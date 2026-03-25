@@ -309,7 +309,7 @@
   function getShareUrl(code) {
     const compressed = compress(code);
     const base = window.location.origin + window.location.pathname;
-    return base + '?v=' + compressed;
+    return base + '#v=' + compressed;
   }
 
   async function copyToClipboard(text) {
@@ -411,25 +411,19 @@
     }
   });
 
-  // ===== Init: route based on URL params =====
+  // ===== Init: route based on URL hash =====
   (function init() {
-    const params = new URLSearchParams(window.location.search);
-    const compressed = params.get('v');
+    const hash = window.location.hash;
 
-    if (compressed) {
+    if (hash.startsWith('#v=')) {
       try {
-        const code = decompress(compressed);
-        if (code) {
-          showView(code);
-          return;
-        }
+        const code = decompress(hash.substring(3));
+        if (code) { showView(code); return; }
       } catch(e) {
         console.error('Failed to decompress:', e);
       }
     }
 
-    // Check hash for backwards compat
-    const hash = window.location.hash;
     if (hash.startsWith('#view=') || hash.startsWith('#code=')) {
       const prefix = hash.startsWith('#view=') ? '#view=' : '#code=';
       try {
@@ -442,7 +436,6 @@
       } catch(e) {}
     }
 
-    // No content → landing
     showLanding();
   })();
 })();
