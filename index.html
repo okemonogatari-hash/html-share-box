@@ -415,12 +415,19 @@
   (function init() {
     const hash = window.location.hash;
 
+    // Debug: remove after confirming
+    if (hash.length > 3) {
+      document.title = 'hash=' + hash.substring(0, 30) + '... len=' + hash.length + ' LZ=' + (typeof LZString);
+    }
+
     if (hash.startsWith('#v=')) {
       try {
-        const code = decompress(hash.substring(3));
+        const compressed = hash.substring(3);
+        const code = decompress(compressed);
         if (code) { showView(code); return; }
+        else { document.title = 'DECOMPRESS_NULL len=' + compressed.length; }
       } catch(e) {
-        console.error('Failed to decompress:', e);
+        document.title = 'ERROR: ' + e.message;
       }
     }
 
