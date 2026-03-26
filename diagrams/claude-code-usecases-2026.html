@@ -6,50 +6,48 @@
 <title>Claude Code でできること 完全ガイド 2026</title>
 <style>
   :root {
-    --bg: #0f0f1a;
-    --paper: rgba(22, 22, 40, 0.92);
-    --paper-light: rgba(30, 30, 55, 0.85);
-    --ink: #e8e6f0;
-    --muted: #9a96b0;
-    --line: rgba(255, 255, 255, 0.08);
-    --accent: #7c6aff;
-    --accent-soft: rgba(124, 106, 255, 0.15);
-    --cyan: #22d3ee;
-    --cyan-soft: rgba(34, 211, 238, 0.12);
-    --orange: #fb923c;
-    --orange-soft: rgba(251, 146, 60, 0.12);
-    --green: #34d399;
-    --green-soft: rgba(52, 211, 153, 0.12);
-    --rose: #f472b6;
-    --rose-soft: rgba(244, 114, 182, 0.12);
-    --gold: #fbbf24;
-    --gold-soft: rgba(251, 191, 36, 0.12);
-    --blue: #60a5fa;
-    --blue-soft: rgba(96, 165, 250, 0.12);
-    --red: #f87171;
-    --red-soft: rgba(248, 113, 113, 0.12);
-    --shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-    --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.3);
+    --bg: #faf8f5;
+    --paper: rgba(255, 255, 255, 0.92);
+    --paper-light: rgba(255, 255, 255, 0.7);
+    --ink: #2d2a26;
+    --muted: #7a756d;
+    --line: rgba(0, 0, 0, 0.06);
+    --accent: #6c5ce7;
+    --accent-soft: rgba(108, 92, 231, 0.08);
+    --accent-mid: rgba(108, 92, 231, 0.15);
+    --warm: #e17055;
+    --warm-soft: rgba(225, 112, 85, 0.08);
+    --mint: #00b894;
+    --mint-soft: rgba(0, 184, 148, 0.08);
+    --sky: #0984e3;
+    --sky-soft: rgba(9, 132, 227, 0.08);
+    --honey: #fdcb6e;
+    --honey-soft: rgba(253, 203, 110, 0.1);
+    --rose: #e84393;
+    --rose-soft: rgba(232, 67, 147, 0.08);
+    --peach: #fab1a0;
+    --peach-soft: rgba(250, 177, 160, 0.1);
+    --shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.04);
     --radius-xl: 28px;
     --radius-lg: 22px;
     --radius-md: 16px;
     --radius-sm: 12px;
-    --max: 1280px;
-    --glow: 0 0 40px rgba(124, 106, 255, 0.3);
+    --max: 1200px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: "Avenir Next", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    font-family: "Hiragino Maru Gothic ProN", "Rounded Mplus 1c", "Avenir Next", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
     color: var(--ink);
     background: var(--bg);
     background-image:
-      radial-gradient(circle at 15% 10%, rgba(124, 106, 255, 0.15), transparent 40%),
-      radial-gradient(circle at 85% 20%, rgba(34, 211, 238, 0.1), transparent 35%),
-      radial-gradient(circle at 50% 80%, rgba(251, 146, 60, 0.08), transparent 40%);
-    line-height: 1.7;
+      radial-gradient(circle at 20% 5%, rgba(108, 92, 231, 0.06), transparent 40%),
+      radial-gradient(circle at 80% 15%, rgba(250, 177, 160, 0.08), transparent 35%),
+      radial-gradient(circle at 50% 90%, rgba(253, 203, 110, 0.06), transparent 40%);
+    line-height: 1.8;
     min-height: 100vh;
   }
 
@@ -59,35 +57,128 @@
     padding: 28px 0 80px;
   }
 
+  /* ═══════════════════ HOOK ═══════════════════ */
+  .hook {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 36px;
+    padding: 48px 36px;
+    margin-bottom: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .hook::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--peach), var(--accent), var(--mint), var(--honey));
+    border-radius: 4px 4px 0 0;
+  }
+
+  .hook-doraemon {
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 800;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+
+  .hook-doraemon .pop {
+    background: linear-gradient(135deg, var(--accent), var(--warm));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hook-explain {
+    font-size: clamp(14px, 2.5vw, 17px);
+    color: var(--muted);
+    max-width: 680px;
+    margin: 0 auto 32px;
+    line-height: 1.9;
+  }
+
+  .hook-examples {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .hook-example {
+    background: var(--accent-soft);
+    border: 1px solid rgba(108, 92, 231, 0.12);
+    border-radius: var(--radius-lg);
+    padding: 18px 22px;
+    max-width: 240px;
+    text-align: left;
+    transition: all 0.3s;
+  }
+
+  .hook-example:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(108, 92, 231, 0.1);
+  }
+
+  .hook-you-say {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .hook-command {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .hook-result {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .hook-result .done {
+    color: var(--mint);
+    font-weight: 700;
+  }
+
+  .hook-bottom {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+
+  .hook-bottom strong {
+    color: var(--ink);
+  }
+
   /* ═══════════════════ HERO ═══════════════════ */
   .hero {
     position: relative;
     overflow: hidden;
     border-radius: 36px;
-    padding: 56px 44px 48px;
-    margin-bottom: 28px;
-    background: linear-gradient(135deg, rgba(124, 106, 255, 0.2) 0%, rgba(34, 211, 238, 0.1) 50%, rgba(251, 146, 60, 0.08) 100%);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(124, 106, 255, 0.25);
-    box-shadow: var(--glow), var(--shadow);
+    padding: 48px 40px 42px;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, rgba(108, 92, 231, 0.1) 0%, rgba(250, 177, 160, 0.1) 50%, rgba(253, 203, 110, 0.08) 100%);
+    border: 1px solid rgba(108, 92, 231, 0.1);
+    box-shadow: var(--shadow);
     text-align: center;
   }
 
   .hero::before {
     content: "";
     position: absolute;
-    top: -80px; right: -80px;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(34, 211, 238, 0.2), transparent 70%);
-    border-radius: 999px;
-  }
-
-  .hero::after {
-    content: "";
-    position: absolute;
-    bottom: -60px; left: -40px;
+    top: -80px; right: -60px;
     width: 250px; height: 250px;
-    background: radial-gradient(circle, rgba(124, 106, 255, 0.15), transparent 70%);
+    background: radial-gradient(circle, rgba(250, 177, 160, 0.15), transparent 70%);
     border-radius: 999px;
   }
 
@@ -95,66 +186,57 @@
     display: inline-block;
     background: var(--accent-soft);
     color: var(--accent);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
-    padding: 6px 18px;
+    padding: 5px 16px;
     border-radius: 999px;
     letter-spacing: 0.5px;
-    margin-bottom: 18px;
-    border: 1px solid rgba(124, 106, 255, 0.3);
-    position: relative;
-    z-index: 1;
+    margin-bottom: 16px;
+    border: 1px solid rgba(108, 92, 231, 0.15);
+    position: relative; z-index: 1;
   }
 
   .hero h1 {
-    font-size: clamp(28px, 5vw, 52px);
+    font-size: clamp(26px, 5vw, 46px);
     font-weight: 800;
-    line-height: 1.25;
+    line-height: 1.3;
     margin-bottom: 14px;
-    position: relative;
-    z-index: 1;
-    background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    position: relative; z-index: 1;
+    color: var(--ink);
   }
 
   .hero-sub {
-    font-size: clamp(14px, 2vw, 18px);
+    font-size: clamp(14px, 2vw, 17px);
     color: var(--muted);
-    max-width: 700px;
+    max-width: 650px;
     margin: 0 auto 28px;
-    position: relative;
-    z-index: 1;
+    position: relative; z-index: 1;
+    line-height: 1.8;
   }
 
   .hero-stats {
     display: flex;
-    gap: 24px;
+    gap: 16px;
     justify-content: center;
     flex-wrap: wrap;
-    position: relative;
-    z-index: 1;
+    position: relative; z-index: 1;
   }
 
   .stat {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius-md);
-    padding: 16px 28px;
+    padding: 14px 24px;
     text-align: center;
-    min-width: 140px;
+    min-width: 130px;
+    box-shadow: var(--shadow-sm);
   }
 
   .stat-num {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
     display: block;
-    background: linear-gradient(135deg, var(--cyan), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--accent);
   }
 
   .stat-label {
@@ -169,7 +251,6 @@
     gap: 8px;
     overflow-x: auto;
     padding: 4px 0 20px;
-    margin-bottom: 8px;
     scrollbar-width: none;
   }
   .nav-strip::-webkit-scrollbar { display: none; }
@@ -181,35 +262,34 @@
     font-size: 13px;
     font-weight: 600;
     color: var(--muted);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--paper);
+    border: 1px solid var(--line);
     cursor: pointer;
     transition: all 0.3s;
     text-decoration: none;
   }
 
   .nav-pill:hover {
-    color: var(--ink);
-    background: rgba(124, 106, 255, 0.15);
-    border-color: rgba(124, 106, 255, 0.3);
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: rgba(108, 92, 231, 0.2);
   }
 
   /* ═══════════════════ SECTION ═══════════════════ */
   .section {
     background: var(--paper);
-    backdrop-filter: blur(14px);
     border: 1px solid var(--line);
     box-shadow: var(--shadow-sm);
     border-radius: var(--radius-xl);
     padding: 36px 32px;
-    margin-bottom: 22px;
+    margin-bottom: 20px;
   }
 
   .section-head {
     display: flex;
     align-items: center;
     gap: 14px;
-    margin-bottom: 24px;
+    margin-bottom: 8px;
   }
 
   .section-icon {
@@ -224,145 +304,148 @@
   }
 
   .section-head h2 {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 21px;
+    font-weight: 800;
     line-height: 1.3;
   }
 
-  .section-head .section-desc {
-    font-size: 13px;
+  .section-lead {
+    font-size: 14px;
     color: var(--muted);
-    margin-top: 2px;
+    margin-bottom: 22px;
+    padding-left: 62px;
+    line-height: 1.8;
   }
 
   /* ═══════════════════ CARDS GRID ═══════════════════ */
   .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
   }
 
   .card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: var(--bg);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
-    padding: 24px;
+    padding: 22px;
     transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
   }
 
   .card:hover {
-    border-color: rgba(124, 106, 255, 0.3);
     transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    border-color: rgba(108, 92, 231, 0.2);
   }
 
   .card-emoji {
     font-size: 28px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     display: block;
   }
 
   .card h3 {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     margin-bottom: 8px;
-    line-height: 1.4;
+    line-height: 1.5;
   }
 
   .card p {
     font-size: 13px;
     color: var(--muted);
-    line-height: 1.6;
+    line-height: 1.7;
   }
 
   .card-tag {
     display: inline-block;
-    margin-top: 12px;
+    margin-top: 10px;
     padding: 3px 10px;
     border-radius: 999px;
     font-size: 11px;
     font-weight: 600;
   }
 
-  .tag-beginner {
-    background: var(--green-soft);
-    color: var(--green);
+  .tag-easy { background: var(--mint-soft); color: var(--mint); }
+  .tag-medium { background: var(--sky-soft); color: var(--sky); }
+  .tag-pro { background: var(--accent-soft); color: var(--accent); }
+
+  /* ═══════════════════ METAPHOR BOX ═══════════════════ */
+  .metaphor {
+    background: var(--honey-soft);
+    border: 1px solid rgba(253, 203, 110, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--ink);
   }
 
-  .tag-intermediate {
-    background: var(--blue-soft);
-    color: var(--blue);
+  .metaphor-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--warm);
+    margin-bottom: 4px;
   }
 
-  .tag-advanced {
-    background: var(--accent-soft);
-    color: var(--accent);
-  }
-
-  /* ═══════════════════ OKEMON SECTION ═══════════════════ */
+  /* ═══════════════════ OKEMON ═══════════════════ */
   .okemon-section {
-    background: linear-gradient(135deg, rgba(124, 106, 255, 0.12) 0%, rgba(251, 146, 60, 0.08) 100%);
-    border-color: rgba(124, 106, 255, 0.2);
+    background: linear-gradient(135deg, rgba(108, 92, 231, 0.06) 0%, rgba(250, 177, 160, 0.06) 100%);
+    border-color: rgba(108, 92, 231, 0.12);
   }
 
   .okemon-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: linear-gradient(135deg, var(--accent), var(--cyan));
+    background: linear-gradient(135deg, var(--accent), var(--warm));
     color: #fff;
     font-size: 12px;
     font-weight: 700;
     padding: 5px 14px;
     border-radius: 999px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
   .timeline-card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
-    padding: 24px;
-    margin-bottom: 14px;
+    padding: 22px 22px 22px 48px;
+    margin-bottom: 12px;
     position: relative;
-    padding-left: 48px;
   }
 
   .timeline-card::before {
     content: "";
     position: absolute;
     left: 20px;
-    top: 0;
-    bottom: 0;
+    top: 0; bottom: 0;
     width: 2px;
-    background: linear-gradient(180deg, var(--accent), var(--cyan));
+    background: linear-gradient(180deg, var(--accent), var(--peach));
     border-radius: 2px;
   }
 
   .timeline-card::after {
     content: "";
     position: absolute;
-    left: 15px;
-    top: 28px;
-    width: 12px;
-    height: 12px;
+    left: 15px; top: 26px;
+    width: 12px; height: 12px;
     background: var(--accent);
     border-radius: 999px;
-    box-shadow: 0 0 12px rgba(124, 106, 255, 0.5);
+    box-shadow: 0 0 8px rgba(108, 92, 231, 0.3);
   }
 
-  .timeline-date {
+  .timeline-label {
     font-size: 11px;
-    color: var(--cyan);
+    color: var(--accent);
     font-weight: 700;
-    letter-spacing: 0.5px;
     margin-bottom: 4px;
   }
 
   .timeline-card h3 {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     margin-bottom: 6px;
   }
@@ -370,6 +453,7 @@
   .timeline-card p {
     font-size: 13px;
     color: var(--muted);
+    line-height: 1.7;
   }
 
   .timeline-status {
@@ -381,111 +465,87 @@
     margin-top: 8px;
   }
 
-  .status-live {
-    background: var(--green-soft);
-    color: var(--green);
-  }
+  .status-live { background: var(--mint-soft); color: var(--mint); }
+  .status-done { background: var(--sky-soft); color: var(--sky); }
 
-  .status-progress {
-    background: var(--gold-soft);
-    color: var(--gold);
-  }
-
-  .status-done {
-    background: var(--cyan-soft);
-    color: var(--cyan);
-  }
-
-  /* ═══════════════════ FLOW DIAGRAM ═══════════════════ */
+  /* ═══════════════════ FLOW ═══════════════════ */
   .flow-container {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--bg);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
-    padding: 28px;
-    margin-top: 20px;
+    padding: 24px;
+    margin-top: 18px;
     overflow-x: auto;
   }
 
   .flow-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
+  .flow-row:last-child { margin-bottom: 0; }
+
   .flow-node {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius-md);
-    padding: 12px 20px;
+    padding: 12px 18px;
     font-size: 13px;
     font-weight: 600;
     text-align: center;
-    min-width: 100px;
-    transition: all 0.3s;
-  }
-
-  .flow-node:hover {
-    border-color: rgba(124, 106, 255, 0.4);
-    box-shadow: 0 0 20px rgba(124, 106, 255, 0.15);
-  }
-
-  .flow-arrow {
-    color: var(--accent);
-    font-size: 18px;
-    flex-shrink: 0;
+    min-width: 90px;
+    box-shadow: var(--shadow-sm);
   }
 
   .flow-node.highlight {
     background: var(--accent-soft);
-    border-color: rgba(124, 106, 255, 0.3);
-    color: #fff;
+    border-color: rgba(108, 92, 231, 0.2);
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  .flow-arrow { color: var(--accent); font-size: 16px; flex-shrink: 0; }
+
+  .flow-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
   }
 
   /* ═══════════════════ BEFORE AFTER ═══════════════════ */
   .ba-grid {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    gap: 20px;
+    gap: 18px;
     align-items: stretch;
   }
 
   .ba-col {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: var(--bg);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
-    padding: 24px;
+    padding: 22px;
   }
 
-  .ba-col.before {
-    border-color: rgba(248, 113, 113, 0.2);
-  }
-
-  .ba-col.after {
-    border-color: rgba(52, 211, 153, 0.2);
-  }
+  .ba-col.before { border-left: 3px solid var(--peach); }
+  .ba-col.after { border-left: 3px solid var(--mint); }
 
   .ba-label {
     font-size: 12px;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     margin-bottom: 14px;
     padding: 4px 12px;
     border-radius: 999px;
     display: inline-block;
   }
 
-  .ba-label.before-label {
-    background: var(--red-soft);
-    color: var(--red);
-  }
-
-  .ba-label.after-label {
-    background: var(--green-soft);
-    color: var(--green);
-  }
+  .ba-label.before-label { background: var(--peach-soft); color: var(--warm); }
+  .ba-label.after-label { background: var(--mint-soft); color: var(--mint); }
 
   .ba-divider {
     display: flex;
@@ -498,32 +558,29 @@
   .ba-item {
     font-size: 14px;
     padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--line);
     display: flex;
     gap: 8px;
     align-items: flex-start;
+    line-height: 1.6;
   }
 
   .ba-item:last-child { border-bottom: none; }
-
   .ba-icon { flex-shrink: 0; }
 
   /* ═══════════════════ CTA ═══════════════════ */
   .cta-section {
-    background: linear-gradient(135deg, rgba(124, 106, 255, 0.15), rgba(34, 211, 238, 0.1));
-    border-color: rgba(124, 106, 255, 0.25);
+    background: linear-gradient(135deg, rgba(108, 92, 231, 0.08), rgba(250, 177, 160, 0.06));
+    border-color: rgba(108, 92, 231, 0.12);
     text-align: center;
     padding: 48px 32px;
   }
 
   .cta-section h2 {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
-    margin-bottom: 14px;
-    background: linear-gradient(135deg, #fff, var(--cyan));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    margin-bottom: 12px;
+    color: var(--ink);
   }
 
   .cta-steps {
@@ -535,17 +592,17 @@
   }
 
   .cta-step {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     padding: 24px 20px;
     max-width: 220px;
     text-align: center;
+    box-shadow: var(--shadow-sm);
   }
 
   .cta-step-num {
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border-radius: 999px;
     background: var(--accent-soft);
     color: var(--accent);
@@ -557,159 +614,47 @@
     margin: 0 auto 12px;
   }
 
-  .cta-step h4 {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-
-  .cta-step p {
-    font-size: 12px;
-    color: var(--muted);
-  }
+  .cta-step h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .cta-step p { font-size: 13px; color: var(--muted); line-height: 1.7; }
 
   /* ═══════════════════ FOOTER ═══════════════════ */
   .footer {
     text-align: center;
-    padding: 32px 0 0;
+    padding: 28px 0 0;
     color: var(--muted);
     font-size: 12px;
-  }
-
-  .footer a {
-    color: var(--accent);
-    text-decoration: none;
   }
 
   /* ═══════════════════ RESPONSIVE ═══════════════════ */
   @media (max-width: 768px) {
-    .hero { padding: 36px 24px 32px; }
-    .section { padding: 28px 20px; }
+    .hero { padding: 32px 22px; }
+    .section { padding: 26px 20px; }
     .ba-grid { grid-template-columns: 1fr; }
     .ba-divider { transform: rotate(90deg); padding: 8px 0; }
     .cards { grid-template-columns: 1fr; }
-    .hero-stats { gap: 12px; }
-    .stat { min-width: 110px; padding: 12px 16px; }
+    .hero-stats { gap: 10px; }
+    .stat { min-width: 100px; padding: 10px 14px; }
     .flow-row { flex-direction: column; }
     .flow-arrow { transform: rotate(90deg); }
+    .section-lead { padding-left: 0; }
+    .hook { padding: 32px 22px; }
+    .hook-examples { flex-direction: column; align-items: center; }
+    .hook-example { max-width: 100%; }
   }
 
   /* ═══════════════════ ANIMATE ═══════════════════ */
   @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(24px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .section, .hero {
-    animation: fadeInUp 0.6s ease-out both;
+  .section, .hero, .hook {
+    animation: fadeInUp 0.5s ease-out both;
   }
 
-  .section:nth-child(2) { animation-delay: 0.1s; }
-  .section:nth-child(3) { animation-delay: 0.15s; }
-  .section:nth-child(4) { animation-delay: 0.2s; }
-  .section:nth-child(5) { animation-delay: 0.25s; }
-
-  /* ═══════════════════ HOOK ═══════════════════ */
-  .hook {
-    background: linear-gradient(135deg, rgba(124, 106, 255, 0.08), rgba(34, 211, 238, 0.05));
-    border: 1px solid rgba(124, 106, 255, 0.15);
-    border-radius: var(--radius-xl);
-    padding: 40px 32px;
-    margin-bottom: 28px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hook::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--cyan), var(--orange), var(--green));
-    border-radius: 3px 3px 0 0;
-  }
-
-  .hook-catchcopy {
-    font-size: clamp(18px, 3.5vw, 28px);
-    font-weight: 800;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    color: #fff;
-  }
-
-  .hook-catchcopy .highlight-text {
-    background: linear-gradient(135deg, var(--cyan), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .hook-examples {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 24px;
-  }
-
-  .hook-example {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    padding: 14px 20px;
-    max-width: 260px;
-    text-align: left;
-    transition: all 0.3s;
-  }
-
-  .hook-example:hover {
-    border-color: rgba(124, 106, 255, 0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  }
-
-  .hook-you-say {
-    font-size: 11px;
-    color: var(--cyan);
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-  }
-
-  .hook-command {
-    font-size: 15px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 6px;
-  }
-
-  .hook-result {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  .hook-result .done {
-    color: var(--green);
-    font-weight: 600;
-  }
-
-  .hook-bottom {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  .hook-bottom strong {
-    color: var(--ink);
-  }
-
-  @media (max-width: 768px) {
-    .hook { padding: 28px 20px; }
-    .hook-examples { flex-direction: column; align-items: center; }
-    .hook-example { max-width: 100%; }
-  }
+  .hero { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
 </style>
 </head>
 <body>
@@ -717,164 +662,193 @@
 
   <!-- ═══════════════════ HOOK ═══════════════════ -->
   <div class="hook">
-    <div class="hook-catchcopy">
-      「<span class="highlight-text">今日のメールまとめて</span>」って言ったら、<br>
-      本当にまとまった。<br>
-      ――プログラミング経験、<span class="highlight-text">ゼロ</span>なのに。
+    <div class="hook-doraemon">
+      「Claude Code って何ができるの？」<br>
+      それはね、<br>
+      <span class="pop">ドラえもんに「何できるの？」って聞く</span><br>
+      ぐらいの質問なんです。
     </div>
+
+    <p class="hook-explain">
+      ポケットから出てくる道具みたいに、<br>
+      「こうしてほしいな」って言うだけで、<br>
+      パソコンの中のいろんなことを代わりにやってくれる。<br>
+      しかも、<strong>プログラミングの知識はいっさい不要。</strong>
+    </p>
 
     <div class="hook-examples">
       <div class="hook-example">
-        <div class="hook-you-say">YOU SAY</div>
-        <div class="hook-command">「Downloadsフォルダ整理して」</div>
-        <div class="hook-result"><span class="done">3秒で完了。</span><br>ファイルタイプ別に自動分類。</div>
+        <div class="hook-you-say">こう言うだけ</div>
+        <div class="hook-command">「ダウンロードの中、整理して」</div>
+        <div class="hook-result"><span class="done">3秒で完了。</span><br>写真、書類、音楽…自動で分けてくれる</div>
       </div>
       <div class="hook-example">
-        <div class="hook-you-say">YOU SAY</div>
-        <div class="hook-command">「このPDF 5つ、1つにまとめて」</div>
-        <div class="hook-result"><span class="done">10秒で完了。</span><br>ソフトのインストールすら不要。</div>
+        <div class="hook-you-say">こう言うだけ</div>
+        <div class="hook-command">「この書類5つ、1つにまとめて」</div>
+        <div class="hook-result"><span class="done">10秒で完了。</span><br>わざわざソフトを入れなくていい</div>
       </div>
       <div class="hook-example">
-        <div class="hook-you-say">YOU SAY</div>
-        <div class="hook-command">「会議の録音、議事録にして」</div>
-        <div class="hook-result"><span class="done">自動文字起こし→要約→保存。</span><br>手打ちの時代は終わった。</div>
+        <div class="hook-you-say">こう言うだけ</div>
+        <div class="hook-command">「会議の録音を文字にして」</div>
+        <div class="hook-result"><span class="done">自動で文字起こし＆要約。</span><br>手で打ち込む時代、終わりました</div>
       </div>
     </div>
 
     <div class="hook-bottom">
-      これ全部、<strong>Claude Code</strong> に話しかけるだけ。<br>
-      コードを書く必要は、<strong>一切ない。</strong><br>
-      百聞は一見に如かず。まず、<strong>触ってみて。</strong>
+      難しいことは何もない。<br>
+      <strong>日本語で「お願い」するだけ。</strong><br>
+      百聞は一見に如かず。まず、触ってみてほしい。
     </div>
   </div>
 
   <!-- ═══════════════════ HERO ═══════════════════ -->
   <div class="hero">
-    <div class="hero-badge">COMPLETE GUIDE 2026</div>
+    <div class="hero-badge">2026年版 まるわかりガイド</div>
     <h1>Claude Code でできること</h1>
     <p class="hero-sub">
-      「説明されてもピンとこない」←わかる。触れば5分で世界が変わる。<br>
-      40以上の具体ユースケースと、非エンジニア・おけもんのリアル実践事例。
+      「説明を聞いてもピンとこない」←わかります。<br>
+      だからこそ、触った人の実例をたくさん集めました。<br>
+      5分で「あ、これ便利かも」がきっと見つかります。
     </p>
     <div class="hero-stats">
       <div class="stat">
         <span class="stat-num">8</span>
-        <span class="stat-label">活用カテゴリ</span>
+        <span class="stat-label">できることのジャンル</span>
       </div>
       <div class="stat">
         <span class="stat-num">40+</span>
-        <span class="stat-label">具体ユースケース</span>
+        <span class="stat-label">具体的な使い方</span>
       </div>
       <div class="stat">
         <span class="stat-num">14</span>
-        <span class="stat-label">おけもん実践済み</span>
+        <span class="stat-label">おけもんの実体験</span>
       </div>
       <div class="stat">
-        <span class="stat-num">0行</span>
-        <span class="stat-label">必要なコーディング経験</span>
+        <span class="stat-num">0</span>
+        <span class="stat-label">必要な専門知識</span>
       </div>
     </div>
   </div>
 
   <!-- ═══════════════════ NAV ═══════════════════ -->
   <div class="nav-strip">
-    <a class="nav-pill" href="#sec1">日常業務の自動化</a>
-    <a class="nav-pill" href="#sec2">ファイル・データ操作</a>
-    <a class="nav-pill" href="#sec3">情報収集・リサーチ</a>
-    <a class="nav-pill" href="#sec4">コンテンツ作成</a>
-    <a class="nav-pill" href="#sec5">Web開発・ツール作成</a>
-    <a class="nav-pill" href="#sec6">外部サービス連携</a>
-    <a class="nav-pill" href="#sec7">パーソナルAI秘書</a>
-    <a class="nav-pill" href="#sec8">ビジネス活用</a>
+    <a class="nav-pill" href="#sec1">毎日の仕事をラクに</a>
+    <a class="nav-pill" href="#sec2">書類・データ操作</a>
+    <a class="nav-pill" href="#sec3">調べもの・リサーチ</a>
+    <a class="nav-pill" href="#sec4">文章・発信づくり</a>
+    <a class="nav-pill" href="#sec5">ツールを自分で作る</a>
+    <a class="nav-pill" href="#sec6">色んなサービスと連携</a>
+    <a class="nav-pill" href="#sec7">自分だけのAI秘書</a>
+    <a class="nav-pill" href="#sec8">仕事・事業に活かす</a>
     <a class="nav-pill" href="#okemon">おけもんの実例</a>
   </div>
 
-  <!-- ═══════════════════ 1. 日常業務 ═══════════════════ -->
+  <!-- ═══════════════════ 1. 毎日の仕事 ═══════════════════ -->
   <div class="section" id="sec1">
     <div class="section-head">
-      <div class="section-icon" style="background: var(--cyan-soft);">
-        <span>&#x2699;&#xFE0F;</span>
+      <div class="section-icon" style="background: var(--mint-soft);">
+        <span>&#x2615;</span>
       </div>
       <div>
-        <h2>日常業務の自動化</h2>
-        <div class="section-desc">メール・カレンダー・タスク管理が会話だけで完結</div>
+        <h2>毎日の仕事をラクにする</h2>
       </div>
     </div>
+    <p class="section-lead">
+      朝起きてコーヒーを飲みながら「今日やること教えて」って言うだけ。<br>
+      メール・予定表・チャットを全部見て、まとめてくれる――そんな世界です。
+    </p>
+
+    <div class="metaphor">
+      <div class="metaphor-label">たとえるなら</div>
+      毎朝「今日の新聞」を届けてくれる配達員さんが、<br>
+      あなた宛のメール・予定・連絡もまとめて持ってきてくれるようになった感じ。
+    </div>
+
     <div class="cards">
       <div class="card">
         <span class="card-emoji">&#x2600;&#xFE0F;</span>
-        <h3>朝のブリーフィングを自動生成</h3>
-        <p>Gmail・Slack・Googleカレンダーを一括巡回して「今日やること」を優先度付きで提示。毎朝5分の集約作業がゼロに。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>朝の「今日やること」を自動で整理</h3>
+        <p>メール・予定表・チャットをぜんぶ見て「今日の優先順位」を出してくれる。毎朝5分の確認作業がゼロに。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4E8;</span>
-        <h3>メール返信の自動起草</h3>
-        <p>受信メールを読み取り → テンプレ判定 → 返信下書きを自動作成。確認して送るだけ。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>メールの返信案を考えてくれる</h3>
+        <p>届いたメールを読んで「こう返したらどう？」って下書きを作ってくれる。あとは確認して送るだけ。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4C5;</span>
-        <h3>予定を声で追加</h3>
-        <p>「来週木曜19時にミーティング」と伝えるだけ。Googleカレンダーに自動で予定作成＋リマインダー設定。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>「来週の木曜に予定入れて」で完了</h3>
+        <p>カレンダーアプリを開かなくても、話しかけるだけで予定が入る。リマインダーも自動でつけてくれる。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F501;</span>
-        <h3>定期レポートの自動配信</h3>
-        <p>「毎週月曜に売上データをまとめてSlackに投稿」など、繰り返しタスクを完全自動化。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>毎週のレポートを自動でつくる</h3>
+        <p>「毎週月曜に売上をまとめて」と一度お願いすれば、あとは勝手にやってくれる。繰り返し作業から解放。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F399;&#xFE0F;</span>
-        <h3>会議録の自動文字起こし＋要約</h3>
-        <p>録音ファイルをWhisperで文字起こし → 議事録を自動整形 → アクションアイテムを抽出して一覧化。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>会議の録音を「議事録」に自動変換</h3>
+        <p>録音ファイルを渡すだけで、文字に起こして、要点をまとめて、「誰が何をやるか」まで整理してくれる。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════════ 2. ファイル操作 ═══════════════════ -->
+  <!-- ═══════════════════ 2. 書類・データ ═══════════════════ -->
   <div class="section" id="sec2">
     <div class="section-head">
-      <div class="section-icon" style="background: var(--orange-soft);">
+      <div class="section-icon" style="background: var(--warm-soft);">
         <span>&#x1F4C1;</span>
       </div>
       <div>
-        <h2>ファイル・データ操作</h2>
-        <div class="section-desc">PDF・Excel・Word・画像を会話で自在に操作</div>
+        <h2>書類・データをサクッと操作</h2>
       </div>
     </div>
+    <p class="section-lead">
+      PDF、Excel、Word、画像…パソコンの中のいろんなファイルを、<br>
+      専用ソフトなしで、会話だけで自由自在に扱えます。
+    </p>
+
+    <div class="metaphor">
+      <div class="metaphor-label">たとえるなら</div>
+      今まで「ハサミ・のり・定規・コピー機」を自分で使ってた作業を、<br>
+      となりに座った器用な友達が「あー、やっとくよ」って全部やってくれる感じ。
+    </div>
+
     <div class="cards">
       <div class="card">
         <span class="card-emoji">&#x1F4D1;</span>
-        <h3>PDF の読み取り・結合・分割</h3>
-        <p>「この5つのPDFを1つにまとめて」「3ページ目だけ抽出」。手作業30分 → 10秒。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>PDFを結合・分割・抽出</h3>
+        <p>「この5つのPDFを1つにまとめて」「3ページ目だけちょうだい」。手作業30分が10秒に。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4CA;</span>
-        <h3>Excel を一瞬でクリーニング・集計</h3>
-        <p>散らかったデータ → 重複削除 → ピボット集計 → グラフ付きレポート。全部会話だけ。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>Excelをきれいに整えて集計</h3>
+        <p>ぐちゃぐちゃのデータ → 重複を消して → 集計して → グラフ付きにしてくれる。全部「お願い」だけ。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4DD;</span>
-        <h3>Word ドキュメントを自動整形</h3>
-        <p>見出しスタイル統一、目次自動生成、テンプレート埋め込み。100ページでも一瞬。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>Word文書をプロっぽく整形</h3>
+        <p>見出しのデザイン統一、目次の自動作成、テンプレートの適用。100ページの資料でも一瞬。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F3A8;</span>
-        <h3>HTML で美しい図解を作成</h3>
-        <p>「この情報を見やすい図解にして」→ インタラクティブなHTML図解を自動生成。コード知識不要。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>見やすい図解を自動で作成</h3>
+        <p>「この内容をわかりやすい図にして」と伝えるだけ。おしゃれなデザインの図解が出来上がる。（この資料もそう！）</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4F1;</span>
-        <h3>PowerPoint スライドを自動生成</h3>
-        <p>箇条書きメモ → 構成設計 → デザイン済みスライド20枚。プレゼン資料が会話だけで完成。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>プレゼン資料（スライド）を自動作成</h3>
+        <p>箇条書きのメモを渡すだけ → デザイン済みのスライド20枚が完成。発表資料が会話だけで作れる。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
     </div>
   </div>
@@ -882,38 +856,48 @@
   <!-- ═══════════════════ 3. リサーチ ═══════════════════ -->
   <div class="section" id="sec3">
     <div class="section-head">
-      <div class="section-icon" style="background: var(--green-soft);">
+      <div class="section-icon" style="background: var(--sky-soft);">
         <span>&#x1F50D;</span>
       </div>
       <div>
-        <h2>情報収集・リサーチ</h2>
-        <div class="section-desc">複数ソースを横断して情報を自動集約・分析</div>
+        <h2>調べもの・リサーチをおまかせ</h2>
       </div>
     </div>
+    <p class="section-lead">
+      ネットで検索して、ページを開いて、コピーして…の繰り返しはもう終わり。<br>
+      「これ調べて」で、まとまった答えが返ってきます。
+    </p>
+
+    <div class="metaphor">
+      <div class="metaphor-label">たとえるなら</div>
+      図書館の司書さんに「このテーマの資料ください」って頼んだら、<br>
+      要点をまとめたレジュメまで作って持ってきてくれるような感覚。
+    </div>
+
     <div class="cards">
       <div class="card">
         <span class="card-emoji">&#x1F310;</span>
-        <h3>競合リサーチを自動化</h3>
-        <p>「競合3社の料金プランを比較表にして」。Webから情報収集 → 構造化 → Excel出力まで一気通貫。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>競合のサービスを比較表にする</h3>
+        <p>「A社とB社とC社の料金を比べて表にして」。ネットから情報を集めて、きれいな表にまとめてくれる。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F3AC;</span>
-        <h3>YouTube 動画を自動要約</h3>
-        <p>URLを渡すだけで字幕取得 → 要約 → ポイント整理。1時間の動画が3分で把握可能。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>長い動画を3分で把握</h3>
+        <p>YouTube動画のURLを渡すだけで「この動画はこういう内容です」って要約してくれる。1時間の動画も一瞬。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4F0;</span>
-        <h3>業界ニュースの自動モニタリング</h3>
-        <p>毎日自動でAI/ビジネスニュースを収集 → トレンド分析 → 朝のブリーフィングに統合。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>毎日のニュースを自動で拾ってくる</h3>
+        <p>「AIの最新ニュースを毎朝まとめて」と一度お願いすれば、毎日自動でチェックしてくれる。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4AC;</span>
-        <h3>顧客の声を感情分析</h3>
-        <p>レビューやSNSの投稿を自動収集 → ポジ/ネガ分類 → 改善提案を抽出。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>お客さまの声を分析</h3>
+        <p>レビューやSNSの投稿を集めて「良い声」「改善点」を自動で分類。お客さまの本音が見える化。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
     </div>
   </div>
@@ -925,132 +909,155 @@
         <span>&#x270D;&#xFE0F;</span>
       </div>
       <div>
-        <h2>コンテンツ作成</h2>
-        <div class="section-desc">ブログ・SNS・プレゼン・動画素材をAIが生成</div>
+        <h2>文章・発信をつくる</h2>
       </div>
     </div>
+    <p class="section-lead">
+      ブログ、SNS投稿、プレゼン、動画の台本…<br>
+      「何を書こう」から「できた！」まで、隣で一緒に考えてくれます。
+    </p>
+
+    <div class="metaphor">
+      <div class="metaphor-label">たとえるなら</div>
+      文章を書くのが得意な友達が、24時間いつでも<br>
+      「ねえねえ、これ読んでみてくれない？」に応えてくれる感じ。
+    </div>
+
     <div class="cards">
       <div class="card">
         <span class="card-emoji">&#x1F4DD;</span>
-        <h3>ブログ記事を自動執筆</h3>
-        <p>テーマを伝えるだけで構成→下書き→SEO最適化まで完了。カフェのアイデアが当日中に公開可能。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>ブログ記事を一緒に書く</h3>
+        <p>テーマを伝えるだけで構成を考えて下書きしてくれる。カフェで思いついたことが、その日のうちに記事に。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4F2;</span>
-        <h3>SNS投稿をプラットフォーム別に最適化</h3>
-        <p>1つのネタからX/Instagram/Facebook用にトーンと文字数を自動調整して投稿文を生成。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>SNS投稿を場所に合わせて調整</h3>
+        <p>1つのネタから、X用は短く、Instagram用は丁寧に、自動でトーンと文字数を変えてくれる。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F3A4;</span>
-        <h3>動画スクリプト＋自動字幕</h3>
-        <p>箇条書き → 話し言葉のスクリプト生成 → 収録後にWhisperで字幕化。多言語対応も。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>動画の台本＆字幕を作成</h3>
+        <p>箇条書きを渡せば話し言葉のスクリプトに。撮影後は自動で字幕も付けてくれる。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
-        <span class="card-emoji">&#x1F4E7;</span>
-        <h3>HTML メールテンプレート作成</h3>
-        <p>美しいHTMLメール・ニュースレターを会話だけでデザイン。配信ツールにそのまま貼り付け。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <span class="card-emoji">&#x1F48C;</span>
+        <h3>おしゃれなメールテンプレート</h3>
+        <p>お知らせメールやニュースレターのデザインも会話だけで完成。そのまま配信ツールに貼り付けOK。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════════ 5. Web開発 ═══════════════════ -->
+  <!-- ═══════════════════ 5. ツール作成 ═══════════════════ -->
   <div class="section" id="sec5">
     <div class="section-head">
       <div class="section-icon" style="background: var(--accent-soft);">
-        <span>&#x1F6E0;&#xFE0F;</span>
+        <span>&#x2728;</span>
       </div>
       <div>
-        <h2>Web開発・ツール作成</h2>
-        <div class="section-desc">コード未経験でも「欲しいツール」が作れる時代</div>
+        <h2>自分専用のツールを作る</h2>
       </div>
     </div>
+    <p class="section-lead">
+      「こういうの欲しいなぁ」を実現してくれる。<br>
+      プログラミング未経験でも、自分だけの便利ツールが作れる時代になりました。
+    </p>
+
+    <div class="metaphor">
+      <div class="metaphor-label">たとえるなら</div>
+      日曜大工で「棚が欲しいな」と思ったとき、<br>
+      設計から組み立てまで全部やってくれる大工さんが横にいる感じ。<br>
+      あなたは「ここにこんな棚がほしい」って伝えるだけ。
+    </div>
+
     <div class="cards">
       <div class="card">
         <span class="card-emoji">&#x1F3E0;</span>
-        <h3>ランディングページを即席作成</h3>
-        <p>「営業用のLP作って」→ HTML/CSS/JSを自動生成 → そのまま公開。デザイン知識不要。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>Webページを一瞬で作る</h3>
+        <p>「お店の紹介ページ作って」→ デザインされたページがすぐに完成。そのままネットに公開もできる。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F916;</span>
-        <h3>Slack/LINE Bot を会話だけで開発</h3>
-        <p>「今日のタスクを教えてくれるBot作って」→ コード自動生成 → デプロイまで一気通貫。</p>
-        <span class="card-tag tag-intermediate">中級</span>
-      </div>
-      <div class="card">
-        <span class="card-emoji">&#x26A1;</span>
-        <h3>Google Apps Script で業務自動化</h3>
-        <p>フォーム回答→スプレッドシート集計→メール通知。GASコードの自動生成＆デバッグ。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>チャットで使えるボットを開発</h3>
+        <p>「今日のタスクを教えてくれるボット作って」と伝えるだけ。LINEやSlackで動く相棒が誕生。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F41B;</span>
-        <h3>エラーをスクショで渡すだけで修正</h3>
-        <p>「これエラー出ます」→ スクショ貼るだけ → 原因特定 → 修正 → テスト実行。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>エラーの画面を見せるだけで直してくれる</h3>
+        <p>「これ動かないんだけど」→ 画面のスクショを貼るだけ → 原因を見つけて直してくれる。魔法みたい。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F527;</span>
-        <h3>自分専用の自動化スクリプト</h3>
-        <p>ファイル整理・データ変換・定期実行。「毎日この作業やってるんだけど」→ 自動化完了。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>「毎日やってるこの作業」を自動化</h3>
+        <p>ファイルの整理、データの変換、定期的な確認…「これ毎回めんどうなんだよね」がゼロになる。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════════ 6. MCP連携 ═══════════════════ -->
+  <!-- ═══════════════════ 6. 連携 ═══════════════════ -->
   <div class="section" id="sec6">
     <div class="section-head">
-      <div class="section-icon" style="background: var(--gold-soft);">
+      <div class="section-icon" style="background: var(--honey-soft);">
         <span>&#x1F517;</span>
       </div>
       <div>
-        <h2>外部サービス連携（MCP）</h2>
-        <div class="section-desc">Notion・Gmail・Slack・カレンダーをAIが直接操作</div>
+        <h2>いつも使うサービスと連携する</h2>
       </div>
+    </div>
+    <p class="section-lead">
+      Gmail、Notion、Slack、カレンダー…<br>
+      いつも使ってるサービスをClaude Codeがそのまま操作してくれます。<br>
+      画面を切り替える必要がなくなります。
+    </p>
+
+    <div class="metaphor">
+      <div class="metaphor-label">たとえるなら</div>
+      今まで自分で郵便局・銀行・役所をハシゴしてた手続きを、<br>
+      「お願いね」と頼むだけで全部回ってきてくれる秘書さんがいるイメージ。
     </div>
 
     <div class="flow-container">
-      <p style="font-size: 14px; font-weight: 700; margin-bottom: 16px; text-align: center;">MCP（Model Context Protocol）の仕組み</p>
+      <p style="font-size: 14px; font-weight: 700; margin-bottom: 14px; text-align: center;">仕組みはとってもシンプル</p>
       <div class="flow-row">
-        <div class="flow-node">&#x1F5E3;&#xFE0F; あなたの指示</div>
+        <div class="flow-node">&#x1F5E3;&#xFE0F; あなたの言葉</div>
         <div class="flow-arrow">&#x2192;</div>
-        <div class="flow-node highlight">&#x1F9E0; Claude Code</div>
+        <div class="flow-node highlight">&#x1F9E0; Claude Code<div class="flow-note">つなぎ役</div></div>
         <div class="flow-arrow">&#x2192;</div>
-        <div class="flow-node">&#x1F50C; MCP Server</div>
-        <div class="flow-arrow">&#x2192;</div>
-        <div class="flow-node">&#x1F4E6; 外部サービス<br><small style="color: var(--muted)">Gmail / Notion / Slack...</small></div>
+        <div class="flow-node">&#x1F4E6; いろんなサービス<div class="flow-note">メール・カレンダーなど</div></div>
       </div>
     </div>
 
-    <div class="cards" style="margin-top: 20px;">
+    <div class="cards" style="margin-top: 18px;">
       <div class="card">
         <span class="card-emoji">&#x1F4D3;</span>
-        <h3>Notion をAIが直接読み書き</h3>
-        <p>データベース検索・ページ作成・プロパティ更新。「Notionのタスクで期限切れのものを教えて」で即回答。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>Notionを声で操作</h3>
+        <p>「Notionの期限切れタスクを教えて」で即回答。ページの作成や更新もお願いするだけ。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4EC;</span>
-        <h3>Gmail を横断検索＋分析</h3>
-        <p>「過去3ヶ月のAさんからのメールをトピック別にまとめて」。メールの海から情報を瞬時に抽出。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>Gmailの中から情報を探す</h3>
+        <p>「先月のAさんからのメール、何の話だっけ？」に即答。メールの山から一瞬で見つけてくれる。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4AC;</span>
-        <h3>Chatwork/Slack のメンション処理</h3>
-        <p>APIで未対応メンションを自動取得 → 仕分け → 対応案を提示。見落とし防止。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>チャットの未対応を自動チェック</h3>
+        <p>ChatworkやSlackで返事してないメッセージを自動で拾って教えてくれる。見落とし防止に。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
-        <span class="card-emoji">&#x1F5C3;&#xFE0F;</span>
-        <h3>Google Drive のファイル操作</h3>
-        <p>ドライブ内の音声・動画・ドキュメントをAPI経由で検索・ダウンロード・処理。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <span class="card-emoji">&#x1F4C2;</span>
+        <h3>Googleドライブのファイル操作</h3>
+        <p>ドライブの中の音声・動画・書類を探して、ダウンロードして、加工して…ぜんぶおまかせ。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
     </div>
   </div>
@@ -1058,44 +1065,54 @@
   <!-- ═══════════════════ 7. AI秘書 ═══════════════════ -->
   <div class="section" id="sec7">
     <div class="section-head">
-      <div class="section-icon" style="background: var(--cyan-soft);">
-        <span>&#x1F464;</span>
+      <div class="section-icon" style="background: var(--peach-soft);">
+        <span>&#x1F33F;</span>
       </div>
       <div>
-        <h2>パーソナルAI秘書</h2>
-        <div class="section-desc">タスク管理・日記・思考整理を全部AIが担う</div>
+        <h2>自分だけのAI秘書をつくる</h2>
       </div>
     </div>
+    <p class="section-lead">
+      タスク管理、日記、思考の整理…ぜんぶAIが「一緒にやるよ」って寄り添ってくれる。<br>
+      ひとりで頑張らなくてよくなります。
+    </p>
+
+    <div class="metaphor">
+      <div class="metaphor-label">たとえるなら</div>
+      気の利く友達が隣にいて、あなたが「あ、あれやらなきゃ」って呟いたら<br>
+      「メモしとくね。あと、こっちを先にやった方がいいかも」って返してくれる感じ。
+    </div>
+
     <div class="cards">
       <div class="card">
         <span class="card-emoji">&#x1F4CB;</span>
-        <h3>タスクの自動拾い上げ</h3>
-        <p>会話中に「これやらなきゃ」と呟くだけでAIが「タスクに入れとく？」と確認。自分で管理しなくていい。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>「やらなきゃ」を自動でメモ</h3>
+        <p>会話の中で「あれやらなきゃ」と呟くだけで「タスクに入れとく？」と確認してくれる。自分で管理しなくていい。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4D6;</span>
-        <h3>デイリーログの自動記録</h3>
-        <p>「今日こんなことがあった」を話すだけ。日記として自動保存＋過去の記録を検索可能に。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>話すだけで日記がつく</h3>
+        <p>「今日こんなことがあってね」と話しかけるだけ。きれいに整理されて保存される。あとから検索もできる。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F3AF;</span>
-        <h3>脳内の思考を構造化</h3>
-        <p>「モヤモヤしてる」「ワクワクしてる」→ 対話を通じて言語化＆整理。考えがクリアに。</p>
-        <span class="card-tag tag-beginner">初心者OK</span>
+        <h3>モヤモヤを一緒に整理</h3>
+        <p>「なんかモヤモヤする」「ワクワクしてるんだけど言葉にならない」→ 対話を通じて気持ちをクリアに。</p>
+        <span class="card-tag tag-easy">かんたん</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F3D7;&#xFE0F;</span>
-        <h3>セーブポイントで引き継ぎ</h3>
-        <p>会話の途中でも「ここまでの成果を保存」。次のセッションでスムーズに再開。AIの記憶が継続する。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>途中経過を「セーブ」できる</h3>
+        <p>ゲームのセーブポイントみたいに、会話の途中で「ここまでの成果を保存」。次回スムーズに再開。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
-        <span class="card-emoji">&#x1F3A4;</span>
-        <h3>散歩中の音声ジャーナル</h3>
-        <p>スマホで録音 → 自動文字起こし → Obsidianに保存。歩きながら考えたことが全部テキストに。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <span class="card-emoji">&#x1F3B5;</span>
+        <h3>散歩中のひらめきを自動記録</h3>
+        <p>スマホで録音 → 自動で文字に起こして保存。歩きながら考えたことが、全部テキストになって残る。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
     </div>
   </div>
@@ -1104,37 +1121,48 @@
   <div class="section" id="sec8">
     <div class="section-head">
       <div class="section-icon" style="background: var(--rose-soft);">
-        <span>&#x1F4BC;</span>
+        <span>&#x1F331;</span>
       </div>
       <div>
-        <h2>ビジネス活用</h2>
-        <div class="section-desc">コーチング・コンサル・個人事業をAIで加速</div>
+        <h2>仕事・事業をもっと大きく</h2>
       </div>
     </div>
+    <p class="section-lead">
+      コーチング、コンサル、教室、個人事業…<br>
+      「ひとりで全部やらなきゃ」の限界を突破するパートナーになります。
+    </p>
+
+    <div class="metaphor">
+      <div class="metaphor-label">たとえるなら</div>
+      一人でお店を切り盛りしてたところに、<br>
+      接客も事務も在庫管理もこなせるスーパーな仲間が加わった感じ。<br>
+      しかもお給料はほぼかからない。
+    </div>
+
     <div class="cards">
       <div class="card">
         <span class="card-emoji">&#x1F91D;</span>
-        <h3>クライアント管理の自動化</h3>
-        <p>セッション記録 → 自動要約 → 次回フォーカスエリア提案。複数クライアントを一人で回せる。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>お客さま対応を半自動化</h3>
+        <p>セッション記録を自動で要約→次回の提案も考えてくれる。複数のお客さまを一人で丁寧に回せる。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
-        <span class="card-emoji">&#x1F4E2;</span>
-        <h3>イベント企画＋素材作成</h3>
-        <p>台本・アジェンダ・アンケート・参加者分析。イベント運営の8割をAIが担当。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <span class="card-emoji">&#x1F389;</span>
+        <h3>イベントの企画＆準備</h3>
+        <p>台本、タイムテーブル、アンケート、参加者分析…イベント運営の裏方をまるっとお任せ。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
         <span class="card-emoji">&#x1F4DA;</span>
-        <h3>ナレッジベース構築</h3>
-        <p>日々のセッションや学びをObsidian等に自動蓄積 → 検索可能な知識資産へ。</p>
-        <span class="card-tag tag-intermediate">中級</span>
+        <h3>学んだことを資産にする</h3>
+        <p>日々のセッションや勉強したことを自動で整理・蓄積。いつでも検索できる「自分だけの百科事典」に。</p>
+        <span class="card-tag tag-medium">ちょっと慣れたら</span>
       </div>
       <div class="card">
-        <span class="card-emoji">&#x2699;&#xFE0F;</span>
-        <h3>仕組み導入支援</h3>
-        <p>クライアントの業務にNotionやAIを導入。セットアップスクリプト＋運用マニュアルを自動生成。</p>
-        <span class="card-tag tag-advanced">上級</span>
+        <span class="card-emoji">&#x1F3E1;</span>
+        <h3>お客さまの環境づくりを支援</h3>
+        <p>「お客さまにもこの便利さを届けたい」→ 導入手順書＆使い方マニュアルを自動で作ってくれる。</p>
+        <span class="card-tag tag-pro">じっくり活用</span>
       </div>
     </div>
   </div>
@@ -1146,136 +1174,142 @@
         <span>&#x1F504;</span>
       </div>
       <div>
-        <h2>Before / After：Claude Code 導入で何が変わる？</h2>
+        <h2>Claude Code がある日常 vs ない日常</h2>
       </div>
     </div>
     <div class="ba-grid">
       <div class="ba-col before">
-        <span class="ba-label before-label">BEFORE</span>
-        <div class="ba-item"><span class="ba-icon">&#x23F0;</span> 毎朝メール・Slackを手動チェック</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F4C4;</span> PDF結合にソフトをインストール</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F4DD;</span> 議事録を手打ちで整形</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F50D;</span> 競合調査に半日費やす</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F6AB;</span> ツール開発はエンジニアに依頼</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F4CB;</span> タスク管理を自分でやる</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F4B8;</span> 秘書を雇う余裕がない</div>
+        <span class="ba-label before-label">いままで</span>
+        <div class="ba-item"><span class="ba-icon">&#x23F0;</span> 朝イチでメールとSlackを手動チェック</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F4C4;</span> PDF結合のためにソフトを探す</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F4DD;</span> 議事録を聞き直しながら手打ち</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F50D;</span> 競合調査に半日つぶれる</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F6AB;</span> ツール開発は詳しい人に頼むしかない</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F4CB;</span> タスク管理を自分で頑張る</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F4B8;</span> 秘書を雇う余裕はない</div>
       </div>
       <div class="ba-divider">&#x27A1;&#xFE0F;</div>
       <div class="ba-col after">
-        <span class="ba-label after-label">AFTER</span>
-        <div class="ba-item"><span class="ba-icon">&#x26A1;</span> 「/morning」で1分で完了</div>
-        <div class="ba-item"><span class="ba-icon">&#x2728;</span> 「このPDFまとめて」で10秒</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F3AF;</span> 音声ファイル渡して自動生成</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F680;</span> 「競合3社を比較して」で5分</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F4AA;</span> 自分で作れる（コード不要）</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F91E;</span> AIが勝手に拾って管理</div>
-        <div class="ba-item"><span class="ba-icon">&#x1F451;</span> Claude Codeが24時間秘書</div>
+        <span class="ba-label after-label">これから</span>
+        <div class="ba-item"><span class="ba-icon">&#x2615;</span> 「今日やること教えて」で1分完了</div>
+        <div class="ba-item"><span class="ba-icon">&#x2728;</span> 「これまとめて」で10秒</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F3AF;</span> 録音ファイルを渡すだけで自動生成</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F680;</span> 「3社比べて」で5分</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F4AA;</span> 自分で作れる（知識いらない）</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F91E;</span> AIが勝手に拾って整理してくれる</div>
+        <div class="ba-item"><span class="ba-icon">&#x1F451;</span> Claude Code が24時間の相棒に</div>
       </div>
     </div>
   </div>
 
   <!-- ═══════════════════ OKEMON REAL CASES ═══════════════════ -->
   <div class="section okemon-section" id="okemon">
-    <div class="okemon-badge">REAL CASE STUDY</div>
+    <div class="okemon-badge">リアルな体験談</div>
     <div class="section-head">
       <div class="section-icon" style="background: var(--accent-soft);">
         <span>&#x1F333;</span>
       </div>
       <div>
-        <h2>おけもんの実践事例</h2>
-        <div class="section-desc">非エンジニアが Claude Code で実現した14のリアル成果</div>
+        <h2>おけもんが実際にやったこと</h2>
       </div>
     </div>
+    <p class="section-lead">
+      プログラミング未経験のおけもんが、Claude Codeと一緒に実現した14のこと。<br>
+      「こんなこと、私にもできるんだ」のリアルな記録です。
+    </p>
 
     <div class="timeline-card">
-      <div class="timeline-date">Meet録画 自動処理パイプライン v7</div>
-      <h3>コーチングセッション録画を全自動処理</h3>
-      <p>Raycastコマンド1発 → Google Driveから動画取得 → Whisper文字起こし → YouTube自動アップロード → Google Docs議事録 → Obsidian保存。手作業ゼロ。</p>
-      <span class="timeline-status status-live">稼働中</span>
+      <div class="timeline-label">コーチング事業</div>
+      <h3>セッション録画を全自動で処理</h3>
+      <p>ボタン1つ押すだけで → 動画を取ってきて → 文字に起こして → 要約して → 保存。手作業ゼロになった。</p>
+      <span class="timeline-status status-live">毎日使ってる</span>
     </div>
 
     <div class="timeline-card">
-      <div class="timeline-date">iPhone 音声ログ → Obsidian 自動取り込み</div>
-      <h3>散歩中の思考を自動でテキスト化</h3>
-      <p>Pixel録音 → Google Drive API → Whisper文字起こし → Obsidian音声ログに自動保存。歩きながら考えたことが全部記録される。</p>
-      <span class="timeline-status status-live">稼働中</span>
+      <div class="timeline-label">散歩の習慣</div>
+      <h3>歩きながらの「ひらめき」を自動記録</h3>
+      <p>スマホで録音 → 自動で文字に起こして → ノートに保存。散歩中の思いつきが全部テキストで残る。</p>
+      <span class="timeline-status status-live">毎日使ってる</span>
     </div>
 
     <div class="timeline-card">
-      <div class="timeline-date">Chatwork API メンション自動取得</div>
-      <h3>業務チャットの@メンションを一括処理</h3>
-      <p>64件のメンションをAPI取得 → 対応ノート照合 → 仕分け → 返信案を自動生成。見落としゼロの運用。</p>
-      <span class="timeline-status status-live">稼働中</span>
+      <div class="timeline-label">業務連絡</div>
+      <h3>チャットの返信もれをゼロにした</h3>
+      <p>仕事のチャットで自分宛のメッセージを自動で拾って一覧化。「あ、あれ返してなかった！」がなくなった。</p>
+      <span class="timeline-status status-live">毎日使ってる</span>
     </div>
 
     <div class="timeline-card">
-      <div class="timeline-date">きょうちゃん（HTML Share Box）</div>
-      <h3>HTML図解をワンタッチで共有</h3>
-      <p>AIが作ったHTML図解 → GitHub Pages自動デプロイ → 短いURLで誰にでもシェア。この図解もきょうちゃんで共有中。</p>
-      <span class="timeline-status status-live">稼働中</span>
+      <div class="timeline-label">情報発信</div>
+      <h3>図解をワンタッチで共有できるツールを作った</h3>
+      <p>AIが作ったきれいな図解を、短いURLで誰にでもシェアできる仕組み。この資料もそれで公開中。</p>
+      <span class="timeline-status status-live">毎日使ってる</span>
     </div>
 
     <div class="timeline-card">
-      <div class="timeline-date">カスタムスキル 6種を自作</div>
-      <h3>Claude Codeに自分専用のスキルを装着</h3>
-      <p>パートナー会話（haruka）/ プロコーチ壁打ち / 未来インタビュー / 思考整理 / YouTube要約 / 朝のToDo整理。全部自作。</p>
+      <div class="timeline-label">AI活用</div>
+      <h3>自分専用の「スキル」を6つ作った</h3>
+      <p>コーチングパートナー / 思考整理 / 朝のタスク整理 / 動画要約…自分の生活に合わせたAIの振る舞いを設計。</p>
       <span class="timeline-status status-done">完成</span>
     </div>
 
     <div class="timeline-card">
-      <div class="timeline-date">Obsidian Vault「おけもんの脳内」</div>
-      <h3>第2の脳をAIが直接読み書き</h3>
-      <p>デイリーログ・タスクHub・セーブポイント・仕様書をAIが巡回。「今何やるんだっけ？」で全体を把握。</p>
-      <span class="timeline-status status-live">稼働中</span>
+      <div class="timeline-label">知識管理</div>
+      <h3>「第2の脳」をAIと一緒に育てている</h3>
+      <p>日記、タスク、学んだこと、アイデア…全部をノートアプリに整理。AIが巡回して「次やること」も教えてくれる。</p>
+      <span class="timeline-status status-live">毎日使ってる</span>
     </div>
 
     <div class="timeline-card">
-      <div class="timeline-date">Notion MCP 接続（irodori）</div>
+      <div class="timeline-label">チーム連携</div>
       <h3>チームのNotionをAIから直接操作</h3>
-      <p>Notion APIをMCP経由で接続。データベースの検索・ページ更新をClaudeが直接実行。</p>
-      <span class="timeline-status status-progress">部分接続</span>
+      <p>チームで使ってるNotionのデータベースを、Claude Codeから直接検索・更新できるように。画面を行き来する手間がなくなった。</p>
+      <span class="timeline-status status-live">使ってる</span>
     </div>
 
     <div class="timeline-card">
-      <div class="timeline-date">AIイベント 150人集客（2026-03-25）</div>
-      <h3>「AIエージェント触ってみよう会」を企画・実行</h3>
-      <p>台本・デモ素材・アジェンダ・アンケート分析。Claude Codeがイベント運営の裏方を全面サポート。</p>
+      <div class="timeline-label">イベント運営</div>
+      <h3>150人が集まるAIイベントを企画・実行</h3>
+      <p>台本づくり、デモ素材の準備、アンケート分析…イベントの裏方をClaude Codeがフルサポート。</p>
       <span class="timeline-status status-done">完了</span>
     </div>
 
     <div class="timeline-card">
-      <div class="timeline-date">Git / GitHub 初体験デプロイ</div>
-      <h3>プログラミング未経験でGitHub Pagesを公開</h3>
-      <p>リポジトリ作成 → コミット → プッシュ → 自動デプロイ。非エンジニアがAIと一緒にGitを使いこなす。</p>
-      <span class="timeline-status status-done">完了</span>
+      <div class="timeline-label">はじめてのチャレンジ</div>
+      <h3>プログラミング未経験でWebサイトを公開</h3>
+      <p>「GitHub？なにそれ？」の状態から、AIと一緒にWebサイトを作って公開するところまで到達。</p>
+      <span class="timeline-status status-done">できた！</span>
     </div>
   </div>
 
-  <!-- ═══════════════════ おけもんのエコシステム図 ═══════════════════ -->
+  <!-- ═══════════════════ エコシステム図 ═══════════════════ -->
   <div class="section">
     <div class="section-head">
-      <div class="section-icon" style="background: var(--cyan-soft);">
+      <div class="section-icon" style="background: var(--sky-soft);">
         <span>&#x1F30D;</span>
       </div>
       <div>
-        <h2>おけもんのAIエコシステム全体像</h2>
-        <div class="section-desc">Claude Codeを中心に複数AIとツールが連携するシステム</div>
+        <h2>おけもんのAI活用 ぜんたい像</h2>
       </div>
     </div>
+    <p class="section-lead">
+      Claude Code が「司令塔」になって、いろんなツールやサービスをつないでくれる。<br>
+      まるで、あなた専用の秘書チームが裏で動いてるような世界。
+    </p>
 
     <div class="flow-container">
       <div class="flow-row">
-        <div class="flow-node">&#x1F399;&#xFE0F; 音声入力<br><small style="color:var(--muted)">Pixel / AquaVoice</small></div>
+        <div class="flow-node">&#x1F399;&#xFE0F; 声で録音<div class="flow-note">スマホ</div></div>
         <div class="flow-arrow">&#x2192;</div>
-        <div class="flow-node">&#x1F3A7; Whisper<br><small style="color:var(--muted)">文字起こし</small></div>
+        <div class="flow-node">&#x1F3A7; 自動文字起こし</div>
         <div class="flow-arrow">&#x2192;</div>
-        <div class="flow-node highlight">&#x1F9E0; Claude Code<br><small style="color:var(--muted)">司令塔</small></div>
+        <div class="flow-node highlight">&#x1F9E0; Claude Code<div class="flow-note">司令塔</div></div>
         <div class="flow-arrow">&#x2192;</div>
-        <div class="flow-node">&#x1F4D3; Obsidian<br><small style="color:var(--muted)">おけもんの脳内</small></div>
+        <div class="flow-node">&#x1F4D3; ノートに保存<div class="flow-note">Obsidian</div></div>
       </div>
       <div class="flow-row">
-        <div class="flow-node">&#x1F4E8; Gmail</div>
-        <div class="flow-node">&#x1F4AC; Chatwork</div>
+        <div class="flow-node">&#x1F4E8; メール</div>
+        <div class="flow-node">&#x1F4AC; チャット</div>
         <div class="flow-arrow">&#x2192;</div>
         <div class="flow-node highlight">&#x1F9E0; Claude Code</div>
         <div class="flow-arrow">&#x2192;</div>
@@ -1287,34 +1321,34 @@
         <div class="flow-arrow">&#x2192;</div>
         <div class="flow-node highlight">&#x1F9E0; Claude Code</div>
         <div class="flow-arrow">&#x2192;</div>
-        <div class="flow-node">&#x1F3A8; HTML図解</div>
+        <div class="flow-node">&#x1F3A8; きれいな図解</div>
         <div class="flow-arrow">&#x2192;</div>
-        <div class="flow-node">&#x1F30E; きょうちゃん<br><small style="color:var(--muted)">GitHub Pages</small></div>
+        <div class="flow-node">&#x1F30E; ネットで公開</div>
       </div>
     </div>
   </div>
 
   <!-- ═══════════════════ CTA ═══════════════════ -->
   <div class="section cta-section">
-    <h2>はじめの一歩</h2>
-    <p style="color: var(--muted); max-width: 500px; margin: 0 auto;">
-      プログラミング経験ゼロでも、今日から始められる3ステップ
+    <h2>はじめの一歩は、びっくりするほど簡単</h2>
+    <p style="color: var(--muted); max-width: 500px; margin: 0 auto; font-size: 15px;">
+      難しい設定は何もいりません。<br>3ステップで、もう使えます。
     </p>
     <div class="cta-steps">
       <div class="cta-step">
         <div class="cta-step-num">1</div>
         <h4>インストール</h4>
-        <p>ターミナルで<br><code style="color: var(--cyan); font-size: 12px;">npm i -g @anthropic-ai/claude-code</code><br>を実行するだけ</p>
+        <p>パソコンの画面（ターミナル）に<br>1行コピペするだけ。<br>1分で終わります。</p>
       </div>
       <div class="cta-step">
         <div class="cta-step-num">2</div>
-        <h4>話しかける</h4>
-        <p><code style="color: var(--cyan); font-size: 12px;">claude</code> と打って<br>「Downloadsフォルダを整理して」<br>から始めてみよう</p>
+        <h4>話しかけてみる</h4>
+        <p>「ダウンロードの中<br>整理して」とか、<br>何でもいいから話しかけてみて。</p>
       </div>
       <div class="cta-step">
         <div class="cta-step-num">3</div>
-        <h4>MCPで拡張</h4>
-        <p>Gmail・Notionなど<br>使い慣れたツールと接続して<br>自分専用のAI秘書に育てる</p>
+        <h4>「おお！」ってなる</h4>
+        <p>あとはもう、<br>止まらなくなります。<br>気がついたら夢中に。</p>
       </div>
     </div>
   </div>
