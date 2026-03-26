@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AquaVoice 完全ガイド</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+
+  :root {
+    --aqua: #0ea5e9;
+    --aqua-dark: #0284c7;
+    --aqua-light: #e0f2fe;
+    --aqua-glow: rgba(14,165,233,0.15);
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-sub: #64748b;
+    --border: #e2e8f0;
+    --accent-green: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-red: #ef4444;
+    --accent-purple: #8b5cf6;
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  /* ─── Hero ─── */
+  .hero {
+    background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 50%, #38bdf8 100%);
+    color: white;
+    text-align: center;
+    padding: 64px 24px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 80%, rgba(56,189,248,0.3) 0%, transparent 60%),
+                radial-gradient(circle at 70% 20%, rgba(255,255,255,0.1) 0%, transparent 40%);
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 18px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 span { color: #bae6fd; }
+  .hero p {
+    font-size: 16px;
+    opacity: 0.9;
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ─── Layout ─── */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ─── Section ─── */
+  section {
+    padding: 48px 0;
+  }
+  section + section {
+    border-top: 1px solid var(--border);
+  }
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--aqua);
+    margin-bottom: 8px;
+  }
+  .section-label .icon {
+    width: 28px; height: 28px;
+    background: var(--aqua-light);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .section-title {
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 900;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+  .section-desc {
+    color: var(--text-sub);
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+
+  /* ─── What is ─── */
+  .what-is-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 600px) {
+    .what-is-grid { grid-template-columns: 1fr; }
+  }
+  .what-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .what-card .emoji { font-size: 28px; margin-bottom: 10px; }
+  .what-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .what-card p { font-size: 14px; color: var(--text-sub); line-height: 1.7; }
+  .what-card.highlight {
+    background: linear-gradient(135deg, var(--aqua-light), #f0f9ff);
+    border-color: #bae6fd;
+    grid-column: 1 / -1;
+  }
+  .what-card.highlight .stat-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat .num { font-size: 28px; font-weight: 900; color: var(--aqua-dark); }
+  .stat .label { font-size: 12px; color: var(--text-sub); }
+
+  /* ─── Steps ─── */
+  .steps { counter-reset: step; }
+  .step {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 21px;
+    top: 48px;
+    bottom: -16px;
+    width: 2px;
+    background: var(--border);
+  }
+  .step-num {
+    counter-increment: step;
+    flex-shrink: 0;
+    width: 44px; height: 44px;
+    background: var(--aqua);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900;
+    font-size: 18px;
+    position: relative;
+    z-index: 1;
+  }
+  .step-num::before { content: counter(step); }
+  .step-body { flex: 1; padding-top: 6px; }
+  .step-body h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .step-body p { font-size: 14px; color: var(--text-sub); line-height: 1.7; }
+  .step-body code {
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--aqua-dark);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+  .step-body .note {
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #92400e;
+  }
+  .step-body .tip {
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #065f46;
+  }
+  .os-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .os-tab {
+    padding: 8px 20px;
+    border-radius: 99px;
+    font-size: 14px;
+    font-weight: 700;
+    border: 2px solid var(--border);
+    background: white;
+    cursor: default;
+  }
+  .os-tab.active {
+    background: var(--aqua);
+    color: white;
+    border-color: var(--aqua);
+  }
+
+  /* ─── Pricing ─── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 700px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+  }
+  .price-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+  }
+  .price-card.recommended {
+    border-color: var(--aqua);
+    box-shadow: 0 0 0 3px var(--aqua-glow), 0 8px 32px rgba(14,165,233,0.12);
+  }
+  .price-card.recommended::before {
+    content: 'おすすめ';
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--aqua);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 16px;
+    border-radius: 99px;
+  }
+  .price-plan { font-size: 13px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; }
+  .price-amount {
+    font-size: 42px;
+    font-weight: 900;
+    margin: 8px 0 4px;
+    line-height: 1;
+  }
+  .price-amount span { font-size: 16px; font-weight: 500; color: var(--text-sub); }
+  .price-period { font-size: 13px; color: var(--text-sub); margin-bottom: 20px; }
+  .price-features {
+    list-style: none;
+    text-align: left;
+    font-size: 14px;
+  }
+  .price-features li {
+    padding: 6px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .price-features li::before {
+    content: '✓';
+    color: var(--accent-green);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .price-note {
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  /* ─── Comparison ─── */
+  .compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    font-size: 14px;
+  }
+  .compare-table th {
+    background: #f1f5f9;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table .aqua-col {
+    background: var(--aqua-light);
+    font-weight: 500;
+  }
+  .compare-table th.aqua-col {
+    background: var(--aqua);
+    color: white;
+  }
+  .badge-yes {
+    display: inline-block;
+    background: #dcfce7;
+    color: #166534;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .badge-no {
+    display: inline-block;
+    background: #fef2f2;
+    color: #991b1b;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .badge-partial {
+    display: inline-block;
+    background: #fefce8;
+    color: #854d0e;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  /* ─── FAQ ─── */
+  .faq-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .faq-q {
+    padding: 20px 24px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+  }
+  .faq-q::before {
+    content: 'Q';
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: var(--aqua);
+    color: white;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+  }
+  .faq-q::after {
+    content: '＋';
+    flex-shrink: 0;
+    font-size: 20px;
+    color: var(--text-sub);
+    transition: transform 0.2s;
+  }
+  .faq-item.open .faq-q::after {
+    content: '－';
+  }
+  .faq-a {
+    display: none;
+    padding: 0 24px 20px 64px;
+    font-size: 14px;
+    color: var(--text-sub);
+    line-height: 1.8;
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a strong { color: var(--text); }
+
+  /* ─── Shortcut Table ─── */
+  .shortcut-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 600px) {
+    .shortcut-grid { grid-template-columns: 1fr; }
+  }
+  .shortcut-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .shortcut-card kbd {
+    background: #f1f5f9;
+    border: 1px solid var(--border);
+    border-bottom: 3px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-family: 'SF Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .shortcut-card .desc {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ─── CTA ─── */
+  .cta-section {
+    background: linear-gradient(135deg, #0c4a6e, #0284c7);
+    color: white;
+    text-align: center;
+    padding: 48px 24px;
+    border-radius: var(--radius);
+    margin: 48px 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-section h2 { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
+  .cta-section p { opacity: 0.9; font-size: 15px; margin-bottom: 24px; }
+  .cta-btn {
+    display: inline-block;
+    background: white;
+    color: var(--aqua-dark);
+    padding: 14px 36px;
+    border-radius: 99px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    transition: transform 0.15s;
+  }
+  .cta-btn:hover { transform: translateY(-2px); }
+
+  /* ─── Footer ─── */
+  footer {
+    text-align: center;
+    padding: 32px 20px;
+    font-size: 13px;
+    color: var(--text-sub);
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">AI VOICE INPUT TOOL</div>
+    <h1>AquaVoice<br><span>完全ガイド</span></h1>
+    <p>話すだけで「きちんとした文章」が出てくる。<br>AI時代の音声入力ツールの始め方を徹底解説。</p>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== WHAT IS ===== -->
+<section>
+  <div class="section-label"><span class="icon">💡</span> OVERVIEW</div>
+  <h2 class="section-title">AquaVoice って何？</h2>
+  <p class="section-desc">ひとことで言うと「話した内容を、AIが整った文章にして入力してくれるツール」です。</p>
+
+  <div class="what-is-grid">
+    <div class="what-card">
+      <div class="emoji">🎤</div>
+      <h3>話すだけで文章に</h3>
+      <p>マイクに向かって話すと、文法・句読点・フィラー（「えーと」等）を自動補正して、きれいなテキストに変換。</p>
+    </div>
+    <div class="what-card">
+      <div class="emoji">🧠</div>
+      <h3>画面を見て空気を読む</h3>
+      <p>今いるアプリを認識して出力を調整。メールならビジネス文、チャットならカジュアルに。</p>
+    </div>
+    <div class="what-card">
+      <div class="emoji">🌍</div>
+      <h3>49言語対応</h3>
+      <p>日本語・英語はもちろん、中韓仏独など49言語に対応。言語の自動切替もOK。</p>
+    </div>
+    <div class="what-card">
+      <div class="emoji">⚡</div>
+      <h3>どこでも使える</h3>
+      <p>Slack、Gmail、VS Code、Google Docs…テキスト入力できる場所ならどこでも動く。</p>
+    </div>
+    <div class="what-card highlight">
+      <h3>数字で見る AquaVoice</h3>
+      <div class="stat-row">
+        <div class="stat"><div class="num">97.3%</div><div class="label">認識精度</div></div>
+        <div class="stat"><div class="num">&lt;0.5秒</div><div class="label">起動速度</div></div>
+        <div class="stat"><div class="num">49</div><div class="label">対応言語</div></div>
+        <div class="stat"><div class="num">$8</div><div class="label">月額（年払い）</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SETUP ===== -->
+<section>
+  <div class="section-label"><span class="icon">🛠</span> SETUP</div>
+  <h2 class="section-title">導入手順（5分で完了）</h2>
+  <p class="section-desc">Mac / Windows 両対応。ここでは Mac の手順を紹介します。</p>
+
+  <div class="os-tabs">
+    <span class="os-tab active">Mac</span>
+    <span class="os-tab">Windows</span>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h3>ダウンロード</h3>
+        <p>公式サイト <code>aquavoice.com/download</code> からインストーラーをダウンロード。<br>Apple Silicon（M1〜）/ Intel を選択。</p>
+        <div class="tip">💡 Homebrew派の人は <code>brew install --cask aqua-voice</code> でもOK！</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h3>インストール</h3>
+        <p>ダウンロードした <code>.dmg</code> ファイルを開いて、アプリを Applications にドラッグ。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h3>権限を許可する</h3>
+        <p>初回起動時に2つの許可を求められます。</p>
+        <p>① <strong>マイクへのアクセス</strong> → 「許可」<br>② <strong>アクセシビリティ</strong> → システム設定で許可</p>
+        <div class="note">⚠️ アクセシビリティを許可しないとテキスト挿入ができません。必ず許可してください。</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h3>アカウント登録</h3>
+        <p>無料アカウントを作成。メールアドレスだけでOK。<br>登録すると <strong>1,000語まで無料</strong> で試せます。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h3>使ってみよう！</h3>
+        <p>任意のテキスト欄にカーソルを置いて <kbd>fn</kbd> キーを押しながら話す → 離すとテキストが挿入！</p>
+        <div class="tip">💡 初回は短い文（「今日はいい天気です」など）で試してみよう。</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:17px; margin: 32px 0 16px; font-weight:700;">基本ショートカット</h3>
+  <div class="shortcut-grid">
+    <div class="shortcut-card">
+      <kbd>fn</kbd>
+      <div class="desc">音声入力の開始 / 停止</div>
+    </div>
+    <div class="shortcut-card">
+      <kbd>⌘ ⌃ V</kbd>
+      <div class="desc">直前の文字起こしを貼付</div>
+    </div>
+    <div class="shortcut-card">
+      <kbd>設定で変更可</kbd>
+      <div class="desc">お好みのキーに変更OK</div>
+    </div>
+    <div class="shortcut-card">
+      <kbd>長押し or トグル</kbd>
+      <div class="desc">押してる間 or 1回押しで切替</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section>
+  <div class="section-label"><span class="icon">💰</span> PRICING</div>
+  <h2 class="section-title">料金プラン</h2>
+  <p class="section-desc">まず無料で試す → 気に入ったら Pro がコスパ最強。</p>
+
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-plan">Starter</div>
+      <div class="price-amount">$0<span>/月</span></div>
+      <div class="price-period">ずっと無料</div>
+      <ul class="price-features">
+        <li>月 1,000語まで</li>
+        <li>Aqua Engine（基本モデル）</li>
+        <li>カスタム辞書 5語まで</li>
+        <li>基本的な音声入力</li>
+      </ul>
+    </div>
+
+    <div class="price-card recommended">
+      <div class="price-plan">Pro</div>
+      <div class="price-amount">$8<span>/月</span></div>
+      <div class="price-period">年払いの場合（月払い: $10/月）</div>
+      <ul class="price-features">
+        <li><strong>無制限</strong>の音声入力</li>
+        <li>Avalon モデル（最高精度）</li>
+        <li>カスタム辞書 800語</li>
+        <li>カスタムインストラクション</li>
+        <li>画面コンテキスト認識</li>
+        <li>ストリーミングモード</li>
+      </ul>
+    </div>
+
+    <div class="price-card">
+      <div class="price-plan">Team</div>
+      <div class="price-amount">$12<span>/月</span></div>
+      <div class="price-period">年払い・1人あたり</div>
+      <ul class="price-features">
+        <li>Pro の全機能</li>
+        <li>チーム一括課金</li>
+        <li>組織全体のプライバシー設定</li>
+        <li>管理者コンソール</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="price-note">
+    🎓 <strong>学生さん注目！</strong> .edu メールアドレスで登録すると、年間プランが <strong>70% OFF</strong> になります。
+  </div>
+
+  <div style="margin-top: 16px; padding: 14px 18px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; font-size: 14px;">
+    📱 <strong>対応OS：</strong>Mac / Windows / iOS（2026年3月〜）。1アカウントで複数デバイスOK。<br>
+    ※ Android / Linux は未対応（開発チームは認識済み）
+  </div>
+</section>
+
+<!-- ===== VS COMPARISON ===== -->
+<section>
+  <div class="section-label"><span class="icon">⚖️</span> COMPARE</div>
+  <h2 class="section-title">他の音声入力と比較</h2>
+  <p class="section-desc">Mac標準音声入力・Whisper との違いを一目で。</p>
+
+  <div style="overflow-x: auto;">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th style="min-width:120px;">項目</th>
+        <th class="aqua-col" style="min-width:130px;">AquaVoice</th>
+        <th style="min-width:130px;">Mac標準 音声入力</th>
+        <th style="min-width:130px;">Whisper (OpenAI)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>精度</strong></td>
+        <td class="aqua-col"><span class="badge-yes">97.3%</span></td>
+        <td>中程度</td>
+        <td>高い</td>
+      </tr>
+      <tr>
+        <td><strong>AI補正</strong></td>
+        <td class="aqua-col"><span class="badge-yes">あり</span><br>文法・句読点・フィラー除去</td>
+        <td><span class="badge-partial">最小限</span></td>
+        <td><span class="badge-no">なし</span><br>生テキストのみ</td>
+      </tr>
+      <tr>
+        <td><strong>画面認識</strong></td>
+        <td class="aqua-col"><span class="badge-yes">あり</span><br>アプリに応じて出力調整</td>
+        <td><span class="badge-no">なし</span></td>
+        <td><span class="badge-no">なし</span></td>
+      </tr>
+      <tr>
+        <td><strong>処理方式</strong></td>
+        <td class="aqua-col">クラウド</td>
+        <td>ローカル</td>
+        <td>ローカル or API</td>
+      </tr>
+      <tr>
+        <td><strong>料金</strong></td>
+        <td class="aqua-col">無料〜$8/月</td>
+        <td>無料</td>
+        <td>無料（API従量課金）</td>
+      </tr>
+      <tr>
+        <td><strong>日本語</strong></td>
+        <td class="aqua-col"><span class="badge-yes">対応</span></td>
+        <td><span class="badge-yes">対応</span></td>
+        <td><span class="badge-yes">対応</span></td>
+      </tr>
+      <tr>
+        <td><strong>対応OS</strong></td>
+        <td class="aqua-col">Mac / Win / iOS</td>
+        <td>macOS のみ</td>
+        <td>全OS（実装次第）</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section>
+  <div class="section-label"><span class="icon">❓</span> FAQ</div>
+  <h2 class="section-title">よくある質問</h2>
+  <p class="section-desc">「それ、わざわざ入れる意味ある？」にお答えします。</p>
+
+  <div class="faq-item open">
+    <div class="faq-q">
+      Mac標準の音声入力と何が違うの？
+    </div>
+    <div class="faq-a">
+      <strong>一番の違いは「AI補正」と「画面認識」。</strong><br>
+      Mac標準は「話した通り」にしか打ってくれません。「えーと」も「あのー」もそのまま入る。句読点も自分で言わないとダメ。<br><br>
+      AquaVoice は話した内容を<strong>AIが意図を汲んで整形</strong>してくれます。フィラー除去、句読点自動挿入、文法補正が全自動。さらに「今メールを書いてる」「チャットに投稿してる」など<strong>アプリを認識して文体を調整</strong>してくれるのが決定的な差です。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      無料で使い続けられる？
+    </div>
+    <div class="faq-a">
+      <strong>月1,000語まで無料です。</strong><br>
+      お試しには十分ですが、日常的に使うなら数日で上限に達します。「1日3〜5回の音声入力」程度が目安。<br><br>
+      本格的に使いたいなら Pro（年払い $8/月）がおすすめ。<strong>無制限</strong>になるので、使い放題で上限を気にする必要がなくなります。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      月$8（約1,200円）の価値ある？
+    </div>
+    <div class="faq-a">
+      <strong>「タイピング時間を1日10分以上節約できるなら元が取れる」</strong>と考えるとわかりやすいです。<br><br>
+      実際のユーザー報告では「2週間で14時間節約」「1ヶ月で6.5万語を音声入力」という声も。メール、チャット、ドキュメント作成が多い人ほど効果大。<br><br>
+      <strong>特にこんな人に価値あり：</strong><br>
+      ・テキストコミュニケーションが多い（Slack、メール）<br>
+      ・長文を書く機会が多い（ブログ、レポート）<br>
+      ・タイピングが苦手 or 疲れやすい<br>
+      ・移動中にスマホで文章を作りたい
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      日本語の精度はどう？
+    </div>
+    <div class="faq-a">
+      <strong>かなり高い。ただし英語ほど完璧ではない。</strong><br><br>
+      v0.11.5 以降、日本語・中国語・韓国語の句読点処理が大幅に改善されました。普通の会話調であれば問題なく使えるレベルです。<br><br>
+      ただし、専門用語や固有名詞は<strong>カスタム辞書に登録</strong>しておくと精度がグンと上がります（Pro なら800語まで登録可能）。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      音声データはどこに送られるの？プライバシーは？
+    </div>
+    <div class="faq-a">
+      <strong>クラウド処理ですが、データは保存されないと明示されています。</strong><br><br>
+      音声はTLS暗号化で送信され、処理後に破棄される仕組みです。ただし「完全ローカル処理」ではないため、機密情報の入力には注意が必要。<br><br>
+      <strong>完全ローカル派には：</strong>Superwhisper（買い切り）やMacWhisper（約$20）がローカル処理の代替候補です。ただしAI補正はAquaVoiceが圧勝。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      オフラインでも使える？
+    </div>
+    <div class="faq-a">
+      <strong>いいえ、インターネット接続が必須です。</strong><br><br>
+      AquaVoice はクラウド上のAIモデル（Avalon）で処理するため、オフライン環境では使えません。飛行機内やネットがない場所では Mac 標準音声入力をバックアップとして使うのがおすすめ。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      Windows でも使える？
+    </div>
+    <div class="faq-a">
+      <strong>はい、Windows 10 以降に対応しています。</strong><br><br>
+      公式サイトからインストーラーをダウンロードして、指示に従うだけ。Mac版とほぼ同じ機能が使えます。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      iPhone でも使える？
+    </div>
+    <div class="faq-a">
+      <strong>2026年3月にiOS版がリリースされました。</strong><br><br>
+      Apple 標準の音声入力と比べて精度17倍と謳っています。Android は現時点で未対応です。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      「カスタム辞書」「カスタムインストラクション」って何？
+    </div>
+    <div class="faq-a">
+      <strong>カスタム辞書：</strong>固有名詞や専門用語を登録しておくと、認識精度が大幅に上がります。例えば「AquaVoice」「リベシティ」「ChatGPT」など。<br><br>
+      <strong>カスタムインストラクション：</strong>出力のスタイルを指定できます。例えば「常に丁寧語で出力」「箇条書き形式にして」「句読点は、。を使って」など。自分好みの出力に調整できる機能です。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">
+      Whisper（文字起こしAI）と何が違うの？
+    </div>
+    <div class="faq-a">
+      <strong>Whisper は「文字起こし」、AquaVoice は「文章入力」。目的が違います。</strong><br><br>
+      Whisper は話した言葉をそのまま文字に起こす（生テキスト）。AquaVoice は話した内容を<strong>意味を理解して整った文章にして出力する</strong>。<br><br>
+      例えば「えっと今日のミーティングなんですけどまあ3時からでいいかなって思ってて」と話すと：<br>
+      ・<strong>Whisper:</strong> えっと今日のミーティングなんですけどまあ3時からでいいかなって思ってて<br>
+      ・<strong>AquaVoice:</strong> 今日のミーティングは3時からでいかがでしょうか。<br><br>
+      この差が AquaVoice の最大の強みです。
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- ===== CTA ===== -->
+<div class="cta-section">
+  <h2>まずは無料で試してみよう</h2>
+  <p>1,000語まで無料。5分でセットアップ完了。<br>「え、もうキーボード打ちたくない」って思うかも。</p>
+  <a href="https://aquavoice.com/download" class="cta-btn">AquaVoice をダウンロード →</a>
+</div>
+
+<footer>
+  この図解は個人が作成した非公式ガイドです。最新情報は <a href="https://aquavoice.com" style="color:var(--aqua);">公式サイト</a> をご確認ください。<br>
+  Created with ❤️ by おけもん × Claude
+</footer>
+
+<script>
+// FAQ accordion - first item is open by default
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    q.parentElement.classList.toggle('open');
+  });
+});
+</script>
+
+</body>
+</html>
