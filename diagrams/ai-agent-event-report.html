@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIエージェント触ってみよう会 — イベントレポート</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
+
+  :root {
+    --bg: #fdf8f0;
+    --bg-warm: #faf3e8;
+    --bg-mint: #eef9f6;
+    --bg-peach: #fff5f0;
+    --bg-lavender: #f3f0ff;
+    --bg-lemon: #fefce8;
+    --surface: #ffffff;
+    --green: #5bb98c;
+    --green-soft: #d4f0e2;
+    --green-bg: #edf8f2;
+    --sky: #6cb4d8;
+    --sky-soft: #d4edfa;
+    --peach: #f2956b;
+    --peach-soft: #fde0d2;
+    --lavender: #9b8ec4;
+    --lavender-soft: #e4dff5;
+    --lemon: #e8c840;
+    --lemon-soft: #fdf3c4;
+    --brown: #8b7355;
+    --brown-light: #c4b49a;
+    --text: #4a3f35;
+    --text-dim: #7a7068;
+    --text-muted: #a89e94;
+    --border: rgba(139, 115, 85, 0.12);
+    --shadow: 0 2px 16px rgba(139, 115, 85, 0.08);
+    --shadow-hover: 0 6px 28px rgba(139, 115, 85, 0.13);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.9;
+    font-size: 15px;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+    background:
+      radial-gradient(ellipse 800px 500px at 20% 30%, rgba(212,240,226,0.6), transparent),
+      radial-gradient(ellipse 600px 400px at 80% 60%, rgba(253,224,210,0.5), transparent),
+      radial-gradient(ellipse 500px 400px at 50% 80%, rgba(228,223,245,0.4), transparent),
+      var(--bg-warm);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 80px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80Z' fill='%23fdf8f0'/%3E%3C/svg%3E") no-repeat bottom center;
+    background-size: cover;
+  }
+  .hero-island {
+    font-size: 56px;
+    margin-bottom: 16px;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 22px;
+    font-size: 13px;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 5.5vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.35;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .hero h1 .pop {
+    background: linear-gradient(135deg, var(--green) 0%, var(--sky) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--text-dim);
+    max-width: 520px;
+    margin-bottom: 36px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 24px;
+    text-align: center;
+    min-width: 110px;
+  }
+  .hero-stat .num {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1.1;
+  }
+  .hero-stat .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ── Layout ── */
+  .container { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 72px 0; }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 900;
+    margin-bottom: 10px;
+    line-height: 1.35;
+  }
+  .section-desc {
+    color: var(--text-dim);
+    max-width: 600px;
+    margin-bottom: 40px;
+    font-size: 15px;
+  }
+
+  /* ── Wavy section dividers ── */
+  .wave-top, .wave-bottom {
+    display: block; width: 100%; height: 60px;
+    pointer-events: none;
+  }
+
+  /* ── Cards base ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s, box-shadow 0.3s;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* ── Demo Grid ── */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .demo-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .demo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+  .demo-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    border-radius: 20px 20px 0 0;
+  }
+  .demo-card:nth-child(1)::after { background: linear-gradient(90deg, var(--green), var(--green-soft)); }
+  .demo-card:nth-child(2)::after { background: linear-gradient(90deg, var(--sky), var(--sky-soft)); }
+  .demo-card:nth-child(3)::after { background: linear-gradient(90deg, var(--lemon), var(--lemon-soft)); }
+  .demo-card:nth-child(4)::after { background: linear-gradient(90deg, var(--peach), var(--peach-soft)); }
+
+  .demo-icon { font-size: 36px; margin-bottom: 12px; }
+  .demo-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .demo-steps {
+    list-style: none;
+    counter-reset: step;
+  }
+  .demo-steps li {
+    counter-increment: step;
+    padding: 5px 0 5px 34px;
+    position: relative;
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .demo-steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 6px;
+    width: 24px; height: 24px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+  .demo-card:nth-child(1) .demo-steps li::before { background: var(--green-bg); color: var(--green); }
+  .demo-card:nth-child(2) .demo-steps li::before { background: var(--sky-soft); color: var(--sky); }
+  .demo-card:nth-child(3) .demo-steps li::before { background: var(--lemon-soft); color: #b89f20; }
+  .demo-card:nth-child(4) .demo-steps li::before { background: var(--peach-soft); color: var(--peach); }
+
+  /* ── Q&A ── */
+  .qa-section {
+    background: var(--bg-mint);
+    position: relative;
+  }
+  .qa-list { display: flex; flex-direction: column; gap: 14px; }
+  .qa-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s;
+  }
+  .qa-item:hover { box-shadow: var(--shadow-hover); }
+
+  .qa-question {
+    padding: 18px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .qa-question:hover { background: rgba(91,185,140,0.04); }
+  .qa-q-badge {
+    flex-shrink: 0;
+    width: 38px; height: 38px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    background: var(--green-soft);
+    color: var(--green);
+  }
+  .qa-q-text {
+    font-weight: 700;
+    font-size: 15px;
+    flex: 1;
+    padding-top: 7px;
+  }
+  .qa-toggle {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--green-bg);
+    color: var(--green);
+    transition: transform 0.3s, background 0.2s;
+    margin-top: 4px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .qa-item.open .qa-toggle {
+    transform: rotate(45deg);
+    background: var(--green-soft);
+  }
+  .qa-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .qa-item.open .qa-answer {
+    max-height: 900px;
+  }
+  .qa-answer-inner {
+    padding: 0 24px 22px 76px;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.9;
+    border-top: 1px dashed var(--border);
+    margin-top: 0;
+    padding-top: 16px;
+  }
+  .qa-answer-inner strong { color: var(--text); }
+  .qa-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .qa-tag.tool { background: var(--sky-soft); color: #3a8ab0; }
+  .qa-tag.tip { background: var(--lemon-soft); color: #9a8520; }
+
+  /* ── Tips ── */
+  .tips-section { background: var(--bg-peach); }
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 16px;
+  }
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s, box-shadow 0.3s;
+  }
+  .tip-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  .tip-avatar {
+    width: 46px; height: 46px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    background: var(--peach-soft);
+  }
+  .tip-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--peach);
+  }
+  .tip-content {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.75;
+  }
+  .tip-content strong { color: var(--text); }
+
+  /* ── Tool Table ── */
+  .tool-table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    background: var(--surface);
+  }
+  .tool-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .tool-table th {
+    background: var(--bg-warm);
+    padding: 14px 18px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+  }
+  .tool-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(139,115,85,0.06);
+    vertical-align: top;
+  }
+  .tool-table tr:hover td { background: rgba(91,185,140,0.03); }
+  .tool-table .tool-name { font-weight: 700; color: var(--text); white-space: nowrap; }
+  .rec {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .rec.main { background: var(--green-soft); color: var(--green); }
+  .rec.good { background: var(--sky-soft); color: #3a8ab0; }
+  .rec.ok { background: var(--lemon-soft); color: #9a8520; }
+
+  /* ── Quotes ── */
+  .quote-section { background: var(--bg-lavender); }
+  .quote-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 16px;
+  }
+  .quote-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px;
+    box-shadow: var(--shadow);
+    position: relative;
+    transition: transform 0.25s;
+  }
+  .quote-card:hover { transform: translateY(-2px); }
+  .quote-card::before {
+    content: '🍃';
+    position: absolute;
+    top: 14px; right: 18px;
+    font-size: 22px;
+    opacity: 0.3;
+  }
+  .quote-text {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .quote-context {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ── Takeaway ── */
+  .takeaway-section {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-warm) 100%);
+  }
+  .takeaway-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .takeaway-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s;
+  }
+  .takeaway-card:hover { transform: translateY(-3px); }
+  .takeaway-icon { font-size: 40px; margin-bottom: 14px; }
+  .takeaway-title { font-weight: 700; font-size: 16px; margin-bottom: 10px; line-height: 1.5; }
+  .takeaway-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.8; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-muted);
+    font-size: 13px;
+    background: var(--bg-warm);
+    border-top: 1px solid var(--border);
+  }
+  footer .brand { color: var(--green); font-weight: 700; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .hero { padding: 60px 20px; min-height: 75vh; }
+    .hero-stats { gap: 10px; }
+    .hero-stat { min-width: 90px; padding: 12px 16px; }
+    .qa-item.open .qa-answer-inner { padding-left: 24px; }
+    .demo-grid, .tips-grid, .quote-grid, .takeaway-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero">
+  <div class="hero-island">🏝️</div>
+  <div class="hero-badge">🌿 EVENT REPORT</div>
+  <h1><span class="pop">AIエージェント</span><br>触ってみよう会</h1>
+  <p class="hero-sub">
+    2026年3月25日（火）12:00〜 oVice オンライン開催<br>
+    主催：おけもん（OKモン）🐾
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">150+</div><div class="label">参加者</div></div>
+    <div class="hero-stat"><div class="num">4</div><div class="label">ライブデモ</div></div>
+    <div class="hero-stat"><div class="num">20</div><div class="label">Q&amp;A</div></div>
+    <div class="hero-stat"><div class="num">11</div><div class="label">紹介ツール</div></div>
+  </div>
+</header>
+
+<!-- ═══════════ DEMOS ═══════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">🎮 Live Demos</div>
+    <h2 class="section-title">4つのライブデモ</h2>
+    <p class="section-desc">AIエージェントが実際にパソコンを操作する様子をリアルタイムで実演。チャット欄は「すごい」「えー！」の嵐だった。</p>
+
+    <div class="demo-grid">
+      <div class="demo-card">
+        <div class="demo-icon">📁</div>
+        <h3 class="demo-title">フォルダ自動整理</h3>
+        <ol class="demo-steps">
+          <li>散らかったデモ用フォルダを事前に用意</li>
+          <li>スクショを撮ってClaudeに貼り付け</li>
+          <li>「きれいに整えてほしい」と日本語で指示</li>
+          <li>AIが作戦を考え、ファイルを自動分類</li>
+          <li>数分後にカテゴリ別に整理完了</li>
+          <li>AIが「こんなことしたよ」とレポートも提示</li>
+        </ol>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-icon">🧬</div>
+        <h3 class="demo-title">自分の分身（ペルソナ）作り</h3>
+        <ol class="demo-steps">
+          <li>MBTIの特徴を調べて保存するよう指示</li>
+          <li>ストレングスファインダー・九星気学も格納</li>
+          <li>複数の診断結果を統合して「ペルソナ」を生成</li>
+          <li>AIが掛け合わせた人物像を出力</li>
+          <li>「曖昧さの中に可能性を見出す」等の本質的な分析に</li>
+        </ol>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-icon">🎓</div>
+        <h3 class="demo-title">学長×自分 AIアドバイザー</h3>
+        <ol class="demo-steps">
+          <li>学長ライブ1週間分をAIに要約させて保存</li>
+          <li>ペルソナとライブ要約を同時に指定</li>
+          <li>「学長が自分にアドバイスするなら？」と指示</li>
+          <li>横文字だらけ→「分かりやすくして」と追加指示</li>
+          <li>自分に最適化されたレポートが完成</li>
+        </ol>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-icon">🎬</div>
+        <h3 class="demo-title">ブラウザ自動操作</h3>
+        <ol class="demo-steps">
+          <li>「明日梅田で映画観たい。おすすめ探して」と指示</li>
+          <li>AIがChromeを自動起動、映画館を検索</li>
+          <li>東宝シネマズ梅田のスケジュールページへ遷移</li>
+          <li>日にち選択→座席選択の手前まで自動進行</li>
+          <li>実況スクショ付きで操作過程を報告</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ Q&A ═══════════ -->
+<section class="qa-section">
+  <div class="container">
+    <div class="section-label">💬 Q &amp; A</div>
+    <h2 class="section-title">質疑応答 — 全20問</h2>
+    <p class="section-desc">参加者からのリアルな疑問に、おけもんが実体験ベースで回答。初心者〜中級者まで幅広い質問が飛び交った。</p>
+
+    <div class="qa-list">
+
+      <div class="qa-item open">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q1</div>
+          <div class="qa-q-text">クロードコードとコワーク、どちらを使っていますか？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          使用頻度は<strong>クロードコードの方が多い</strong>。最初はコワークから触り始めたが、クロードコードの方ができることが多いと言われているのでメインはクロードコード。ただし非エンジニアなので、自分がクロードコードでやっていることがコワークでもできる可能性はある。<br><br>
+          ガチ勢的には<strong>Cursor</strong>というアプリの中にクロードコードを立ち上げて使っている（ターミナル起動）。コワークからクロードコードへの移行はそこまで難しくなかった。<br><br>
+          <span class="qa-tag tip">💡 結論</span> チャットに打つこと自体は全部一緒。そこまで難しさの差はない。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q2</div>
+          <div class="qa-q-text">クロードコードを導入するのにおすすめの動画はありますか？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          具体的な動画名は即答できなかったが、<strong>YouTubeで調べればたくさん出てくる</strong>。リベシティの<strong>ノウハウ図書館にもいっぱいある</strong>。<br><br>
+          <span class="qa-tag tip">💡 補足</span> 参加者の方がYouTubeにクロードコード導入の動画をアップしているという情報もチャットで共有された。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q3</div>
+          <div class="qa-q-text">コードを読める人向けですか？一般人はコワークの方がいい？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          <strong>自分はコードを読めないがクロードコードは全然使えている。</strong> ただし学長が言うように、最初に触るならコワークの方が使いやすい（ほとんど日本語で教えてくれる）。<br><br>
+          クロードコードの方がより多くのことができるイメージだが、<strong>一般人でもクロードコードは使える</strong>。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q4</div>
+          <div class="qa-q-text">クロードデスクトップのチャット・コワーク・コード、どれを選ぶ？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          今回のケース（フォルダ操作、PC内のファイルを扱う）であれば<strong>コワークもしくはクロードコード</strong>。自分のパソコンの中身を見に行けるモードであればOK。<br><br>
+          通常のチャットモードだと、パソコン内のファイルを直接操作することはできない。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q5</div>
+          <div class="qa-q-text">どのAIに課金していますか？おすすめは？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          おけもんの課金状況：<br>
+          <span class="qa-tag tool">Claude</span> Proプラン（月$20）→ 最上位Maxプラン（月$100〜$200）にアップグレード<br>
+          <span class="qa-tag tool">ChatGPT</span> 課金中<br>
+          <span class="qa-tag tool">Gemini</span> Google AI Pro（月$19.99）を課金中<br>
+          <span class="qa-tag tool">Manus</span> スライド生成用に課金中（月$20〜、クレジット制）<br><br>
+          <span class="qa-tag tip">💡 おすすめ</span> 今から始めるなら<strong>Claude Proに月$20課金</strong>が一番。課金したくなければ<strong>Google Antigravity（現在パブリックプレビューで無料）</strong>がおすすめ。<br><br>
+          <strong>⚠️ AIの年額課金は避けた方がいい</strong> — ツールの移り変わりが激しいので月額が安全。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q6</div>
+          <div class="qa-q-text">音声入力はAqua Voiceですか？無料版でもよくない？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          <strong>Aqua Voiceを使用中</strong>。無料の音声入力で満足しているなら、わざわざ課金する必要はないかも。<br><br>
+          Aqua Voiceの強み：<br>
+          ・<strong>精度が高い</strong>（認識ミスが少ない）<br>
+          ・<strong>辞書登録ができる</strong>（「おけもん」が「ポケモン」にならない）<br>
+          ・<strong>喋り方のカスタマイズ</strong>（絵文字を程よく入れる等）<br><br>
+          <span class="qa-tag tip">💡</span> 「音声入力自体はめちゃくちゃおすすめ。世界が変わった」
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q7</div>
+          <div class="qa-q-text">毎日ネット情報を自動収集してフォルダに保存できる？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          結論から言うと<strong>多分できる</strong>。自動化の仕組みを作る必要があり、最初の設定はちょっと手間取るかもしれないが、テストケースで試せば基本的にいける。<br><br>
+          外部ツールとの連携がめっちゃ強いのがAIエージェントの特徴。実際にGoogleミート録画の自動処理やChatworkのメッセージ仕分けなども仕組み化している。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q8</div>
+          <div class="qa-q-text">初心者におすすめのAIボイスレコーダーは？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          自分はまだ専用ボイスレコーダーは買っていないが、ネット界隈で評判がいいのは <span class="qa-tag tool">PLAUD</span>（プラウド）。ノートピンタイプで小さいピンをポチッと押したら録れる。<br><br>
+          参加者からは <span class="qa-tag tool">Pixel</span> 端末もおすすめとして挙がっていた。専用ツールを買うか、いいスマホを買うかはその人次第。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q9</div>
+          <div class="qa-q-text">Twitter/Xの情報を自動収集できますか？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          試してみたが<strong>取ってくるのが結構難しい</strong>。できないことはないが精度が悪い。取ってくるツールもあるが<strong>お金がかかる</strong>。<br><br>
+          事業規模やリスクとリターンの兼ね合いによる。現時点では高精度な自動収集は難しい部類。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q10</div>
+          <div class="qa-q-text">自動化・外部連携はクロードコード？Antigravityとの違いは？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          Claudeは<strong>外部ツールとの連携がすごく強いAI</strong>で、クロードコードになるとその強さが生きる。これがGoogle Antigravityとの大きな違い。<br><br>
+          ただしAntigravityも今後どんどん対応していくと思われる。現時点では外部連携の柔軟さでクロードコードが一歩先。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q11</div>
+          <div class="qa-q-text">おけもんさんはどんなフォルダを持ってる？データの溜め方は？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          4つのレベルでデータを貯めている：<br><br>
+          <strong>① 手動記録</strong> — AIに喋って「これを記録しておいて」で保存<br>
+          <strong>② 音声→文字起こし</strong> — 普段から音声を録り、文字起こしして貯める<br>
+          <strong>③ 半自動化</strong> — ボイスレコーダー → Google Drive自動アップ → AIが文字起こし → 日記として保存<br>
+          <strong>④ 完全自動化</strong> — Googleミート録画 → 文字起こし → 要約 → YouTube限定公開まで全自動<br><br>
+          <span class="qa-tag tip">💡</span> まずは①から始めればOK。思ったことをファイルに残すだけで十分。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q12</div>
+          <div class="qa-q-text">すでにAntigravity触ってるけど、Claude課金した方がいい？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          <strong>どっちでもいい。</strong> Google Antigravityでも同じようなことはできる。iPhoneの17と17 Proどっちがいいですかみたいな感じ。誤差の範囲。<br><br>
+          Antigravityで満足しているなら無理に乗り換える必要はない。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q13</div>
+          <div class="qa-q-text">使っているスライドのツールは何ですか？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          <span class="qa-tag tool">Manus</span>（マナス）というスライド生成特化ツール。月額4,000〜5,000円くらい。無料枠もある。<br><br>
+          <span class="qa-tag tool">NotebookLM</span> でもスライドを作ることがある。人との共有がしやすいのが魅力。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q14</div>
+          <div class="qa-q-text">作業ごとにキャラクターのルールを決められる？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          <strong>できる。</strong>「仕様書」と呼ばれるもので、家の中の顔と職場の顔のようにキャラ設定が可能。<br><br>
+          役割分担もできて、リサーチ担当・文書担当など会社の部署のように分けられる。おけもん自身も「秘書AI」「コーチAI」などキャラを使い分けている。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q15</div>
+          <div class="qa-q-text">Antigravityとクロードコードは別々に使い分ける？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          クロードコードで作ったファイルを<strong>「何で見るか（皿＝エディタ）」</strong>の問題がある。<br><br>
+          ・<strong>Google Antigravity</strong> → ビューアが内蔵されているので見やすい<br>
+          ・<strong>クロードコード</strong> → 別途ビューア（VS Code、Obsidian、Cursorなど）が必要<br><br>
+          まずは「自分のフォルダが触れる・見に行ける」というところだけ知ってもらえればOK。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q16</div>
+          <div class="qa-q-text">AIエージェントでファイルが壊れたり消えたりしたら？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          ・<strong>バックアップは取っておいた方がいい</strong><br>
+          ・大幅にいじるときは必ず「今日何をしたか<strong>セーブポイントとして残して</strong>」と依頼する<br>
+          ・消えたファイルも30日間はゴミ箱にある場合が多い<br>
+          ・セーブポイントから戻せるケースもある<br>
+          ・Git/GitHubという専用ツールもあるが、初心者にはまだ早い<br><br>
+          <span class="qa-tag tip">💡 おけもん流</span> 「セーブポイント残して」は魔法の言葉。RPGのセーブ感覚で使える。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q17</div>
+          <div class="qa-q-text">AIの分身はMBTIの特性に引っ張られる？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          <strong>ルールを決めればコントロールできる。</strong><br><br>
+          ・「僕の特性を理解した上で答えて」→ その色が強く反映<br>
+          ・「特性と切り分けてプロの営業マンとして答えて」→ 切り替え可能<br>
+          ・普通に喋っているだけでも自分の特性を理解していく<br><br>
+          使い続けるほど精度が上がる。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q18</div>
+          <div class="qa-q-text">ClaudeとGmailを連携して送信までやってる？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          <strong>送信はやっていない。</strong> 前に一回やろうとしたらAIに「送信は怖いから止めとく」と言われた。<br><br>
+          定型のサポートメールなら自動化してもいいかもしれないが、内容による。<strong>誤爆してもいいもので試すのがおすすめ</strong>。<br><br>
+          <span class="qa-tag tip">💡</span> まずは下書き作成までの自動化から始めるのが安全。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q19</div>
+          <div class="qa-q-text">チケット購入のブラウザ操作はどのAI？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          昨日やったのは<strong>クロードコード</strong>。コワークでもGoogle Antigravityでもいけると思う。<br><br>
+          AIが自分でブラウザを開いて中身を見られるようになっている。「裏で動いといて」と指示して自分は別のことをする使い方が便利。
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question" onclick="this.parentElement.classList.toggle('open')">
+          <div class="qa-q-badge">Q20</div>
+          <div class="qa-q-text">GPT'sとAIエージェントの違いは？</div>
+          <div class="qa-toggle">+</div>
+        </div>
+        <div class="qa-answer"><div class="qa-answer-inner">
+          GPT'sは「外のお店の担当者」、AIエージェントはより<strong>自分に特化した専属秘書</strong>。<br><br>
+          ・GPT'sが<strong>10ページ</strong>ならAIエージェントは<strong>100〜1000ページ</strong>読み込める<br>
+          ・キャラの切り替えが柔軟（寄り添い/お尻叩きなど同じ情報で使い分け）<br>
+          ・GPT'sがパワーアップして家に来てくれた、というイメージ<br><br>
+          <span class="qa-tag tip">💡 例え</span> GPT'sが「窓口の担当者」なら、AIエージェントは「部屋に来てくれる専属秘書」。
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TIPS ═══════════ -->
+<section class="tips-section">
+  <div class="container">
+    <div class="section-label">🌸 Community Tips</div>
+    <h2 class="section-title">参加者からのTips＆共有情報</h2>
+    <p class="section-desc">チャット欄で飛び交った参加者たちの知見。リベシティならではの情報共有の厚みが光った。</p>
+
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-avatar">📸</div>
+        <div>
+          <div class="tip-name">画像認識の活用</div>
+          <div class="tip-content">丁寧に説明しなくても<strong>写真や手書きメモでもAIは読み取ってくれる</strong>。スクショ貼るだけで指示になる、という体験共有。</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-avatar">🎥</div>
+        <div>
+          <div class="tip-name">導入ガイド動画の共有</div>
+          <div class="tip-content">参加者の中には<strong>クロードコード導入の解説動画</strong>をYouTubeにアップしている方も。初心者の第一歩として推薦された。</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-avatar">🎓</div>
+        <div>
+          <div class="tip-name">Antigravity勉強会</div>
+          <div class="tip-content">Antigravityの発信をしている参加者から、<strong>翌日に勉強会を開催予定</strong>との案内。「今日と違う切り口でまた面白い」とおけもんもコメント。</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-avatar">🎙️</div>
+        <div>
+          <div class="tip-name">ボイスレコーダーおすすめ</div>
+          <div class="tip-content">ボイスレコーダーは<strong>PLAUDとPixel</strong>がおすすめとして挙がった。用途や予算に合わせて選ぶとよい。</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-avatar">🎭</div>
+        <div>
+          <div class="tip-name">仕様書でキャラ切り替え</div>
+          <div class="tip-content">「作業に入るごとに<strong>キャラクターのルール（仕様書）を決めている</strong>」という実践例の共有。仕事/プライベートの切替に活用。</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-avatar">🧠</div>
+        <div>
+          <div class="tip-name">AI使い分け術</div>
+          <div class="tip-content">
+            複数AIを使い分けている参加者からの共有：<br>
+            <strong>ChatGPT</strong>＝検索・引用に強い<br>
+            <strong>Claude</strong>＝コード・実務に強い<br>
+            <strong>Gemini</strong>＝Google連携に強い<br>
+            <strong>Grok</strong>＝X巡回に便利
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-avatar">💬</div>
+        <div>
+          <div class="tip-name">Googleドライブ連携の質問</div>
+          <div class="tip-content">「Googleドライブをローカルにする方法」「作ったファイルをピンポイントで呼び出す方法」が質問として挙がり、参加者同士で知見が共有された。</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-avatar">📚</div>
+        <div>
+          <div class="tip-name">コミュニティ内の学び合い</div>
+          <div class="tip-content">リベシティ内で<strong>AI勉強会を定期開催</strong>している方も参加。コミュニティの中で教え合う文化が根付いている。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TOOL TABLE ═══════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">🧰 Tool Guide</div>
+    <h2 class="section-title">紹介ツール一覧</h2>
+    <p class="section-desc">おけもんが実際に使っている・紹介したツール。課金情報とおすすめ度付き。</p>
+
+    <div class="tool-table-wrap">
+      <table class="tool-table">
+        <thead><tr><th>ツール名</th><th>用途</th><th>課金</th><th>おけもん評価</th></tr></thead>
+        <tbody>
+          <tr><td class="tool-name">Claude Pro</td><td>AIチャット＋エージェント基盤</td><td>月$20</td><td><span class="rec main">一番おすすめ</span> 今から始めるならまずこれ</td></tr>
+          <tr><td class="tool-name">Claude Code</td><td>AIエージェント（ターミナル版）</td><td>Pro以上で利用可（従量課金あり）</td><td><span class="rec main">メイン使用</span> できることが最も多い。並列実行可</td></tr>
+          <tr><td class="tool-name">Claude Desktop（コワーク）</td><td>AIエージェント（デスクトップアプリ版）</td><td>Pro以上で利用可</td><td><span class="rec main">初心者向け</span> 最初に触るならこちら</td></tr>
+          <tr><td class="tool-name">Google Antigravity</td><td>AIエージェント（Google製IDE）</td><td>パブリックプレビュー中は無料</td><td><span class="rec good">無料で入門</span> ビューア内蔵・最大5エージェント並列</td></tr>
+          <tr><td class="tool-name">ChatGPT</td><td>AIチャット</td><td>Plus 月$20 / Pro 月$200</td><td><span class="rec ok">検索・引用型</span> 真面目で丁寧な回答が特徴</td></tr>
+          <tr><td class="tool-name">Gemini（Google AI Pro）</td><td>AIチャット＋Google連携</td><td>月$19.99（年額プラン割引あり）</td><td><span class="rec good">Google連携◎</span> Drive 2TB付き</td></tr>
+          <tr><td class="tool-name">Aqua Voice</td><td>音声入力アプリ</td><td>Pro 月$10（初回2ヶ月無料キャンペーンあり）</td><td><span class="rec main">世界が変わった</span> 精度・辞書登録・カスタマイズが最高</td></tr>
+          <tr><td class="tool-name">Manus</td><td>自律型AIエージェント</td><td>月$20〜（クレジット制・無料枠あり）</td><td><span class="rec ok">スライド生成にも</span> イベント用に使用</td></tr>
+          <tr><td class="tool-name">NotebookLM</td><td>情報整理・要約</td><td>Google AI Pro課金で拡張版利用可</td><td><span class="rec good">共有しやすい</span> スライド作成にも使える</td></tr>
+          <tr><td class="tool-name">Cursor</td><td>コードエディタ</td><td>Pro 月$20</td><td><span class="rec ok">ガチ勢向け</span> Claude Code連携の上級者スタイル</td></tr>
+          <tr><td class="tool-name">PLAUD</td><td>AIボイスレコーダー</td><td>専用デバイス購入</td><td><span class="rec ok">評判良い</span> ピン型で小さく軽い</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ QUOTES ═══════════ -->
+<section class="quote-section">
+  <div class="container">
+    <div class="section-label">✨ Key Messages</div>
+    <h2 class="section-title">おけもんの名言集</h2>
+    <p class="section-desc">イベント中に飛び出した、AIエージェントの本質を突く言葉たち。</p>
+
+    <div class="quote-grid">
+      <div class="quote-card">
+        <div class="quote-text">AIエージェントは "あつ森" みたいなもの</div>
+        <div class="quote-context">正解はなく、自分の好きなものを入れて日々育てていく感覚。人と同じにならなくていい。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">AIをうまく使いこなすコツは、自分でなんとかしようとしないこと</div>
+        <div class="quote-context">分からなかったら全部AIに聞く。自分で調べようとする時間がもったいない。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">ドラえもんに「なんとかしてよ」ぐらいの感じで頼めばいい</div>
+        <div class="quote-context">丁寧なプロンプトなんていらない。スクショ1枚や手書きメモでも意外とやってくれる。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">ゴミを入れたらゴミしか出てこない</div>
+        <div class="quote-context">Garbage In, Garbage Out。いいプロンプトより、いい材料（日記・音声・診断結果）を貯めることが大事。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">AIは「使う」じゃなくて「育てる」</div>
+        <div class="quote-context">日々の気づきを貯めていくと精度が上がる。プロンプトよりコンテキスト。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-text">今日ここにいる皆さんは、だいぶトップランカー</div>
+        <div class="quote-context">AIエージェントを知っている時点でまだ少数派。リベの外では携帯プランすら店任せの人がザラにいる。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TAKEAWAYS ═══════════ -->
+<section class="takeaway-section">
+  <div class="container">
+    <div class="section-label">🌱 First Steps</div>
+    <h2 class="section-title">今日からできる3つのこと</h2>
+    <p class="section-desc">150人に伝えたメッセージの核心。難しいことは何もない。</p>
+
+    <div class="takeaway-grid">
+      <div class="takeaway-card">
+        <div class="takeaway-icon">📝</div>
+        <div class="takeaway-title">日記や気づきを<br>ファイルに残す</div>
+        <div class="takeaway-desc">メモ帳でもテキストでも何でもいい。自分が思ったことを1日1つでもファイルに保存する。それがAIの「材料」になる。</div>
+      </div>
+      <div class="takeaway-card">
+        <div class="takeaway-icon">🤖</div>
+        <div class="takeaway-title">AIに「全部聞く」を<br>習慣にする</div>
+        <div class="takeaway-desc">分からないことを自分で調べない。AIに丸投げする。「なんとかして」でいい。スクショ1枚でもいい。</div>
+      </div>
+      <div class="takeaway-card">
+        <div class="takeaway-icon">🏠</div>
+        <div class="takeaway-title">リアルで教えてもらう<br>機会を作る</div>
+        <div class="takeaway-desc">初期設定はオンラインだと限界がある。オフィスやイベントで隣の人に聞きながら触るのが最短ルート。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <p>🏝️ AIエージェント触ってみよう会 — 2026年3月25日 oVice</p>
+  <p style="margin-top:8px;">主催：<span class="brand">おけもん（OKモン）</span>🐾｜自己理解 × AI｜リベシティ</p>
+</footer>
+
+<script>
+document.querySelectorAll('.qa-item').forEach((item, i) => {
+  if (i > 0) item.classList.remove('open');
+});
+</script>
+
+</body>
+</html>

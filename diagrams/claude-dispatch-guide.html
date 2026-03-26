@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Dispatchでおけもんの森にできること 図解</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f4efe7;
+      --bg2: #e8dccd;
+      --panel: rgba(255, 251, 246, 0.86);
+      --panel-strong: rgba(255, 255, 255, 0.95);
+      --line: rgba(42, 45, 48, 0.12);
+      --ink: #1f2a2d;
+      --muted: #5f6b6f;
+      --green: #2f7d62;
+      --green-soft: #ddf3ea;
+      --orange: #d96b3b;
+      --orange-soft: #ffe6d8;
+      --blue: #2f5f8f;
+      --blue-soft: #dfeafb;
+      --gold: #b68832;
+      --gold-soft: #f8edc7;
+      --rose: #b35c72;
+      --rose-soft: #f9e2e9;
+      --shadow: 0 22px 60px rgba(62, 44, 29, 0.13);
+      --soft-shadow: 0 14px 36px rgba(62, 44, 29, 0.08);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+    }
+
+    body {
+      font-family: "Avenir Next", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      color: var(--ink);
+      line-height: 1.75;
+      background:
+        radial-gradient(circle at 10% 12%, rgba(217, 107, 59, 0.18), transparent 18%),
+        radial-gradient(circle at 86% 16%, rgba(47, 125, 98, 0.18), transparent 20%),
+        radial-gradient(circle at 82% 88%, rgba(47, 95, 143, 0.14), transparent 22%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      padding: 24px 16px 72px;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .hero,
+    .section {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: linear-gradient(135deg, rgba(255, 252, 248, 0.98), rgba(249, 241, 231, 0.92));
+    }
+
+    .hero {
+      padding: 40px 32px 34px;
+      margin-bottom: 24px;
+    }
+
+    .section {
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, rgba(255, 252, 248, 0.92), rgba(251, 246, 239, 0.86));
+    }
+
+    .hero::before,
+    .hero::after,
+    .section::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    .hero::before {
+      width: 260px;
+      height: 260px;
+      right: -90px;
+      top: -90px;
+      background: radial-gradient(circle, rgba(47, 125, 98, 0.22), rgba(47, 125, 98, 0.02) 72%);
+    }
+
+    .hero::after {
+      width: 280px;
+      height: 280px;
+      left: -100px;
+      bottom: -150px;
+      background: radial-gradient(circle, rgba(217, 107, 59, 0.2), rgba(217, 107, 59, 0.02) 74%);
+    }
+
+    .section::after {
+      width: 220px;
+      height: 220px;
+      right: -100px;
+      bottom: -120px;
+      background: radial-gradient(circle, rgba(47, 95, 143, 0.12), rgba(47, 95, 143, 0.02) 72%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+    }
+
+    h1,
+    h2,
+    .big-copy,
+    .card-title,
+    .flow-label {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+    }
+
+    h1 {
+      max-width: 900px;
+      font-size: clamp(34px, 5.4vw, 64px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+    }
+
+    .lead {
+      max-width: 860px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .hero-grid,
+    .idea-grid,
+    .case-grid,
+    .safe-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      margin-top: 28px;
+    }
+
+    .idea-grid {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 18px;
+    }
+
+    .case-grid,
+    .safe-grid {
+      grid-template-columns: repeat(2, 1fr);
+      margin-top: 18px;
+    }
+
+    .panel,
+    .chip-card,
+    .flow-box,
+    .case-card,
+    .safe-card {
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--soft-shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .panel {
+      padding: 24px 22px;
+    }
+
+    .chip-card,
+    .case-card,
+    .safe-card {
+      padding: 18px 16px;
+    }
+
+    .signal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .signal.orange { background: var(--orange-soft); color: var(--orange); }
+    .signal.blue { background: var(--blue-soft); color: var(--blue); }
+    .signal.gold { background: var(--gold-soft); color: var(--gold); }
+    .signal.rose { background: var(--rose-soft); color: var(--rose); }
+
+    .big-copy {
+      font-size: clamp(28px, 4.6vw, 48px);
+      line-height: 1.18;
+      margin-bottom: 12px;
+    }
+
+    .big-copy strong {
+      color: var(--green);
+    }
+
+    .panel p,
+    .chip-card p,
+    .case-card p,
+    .safe-card p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+      align-items: stretch;
+    }
+
+    .flow-box {
+      padding: 18px 16px;
+      position: relative;
+      min-height: 170px;
+    }
+
+    .flow-box:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -11px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      color: var(--orange);
+      font-weight: 900;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .flow-label {
+      font-size: 22px;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .mini {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid var(--line);
+      font-size: 13px;
+      color: var(--ink);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    h2 {
+      font-size: clamp(24px, 3.1vw, 38px);
+      line-height: 1.18;
+      margin-bottom: 10px;
+    }
+
+    .section-lead {
+      max-width: 820px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .card-title {
+      font-size: 22px;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    ul {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    li {
+      position: relative;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(47, 125, 98, 0.12);
+    }
+
+    .bridge {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    .bridge-card {
+      padding: 20px 18px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .bridge-arrow {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--orange-soft), var(--gold-soft));
+      color: var(--orange);
+      font-size: 30px;
+      font-weight: 900;
+      border: 1px solid var(--line);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px dashed rgba(47, 125, 98, 0.32);
+      background: rgba(221, 243, 234, 0.55);
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .idea-grid,
+      .case-grid,
+      .safe-grid,
+      .flow,
+      .bridge {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-box:not(:last-child)::after {
+        content: "↓";
+        right: 50%;
+        top: auto;
+        bottom: -12px;
+        transform: translateX(50%);
+      }
+
+      .bridge-arrow {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">OKEMON FOREST x CLAUDE DISPATCH</div>
+      <h1>Claude Dispatchで<br>おけもんの森は<br>「覗く場所」から「働く場所」へ</h1>
+      <p class="lead">
+        本質は、スマホから森を読むことではなく、
+        スマホから森に「見回って」「拾って」「整えて」と頼めること。
+        外出先のおけもんと、家で働く森番AIがつながるイメージです。
+      </p>
+
+      <div class="hero-grid">
+        <div class="panel">
+          <div class="signal orange">BEFORE → AFTER</div>
+          <div class="big-copy">Before: 森を<strong>見に行く</strong><br>After: 森に<strong>頼みごとをする</strong></div>
+          <p>
+            これまでの森は「保管庫」として優秀だった。
+            Dispatchが入ると、森はAIが実際に見回り・抽出・下書き・引き継ぎを返してくれる
+            生きた作業場として立ち上がる。
+          </p>
+          <div class="chips">
+            <div class="chip">スマホで依頼</div>
+            <div class="chip">PC側で森を横断</div>
+            <div class="chip">要約して返す</div>
+            <div class="chip">必要なら下書き作成</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="signal blue">CORE IDEA</div>
+          <p class="mini">Dispatchの役割</p>
+          <div class="card-title">「遠隔の森番AI」になる</div>
+          <ul>
+            <li>デイログと音声ログを横断して今のテーマを返す</li>
+            <li>発信ネタや気づきを森から抽出する</li>
+            <li>セーブポイントや引き継ぎメモを残す</li>
+            <li>おけもんが自分で探し回る負担を減らす</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4ステップで起こること</h2>
+      <p class="section-lead">
+        Dispatchが森に入ると、外出中のおけもんの一言が、家のPC側で具体的な仕事に変わる。
+      </p>
+
+      <div class="flow">
+        <div class="flow-box">
+          <div class="mini">STEP 1</div>
+          <div class="flow-label">スマホで依頼</div>
+          <p>「今週の悩みを3つにして」「今日のログから発信ネタを出して」など、短い指示を投げる。</p>
+        </div>
+        <div class="flow-box">
+          <div class="mini">STEP 2</div>
+          <div class="flow-label">森を見回る</div>
+          <p>PC側のClaudeが、デイログ・音声ログ・要約ノート・タスクを横断して必要な文脈を拾う。</p>
+        </div>
+        <div class="flow-box">
+          <div class="mini">STEP 3</div>
+          <div class="flow-label">整理して変換</div>
+          <p>要約、抽出、比較、下書き、リンク候補、セーブポイントなど、次に使える形へ変換する。</p>
+        </div>
+        <div class="flow-box">
+          <div class="mini">STEP 4</div>
+          <div class="flow-label">おけもんへ返す</div>
+          <p>スマホに結果を返したり、森の中に下書きを残したりして、次の一歩を軽くする。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>おけもん文脈で特に強い使い方</h2>
+      <p class="section-lead">
+        単なる閲覧ではなく、「見回り」「抽出」「引き継ぎ」が得意分野。
+      </p>
+
+      <div class="case-grid">
+        <div class="case-card">
+          <div class="signal gold">USE CASE 1</div>
+          <div class="card-title">今の自分の状態を拾い直す</div>
+          <ul>
+            <li>今日のデイログと最新音声ログから今のテーマを3つ</li>
+            <li>この1週間で繰り返している悩みだけ抽出</li>
+            <li>今のワクワクの源泉を言語化</li>
+          </ul>
+        </div>
+
+        <div class="case-card">
+          <div class="signal orange">USE CASE 2</div>
+          <div class="card-title">発信の原液を取りに行く</div>
+          <ul>
+            <li>ログからX投稿ネタを3本</li>
+            <li>YouTube要約と最近の実体験を接続</li>
+            <li>note見出しや話すテーマの下書き作成</li>
+          </ul>
+        </div>
+
+        <div class="case-card">
+          <div class="signal blue">USE CASE 3</div>
+          <div class="card-title">森の見回りと整備</div>
+          <ul>
+            <li>孤立ノートやリンク薄いノートの発見</li>
+            <li>最近の更新をセーブポイント化</li>
+            <li>次のAIが動きやすい引き継ぎメモを生成</li>
+          </ul>
+        </div>
+
+        <div class="case-card">
+          <div class="signal rose">USE CASE 4</div>
+          <div class="card-title">今日の行動を返してもらう</div>
+          <ul>
+            <li>タスクと期限から今夜やる順番を整理</li>
+            <li>重い仕事の最初の一歩だけ作る</li>
+            <li>移動中でも今日のハンドルを握り直す</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>いちばん大事な理解</h2>
+      <p class="section-lead">
+        Dispatchの価値は、森をスマホに映すことではなく、森に仕事を任せられること。
+      </p>
+
+      <div class="bridge">
+        <div class="bridge-card">
+          <div class="signal orange">VIEW MODE</div>
+          <div class="card-title">「森を覗く」だけ</div>
+          <p>
+            過去ノートを読む、内容を確認する、思い出す。
+            これだけでも便利だけど、森の力を半分しか使っていない。
+          </p>
+        </div>
+
+        <div class="bridge-arrow">→</div>
+
+        <div class="bridge-card">
+          <div class="signal green" style="background: var(--green-soft); color: var(--green);">WORK MODE</div>
+          <div class="card-title">「森に頼む」</div>
+          <p>
+            見回り、抽出、整理、下書き、引き継ぎまで一気に頼める。
+            おけもんが探す側から、森を動かす側に回る。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>最初にやると良さそうな実験</h2>
+      <p class="section-lead">
+        いきなり全部自動化より、恩恵が大きくて安全なところから始めるのが育てやすい。
+      </p>
+
+      <div class="idea-grid">
+        <div class="chip-card">
+          <div class="signal blue">EXPERIMENT 1</div>
+          <div class="card-title">朝の見回り</div>
+          <p>「昨日のデイログ・最新音声ログ・タスクを見て、今日のテーマを3つ返して」</p>
+        </div>
+
+        <div class="chip-card">
+          <div class="signal gold">EXPERIMENT 2</div>
+          <div class="card-title">発信ネタ抽出</div>
+          <p>「この1週間のログから、今の私らしい発信ネタを3本」</p>
+        </div>
+
+        <div class="chip-card">
+          <div class="signal rose">EXPERIMENT 3</div>
+          <div class="card-title">セーブポイント生成</div>
+          <p>「最近の更新を見て、進捗・未整理・次の一歩をセーブポイントにして」</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>安全設計は先に決める</h2>
+      <p class="section-lead">
+        森は大事な本体。便利さだけで突っ走らず、「どの環境を外から触ってよいか」を分けるのが前提。
+      </p>
+
+      <div class="safe-grid">
+        <div class="safe-card">
+          <div class="signal orange">DO FIRST</div>
+          <ul>
+            <li>最初は「読む・要約する・下書きする」中心</li>
+            <li>破壊的な操作はまだ持たせない</li>
+            <li>セーブポイントや引き継ぎから育てる</li>
+          </ul>
+        </div>
+
+        <div class="safe-card">
+          <div class="signal blue">SEPARATE</div>
+          <ul>
+            <li>森専用マシン or 森専用ユーザー環境を分ける</li>
+            <li>必要ならクラウドデスクトップも候補</li>
+            <li>メインPCそのものを無防備に開かない</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        結論: Claude Dispatchは、おけもんの森を「静かな保管庫」から
+        「外出先のおけもんに応答してくれる生きた作業場」へ進化させる入口になりうる。
+      </div>
+    </section>
+  </div>
+</body>
+</html>

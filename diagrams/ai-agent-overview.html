@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIエージェント共有図解</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f6f3eb;
+    --paper: rgba(255, 252, 246, 0.94);
+    --ink: #24323d;
+    --muted: #61707a;
+    --line: #d7cfc0;
+    --accent: #c96f3b;
+    --accent-soft: #f4dfd2;
+    --accent-2: #2f7d6d;
+    --accent-2-soft: #dbeee8;
+    --accent-3: #4f6db8;
+    --accent-3-soft: #dfe8fb;
+    --shadow: 0 20px 60px rgba(53, 43, 30, 0.12);
+  }
+
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    background:
+      radial-gradient(circle at top left, rgba(201, 111, 59, 0.12), transparent 28%),
+      radial-gradient(circle at top right, rgba(47, 125, 109, 0.12), transparent 24%),
+      linear-gradient(180deg, #f7f2e8 0%, #f2eee5 100%);
+    color: var(--ink);
+    line-height: 1.75;
+    padding: 32px 18px 64px;
+  }
+
+  .container {
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255,252,246,0.98), rgba(248,242,231,0.92));
+    border: 1px solid rgba(201, 111, 59, 0.15);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    padding: 42px 34px 36px;
+    margin-bottom: 24px;
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201, 111, 59, 0.18), rgba(201, 111, 59, 0.02) 70%);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: clamp(30px, 5vw, 52px);
+    line-height: 1.15;
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+  }
+
+  .lead {
+    max-width: 800px;
+    font-size: 17px;
+    color: var(--muted);
+  }
+
+  .hero-points {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .hero-point {
+    background: rgba(255,255,255,0.75);
+    border: 1px solid rgba(36, 50, 61, 0.08);
+    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .hero-point .small {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .hero-point .big {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .section {
+    background: var(--paper);
+    border: 1px solid rgba(36, 50, 61, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(53, 43, 30, 0.07);
+    padding: 28px 24px;
+    margin-bottom: 20px;
+  }
+
+  .section h2 {
+    font-size: 26px;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .section .sub {
+    color: var(--muted);
+    margin-bottom: 22px;
+    font-size: 15px;
+  }
+
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .card {
+    border-radius: 20px;
+    padding: 22px 20px;
+    border: 1px solid rgba(36, 50, 61, 0.08);
+    background: #fffdfa;
+  }
+
+  .card.old {
+    background: linear-gradient(180deg, #fff8f3 0%, #fffdf9 100%);
+    border-color: rgba(201, 111, 59, 0.18);
+  }
+
+  .card.new {
+    background: linear-gradient(180deg, #f5fbf8 0%, #fffdfa 100%);
+    border-color: rgba(47, 125, 109, 0.18);
+  }
+
+  .card .label {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .old .label {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .new .label {
+    background: var(--accent-2-soft);
+    color: var(--accent-2);
+  }
+
+  .card h3 {
+    font-size: 21px;
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .flow-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 14px;
+    padding: 12px 14px;
+    border: 1px dashed rgba(36, 50, 61, 0.12);
+    font-size: 14px;
+  }
+
+  .flow-item .num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .old .num {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .new .num {
+    background: var(--accent-2-soft);
+    color: var(--accent-2);
+  }
+
+  .future {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .future-item {
+    border-radius: 18px;
+    padding: 18px 16px;
+    background: #fffefa;
+    border: 1px solid rgba(36, 50, 61, 0.08);
+  }
+
+  .future-item .icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .future-item h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .future-item p {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .position-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 18px;
+  }
+
+  .position-main {
+    background: linear-gradient(135deg, #fff8f0, #fffdf9);
+    border: 1px solid rgba(201, 111, 59, 0.18);
+    border-radius: 20px;
+    padding: 22px;
+  }
+
+  .position-main h3,
+  .entry-box h3,
+  .share-box h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .position-main p,
+  .entry-box p,
+  .share-box p {
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .tag.orange { background: var(--accent-soft); color: var(--accent); }
+  .tag.green { background: var(--accent-2-soft); color: var(--accent-2); }
+  .tag.blue { background: var(--accent-3-soft); color: var(--accent-3); }
+
+  .stack {
+    display: grid;
+    gap: 18px;
+  }
+
+  .entry-box,
+  .share-box {
+    background: #fffefa;
+    border: 1px solid rgba(36, 50, 61, 0.08);
+    border-radius: 20px;
+    padding: 20px;
+  }
+
+  .entry-path {
+    display: grid;
+    gap: 10px;
+  }
+
+  .entry-step {
+    border-radius: 14px;
+    padding: 12px 14px;
+    border: 1px solid rgba(47, 125, 109, 0.16);
+    background: linear-gradient(180deg, #f8fcfa, #fffdf9);
+    font-size: 14px;
+  }
+
+  .entry-step strong {
+    color: var(--accent-2);
+  }
+
+  .mini-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .mini {
+    padding: 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(36, 50, 61, 0.08);
+    background: #fffdfa;
+  }
+
+  .mini h4 {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .mini p {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .footer-note {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding-top: 6px;
+  }
+
+  @media (max-width: 900px) {
+    .hero-points,
+    .future,
+    .position-grid,
+    .compare,
+    .mini-compare {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    body {
+      padding: 16px 10px 40px;
+    }
+
+    .hero,
+    .section {
+      padding: 22px 16px;
+      border-radius: 20px;
+    }
+
+    h1 {
+      font-size: 32px;
+    }
+
+    .section h2 {
+      font-size: 22px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <div class="eyebrow">AIエージェント共有メモ</div>
+      <h1>AIに聞く時代から、<br>AIと一緒に進める時代へ</h1>
+      <p class="lead">
+        ここ2日ほどのシェア会と実践を通じて見えてきたのは、
+        <strong>AIエージェント = 難しい人だけのもの</strong> ではなく、
+        非エンジニアでも「情報整理」「記録」「発信の下地づくり」に使えるかもしれない、ということでした。
+      </p>
+
+      <div class="hero-points">
+        <div class="hero-point">
+          <div class="small">これまで</div>
+          <div class="big">質問すると、答えてくれるAI</div>
+        </div>
+        <div class="hero-point">
+          <div class="small">これから</div>
+          <div class="big">こうしたいを渡すと、一緒に動くAI</div>
+        </div>
+        <div class="hero-point">
+          <div class="small">私の立場</div>
+          <div class="big">非エンジニア目線で入口を試している段階</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>AIエージェントって、どういうこと？</h2>
+      <p class="sub">
+        単語だけだと伝わりにくいので、まずは「従来のAI」と「AIエージェント」の違いを、感覚ベースで見るとこんな感じです。
+      </p>
+
+      <div class="compare">
+        <div class="card old">
+          <div class="label">これまでのAI</div>
+          <h3>相談相手・検索相手に近い</h3>
+          <p>
+            ChatGPTやGeminiのように、質問すると答えが返ってくる。
+            便利だけど、その後の整理や保存や活用は自分でやることが多い。
+          </p>
+          <div class="flow">
+            <div class="flow-item"><div class="num">1</div><div>気になることがある</div></div>
+            <div class="flow-item"><div class="num">2</div><div>AIに聞く</div></div>
+            <div class="flow-item"><div class="num">3</div><div>答えを読む</div></div>
+            <div class="flow-item"><div class="num">4</div><div>必要なら自分でメモする</div></div>
+            <div class="flow-item"><div class="num">5</div><div>あとで埋もれやすい</div></div>
+          </div>
+        </div>
+
+        <div class="card new">
+          <div class="label">AIエージェント</div>
+          <h3>作業を一緒に進める相棒に近い</h3>
+          <p>
+            「こうしたい」を渡すと、調べる・整理する・まとめる・保存する、みたいな流れまで一緒に進めやすい。
+            まだ万能ではないけれど、作業の一部を分担できる感覚がある。
+          </p>
+          <div class="flow">
+            <div class="flow-item"><div class="num">1</div><div>気になることを渡す</div></div>
+            <div class="flow-item"><div class="num">2</div><div>AIが要点を整理する</div></div>
+            <div class="flow-item"><div class="num">3</div><div>記録やフォルダに残す</div></div>
+            <div class="flow-item"><div class="num">4</div><div>あとから引っ張り出せる</div></div>
+            <div class="flow-item"><div class="num">5</div><div>発信や仕事に変えやすい</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>ビフォー → アフターで見ると、こんな未来があるかも</h2>
+      <p class="sub">
+        まだ実験段階ですが、「こういう作業がこう変わるかも」というイメージはかなり見えてきました。
+      </p>
+
+      <div class="future">
+        <div class="future-item">
+          <div class="icon">🧠</div>
+          <h3>情報整理</h3>
+          <p>気になる情報が散らばる状態から、後で使える形で残しやすくなるかもしれない。</p>
+        </div>
+        <div class="future-item">
+          <div class="icon">📝</div>
+          <h3>発信の下地</h3>
+          <p>思いつきや会話ログが、投稿・記事・共有文の材料に変わりやすくなるかもしれない。</p>
+        </div>
+        <div class="future-item">
+          <div class="icon">📂</div>
+          <h3>記録の資産化</h3>
+          <p>その場限りのメモではなく、あとで見返せる自分専用の知識資産に育てやすい。</p>
+        </div>
+        <div class="future-item">
+          <div class="icon">🤝</div>
+          <h3>作業の分担</h3>
+          <p>1人で抱えていた「調べる・まとめる・整える」の一部をAIに任せやすくなる。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>今、私が見えている立ち位置</h2>
+      <p class="sub">
+        ここが大事だなと思っていて、私はガチエンジニア側ではありません。
+        でもだからこそ見えていることがあります。
+      </p>
+
+      <div class="position-grid">
+        <div class="position-main">
+          <h3>私は非エンジニア側の入口を試している</h3>
+          <p>
+            Claude CodeやCursorでターミナルを立ち上げてゴリゴリ使う人たちがいる一方で、
+            私はまず <strong>チャット型・見えるUI・触りやすい入口</strong> から入っています。
+            だからこそ、「どこで止まりやすいか」「どう説明すると伝わるか」が見えてきました。
+          </p>
+          <div class="tag-list">
+            <span class="tag orange">非エンジニア目線</span>
+            <span class="tag green">入口を翻訳する役割</span>
+            <span class="tag blue">使い方の未来を言語化</span>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="entry-box">
+            <h3>今の入口候補</h3>
+            <p>最初から難しいところに行かなくてもよくて、こんな順番が触りやすそうです。</p>
+            <div class="entry-path">
+              <div class="entry-step"><strong>1.</strong> まずは「AIエージェントって何？」を体感する</div>
+              <div class="entry-step"><strong>2.</strong> チャット型や見えるUIのあるものから触る</div>
+              <div class="entry-step"><strong>3.</strong> 自分のメモ・記録・発信で小さく使う</div>
+              <div class="entry-step"><strong>4.</strong> その先で必要ならClaude CodeやCursorに広げる</div>
+            </div>
+          </div>
+
+          <div class="share-box">
+            <h3>私が今やっていること</h3>
+            <p>
+              シェア会や作業会に参加しながら、
+              「自分がどう感じたか」「何が難しかったか」「どこに可能性を感じたか」をアウトプットしています。
+              これ自体が、自分の理解を深める学習法にもなっています。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>ガチ勢と入口勢の違いも、いま広がっている</h2>
+      <p class="sub">
+        ここも大事なポイントで、「AIを触っている」と言っても、実は中身がかなり分かれてきています。
+      </p>
+
+      <div class="mini-compare">
+        <div class="mini">
+          <h4>ガチ勢</h4>
+          <p>
+            Claude CodeやCursorでターミナルを立ち上げて、
+            実装・設定・ワークフロー構築まで進める層。
+            できることは広いけど、入口のハードルは高め。
+          </p>
+        </div>
+        <div class="mini">
+          <h4>入口勢・非エンジニア勢</h4>
+          <p>
+            まずは「何ができるの？」を見たい層。
+            日常・仕事・発信・整理にどう使えるかが分かると、一気に興味が持ちやすい。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>ひとことで言うと</h2>
+      <p class="sub">
+        AIエージェントは、まだ全員がすぐ使いこなせるものではないです。
+        でも、未来の使い方としてはかなり面白いです。
+      </p>
+
+      <div class="position-main" style="background: linear-gradient(135deg, #f4fbf9, #fffdf9); border-color: rgba(47,125,109,0.18);">
+        <h3>「AIに聞く」から「AIと一緒に進める」へ</h3>
+        <p>
+          今すぐ全部を理解しなくてもよくて、
+          まずは <strong>情報整理・記録・発信の下地づくり</strong> のような身近なところから触ると、
+          AIエージェントの価値が見えやすい気がしています。
+        </p>
+        <div class="tag-list">
+          <span class="tag green">気になる人は入口からでOK</span>
+          <span class="tag blue">非エンジニアでも可能性あり</span>
+          <span class="tag orange">まだ私も勉強中</span>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">
+      2026-03-14 / 2日間のシェア会と実践メモをもとに作成
+    </p>
+  </div>
+</body>
+</html>

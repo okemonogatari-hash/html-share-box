@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>動画教材作成ツール比較レポート｜NoLang vs Google Vids</title>
+  <style>
+    /* ===== BASE ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hiragino Sans', 'Hiragino Kana Gothic Pro', 'Meiryo', sans-serif;
+      background: #f4f6fb;
+      color: #2d2d2d;
+      line-height: 1.75;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: #fff;
+      padding: 60px 40px 50px;
+      text-align: center;
+    }
+    .hero .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 4px 16px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(22px, 4vw, 36px);
+      font-weight: 800;
+      letter-spacing: 1px;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .hero h1 span { color: #e94560; }
+    .hero p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 16px;
+    }
+    .hero .date {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 8px;
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ===== SECTION ===== */
+    .section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px;
+      margin: 30px auto;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1a1a2e;
+      border-left: 5px solid #e94560;
+      padding-left: 14px;
+      margin-bottom: 24px;
+    }
+    .section-title .num {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e94560;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* ===== PREMISE BOX ===== */
+    .premise {
+      background: linear-gradient(135deg, #fff8f0, #fff3e8);
+      border: 2px solid #ff9a3c;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+    }
+    .premise h3 { color: #c96a00; font-size: 15px; margin-bottom: 12px; }
+    .premise-items { display: flex; gap: 16px; flex-wrap: wrap; }
+    .premise-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a2e;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+      flex: 1;
+      min-width: 160px;
+    }
+    .premise-item .icon { font-size: 24px; }
+    .premise-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #ff9a3c;
+      margin: 12px 0;
+    }
+    .premise-goal {
+      background: linear-gradient(135deg, #e94560, #c0392b);
+      color: #fff;
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* ===== TOOL CARDS ===== */
+    .tool-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 600px) { .tool-cards { grid-template-columns: 1fr; } }
+    .tool-card {
+      border-radius: 14px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .tool-card.nolang {
+      background: linear-gradient(135deg, #1a1a2e, #2d1b69);
+      color: #fff;
+    }
+    .tool-card.vids {
+      background: linear-gradient(135deg, #0f5132, #157347);
+      color: #fff;
+    }
+    .tool-card .badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+    .tool-card h3 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .tool-card .tagline {
+      font-size: 12px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 3px 12px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .tool-card .desc {
+      font-size: 13px;
+      line-height: 1.7;
+      opacity: 0.9;
+    }
+
+    /* ===== FLOW DIAGRAM ===== */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 24px 0;
+    }
+    .flow-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .flow-step {
+      flex: 1;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step.s1 { background: #e8f4ff; color: #0d6efd; border: 2px solid #b3d7ff; }
+    .flow-step.s2 { background: #fff0e8; color: #c96a00; border: 2px solid #ffd0a0; }
+    .flow-step.s3 { background: #e8fff0; color: #0a6640; border: 2px solid #a0ffd0; }
+    .flow-step.s4 { background: #f8e8ff; color: #7a00c9; border: 2px solid #e0a0ff; }
+    .flow-step.s5 { background: #fff8e8; color: #8a6000; border: 2px solid #ffdfa0; }
+    .flow-step.goal { background: linear-gradient(135deg, #e94560, #c0392b); color: #fff; border: none; }
+    .flow-arrow {
+      text-align: center;
+      color: #aaa;
+      font-size: 20px;
+      padding: 2px 0;
+    }
+    .flow-step .step-num {
+      font-size: 10px;
+      font-weight: 700;
+      display: block;
+      opacity: 0.7;
+      margin-bottom: 2px;
+    }
+    .flow-step .step-icon { font-size: 18px; display: block; margin-bottom: 3px; }
+    .flow-label {
+      font-size: 11px;
+      color: #888;
+      text-align: center;
+      margin: -4px 0 4px;
+    }
+
+    /* ===== TWO FLOW SIDE BY SIDE ===== */
+    .two-flows {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 20px 0;
+    }
+    @media (max-width: 640px) { .two-flows { grid-template-columns: 1fr; } }
+    .flow-box {
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .flow-box.nolang { background: #f5f0ff; border: 2px solid #c4a0ff; }
+    .flow-box.vids { background: #f0fff5; border: 2px solid #a0ffc4; }
+    .flow-box h4 {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .flow-box.nolang h4 { color: #5a00c9; }
+    .flow-box.vids h4 { color: #0a6640; }
+    .flow-step-small {
+      background: #fff;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .flow-step-small .snum {
+      background: #e0cfff;
+      color: #5a00c9;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .flow-box.vids .flow-step-small .snum {
+      background: #b0ffd4;
+      color: #0a6640;
+    }
+    .mini-arrow { text-align: center; color: #aaa; font-size: 14px; margin: 2px 0; }
+
+    /* ===== COMPARISON TABLE ===== */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .compare-table th {
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .compare-table th:first-child { background: #f8f9fa; color: #666; text-align: left; border-radius: 8px 0 0 0; }
+    .compare-table th.nolang-th { background: #1a1a2e; color: #fff; text-align: center; }
+    .compare-table th.vids-th { background: #0f5132; color: #fff; text-align: center; border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+    .compare-table td:first-child { font-weight: 600; color: #444; background: #fafafa; }
+    .compare-table td.center { text-align: center; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: #f9f5ff; }
+    .compare-table tr:hover td:first-child { background: #f0ebff; }
+    .badge-ok { background: #d4f5e2; color: #0a6640; border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 700; }
+    .badge-ng { background: #fde8ec; color: #c0392b; border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 700; }
+    .badge-tri { background: #fff3cd; color: #856404; border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 700; }
+    .badge-free { background: #e8f4ff; color: #0d6efd; border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 700; }
+
+    /* ===== PERSONA CARDS ===== */
+    .persona-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .persona-card {
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 13px;
+    }
+    .persona-card.a { background: linear-gradient(135deg, #f5f0ff, #ede0ff); border: 2px solid #c4a0ff; }
+    .persona-card.b { background: linear-gradient(135deg, #f0fff8, #e0ffee); border: 2px solid #a0ffd0; }
+    .persona-card.c { background: linear-gradient(135deg, #fff8f0, #ffe8d0); border: 2px solid #ffa060; }
+    .persona-card h4 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+    .persona-card.a h4 { color: #5a00c9; }
+    .persona-card.b h4 { color: #0a6640; }
+    .persona-card.c h4 { color: #c96a00; }
+    .persona-card .rec {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 2px 10px;
+      margin: 8px 0;
+    }
+    .persona-card.a .rec { background: #5a00c9; color: #fff; }
+    .persona-card.b .rec { background: #0a6640; color: #fff; }
+    .persona-card.c .rec { background: #c96a00; color: #fff; }
+    .persona-card ul { padding-left: 16px; margin-top: 6px; }
+    .persona-card ul li { margin-bottom: 4px; }
+
+    /* ===== DECISION TREE ===== */
+    .decision {
+      background: #f8f9fa;
+      border-radius: 14px;
+      padding: 28px;
+      margin: 20px 0;
+    }
+    .d-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 0;
+      flex-wrap: wrap;
+    }
+    .d-q {
+      background: #1a1a2e;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .d-branch {
+      display: flex;
+      flex-direction: column;
+      margin-left: 16px;
+      gap: 8px;
+    }
+    .d-opt {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .d-opt .label {
+      background: #eee;
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #555;
+      white-space: nowrap;
+    }
+    .d-ans {
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .d-ans.nl { background: #2d1b69; color: #fff; }
+    .d-ans.gv { background: #0f5132; color: #fff; }
+    .d-ans.vr { background: #c96a00; color: #fff; }
+    .d-tree-container { overflow-x: auto; }
+    .d-tree {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 500px;
+    }
+    .d-node {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .d-q-box {
+      background: #1a1a2e;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .d-branches { display: flex; flex-direction: column; gap: 8px; }
+    .d-branch-row { display: flex; align-items: center; gap: 8px; }
+    .d-choice {
+      background: #e8ecf0;
+      color: #555;
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .d-result {
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .d-result.nl { background: #2d1b69; color: #fff; }
+    .d-result.gv { background: #157347; color: #fff; }
+    .d-result.vr { background: #fd7e14; color: #fff; }
+    .d-arrow-right { color: #bbb; font-size: 18px; }
+
+    /* ===== PRICING ===== */
+    .price-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .price-card {
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .price-card.free { background: #f0f4ff; border: 2px solid #b3c6ff; }
+    .price-card.mid { background: #fff0f5; border: 2px solid #ffb3cc; }
+    .price-card.pro { background: #fff8e8; border: 2px solid #ffd080; }
+    .price-card .plan-name { font-size: 13px; font-weight: 700; color: #666; margin-bottom: 6px; }
+    .price-card .price { font-size: 24px; font-weight: 800; color: #1a1a2e; }
+    .price-card .price span { font-size: 13px; font-weight: 400; color: #888; }
+    .price-card .desc { font-size: 12px; color: #666; margin-top: 8px; }
+
+    /* ===== ALERT BOX ===== */
+    .alert {
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 13px;
+      margin: 16px 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .alert.warn { background: #fff8e1; border: 1px solid #ffc107; }
+    .alert.info { background: #e8f4ff; border: 1px solid #2196f3; }
+    .alert.tip { background: #e8fff0; border: 1px solid #4caf50; }
+    .alert .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .alert strong { display: block; margin-bottom: 2px; }
+
+    /* ===== THIRD OPTION ===== */
+    .third {
+      background: linear-gradient(135deg, #fff5e0, #fff0d0);
+      border: 2px solid #fd9e02;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 16px 0;
+    }
+    .third h4 { font-size: 16px; font-weight: 800; color: #8a5500; margin-bottom: 10px; }
+    .third .points { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .third .point {
+      background: #fff;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #8a5500;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+
+    /* ===== FINAL SUMMARY ===== */
+    .summary-card {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: #fff;
+      border-radius: 16px;
+      padding: 36px;
+      margin: 30px 0;
+      text-align: center;
+    }
+    .summary-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 20px; }
+    .summary-card .rec-box {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 12px 0;
+      text-align: left;
+    }
+    .summary-card .rec-title { font-size: 14px; font-weight: 800; margin-bottom: 6px; color: #e94560; }
+    .summary-card .rec-text { font-size: 13px; opacity: 0.85; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* ===== PROS CONS ===== */
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    @media (max-width: 500px) { .pros-cons { grid-template-columns: 1fr; } }
+    .pros, .cons {
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .pros { background: #f0fff8; border: 1px solid #a0ffd0; }
+    .cons { background: #fff0f3; border: 1px solid #ffb0c0; }
+    .pros h5, .cons h5 { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+    .pros h5 { color: #0a6640; }
+    .cons h5 { color: #c0392b; }
+    .pros ul, .cons ul { padding-left: 14px; font-size: 12px; }
+    .pros ul li, .cons ul li { margin-bottom: 4px; }
+
+    /* ===== DIVIDER ===== */
+    .divider { border: none; border-top: 2px dashed #e0e0e0; margin: 8px 0 24px; }
+
+    /* ===== INDENT ===== */
+    .indent { padding: 0 8px; }
+  </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="tag">CLIENT REPORT · 2026.03.05</div>
+  <h1>音声付き動画教材を作るなら<br><span>どのツールが最適？</span></h1>
+  <p>NoLang（ノーラング）vs Google Vids 徹底比較レポート</p>
+  <p class="date">調査・作成：おけもん｜2026年3月5日</p>
+</div>
+
+<!-- ===== BREAKING NEWS BANNER ===== -->
+<div style="background:linear-gradient(135deg,#e94560,#c0392b);color:#fff;text-align:center;padding:14px 20px;">
+  <span style="font-size:11px;font-weight:700;letter-spacing:2px;background:rgba(255,255,255,0.2);border-radius:20px;padding:2px 10px;margin-right:10px;">🔥 速報</span>
+  <span style="font-size:14px;font-weight:700;">2026年2月24日 — Google Vidsが日本語AIナレーションに正式対応しました！比較内容をすべて最新情報に更新済みです。</span>
+</div>
+
+<!-- ===== SECTION 0: PREMISE ===== -->
+<div class="section" style="margin-top:30px;">
+  <div class="section-title">
+    <span class="num">はじめに</span>
+    解決したい課題の整理
+  </div>
+
+  <div class="premise">
+    <h3>🎯 クライアントが抱えている状況</h3>
+    <div class="premise-items">
+      <div class="premise-item">
+        <span class="icon">📄</span>
+        <div>
+          <div style="font-size:11px;color:#888;">① 手元にある</div>
+          <div>テキスト台本</div>
+        </div>
+      </div>
+      <div class="premise-item">
+        <span class="icon">🖼️</span>
+        <div>
+          <div style="font-size:11px;color:#888;">② 手元にある</div>
+          <div>スライド資料</div>
+        </div>
+      </div>
+      <div class="premise-item">
+        <span class="icon">🤔</span>
+        <div>
+          <div style="font-size:11px;color:#888;">③ 悩み</div>
+          <div>どのツールが楽？</div>
+        </div>
+      </div>
+    </div>
+    <div class="premise-arrow">↓</div>
+    <div class="premise-goal">🎬 これを「音声ナレーション付きの動画教材」に変換したい</div>
+  </div>
+
+  <div class="alert info">
+    <div class="icon">💡</div>
+    <div>今回は候補として挙げられた <strong>NoLang</strong> と <strong>Google Vids</strong> の2ツールを徹底比較。さらに両方のいいとこ取りができる <strong>第3の選択肢</strong> もご提案します。</div>
+  </div>
+
+  <div class="alert warn">
+    <div class="icon">⚠️</div>
+    <div><strong>URLの誤りについて</strong><br>ご連絡いただいたメッセージ内でURLが入れ替わっていました。正しくは、NoLang → <code>no-lang.com</code>、Google Vids → <code>workspace.google.com/products/vids</code> です。</div>
+  </div>
+</div>
+
+<!-- ===== SECTION 1: OVERVIEW ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">SECTION 01</span>
+    2つのツール、何が違う？
+  </div>
+
+  <div class="tool-cards">
+    <div class="tool-card nolang">
+      <div class="badge">TOOL A</div>
+      <h3>NoLang</h3>
+      <div class="tagline">ノーラング</div>
+      <div class="desc">
+        東京大学発スタートアップが開発。<br>
+        テキストを入れると、AIがナレーション・画像・字幕・BGMを<strong style="color:#ddd;">全自動で生成</strong>してくれる動画AIツール。<br><br>
+        台本が先にある人に最適。
+      </div>
+    </div>
+    <div class="tool-card vids">
+      <div class="badge">TOOL B</div>
+      <h3>Google Vids</h3>
+      <div class="tagline">グーグルビッズ</div>
+      <div class="desc">
+        Google Workspaceに統合されたAI動画ツール。<br>
+        既存のGoogleスライドをそのまま動画化し、<strong style="color:#ddd;">スライドにナレーションをつけていく</strong>イメージ。<br><br>
+        スライドが先にある人に最適。
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY DIFFERENCE -->
+  <div style="background:#fff8f0;border-radius:12px;padding:20px 24px;border:2px solid #ffd0a0;margin-top:8px;">
+    <div style="font-size:14px;font-weight:800;color:#c96a00;margin-bottom:12px;">🔑 最も大きな違い：「どこから動画を作り始めるか」</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:180px;background:#fff;border-radius:8px;padding:12px 16px;border-left:4px solid #5a00c9;">
+        <div style="font-size:11px;font-weight:700;color:#5a00c9;margin-bottom:4px;">NoLang の出発点</div>
+        <div style="font-size:13px;">📄 台本テキストを入力<br>→ AIがすべて作る</div>
+      </div>
+      <div style="flex:1;min-width:180px;background:#fff;border-radius:8px;padding:12px 16px;border-left:4px solid #0a6640;">
+        <div style="font-size:11px;font-weight:700;color:#0a6640;margin-bottom:4px;">Google Vids の出発点</div>
+        <div style="font-size:13px;">🖼️ スライドをインポート<br>→ ナレーションを追加</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 2: WORKFLOW ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">SECTION 02</span>
+    実際の作業の流れ（ワークフロー）
+  </div>
+
+  <div class="two-flows">
+    <!-- NoLang Flow -->
+    <div class="flow-box nolang">
+      <h4>🎬 NoLang の場合</h4>
+
+      <div class="flow-step-small">
+        <div class="snum">1</div>
+        <div>台本テキスト（またはPPTX）を入力</div>
+      </div>
+      <div class="mini-arrow">↓</div>
+      <div class="flow-step-small">
+        <div class="snum">2</div>
+        <div>AIがシーン構成・AI画像・ナレーション・字幕・BGMを自動生成</div>
+      </div>
+      <div class="mini-arrow">↓</div>
+      <div class="flow-step-small">
+        <div class="snum">3</div>
+        <div>AIが生成した画像を自分のスライドのスクリーンショットに差し替え</div>
+      </div>
+      <div class="mini-arrow">↓</div>
+      <div class="flow-step-small">
+        <div class="snum">4</div>
+        <div>ナレーション・テロップを微調整</div>
+      </div>
+      <div class="mini-arrow">↓</div>
+      <div class="flow-step-small" style="background:#e8d8ff;">
+        <div class="snum">5</div>
+        <div><strong>ダウンロード完了 🎉</strong></div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:#5a00c9;background:#ede0ff;border-radius:8px;padding:8px 12px;">
+        ⏱ 最短数十分で完成。スライドの差し替えが主な手作業。
+      </div>
+    </div>
+
+    <!-- Google Vids Flow -->
+    <div class="flow-box vids">
+      <h4>🎬 Google Vids の場合</h4>
+
+      <div class="flow-step-small">
+        <div class="snum">1</div>
+        <div>Googleスライドをそのままインポート</div>
+      </div>
+      <div class="mini-arrow">↓</div>
+      <div class="flow-step-small" style="background:#fff3cd;border:2px solid #ffc107;">
+        <div class="snum" style="background:#ffc107;color:#fff;">2</div>
+        <div><strong>✏️ 自分でナレーション文章を書く</strong>（スライドごとにテキスト入力）<br><span style="font-size:11px;color:#666;">AIはスクリプトを考えてくれない。自分で台本を入力する</span></div>
+      </div>
+      <div class="mini-arrow">↓</div>
+      <div class="flow-step-small" style="background:#e0ffe8;border:2px solid #00c853;">
+        <div class="snum" style="background:#00c853;color:#fff;">3</div>
+        <div><strong>🔊 AIが入力テキストを日本語音声で読み上げ</strong>（TTS）<br><span style="font-size:11px;color:#555;">声質・ナレーターは複数から選べる（2026/2〜日本語対応）</span></div>
+      </div>
+      <div class="mini-arrow">↓</div>
+      <div class="flow-step-small">
+        <div class="snum">4</div>
+        <div>BGM・トランジション・ストック素材を調整</div>
+      </div>
+      <div class="mini-arrow">↓</div>
+      <div class="flow-step-small" style="background:#b0ffd4;">
+        <div class="snum">5</div>
+        <div><strong>書き出して完成 🎉</strong></div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:#0a6640;background:#d0fff0;border-radius:8px;padding:8px 12px;">
+        🖼️ スライドそのまま使える。ナレーション内容は自分でコントロールできる。
+      </div>
+    </div>
+  </div>
+
+  <div class="alert tip">
+    <div class="icon">🎉</div>
+    <div>
+      <strong>【最新情報】Google Vids 日本語AI音声読み上げ（TTS）、2026年2月24日に正式対応！</strong>
+      自分で書いたナレーション文章を、AIが日本語音声で読み上げてくれる機能が解禁。日本語AIアバターにも対応（週20回・1クリップ最大30秒）。※ナレーション文章の自動生成はできないため、文章は自分で用意する必要があります。
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 3: DETAILED COMPARE ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">SECTION 03</span>
+    項目別 徹底比較表
+  </div>
+
+  <div style="overflow-x:auto;">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>比較項目</th>
+          <th class="nolang-th">🎬 NoLang</th>
+          <th class="vids-th">🎬 Google Vids</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>作業の起点</td>
+          <td class="center">台本テキスト</td>
+          <td class="center">スライド資料</td>
+        </tr>
+        <tr>
+          <td>ナレーション文章の自動生成</td>
+          <td class="center"><span class="badge-ok">✅ AIが自動生成</span></td>
+          <td class="center"><span class="badge-ng">❌ 自分で書く必要あり</span></td>
+        </tr>
+        <tr>
+          <td>AI音声読み上げ（TTS）</td>
+          <td class="center"><span class="badge-ok">✅ 対応</span></td>
+          <td class="center"><span class="badge-ok">✅ 2026/2/24〜日本語対応</span></td>
+        </tr>
+        <tr>
+          <td>スライドの活用方法</td>
+          <td class="center">AI画像を手動で差し替え</td>
+          <td class="center"><span class="badge-ok">そのままインポート</span></td>
+        </tr>
+        <tr>
+          <td>PPTX・PDF読み込み</td>
+          <td class="center"><span class="badge-ok">✅ 対応</span></td>
+          <td class="center">Googleスライドのみ</td>
+        </tr>
+        <tr>
+          <td>自動化の度合い</td>
+          <td class="center"><span class="badge-ok">高い（ほぼ全自動）</span></td>
+          <td class="center"><span class="badge-tri">中（録音は手動）</span></td>
+        </tr>
+        <tr>
+          <td>作業スピード</td>
+          <td class="center"><span class="badge-ok">圧倒的に速い</span></td>
+          <td class="center">やや時間がかかる</td>
+        </tr>
+        <tr>
+          <td>動画の最大長さ</td>
+          <td class="center">制限なし（プランによる）</td>
+          <td class="center"><span class="badge-tri">最大10分</span></td>
+        </tr>
+        <tr>
+          <td>料金</td>
+          <td class="center"><span class="badge-free">無料〜7,980円/月</span></td>
+          <td class="center">Workspace契約内（追加費用なし）</td>
+        </tr>
+        <tr>
+          <td>初心者でも使いやすい</td>
+          <td class="center"><span class="badge-ok">✅ はい</span></td>
+          <td class="center"><span class="badge-ok">Googleユーザーなら◎</span></td>
+        </tr>
+        <tr>
+          <td>チーム共有・共同編集</td>
+          <td class="center">△</td>
+          <td class="center"><span class="badge-ok">✅ 得意（Google連携）</span></td>
+        </tr>
+        <tr>
+          <td>商用利用</td>
+          <td class="center">✅（クレジット表記必要）</td>
+          <td class="center">✅（Workspace内）</td>
+        </tr>
+        <tr>
+          <td>縦型動画（ショート）</td>
+          <td class="center">✅（Standard以上）</td>
+          <td class="center"><span class="badge-ng">❌ 未対応</span></td>
+        </tr>
+        <tr>
+          <td>アバター機能</td>
+          <td class="center"><span class="badge-ok">✅ あり</span></td>
+          <td class="center"><span class="badge-ok">✅ あり</span></td>
+        </tr>
+        <tr>
+          <td>内蔵ストック素材</td>
+          <td class="center">△（AI生成画像）</td>
+          <td class="center"><span class="badge-ok">✅ 豊富（著作権フリー）</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== SECTION 4: PROS CONS ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">SECTION 04</span>
+    それぞれの強み・弱み
+  </div>
+
+  <div style="font-size:15px;font-weight:800;color:#2d1b69;margin-bottom:10px;">🎬 NoLang</div>
+  <div class="pros-cons">
+    <div class="pros">
+      <h5>✅ 強み（できること）</h5>
+      <ul>
+        <li>台本→動画がほぼ全自動</li>
+        <li>最短数十分で完成</li>
+        <li>日本語AIナレーション対応</li>
+        <li>PPTX・PDFを直接入力できる</li>
+        <li>無料から試せる</li>
+        <li>量産に向いている</li>
+        <li>初心者でも操作しやすい</li>
+        <li>ショート動画にも対応</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h5>⚠️ 弱み（注意点）</h5>
+      <ul>
+        <li>AIが生成する画像の品質にムラ</li>
+        <li>スライド差し替えは手動（枚数が多いと手間）</li>
+        <li>台本と画像のズレが起きることがある</li>
+        <li>内容のファクトチェックが必要</li>
+        <li>無料版は2週間後に動画消滅</li>
+        <li>商用利用にはクレジット表記が必要</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="font-size:15px;font-weight:800;color:#0f5132;margin-bottom:4px;">🎬 Google Vids</div>
+  <div style="background:#e8fff0;border:1px solid #00c853;border-radius:8px;padding:8px 14px;font-size:12px;color:#0a6640;font-weight:700;margin-bottom:10px;">
+    🆕 2026年2月24日アップデート：日本語AIナレーション・日本語AIアバターに正式対応！
+  </div>
+  <div class="pros-cons">
+    <div class="pros">
+      <h5>✅ 強み（できること）</h5>
+      <ul>
+        <li>既存スライドをそのまま活用</li>
+        <li>スライドのデザインを一切変えなくてよい</li>
+        <li>Googleドライブで管理・共有が楽</li>
+        <li>追加コストなし（Workspace内）</li>
+        <li>操作感がGoogleスライドと同じ</li>
+        <li>著作権フリー素材・BGMが豊富</li>
+        <li>チームでの共同編集に強い</li>
+        <li><strong>🆕 日本語AIナレーション対応（2026/2〜）</strong></li>
+        <li><strong>🆕 日本語AIアバター対応（2D・3Dも追加）</strong></li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h5>⚠️ 弱み（注意点）</h5>
+      <ul>
+        <li>最大10分の動画制限</li>
+        <li>PCのみ（スマホ不可）</li>
+        <li>縦型動画は未対応</li>
+        <li>Google Workspace契約が必要（個人はAI Pro以上）</li>
+        <li>AIアバターは週20回・1クリップ最大30秒まで</li>
+        <li>ロールアウト中のため使えない環境も（3月中に解消予定）</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 5: PERSONA ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">SECTION 05</span>
+    どんな人に何がおすすめ？
+  </div>
+
+  <!-- KEY DIFFERENCE BOX -->
+  <div style="background:#f8f0ff;border:2px solid #c4a0ff;border-radius:12px;padding:20px 24px;margin-bottom:24px;">
+    <div style="font-size:14px;font-weight:800;color:#5a00c9;margin-bottom:12px;">🔑 両ツールの本質的な違い（実際に触って判明）</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex-wrap:wrap;">
+      <div style="background:#fff;border-radius:10px;padding:14px 16px;border-left:4px solid #2d1b69;">
+        <div style="font-size:12px;font-weight:800;color:#2d1b69;margin-bottom:6px;">🎬 NoLang</div>
+        <div style="font-size:13px;color:#333;">ナレーション文章を <strong>AIが自動生成</strong><br>→ 台本さえ渡せば全部おまかせ</div>
+      </div>
+      <div style="background:#fff;border-radius:10px;padding:14px 16px;border-left:4px solid #0f5132;">
+        <div style="font-size:12px;font-weight:800;color:#0f5132;margin-bottom:6px;">🎬 Google Vids</div>
+        <div style="font-size:13px;color:#333;">ナレーション文章は <strong>自分で書く</strong><br>→ 書いた文章をAIが読み上げるだけ（TTS）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="persona-grid">
+    <div class="persona-card a">
+      <h4>タイプ A</h4>
+      <div>「全部AIに任せたい」派</div>
+      <div class="rec">→ NoLang 推奨</div>
+      <ul>
+        <li>ナレーション文章も考えてほしい</li>
+        <li>動画制作の経験がない</li>
+        <li>とにかく早く・楽に形にしたい</li>
+        <li>動画を量産したい</li>
+        <li>スライドの画像差し替えは許容できる</li>
+      </ul>
+    </div>
+    <div class="persona-card b">
+      <h4>タイプ B</h4>
+      <div>「内容は自分でコントロールしたい」派</div>
+      <div class="rec">→ Google Vids 推奨</div>
+      <ul>
+        <li>台本・ナレーション文章はすでに持っている</li>
+        <li>スライドのデザインをそのまま使いたい</li>
+        <li>声だけAIに任せたい（読み上げTTS）</li>
+        <li>Google Workspaceを使っている</li>
+        <li>チームで共有・管理したい</li>
+      </ul>
+    </div>
+    <div class="persona-card c">
+      <h4>タイプ C</h4>
+      <div>「スライドも使いつつ、文章もAIに」派</div>
+      <div class="rec">→ Vrew が有力候補</div>
+      <ul>
+        <li>スライドはそのまま使いたい</li>
+        <li>でもナレーション文章の生成もサポートほしい</li>
+        <li>日本語品質にこだわりたい</li>
+        <li>月額900円程度はOK</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Decision Tree -->
+  <div class="decision" style="margin-top:24px;">
+    <div style="font-size:14px;font-weight:800;color:#333;margin-bottom:18px;">🌳 ツール選定フローチャート</div>
+    <div class="d-tree-container">
+      <div class="d-tree">
+
+        <div class="d-node">
+          <div class="d-q-box">Q1. ナレーション文章を<br>AIに考えてほしいですか？</div>
+          <div style="margin-left:12px;">
+            <div class="d-branches">
+              <div class="d-branch-row">
+                <div class="d-choice">はい・全部AIに任せたい</div>
+                <div class="d-arrow-right">→</div>
+                <div class="d-result nl">NoLang ✅<br><span style="font-size:10px;">台本→全自動で動画生成</span></div>
+              </div>
+              <div class="d-branch-row">
+                <div class="d-choice">いいえ・自分で書く</div>
+                <div class="d-arrow-right">→</div>
+                <div style="font-size:13px;color:#555;">Q2へ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-node" style="padding-left:20px;">
+          <div class="d-q-box" style="background:#2d1b69;font-size:12px;">Q2. スライドはGoogleスライドで<br>作っていますか？</div>
+          <div style="margin-left:12px;">
+            <div class="d-branches">
+              <div class="d-branch-row">
+                <div class="d-choice">はい・Googleスライドを使っている</div>
+                <div class="d-arrow-right">→</div>
+                <div class="d-result gv">Google Vids ✅<br><span style="font-size:10px;">スライドそのまま＋AI読み上げ</span></div>
+              </div>
+              <div class="d-branch-row">
+                <div class="d-choice">いいえ・PPTXなど</div>
+                <div class="d-arrow-right">→</div>
+                <div style="font-size:13px;color:#555;">Q3へ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-node" style="padding-left:20px;">
+          <div class="d-q-box" style="background:#c96a00;font-size:12px;">Q3. スライドをそのまま使いつつ<br>AI読み上げも使いたいですか？</div>
+          <div style="margin-left:12px;">
+            <div class="d-branches">
+              <div class="d-branch-row">
+                <div class="d-choice">はい・両方ほしい</div>
+                <div class="d-arrow-right">→</div>
+                <div class="d-result vr">Vrew ✅<br><span style="font-size:10px;">月額900円〜・要慣れ</span></div>
+              </div>
+              <div class="d-branch-row">
+                <div class="d-choice">スライドを新たに作れる</div>
+                <div class="d-arrow-right">→</div>
+                <div class="d-result nl">NoLang でOK</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 6: PRICING ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">SECTION 06</span>
+    料金の目安
+  </div>
+
+  <div style="font-size:14px;font-weight:700;color:#2d1b69;margin-bottom:12px;">NoLang の料金プラン</div>
+  <div class="price-cards">
+    <div class="price-card free">
+      <div class="plan-name">無料プラン</div>
+      <div class="price">¥0 <span>/月</span></div>
+      <div class="desc">月約20本まで<br>透かし入り<br>2週間で動画消滅</div>
+    </div>
+    <div class="price-card mid">
+      <div class="plan-name">Standard</div>
+      <div class="price">¥2,980 <span>/月</span></div>
+      <div class="desc">月200本<br>透かしなし<br>縦型動画対応</div>
+    </div>
+    <div class="price-card pro">
+      <div class="plan-name">Premium</div>
+      <div class="price">¥7,980 <span>/月</span></div>
+      <div class="desc">月700本<br>アバター70本<br>法人向け機能</div>
+    </div>
+  </div>
+
+  <div class="alert tip" style="margin-top:8px;">
+    <div class="icon">💡</div>
+    <div>まずは<strong>無料プランで試してみる</strong>のがおすすめ。月20本以内の制作なら無料で十分です。年払いにすると約20%割引になります。</div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="font-size:14px;font-weight:700;color:#0f5132;margin-bottom:12px;">Google Vids の料金</div>
+  <div class="alert info">
+    <div class="icon">ℹ️</div>
+    <div>Google Workspace Business/Enterprise プランに含まれているため、<strong>すでにWorkspaceを契約していれば追加費用は0円</strong>。個人の場合はGoogle AI Pro（月額2,900円〜）が必要。</div>
+  </div>
+</div>
+
+<!-- ===== SECTION 7: THIRD OPTION ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="num">SECTION 07</span>
+    第3の選択肢：Vrew（ブリュー）
+  </div>
+
+  <div class="third">
+    <h4>🌟 Vrew とは？NoLang＋Google Vidsの「いいとこ取り」ツール</h4>
+    <p style="font-size:13px;color:#8a5500;">
+      韓国製の動画編集AIツール。台本入力・日本語AIナレーション・スライドインポートのすべてに対応しており、NoLangとGoogle Vidsの両方の弱点を補える可能性があります。
+    </p>
+    <div class="points">
+      <div class="point">✅ 日本語AIナレーション対応（200種類以上）</div>
+      <div class="point">✅ スライドのインポート可能</div>
+      <div class="point">✅ 台本からの動画生成OK</div>
+      <div class="point">✅ 月額900円〜と低コスト</div>
+      <div class="point">⚠️ 動画編集ソフト寄りで若干学習コスト高め</div>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;margin-top:16px;">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>比較項目</th>
+          <th class="nolang-th">NoLang</th>
+          <th class="vids-th">Google Vids</th>
+          <th style="background:#fd7e14;color:#fff;padding:12px 16px;font-size:13px;font-weight:700;text-align:center;">Vrew</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>日本語AIナレーション</td>
+          <td class="center"><span class="badge-ok">✅</span></td>
+          <td class="center"><span class="badge-ok">✅ 2026/2〜対応</span></td>
+          <td class="center"><span class="badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>スライドそのまま使える</td>
+          <td class="center">△（差し替え必要）</td>
+          <td class="center"><span class="badge-ok">✅</span></td>
+          <td class="center"><span class="badge-ok">✅</span></td>
+        </tr>
+        <tr>
+          <td>全自動で動画生成</td>
+          <td class="center"><span class="badge-ok">✅ 高い</span></td>
+          <td class="center">低い</td>
+          <td class="center">中程度</td>
+        </tr>
+        <tr>
+          <td>初心者のしやすさ</td>
+          <td class="center"><span class="badge-ok">◎</span></td>
+          <td class="center">○（Googleユーザー）</td>
+          <td class="center">△（慣れが必要）</td>
+        </tr>
+        <tr>
+          <td>月額料金</td>
+          <td class="center">無料〜7,980円</td>
+          <td class="center">Workspace内</td>
+          <td class="center"><span class="badge-free">900円〜</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== SECTION 8: SUMMARY ===== -->
+<div class="summary-card" style="max-width:900px;margin:30px auto;">
+  <h3>🎯 最終結論・提案まとめ</h3>
+  <div class="rec-box">
+    <div class="rec-title">① 「全部AIに任せたい」→ NoLang</div>
+    <div class="rec-text">台本テキストを入れると、AIがナレーション文章・画像・音声・字幕・BGMをすべて自動生成。ナレーション原稿を自分で考える必要がない。動画制作未経験でも最速で形になる。まず無料プランで試せる。</div>
+  </div>
+  <div class="rec-box">
+    <div class="rec-title">② 「内容は自分で書く、声だけAIに」→ Google Vids</div>
+    <div class="rec-text">台本・ナレーション文章はすでに持っている人向け。自分で書いたスクリプトをAIが日本語で読み上げてくれる（TTS）。既存のGoogleスライドをそのまま動画化できる。内容の質を自分でコントロールしたい人に最適。Workspace契約があれば追加費用なし。</div>
+  </div>
+  <div class="rec-box">
+    <div class="rec-title">③ 「スライドそのまま＋ナレーション生成サポートも」→ Vrew</div>
+    <div class="rec-text">スライドをインポートしつつ、ナレーション文章のAI生成サポートも受けられる可能性がある。月額900円〜。ただし操作に慣れが必要なため、まずNoLangかGoogle Vidsで試してみてから検討するのがおすすめ。</div>
+  </div>
+
+  <div style="margin-top:24px;background:rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;">
+    <div style="font-size:13px;font-weight:700;color:#e94560;margin-bottom:8px;">💬 選び方の一言まとめ</div>
+    <div style="font-size:13px;opacity:0.9;">
+      <strong>「ナレーション文章もAIに考えてほしい」→ NoLang</strong><br>
+      <strong>「ナレーション文章は自分で書く、読み上げだけAIに」→ Google Vids</strong><br><br>
+      どちらも無料で試せるので、まず両方さわって自分のワークフローに合う方を選ぶのが正解です。
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  <p>本レポートは 2026年3月5日時点の情報をもとに作成されています。各ツールの仕様・料金は変更される場合があります。</p>
+  <p style="margin-top:6px;">NoLang: <a href="https://no-lang.com/" style="color:#aaa;">https://no-lang.com/</a>　｜　Google Vids: <a href="https://workspace.google.com/intl/ja/products/vids/" style="color:#aaa;">https://workspace.google.com/intl/ja/products/vids/</a>　｜　Vrew: <a href="https://vrew.ai/ja/" style="color:#aaa;">https://vrew.ai/ja/</a></p>
+  <p style="margin-top:6px;">作成：おけもんの脳内 / Claude</p>
+</div>
+
+</body>
+</html>

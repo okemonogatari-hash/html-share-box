@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>短時間で最大成果を出す業務自動化術 図解</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f4efe8;
+      --bg-deep: #efe7dd;
+      --paper: rgba(255, 251, 246, 0.92);
+      --card: rgba(255, 255, 255, 0.82);
+      --ink: #20313b;
+      --muted: #61717c;
+      --line: rgba(32, 49, 59, 0.1);
+      --orange: #de6a34;
+      --orange-soft: #ffe1d3;
+      --green: #1f7a67;
+      --green-soft: #dcf3eb;
+      --navy: #31598b;
+      --navy-soft: #dfeafc;
+      --gold: #b9821f;
+      --gold-soft: #f9efce;
+      --rose: #ba5f73;
+      --rose-soft: #f8dde4;
+      --shadow: 0 24px 70px rgba(68, 50, 28, 0.12);
+      --soft-shadow: 0 10px 28px rgba(68, 50, 28, 0.07);
+    }
+
+    body {
+      font-family: "Avenir Next", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(222, 106, 52, 0.16), transparent 23%),
+        radial-gradient(circle at 86% 12%, rgba(31, 122, 103, 0.14), transparent 21%),
+        radial-gradient(circle at 78% 88%, rgba(49, 89, 139, 0.10), transparent 22%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+      line-height: 1.8;
+      padding: 28px 16px 64px;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      padding: 42px 34px 32px;
+      background:
+        linear-gradient(135deg, rgba(255, 251, 246, 0.98), rgba(249, 242, 233, 0.96));
+      border: 1px solid rgba(222, 106, 52, 0.12);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 260px;
+      height: 260px;
+      right: -80px;
+      top: -90px;
+      background: radial-gradient(circle, rgba(222, 106, 52, 0.20), rgba(222, 106, 52, 0.02) 72%);
+    }
+
+    .hero::after {
+      width: 240px;
+      height: 240px;
+      left: -60px;
+      bottom: -120px;
+      background: radial-gradient(circle, rgba(31, 122, 103, 0.18), rgba(31, 122, 103, 0.01) 72%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      background: var(--orange-soft);
+      color: var(--orange);
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      max-width: 900px;
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+    }
+
+    .lead {
+      max-width: 840px;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .glass {
+      position: relative;
+      border-radius: 24px;
+      padding: 22px 20px;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+    }
+
+    .glass h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .glass p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .hero-point {
+      border-radius: 18px;
+      padding: 14px 12px;
+      background: #fffdfa;
+      border: 1px solid var(--line);
+    }
+
+    .hero-point .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .hero-point .value {
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .quote {
+      border-radius: 22px;
+      padding: 18px;
+      background: linear-gradient(180deg, #f5fbf8 0%, #fffdfa 100%);
+      border: 1px solid rgba(31, 122, 103, 0.14);
+      margin-top: 14px;
+    }
+
+    .quote strong {
+      color: var(--green);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .section {
+      border-radius: 28px;
+      padding: 28px 24px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--soft-shadow);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 30px;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .panel {
+      border-radius: 24px;
+      padding: 22px 20px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+    }
+
+    .panel.bad {
+      background: linear-gradient(180deg, #fff8f4 0%, #fffdfa 100%);
+      border-color: rgba(222, 106, 52, 0.16);
+    }
+
+    .panel.good {
+      background: linear-gradient(180deg, #f5fbf8 0%, #fffdfa 100%);
+      border-color: rgba(31, 122, 103, 0.16);
+    }
+
+    .tag {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .bad .tag {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .good .tag {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .panel h3 {
+      font-size: 22px;
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .panel p {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .stack-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px dashed var(--line);
+      font-size: 14px;
+    }
+
+    .dot {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .bad .dot {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .good .dot {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .mode-card {
+      border-radius: 24px;
+      padding: 22px 20px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+    }
+
+    .mode-card h3 {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .mode-card p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .cell {
+      background: linear-gradient(180deg, #fff9f4 0%, #fffdfa 100%);
+      border-color: rgba(222, 106, 52, 0.16);
+    }
+
+    .belt {
+      background: linear-gradient(180deg, #f4f9ff 0%, #fffdfa 100%);
+      border-color: rgba(49, 89, 139, 0.16);
+    }
+
+    .lane {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .chip {
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .flow-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .flow-box,
+    .flow-arrow {
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .flow-box {
+      background: #fffdfa;
+      border: 1px solid var(--line);
+      min-width: 92px;
+      text-align: center;
+    }
+
+    .flow-arrow {
+      color: var(--muted);
+      padding: 0;
+      font-size: 20px;
+    }
+
+    .tri-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .tri-card {
+      border-radius: 22px;
+      padding: 22px 18px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+      min-height: 100%;
+    }
+
+    .tri-card.a {
+      background: linear-gradient(180deg, #fff6f1 0%, #fffdfa 100%);
+      border-color: rgba(222, 106, 52, 0.16);
+    }
+
+    .tri-card.b {
+      background: linear-gradient(180deg, #f5fbf8 0%, #fffdfa 100%);
+      border-color: rgba(31, 122, 103, 0.16);
+    }
+
+    .tri-card.c {
+      background: linear-gradient(180deg, #f4f8ff 0%, #fffdfa 100%);
+      border-color: rgba(49, 89, 139, 0.16);
+    }
+
+    .tri-card .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .tri-card.a .badge {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .tri-card.b .badge {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .tri-card.c .badge {
+      background: var(--navy-soft);
+      color: var(--navy);
+    }
+
+    .tri-card h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .tri-card p {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .bullet-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bullet {
+      border-radius: 15px;
+      padding: 11px 12px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid var(--line);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .plan-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+    }
+
+    .case-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .case-col {
+      border-radius: 20px;
+      padding: 18px 16px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+    }
+
+    .case-col h3 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .case-col.pick {
+      background: linear-gradient(180deg, #f4f8ff 0%, #fffdfa 100%);
+      border-color: rgba(49, 89, 139, 0.16);
+    }
+
+    .case-col.pack {
+      background: linear-gradient(180deg, #f5fbf8 0%, #fffdfa 100%);
+      border-color: rgba(31, 122, 103, 0.16);
+    }
+
+    .case-col.ship {
+      background: linear-gradient(180deg, #fff9f1 0%, #fffdfa 100%);
+      border-color: rgba(185, 130, 31, 0.18);
+    }
+
+    .case-col .mini {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .case-col .role {
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid var(--line);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .funnel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .funnel-step {
+      position: relative;
+      border-radius: 18px;
+      padding: 16px 16px 16px 18px;
+      background: #fffdfa;
+      border: 1px solid var(--line);
+    }
+
+    .funnel-step strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .funnel-step p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .funnel-step::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      border-radius: 18px 0 0 18px;
+      background: linear-gradient(180deg, var(--orange), var(--green));
+    }
+
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .loop-card {
+      border-radius: 20px;
+      padding: 18px 14px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+      text-align: center;
+    }
+
+    .loop-card .num {
+      width: 38px;
+      height: 38px;
+      margin: 0 auto 10px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 16px;
+      background: var(--navy-soft);
+      color: var(--navy);
+    }
+
+    .loop-card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .loop-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .manager-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 18px;
+    }
+
+    .mindset {
+      border-radius: 24px;
+      padding: 22px 20px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+    }
+
+    .mindset.old {
+      background: linear-gradient(180deg, #fff7f2 0%, #fffdfa 100%);
+      border-color: rgba(186, 95, 115, 0.18);
+    }
+
+    .mindset.new {
+      background: linear-gradient(180deg, #f4f9ff 0%, #fffdfa 100%);
+      border-color: rgba(49, 89, 139, 0.18);
+    }
+
+    .mindset h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .matrix-card {
+      border-radius: 16px;
+      padding: 14px 12px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid var(--line);
+    }
+
+    .matrix-card strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .matrix-card span {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+
+    .road {
+      border-radius: 18px;
+      padding: 16px 14px;
+      background: #fffdfa;
+      border: 1px solid var(--line);
+      position: relative;
+    }
+
+    .road strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .road span {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .road::after {
+      content: "→";
+      position: absolute;
+      right: -10px;
+      top: 18px;
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .road:last-child::after {
+      display: none;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .plan-grid,
+      .manager-grid,
+      .compare,
+      .mode-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tri-grid,
+      .case-board,
+      .roadmap,
+      .loop {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .matrix {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 18px 12px 40px;
+      }
+
+      .hero,
+      .section {
+        padding: 22px 16px;
+        border-radius: 24px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .hero-points,
+      .tri-grid,
+      .case-board,
+      .roadmap,
+      .matrix,
+      .loop {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .flow-arrow {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">BUSINESS AUTOMATION VISUAL GUIDE</div>
+      <h1>短時間で最大成果を出す業務の自動化術</h1>
+      <p class="lead">
+        この動画の本質は、<strong>人を変えようとせず、仕事を分解して、判断基準を言語化し、得意な人に再配置する</strong>こと。
+        属人化した現場を「少人数でも回る仕組み」に変えるための考え方を、直感で掴めるように1枚にまとめた図解です。
+      </p>
+
+      <div class="hero-grid">
+        <div class="glass">
+          <h2>結論をひと言でいうと</h2>
+          <p>「自分がやった方が早い」を卒業して、ベテランの頭の中にある判断を分解・可視化・仕組み化する。すると未経験者でも部分戦力になり、少人数・短時間・高品質が同時に成立する。</p>
+          <div class="hero-points">
+            <div class="hero-point">
+              <div class="label">STEP 1</div>
+              <div class="value">仕事を工程ごとに細かく分解する</div>
+            </div>
+            <div class="hero-point">
+              <div class="label">STEP 2</div>
+              <div class="value">判断基準を言語化してマニュアル化する</div>
+            </div>
+            <div class="hero-point">
+              <div class="label">STEP 3</div>
+              <div class="value">適材適所で再配置し、自動で回る形にする</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass">
+          <h2>この図解で見えること</h2>
+          <p>失敗パターン、セル方式とベルトコンベア方式の違い、A/B/C業務分類、物流の実例、仕組み化ループ、マネージャーの着眼点までを順番に整理しています。</p>
+          <div class="quote">
+            <strong>中核メッセージ</strong>
+            「ケースバイケース」は、聞き出していくと判断基準に変えられる。判断基準に変えられれば、仕組みにできる。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">1. まず何が問題だったのか</h2>
+      <p class="section-sub">忙しい現場が崩れるときは、人手不足よりも「業務が1人の頭と手にくっついていること」が根本原因になりやすい。</p>
+      <div class="compare">
+        <div class="panel bad">
+          <div class="tag">BEFORE</div>
+          <h3>自分が抱え込む現場</h3>
+          <p>チームはあるのに、結局「自分がやった方が早い」。その結果、判断も作業も属人化して、繁忙期に一気にパンクする。</p>
+          <div class="stack">
+            <div class="stack-item"><div class="dot">1</div><div>仕事を丸ごと1人で処理しているので、代替がきかない</div></div>
+            <div class="stack-item"><div class="dot">2</div><div>新人はどこでつまずくのかが見えておらず、教育が長い</div></div>
+            <div class="stack-item"><div class="dot">3</div><div>ベテランは「経験で判断している」ため、引き継げないように見える</div></div>
+            <div class="stack-item"><div class="dot">4</div><div>忙しくなるほど、マニュアル化や改善が後回しになる</div></div>
+          </div>
+        </div>
+
+        <div class="panel good">
+          <div class="tag">AFTER</div>
+          <h3>仕組みで回る現場</h3>
+          <p>仕事を工程ごとに分け、必要能力ごとに再配置し、判断基準を仕組みに落とす。すると未経験者もすぐ部分戦力になれる。</p>
+          <div class="stack">
+            <div class="stack-item"><div class="dot">1</div><div>ベテランは難所だけ担当し、単純工程は別メンバーへ分離</div></div>
+            <div class="stack-item"><div class="dot">2</div><div>採用要件が「全部できる人」から「この工程が得意な人」に変わる</div></div>
+            <div class="stack-item"><div class="dot">3</div><div>教育対象が狭くなり、立ち上がりが早くなる</div></div>
+            <div class="stack-item"><div class="dot">4</div><div>人ではなく仕組みを改善するので、再現性が高い</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">2. 業務の進め方は大きく2種類</h2>
+      <p class="section-sub">動画で紹介されていた核になる対比。日常はセル方式、繁忙期はベルトコンベア方式に切り替える発想が重要です。</p>
+      <div class="mode-grid">
+        <div class="mode-card cell">
+          <h3>セル方式</h3>
+          <p>1人が最初から最後まで全部やる。裁量は大きいが、育成に時間がかかり、1工程でも苦手があると全体品質に影響する。</p>
+          <div class="lane">
+            <div class="chip">A工程</div>
+            <div class="chip">B工程</div>
+            <div class="chip">C工程</div>
+            <div class="chip">D工程</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box">1人の担当者</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">全部処理</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">完成</div>
+          </div>
+          <div class="bullet-list" style="margin-top:14px;">
+            <div class="bullet">向いている場面: 少量・高裁量・熟練者中心の運用</div>
+            <div class="bullet">強み: モチベーション、責任感、工夫が生まれやすい</div>
+            <div class="bullet">弱み: 戦力化が遅い、属人化しやすい、繁忙期に弱い</div>
+          </div>
+        </div>
+
+        <div class="mode-card belt">
+          <h3>ベルトコンベア方式</h3>
+          <p>工程ごとに切り分け、必要スキルに応じて人を配置する。教育範囲が狭いので、未経験者でも早く戦力になれる。</p>
+          <div class="flow-row">
+            <div class="flow-box">A担当</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">B担当</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">C担当</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">D担当</div>
+          </div>
+          <div class="bullet-list" style="margin-top:14px;">
+            <div class="bullet">向いている場面: 繁忙期・大量処理・短期戦力化が必要な現場</div>
+            <div class="bullet">強み: 教育コスト低下、採用しやすい、適材適所にしやすい</div>
+            <div class="bullet">弱み: 設計が雑だと受け渡しで詰まる。上流設計が命</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">3. すべての仕事を A / B / C に分ける</h2>
+      <p class="section-sub">「誰に任せるか」を感覚で決めないための分類法。ここが仕組み化の出発点です。</p>
+      <div class="tri-grid">
+        <article class="tri-card a">
+          <div class="badge">A</div>
+          <h3>得意不得意がはっきり出る仕事</h3>
+          <p>センス、適性、素質、経験差が結果に直結する仕事。文章力、クリエイティブ、アドリブ会話、交渉などが代表例。</p>
+          <div class="bullet-list">
+            <div class="bullet">採用基準: これさえ強ければよい、で採る</div>
+            <div class="bullet">NG発想: 明るい・元気など周辺要素で選んでしまうこと</div>
+            <div class="bullet">配置の原則: オールラウンダーを探すより尖った強みを使う</div>
+          </div>
+        </article>
+
+        <article class="tri-card b">
+          <div class="badge">B</div>
+          <h3>入社してすぐできる仕事</h3>
+          <p>覚えていなくてもできる、センスがなくてもできる、比較的単純な作業。未経験者の入口にする仕事。</p>
+          <div class="bullet-list">
+            <div class="bullet">採用の役割: まずここで雇い、早期に戦力化する</div>
+            <div class="bullet">教育の役割: 仕事の流れを体感してもらう導線になる</div>
+            <div class="bullet">重要視点: 今の必要人数ではなく、将来Cに送る母集団として考える</div>
+          </div>
+        </article>
+
+        <article class="tri-card c">
+          <div class="badge">C</div>
+          <h3>流れや目的の理解が必要な仕事</h3>
+          <p>単純作業ではないが、Aほど強い才能依存でもない仕事。現場理解や判断経験があると担える領域。</p>
+          <div class="bullet-list">
+            <div class="bullet">人材の作り方: Bから一定期間かけて昇格させる</div>
+            <div class="bullet">人数設計: 1年後に必要なC人材の数から逆算する</div>
+            <div class="bullet">組織設計: BはCの予備軍と捉える</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">4. 動画の物流事例を図で理解する</h2>
+      <p class="section-sub">カニ・メロンのEC物流では、通常期はセル方式でも、12月の繁忙期には同じやり方では詰まる。だから工程別に分け直す。</p>
+      <div class="plan-grid">
+        <div class="case-board">
+          <div class="case-col pick">
+            <h3>1. ピッキング</h3>
+            <div class="mini">どれが毛ガニか、ズワイガニか、重量違いかを見分ける必要がある</div>
+            <div class="role">分類: C</div>
+            <div class="role">向いている人: ベテラン / 商品知識がある人</div>
+            <div class="role">繁忙期の配置: セル方式担当者をここへ集約</div>
+          </div>
+          <div class="case-col pack">
+            <h3>2. 梱包と送り状</h3>
+            <div class="mini">箱詰め、梱包、ラベル貼りなど、手順化しやすい工程</div>
+            <div class="role">分類: B</div>
+            <div class="role">向いている人: アルバイト / 派遣 / 新人</div>
+            <div class="role">繁忙期の配置: 大量投入して処理量を確保</div>
+          </div>
+          <div class="case-col ship">
+            <h3>3. 出荷棚へ運ぶ</h3>
+            <div class="mini">力仕事の要素が強く、身体条件や得手不得手が出やすい</div>
+            <div class="role">分類: A</div>
+            <div class="role">向いている人: 体力がある人</div>
+            <div class="role">繁忙期の配置: 特性に合う人を集中投入</div>
+          </div>
+        </div>
+
+        <div class="funnel">
+          <div class="funnel-step">
+            <strong>通常期</strong>
+            <p>ベテランが1人で一連の工程を回しても成立する。</p>
+          </div>
+          <div class="funnel-step">
+            <strong>繁忙期突入</strong>
+            <p>注文量が数倍になり、丸ごと担当のやり方では新人が立ち尽くす。</p>
+          </div>
+          <div class="funnel-step">
+            <strong>工程分解</strong>
+            <p>「見分ける」「詰める」「運ぶ」に分けて、必要能力を整理する。</p>
+          </div>
+          <div class="funnel-step">
+            <strong>再配置</strong>
+            <p>ベテランは難しい工程だけ、新人はすぐできる工程だけ担当する。</p>
+          </div>
+          <div class="funnel-step">
+            <strong>結果</strong>
+            <p>人を増やすだけではなく、流れを変えることで処理量が上がる。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">5. 「ケースバイケース」を仕組みに変えるループ</h2>
+      <p class="section-sub">ベテランの頭の中はブラックボックスではなく、掘ると判断基準の集まりであることが多い。だからヒアリングして構造化する。</p>
+      <div class="loop">
+        <div class="loop-card">
+          <div class="num">1</div>
+          <h3>観察</h3>
+          <p>成果を出す人が、どの場面で何を見ているかを具体的に追う。</p>
+        </div>
+        <div class="loop-card">
+          <div class="num">2</div>
+          <h3>深掘り</h3>
+          <p>「この場合は?」「なぜ?」を繰り返し、判断条件を言葉にする。</p>
+        </div>
+        <div class="loop-card">
+          <div class="num">3</div>
+          <h3>構造化</h3>
+          <p>パターンをまとめ、分岐条件や優先順位として整理する。</p>
+        </div>
+        <div class="loop-card">
+          <div class="num">4</div>
+          <h3>実装</h3>
+          <p>マニュアル、Excel、チェックリスト、自動判定ルールに落とす。</p>
+        </div>
+        <div class="loop-card">
+          <div class="num">5</div>
+          <h3>改善</h3>
+          <p>現場との差分を回収し、マニュアルと仕組みを更新し続ける。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">6. Webマーケティング事例の本質</h2>
+      <p class="section-sub">毎日約1500本の広告を8人で回せるのは、人が超人的だからではなく、最上位プレイヤーの判断が自動ロジックに変換されているから。</p>
+      <div class="compare">
+        <div class="panel good">
+          <div class="tag">SUCCESS PATTERN</div>
+          <h3>成果を出す人の判断を抽出する</h3>
+          <p>「どういう状況なら、どう調整するか」を俯瞰的に言語化し、自動判定に落とし込む。重要なのは、上手い人の感覚を再現可能な条件式に変えること。</p>
+          <div class="bullet-list">
+            <div class="bullet">誰を観察するか: 最も成果を出しているプレイヤー</div>
+            <div class="bullet">何を聞くか: いつ / 何を見て / なぜ / どう変えるか</div>
+            <div class="bullet">どこに落とすか: マニュアル、運用ルール、自動化ロジック</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="tag" style="background:var(--gold-soft); color:var(--gold);">IMPORTANT</div>
+          <h3>上流設計には時間をかける</h3>
+          <p>動画では、仕組み化の初期設計はかなり時間をかけると語られていました。ここを急ぐと、現場では回らない中途半端な自動化になる。</p>
+          <div class="bullet-list">
+            <div class="bullet">複数人にヒアリングして、最適フローを整える</div>
+            <div class="bullet">仕組みと実運用を両方試し、差分を拾って改善する</div>
+            <div class="bullet">一度作って終わりではなく、現場で育てる前提を持つ</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">7. マネージャーが持つべき視点</h2>
+      <p class="section-sub">この動画の強いメッセージは、「人を変える」ことを期待しすぎないこと。期待するべきは、仕事の設計を変える力です。</p>
+      <div class="manager-grid">
+        <div class="mindset old">
+          <h3>ありがちな誤解</h3>
+          <div class="bullet-list">
+            <div class="bullet">部下の能力が低いから進まない</div>
+            <div class="bullet">もっと頑張れば全部できるようになるはず</div>
+            <div class="bullet">育成が進めば、今のやり方のままで回るはず</div>
+          </div>
+        </div>
+        <div class="mindset new">
+          <h3>あるべき見方</h3>
+          <div class="bullet-list">
+            <div class="bullet">人は急には変わらない。だから仕組みを先に変える</div>
+            <div class="bullet">業務を分解すると、今いるメンバーの強みだけで回せることがある</div>
+            <div class="bullet">マネージャーの優先能力は、実務力より仕組み化力である</div>
+          </div>
+
+          <div class="matrix">
+            <div class="matrix-card">
+              <strong>交渉</strong>
+              <span>媒体社との商談など、人と話す力が要る仕事</span>
+            </div>
+            <div class="matrix-card">
+              <strong>広告作成</strong>
+              <span>反応の良い原稿を作る、創造性が要る仕事</span>
+            </div>
+            <div class="matrix-card">
+              <strong>事務処理</strong>
+              <span>応募者の振り分けなど、正確性が要る仕事</span>
+            </div>
+            <div class="matrix-card">
+              <strong>見極め</strong>
+              <span>面接など、経験知が必要な仕事</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">8. 実践ロードマップ</h2>
+      <p class="section-sub">この動画内容を現場に落とすなら、この順番が一番やりやすいです。大事なのは「全部自動化」ではなく「詰まりやすい工程から再設計」すること。</p>
+      <div class="roadmap">
+        <div class="road">
+          <strong>1. 洗い出す</strong>
+          <span>自分とチームの仕事を、工程単位で全部書き出す。</span>
+        </div>
+        <div class="road">
+          <strong>2. 分類する</strong>
+          <span>A/B/Cのどれかに振り分け、必要能力を明確にする。</span>
+        </div>
+        <div class="road">
+          <strong>3. 詰まりを特定</strong>
+          <span>繁忙期に止まる場所、ベテランしかできない場所を見つける。</span>
+        </div>
+        <div class="road">
+          <strong>4. 聞き出す</strong>
+          <span>成果を出す人の判断基準を具体例ベースでヒアリングする。</span>
+        </div>
+        <div class="road">
+          <strong>5. 仕組みにする</strong>
+          <span>マニュアル、テンプレ、Excel、チェック表、自動化に落とす。</span>
+        </div>
+        <div class="road">
+          <strong>6. 差分改善</strong>
+          <span>実運用との差を回収し、ルールを磨き続ける。</span>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">
+      制作意図: 動画の主張を「感覚論」ではなく、現場でそのまま使える業務設計の型として一目で理解できるよう再構成
+    </p>
+  </div>
+</body>
+</html>

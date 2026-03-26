@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NotebookLM 完全ガイド 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+    background: #0d0d1a;
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  .slideshow { width: 100%; height: 100vh; position: relative; }
+
+  .slide {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0; left: 0;
+    padding: 48px 72px 80px;
+    flex-direction: column;
+    justify-content: center;
+    animation: fadeIn 0.35s ease;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── backgrounds ─── */
+  .bg-dark   { background: linear-gradient(135deg, #0d0d1a 0%, #141428 100%); }
+  .bg-hero   { background: linear-gradient(135deg, #0d0d1a 0%, #0f2040 60%, #0a3060 100%); }
+  .bg-green  { background: linear-gradient(135deg, #0d0d1a 0%, #0d2a1a 100%); }
+  .bg-purple { background: linear-gradient(135deg, #0d0d1a 0%, #1a0d2a 100%); }
+
+  /* ─── section label ─── */
+  .label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #4facfe;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  /* ─── headings ─── */
+  h1 { font-size: 3.6rem; font-weight: 900; line-height: 1.15; }
+  h2 { font-size: 2.2rem; font-weight: 900; line-height: 1.3; margin-bottom: 28px; }
+  .accent  { color: #4facfe; }
+  .accent2 { color: #68d391; }
+  .accent3 { color: #f6ad55; }
+
+  .google-badge {
+    background: linear-gradient(90deg, #4285F4, #34A853, #FBBC05, #EA4335);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1rem; font-weight: 800; letter-spacing: 3px; margin-bottom: 18px;
+  }
+
+  /* ─── rank badge ─── */
+  .rank {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    color: #0d0d1a; font-weight: 900; font-size: 0.95rem;
+    padding: 5px 18px; border-radius: 50px; margin-bottom: 18px;
+  }
+
+  /* ─── highlight box ─── */
+  .hbox {
+    background: linear-gradient(135deg, rgba(79,172,254,.12), rgba(0,242,254,.06));
+    border: 1px solid rgba(79,172,254,.35);
+    border-radius: 14px; padding: 20px 28px; margin-bottom: 22px;
+  }
+  .hbox .big { font-size: 1.4rem; font-weight: 700; color: #4facfe; margin-bottom: 6px; }
+  .hbox p   { font-size: 0.92rem; color: #cbd5e0; line-height: 1.7; }
+
+  .hbox-green {
+    background: linear-gradient(135deg, rgba(104,211,145,.12), rgba(72,187,120,.06));
+    border: 1px solid rgba(104,211,145,.35);
+  }
+  .hbox-green .big { color: #68d391; }
+
+  .hbox-orange {
+    background: linear-gradient(135deg, rgba(246,173,85,.12), rgba(237,137,54,.06));
+    border: 1px solid rgba(246,173,85,.35);
+  }
+  .hbox-orange .big { color: #f6ad55; }
+
+  /* ─── cards ─── */
+  .card {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 14px; padding: 18px 22px;
+    display: flex; align-items: flex-start; gap: 14px;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: rgba(79,172,254,.4); }
+  .card .ico { font-size: 2rem; flex-shrink: 0; width: 44px; text-align: center; }
+  .card h3 { font-size: 0.98rem; font-weight: 700; margin-bottom: 4px; }
+  .card p  { font-size: 0.82rem; color: #a0aec0; line-height: 1.55; }
+
+  /* ─── grids ─── */
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+
+  /* ─── step list ─── */
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+  .step  { display: flex; align-items: flex-start; gap: 14px; }
+  .step .num {
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: #0d0d1a; font-weight: 900; font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 3px; }
+  .step p  { font-size: 0.82rem; color: #a0aec0; line-height: 1.5; }
+
+  /* ─── tags ─── */
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .tag {
+    background: rgba(79,172,254,.15);
+    border: 1px solid rgba(79,172,254,.35);
+    color: #4facfe; padding: 5px 14px;
+    border-radius: 50px; font-size: 0.8rem; font-weight: 600;
+  }
+  .tag-g { background: rgba(104,211,145,.15); border-color: rgba(104,211,145,.35); color: #68d391; }
+  .tag-o { background: rgba(246,173,85,.15); border-color: rgba(246,173,85,.35); color: #f6ad55; }
+
+  /* ─── plan table ─── */
+  .plan-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  }
+  .plan-card {
+    border-radius: 14px; padding: 20px 16px; text-align: center;
+    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.04);
+  }
+  .plan-card.highlight {
+    background: linear-gradient(135deg, rgba(79,172,254,.18), rgba(0,242,254,.08));
+    border-color: rgba(79,172,254,.5);
+  }
+  .plan-card .pname { font-size: 0.85rem; font-weight: 700; color: #a0aec0; margin-bottom: 6px; }
+  .plan-card .pprice { font-size: 1.5rem; font-weight: 900; margin-bottom: 10px; }
+  .plan-card .prow { font-size: 0.78rem; color: #718096; margin-bottom: 4px; }
+  .plan-card .pval { font-size: 0.88rem; font-weight: 700; color: #e2e8f0; margin-bottom: 8px; }
+
+  /* ─── studio icons grid ─── */
+  .studio-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  }
+  .studio-item {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px; padding: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .studio-item .sico { font-size: 1.8rem; flex-shrink: 0; }
+  .studio-item h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 3px; }
+  .studio-item p  { font-size: 0.75rem; color: #a0aec0; line-height: 1.4; }
+  .studio-item.star { border-color: rgba(79,172,254,.5); background: rgba(79,172,254,.08); }
+
+  /* ─── vs box ─── */
+  .vs { display: flex; flex-direction: column; gap: 8px; }
+  .vs-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 10px; padding: 12px 16px;
+  }
+  .vs-label { font-size: 0.7rem; color: #718096; font-weight: 700; letter-spacing: 1px; min-width: 48px; padding-top: 2px; }
+  .vs-bad  { color: #fc8181; font-size: 0.88rem; }
+  .vs-good { color: #68d391; font-size: 0.88rem; font-weight: 600; }
+
+  /* ─── summary ─── */
+  .sum-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+  .sum-item {
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px; padding: 14px; text-align: center;
+  }
+  .sum-item .snum { font-size: 0.7rem; color: #4facfe; font-weight: 700; margin-bottom: 4px; }
+  .sum-item .semi { font-size: 1.5rem; margin-bottom: 4px; }
+  .sum-item .slbl { font-size: 0.78rem; color: #e2e8f0; font-weight: 600; line-height: 1.3; }
+
+  /* ─── nav ─── */
+  .nav {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: 14px; z-index: 100;
+  }
+  .nav button {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    color: #fff; padding: 9px 22px; border-radius: 50px;
+    font-size: 0.88rem; cursor: pointer;
+    backdrop-filter: blur(12px); transition: all .2s;
+  }
+  .nav button:hover { background: rgba(79,172,254,.3); border-color: #4facfe; }
+  .nav button:disabled { opacity: .3; cursor: default; }
+  .nav .pager { color: #718096; font-size: 0.88rem; min-width: 56px; text-align: center; }
+
+  .progress {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    transition: width .3s ease; z-index: 200;
+  }
+  .key-hint { position: fixed; bottom: 28px; right: 28px; font-size: 0.72rem; color: #4a5568; }
+
+  /* ─── title slide ─── */
+  .title-content { text-align: center; }
+  .title-content h1 { margin-bottom: 14px; }
+  .title-content .sub { font-size: 1.1rem; color: #a0aec0; margin-bottom: 32px; }
+  .title-content .pill {
+    display: inline-block;
+    background: rgba(79,172,254,.15); border: 1px solid rgba(79,172,254,.4);
+    border-radius: 50px; padding: 10px 28px;
+    font-size: 1.2rem; font-weight: 700;
+  }
+  .new-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #f6ad55, #ed8936);
+    color: #0d0d1a; font-size: 0.8rem; font-weight: 800;
+    padding: 3px 10px; border-radius: 6px; margin-left: 10px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+<div class="slideshow">
+
+<!-- ===== 1. タイトル ===== -->
+<div class="slide bg-hero active">
+  <div class="title-content">
+    <div class="google-badge">GOOGLE AI — 2026 最新版</div>
+    <h1>NotebookLM<br><span class="accent">完全ガイド</span></h1>
+    <p class="sub">使い方 / 全機能 / 活用法 TOP7 を一気に解説</p>
+    <div class="pill">📚 情報は整理するな、<strong>放り込め</strong></div>
+  </div>
+</div>
+
+<!-- ===== 2. NotebookLMとは ===== -->
+<div class="slide bg-dark">
+  <div class="label">WHAT IS NOTEBOOKLM</div>
+  <h2>NotebookLMって<span class="accent">何がすごい？</span></h2>
+
+  <div class="hbox" style="margin-bottom:18px;">
+    <div class="big">「嘘をつかないAI」＝ ソース限定型リサーチAI</div>
+    <p>ChatGPT・Geminiは世界中の学習データ＋ネット情報からアウトプット。<br>
+    NotebookLMは<strong>自分が指定したソースだけ</strong>を参照 → ハルシネーション（AI の嘘）を最小化</p>
+  </div>
+
+  <div class="g2">
+    <div class="card"><div class="ico">📥</div><div><h3>ソース（左パネル）</h3><p>PDF・画像・音声・YouTube・URL・Googleドライブ…何でも放り込める</p></div></div>
+    <div class="card"><div class="ico">💬</div><div><h3>チャット（中央）</h3><p>入れた情報に対してLINE感覚で自由に質問。参照元の番号も表示</p></div></div>
+    <div class="card"><div class="ico">🎨</div><div><h3>スタジオ（右パネル）</h3><p>音声・動画・スライド・図解など9種類のアウトプットをワンクリックで生成</p></div></div>
+    <div class="card"><div class="ico">💰</div><div><h3>基本無料 / 4プラン</h3><p>無料でも十分使える。Plus月¥1,200〜 まずは無料から始めよう</p></div></div>
+  </div>
+</div>
+
+<!-- ===== 3. 料金プラン ===== -->
+<div class="slide bg-dark">
+  <div class="label">PRICING</div>
+  <h2>料金プラン<span class="accent"> 比較</span></h2>
+
+  <div class="plan-grid" style="margin-bottom:20px;">
+    <div class="plan-card">
+      <div class="pname">無料版</div>
+      <div class="pprice">¥0</div>
+      <div class="prow">ノート数</div><div class="pval">100個</div>
+      <div class="prow">1日のスライド生成</div><div class="pval">制限あり</div>
+      <div class="prow">ソース数/ノート</div><div class="pval">50個</div>
+      <div class="prow">音声・動画/日</div><div class="pval">3回</div>
+    </div>
+    <div class="plan-card highlight">
+      <div class="pname">Google AI Plus</div>
+      <div class="pprice" style="color:#4facfe;">¥1,200<span style="font-size:.7rem;font-weight:400;">/月</span></div>
+      <div class="prow">ノート数</div><div class="pval">200個</div>
+      <div class="prow">1日のスライド生成</div><div class="pval">約50枚</div>
+      <div class="prow">ソース数/ノート</div><div class="pval">100個</div>
+      <div class="prow">音声・動画/日</div><div class="pval">増加</div>
+    </div>
+    <div class="plan-card">
+      <div class="pname">Google AI Pro</div>
+      <div class="pprice" style="color:#68d391;">¥2,900<span style="font-size:.7rem;font-weight:400;">/月</span></div>
+      <div class="prow">ノート数</div><div class="pval">500個</div>
+      <div class="prow">1日のスライド生成</div><div class="pval">さらに増加</div>
+      <div class="prow">ソース数/ノート</div><div class="pval">300個</div>
+      <div class="prow">音声・動画/日</div><div class="pval">さらに増加</div>
+    </div>
+    <div class="plan-card">
+      <div class="pname">Google AI Ultra</div>
+      <div class="pprice" style="color:#f6ad55;">¥36,400<span style="font-size:.7rem;font-weight:400;">/月</span></div>
+      <div class="prow">ノート数</div><div class="pval">500個</div>
+      <div class="prow">1日のスライド生成</div><div class="pval">最大</div>
+      <div class="prow">ソース数/ノート</div><div class="pval">600個</div>
+      <div class="prow">音声・動画/日</div><div class="pval">最大</div>
+    </div>
+  </div>
+
+  <div class="hbox-green hbox">
+    <div class="big">まず無料版でOK！</div>
+    <p>1日50チャット・音声/動画3回・ソース50個。普段使いには十分。<br>
+    スライドや音声をガンガン生成したくなったら <strong>Plus（¥1,200）</strong>を検討しよう。</p>
+  </div>
+</div>
+
+<!-- ===== 4. ソース追加方法 ===== -->
+<div class="slide bg-dark">
+  <div class="label">HOW TO USE — SOURCES</div>
+  <h2>ソースの<span class="accent">追加方法</span></h2>
+
+  <div class="g2" style="margin-bottom:18px;">
+    <div>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div><h4>ノートブックを新規作成</h4><p>画面上部の「新規作成」から。テーマ別にノートを分けておくのが◎</p></div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div><h4>ソースを追加</h4><p>PDF・画像・音声・動画・Googleドライブ・ウェブサイトURL・YouTubeに対応</p></div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div><h4>Webからも自動収集できる</h4><p>「Webで新しいソースを検索」→ キーワードで検索 → ファストor<strong>ディープリサーチ</strong>を選択</p></div>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <div><h4>ディープリサーチを活用</h4><p>AIが複数サイトを横断調査してソースをまとめてインポート。月10回まで（無料版）</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="hbox" style="margin-bottom:14px;">
+        <div class="big">対応ファイル形式</div>
+        <p>PDF（32MBまで）/ テキスト（50万文字）/ 画像 / 音声 / 動画<br>YouTube URL / ウェブサイトURL / Googleドライブ</p>
+      </div>
+      <div class="hbox-orange hbox">
+        <div class="big">チャットのカスタマイズ</div>
+        <p>「チャットの設定」から<br>
+        ・<strong>会話モード</strong>：デフォルト / 学習ガイド / カスタム<br>
+        ・<strong>回答の長さ</strong>：短め / デフォルト / 長め<br>
+        返答スタイルを自分に合わせて変えられる</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 5. スタジオ機能 ===== -->
+<div class="slide bg-dark">
+  <div class="label">STUDIO FEATURES</div>
+  <h2>スタジオ機能<span class="accent"> 全9種</span>を使いこなせ</h2>
+
+  <div class="studio-grid" style="margin-bottom: 16px;">
+    <div class="studio-item star">
+      <div class="sico">🎙️</div>
+      <div><h4>音声解説 ★おすすめ</h4><p>2人の対話形式ポッドキャスト（約20分）。ダウンロードして通勤中に聴ける</p></div>
+    </div>
+    <div class="studio-item star">
+      <div class="sico">🖼️</div>
+      <div><h4>インフォグラフィック ★おすすめ</h4><p>Imagen 3使用。日本語も高品質。ソース全体を1枚の図に凝縮</p></div>
+    </div>
+    <div class="studio-item star">
+      <div class="sico">📊</div>
+      <div><h4>スライド資料 ★おすすめ</h4><p>15〜20枚の本格スライド。PDF出力可。現場でそのまま使えるレベル</p></div>
+    </div>
+    <div class="studio-item">
+      <div class="sico">🎬</div>
+      <div><h4>動画解説</h4><p>画像＋音声の説明動画（約8分）。2倍速再生にも対応</p></div>
+    </div>
+    <div class="studio-item">
+      <div class="sico">🗺️</div>
+      <div><h4>マインドマップ</h4><p>膨大な情報を枝分かれ構造で可視化。比較的すぐ生成できる</p></div>
+    </div>
+    <div class="studio-item">
+      <div class="sico">📝</div>
+      <div><h4>レポート</h4><p>表を使った詳細なまとめ。ディープリサーチ結果のレポート化に◎</p></div>
+    </div>
+    <div class="studio-item">
+      <div class="sico">🃏</div>
+      <div><h4>フラッシュカード</h4><p>暗記・学習用。ソース内容から自動で問題を作成</p></div>
+    </div>
+    <div class="studio-item">
+      <div class="sico">🧩</div>
+      <div><h4>クイズ</h4><p>理解度の確認に。ヒント機能付き。資格・英語学習に活用</p></div>
+    </div>
+    <div class="studio-item">
+      <div class="sico">📋</div>
+      <div><h4>データテーブル</h4><p>比較情報を表形式で整理。モデル名・用途・料金などを一覧化</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 6. スライドをカスタマイズ ===== -->
+<div class="slide bg-dark">
+  <div class="label">ADVANCED — SLIDE CUSTOMIZATION</div>
+  <h2>スライドを<span class="accent">自分色</span>にカスタマイズ</h2>
+
+  <div class="hbox" style="margin-bottom:18px;">
+    <div class="big">デフォルトのスライドはAIが勝手に観点・色を決める</div>
+    <p>「コーポレートカラーで作りたい」「投資判断用の資料にしたい」→ <strong>プロンプトで仕様書を作ってから生成</strong>するのが正解</p>
+  </div>
+
+  <div class="g2">
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <div><h4>チャットに仕様書プロンプトを貼る</h4><p>「資料の目的」「色の方向性」「ターゲット」を指定して仕様書を生成</p></div>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <div><h4>仕様書の内容をコピー</h4><p>AIが出した色彩ルール・ページ方針・アクセントカラーなどをコピー</p></div>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <div><h4>スライドの「ペン」マークに貼り付け</h4><p>スタジオのスライドアイコン横の編集ボタンに仕様書をペースト</p></div>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <div><h4>「生成」を押して改定版を作成</h4><p>指定した観点・カラーで新しいスライドが作られる</p></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="hbox-orange hbox">
+        <div class="big">プロンプト例</div>
+        <p style="font-size:0.82rem; font-family: monospace; background: rgba(0,0,0,.3); padding: 12px; border-radius: 8px; margin-top: 8px;">
+          アップロードされたソースを分析し、以下の目的と色の方向性に基づいた<strong>資料の仕様書</strong>を作成してください。<br><br>
+          【資料の目的】〇〇の投資判断・自分向けの説明資料<br>
+          【色の方向性】コーポレートカラーの緑をメイン / 先進的なイメージ
+        </p>
+      </div>
+      <div class="tags" style="margin-top:12px;">
+        <span class="tag-o tag">観点を自分で決められる</span>
+        <span class="tag-o tag">色・スタイルを指定可</span>
+        <span class="tag-o tag">提案資料として使えるレベルに</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 7. 第7位 ===== -->
+<div class="slide bg-dark">
+  <div class="rank">🥉 第7位</div>
+  <h2>隙間時間の<span class="accent">万能インプット術</span></h2>
+
+  <div class="hbox" style="margin-bottom:18px;">
+    <div class="big">「後で見るリスト」が永遠に消化できない問題を解決</div>
+    <p>気になったYouTube動画をNotebookLMに放り込むだけで、スライドや音声ポッドキャストに自動変換。移動中にサクッとインプット</p>
+  </div>
+
+  <div class="g2">
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div><h4>「YouTubeキャッチアップノート」を作成</h4><p>テーマ別にノートを分けておくと管理しやすい</p></div></div>
+      <div class="step"><div class="num">2</div><div><h4>動画URLをソースに追加</h4><p>後で見るリストに入れる代わりにNotebookLMへ！スマホなら共有→NotebookLMを選択</p></div></div>
+      <div class="step"><div class="num">3</div><div><h4>スライドボタンを押す</h4><p>10〜15分待つだけで本格スライドが完成</p></div></div>
+      <div class="step"><div class="num">4</div><div><h4>作り置きして隙間時間に消化</h4><p>スマホアプリで電車の中でも確認OK。音声解説なら耳だけで聴ける</p></div></div>
+    </div>
+    <div>
+      <div class="vs">
+        <div class="vs-row"><span class="vs-label">BEFORE</span><span class="vs-bad">😔 後で見るリストに追加→結局見ない→魔境と化す</span></div>
+        <div class="vs-row"><span class="vs-label">AFTER</span><span class="vs-good">✅ その場でノートに追加→スライド化→移動中に消化</span></div>
+      </div>
+      <div class="tags">
+        <span class="tag">📱 スマホアプリあり</span>
+        <span class="tag">🎙️ 音声でも聴ける</span>
+        <span class="tag">🚆 通勤中に消化</span>
+        <span class="tag">🔖 業界キャッチアップにも</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 8. 第6位 ===== -->
+<div class="slide bg-dark">
+  <div class="rank">🍳 第6位</div>
+  <h2>好きなレシピ動画をストック<br><span class="accent">最強お料理コンシェルジュ</span></h2>
+
+  <div class="g2">
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div><h4>レシピ動画を「お気に入りレシピ」ノートに追加</h4><p>YouTube共有→NotebookLMアプリ→既存ノートを選択。どんどん貯める</p></div></div>
+      <div class="step"><div class="num">2</div><div><h4>LINE感覚で材料を聞く</h4><p>「今夜ペペロンチーノ作りたい。材料は？」→リスト化。買い忘れゼロ</p></div></div>
+      <div class="step"><div class="num">3</div><div><h4>インフォグラフィックで手順を図解</h4><p>材料・手順・火加減まで1枚の図に。調理中に動画を巻き戻す手間ゼロ</p></div></div>
+      <div class="step"><div class="num">4</div><div><h4>冷蔵庫の余り食材で献立提案</h4><p>「キャベツが余ってる。作れるレシピは？」→ストック動画から最適提案</p></div></div>
+    </div>
+    <div>
+      <div class="vs">
+        <div class="vs-row"><span class="vs-label">BEFORE</span><span class="vs-bad">😔 調理中に動画を巻き戻して探す。唐辛子を買い忘れる</span></div>
+        <div class="vs-row"><span class="vs-label">AFTER</span><span class="vs-good">✅ 図1枚で全手順を把握。材料リストで買い忘れゼロ</span></div>
+      </div>
+      <div class="hbox" style="margin-top:16px;">
+        <div class="big" style="font-size:1rem;">1ノートに入れられるソース数</div>
+        <p>無料：50個　Plus：100個　Pro：300個　Ultra：600個</p>
+      </div>
+      <div class="tags">
+        <span class="tag">🛒 買い物リスト自動生成</span>
+        <span class="tag">👨‍🍳 手順図解1枚</span>
+        <span class="tag">🧅 余り食材から献立提案</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 9. 第5位 ===== -->
+<div class="slide bg-dark">
+  <div class="rank">🏠 第5位</div>
+  <h2>自宅の<span class="accent">取り扱い説明書</span>を作る</h2>
+
+  <div class="hbox" style="margin-bottom:18px;">
+    <div class="big">「鍵なくした…管理会社の番号どこ？」を即解決</div>
+    <p>家のトラブルは突然やってくる。今日30分で作っておけば、深夜のトラブルでも焦らない</p>
+  </div>
+
+  <div class="g2">
+    <div>
+      <p style="font-size:0.88rem; color:#a0aec0; margin-bottom:12px;">入れておくといい情報</p>
+      <div class="g2" style="gap:10px;">
+        <div class="card" style="padding:12px 14px;"><div class="ico" style="font-size:1.4rem;">📋</div><div><h3 style="font-size:0.85rem;">賃貸契約書の写真</h3></div></div>
+        <div class="card" style="padding:12px 14px;"><div class="ico" style="font-size:1.4rem;">🔌</div><div><h3 style="font-size:0.85rem;">電気・ガス・水道の緊急連絡先</h3></div></div>
+        <div class="card" style="padding:12px 14px;"><div class="ico" style="font-size:1.4rem;">❄️</div><div><h3 style="font-size:0.85rem;">エアコン型番・購入日</h3></div></div>
+        <div class="card" style="padding:12px 14px;"><div class="ico" style="font-size:1.4rem;">📮</div><div><h3 style="font-size:0.85rem;">ポスト暗証番号</h3></div></div>
+        <div class="card" style="padding:12px 14px;"><div class="ico" style="font-size:1.4rem;">🌐</div><div><h3 style="font-size:0.85rem;">光回線プロバイダー情報</h3></div></div>
+        <div class="card" style="padding:12px 14px;"><div class="ico" style="font-size:1.4rem;">🔑</div><div><h3 style="font-size:0.85rem;">管理会社連絡先・対応時間</h3></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="hbox">
+        <div class="big">Notionとの違い</div>
+        <p>Notionは「どう整理するか」を考え始めると手が止まる。<br><br>
+        NotebookLMは<strong>整理する機能がない</strong>。ただ放り込むだけ。<br>
+        → 「整理できないこと」が逆にハードルを下げる</p>
+      </div>
+      <div class="vs" style="margin-top:12px;">
+        <div class="vs-row"><span class="vs-label">検索</span><span class="vs-bad">キーワードが一致しないと出てこない</span></div>
+        <div class="vs-row"><span class="vs-label">NLM</span><span class="vs-good">「鍵なくした」と聞けば連絡先も対応時間も全部まとめて返してくれる</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 10. 第4位 ===== -->
+<div class="slide bg-dark">
+  <div class="rank">✈️ 第4位</div>
+  <h2>全員が迷わない<span class="accent">完璧な旅のしおり</span></h2>
+
+  <div class="g2">
+    <div>
+      <div class="hbox" style="margin-bottom:14px;">
+        <div class="big">バラバラでいい。全部ぶち込め</div>
+        <p>飛行機スクショ・ホテルPDF・レストランURL・友達とのLINEスクショ…<br>何も考えず全部放り込むだけでOK</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="num">📸</div><div><h4>予約メール・スクショ・PDFを追加</h4></div></div>
+        <div class="step"><div class="num">🗺️</div><div><h4>行きたい店・スポットのURLを追加</h4></div></div>
+        <div class="step"><div class="num">💬</div><div><h4>友達とのLINEスクショも追加（画像の文字も読める）</h4></div></div>
+        <div class="step"><div class="num">▶️</div><div><h4>旅行系YouTuberのレビュー動画も追加</h4></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="ico">❓</div>
+        <div><h3>旅行中の質問例</h3>
+        <p style="margin-top:6px;">「2日目の最初ってどこ行くんだっけ？」<br>「ホテルの住所を英語で教えて」<br>「1日目のランチはどこだっけ？」</p></div>
+      </div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="ico">📊</div>
+        <div><h3>スライドでしおりを作成</h3>
+        <p>PDF出力→グループLINEに共有→そのまま旅のしおりになる</p></div>
+      </div>
+      <div class="card">
+        <div class="ico">🤝</div>
+        <div><h3>ノートブックを友達と共有</h3>
+        <p>共有ボタン→Googleメールで招待（<strong>編集者権限</strong>を忘れずに）</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 11. 第3位 ===== -->
+<div class="slide bg-dark">
+  <div class="rank">📊 第3位</div>
+  <h2>数字で迷わない<span class="accent">最強の分析パートナー</span></h2>
+
+  <div class="hbox" style="margin-bottom:18px;">
+    <div class="big">表計算シートは「とりあえずスライドにする」</div>
+    <p>数字と睨めっこするのは時間の無駄。NotebookLMがワンクリックで視覚的スライドに変換。課題点・傾向・注目数字を即把握</p>
+  </div>
+
+  <div class="g2">
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div><h4>Googleスプレッドシートをソースに追加</h4><p>ソース追加→Googleドライブ→対象シートを選択</p></div></div>
+      <div class="step"><div class="num">2</div><div><h4>スライドボタンを押す</h4><p>数分で課題・傾向・注目数字を整理したスライドが完成</p></div></div>
+      <div class="step"><div class="num">3</div><div><h4>チャットで深掘り</h4><p>「○○店の満足度が低い原因は？」「上司報告向けに施策を3つ提案して」</p></div></div>
+      <div class="step"><div class="num">4</div><div><h4>回答をスライドに変換して提案書に</h4><p>チャット結果→メモ保存→ソースに変換→スライド生成</p></div></div>
+    </div>
+    <div>
+      <div class="hbox-orange hbox" style="margin-bottom:14px;">
+        <div class="big">⚠️ Excelユーザーへ注意</div>
+        <p>ExcelファイルはNotebookLMで直接読み込めない。<br>Googleスプレッドシートへの変換が必要。<br><br>Excelを多用する人は<strong>Claude in Excel</strong>（月約¥3,000）がおすすめ</p>
+      </div>
+      <div class="card">
+        <div class="ico">💡</div>
+        <div><h3>使い分けポイント</h3>
+        <p>全体像を把握したい → インフォグラフィック<br>詳細まで伝えたい → スライド（枚数多く情報量大）</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 12. 第2位 ===== -->
+<div class="slide bg-dark">
+  <div class="rank">💰 第2位</div>
+  <h2>自分専用<span class="accent">ファイナンシャルプランナー</span></h2>
+
+  <div class="g2">
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div><h4>STEP 1｜データ収集</h4><p>クレジットカード明細3ヶ月分＋銀行通帳をPDFでダウンロード→ソースに追加</p></div></div>
+      <div class="step"><div class="num">2</div><div><h4>STEP 2｜価値観を教え込む</h4><p>ヒアリングプロンプトで10の質問に答える。「本当は何にお金を使いたいか」を言語化</p></div></div>
+      <div class="step"><div class="num">3</div><div><h4>STEP 3｜お金の健康診断</h4><p>「理想と現実を照らし合わせて最も改善すべき支出を3つ特定して」→夢に寄り添った具体的アドバイス</p></div></div>
+      <div class="step"><div class="num">4</div><div><h4>STEP 4｜音声解説で客観視</h4><p>「少し厳しめに分析して」と指示→第三者視点でポッドキャスト解説。心に刺さる</p></div></div>
+    </div>
+    <div>
+      <div class="hbox" style="margin-bottom:14px;">
+        <div class="big">家計簿アプリとの違い</div>
+        <p>マネーフォワードは「何にいくら使ったか」を記録するだけ。<br><br>
+        NotebookLMは<strong>支出と人生の理想をリンク</strong>させる。<br>いわば<strong>人生全体のコンサルタント</strong></p>
+      </div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="ico">🔒</div>
+        <div><h3>プライバシーは？</h3>
+        <p>GoogleアカウントのデータはGoogle企業向けサービスと同じ基準で保護。AIの学習には使われない</p></div>
+      </div>
+      <div class="tags">
+        <span class="tag">💸 支出の傾向を可視化</span>
+        <span class="tag">🎯 夢への道筋を提案</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 13. 第1位 ===== -->
+<div class="slide bg-dark">
+  <div class="rank">🏆 第1位</div>
+  <h2>議事録を<span class="accent">図解化</span>する</h2>
+
+  <div class="hbox" style="margin-bottom:18px;">
+    <div class="big">文字だけの議事録は「認知の負債」。NotebookLMで「視える資産」に変える</div>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><div><h4>Googleドキュメントに議事録を保存</h4><p>後から修正しやすくするため</p></div></div>
+        <div class="step"><div class="num">2</div><div><h4>ソース → Googleドライブから追加</h4></div></div>
+        <div class="step"><div class="num">3</div><div><h4>インフォグラフィックボタンを押す</h4><p>決定事項・アクションプランが1枚の図に</p></div></div>
+      </div>
+      <div class="hbox" style="margin-top:14px;">
+        <div class="big" style="font-size:1rem;">スライドvsインフォグラフィック</div>
+        <p>全体像を素早く把握 → インフォグラフィック<br>情報を漏らさず詳細に → スライド</p>
+      </div>
+    </div>
+    <div>
+      <div class="hbox-green hbox" style="margin-bottom:14px;">
+        <div class="big">さらに上を目指す：Geminiとの連携</div>
+        <p style="font-size:0.83rem;">
+          ① NotebookLMに会社の事業概要・組織図・過去の決定事項を入れた<strong>「会社情報ノートブック」</strong>を作成<br><br>
+          ② Geminiのチャット左下＋ → ノートブックを選択してコンテキストとして渡す<br><br>
+          ③ <strong>Gemのカスタム指示</strong>に議事録プロンプトを保存 → 次回から音声を添付するだけでOK
+        </p>
+      </div>
+      <div class="vs">
+        <div class="vs-row"><span class="vs-label">BEFORE</span><span class="vs-bad">録音だけ渡す → 用語も経緯も知らないAIがまとめる</span></div>
+        <div class="vs-row"><span class="vs-label">AFTER</span><span class="vs-good">コンテキスト付き → 社内事情を把握した精度の高い議事録が1分で完成</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 14. まとめ ===== -->
+<div class="slide bg-hero" style="justify-content: flex-start; padding-top: 44px;">
+  <div class="label" style="text-align:center;">SUMMARY</div>
+  <h2 style="text-align:center; margin-bottom:20px;">NotebookLM 活用法<span class="accent"> TOP7</span></h2>
+
+  <div class="sum-grid">
+    <div class="sum-item"><div class="snum">第7位</div><div class="semi">📺</div><div class="slbl">隙間時間の万能インプット術</div></div>
+    <div class="sum-item"><div class="snum">第6位</div><div class="semi">🍳</div><div class="slbl">お料理コンシェルジュ</div></div>
+    <div class="sum-item"><div class="snum">第5位</div><div class="semi">🏠</div><div class="slbl">自宅の取り扱い説明書</div></div>
+    <div class="sum-item"><div class="snum">第4位</div><div class="semi">✈️</div><div class="slbl">完璧な旅のしおり</div></div>
+    <div class="sum-item"><div class="snum">第3位</div><div class="semi">📊</div><div class="slbl">スプレッドシート分析</div></div>
+    <div class="sum-item"><div class="snum">第2位</div><div class="semi">💰</div><div class="slbl">自分専用FP</div></div>
+    <div class="sum-item"><div class="snum">第1位</div><div class="semi">📝</div><div class="slbl">議事録の図解化</div></div>
+    <div class="sum-item" style="background: linear-gradient(135deg, rgba(79,172,254,.2), rgba(0,242,254,.1)); border-color: rgba(79,172,254,.5);">
+      <div class="snum" style="color:#00f2fe;">KEY</div>
+      <div class="semi">🧠</div>
+      <div class="slbl" style="color:#4facfe;">情報はAIに預ける時代</div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:12px;">
+    <p style="font-size:1.1rem; font-weight:700; margin-bottom:12px;">今日からやること</p>
+    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+      <span class="tag" style="font-size:0.95rem; padding:9px 20px;">📺 後で見る動画を1本スライド化してみる</span>
+      <span class="tag-g tag" style="font-size:0.95rem; padding:9px 20px;">🏠 自宅の取り扱い説明書を今週中に作る</span>
+      <span class="tag-o tag" style="font-size:0.95rem; padding:9px 20px;">📝 次の会議の議事録を図解化してみる</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /slideshow -->
+
+<!-- nav -->
+<div class="nav">
+  <button id="prev" onclick="go(-1)" disabled>← 前へ</button>
+  <span class="pager" id="pager">1 / 14</span>
+  <button id="next" onclick="go(1)">次へ →</button>
+</div>
+<div class="key-hint">← → キーでも操作できます</div>
+
+<script>
+  let cur = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function go(d) {
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(cur + d, total - 1));
+    slides[cur].classList.add('active');
+    document.getElementById('pager').textContent = `${cur+1} / ${total}`;
+    document.getElementById('prev').disabled = cur === 0;
+    document.getElementById('next').disabled = cur === total - 1;
+    document.getElementById('prog').style.width = `${(cur+1)/total*100}%`;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(-1);
+  });
+
+  go(0);
+</script>
+</body>
+</html>

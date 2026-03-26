@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生成AI時代に仕事が増えるクリエイター図解</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f5efe6;
+      --bg-deep: #eadfce;
+      --paper: rgba(255, 251, 246, 0.88);
+      --panel: rgba(255, 255, 255, 0.76);
+      --ink: #22313b;
+      --muted: #5e6d76;
+      --line: rgba(34, 49, 59, 0.12);
+      --shadow: 0 24px 60px rgba(92, 67, 39, 0.12);
+      --soft-shadow: 0 12px 32px rgba(92, 67, 39, 0.08);
+      --orange: #db6b37;
+      --orange-soft: #ffe4d5;
+      --teal: #1f7c72;
+      --teal-soft: #daf4ee;
+      --navy: #2d5a8f;
+      --navy-soft: #dfeafa;
+      --gold: #b9872e;
+      --gold-soft: #f8edcb;
+      --wine: #a44e56;
+      --wine-soft: #f6dfe1;
+      --charcoal: #142027;
+    }
+
+    body {
+      font-family: "Avenir Next", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(219, 107, 55, 0.18), transparent 18%),
+        radial-gradient(circle at 87% 10%, rgba(31, 124, 114, 0.16), transparent 18%),
+        radial-gradient(circle at 84% 90%, rgba(45, 90, 143, 0.14), transparent 21%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+      line-height: 1.75;
+      padding: 24px 16px 72px;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .hero,
+    .section {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      border-radius: 36px;
+      padding: 42px 34px 34px;
+      background:
+        linear-gradient(135deg, rgba(255, 252, 247, 0.98), rgba(249, 241, 231, 0.94));
+      margin-bottom: 24px;
+    }
+
+    .hero::before,
+    .hero::after,
+    .section::before {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    .hero::before {
+      width: 260px;
+      height: 260px;
+      right: -72px;
+      top: -84px;
+      background: radial-gradient(circle, rgba(219, 107, 55, 0.22), rgba(219, 107, 55, 0.02) 72%);
+    }
+
+    .hero::after {
+      width: 300px;
+      height: 300px;
+      left: -100px;
+      bottom: -150px;
+      background: radial-gradient(circle, rgba(31, 124, 114, 0.18), rgba(31, 124, 114, 0.02) 74%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 9px 16px;
+      background: var(--orange-soft);
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin-bottom: 18px;
+    }
+
+    h1, .section-title, .big-word, .equation {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "Times New Roman", serif;
+    }
+
+    h1 {
+      max-width: 920px;
+      font-size: clamp(34px, 5.3vw, 64px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+      color: var(--charcoal);
+    }
+
+    .lead {
+      max-width: 840px;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .card,
+    .mini-card,
+    .stack-card,
+    .anchor-card,
+    .step,
+    .quad-card {
+      border-radius: 24px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .card {
+      padding: 24px 22px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .card p,
+    .mini-card p,
+    .stack-card p,
+    .anchor-card p,
+    .quad-card p,
+    .step p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .signal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 6px 12px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .signal.orange {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .signal.teal {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .signal.navy {
+      background: var(--navy-soft);
+      color: var(--navy);
+    }
+
+    .signal.gold {
+      background: var(--gold-soft);
+      color: var(--gold);
+    }
+
+    .formula-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .mini-card {
+      padding: 16px 14px;
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .mini-label {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .mini-value {
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .hero-quote {
+      margin-top: 16px;
+      border-radius: 22px;
+      padding: 18px;
+      background: linear-gradient(180deg, #f6fbf9 0%, #fffdfa 100%);
+      border: 1px solid rgba(31, 124, 114, 0.14);
+    }
+
+    .hero-quote strong {
+      color: var(--teal);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .equation-box {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .equation-part,
+    .equation-result,
+    .equation-sign {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .equation-part,
+    .equation-result {
+      min-height: 104px;
+      min-width: 180px;
+      padding: 18px 20px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .equation-part {
+      flex-direction: column;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .equation-sign {
+      font-size: 38px;
+      font-weight: 300;
+      color: #85919a;
+      padding: 0 2px;
+    }
+
+    .equation-result {
+      background: linear-gradient(135deg, rgba(31, 124, 114, 0.15), rgba(219, 107, 55, 0.12));
+      text-align: center;
+    }
+
+    .equation {
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    .equation-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .section {
+      border-radius: 32px;
+      padding: 30px 26px;
+      background: var(--paper);
+      margin-bottom: 20px;
+    }
+
+    .section::before {
+      width: 180px;
+      height: 180px;
+      right: -70px;
+      top: -70px;
+      background: radial-gradient(circle, rgba(45, 90, 143, 0.10), transparent 72%);
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 3.8vw, 44px);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+      margin-bottom: 10px;
+      color: var(--charcoal);
+    }
+
+    .section-lead {
+      max-width: 860px;
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+
+    .shift-grid {
+      display: grid;
+      grid-template-columns: 0.96fr 0.12fr 0.92fr 0.12fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .shift-card {
+      border-radius: 26px;
+      padding: 24px 20px;
+      border: 1px solid var(--line);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .shift-card.old {
+      background: linear-gradient(180deg, #fff4ec 0%, #fffdfa 100%);
+      border-color: rgba(219, 107, 55, 0.14);
+    }
+
+    .shift-card.now {
+      background: linear-gradient(180deg, #f2fbf8 0%, #fffdfa 100%);
+      border-color: rgba(31, 124, 114, 0.16);
+    }
+
+    .shift-card.future {
+      background: linear-gradient(180deg, #eef5ff 0%, #fffdfa 100%);
+      border-color: rgba(45, 90, 143, 0.16);
+    }
+
+    .shift-title {
+      font-size: 21px;
+      font-weight: 900;
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .big-word {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.05em;
+      margin: 12px 0 16px;
+    }
+
+    .arrow-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8ca0ab;
+      font-size: clamp(28px, 3vw, 42px);
+    }
+
+    .bullet-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(34, 49, 59, 0.08);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .bullet strong {
+      color: var(--charcoal);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      margin-top: 8px;
+      flex: 0 0 auto;
+    }
+
+    .dot.orange { background: var(--orange); }
+    .dot.teal { background: var(--teal); }
+    .dot.navy { background: var(--navy); }
+    .dot.gold { background: var(--gold); }
+    .dot.wine { background: var(--wine); }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .compare-card {
+      border-radius: 28px;
+      padding: 24px 20px;
+      border: 1px solid var(--line);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .compare-card.loss {
+      background: linear-gradient(180deg, #fff6ef 0%, #fffdfa 100%);
+      border-color: rgba(219, 107, 55, 0.15);
+    }
+
+    .compare-card.gain {
+      background: linear-gradient(180deg, #f2fbf8 0%, #fffdfa 100%);
+      border-color: rgba(31, 124, 114, 0.15);
+    }
+
+    .compare-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .compare-title {
+      font-size: 24px;
+      line-height: 1.3;
+      font-weight: 900;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 94px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .pill.loss {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .pill.gain {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .result-box {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px dashed rgba(34, 49, 59, 0.14);
+      background: rgba(255, 255, 255, 0.68);
+    }
+
+    .example-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .example-box {
+      border-radius: 22px;
+      padding: 16px 14px;
+      border: 1px solid rgba(34, 49, 59, 0.08);
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .example-box strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: var(--navy);
+    }
+
+    .example-box p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .easy-note {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(31, 124, 114, 0.08);
+      border: 1px solid rgba(31, 124, 114, 0.12);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .result-box strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--charcoal);
+      font-size: 15px;
+    }
+
+    .anchor-wrap {
+      display: grid;
+      grid-template-columns: 1fr 0.82fr 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .anchor-side {
+      display: grid;
+      gap: 14px;
+    }
+
+    .anchor-center {
+      position: relative;
+      border-radius: 30px;
+      padding: 28px 22px;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(31, 124, 114, 0.18), transparent 48%),
+        linear-gradient(180deg, rgba(255,255,255,0.88), rgba(248, 243, 235, 0.92));
+      border: 1px solid rgba(31, 124, 114, 0.16);
+      box-shadow: var(--soft-shadow);
+      text-align: center;
+    }
+
+    .anchor-center::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 24px;
+      border: 1px dashed rgba(31, 124, 114, 0.18);
+    }
+
+    .anchor-core {
+      position: relative;
+      z-index: 1;
+    }
+
+    .anchor-core .signal {
+      margin-bottom: 14px;
+    }
+
+    .anchor-core h3 {
+      font-size: 30px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .anchor-core p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .anchor-card {
+      padding: 18px 16px;
+    }
+
+    .anchor-card h4 {
+      font-size: 19px;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .anchor-card .anchor-key {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+      color: var(--navy);
+    }
+
+    .anchor-note {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #fffdfa 0%, #f4fbf9 100%);
+      border: 1px solid rgba(31, 124, 114, 0.14);
+    }
+
+    .anchor-note strong {
+      color: var(--teal);
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .axis-y {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .axis-label {
+      border-radius: 24px;
+      padding: 16px 12px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.66);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-align: center;
+      justify-self: stretch;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+    }
+
+    .quadrants {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .quad-card {
+      padding: 20px 18px;
+      min-height: 210px;
+    }
+
+    .quad-card.bad {
+      background: linear-gradient(180deg, #fff6ef 0%, #fffdfa 100%);
+    }
+
+    .quad-card.mid {
+      background: linear-gradient(180deg, #fff9f1 0%, #fffdfa 100%);
+    }
+
+    .quad-card.good {
+      background: linear-gradient(180deg, #f3f8ff 0%, #fffdfa 100%);
+    }
+
+    .quad-card.best {
+      background: linear-gradient(180deg, #effaf6 0%, #fffdfa 100%);
+      border-color: rgba(31, 124, 114, 0.18);
+    }
+
+    .quad-name {
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .quad-score {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      background: rgba(255, 255, 255, 0.86);
+    }
+
+    .axis-x {
+      margin-top: 14px;
+      margin-left: 156px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .axis-x .axis-label {
+      writing-mode: horizontal-tb;
+      min-height: auto;
+      padding: 14px 16px;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+
+    .stack-card {
+      padding: 18px 16px;
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-top: 4px solid transparent;
+    }
+
+    .stack-card:nth-child(1) { border-top-color: var(--gold); }
+    .stack-card:nth-child(2) { border-top-color: var(--navy); }
+    .stack-card:nth-child(3) { border-top-color: var(--teal); }
+    .stack-card:nth-child(4) { border-top-color: var(--orange); }
+    .stack-card:nth-child(5) { border-top-color: var(--wine); }
+    .stack-card:nth-child(6) { border-top-color: #58755f; }
+
+    .stack-no {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .stack-card h3 {
+      font-size: 20px;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .stack-tip {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(34, 49, 59, 0.08);
+      font-size: 13px;
+      color: var(--charcoal);
+      font-weight: 700;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .step {
+      padding: 18px 16px 20px;
+      position: relative;
+    }
+
+    .step-no {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--charcoal);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .step h3 {
+      font-size: 19px;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .step small {
+      display: block;
+      margin-top: 10px;
+      color: var(--charcoal);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .closing {
+      text-align: center;
+      padding: 36px 26px;
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(219, 107, 55, 0.14), transparent 28%),
+        linear-gradient(135deg, rgba(255,255,255,0.96), rgba(248, 241, 231, 0.96));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .closing .equation {
+      font-size: clamp(30px, 4vw, 52px);
+      margin-bottom: 10px;
+    }
+
+    .closing p {
+      max-width: 780px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #76858e;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-grid,
+      .shift-grid,
+      .anchor-wrap,
+      .compare-grid,
+      .example-row,
+      .steps,
+      .stack-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow-col {
+        transform: rotate(90deg);
+        min-height: 34px;
+      }
+
+      .formula-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .matrix {
+        grid-template-columns: 1fr;
+      }
+
+      .axis-y {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: none;
+      }
+
+      .axis-label {
+        writing-mode: horizontal-tb;
+        min-height: auto;
+      }
+
+      .axis-x {
+        margin-left: 0;
+      }
+
+      .quadrants {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+      }
+
+      .stack-card {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 16px 10px 48px;
+      }
+
+      .hero,
+      .section,
+      .closing {
+        border-radius: 26px;
+      }
+
+      .hero,
+      .section {
+        padding: 24px 18px;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .lead {
+        font-size: 16px;
+      }
+
+      .equation-part,
+      .equation-result {
+        width: 100%;
+      }
+
+      .equation-sign {
+        width: 100%;
+        min-height: 20px;
+      }
+
+      .compare-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .steps {
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="eyebrow">AI × CREATIVE SHIFT MAP</div>
+      <h1>生成AI時代に<br>仕事が増えるクリエイターと<br>奪われるクリエイターの差</h1>
+      <p class="lead">
+        この話をすごく簡単に言うと、<strong>「うまく作る人」だけでは足りなくなり、「何を作るべきかを決められる人」が強くなる</strong>ということです。
+        たとえば文化祭でも、絵が上手い人は大事。でも本当にクラスを勝たせるのは、<strong>どの案がみんなにウケるかを選んで、みんなを動かせる人</strong>です。
+      </p>
+
+      <div class="hero-grid">
+        <section class="card">
+          <div class="signal orange">変化の本質</div>
+          <h2>クリエイティブは「作る競争」から<br>「選ぶ・結ぶ・進める競争」へ</h2>
+          <p>
+            AIは、たくさん案を出したり、それっぽく整えたりするのがとても速いです。
+            だから「ポスターをきれいに作れる」だけでは差がつきにくい。
+            これからは<strong>どの案が一番いいかを選ぶ力、みんなが動く意味を作る力、迷っても前に進める力</strong>が大事になります。
+          </p>
+          <div class="formula-grid">
+            <article class="mini-card">
+              <div class="mini-label">AIの得意</div>
+              <div class="mini-value">量産する<br>編集する<br>試作する</div>
+            </article>
+            <article class="mini-card">
+              <div class="mini-label">人の価値</div>
+              <div class="mini-value">選び取る<br>意味を与える<br>前に進める</div>
+            </article>
+            <article class="mini-card">
+              <div class="mini-label">勝ち筋</div>
+              <div class="mini-value">人間力に<br>AI活用力を<br>掛け算する</div>
+            </article>
+          </div>
+          <div class="hero-quote">
+            <strong>一番大事な視点</strong>
+            たとえばAIはポスターの絵は作れても、<strong>そのクラスで過ごした思い出</strong>までは作れない。そこを入れるのが人の役目です。
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="signal teal">最強の方程式</div>
+          <div class="equation-box">
+            <div class="equation-part">
+              <div class="equation">人間力</div>
+              <div class="equation-sub">明るさ / 共感 / 信頼 / チーム感</div>
+            </div>
+            <div class="equation-sign">×</div>
+            <div class="equation-part">
+              <div class="equation">AI活用力</div>
+              <div class="equation-sub">試作 / 量産 / 壁打ち / 実装補助</div>
+            </div>
+            <div class="equation-sign">＝</div>
+            <div class="equation-result">
+              <div>
+                <div class="equation">無敵化</div>
+                <div class="equation-sub">目的設計できる人がAIを持つと一気にレバレッジが乗る</div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-quote">
+            <strong>対談の結論</strong>
+            たとえるなら、<strong>感じのいいリーダーが超優秀なロボットを仲間にした状態</strong>。それが今いちばん強いです。
+          </div>
+        </section>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-kicker">01 / 地殻変動</div>
+      <h2 class="section-title">何が価値から外れ、何が価値の中心に来たのか</h2>
+      <p class="section-lead">
+        難しく言うと「コモディティ化」ですが、もっと簡単に言えば、<strong>前はすごかった技術が、今はみんな使いやすくなった</strong>ということです。
+        だから勝負どころが、「作れるか」から「何を選ぶか」にずれました。
+      </p>
+
+      <div class="shift-grid">
+        <article class="shift-card old">
+          <div class="signal orange">BEFORE</div>
+          <div class="shift-title">AI前に評価されやすかった人</div>
+          <div class="big-word">作れる人</div>
+          <div class="bullet-list">
+            <div class="bullet"><span class="dot orange"></span><div><strong>技術の希少性</strong>がそのまま価値だった</div></div>
+            <div class="bullet"><span class="dot orange"></span><div>職人的で気難しくても、<strong>代わりがいない</strong>から成立した</div></div>
+            <div class="bullet"><span class="dot orange"></span><div>絵を描ける、デザインできる、書けること自体が強かった</div></div>
+          </div>
+        </article>
+
+        <div class="arrow-col">→</div>
+
+        <article class="shift-card now">
+          <div class="signal teal">NOW</div>
+          <div class="shift-title">AIが一気に薄めた価値</div>
+          <div class="big-word">作るだけ</div>
+          <div class="bullet-list">
+            <div class="bullet"><span class="dot teal"></span><div>AIは編集・模倣・パターン生成が強い</div></div>
+            <div class="bullet"><span class="dot teal"></span><div><strong>大量案の生成</strong>は人間より速く安くなる</div></div>
+            <div class="bullet"><span class="dot teal"></span><div>「描ける」は、昔の「ググれる」に近づいていく</div></div>
+          </div>
+        </article>
+
+        <div class="arrow-col">→</div>
+
+        <article class="shift-card future">
+          <div class="signal navy">AFTER SHIFT</div>
+          <div class="shift-title">これから価値が集まる人</div>
+          <div class="big-word">選べる人</div>
+          <div class="bullet-list">
+            <div class="bullet"><span class="dot navy"></span><div><strong>人が価値だと感じるもの</strong>を見抜ける</div></div>
+            <div class="bullet"><span class="dot navy"></span><div>曖昧でも決めて、進めて、修正できる</div></div>
+            <div class="bullet"><span class="dot navy"></span><div>AIが作れないアンカーを企画に差し込める</div></div>
+            <div class="bullet"><span class="dot navy"></span><div>一緒に働くと気分がいい。だから指名される</div></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="example-row">
+        <article class="example-box">
+          <strong>学校でたとえると 1</strong>
+          <p>昔は「絵が一番上手い人」が文化祭ポスターの主役でした。</p>
+        </article>
+        <article class="example-box">
+          <strong>学校でたとえると 2</strong>
+          <p>今はAIがポスター案を一気に10個、20個出せます。</p>
+        </article>
+        <article class="example-box">
+          <strong>学校でたとえると 3</strong>
+          <p>だから次に強いのは、「どの案ならクラスが勝てるか」を決められる人です。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-kicker">02 / 比較図</div>
+      <h2 class="section-title">仕事が奪われやすい人 vs 仕事が増えやすい人</h2>
+      <p class="section-lead">
+        違いは「才能があるかないか」より、<strong>どこで勝負しているか</strong>です。
+        左はAIと同じ土俵で戦ってしまう人。右はAIを道具として使いながら、人にしかできない仕事をする人です。
+      </p>
+
+      <div class="compare-grid">
+        <article class="compare-card loss">
+          <div class="compare-head">
+            <div class="compare-title">奪われやすい<br>クリエイター</div>
+            <div class="pill loss">REPLACED</div>
+          </div>
+          <div class="bullet-list">
+            <div class="bullet"><span class="dot orange"></span><div><strong>作る技術そのもの</strong>を価値の中心に置いている</div></div>
+            <div class="bullet"><span class="dot orange"></span><div>AIを嫌って情報を遮断し、<strong>自分の危険領域</strong>を知らない</div></div>
+            <div class="bullet"><span class="dot orange"></span><div>大量の選択肢から「何が刺さるか」を選べない</div></div>
+            <div class="bullet"><span class="dot orange"></span><div>正解が来るまで止まり、<strong>曖昧さに耐えられない</strong></div></div>
+            <div class="bullet"><span class="dot orange"></span><div>人と働く気持ちよさを軽視し、暗さや扱いづらさを放置している</div></div>
+            <div class="bullet"><span class="dot orange"></span><div>プロジェクトに土地・時間・思い出・制作過程などの<strong>非代替要素</strong>がない</div></div>
+          </div>
+          <div class="result-box">
+            <strong>起きること</strong>
+            「それならAIでもよくない?」と思われやすく、頼まれる回数も下がっていきます。
+          </div>
+        </article>
+
+        <article class="compare-card gain">
+          <div class="compare-head">
+            <div class="compare-title">仕事が増える<br>クリエイター</div>
+            <div class="pill gain">EXPANDS</div>
+          </div>
+          <div class="bullet-list">
+            <div class="bullet"><span class="dot teal"></span><div>AIで試作・量産しつつ、<strong>価値のある案を選べる</strong></div></div>
+            <div class="bullet"><span class="dot teal"></span><div>目的設計ができるので、AIを優秀な部下のように使える</div></div>
+            <div class="bullet"><span class="dot teal"></span><div>人の共感・心の動き・社会文脈を読んで、<strong>意味づけ</strong>ができる</div></div>
+            <div class="bullet"><span class="dot teal"></span><div>曖昧な場でも「これで行きましょう」と決め、後で修正できる</div></div>
+            <div class="bullet"><span class="dot teal"></span><div>明るさ、清潔感、感じの良さで、<strong>一緒に働きたい人</strong>になっている</div></div>
+            <div class="bullet"><span class="dot teal"></span><div>ブランド、ストーリー、関係性、リアルな体験を企画に組み込める</div></div>
+          </div>
+          <div class="result-box">
+            <strong>起きること</strong>
+            AIで速く動きつつ、人にしか出せない空気や意味を足せるので、「次もこの人がいい」と言われやすくなります。
+          </div>
+        </article>
+      </div>
+
+      <div class="easy-note">
+        <strong>文化祭でたとえると:</strong>
+        左は「ポスターを描くことしかできない人」。
+        右は「AIで案をいっぱい出して、その中から一番ウケる案を選び、みんなに役割を振って完成まで持っていける人」です。
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-kicker">03 / アンカー</div>
+      <h2 class="section-title">AIが逆立ちしても作れない「アンカー」を持て</h2>
+      <p class="section-lead">
+        「アンカー」は、<strong>AIがマネできない本物の部分</strong>のことです。
+        これからはAIをどれだけ使ってもいい。でも最後に、コピーできない本物を入れないと弱くなります。
+      </p>
+
+      <div class="anchor-wrap">
+        <div class="anchor-side">
+          <article class="anchor-card">
+            <div class="anchor-key">ANCHOR 01</div>
+            <h4>土地</h4>
+            <p>リアルな場所のこと。たとえば<strong>学校の体育館、地元の商店街、その会場</strong>。AIは画像は作れても、その場所自体は作れません。</p>
+          </article>
+          <article class="anchor-card">
+            <div class="anchor-key">ANCHOR 02</div>
+            <h4>時間</h4>
+            <p>長く積み上げた時間のこと。たとえば<strong>3年間の部活、ずっと続けた活動、先に取った場所</strong>。あとから一気に作れません。</p>
+          </article>
+        </div>
+
+        <div class="anchor-center">
+          <div class="anchor-core">
+            <div class="signal teal">企画の中心に置く</div>
+            <h3>非代替の核</h3>
+            <p>
+              AIで作るスピードを上げるのはOK。<br>
+              でも最後は、「その学校だから」「その人たちだから」できる要素を入れる。<br><br>
+              <strong>企画ごとに最低1つは入れると強い。</strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="anchor-side">
+          <article class="anchor-card">
+            <div class="anchor-key">ANCHOR 03</div>
+            <h4>思い出</h4>
+            <p>その場にいた人だけが持つ記憶。たとえば<strong>修学旅行、最後の大会、卒業前の時間</strong>。これはコピペできません。</p>
+          </article>
+          <article class="anchor-card">
+            <div class="anchor-key">ANCHOR 04</div>
+            <h4>制作過程・関係性</h4>
+            <p>何を作ったかだけでなく、<strong>みんなで準備した時間、裏側、協力した流れ</strong>そのもの。完成品だけより、そこが刺さることも多いです。</p>
+          </article>
+          <article class="anchor-card">
+            <div class="anchor-key">ANCHOR 05</div>
+            <h4>ブランド</h4>
+            <p>「この人に頼みたい」と思われる力。たとえば<strong>あの先輩なら安心、あの先生なら任せたい</strong>という信頼です。</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="anchor-note">
+        <strong>図解で言い切るなら:</strong>
+        AI時代の勝ち方は、<strong>作るところはAIで速くして、最後の決め手は「本物の思い出」や「その場らしさ」で作る</strong>ことです。
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-kicker">04 / 4象限</div>
+      <h2 class="section-title">「人間力」と「AI活用力」の掛け算マップ</h2>
+      <p class="section-lead">
+        これも学校で考えるとわかりやすいです。<strong>感じがよくてみんなをまとめられる人</strong>と、<strong>新しい道具を使いこなせる人</strong>。
+        その両方がある人が、一番強いです。
+      </p>
+
+      <div class="matrix">
+        <div class="axis-y">
+          <div class="axis-label">人間力 高</div>
+          <div class="axis-label">人間力 低</div>
+        </div>
+
+        <div>
+          <div class="quadrants">
+            <article class="quad-card mid">
+              <div class="quad-name">未覚醒の実力者</div>
+              <div class="quad-score">人間力 高 × AI活用 低</div>
+              <p>
+                明るいし、信頼されるし、センスもある。なのにAIをまだ使っていない人。
+                <strong>文化祭でいうと、いい委員長なのに便利ツールをまだ知らない状態です。</strong>
+              </p>
+              <div class="stack-tip">AIを持った瞬間に一気に無双しやすい</div>
+            </article>
+
+            <article class="quad-card best">
+              <div class="quad-name">無敵ゾーン</div>
+              <div class="quad-score">人間力 高 × AI活用 高</div>
+              <p>
+                価値を選べるし、人も動かせるし、AIで速い。
+                <strong>文化祭でいうと、人気のある実行委員長が超優秀なアシスタントを何人も持っている状態です。</strong>
+              </p>
+              <div class="stack-tip">これから最も仕事が増えやすい</div>
+            </article>
+
+            <article class="quad-card bad">
+              <div class="quad-name">置換されやすい</div>
+              <div class="quad-score">人間力 低 × AI活用 低</div>
+              <p>
+                人としての魅力も弱く、新しい道具も使っていない。
+                <strong>文化祭でいうと、文句は言うけど手も動かさない人に近いです。</strong>
+              </p>
+              <div class="stack-tip">価格競争か、依頼そのものの消失に向かいやすい</div>
+            </article>
+
+            <article class="quad-card good">
+              <div class="quad-name">便利だが選ばれにくい</div>
+              <div class="quad-score">人間力 低 × AI活用 高</div>
+              <p>
+                作業は速い。でも感じが悪い、暗い、頼みにくい。
+                <strong>テストはできるけど班活動で毎回空気を悪くする人は、また組みたいとは思われにくいのと同じです。</strong>
+              </p>
+              <div class="stack-tip">性能だけではChatGPT的な快適さに負ける</div>
+            </article>
+          </div>
+
+          <div class="axis-x">
+            <div class="axis-label">AI活用 低</div>
+            <div class="axis-label">AI活用 高</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-kicker">05 / 必須能力</div>
+      <h2 class="section-title">これからのクリエイターに必要な6つのコアスキル</h2>
+      <p class="section-lead">
+        ここも難しく考えなくて大丈夫です。要するに、<strong>AIに任せられない「人っぽい力」</strong>を伸ばそう、という話です。
+      </p>
+
+      <div class="stack-grid">
+        <article class="stack-card">
+          <div>
+            <div class="stack-no">CORE 01</div>
+            <h3>審美眼<br>価値認識力</h3>
+            <p>たくさんの案の中から、「これが一番いい」と見抜く力。文化祭のポスターなら、目立つだけでなく人が見たくなる案を選べる力です。</p>
+          </div>
+          <div class="stack-tip">例: 青い屋台は目立つけど食欲はわきにくい、と分かる感覚</div>
+        </article>
+
+        <article class="stack-card">
+          <div>
+            <div class="stack-no">CORE 02</div>
+            <h3>目的設計力</h3>
+            <p>「そもそも何のためにやるの?」を決める力。ポスターを作る前に、「集客したいのか、かわいく見せたいのか」を決める力です。</p>
+          </div>
+          <div class="stack-tip">例: ゴールを決めるのは人、作業を速くするのがAI</div>
+        </article>
+
+        <article class="stack-card">
+          <div>
+            <div class="stack-no">CORE 03</div>
+            <h3>曖昧さ耐性<br>ドライブ力</h3>
+            <p>まだ答えがなくても「じゃあこれでやってみよう」と決める力。部活でも、ずっと相談するだけより、まず動く人が強いです。</p>
+          </div>
+          <div class="stack-tip">例: 完璧を待つより、仮で進めて後で直す</div>
+        </article>
+
+        <article class="stack-card">
+          <div>
+            <div class="stack-no">CORE 04</div>
+            <h3>人間力<br>明るさ</h3>
+            <p>一緒にいると空気がよくなる力。あいさつできる、感じがいい、話しかけやすい。これは想像以上に大事です。</p>
+          </div>
+          <div class="stack-tip">例: 同じ実力なら「また一緒にやりたい人」が勝つ</div>
+        </article>
+
+        <article class="stack-card">
+          <div>
+            <div class="stack-no">CORE 05</div>
+            <h3>ストーリー構築力</h3>
+            <p>「この企画にはこんな意味がある」と語れる力。卒業前のイベントなら、ただ楽しいだけでなく「最後の思い出」にできる力です。</p>
+          </div>
+          <div class="stack-tip">例: 物ではなく、心が動く理由を作る</div>
+        </article>
+
+        <article class="stack-card">
+          <div>
+            <div class="stack-no">CORE 06</div>
+            <h3>非合理を守る力</h3>
+            <p>効率だけでは説明できない大事なものを守る力。たとえば、みんなで準備した時間、雑談、打ち上げ、裏話みたいな部分です。</p>
+          </div>
+          <div class="stack-tip">例: 最短ではなくても、思い出が残るやり方を選べる</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-kicker">06 / 実践</div>
+      <h2 class="section-title">明日からの打ち手 5ステップ</h2>
+      <p class="section-lead">
+        じゃあ何をすればいいのか。中学生でも始めやすい形にすると、この5つです。
+      </p>
+
+      <div class="steps">
+        <article class="step">
+          <div class="step-no">01</div>
+          <h3>AIの得意を体感する</h3>
+          <p>まずはChatGPTや画像生成を触ってみる。作文、要約、ポスター案づくりで使ってみると、「AIはここが速い」が見えてきます。</p>
+          <small>知らないことが一番危ない</small>
+        </article>
+
+        <article class="step">
+          <div class="step-no">02</div>
+          <h3>自分のアンカーを書き出す</h3>
+          <p>自分しか持っていないものを書き出す。部活経験、地元、友達との思い出、得意分野、関係性。そこがあなたの強みになります。</p>
+          <small>差は能力より所有から生まれることも多い</small>
+        </article>
+
+        <article class="step">
+          <div class="step-no">03</div>
+          <h3>成功パターンを大量に浴びる</h3>
+          <p>人気の動画、かっこいいポスター、売れている商品をたくさん見る。「なぜこれがいいのか」を考えると、選ぶ力が育ちます。</p>
+          <small>パターンを知らない逆張りは外しやすい</small>
+        </article>
+
+        <article class="step">
+          <div class="step-no">04</div>
+          <h3>曖昧でも決めて進める</h3>
+          <p>完璧な正解を待ちすぎない。「まずこれでやってみよう」で進める。やってから直すほうが、ずっと速く成長できます。</p>
+          <small>ドライブ力は全職種で強い価値になる</small>
+        </article>
+
+        <article class="step">
+          <div class="step-no">05</div>
+          <h3>感じの良い人になる</h3>
+          <p>あいさつする、返事が早い、感じよく話す。結局、最後は「この人とまた組みたい」がすごく強いです。</p>
+          <small>人間力は甘い話ではなく、競争力</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="equation">AI時代の勝ち筋 =<br>「人にしかできない価値」 × 「AIで増幅する力」</div>
+      <p>
+        すごく簡単にまとめると、<br>
+        <strong>AIは「手を速くする道具」、人は「何をやるかを決める存在」</strong>です。<br>
+        作るだけの人ではなく、選ぶ・意味をつける・人を動かす人になるほど、これから強くなります。
+      </p>
+      <div class="footer-note">
+        Based on the YouTube talk: キングコング西野亮廣 × グッドパッチ土屋尚史「生成AIで仕事が奪われる/増えるクリエイターの差」
+      </div>
+    </section>
+  </div>
+</body>
+</html>

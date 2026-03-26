@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🎨 AIで「自分の取説」を作ろう！ ── Personality Profile ページの作り方</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#FF6B9D;--orange:#FF8A65;--yellow:#FFD54F;--green:#81C784;
+  --blue:#64B5F6;--purple:#BA68C8;--cyan:#4DD0E1;--red:#EF5350;
+  --bg:#FFF8F0;--card:#fff;--text:#2D2D2D;--text-light:#666;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito','Hiragino Sans','Meiryo',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;overflow-x:hidden}
+
+/* Background */
+.bg-shapes{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.shape{position:absolute;border-radius:50%;opacity:.1}
+.shape:nth-child(1){width:300px;height:300px;background:var(--pink);top:-50px;right:-80px;animation:fl 20s ease-in-out infinite}
+.shape:nth-child(2){width:200px;height:200px;background:var(--blue);bottom:10%;left:-60px;animation:fl 25s ease-in-out infinite reverse}
+.shape:nth-child(3){width:250px;height:250px;background:var(--green);top:40%;right:5%;animation:fl 22s ease-in-out infinite 3s}
+.shape:nth-child(4){width:180px;height:180px;background:var(--yellow);bottom:-40px;right:30%;animation:fl 18s ease-in-out infinite 5s}
+@keyframes fl{0%,100%{transform:translate(0,0)}25%{transform:translate(30px,-30px)}50%{transform:translate(-20px,20px)}75%{transform:translate(15px,10px)}}
+
+.container{max-width:860px;margin:0 auto;padding:20px;position:relative;z-index:1}
+
+/* Hero */
+.hero{text-align:center;padding:50px 20px 20px;animation:fadeInDown .8s ease}
+.hero h1{font-size:2.4em;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--orange),var(--yellow),var(--green),var(--blue),var(--purple));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gs 4s ease infinite}
+.hero .subtitle{font-size:1.05em;color:var(--text-light);margin-top:8px;font-weight:600}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gs{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* Intro banner */
+.intro-banner{background:linear-gradient(135deg,#FFF3E0,#FCE4EC,#E8F5E9,#E3F2FD);background-size:400% 400%;animation:gs 6s ease infinite;border-radius:20px;padding:30px;margin:20px 0 30px;text-align:center;font-size:1.1em;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.08)}
+
+/* Cards */
+.card{background:var(--card);border-radius:20px;padding:30px;margin-bottom:24px;box-shadow:0 8px 32px rgba(0,0,0,.08);transition:transform .3s}
+.card:hover{transform:translateY(-3px)}
+.card h2{font-size:1.5em;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.card h3{font-size:1.15em;font-weight:700;margin:20px 0 10px;color:var(--purple)}
+
+/* Step cards */
+.step-card{background:var(--card);border-radius:20px;padding:28px;margin-bottom:20px;box-shadow:0 8px 32px rgba(0,0,0,.08);border-left:5px solid var(--pink);position:relative;transition:all .3s}
+.step-card:hover{transform:translateX(4px);box-shadow:0 12px 40px rgba(0,0,0,.12)}
+.step-card:nth-child(2){border-left-color:var(--orange)}
+.step-card:nth-child(3){border-left-color:var(--yellow)}
+.step-card:nth-child(4){border-left-color:var(--green)}
+.step-card:nth-child(5){border-left-color:var(--blue)}
+.step-card:nth-child(6){border-left-color:var(--purple)}
+.step-num{position:absolute;top:-12px;left:-12px;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1em;box-shadow:0 4px 12px rgba(186,104,200,.4)}
+.step-card h3{margin-top:0;color:var(--text)}
+
+/* Prompt box */
+.prompt-section{margin:14px 0}
+.prompt-label{display:inline-block;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;padding:4px 16px;border-radius:20px 20px 0 0;font-size:.85em;font-weight:700}
+.prompt-textarea{width:100%;min-height:320px;padding:20px;border:3px solid #e8d5f5;border-radius:0 16px 16px 16px;font-family:'Nunito','Hiragino Sans',sans-serif;font-size:.92em;line-height:1.8;color:var(--text);background:#fdf8ff;resize:vertical;outline:none;transition:border-color .3s}
+.prompt-textarea:focus{border-color:var(--purple)}
+.prompt-textarea.small{min-height:140px}
+.copy-btn-big{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;margin-top:8px;border:none;border-radius:50px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;font-family:'Nunito',sans-serif;font-size:1.05em;font-weight:800;cursor:pointer;transition:all .3s;box-shadow:0 4px 16px rgba(186,104,200,.3)}
+.copy-btn-big:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(186,104,200,.5)}
+.copy-btn-big.copied{background:linear-gradient(135deg,var(--green),var(--cyan))}
+
+/* Feature grid */
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:16px 0}
+.feature-item{background:linear-gradient(135deg,#fff,#fafafa);border-radius:16px;padding:20px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.05);transition:all .3s}
+.feature-item:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.feature-item .icon{font-size:2.2em;margin-bottom:8px}
+.feature-item h4{font-weight:700;margin-bottom:4px}
+.feature-item p{font-size:.88em;color:var(--text-light)}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,var(--pink),var(--purple));border-radius:20px;padding:40px;text-align:center;color:#fff;margin:30px 0}
+.cta-box h2{color:#fff;font-size:1.6em;margin-bottom:12px;justify-content:center}
+.cta-box p{font-size:1.05em;opacity:.95;margin-bottom:16px}
+.cta-btn{display:inline-block;padding:14px 36px;border-radius:50px;background:#fff;color:var(--purple);font-family:'Nunito',sans-serif;font-weight:800;font-size:1em;text-decoration:none;transition:all .3s;cursor:pointer;border:none}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+
+/* Tips */
+.tip-card{background:#fff;border-radius:16px;padding:20px;margin:12px 0;display:flex;gap:14px;align-items:flex-start;box-shadow:0 2px 10px rgba(0,0,0,.04);border-left:4px solid var(--cyan)}
+.tip-icon{font-size:1.6em;flex-shrink:0}
+.tip-text{font-size:.95em}
+.tip-text strong{color:var(--purple)}
+
+/* Before/After */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.ba-card{border-radius:16px;padding:20px}
+.ba-before{background:linear-gradient(135deg,#f5f5f5,#e0e0e0)}
+.ba-after{background:linear-gradient(135deg,#E8F5E9,#E3F2FD)}
+.ba-card h4{margin-bottom:8px;font-size:1em}
+.ba-card ul{padding-left:18px;font-size:.92em}
+.ba-card li{margin:4px 0}
+
+/* Tag */
+.tag{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.78em;font-weight:700;color:#fff;margin:2px}
+.tag-pink{background:var(--pink)}
+.tag-blue{background:var(--blue)}
+.tag-green{background:var(--green)}
+.tag-purple{background:var(--purple)}
+.tag-orange{background:var(--orange)}
+
+/* Footer */
+.footer{text-align:center;padding:30px;color:var(--text-light);font-size:.85em}
+.footer a{color:var(--purple);text-decoration:none;font-weight:700}
+
+/* Accordion */
+.accordion{border-radius:16px;overflow:hidden;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.accordion-header{background:#fff;padding:16px 20px;cursor:pointer;font-weight:700;display:flex;justify-content:space-between;align-items:center;transition:background .3s}
+.accordion-header:hover{background:#fef3f0}
+.accordion-header .arrow{transition:transform .3s;font-size:.8em}
+.accordion-header.open .arrow{transform:rotate(180deg)}
+.accordion-body{background:#fff;padding:0 20px;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease}
+.accordion-body.open{max-height:2000px;padding:0 20px 20px}
+
+/* Link box */
+.link-box{display:flex;align-items:center;gap:10px;background:#fff;border:3px solid #e8d5f5;border-radius:16px;padding:12px 16px;margin:16px 0}
+.link-box input{flex:1;border:none;font-family:'Nunito',sans-serif;font-size:.95em;font-weight:600;color:var(--purple);background:transparent;outline:none}
+.link-copy-btn{padding:10px 20px;border:none;border-radius:50px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;font-family:'Nunito',sans-serif;font-weight:700;font-size:.9em;cursor:pointer;transition:all .3s;white-space:nowrap}
+.link-copy-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(186,104,200,.4)}
+
+@media(max-width:640px){
+  .hero h1{font-size:1.8em}
+  .card,.step-card{padding:20px}
+  .ba-grid{grid-template-columns:1fr}
+  .feature-grid{grid-template-columns:1fr}
+  .prompt-box{font-size:.8em}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-shapes">
+  <div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div>
+</div>
+
+<div class="container">
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <h1>🎨 AIで「自分の取説」を作ろう！</h1>
+  <p class="subtitle">MBTI × ストレングスファインダーで作る、可愛い自己紹介ページ</p>
+</div>
+
+<div class="intro-banner">
+  🌈 MBTI や ストレングスファインダーの結果を<br>
+  AIに渡すだけで、めちゃくちゃ可愛い<br>
+  「自分の取扱説明書」ページが作れます✨<br>
+  <span style="font-size:.85em;color:var(--text-light)">所要時間：約5〜10分 ｜ プログラミング知識：不要</span>
+</div>
+
+<!-- ===== 完成イメージ ===== -->
+<div class="card">
+  <h2>✨ こんなのができます</h2>
+  <div class="feature-grid">
+    <div class="feature-item">
+      <div class="icon">🧠</div>
+      <h4>MBTIタイプ表示</h4>
+      <p>アニメーション付きの文字＋認知機能バーで可視化</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">💎</div>
+      <h4>資質TOP10カード</h4>
+      <p>ドメイン別カラーで一覧表示</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">📊</div>
+      <h4>チャート2種</h4>
+      <p>ドーナツグラフ＋レーダーチャート</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">⚖️</div>
+      <h4>強み・弱み</h4>
+      <p>資質の掛け合わせで分析</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">👋</div>
+      <h4>自己紹介文</h4>
+      <p>グラデーション背景のオシャレカード</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">💡</div>
+      <h4>活かし方ヒント</h4>
+      <p>資質ごとの実践アドバイス</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">📈</div>
+      <h4>全34資質ランキング</h4>
+      <p>バーチャートで全体像を一望</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">✏️</div>
+      <h4>編集機能つき</h4>
+      <p>ブラウザ上でデータ編集→即反映</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 準備するもの ===== -->
+<div class="card">
+  <h2>📋 準備するもの</h2>
+  <div class="ba-grid">
+    <div class="ba-card ba-before">
+      <h4>🔑 必須</h4>
+      <ul>
+        <li><strong>MBTIの結果</strong>（4文字タイプ）</li>
+        <li><strong>ストレングスファインダー結果</strong><br>（最低TOP5、できればTOP10）</li>
+        <li><strong>AI（ChatGPT / Claude / Gemini 等）</strong></li>
+      </ul>
+    </div>
+    <div class="ba-card ba-after">
+      <h4>💡 あるとベター</h4>
+      <ul>
+        <li>MBTI 各軸のパーセンテージ<br>（16Personalities等のスクショ）</li>
+        <li>全34資質の順位</li>
+        <li>自分なりの「強み・弱み」メモ</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tip-card">
+    <div class="tip-icon">💡</div>
+    <div class="tip-text"><strong>MBTIがわからない人は</strong><br>
+    <a href="https://www.16personalities.com/ja" target="_top" style="color:var(--purple)">16Personalities</a> で無料診断できます（約10分）。ストレングスファインダーは有料ですが、TOP5だけでも十分作れます！</div>
+  </div>
+</div>
+
+<!-- ===== ステップ ===== -->
+<div class="card">
+  <h2>🚀 作り方（3ステップ）</h2>
+</div>
+
+<!-- STEP 1 -->
+<div class="step-card">
+  <div class="step-num">1</div>
+  <h3>🌐 お手本ページを見る</h3>
+  <p>まず完成イメージを確認しましょう。下のURLをコピーしてブラウザの新しいタブで開いてね👇</p>
+  <div class="link-box">
+    <input type="text" value="https://joyful-crisp-4fb193.netlify.app/" readonly id="sampleUrl">
+    <button class="link-copy-btn" onclick="copyUrl()">📋 URLをコピー</button>
+  </div>
+  <p style="font-size:.9em;color:var(--text-light)">※ タブ切替、チャート、編集機能など全部入り。このまるごとを自分用に作ります。</p>
+</div>
+
+<!-- STEP 2 -->
+<div class="step-card">
+  <div class="step-num">2</div>
+  <h3>🤖 AIにプロンプトを投げる</h3>
+  <p>お好きなAIに、以下のプロンプトをコピペして送ってください。<br>
+  <span class="tag tag-pink">ChatGPT</span>
+  <span class="tag tag-purple">Claude</span>
+  <span class="tag tag-blue">Gemini</span>
+  どれでもOK！</p>
+
+  <div class="prompt-section">
+    <div class="prompt-label">💬 プロンプト（↓の「私のデータ」を自分の情報に書き換えてね）</div>
+    <textarea class="prompt-textarea" id="prompt1" onclick="this.select()">以下のURLのページを分析して、同じ構造・デザイン・機能で「私の」データに差し替えた、単一HTMLファイルを作ってください。
+
+■ お手本URL
+https://joyful-crisp-4fb193.netlify.app/
+
+■ 再現してほしいポイント
+- タブ切替（MBTI / 資質TOP10 / チャート / 強み弱み / 自己紹介 / 活かし方 / 編集）
+- MBTI文字のポップインアニメーション
+- 認知機能バー
+- ストレングスファインダー資質カード（ドメイン色分け）
+- ドーナツチャート＆レーダーチャート（Canvas描画）
+- 全34資質バーチャート
+- 編集機能（ブラウザ上でデータ変更→即反映）
+- パステルカラー＆丸みデザイン
+- レスポンシブ対応
+
+■ 私のデータ（↓ここを自分の情報に書き換える！）
+【MBTI】ENFP（広報運動家）
+- E-I: 72%
+- S-N: 85%
+- T-F: 60%
+- J-P: 78%
+
+【ストレングスファインダー TOP10】
+1. ○○○（ドメイン: 実行力 or 影響力 or 人間関係構築力 or 戦略的思考力）
+2. ○○○
+3. ○○○
+4. ○○○
+5. ○○○
+6. ○○○
+7. ○○○
+8. ○○○
+9. ○○○
+10. ○○○
+
+【全34資質の順位】（あれば）
+1位〜34位を列挙
+
+■ 出力形式
+- 単一の .html ファイル（外部ファイル参照なし）
+- CSS・JSはすべてインライン
+- Google Fonts（Nunito）のみ外部読み込みOK
+- そのままブラウザで開いて動作すること</textarea>
+    <button class="copy-btn-big" onclick="copyPrompt('prompt1',this)">📋 プロンプトをまるごとコピー</button>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">⚡</div>
+    <div class="tip-text"><strong>コツ：データは具体的に書く！</strong><br>
+    「ENFP です」だけでなく、各軸のパーセンテージや資質の説明文もつけると、AIがより正確に作ってくれます。</div>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="step-card">
+  <div class="step-num">3</div>
+  <h3>📄 HTMLをダウンロードして開く</h3>
+  <p>AIが生成したHTMLコードを <code>.html</code> ファイルとして保存し、ブラウザで開けば完成！</p>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      💻 保存方法（PCの場合）
+      <span class="arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ol style="padding-left:20px;margin-top:10px">
+        <li>AIの出力からHTMLコードをコピー</li>
+        <li>テキストエディタ（メモ帳 etc.）に貼り付け</li>
+        <li><code>my-profile.html</code> という名前で保存</li>
+        <li>ファイルをダブルクリック → ブラウザで開く</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      📱 保存方法（スマホの場合）
+      <span class="arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <ol style="padding-left:20px;margin-top:10px">
+        <li>ChatGPT等のアプリ内で「コードをコピー」</li>
+        <li>「ファイル」アプリなどでHTMLとして保存</li>
+        <li>ブラウザアプリで開く</li>
+        <li>※ PCでの操作がおすすめです</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 公開したい人向け ===== -->
+<div class="card">
+  <h2>🌍 みんなに見せたい人向け（公開方法）</h2>
+  <p>作ったHTMLは、無料で世界中に公開できます！</p>
+
+  <div class="feature-grid" style="margin-top:16px">
+    <div class="feature-item">
+      <div class="icon">🚀</div>
+      <h4>Netlify Drop</h4>
+      <p>ファイルをドラッグ＆ドロップするだけ。一番かんたん！</p>
+      <a href="https://app.netlify.com/drop" target="_top" style="color:var(--purple);font-weight:700;font-size:.88em">→ Netlify Drop</a>
+    </div>
+    <div class="feature-item">
+      <div class="icon">📦</div>
+      <h4>GitHub Pages</h4>
+      <p>GitHubにファイルを置いて公開。無料。</p>
+    </div>
+    <div class="feature-item">
+      <div class="icon">🔗</div>
+      <h4>HTML Share Box</h4>
+      <p>HTMLを圧縮してURL化。サーバー不要！</p>
+      <a href="https://okemonogatari-hash.github.io/html-share-box/" target="_top" style="color:var(--purple);font-weight:700;font-size:.88em">→ きょうちゃん</a>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🎯</div>
+    <div class="tip-text"><strong>一番かんたんなのは Netlify Drop</strong><br>
+    アカウント登録すら不要。HTMLファイルをドラッグ＆ドロップするだけで、<code>https://○○○.netlify.app</code> のURLが発行されます。お手本ページもこれで公開されています。</div>
+  </div>
+</div>
+
+<!-- ===== カスタマイズ ===== -->
+<div class="card">
+  <h2>🎨 もっとカスタマイズしたい人へ</h2>
+
+  <h3>編集タブを使う</h3>
+  <p>完成したページの「✏️ 編集」タブから、ブラウザ上でデータを変更できます。<br>変更後「反映する」ボタンを押すと、すべてのタブがリアルタイム更新されます。</p>
+
+  <h3>AIに追加指示を出す</h3>
+  <div class="prompt-section">
+    <div class="prompt-label">💬 カスタマイズ指示の例</div>
+    <textarea class="prompt-textarea small" id="prompt2" onclick="this.select()">・タイトルを「○○の取扱説明書」に変えて
+・色をブルー系に変更して
+・「趣味」タブを追加して
+・自己紹介にプロフィール画像を入れて
+・フッターにSNSリンクを追加して
+・背景のアニメーションをもっと派手にして</textarea>
+    <button class="copy-btn-big" onclick="copyPrompt('prompt2',this)">📋 コピー</button>
+  </div>
+</div>
+
+<!-- ===== FAQ ===== -->
+<div class="card">
+  <h2>❓ よくある質問</h2>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      Q. プログラミングの知識は必要？
+      <span class="arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p><strong>不要です！</strong> AIがHTMLを全部書いてくれます。あなたがやるのは「自分のデータを伝える」だけ。</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      Q. ストレングスファインダーを受けてないけど作れる？
+      <span class="arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p><strong>作れます！</strong> MBTIだけでもOK。ストレングスファインダー部分を省いて、代わりに「好きなこと」「得意なこと」等のセクションに変えてもらうこともできます。</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      Q. どのAIが一番おすすめ？
+      <span class="arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p><strong>Claude（クロード）</strong>が一番得意です。長いHTMLコードも一発で出力してくれます。<br>
+      ChatGPT（GPT-4o）やGeminiでも作れますが、コードが途中で切れることがあるので、その場合は「続きを書いて」と伝えてください。</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      Q. 出来上がりがお手本と違う…
+      <span class="arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>AIに<strong>「お手本URLをもう一度見て、もっと再現度を上げて」</strong>と指示してみてください。<br>
+      特に「タブ切替」「Canvas描画のチャート」「ポップインアニメーション」の3つが入っているか確認するのがポイントです。</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      Q. 個人情報は大丈夫？
+      <span class="arrow">▼</span>
+    </div>
+    <div class="accordion-body">
+      <p>HTMLはあなたのPC上にだけ存在します。公開しなければ誰にも見えません。<br>
+      Netlify等で公開する場合は、載せたくない情報は省いてくださいね。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CTA ===== -->
+<div class="cta-box">
+  <h2>さあ、あなたの「取説」を作ろう！ 🎉</h2>
+  <p>MBTIとストレングスファインダーの結果を用意して<br>AIにプロンプトを投げるだけ。5分で完成！</p>
+  <button class="cta-btn" onclick="copyUrl()" style="text-decoration:none">📋 お手本URLをコピーして見てみる</button>
+</div>
+
+<!-- ===== Footer ===== -->
+<div class="footer">
+  <p>Made with 💖 by <a href="#">おけもん</a> × Claude Code</p>
+  <p style="margin-top:4px">このページ自体もAIで作られた単一HTMLです ✨</p>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// Accordion toggle
+function toggleAccordion(header){
+  header.classList.toggle('open');
+  const body=header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// Copy prompt textarea
+function copyPrompt(id,btn){
+  const ta=document.getElementById(id);
+  ta.select();
+  ta.setSelectionRange(0,99999);
+  navigator.clipboard.writeText(ta.value).then(()=>{
+    btn.innerHTML='✅ コピーしました！';
+    btn.classList.add('copied');
+    setTimeout(()=>{
+      btn.innerHTML='📋 プロンプトをまるごとコピー';
+      btn.classList.remove('copied');
+    },2000);
+  }).catch(()=>{
+    // fallback
+    document.execCommand('copy');
+    btn.innerHTML='✅ コピーしました！';
+    btn.classList.add('copied');
+    setTimeout(()=>{
+      btn.innerHTML='📋 プロンプトをまるごとコピー';
+      btn.classList.remove('copied');
+    },2000);
+  });
+}
+
+// Copy sample URL
+function copyUrl(){
+  const url='https://joyful-crisp-4fb193.netlify.app/';
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.querySelector('.link-copy-btn');
+    if(btn){btn.textContent='✅ コピーしました！';setTimeout(()=>{btn.textContent='📋 URLをコピー'},2000);}
+    // Also show on CTA button if it was clicked there
+  }).catch(()=>{
+    const inp=document.getElementById('sampleUrl');
+    if(inp){inp.select();document.execCommand('copy');}
+  });
+}
+
+// Animate on scroll
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.opacity='1';
+      e.target.style.transform='translateY(0)';
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.step-card,.card,.feature-item').forEach(el=>{
+  el.style.opacity='0';
+  el.style.transform='translateY(20px)';
+  el.style.transition='all 0.6s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

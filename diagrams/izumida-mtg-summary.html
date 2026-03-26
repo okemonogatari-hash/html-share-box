@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>泉田さんMTGまとめ 2026/3/11</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: #f0f2f5;
+    color: #2d3748;
+    padding: 32px 24px;
+    line-height: 1.7;
+  }
+
+  .container { max-width: 960px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 36px 40px;
+    color: white;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+  }
+  .header h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .header-meta { font-size: 14px; opacity: 0.9; }
+  .header-meta span { margin-right: 20px; }
+
+  /* Section Card */
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border-left: 5px solid #667eea;
+  }
+  .card.green { border-left-color: #48bb78; }
+  .card.orange { border-left-color: #ed8936; }
+  .card.red { border-left-color: #f56565; }
+  .card.purple { border-left-color: #9f7aea; }
+  .card.teal { border-left-color: #38b2ac; }
+  .card.pink { border-left-color: #ed64a6; }
+
+  .card h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h2 .icon { font-size: 22px; }
+
+  .card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 16px 0 8px;
+    color: #4a5568;
+  }
+
+  /* Decided items */
+  .decided-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .decided-item {
+    background: #f7fafc;
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+  }
+  .decided-item .label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #667eea;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .decided-item .value { font-size: 14px; font-weight: 600; }
+  .decided-item .sub { font-size: 12px; color: #718096; margin-top: 2px; }
+
+  /* Flow */
+  .flow-container {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    overflow-x: auto;
+    padding: 8px 0;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 130px;
+    text-align: center;
+    position: relative;
+  }
+  .flow-circle {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+  }
+  .flow-step .flow-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 2px;
+  }
+  .flow-step .flow-detail {
+    font-size: 10px;
+    color: #718096;
+    line-height: 1.4;
+  }
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    color: #cbd5e0;
+    font-size: 20px;
+    padding: 0 4px;
+    padding-bottom: 20px;
+  }
+
+  /* Task table */
+  .task-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+  }
+  .task-table th {
+    background: #667eea;
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .task-table th:first-child { border-radius: 8px 0 0 0; }
+  .task-table th:last-child { border-radius: 0 8px 0 0; }
+  .task-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #edf2f7;
+  }
+  .task-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+  .task-table tr:last-child td:last-child { border-radius: 0 0 8px 0; }
+  .task-table tr:hover td { background: #f7fafc; }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .badge.okemon { background: #ebf4ff; color: #3182ce; }
+  .badge.izumida { background: #faf5ff; color: #805ad5; }
+  .badge-date {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e53e3e;
+  }
+
+  /* Onboarding split */
+  .onboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .onboard-col {
+    background: #f7fafc;
+    border-radius: 10px;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+  }
+  .onboard-col h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid;
+  }
+  .onboard-col.irodori h4 { border-bottom-color: #667eea; color: #667eea; }
+  .onboard-col.member h4 { border-bottom-color: #48bb78; color: #48bb78; }
+  .onboard-col ol {
+    padding-left: 18px;
+    font-size: 13px;
+  }
+  .onboard-col li { margin-bottom: 4px; }
+  .onboard-col li .note {
+    font-size: 11px;
+    color: #a0aec0;
+  }
+
+  /* Issue cards */
+  .issue-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .issue-card {
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    position: relative;
+  }
+  .issue-card .issue-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .issue-card .issue-body { font-size: 12px; color: #4a5568; line-height: 1.6; }
+  .issue-card .issue-action {
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #667eea;
+  }
+  .issue-card.yellow { background: #fffff0; border-color: #f6e05e; }
+  .issue-card.blue { background: #ebf8ff; border-color: #90cdf4; }
+  .issue-card.pink-bg { background: #fff5f7; border-color: #feb2b2; }
+  .issue-card.green-bg { background: #f0fff4; border-color: #9ae6b4; }
+  .issue-card.purple-bg { background: #faf5ff; border-color: #d6bcfa; }
+
+  /* Course table */
+  .course-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 12px;
+    margin-top: 12px;
+  }
+  .course-table th {
+    background: #edf2f7;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 700;
+    color: #4a5568;
+  }
+  .course-table th:first-child { border-radius: 6px 0 0 0; }
+  .course-table th:last-child { border-radius: 0 6px 0 0; }
+  .course-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #edf2f7;
+  }
+
+  /* Next meeting banner */
+  .next-mtg {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    border-radius: 14px;
+    padding: 24px 32px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+  .next-mtg .left h3 { font-size: 14px; opacity: 0.9; margin-bottom: 4px; }
+  .next-mtg .left .date { font-size: 22px; font-weight: 700; }
+  .next-mtg .right { text-align: right; font-size: 13px; opacity: 0.9; }
+
+  /* Status dot legend */
+  .status-legend {
+    display: flex; gap: 16px; margin-bottom: 12px; font-size: 12px;
+  }
+  .status-dot {
+    width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px;
+  }
+  .status-dot.fuzzy { background: #f6e05e; }
+  .status-dot.decided { background: #48bb78; }
+  .status-dot.todo { background: #667eea; }
+
+  @media (max-width: 640px) {
+    .decided-grid, .onboard-grid, .issue-grid { grid-template-columns: 1fr; }
+    .flow-container { flex-wrap: wrap; justify-content: center; }
+    .flow-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>泉田さん MTGまとめ</h1>
+    <div class="header-meta">
+      <span>📅 2026/3/11（水）14:00〜</span>
+      <span>👥 おけもん × 泉田さん</span>
+      <span>🎯 採用・オンボーディング業務の引き継ぎ</span>
+    </div>
+  </div>
+
+  <!-- 決まったこと -->
+  <div class="card green">
+    <h2><span class="icon">✅</span>決まったこと</h2>
+    <div class="decided-grid">
+      <div class="decided-item">
+        <div class="label">採用対応の引き継ぎ</div>
+        <div class="value">山下さんまで → 泉田さん</div>
+        <div class="sub">次の応募者から → おけもんが担当</div>
+      </div>
+      <div class="decided-item">
+        <div class="label">公式LINE</div>
+        <div class="value">おけもん招待済み ✅</div>
+        <div class="sub">最低1日1回チェック / スマホ通知ON</div>
+      </div>
+      <div class="decided-item">
+        <div class="label">採用フロー確認</div>
+        <div class="value">全体像と各リンク確認済み</div>
+        <div class="sub">フォーム・課題・ES・事業資料</div>
+      </div>
+      <div class="decided-item">
+        <div class="label">次回MTG</div>
+        <div class="value">3/23（月）11:00</div>
+        <div class="sub">ZoomリンクはURL都度発行</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 採用フロー -->
+  <div class="card">
+    <h2><span class="icon">🔄</span>採用フロー全体像</h2>
+    <div class="flow-container">
+      <div class="flow-step">
+        <div class="flow-circle">1</div>
+        <div class="flow-label">応募フォーム</div>
+        <div class="flow-detail">公式LINEから<br>「受信応募」で自動送信</div>
+      </div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-step">
+        <div class="flow-circle">2</div>
+        <div class="flow-label">課題テスト</div>
+        <div class="flow-detail">職種別に異なる<br>（下表参照）</div>
+      </div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-step">
+        <div class="flow-circle">3</div>
+        <div class="flow-label">ES＋資料送付</div>
+        <div class="flow-detail">理念・コアバリュー<br>事業資料</div>
+      </div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-step">
+        <div class="flow-circle">4</div>
+        <div class="flow-label">コメント追加</div>
+        <div class="flow-detail">担当者が<br>一言メモ補足</div>
+      </div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-step">
+        <div class="flow-circle">5</div>
+        <div class="flow-label">面談</div>
+        <div class="flow-detail">かほやまさん or<br>空いている方</div>
+      </div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-step">
+        <div class="flow-circle">6</div>
+        <div class="flow-label">合否連絡</div>
+        <div class="flow-detail">infoメールから<br>送信</div>
+      </div>
+    </div>
+
+    <h3>職種別の課題テスト</h3>
+    <table class="course-table">
+      <tr><th>職種</th><th>送る課題</th></tr>
+      <tr><td>🎨 デザイナー</td><td>デザイナー課題 ＋ 共通メールテスト</td></tr>
+      <tr><td>✍️ ライター</td><td>ライティング課題 ＋ 共通メールテスト</td></tr>
+      <tr><td>💼 事務アシスタント</td><td>共通メールテストのみ</td></tr>
+    </table>
+  </div>
+
+  <!-- タスク一覧 -->
+  <div class="card orange">
+    <h2><span class="icon">📋</span>タスクと期限（次回MTGまで）</h2>
+    <table class="task-table">
+      <tr>
+        <th>タスク</th>
+        <th>担当</th>
+        <th>期限</th>
+      </tr>
+      <tr>
+        <td>オフボーディング叩き台作成</td>
+        <td><span class="badge okemon">おけもん</span></td>
+        <td><span class="badge-date">3/12</span></td>
+      </tr>
+      <tr>
+        <td>infoメールのログイン確認</td>
+        <td><span class="badge okemon">おけもん</span></td>
+        <td><span class="badge-date">3/12</span>（明日のMTGで確認）</td>
+      </tr>
+      <tr>
+        <td>PMマニュアル整理（草間さん等の名前削除含む）</td>
+        <td><span class="badge okemon">おけもん</span></td>
+        <td><span class="badge-date">3/22</span></td>
+      </tr>
+      <tr>
+        <td>メール用・LINE用テンプレ文面作成</td>
+        <td><span class="badge izumida">泉田さん</span></td>
+        <td><span class="badge-date">3/22</span></td>
+      </tr>
+      <tr>
+        <td>スタートアップガイド整理（オンボーディングとの重複解消）</td>
+        <td><span class="badge izumida">泉田さん</span></td>
+        <td><span class="badge-date">3/22</span></td>
+      </tr>
+      <tr>
+        <td>3/16 採用専門家MTGで基準について相談</td>
+        <td><span class="badge okemon">おけもん</span></td>
+        <td><span class="badge-date">3/16</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- オンボーディング -->
+  <div class="card teal">
+    <h2><span class="icon">🚀</span>採用後オンボーディング（現状の流れ）</h2>
+    <div class="onboard-grid">
+      <div class="onboard-col irodori">
+        <h4>彩り側の作業</h4>
+        <ol>
+          <li>チャットワークグループ作成<br><span class="note">（新メンバー・小川さん・大山さん・人事担当）</span></li>
+          <li>契約書を配布<br><span class="note">業務委託契約書 ＋ 取引条件通知書（フリーランス法対応）</span></li>
+          <li>Notionメンバーポータルに招待<br><span class="note">彩りGmailアドレス作成後</span></li>
+          <li>Notion個人ページ作成を依頼</li>
+        </ol>
+      </div>
+      <div class="onboard-col member">
+        <h4>新メンバー側の作業</h4>
+        <ol>
+          <li>彩り用Gmailアドレスを作成</li>
+          <li>Notionメンバーポータルへ入る<br><span class="note">→ マニュアルへのアクセス権も自動付与</span></li>
+          <li>スタートアップガイドを読み進める<br><span class="note">（全19項目）</span></li>
+          <li>わからないことはグループチャットで質問</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- 課題感 -->
+  <div class="card red">
+    <h2><span class="icon">🤔</span>見えてきた課題感（まだふわっとしている部分）</h2>
+    <div class="status-legend">
+      <span><span class="status-dot fuzzy"></span>未確定・要検討</span>
+      <span><span class="status-dot todo"></span>対応予定あり</span>
+    </div>
+    <div class="issue-grid">
+      <div class="issue-card yellow">
+        <div class="issue-title"><span class="status-dot fuzzy"></span>採用基準が未整備</div>
+        <div class="issue-body">
+          スキル重視 or 熱意・伸びしろ重視？<br>
+          職種ごとに基準が異なるが専門外は評価が難しい<br>
+          まだ不採用を出した実績もなく判断軸がない
+        </div>
+        <div class="issue-action">→ 3/16 採用専門家MTGで相談予定</div>
+      </div>
+      <div class="issue-card yellow">
+        <div class="issue-title"><span class="status-dot fuzzy"></span>「入った感がない」問題</div>
+        <div class="issue-body">
+          文面指示だけで直接話す機会がない<br>
+          「採用されたけど、いつから？」状態になりがち<br>
+          オリエンテーションの仕組みが必要
+        </div>
+        <div class="issue-action">→ 読み合わせ会 or 出勤前日MTGを検討</div>
+      </div>
+      <div class="issue-card blue">
+        <div class="issue-title"><span class="status-dot todo"></span>ガイド・フローの重複</div>
+        <div class="issue-body">
+          スタートアップガイドとオンボーディングフローの<br>
+          内容がかなり被っている → 整理が必要
+        </div>
+        <div class="issue-action">→ 泉田さんが3/22までに整理</div>
+      </div>
+      <div class="issue-card pink-bg">
+        <div class="issue-title"><span class="status-dot fuzzy"></span>Googleドライブの権限</div>
+        <div class="issue-body">
+          個人アドレスでデータ作成 → 退職時消失問題<br>
+          （吹上さんのケースで実際に発生）
+        </div>
+        <div class="issue-action">→ ワークスペース移行と合わせて整理</div>
+      </div>
+      <div class="issue-card green-bg">
+        <div class="issue-title"><span class="status-dot fuzzy"></span>入力内容の重複</div>
+        <div class="issue-body">
+          ES・Notion個人ページ・自己紹介シートで<br>
+          似た情報を何度も書かせている可能性
+        </div>
+        <div class="issue-action">→ おけもんが内容を比較して整理</div>
+      </div>
+      <div class="issue-card purple-bg">
+        <div class="issue-title"><span class="status-dot todo"></span>定期ミーティング制度</div>
+        <div class="issue-body">
+          現在3ヶ月に1回 → 毎月に変更検討中<br>
+          おけもんも第三者的立場で参加予定
+        </div>
+        <div class="issue-action">→ 日程固定とアナウンス方法を決める</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next MTG -->
+  <div class="next-mtg">
+    <div class="left">
+      <h3>次回進捗確認MTG</h3>
+      <div class="date">📅 3/23（月）11:00〜</div>
+    </div>
+    <div class="right">
+      おけもん × 泉田さん<br>
+      上記タスクの進捗確認
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,459 +1,422 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTML Share Box - おけもんの図解共有</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
-  <style>
-    :root {
-      --bg: #f6efe7;
-      --panel: rgba(255,255,255,0.88);
-      --line: rgba(29,42,47,0.10);
-      --ink: #1d2a2f;
-      --muted: #607076;
-      --accent: #d96b3b;
-      --accent-soft: #ffe7db;
-      --green: #2f7d62;
-      --green-soft: #dff3ea;
-      --shadow: 0 20px 48px rgba(83,60,40,0.12);
-      --radius: 22px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: "Avenir Next","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
-      background:
-        radial-gradient(circle at 8% 10%, rgba(217,107,59,0.14), transparent 20%),
-        radial-gradient(circle at 88% 8%, rgba(47,125,98,0.12), transparent 22%),
-        linear-gradient(180deg, #fbf7f2, var(--bg));
-      color: var(--ink);
-      min-height: 100vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>おけもんの図解ギャラリー</title>
+<style>
+  :root {
+    --bg: #faf8f5;
+    --paper: #fff;
+    --ink: #2d2a26;
+    --muted: #7a756d;
+    --line: rgba(0,0,0,0.06);
+    --accent: #6c5ce7;
+    --accent-soft: rgba(108,92,231,0.08);
+    --warm: #e17055;
+    --mint: #00b894;
+    --mint-soft: rgba(0,184,148,0.08);
+    --honey-soft: rgba(253,203,110,0.1);
+    --sky: #0984e3;
+    --sky-soft: rgba(9,132,227,0.08);
+    --rose: #e84393;
+    --rose-soft: rgba(232,67,147,0.08);
+    --peach-soft: rgba(250,177,160,0.1);
+    --shadow: 0 8px 30px rgba(0,0,0,0.06);
+    --radius: 20px;
+    --max: 1100px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 20% 5%, rgba(108,92,231,0.05), transparent 40%),
+      radial-gradient(circle at 80% 15%, rgba(250,177,160,0.06), transparent 35%);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
 
-    /* ===== VIEW MODE (default when ?v= is present) ===== */
-    .view-app { display: none; flex-direction: column; min-height: 100vh; }
-    .view-app.active { display: flex; }
+  .page { width: min(var(--max), calc(100vw - 32px)); margin: 0 auto; padding: 32px 0 80px; }
 
-    .view-toolbar {
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 14px; flex-wrap: wrap;
-      padding: 16px 20px; margin: 14px;
-      background: var(--panel); border: 1px solid var(--line);
-      border-radius: var(--radius); box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-    }
-    .view-toolbar h1 {
-      font-size: clamp(16px, 2.5vw, 26px);
-      line-height: 1.2; flex: 1; min-width: 0;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .view-toolbar .meta { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .hero {
+    text-align: center;
+    padding: 48px 32px 40px;
+    margin-bottom: 28px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 32px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--warm), var(--mint), #fdcb6e);
+  }
+  .hero h1 { font-size: clamp(24px, 4vw, 38px); font-weight: 800; margin-bottom: 10px; }
+  .hero p { font-size: 15px; color: var(--muted); max-width: 500px; margin: 0 auto 20px; }
+  .hero-count {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(108,92,231,0.15);
+  }
 
-    .view-frame {
-      flex: 1; margin: 0 14px 14px;
-      background: white; border-radius: var(--radius);
-      border: 1px solid var(--line); box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .view-frame iframe {
-      width: 100%; height: 100%; min-height: calc(100vh - 120px);
-      border: none; display: block; background: white;
-    }
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; padding: 0 4px; }
+  .filter-btn {
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: rgba(108,92,231,0.2);
+  }
 
-    /* ===== EDITOR MODE ===== */
-    .edit-app { display: none; flex-direction: column; height: 100vh; padding: 14px; gap: 14px; }
-    .edit-app.active { display: flex; }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
 
-    .edit-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 20px;
-      background: var(--panel); border: 1px solid var(--line);
-      border-radius: var(--radius); box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-    }
-    .edit-header h1 { font-size: 1.3rem; }
+  .g-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+  .g-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    border-color: rgba(108,92,231,0.25);
+  }
 
-    .edit-main { display: flex; flex: 1; gap: 14px; min-height: 0; }
+  .g-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    align-self: flex-start;
+  }
+  .g-tag-ai { background: var(--accent-soft); color: var(--accent); }
+  .g-tag-biz { background: var(--mint-soft); color: var(--mint); }
+  .g-tag-skill { background: var(--honey-soft); color: #b8860b; }
+  .g-tag-tool { background: var(--sky-soft); color: var(--sky); }
+  .g-tag-event { background: var(--rose-soft); color: var(--rose); }
+  .g-tag-personal { background: var(--peach-soft); color: var(--warm); }
 
-    .editor-pane {
-      flex: 1; min-width: 280px; display: flex; flex-direction: column;
-      background: var(--panel); border: 1px solid var(--line);
-      border-radius: var(--radius); box-shadow: var(--shadow);
-      overflow: hidden; backdrop-filter: blur(12px);
-    }
-    .editor-pane-header {
-      padding: 12px 16px; border-bottom: 1px solid var(--line);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .editor-pane-header h2 { font-size: 0.95rem; font-weight: 600; }
-    .drop-hint {
-      padding: 3px 10px; border-radius: 999px;
-      background: var(--accent-soft); color: var(--accent);
-      font-size: 11px; font-weight: 700;
-    }
-    .editor-pane textarea {
-      flex: 1; width: 100%; border: none; background: transparent;
-      padding: 16px; font-family: "SF Mono","Menlo","Monaco",monospace;
-      font-size: 13px; color: var(--ink); resize: none; outline: none;
-      line-height: 1.5;
-    }
-    .editor-pane.drag-over { border: 2px dashed var(--accent); }
+  .g-card h3 { font-size: 16px; font-weight: 700; line-height: 1.5; margin-bottom: 8px; flex-grow: 1; }
+  .g-date { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
 
-    .preview-pane {
-      flex: 1; min-width: 280px; display: flex; flex-direction: column;
-      background: var(--panel); border: 1px solid var(--line);
-      border-radius: var(--radius); box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .preview-pane-header {
-      padding: 12px 16px; border-bottom: 1px solid var(--line);
-    }
-    .preview-pane-header h2 { font-size: 0.95rem; font-weight: 600; }
-    .preview-pane .iframe-wrap {
-      flex: 1; background: white; border-radius: 0 0 var(--radius) var(--radius);
-    }
-    .preview-pane iframe {
-      width: 100%; height: 100%; border: none; display: block; background: white;
-    }
+  .g-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
 
-    /* ===== BUTTONS ===== */
-    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .btn {
-      appearance: none; border: none; border-radius: 999px;
-      padding: 10px 18px; font-size: 13px; font-weight: 700;
-      cursor: pointer; transition: transform 0.15s ease;
-      display: inline-flex; align-items: center; gap: 6px;
-    }
-    .btn:hover { transform: translateY(-1px); }
-    .btn-accent { background: var(--accent); color: white; }
-    .btn-green { background: var(--green); color: white; }
-    .btn-soft { background: var(--accent-soft); color: var(--accent); }
-    .btn-green-soft { background: var(--green-soft); color: var(--green); }
+  .g-btn {
+    flex: 1;
+    text-align: center;
+    padding: 7px 0;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .g-btn-view { background: var(--accent); color: #fff; }
+  .g-btn-view:hover { opacity: 0.85; }
+  .g-btn-copy {
+    background: var(--bg);
+    color: var(--accent);
+    border: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .g-btn-copy:hover { background: var(--accent-soft); }
 
-    /* ===== TOAST ===== */
-    .toast {
-      position: fixed; bottom: 20px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: rgba(29,42,47,0.92); color: white;
-      padding: 12px 22px; border-radius: 999px; font-size: 14px;
-      font-weight: 600; z-index: 100;
-      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--ink);
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ===== LANDING (no content) ===== */
-    .landing { display: none; }
-    .landing.active {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      min-height: 100vh; padding: 40px 20px; text-align: center;
-    }
-    .landing-card {
-      background: var(--panel); border: 1px solid var(--line);
-      border-radius: 30px; box-shadow: var(--shadow);
-      backdrop-filter: blur(12px); padding: 48px 40px; max-width: 560px;
-    }
-    .landing-card h1 { font-size: 2rem; margin-bottom: 12px; line-height: 1.2; }
-    .landing-card p { color: var(--muted); font-size: 1rem; margin-bottom: 24px; line-height: 1.6; }
-    .landing-card .btn { font-size: 15px; padding: 14px 28px; }
+  .footer { text-align: center; padding: 32px 0 0; color: var(--muted); font-size: 12px; }
 
-    @media (max-width: 768px) {
-      .edit-main { flex-direction: column; }
-      .view-toolbar h1 { font-size: 16px; }
-    }
-  </style>
+  @media (max-width: 640px) {
+    .gallery { grid-template-columns: 1fr; }
+    .hero { padding: 32px 20px; }
+  }
+</style>
 </head>
 <body>
+<div class="page">
 
-<!-- ===== LANDING PAGE ===== -->
-<div class="landing" id="landing">
-  <div class="landing-card">
-    <h1>HTML Share Box</h1>
-    <p>HTMLコードを貼り付けるだけで、<br>プレビュー & 共有URLが作れるツール</p>
-    <div class="actions" style="justify-content:center;">
-      <button class="btn btn-accent" onclick="showEditor()">エディタを開く</button>
-    </div>
+  <div class="hero">
+    <h1>おけもんの図解ギャラリー</h1>
+    <p>AIと一緒に作った図解コレクション。<br>気になるものがあったら、自由に見てね。</p>
+    <span class="hero-count">全 18 作品</span>
   </div>
-</div>
 
-<!-- ===== VIEW MODE ===== -->
-<div class="view-app" id="viewApp">
-  <header class="view-toolbar">
-    <div style="min-width:0;flex:1;">
-      <h1 id="viewTitle">HTML Preview</h1>
-      <div class="meta" id="viewMeta"></div>
-    </div>
-    <div class="actions">
-      <button class="btn btn-accent" id="viewShareBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        共有リンクをコピー
-      </button>
-      <button class="btn btn-soft" id="viewDownloadBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        HTMLダウンロード
-      </button>
-      <button class="btn btn-green-soft" onclick="showEditor()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838.838-2.872a2 2 0 0 1 .506-.855z"/></svg>
-        編集する
-      </button>
-    </div>
-  </header>
-  <main class="view-frame">
-    <iframe id="viewIframe" sandbox="allow-scripts allow-same-origin allow-modals"></iframe>
-  </main>
-</div>
-
-<!-- ===== EDITOR MODE ===== -->
-<div class="edit-app" id="editApp">
-  <header class="edit-header">
-    <h1>HTML Share Box</h1>
-    <div class="actions">
-      <button class="btn btn-green" id="editShareBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        共有URLを作成
-      </button>
-      <button class="btn btn-soft" id="editDownloadBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        ダウンロード
-      </button>
-      <button class="btn btn-green-soft" id="backToViewBtn" style="display:none;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-        プレビューに戻る
-      </button>
-    </div>
-  </header>
-  <div class="edit-main">
-    <div class="editor-pane" id="dropZone">
-      <div class="editor-pane-header">
-        <h2>HTMLコード</h2>
-        <span class="drop-hint" id="dropHint">ファイルをドロップ or ペースト</span>
-      </div>
-      <textarea id="codeEditor" placeholder="HTMLコードをここに貼り付け、またはHTMLファイルをドロップ..."></textarea>
-    </div>
-    <div class="preview-pane">
-      <div class="preview-pane-header">
-        <h2>プレビュー</h2>
-      </div>
-      <div class="iframe-wrap">
-        <iframe id="editIframe" sandbox="allow-scripts allow-same-origin allow-modals"></iframe>
-      </div>
-    </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterCards('all')">すべて</button>
+    <button class="filter-btn" onclick="filterCards('ai')">AI活用</button>
+    <button class="filter-btn" onclick="filterCards('tool')">ツール比較</button>
+    <button class="filter-btn" onclick="filterCards('skill')">スキル・学び</button>
+    <button class="filter-btn" onclick="filterCards('biz')">ビジネス</button>
+    <button class="filter-btn" onclick="filterCards('event')">イベント</button>
+    <button class="filter-btn" onclick="filterCards('personal')">自分のこと</button>
   </div>
+
+  <div class="gallery">
+
+    <div class="g-card" data-cat="ai">
+      <span class="g-tag g-tag-ai">AI活用</span>
+      <h3>Claude Code でできること 完全ガイド 2026</h3>
+      <div class="g-date">2026.03.26</div>
+      <div class="g-actions">
+        <a href="diagrams/claude-code-usecases-2026.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('claude-code-usecases-2026.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="tool">
+      <span class="g-tag g-tag-tool">ツール比較</span>
+      <h3>AquaVoice 完全ガイド</h3>
+      <div class="g-date">2026.03.26</div>
+      <div class="g-actions">
+        <a href="diagrams/aquavoice-guide.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('aquavoice-guide.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="ai">
+      <span class="g-tag g-tag-ai">AI活用</span>
+      <h3>Claude Code 活用トレンド 2026年2〜3月</h3>
+      <div class="g-date">2026.03.26</div>
+      <div class="g-actions">
+        <a href="diagrams/claude-code-trends-2026.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('claude-code-trends-2026.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="skill">
+      <span class="g-tag g-tag-skill">スキル・学び</span>
+      <h3>AIで「自分の取説」を作ろう！ Personality Profileの作り方</h3>
+      <div class="g-date">2026.03.26</div>
+      <div class="g-actions">
+        <a href="diagrams/personality-profile-howto.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('personality-profile-howto.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="personal">
+      <span class="g-tag g-tag-personal">自分のこと</span>
+      <h3>おけもん Personality Profile</h3>
+      <div class="g-date">2026.03.26</div>
+      <div class="g-actions">
+        <a href="diagrams/okemon-personality-profile.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('okemon-personality-profile.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="event">
+      <span class="g-tag g-tag-event">イベント</span>
+      <h3>AIエージェント触ってみよう会 イベントレポート</h3>
+      <div class="g-date">2026.03.25</div>
+      <div class="g-actions">
+        <a href="diagrams/ai-agent-event-report.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('ai-agent-event-report.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="tool">
+      <span class="g-tag g-tag-tool">ツール比較</span>
+      <h3>NotebookLM x Genspark 統合図解</h3>
+      <div class="g-date">2026.03.22</div>
+      <div class="g-actions">
+        <a href="diagrams/notebooklm-genspark-workflow.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('notebooklm-genspark-workflow.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="ai">
+      <span class="g-tag g-tag-ai">AI活用</span>
+      <h3>Claude Dispatchでおけもんの森にできること</h3>
+      <div class="g-date">2026.03.21</div>
+      <div class="g-actions">
+        <a href="diagrams/claude-dispatch-guide.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('claude-dispatch-guide.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="skill">
+      <span class="g-tag g-tag-skill">スキル・学び</span>
+      <h3>信用していい人は"この質問"で一発で分かる</h3>
+      <div class="g-date">2026.03.19</div>
+      <div class="g-actions">
+        <a href="diagrams/trust-detection-guide.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('trust-detection-guide.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="ai">
+      <span class="g-tag g-tag-ai">AI活用</span>
+      <h3>生成AI時代に仕事が増えるクリエイター図解</h3>
+      <div class="g-date">2026.03.19</div>
+      <div class="g-actions">
+        <a href="diagrams/ai-era-creator-guide.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('ai-era-creator-guide.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="biz">
+      <span class="g-tag g-tag-biz">ビジネス</span>
+      <h3>短時間で最大成果を出す業務自動化術</h3>
+      <div class="g-date">2026.03.16</div>
+      <div class="g-actions">
+        <a href="diagrams/business-automation-tips.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('business-automation-tips.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="ai">
+      <span class="g-tag g-tag-ai">AI活用</span>
+      <h3>Codex と Claude Code の違いが一目でわかる図解</h3>
+      <div class="g-date">2026.03.14</div>
+      <div class="g-actions">
+        <a href="diagrams/codex-vs-claude-code.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('codex-vs-claude-code.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="ai">
+      <span class="g-tag g-tag-ai">AI活用</span>
+      <h3>AIエージェント共有図解</h3>
+      <div class="g-date">2026.03.14</div>
+      <div class="g-actions">
+        <a href="diagrams/ai-agent-overview.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('ai-agent-overview.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="tool">
+      <span class="g-tag g-tag-tool">ツール比較</span>
+      <h3>動画教材作成ツール比較（NoLang vs Google Vids）</h3>
+      <div class="g-date">2026.03</div>
+      <div class="g-actions">
+        <a href="diagrams/video-tool-comparison.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('video-tool-comparison.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="tool">
+      <span class="g-tag g-tag-tool">ツール比較</span>
+      <h3>NotebookLM 完全ガイド 2026</h3>
+      <div class="g-date">2026.03</div>
+      <div class="g-actions">
+        <a href="diagrams/notebooklm-slides.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('notebooklm-slides.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="biz">
+      <span class="g-tag g-tag-biz">ビジネス</span>
+      <h3>コーチングパートナー レビュー</h3>
+      <div class="g-date">2026.03</div>
+      <div class="g-actions">
+        <a href="diagrams/coaching-partner-review.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('coaching-partner-review.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="biz">
+      <span class="g-tag g-tag-biz">ビジネス</span>
+      <h3>株式会社おけもん 経営ダッシュボード</h3>
+      <div class="g-date">2026.03</div>
+      <div class="g-actions">
+        <a href="diagrams/okemon-corp-dashboard.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('okemon-corp-dashboard.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="biz">
+      <span class="g-tag g-tag-biz">ビジネス</span>
+      <h3>泉田さんMTGまとめ</h3>
+      <div class="g-date">2026.03.11</div>
+      <div class="g-actions">
+        <a href="diagrams/izumida-mtg-summary.html" class="g-btn g-btn-view">見る</a>
+        <button class="g-btn g-btn-copy" onclick="copyUrl('izumida-mtg-summary.html', event)">URLをコピー</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p>Created with Claude Code x きょうちゃん</p>
+    <p style="margin-top: 4px;">By おけもん &amp; Claude</p>
+  </div>
+
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast">URLをコピーしました！</div>
 
 <script>
-(function() {
-  // ===== Elements =====
-  const landing    = document.getElementById('landing');
-  const viewApp    = document.getElementById('viewApp');
-  const editApp    = document.getElementById('editApp');
-  const viewTitle  = document.getElementById('viewTitle');
-  const viewMeta   = document.getElementById('viewMeta');
-  const viewIframe = document.getElementById('viewIframe');
-  const editIframe = document.getElementById('editIframe');
-  const codeEditor = document.getElementById('codeEditor');
-  const dropZone   = document.getElementById('dropZone');
-  const dropHint   = document.getElementById('dropHint');
-  const toast      = document.getElementById('toast');
+  var BASE = 'https://okemonogatari-hash.github.io/html-share-box/diagrams/';
 
-  let currentCode  = '';
-  let currentTitle = '';
-  let cameFromView = false;
-  const backToViewBtn = document.getElementById('backToViewBtn');
-
-  // ===== Toast =====
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2600);
-  }
-
-  // ===== Mode switching =====
-  function showView(code, title) {
-    landing.classList.remove('active');
-    editApp.classList.remove('active');
-    viewApp.classList.add('active');
-    currentCode = code;
-    currentTitle = title || extractTitle(code) || 'HTML Preview';
-    viewTitle.textContent = currentTitle;
-    viewMeta.textContent = 'HTML Share Box で共有中';
-    viewIframe.srcdoc = code;
-  }
-
-  window.showEditor = function() {
-    landing.classList.remove('active');
-    viewApp.classList.remove('active');
-    editApp.classList.add('active');
-    if (currentCode && !codeEditor.value) {
-      codeEditor.value = currentCode;
-      editIframe.srcdoc = currentCode;
-    }
-    if (currentCode) {
-      cameFromView = true;
-      backToViewBtn.style.display = '';
-    }
-  };
-
-  backToViewBtn.addEventListener('click', () => {
-    currentCode = codeEditor.value || currentCode;
-    showView(currentCode, currentTitle);
-  });
-
-  function showLanding() {
-    viewApp.classList.remove('active');
-    editApp.classList.remove('active');
-    landing.classList.add('active');
-  }
-
-  // ===== Helpers =====
-  function extractTitle(html) {
-    const m = html.match(/<title>([^<]*)<\/title>/i);
-    return m ? m[1].trim() : '';
-  }
-
-  function compress(str) {
-    return LZString.compressToEncodedURIComponent(str);
-  }
-
-  function decompress(str) {
-    return LZString.decompressFromEncodedURIComponent(str);
-  }
-
-  function getShareUrl(code) {
-    const compressed = compress(code);
-    const base = window.location.origin + window.location.pathname;
-    return base + '#v=' + compressed;
-  }
-
-  async function copyToClipboard(text) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch {
-      // Fallback
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      const ok = document.execCommand('copy');
-      ta.remove();
-      return ok;
-    }
-  }
-
-  function downloadHtml(code, filename) {
-    const blob = new Blob([code], { type: 'text/html;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename || 'diagram.html';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  }
-
-  // ===== Share & Download buttons =====
-  function handleShare() {
-    const code = currentCode || codeEditor.value;
-    if (!code.trim()) { showToast('HTMLコードがありません'); return; }
-
-    const url = getShareUrl(code);
-    // Check URL length (most browsers support ~64KB+)
-    if (url.length > 60000) {
-      showToast('HTMLが大きすぎるためダウンロードで共有してください');
-      return;
-    }
-    copyToClipboard(url).then(ok => {
-      if (ok) showToast('共有URLをコピーしました!');
-      else showToast('コピーに失敗しました');
+  function copyUrl(filename, e) {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(BASE + filename).then(function() {
+      var toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2000);
     });
   }
 
-  function handleDownload() {
-    const code = currentCode || codeEditor.value;
-    if (!code.trim()) { showToast('HTMLコードがありません'); return; }
-    const title = currentTitle || extractTitle(code) || 'diagram';
-    const safeName = title.replace(/[^a-zA-Z0-9\u3040-\u30ff\u3400-\u9fff_-]/g, '_') + '.html';
-    downloadHtml(code, safeName);
-    showToast('ダウンロードしました');
+  function filterCards(cat) {
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    event.target.classList.add('active');
+    document.querySelectorAll('.g-card').forEach(function(card) {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+    });
   }
-
-  document.getElementById('viewShareBtn').addEventListener('click', handleShare);
-  document.getElementById('editShareBtn').addEventListener('click', handleShare);
-  document.getElementById('viewDownloadBtn').addEventListener('click', handleDownload);
-  document.getElementById('editDownloadBtn').addEventListener('click', handleDownload);
-
-  // ===== Editor =====
-  let debounceTimer;
-  codeEditor.addEventListener('input', () => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      currentCode = codeEditor.value;
-      editIframe.srcdoc = currentCode;
-      currentTitle = extractTitle(currentCode) || '';
-    }, 400);
-  });
-
-  // ===== Drag & Drop =====
-  ['dragenter','dragover','dragleave','drop'].forEach(ev => {
-    dropZone.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); });
-  });
-  ['dragenter','dragover'].forEach(ev => {
-    dropZone.addEventListener(ev, () => dropZone.classList.add('drag-over'));
-  });
-  ['dragleave','drop'].forEach(ev => {
-    dropZone.addEventListener(ev, () => dropZone.classList.remove('drag-over'));
-  });
-  dropZone.addEventListener('drop', e => {
-    const file = e.dataTransfer.files[0];
-    if (file && (file.type === 'text/html' || file.name.endsWith('.html'))) {
-      const reader = new FileReader();
-      reader.onload = ev => {
-        codeEditor.value = ev.target.result;
-        currentCode = ev.target.result;
-        currentTitle = extractTitle(currentCode) || file.name;
-        editIframe.srcdoc = currentCode;
-        dropHint.textContent = 'Loaded: ' + file.name;
-      };
-      reader.readAsText(file);
-    } else {
-      showToast('HTMLファイルをドロップしてください');
-    }
-  });
-
-  // ===== Init: route based on URL hash =====
-  (function init() {
-    const hash = window.location.hash;
-
-    if (hash.startsWith('#v=')) {
-      try {
-        const code = decompress(hash.substring(3));
-        if (code) { showView(code); return; }
-      } catch(e) {
-        console.error('Failed to decompress:', e);
-      }
-    }
-
-    if (hash.startsWith('#view=') || hash.startsWith('#code=')) {
-      const prefix = hash.startsWith('#view=') ? '#view=' : '#code=';
-      try {
-        const code = decompress(hash.substring(prefix.length));
-        if (code) {
-          if (prefix === '#view=') showView(code);
-          else { currentCode = code; showEditor(); }
-          return;
-        }
-      } catch(e) {}
-    }
-
-    showLanding();
-  })();
-})();
 </script>
 </body>
 </html>

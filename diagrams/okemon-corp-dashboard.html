@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>株式会社おけもん 経営ダッシュボード</title>
+<style>
+  :root {
+    --bg: #0f1923;
+    --card: #1a2732;
+    --card-hover: #1e3040;
+    --accent: #4ecdc4;
+    --accent2: #ff6b6b;
+    --accent3: #ffe66d;
+    --accent4: #a78bfa;
+    --accent5: #38bdf8;
+    --text: #e8e8e8;
+    --text-dim: #8899aa;
+    --border: #2a3a4a;
+    --success: #4ecdc4;
+    --warning: #ffe66d;
+    --danger: #ff6b6b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .header {
+    text-align: center;
+    padding: 30px 20px 20px;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, #1a2732 0%, #0f2027 100%);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent4), var(--accent3));
+  }
+
+  .header h1 {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent5));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header .vision {
+    font-size: 0.95em;
+    color: var(--text-dim);
+    max-width: 700px;
+    margin: 0 auto 15px;
+    line-height: 1.6;
+  }
+
+  .header .ceo-stance {
+    display: inline-block;
+    padding: 6px 20px;
+    background: rgba(78, 205, 196, 0.1);
+    border: 1px solid rgba(78, 205, 196, 0.3);
+    border-radius: 20px;
+    font-size: 0.85em;
+    color: var(--accent);
+  }
+
+  /* Phase Timeline */
+  .phase-timeline {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding: 4px;
+  }
+
+  .phase-card {
+    flex: 1;
+    min-width: 200px;
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .phase-card.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(78, 205, 196, 0.15);
+  }
+
+  .phase-card .phase-label {
+    font-size: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .phase-card .phase-name {
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .phase-card .phase-period {
+    font-size: 0.75em;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .phase-card .phase-target {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: var(--accent3);
+  }
+
+  .phase-card .phase-target small {
+    font-size: 0.5em;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  .phase-card.active .phase-label {
+    color: var(--accent);
+  }
+
+  .phase-indicator {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .phase-card.active .phase-indicator {
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Big Numbers Row */
+  .big-numbers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+
+  .big-num-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  .big-num-card .label {
+    font-size: 0.75em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .big-num-card .value {
+    font-size: 2em;
+    font-weight: 700;
+  }
+
+  .big-num-card .sub {
+    font-size: 0.75em;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .big-num-card .target {
+    font-size: 0.8em;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  .big-num-card .target span {
+    color: var(--accent3);
+    font-weight: 600;
+  }
+
+  /* Revenue Section */
+  .section-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-left: 12px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .revenue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+
+  .biz-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .biz-card:hover {
+    background: var(--card-hover);
+  }
+
+  .biz-card .biz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .biz-card .biz-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    font-weight: 700;
+  }
+
+  .biz-card .biz-name {
+    font-weight: 600;
+    font-size: 0.95em;
+    flex: 1;
+    margin-left: 10px;
+  }
+
+  .biz-card .biz-status {
+    font-size: 0.7em;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  .status-active { background: rgba(78, 205, 196, 0.15); color: var(--accent); }
+  .status-prep { background: rgba(255, 230, 109, 0.15); color: var(--warning); }
+  .status-plan { background: rgba(167, 139, 250, 0.15); color: var(--accent4); }
+
+  .biz-card .revenue-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+
+  .biz-card .current-rev {
+    font-size: 1.6em;
+    font-weight: 700;
+  }
+
+  .biz-card .target-rev {
+    font-size: 0.85em;
+    color: var(--text-dim);
+  }
+
+  .biz-card .target-rev span {
+    color: var(--accent3);
+    font-weight: 600;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .progress-bar .fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.8s ease;
+  }
+
+  .biz-card .biz-desc {
+    font-size: 0.78em;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .biz-card .ceiling-tag {
+    display: inline-block;
+    font-size: 0.7em;
+    padding: 2px 8px;
+    border-radius: 8px;
+    margin-top: 8px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text-dim);
+  }
+
+  .ceiling-tag.explosive {
+    background: rgba(255, 107, 107, 0.15);
+    color: var(--accent2);
+  }
+
+  /* KPI Section */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+
+  .kpi-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 18px;
+    border: 1px solid var(--border);
+  }
+
+  .kpi-card .kpi-label {
+    font-size: 0.78em;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .kpi-card .kpi-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .kpi-card .kpi-value {
+    font-size: 1.5em;
+    font-weight: 700;
+  }
+
+  .kpi-card .kpi-target {
+    font-size: 0.8em;
+    color: var(--text-dim);
+  }
+
+  .kpi-card .kpi-target span {
+    color: var(--accent3);
+  }
+
+  .kpi-card .kpi-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .kpi-card .kpi-bar .fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  /* Window Alert */
+  .window-alert {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 230, 109, 0.1));
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .window-alert .alert-icon {
+    font-size: 2em;
+    flex-shrink: 0;
+  }
+
+  .window-alert .alert-content h3 {
+    font-size: 0.95em;
+    color: var(--accent2);
+    margin-bottom: 4px;
+  }
+
+  .window-alert .alert-content p {
+    font-size: 0.82em;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .window-alert .countdown {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--accent3);
+    flex-shrink: 0;
+    text-align: center;
+    min-width: 80px;
+  }
+
+  .window-alert .countdown small {
+    display: block;
+    font-size: 0.35em;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  /* AI Team */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .team-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    font-size: 0.85em;
+  }
+
+  .team-card .team-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--accent5);
+  }
+
+  .team-card .team-role {
+    font-size: 0.85em;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .team-card .team-status {
+    font-size: 0.75em;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 8px;
+  }
+
+  .team-active { background: rgba(78, 205, 196, 0.15); color: var(--accent); }
+  .team-building { background: rgba(255, 230, 109, 0.15); color: var(--warning); }
+  .team-planned { background: rgba(167, 139, 250, 0.1); color: var(--accent4); }
+
+  /* Success Principles */
+  .principles {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
+  }
+
+  .principles .principle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    font-size: 0.88em;
+  }
+
+  .principles .principle + .principle {
+    border-top: 1px solid var(--border);
+  }
+
+  .principles .p-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: rgba(78, 205, 196, 0.15);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75em;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .principles .p-text {
+    color: var(--text-dim);
+  }
+
+  .principles .p-text strong {
+    color: var(--text);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-dim);
+    font-size: 0.78em;
+    line-height: 1.8;
+  }
+
+  .footer .motto {
+    font-size: 1.1em;
+    color: var(--text);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    body { padding: 12px; }
+    .header h1 { font-size: 1.4em; }
+    .big-numbers { grid-template-columns: repeat(2, 1fr); }
+    .revenue-grid { grid-template-columns: 1fr; }
+    .phase-timeline { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>株式会社おけもん 経営ダッシュボード</h1>
+  <div class="vision">
+    「ADHDで自己破産した男が、AIと仕組みだけで月収300万を達成する物語」<br>
+    非エンジニアAI導入の第一人者として、自分の体験が誰かの人生を動かしている状態へ
+  </div>
+  <div class="ceo-stance">社長の仕事：話す / 選ぶ / 会う &#8212; それ以外は全部AIがやる</div>
+</div>
+
+<!-- Phase Timeline -->
+<div class="phase-timeline">
+  <div class="phase-card active">
+    <div class="phase-indicator"></div>
+    <div class="phase-label">Phase 1</div>
+    <div class="phase-name">起動</div>
+    <div class="phase-period">2026年 3-5月</div>
+    <div class="phase-target">30-40<small>万円/月</small></div>
+  </div>
+  <div class="phase-card">
+    <div class="phase-indicator"></div>
+    <div class="phase-label">Phase 2</div>
+    <div class="phase-name">加速</div>
+    <div class="phase-period">2026年 6-8月</div>
+    <div class="phase-target">50-80<small>万円/月</small></div>
+  </div>
+  <div class="phase-card">
+    <div class="phase-indicator"></div>
+    <div class="phase-label">Phase 3</div>
+    <div class="phase-name">仕組み化</div>
+    <div class="phase-period">2026年 9-11月</div>
+    <div class="phase-target">100-200<small>万円/月</small></div>
+  </div>
+  <div class="phase-card">
+    <div class="phase-indicator"></div>
+    <div class="phase-label">Phase 4</div>
+    <div class="phase-name">突き抜け</div>
+    <div class="phase-period">2026年12月 - 2027年3月</div>
+    <div class="phase-target">200-300<small>万円/月</small></div>
+  </div>
+</div>
+
+<!-- Window Alert -->
+<div class="window-alert">
+  <div class="alert-icon">&#9200;</div>
+  <div class="alert-content">
+    <h3>AI導入支援 市場の窓：残り約9ヶ月</h3>
+    <p>学長断言「エージェント型AI導入済み企業は0.01%以下。窓は6-12ヶ月」<br>
+    学長が5月にリベでAI講座準備中 = 競合が増える前に先行者利益を固める</p>
+  </div>
+  <div class="countdown" id="windowCountdown">
+    <span id="monthsLeft">9</span>
+    <small>ヶ月<br>(2026年12月まで)</small>
+  </div>
+</div>
+
+<!-- Big Numbers -->
+<div class="big-numbers">
+  <div class="big-num-card">
+    <div class="label">今月の売上</div>
+    <div class="value" style="color: var(--accent);">20<span style="font-size:0.5em">万円</span></div>
+    <div class="sub">irodori PM</div>
+    <div class="target">Phase 1 目標: <span>30-40万</span></div>
+  </div>
+  <div class="big-num-card">
+    <div class="label">AI導入支援した人数</div>
+    <div class="value" style="color: var(--accent3);">0<span style="font-size:0.5em">人</span></div>
+    <div class="sub">累計 / 年間目標100人</div>
+    <div class="target">今日のoVice会: <span>100人超参加</span></div>
+  </div>
+  <div class="big-num-card">
+    <div class="label">コーチングクライアント</div>
+    <div class="value" style="color: var(--accent4);">0<span style="font-size:0.5em">名</span></div>
+    <div class="sub">月額制 / 目標10名</div>
+    <div class="target">累計実績: <span>1,000人超</span></div>
+  </div>
+  <div class="big-num-card">
+    <div class="label">コンテンツリーチ</div>
+    <div class="value" style="color: var(--accent5);">0<span style="font-size:0.5em">人/月</span></div>
+    <div class="sub">note + X + YouTube</div>
+    <div class="target">目標: <span>月間1万人</span></div>
+  </div>
+  <div class="big-num-card">
+    <div class="label">2B企業接点</div>
+    <div class="value" style="color: var(--accent2);">0<span style="font-size:0.5em">社/月</span></div>
+    <div class="sub">商談数 / 目標月5社</div>
+    <div class="target">成約率20%想定: <span>月1件</span></div>
+  </div>
+</div>
+
+<!-- Revenue by Business -->
+<div class="section-title">事業別 売上・進捗</div>
+<div class="revenue-grid">
+
+  <div class="biz-card">
+    <div class="biz-header">
+      <div class="biz-num" style="background: rgba(167,139,250,0.2); color: var(--accent4);">1</div>
+      <div class="biz-name">個人コーチング</div>
+      <div class="biz-status status-prep">準備中</div>
+    </div>
+    <div class="revenue-row">
+      <div class="current-rev" style="color: var(--accent4);">0<span style="font-size:0.5em">万</span></div>
+      <div class="target-rev">目標: <span>50万/月</span></div>
+    </div>
+    <div class="progress-bar"><div class="fill" style="width: 0%; background: var(--accent4);"></div></div>
+    <div class="biz-desc">月額5万 x 10名。AI x 自己理解の独自メニュー。<br>ストレングスファインダー x AI診断シート</div>
+    <div class="ceiling-tag">時間が上限 / 単価UPで突破</div>
+  </div>
+
+  <div class="biz-card" style="border-color: rgba(255,107,107,0.3);">
+    <div class="biz-header">
+      <div class="biz-num" style="background: rgba(255,107,107,0.2); color: var(--accent2);">2</div>
+      <div class="biz-name">AI導入支援事業</div>
+      <div class="biz-status status-prep">Stage A 準備中</div>
+    </div>
+    <div class="revenue-row">
+      <div class="current-rev" style="color: var(--accent2);">0<span style="font-size:0.5em">万</span></div>
+      <div class="target-rev">目標: <span>150万/月</span></div>
+    </div>
+    <div class="progress-bar"><div class="fill" style="width: 0%; background: var(--accent2);"></div></div>
+    <div class="biz-desc">2B企業 月3件 x 50万。学長「めちゃくちゃいい」「2Bに行け」<br>大手コンサル100万 → おけもん30万 = 即決案件</div>
+    <div class="ceiling-tag explosive">天井なし / 2B展開で爆発</div>
+  </div>
+
+  <div class="biz-card">
+    <div class="biz-header">
+      <div class="biz-num" style="background: rgba(78,205,196,0.2); color: var(--accent);">3</div>
+      <div class="biz-name">コンテンツ事業（表ライン）</div>
+      <div class="biz-status status-plan">計画中</div>
+    </div>
+    <div class="revenue-row">
+      <div class="current-rev" style="color: var(--accent);">0<span style="font-size:0.5em">万</span></div>
+      <div class="target-rev">目標: <span>50万/月</span></div>
+    </div>
+    <div class="progress-bar"><div class="fill" style="width: 0%; background: var(--accent);"></div></div>
+    <div class="biz-desc">有料note + メンバーシップ + ワークショップ月3回<br>ADHD x AI x 再生ストーリー / おけもんの森の育て方</div>
+    <div class="ceiling-tag">スケール可 / ストック収入</div>
+  </div>
+
+  <div class="biz-card">
+    <div class="biz-header">
+      <div class="biz-num" style="background: rgba(255,230,109,0.2); color: var(--accent3);">4</div>
+      <div class="biz-name">AI収益実験（裏ライン）</div>
+      <div class="biz-status status-plan">計画中</div>
+    </div>
+    <div class="revenue-row">
+      <div class="current-rev" style="color: var(--accent3);">0<span style="font-size:0.5em">万</span></div>
+      <div class="target-rev">目標: <span>30万/月</span></div>
+    </div>
+    <div class="progress-bar"><div class="fill" style="width: 0%; background: var(--accent3);"></div></div>
+    <div class="biz-desc">匿名ブログ x 3本並走。AIフル自動のアフィリエイト実験<br>「人間味を削った時にどこまで収益が出るか」のデータ取り</div>
+    <div class="ceiling-tag">スケール可 / 自動収入</div>
+  </div>
+
+  <div class="biz-card">
+    <div class="biz-header">
+      <div class="biz-num" style="background: rgba(56,189,248,0.2); color: var(--accent5);">5</div>
+      <div class="biz-name">irodori PM</div>
+      <div class="biz-status status-active">稼働中</div>
+    </div>
+    <div class="revenue-row">
+      <div class="current-rev" style="color: var(--accent5);">20<span style="font-size:0.5em">万</span></div>
+      <div class="target-rev">目標: <span>20万/月</span></div>
+    </div>
+    <div class="progress-bar"><div class="fill" style="width: 100%; background: var(--accent5);"></div></div>
+    <div class="biz-desc">安定基盤。AI活用でirodori業務を効率化 → 浮いた時間を事業1-4に<br>irodoriでの実績 = 事業2の信頼材料</div>
+    <div class="ceiling-tag">固定 / 安定基盤</div>
+  </div>
+
+</div>
+
+<!-- KPIs -->
+<div class="section-title">重要KPI（売上より大事な数字）</div>
+<div class="kpi-grid">
+
+  <div class="kpi-card">
+    <div class="kpi-label">AI導入を支援した人数（累計）</div>
+    <div class="kpi-row">
+      <div class="kpi-value" style="color: var(--accent3);">0</div>
+      <div class="kpi-target">年間目標: <span>100人</span></div>
+    </div>
+    <div class="kpi-bar"><div class="fill" style="width: 0%; background: var(--accent3);"></div></div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-label">「おけもんに教わってできた」の声</div>
+    <div class="kpi-row">
+      <div class="kpi-value" style="color: var(--accent);">0<span style="font-size:0.5em">/月</span></div>
+      <div class="kpi-target">目標: <span>月10件</span></div>
+    </div>
+    <div class="kpi-bar"><div class="fill" style="width: 0%; background: var(--accent);"></div></div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-label">音声ログ（コンテンツの原液）</div>
+    <div class="kpi-row">
+      <div class="kpi-value" style="color: var(--accent4);">0<span style="font-size:0.5em">/月</span></div>
+      <div class="kpi-target">目標: <span>毎日1本</span></div>
+    </div>
+    <div class="kpi-bar"><div class="fill" style="width: 0%; background: var(--accent4);"></div></div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-label">社長の時間配分「話す・選ぶ・会う」率</div>
+    <div class="kpi-row">
+      <div class="kpi-value" style="color: var(--accent5);">-<span style="font-size:0.5em">%</span></div>
+      <div class="kpi-target">目標: <span>70%以上</span></div>
+    </div>
+    <div class="kpi-bar"><div class="fill" style="width: 0%; background: var(--accent5);"></div></div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-label">発信頻度（note + X）</div>
+    <div class="kpi-row">
+      <div class="kpi-value" style="color: var(--accent2);">0<span style="font-size:0.5em">/週</span></div>
+      <div class="kpi-target">目標: <span>note週1 + X週3-5</span></div>
+    </div>
+    <div class="kpi-bar"><div class="fill" style="width: 0%; background: var(--accent2);"></div></div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-label">ワークショップ・イベント開催</div>
+    <div class="kpi-row">
+      <div class="kpi-value" style="color: var(--accent3);">1<span style="font-size:0.5em">回/月</span></div>
+      <div class="kpi-target">目標: <span>月3回</span></div>
+    </div>
+    <div class="kpi-bar"><div class="fill" style="width: 33%; background: var(--accent3);"></div></div>
+  </div>
+
+</div>
+
+<!-- AI Team -->
+<div class="section-title">AI社員チーム（Claude Code MAX）</div>
+<div class="team-grid">
+  <div class="team-card">
+    <div class="team-name">秘書AI</div>
+    <div class="team-role">全事業横断 / 毎朝ブリーフィング</div>
+    <div class="team-status team-active">稼働中</div>
+  </div>
+  <div class="team-card">
+    <div class="team-name">コーチングAI</div>
+    <div class="team-role">診断シート / セッション後レポート</div>
+    <div class="team-status team-building">構築中</div>
+  </div>
+  <div class="team-card">
+    <div class="team-name">発信AI</div>
+    <div class="team-role">note下書き / X投稿案 / 教材作成</div>
+    <div class="team-status team-planned">計画中</div>
+  </div>
+  <div class="team-card">
+    <div class="team-name">裏方AI</div>
+    <div class="team-role">匿名記事生成 / SEO / ABテスト</div>
+    <div class="team-status team-planned">計画中</div>
+  </div>
+  <div class="team-card">
+    <div class="team-name">irodori AI</div>
+    <div class="team-role">Notion更新 / 議事録 / アジェンダ</div>
+    <div class="team-status team-active">稼働中</div>
+  </div>
+  <div class="team-card">
+    <div class="team-name">Goal-Aligner</div>
+    <div class="team-role">ロードマップ突き合わせ / 週次レビュー</div>
+    <div class="team-status team-building">構築中</div>
+  </div>
+  <div class="team-card">
+    <div class="team-name">森の管理人</div>
+    <div class="team-role">Vault整理 / リンク修復 / セーブポイント</div>
+    <div class="team-status team-active">稼働中</div>
+  </div>
+</div>
+
+<!-- Success Principles -->
+<div class="section-title">経営原則</div>
+<div class="principles">
+  <div class="principle">
+    <div class="p-num">1</div>
+    <div class="p-text"><strong>毎日「話す」を止めない</strong> &#8212; 音声ログ1本がコンテンツの原液になる</div>
+  </div>
+  <div class="principle">
+    <div class="p-num">2</div>
+    <div class="p-text"><strong>完璧を待たない</strong> &#8212; 60点で出す。AIが改善する</div>
+  </div>
+  <div class="principle">
+    <div class="p-num">3</div>
+    <div class="p-text"><strong>森を信じる</strong> &#8212; 全ての記録は無駄にならない。AIが後から価値に変える</div>
+  </div>
+  <div class="principle">
+    <div class="p-num">4</div>
+    <div class="p-text"><strong>数字を見る</strong> &#8212; 感情ではなくデータで判断する</div>
+  </div>
+  <div class="principle">
+    <div class="p-num">5</div>
+    <div class="p-text"><strong>人に会い続ける</strong> &#8212; AIにできない唯一のこと。信頼は対面で作る</div>
+  </div>
+  <div class="principle">
+    <div class="p-num">6</div>
+    <div class="p-text"><strong>口出ししない</strong> &#8212; AI社員の可能性を最大限に活かす最高の経営者でいる</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="motto">「おけもんは話す。選ぶ。会う。それ以外は全部AIがやる。」</div>
+  事業設計書 v1.0 &#8212; 2026-03-24 作成<br>
+  ダッシュボード生成日: 2026-03-25 | 次回更新: 週次（Goal-Aligner）<br>
+  <span style="color: var(--accent);">Powered by Claude Code MAX + おけもんの森</span>
+</div>
+
+<script>
+  // Window countdown (months until Dec 2026)
+  const now = new Date();
+  const deadline = new Date(2026, 11, 31); // Dec 2026
+  const monthsLeft = Math.max(0, Math.ceil((deadline - now) / (1000 * 60 * 60 * 24 * 30)));
+  document.getElementById('monthsLeft').textContent = monthsLeft;
+</script>
+
+</body>
+</html>
