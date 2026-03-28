@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIエージェント活用法 — らすく×くらげ KeeeeN-G主催リベイベント</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
+
+  :root {
+    --bg: #fdf8f0;
+    --bg-warm: #faf3e8;
+    --bg-mint: #eef9f6;
+    --bg-peach: #fff5f0;
+    --bg-lavender: #f3f0ff;
+    --bg-lemon: #fefce8;
+    --surface: #ffffff;
+    --green: #5bb98c;
+    --green-soft: #d4f0e2;
+    --green-bg: #edf8f2;
+    --sky: #6cb4d8;
+    --sky-soft: #d4edfa;
+    --peach: #f2956b;
+    --peach-soft: #fde0d2;
+    --lavender: #9b8ec4;
+    --lavender-soft: #e4dff5;
+    --lemon: #e8c840;
+    --lemon-soft: #fdf3c4;
+    --brown: #8b7355;
+    --brown-light: #c4b49a;
+    --text: #4a3f35;
+    --text-dim: #7a7068;
+    --text-muted: #a89e94;
+    --border: rgba(139, 115, 85, 0.12);
+    --shadow: 0 2px 16px rgba(139, 115, 85, 0.08);
+    --shadow-hover: 0 6px 28px rgba(139, 115, 85, 0.13);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.9;
+    font-size: 15px;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+    background:
+      radial-gradient(ellipse 800px 500px at 20% 30%, rgba(212,240,226,0.6), transparent),
+      radial-gradient(ellipse 600px 400px at 80% 60%, rgba(212,237,250,0.5), transparent),
+      radial-gradient(ellipse 500px 400px at 50% 80%, rgba(228,223,245,0.4), transparent),
+      var(--bg-warm);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 80px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80Z' fill='%23fdf8f0'/%3E%3C/svg%3E") no-repeat bottom center;
+    background-size: cover;
+  }
+  .hero-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 22px;
+    font-size: 13px;
+    color: var(--sky);
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(1.6rem, 5vw, 2.8rem);
+    font-weight: 900;
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .hero h1 .pop {
+    background: linear-gradient(135deg, var(--green) 0%, var(--sky) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--text-dim);
+    max-width: 540px;
+    margin-bottom: 36px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 22px;
+    text-align: center;
+    min-width: 100px;
+  }
+  .hero-stat .num {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1.1;
+  }
+  .hero-stat .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ── Layout ── */
+  .container { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 64px 0; }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 900;
+    margin-bottom: 10px;
+    line-height: 1.35;
+  }
+  .section-desc {
+    color: var(--text-dim);
+    max-width: 600px;
+    margin-bottom: 36px;
+    font-size: 15px;
+  }
+
+  /* ── Comparison ── */
+  .compare-section { background: var(--bg-mint); }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  .compare-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+  }
+  .compare-card h3 {
+    font-size: 1.2rem;
+    font-weight: 900;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .compare-vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--text-muted);
+  }
+  .compare-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .compare-list li {
+    font-size: 14px;
+    color: var(--text-dim);
+    padding-left: 24px;
+    position: relative;
+    line-height: 1.7;
+  }
+  .compare-list li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 10px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .compare-card:first-child .compare-list li::before { background: var(--lavender); }
+  .compare-card:last-child .compare-list li::before { background: var(--green); }
+  .tag {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .tag-lavender { background: var(--lavender-soft); color: var(--lavender); }
+  .tag-green { background: var(--green-soft); color: var(--green); }
+
+  /* ── Cards Grid ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    border-radius: 20px 20px 0 0;
+  }
+  .card:nth-child(1)::after { background: linear-gradient(90deg, var(--green), var(--green-soft)); }
+  .card:nth-child(2)::after { background: linear-gradient(90deg, var(--sky), var(--sky-soft)); }
+  .card:nth-child(3)::after { background: linear-gradient(90deg, var(--lemon), var(--lemon-soft)); }
+  .card:nth-child(4)::after { background: linear-gradient(90deg, var(--peach), var(--peach-soft)); }
+  .card:nth-child(5)::after { background: linear-gradient(90deg, var(--lavender), var(--lavender-soft)); }
+  .card-icon { font-size: 36px; margin-bottom: 12px; }
+  .card-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; }
+  .card-text { font-size: 13.5px; color: var(--text-dim); line-height: 1.8; }
+  .card-text li { margin-bottom: 4px; }
+
+  /* ── Flow ── */
+  .flow-section { background: var(--bg-lavender); }
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+  .flow-steps::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--lavender), var(--green));
+    border-radius: 10px;
+  }
+  .flow-step {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    padding: 20px 0;
+  }
+  .flow-num {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .flow-step:nth-child(1) .flow-num { background: linear-gradient(135deg, var(--lavender), #b8a8e0); }
+  .flow-step:nth-child(2) .flow-num { background: linear-gradient(135deg, var(--sky), #8ac8e8); }
+  .flow-step:nth-child(3) .flow-num { background: linear-gradient(135deg, var(--green), #7ccda4); }
+  .flow-step:nth-child(4) .flow-num { background: linear-gradient(135deg, var(--lemon), #f0d860); }
+  .flow-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    box-shadow: var(--shadow);
+    flex: 1;
+  }
+  .flow-content h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .flow-content p {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* ── Future ── */
+  .future-section { background: var(--bg-lemon); }
+  .future-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .future-card .big-icon { font-size: 64px; margin-bottom: 16px; }
+  .future-card h3 {
+    font-size: 1.3rem;
+    font-weight: 900;
+    margin-bottom: 12px;
+  }
+  .future-card p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.9;
+    margin-bottom: 8px;
+  }
+  .future-timeline {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .timeline-chip {
+    background: var(--lemon-soft);
+    border: 1px solid rgba(232,200,64,0.3);
+    border-radius: 100px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #8b7020;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ── Takeaway ── */
+  .takeaway-section { background: var(--bg-peach); }
+  .takeaway-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .takeaway-card .icon { font-size: 48px; margin-bottom: 16px; }
+  .takeaway-card h3 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--peach), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .takeaway-list {
+    list-style: none;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .takeaway-list li {
+    font-size: 14px;
+    padding: 12px 16px;
+    background: var(--bg-warm);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.7;
+  }
+  .takeaway-list li .emoji { font-size: 20px; flex-shrink: 0; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  footer a { color: var(--green); text-decoration: none; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .compare-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .compare-vs { padding: 8px 0; }
+    .flow-steps::before { left: 18px; }
+    .flow-num { width: 40px; height: 40px; font-size: 16px; }
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<header class="hero">
+  <div class="hero-icon">🤖</div>
+  <div class="hero-badge">📹 KeeeeN-G主催 リベイベント</div>
+  <h1>「生成AIとの違いは？」<br><span class="pop">AIエージェント活用法</span></h1>
+  <p class="hero-sub">らすくさん×くらげさん登壇。AIエージェントの基本から実践的な活用法、未来の展望まで語り尽くしたイベントの要点まとめ。</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">1h47m</div><div class="label">イベント時間</div></div>
+    <div class="hero-stat"><div class="num">11</div><div class="label">質問数</div></div>
+    <div class="hero-stat"><div class="num">3/25</div><div class="label">開催日</div></div>
+    <div class="hero-stat"><div class="num">3人</div><div class="label">登壇者</div></div>
+  </div>
+</header>
+
+<!-- ── 生成AI vs AIエージェント ── -->
+<section class="compare-section">
+  <div class="container">
+    <div class="section-label" style="color: var(--sky);">💡 基本のキ</div>
+    <h2 class="section-title">生成AI と AIエージェント の違い</h2>
+    <p class="section-desc">「指示して答えをもらう」から「目的を渡して任せる」へ。パラダイムシフトが起きている。</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h3>💬 生成AI <span class="tag tag-lavender">従来型</span></h3>
+        <ul class="compare-list">
+          <li>指示に応じて <strong>1回答える</strong></li>
+          <li>ChatGPTに質問 → 回答が返る</li>
+          <li>毎回こちらが指示を出す</li>
+          <li>ツールとの連携は基本なし</li>
+          <li>「賢い検索エンジン」のイメージ</li>
+        </ul>
+      </div>
+      <div class="compare-vs">VS</div>
+      <div class="compare-card">
+        <h3>🤖 AIエージェント <span class="tag tag-green">新世代</span></h3>
+        <ul class="compare-list">
+          <li><strong>目的を与えると自分で判断・行動</strong></li>
+          <li>外部ツール（Gmail, Slack, Notion等）と連携</li>
+          <li>MCP で「手足」を持つ</li>
+          <li>複数ステップを自動で実行</li>
+          <li>「AIがパソコンを操作する」イメージ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 学び方のコツ ── -->
+<section>
+  <div class="container">
+    <div class="section-label" style="color: var(--green);">📚 学び方</div>
+    <h2 class="section-title">AIエージェント、どう学ぶ？</h2>
+    <p class="section-desc">汎用的なYouTube動画だけでは「自分の業務にどう活かすか」で止まりがち。実践者から学ぶのが最短ルート。</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🎥</div>
+        <div class="card-title">YouTube を広く浅く</div>
+        <div class="card-text">
+          <ul style="list-style:none; padding:0;">
+            <li>特定のチャンネルではなく、おすすめに流れてくるAIエージェント系の動画を満遍なく見る</li>
+            <li>フックを増やす → 自分の発想に繋がる</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">👥</div>
+        <div class="card-title">仲間のユースケースを聞く</div>
+        <div class="card-text">
+          <ul style="list-style:none; padding:0;">
+            <li>他の人がどう使ってるかを聞くのが一番刺さる</li>
+            <li>「その発想なかった！」が生まれる</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏢</div>
+        <div class="card-title">業種特化の勉強会</div>
+        <div class="card-text">
+          <ul style="list-style:none; padding:0;">
+            <li>ブロガーだけ、物販だけ、コーチだけ…同業のAI活用事例が最も実践的</li>
+            <li>リベ内でもっと増えてほしい（らすくさん提唱）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ツール比較 ── -->
+<section class="compare-section">
+  <div class="container">
+    <div class="section-label" style="color: var(--lavender);">🔧 ツール選び</div>
+    <h2 class="section-title">Antigravity vs Claude Code</h2>
+    <p class="section-desc">初心者はAntigravityから。慣れてきたらClaude Codeでさらに深く。</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h3>🌀 Antigravity <span class="tag tag-green">初心者向け</span></h3>
+        <ul class="compare-list">
+          <li><strong>無料で始められる</strong></li>
+          <li>GUIベースで直感的</li>
+          <li>Claudeのモデルを使用</li>
+          <li>スキル（自動化レシピ）を作れる</li>
+          <li>まず触ってみるならこちら</li>
+        </ul>
+      </div>
+      <div class="compare-vs">VS</div>
+      <div class="compare-card">
+        <h3>⌨️ Claude Code <span class="tag tag-lavender">中上級者</span></h3>
+        <ul class="compare-list">
+          <li>ターミナル操作ベース</li>
+          <li>月額課金が必要</li>
+          <li>より柔軟なカスタマイズ</li>
+          <li>MCP接続でフルパワー</li>
+          <li>開発者・パワーユーザー向け</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── スキル作成フロー ── -->
+<section class="flow-section">
+  <div class="container">
+    <div class="section-label" style="color: var(--lavender);">⚡ 実践テク</div>
+    <h2 class="section-title">スキル（自動化レシピ）の作り方</h2>
+    <p class="section-desc">らすくさん流：「優秀な新人と一緒にやる → 次から1人でできるようになる」イメージ</p>
+
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-content">
+          <h4>🤝 まず一緒にやる</h4>
+          <p>AIと壁打ちしながら、作業を1つ1つ進める。例：ブログ記事のリサーチ→構成→執筆→整え。まずは手を動かす。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-content">
+          <h4>✅ やり切って完成させる</h4>
+          <p>一旦その作業を最後まで完了させる。中途半端にせず、いい感じの成果物を1つ仕上げる。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-content">
+          <h4>📋 スキル化を依頼</h4>
+          <p>「今やった内容をスキル化して」とAIに頼む。AIが全工程を振り返り、再現可能なマニュアルを自動生成。</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-content">
+          <h4>🔄 次回からワンコマンド</h4>
+          <p>スキルを呼び出すだけで同じ品質の作業を自動実行。AIが「1人でできる新人」に成長する瞬間。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 未来展望 ── -->
+<section class="future-section">
+  <div class="container">
+    <div class="section-label" style="color: #8b7020;">🔮 未来展望</div>
+    <h2 class="section-title">AIエージェントの未来</h2>
+    <p class="section-desc">スマホが「分身」になったように、AIエージェントが次の「分身」になる時代が来る。</p>
+
+    <div class="future-card">
+      <div class="big-icon">🎬</div>
+      <h3>「自分専用の映画館」の時代へ</h3>
+      <p>イーロン・マスク曰く、5年後にはスマホやPCは<strong>「操作するもの」ではなく「求めるものを映し出すデバイス」</strong>になる。</p>
+      <p>操作の時代から、思考を伝える時代へ。AIエージェントはその橋渡し。</p>
+
+      <div class="future-timeline">
+        <div class="timeline-chip">📱 現在 — スマホが分身</div>
+        <div class="timeline-chip">🤖 5-10年後 — AIエージェントが分身</div>
+        <div class="timeline-chip">🎬 その先 — 求めるものが映し出される</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── まとめ ── -->
+<section class="takeaway-section">
+  <div class="container">
+    <div class="section-label" style="color: var(--peach);">🎯 まとめ</div>
+    <h2 class="section-title">今日から始めるアクション</h2>
+
+    <div class="takeaway-card">
+      <div class="icon">🚀</div>
+      <h3>まず触ってみよう</h3>
+      <ul class="takeaway-list">
+        <li><span class="emoji">🆓</span> <span><strong>Antigravityは無料</strong>で始められる。まずはここから試してみよう</span></li>
+        <li><span class="emoji">🎮</span> <span>AIエージェントは<strong>「マジで大人の遊び道具」</strong>（くらげさん）。楽しんだもん勝ち</span></li>
+        <li><span class="emoji">👥</span> <span>分からないことはリベシティの勉強会・オフィス・チャットで聞ける。<strong>1人で悩まなくていい</strong></span></li>
+        <li><span class="emoji">🏢</span> <span>同じ業種の人のAI活用事例が一番参考になる。<strong>業種特化の勉強会</strong>に参加しよう</span></li>
+        <li><span class="emoji">⚡</span> <span>AI界隈は<strong>1週間前が結構昔</strong>。食らいついていこう</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>📺 <a href="https://www.youtube.com/watch?v=BnmX-gM2UjY">動画を見る（YouTube / 限定公開）</a></p>
+  <p style="margin-top:8px;">KeeeeN-G主催 リベイベントアーカイブ（2026/3/25）<br>登壇：らすくさん・くらげさん / MC：KeeeeN-G（ケンジ）さん</p>
+  <p style="margin-top:12px;">おけもんの脳内 🧠 AIが作成した図解ノート</p>
+</footer>
+
+</body>
+</html>
