@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>「インストールしても反応なし」の解決ガイド｜Claude Code はじめの一歩</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+      background: #F0F4FF;
+      color: #2D2D2D;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    /* ヘッダー */
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .header .tag {
+      display: inline-block;
+      background: #E8EDFF;
+      color: #4A6CF7;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      letter-spacing: 0.05em;
+    }
+
+    .header h1 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.4;
+      color: #1A1A2E;
+      margin-bottom: 10px;
+    }
+
+    .header h1 span {
+      color: #4A6CF7;
+    }
+
+    .header .subtitle {
+      font-size: 15px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* 説明ボックス（何が起きてるか） */
+    .explain-box {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border-left: 5px solid #4A6CF7;
+      box-shadow: 0 4px 16px rgba(74,108,247,0.08);
+    }
+
+    .explain-box .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #4A6CF7;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .explain-box h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1A1A2E;
+      margin-bottom: 14px;
+    }
+
+    .explain-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 560px) {
+      .explain-grid { grid-template-columns: 1fr; }
+    }
+
+    .explain-card {
+      background: #F8F9FF;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .explain-card .emoji { font-size: 24px; margin-bottom: 8px; }
+    .explain-card .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1A1A2E;
+      margin-bottom: 6px;
+    }
+    .explain-card .card-body {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* OK バナー */
+    .ok-banner {
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      border-radius: 14px;
+      padding: 18px 24px;
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.5;
+      box-shadow: 0 4px 16px rgba(16,185,129,0.25);
+    }
+
+    .ok-banner .small {
+      font-size: 13px;
+      font-weight: 400;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    /* ステップカード */
+    .steps-section {
+      margin-bottom: 24px;
+    }
+
+    .steps-section .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #1A1A2E;
+      margin-bottom: 14px;
+      padding-left: 6px;
+      border-left: 4px solid #4A6CF7;
+    }
+
+    .step-card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #4A6CF7;
+      color: white;
+      font-size: 17px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-content { flex: 1; }
+
+    .step-content h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1A1A2E;
+      margin-bottom: 6px;
+    }
+
+    .step-content p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .step-content .hint {
+      background: #F0F4FF;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #4A6CF7;
+      font-weight: 600;
+    }
+
+    .step-content .code-box {
+      background: #1A1A2E;
+      color: #7EE8A2;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-family: 'Menlo', 'Courier New', monospace;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .step-content .success-hint {
+      background: #ECFDF5;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #059669;
+    }
+
+    /* アロー */
+    .arrow {
+      text-align: center;
+      font-size: 22px;
+      color: #CBD5E1;
+      margin: -4px 0;
+    }
+
+    /* まだダメなら */
+    .fallback-box {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 2px dashed #CBD5E1;
+    }
+
+    .fallback-box h2 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #1A1A2E;
+      margin-bottom: 14px;
+    }
+
+    .fallback-step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .fallback-step:last-child { margin-bottom: 0; }
+
+    .fallback-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #F1F5F9;
+      border: 2px solid #CBD5E1;
+      color: #64748B;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .fallback-text {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+      padding-top: 2px;
+    }
+
+    .fallback-text strong { color: #1A1A2E; }
+
+    .fallback-text .code-inline {
+      background: #F1F5F9;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #4A6CF7;
+      font-weight: 700;
+    }
+
+    /* フッター */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      margin-top: 16px;
+    }
+
+    .footer a {
+      color: #4A6CF7;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- ヘッダー -->
+    <div class="header">
+      <div class="tag">Claude Code はじめの一歩</div>
+      <h1>「インストールしたのに<br>反応がない！」<span>→ 大丈夫！</span></h1>
+      <p class="subtitle">赤いエラーとポップアップ、どう対処すればいい？<br>ターミナル初心者でもできる解決方法をまとめました</p>
+    </div>
+
+    <!-- 何が起きてるか説明 -->
+    <div class="explain-box">
+      <div class="section-label">まず知ってほしいこと</div>
+      <h2>なぜ赤いエラーが出たの？</h2>
+      <div class="explain-grid">
+        <div class="explain-card">
+          <div class="emoji">🧰</div>
+          <div class="card-title">Claude Codeには「道具箱」が必要</div>
+          <div class="card-body">「git」という、ファイルを管理するための道具が必要です。Macに最初から入っていない場合があります。</div>
+        </div>
+        <div class="explain-card">
+          <div class="emoji">⏳</div>
+          <div class="card-title">「インストール」を押したら、裏で準備中！</div>
+          <div class="card-body">ボタンを押したら反応がないように見えても、画面の裏でちゃんとダウンロードが始まっています。<strong>8〜10分</strong>かかります。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OKバナー -->
+    <div class="ok-banner">
+      ✅ 「インストール」を押していたなら、今も準備中の可能性が高いです！
+      <div class="small">焦らず、まず10分待ってみましょう</div>
+    </div>
+
+    <!-- ステップ -->
+    <div class="steps-section">
+      <div class="section-title">確認の手順（3ステップ）</div>
+
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>10分くらい待ってみる</h3>
+          <p>「インストール」を押していたなら、裏でダウンロードが進んでいます。Wi-Fiの速度によっては少し時間がかかります。待っている間はMacを閉じないようにしましょう。</p>
+          <div class="hint">💡 インターネットの速度次第で、3分〜15分かかる場合があります</div>
+        </div>
+      </div>
+
+      <div class="arrow">↓</div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>ちゃんと入ったか確認する</h3>
+          <p>Mac右上の虫眼鏡アイコン（🔍）をクリックして「ターミナル」と入力 → Enterキーで開きます。<br>黒い画面が開いたら、以下をそのままコピー＆ペーストしてEnterキーを押してください：</p>
+          <div class="code-box">git --version</div>
+          <div class="success-hint">✅ 「git version 2.○○.○」のような文字が出たら完了！<br>❌ 何も出ない or エラーが出たら → 次のステップへ</div>
+        </div>
+      </div>
+
+      <div class="arrow">↓</div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Claude Codeを再起動する</h3>
+          <p>確認できたら、Claude Codeを一度閉じて、もう一度開いてみましょう。これで赤いエラーが消えるはずです。</p>
+          <div class="hint">🎉 これで完了です！お疲れさまでした</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- まだダメなら -->
+    <div class="fallback-box">
+      <h2>⚠️ まだダメなら → 手動でインストールしてみよう</h2>
+
+      <div class="fallback-step">
+        <div class="fallback-num">1</div>
+        <div class="fallback-text">
+          Mac右上の虫眼鏡アイコン（🔍）→「<strong>ターミナル</strong>」と入力→ Enterで開く
+        </div>
+      </div>
+
+      <div class="fallback-step">
+        <div class="fallback-num">2</div>
+        <div class="fallback-text">
+          黒い画面に <span class="code-inline">xcode-select --install</span> と入力してEnterを押す<br>
+          <span style="color:#888;font-size:12px;">（コピー&ペーストでOK。半角スペースとハイフン2つに注意）</span>
+        </div>
+      </div>
+
+      <div class="fallback-step">
+        <div class="fallback-num">3</div>
+        <div class="fallback-text">
+          ポップアップが出たら「<strong>インストール</strong>」→「<strong>同意</strong>」をクリック
+        </div>
+      </div>
+
+      <div class="fallback-step">
+        <div class="fallback-num">4</div>
+        <div class="fallback-text">
+          <strong>10分ほど待つ</strong>（Wi-Fiを切らずに待つ）
+        </div>
+      </div>
+
+      <div class="fallback-step">
+        <div class="fallback-num">5</div>
+        <div class="fallback-text">
+          ターミナルで <span class="code-inline">git --version</span> → バージョンが出たら完了。Claude Codeを再起動！
+        </div>
+      </div>
+    </div>
+
+    <!-- フッター -->
+    <div class="footer">
+      作成: おけもんの図解ラボ｜きょうちゃん powered by Claude Code<br>
+      <a href="https://okemonogatari-hash.github.io/html-share-box/">図解一覧に戻る</a>
+    </div>
+
+  </div>
+</body>
+</html>
