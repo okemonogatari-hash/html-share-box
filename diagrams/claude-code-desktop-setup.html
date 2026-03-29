@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デスクトップ版 Claude Code はじめてガイド｜全部入りセットアップ</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+      background: #F5F3FF;
+      color: #1E1B4B;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 36px 20px 70px;
+    }
+
+    /* ヘッダー */
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .header .badge {
+      display: inline-block;
+      background: #EDE9FE;
+      color: #7C3AED;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      letter-spacing: 0.08em;
+    }
+    .header h1 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.4;
+      color: #1E1B4B;
+      margin-bottom: 10px;
+    }
+    .header h1 em {
+      font-style: normal;
+      color: #7C3AED;
+    }
+    .header .subtitle {
+      font-size: 14px;
+      color: #6B7280;
+      line-height: 1.7;
+    }
+
+    /* 前提チェック */
+    .prereq-box {
+      background: white;
+      border-radius: 16px;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+      border: 2px solid #EDE9FE;
+      box-shadow: 0 4px 16px rgba(124,58,237,0.07);
+    }
+    .prereq-box .box-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #7C3AED;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .prereq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 520px) { .prereq-grid { grid-template-columns: 1fr; } }
+    .prereq-item {
+      background: #FAF5FF;
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .prereq-icon { font-size: 20px; flex-shrink: 0; }
+    .prereq-text .ptitle {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1E1B4B;
+      margin-bottom: 3px;
+    }
+    .prereq-text .pbody {
+      font-size: 12px;
+      color: #6B7280;
+      line-height: 1.5;
+    }
+    .prereq-text .pbody .chip {
+      display: inline-block;
+      background: #EDE9FE;
+      color: #7C3AED;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 8px;
+      border-radius: 10px;
+    }
+
+    /* ステップヘッダー */
+    .steps-header {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1E1B4B;
+      margin-bottom: 12px;
+      padding-left: 8px;
+      border-left: 4px solid #7C3AED;
+    }
+
+    /* ステップカード */
+    .step-card {
+      background: white;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 22px;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .c1 { background: #7C3AED; }
+    .c2 { background: #2563EB; }
+    .c3 { background: #059669; }
+    .c4 { background: #D97706; }
+    .c5 { background: #DC2626; }
+    .c6 { background: #7C3AED; }
+    .c7 { background: #059669; }
+
+    .step-title-wrap { flex: 1; }
+    .step-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9CA3AF;
+      letter-spacing: 0.1em;
+      margin-bottom: 3px;
+    }
+    .step-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #1E1B4B;
+    }
+
+    .step-body {
+      padding: 0 22px 18px 22px;
+      border-top: 1px solid #F3F4F6;
+      padding-top: 16px;
+    }
+
+    .step-body p {
+      font-size: 14px;
+      color: #4B5563;
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+    .step-body p:last-child { margin-bottom: 0; }
+
+    /* コードブロック */
+    .code-block {
+      background: #1E1B4B;
+      color: #A5F3A0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: 'Menlo', 'Courier New', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      word-break: break-all;
+    }
+    .code-block .comment {
+      color: #6B7280;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    /* ヒントボックス */
+    .hint {
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.65;
+      margin-top: 10px;
+    }
+    .hint-blue { background: #EFF6FF; color: #1D4ED8; }
+    .hint-green { background: #ECFDF5; color: #047857; }
+    .hint-yellow { background: #FFFBEB; color: #92400E; }
+    .hint-red { background: #FEF2F2; color: #991B1B; }
+    .hint-purple { background: #F5F3FF; color: #5B21B6; }
+
+    .hint strong { font-weight: 700; }
+
+    /* 警告コーナー */
+    .warning-section {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 12px;
+      border-left: 4px solid #F59E0B;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .warning-section .wtitle {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1E1B4B;
+      margin-bottom: 14px;
+    }
+    .warning-item {
+      margin-bottom: 18px;
+    }
+    .warning-item:last-child { margin-bottom: 0; }
+    .warning-label {
+      display: inline-block;
+      background: #FEF3C7;
+      color: #92400E;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .warning-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1E1B4B;
+      margin-bottom: 6px;
+    }
+    .warning-body {
+      font-size: 13px;
+      color: #4B5563;
+      line-height: 1.65;
+    }
+
+    /* アロー */
+    .arrow-down {
+      text-align: center;
+      font-size: 24px;
+      color: #D1D5DB;
+      margin: -4px 0;
+      line-height: 1;
+    }
+
+    /* 完了バナー */
+    .done-banner {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 22px 24px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(5,150,105,0.25);
+    }
+    .done-banner .done-emoji { font-size: 36px; margin-bottom: 10px; }
+    .done-banner h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .done-banner p {
+      font-size: 14px;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    /* フッター */
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #9CA3AF;
+    }
+    .footer a { color: #7C3AED; text-decoration: none; }
+
+    /* ステップ間の仕切り */
+    .divider {
+      height: 1px;
+      background: #F3F4F6;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- ヘッダー -->
+    <div class="header">
+      <div class="badge">デスクトップ版 Claude Code</div>
+      <h1>はじめてのセットアップ<br><em>完全ガイド</em></h1>
+      <p class="subtitle">「Gitがない」「Homebrewがない」の警告も全部解決します<br>ターミナル版ではなく、デスクトップアプリ版のためのガイドです</p>
+    </div>
+
+    <!-- 前提確認 -->
+    <div class="prereq-box">
+      <div class="box-title">📋 始める前に確認しておくこと</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-icon">💻</div>
+          <div class="prereq-text">
+            <div class="ptitle">Macの場合</div>
+            <div class="pbody">macOS 13（Ventura）以降が必要です。「りんごマーク → このMacについて」で確認できます</div>
+          </div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-icon">👤</div>
+          <div class="prereq-text">
+            <div class="ptitle">Claudeのプランが必要</div>
+            <div class="pbody">無料プランでは使えません。<span class="chip">Pro</span> または <span class="chip">Max</span> プランが必要です（月額 $20〜）</div>
+          </div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-icon">📶</div>
+          <div class="prereq-text">
+            <div class="ptitle">ネット環境が必要</div>
+            <div class="pbody">インストール中も使用中も、インターネット接続が必要です</div>
+          </div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-icon">⏱️</div>
+          <div class="prereq-text">
+            <div class="ptitle">準備時間の目安</div>
+            <div class="pbody">ダウンロードやインストールを含めて、だいたい<strong>20〜30分</strong>みておきましょう</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-header">セットアップの流れ（全7ステップ）</div>
+
+    <!-- STEP 1 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num c1">1</div>
+        <div class="step-title-wrap">
+          <div class="step-tag">STEP 1 ・ ダウンロード</div>
+          <div class="step-title">公式サイトからアプリをダウンロードする</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>ブラウザで <strong>claude.ai</strong> を開いて、ログインした状態でアプリをダウンロードします。</p>
+        <div class="hint hint-blue">
+          💡 ダウンロードしたファイル（.dmg）は「ダウンロード」フォルダに入ります。ダブルクリックして開いてください。
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- STEP 2 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num c2">2</div>
+        <div class="step-title-wrap">
+          <div class="step-tag">STEP 2 ・ インストール</div>
+          <div class="step-title">アプリをApplicationsフォルダに移動する</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>開いたウィンドウの中で、「Claude」アイコンを右の「Applications」フォルダにドラッグ＆ドロップします。</p>
+        <p>移動が終わったら、Finderの「アプリケーション」フォルダから「Claude」をダブルクリックして起動します。</p>
+        <div class="hint hint-yellow">
+          ⚠️ 「"Claude.app"は開発元を確認できないアプリです」と表示されたら →「開く」をクリックすれば大丈夫です（Apple公証済みの安全なアプリです）
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- STEP 3 警告が出る -->
+    <div class="warning-section">
+      <div class="wtitle">⚠️ ここで警告が出ることがある！あわてないで</div>
+
+      <div class="warning-item">
+        <div class="warning-label">よくある警告 ①</div>
+        <div class="warning-title">「Gitが見つかりません」「ローカルセッションにはGitが必要です」</div>
+        <div class="warning-body">
+          Gitというファイル管理の道具がMacに入っていない状態です。次のSTEP 3で解決します。
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="warning-item">
+        <div class="warning-label">よくある警告 ②</div>
+        <div class="warning-title">「Homebrewが見つかりません」</div>
+        <div class="warning-body">
+          Homebrewというアプリのインストールを助けてくれる道具が入っていない状態です。STEP 3 → 4の順に解決します。
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="warning-item">
+        <div class="warning-label">よくある警告 ③</div>
+        <div class="warning-title">「コマンドラインデベロッパツールをインストールしますか？」（Macのポップアップ）</div>
+        <div class="warning-body">
+          「インストール」を押すと裏でダウンロードが始まります。<strong>8〜10分</strong>かかるので、そのまま待ちましょう。
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- STEP 3 Homebrewインストール -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num c3">3</div>
+        <div class="step-title-wrap">
+          <div class="step-tag">STEP 3 ・ Homebrew インストール</div>
+          <div class="step-title">「道具を入れる道具」Homebrew を入れる</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Homebrew（ホームブリュー）は、Macに色々な道具を簡単に入れてくれる「インストーラー」のようなものです。まずこれを入れます。</p>
+        <p>Macの虫眼鏡アイコン（🔍）→「ターミナル」→ Enterで黒い画面を開いて、以下をコピー＆ペーストしてEnterを押します：</p>
+        <div class="code-block">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</div>
+        <div class="hint hint-yellow">
+          ⚠️ Macのパスワードを聞かれます。普段ログインに使うパスワードを入力してください（入力しても画面に文字が表示されませんが、ちゃんと入力されています）
+        </div>
+        <div class="hint hint-blue">
+          💡 M1・M2・M3チップのMac（2020年以降の薄いMac）の場合、インストール後に追加で以下の2行も実行してください：<br><br>
+          <span style="font-family:monospace;font-size:13px;background:#1E1B4B;color:#A5F3A0;padding:2px 8px;border-radius:4px;">echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc</span><br><br>
+          <span style="font-family:monospace;font-size:13px;background:#1E1B4B;color:#A5F3A0;padding:2px 8px;border-radius:4px;">source ~/.zshrc</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- STEP 4 Git インストール -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num c4">4</div>
+        <div class="step-title-wrap">
+          <div class="step-tag">STEP 4 ・ Git インストール</div>
+          <div class="step-title">Claude Codeに必要な「Git」を入れる</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Git（ジット）は、ファイルの変更履歴を管理する道具です。Claude Codeが作業するために必要です。Homebrewが入れば、簡単に追加できます。</p>
+        <p>同じくターミナルで以下を入力してEnterを押します：</p>
+        <div class="code-block">brew install git</div>
+        <p>完了したら確認してみましょう：</p>
+        <div class="code-block">git --version<br><span class="comment"># → 「git version 2.○○.○」と表示されればOK！</span></div>
+        <div class="hint hint-green">
+          ✅ バージョン番号が表示されたら、Gitのインストール完了です！
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- STEP 5 ログイン -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num c5">5</div>
+        <div class="step-title-wrap">
+          <div class="step-tag">STEP 5 ・ ログイン</div>
+          <div class="step-title">Claudeアカウントでログインする</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>アプリを（再）起動すると、ブラウザが自動で開きます。Claude.aiのアカウントでログインして「許可する」をクリックすると、デスクトップアプリに自動で戻ります。</p>
+        <div class="hint hint-blue">
+          💡 ブラウザが開かない場合は、アプリの画面で「C」キーを押すとURLがコピーされます。それをブラウザのアドレスバーに貼り付けてアクセスしてください。
+        </div>
+        <div class="hint hint-red">
+          ❌ 「Pro/Maxプランが必要です」と表示された場合は、claude.ai からプランをアップグレードしてください。無料プランでは使えません。
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- STEP 6 Codeタブ -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num c6">6</div>
+        <div class="step-title-wrap">
+          <div class="step-tag">STEP 6 ・ Code タブを開く</div>
+          <div class="step-title">アプリ上部の「Code」タブをクリックする</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>ログインが完了すると、アプリ上部に「Code」というタブが表示されます。ここをクリックすると、Claude Code の画面が開きます。</p>
+        <div class="hint hint-purple">
+          💡 Claudeの通常チャット画面とは別の場所です。「Code」タブが見当たらない場合は、アプリを再起動してみてください。
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- STEP 7 フォルダ選択 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num c7">7</div>
+        <div class="step-title-wrap">
+          <div class="step-tag">STEP 7 ・ フォルダ選択</div>
+          <div class="step-title">作業したいフォルダを選んでスタート！</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>「フォルダを選択」（Select folder）ボタンをクリックして、Claudeに整理・作業してほしいフォルダを選びます。</p>
+        <p>最初は「デスクトップ」や「ダウンロード」フォルダなど、使い慣れた場所から試してみるのがおすすめです。</p>
+        <div class="hint hint-green">
+          ✅ フォルダを選ぶと会話欄が出てきます。日本語でそのまま指示を入力するだけでOKです！
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- 完了バナー -->
+    <div class="done-banner">
+      <div class="done-emoji">🎉</div>
+      <h2>セットアップ完了！</h2>
+      <p>あとはやってほしいことを日本語で話しかけるだけ。<br>「このフォルダのファイルを整理して」「〇〇のリストを作って」など、なんでも頼んでみてください！</p>
+    </div>
+
+    <div class="footer" style="margin-top:24px;">
+      作成: おけもんの図解ラボ｜きょうちゃん powered by Claude Code<br>
+      <a href="https://okemonogatari-hash.github.io/html-share-box/">図解一覧に戻る</a>
+    </div>
+
+  </div>
+</body>
+</html>
