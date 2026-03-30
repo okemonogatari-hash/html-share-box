@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>みんなの活用事例集 | AIわくわくお遊びひろば</title>
+<style>
+  :root {
+    --bg: #faf8f5;
+    --paper: #fff;
+    --ink: #2d2a26;
+    --muted: #7a756d;
+    --line: rgba(0,0,0,0.06);
+    --accent: #6c5ce7;
+    --accent-soft: rgba(108,92,231,0.08);
+    --warm: #e17055;
+    --mint: #00b894;
+    --mint-soft: rgba(0,184,148,0.08);
+    --honey: #fdcb6e;
+    --honey-soft: rgba(253,203,110,0.15);
+    --sky: #0984e3;
+    --sky-soft: rgba(9,132,227,0.08);
+    --rose: #e84393;
+    --rose-soft: rgba(232,67,147,0.08);
+    --shadow: 0 8px 30px rgba(0,0,0,0.06);
+    --radius: 20px;
+    --max: 1100px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(253,203,110,0.08), transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(0,184,148,0.06), transparent 35%);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .page { width: min(var(--max), calc(100vw - 32px)); margin: 0 auto; padding: 32px 0 80px; }
+
+  /* ===== Hero ===== */
+  .hero {
+    text-align: center;
+    padding: 48px 32px 40px;
+    margin-bottom: 28px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 32px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--honey), var(--warm), var(--mint), var(--accent));
+  }
+  .hero-emoji { font-size: 48px; margin-bottom: 12px; }
+  .hero h1 { font-size: clamp(22px, 4vw, 34px); font-weight: 800; margin-bottom: 10px; }
+  .hero p { font-size: 15px; color: var(--muted); max-width: 520px; margin: 0 auto 20px; line-height: 1.8; }
+  .hero-count {
+    display: inline-block;
+    background: var(--honey-soft);
+    color: #b8860b;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(253,203,110,0.3);
+  }
+
+  /* ===== Filter ===== */
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; padding: 0 4px; }
+  .filter-btn {
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: rgba(108,92,231,0.2);
+  }
+
+  /* ===== Cards ===== */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  .case-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .case-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    border-color: rgba(108,92,231,0.25);
+  }
+
+  .case-number {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  .case-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    align-self: flex-start;
+  }
+  .tag-code { background: var(--accent-soft); color: var(--accent); }
+  .tag-auto { background: var(--mint-soft); color: var(--mint); }
+  .tag-tool { background: var(--sky-soft); color: var(--sky); }
+  .tag-life { background: var(--rose-soft); color: var(--rose); }
+  .tag-biz { background: var(--honey-soft); color: #b8860b; }
+
+  .case-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .case-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 12px;
+    flex-grow: 1;
+  }
+  .case-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--muted);
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .case-meta-item { display: flex; align-items: center; gap: 4px; }
+  .case-tool {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--bg);
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  /* ===== Empty state ===== */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  .empty-state .emoji { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 15px; }
+
+  /* ===== CTA ===== */
+  .cta-section {
+    margin-top: 32px;
+    padding: 32px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .cta-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .cta-section p { font-size: 14px; color: var(--muted); max-width: 450px; margin: 0 auto 16px; line-height: 1.7; }
+  .cta-hint {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(108,92,231,0.15);
+  }
+
+  .footer { text-align: center; padding: 32px 0 0; color: var(--muted); font-size: 12px; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .gallery { grid-template-columns: 1fr; }
+    .hero { padding: 32px 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a href="../index.html" class="back-link">< 図解ギャラリーに戻る</a>
+
+  <div class="hero">
+    <div class="hero-emoji">&#127912;</div>
+    <h1>みんなの活用事例集</h1>
+    <p>AIわくわくお遊びひろばのメンバーが<br>「作ってみた！」を集めた場所。<br>こんなことできるんだ！のヒントがここに。</p>
+    <span class="hero-count" id="totalCount">1 件の事例</span>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterCards('all')">すべて</button>
+    <button class="filter-btn" onclick="filterCards('code')">コード/アプリ</button>
+    <button class="filter-btn" onclick="filterCards('auto')">自動化</button>
+    <button class="filter-btn" onclick="filterCards('tool')">ツール活用</button>
+    <button class="filter-btn" onclick="filterCards('life')">暮らし</button>
+    <button class="filter-btn" onclick="filterCards('biz')">仕事/副業</button>
+  </div>
+
+  <div class="gallery" id="gallery">
+
+    <!-- Case #1 -->
+    <div class="case-card" data-cat="code">
+      <span class="case-number">#1</span>
+      <span class="case-tag tag-code">コード/アプリ</span>
+      <h3>スクショからGoogleカレンダー予定登録アプリ</h3>
+      <p class="case-desc">
+        小学校・中学校の予定表のスクショを読み取り、Googleカレンダーに一括登録。
+        全部登録/1件ずつ確認/スキップなど選べるインターフェース付き。
+      </p>
+      <div class="case-meta">
+        <span class="case-meta-item">&#128197; 2026.03.30</span>
+        <span class="case-meta-item">&#128100; マガジンさん</span>
+        <span class="case-tool">Claude Code</span>
+      </div>
+    </div>
+
+    <!-- 次の事例はここに追加 -->
+
+  </div>
+
+  <div class="cta-section">
+    <h2>あなたの「作ってみた！」も載せませんか？</h2>
+    <p>チャットで成果物をシェアしてくれたら、ここに掲載します。<br>小さなものでもOK！みんなのヒントになります。</p>
+    <span class="cta-hint">&#128172; チャットに投稿するだけでOK</span>
+  </div>
+
+  <div class="footer">
+    <p>夢を叶えるAIわくわくお遊びひろば</p>
+    <p style="margin-top: 4px;">Created with Claude Code x おけもん</p>
+  </div>
+
+</div>
+
+<script>
+  function filterCards(cat) {
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    event.target.classList.add('active');
+    var cards = document.querySelectorAll('.case-card');
+    var visible = 0;
+    cards.forEach(function(card) {
+      var show = (cat === 'all' || card.dataset.cat === cat);
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+  }
+</script>
+</body>
+</html>
