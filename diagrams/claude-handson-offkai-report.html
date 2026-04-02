@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude初期導入ハンズオンオフ会レポート</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', sans-serif;
+    background: #fdf8f0;
+    color: #3a3a3a;
+    min-height: 100vh;
+    line-height: 1.8;
+  }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
+
+  /* ========== Hero ========== */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 56px 24px 48px;
+    border-radius: 28px;
+    margin-bottom: 32px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(91,185,140,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 70%, rgba(108,180,216,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 50%, rgba(155,142,196,0.15) 0%, transparent 70%),
+      #f5f0ff;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(8px);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #6c5ce7;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.5;
+    background: linear-gradient(135deg, #6c5ce7, #5bb98c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .subtitle {
+    font-size: 14px;
+    color: #7a7a8a;
+    margin-top: 8px;
+  }
+  .hero .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .hero .stat-chip {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(8px);
+    padding: 10px 18px;
+    border-radius: 14px;
+    font-size: 13px;
+    color: #555;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .hero .stat-chip strong {
+    font-size: 20px;
+    font-weight: 900;
+    color: #6c5ce7;
+    margin-right: 4px;
+  }
+  .hero-emoji {
+    position: absolute;
+    font-size: 40px;
+    animation: float 3s ease-in-out infinite;
+    opacity: 0.7;
+  }
+  .hero-emoji.e1 { top: 12%; left: 8%; animation-delay: 0s; }
+  .hero-emoji.e2 { top: 18%; right: 10%; animation-delay: 1s; }
+  .hero-emoji.e3 { bottom: 12%; left: 14%; animation-delay: 0.5s; }
+  .hero-emoji.e4 { bottom: 16%; right: 8%; animation-delay: 1.5s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* ========== Hook Banner ========== */
+  .hook-banner {
+    background: linear-gradient(135deg, #fff7ed, #fef3c7);
+    border: 2px solid #fbbf24;
+    border-radius: 20px;
+    padding: 28px 24px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .hook-banner .hook-icon { font-size: 36px; margin-bottom: 8px; }
+  .hook-banner h2 {
+    font-size: 18px;
+    font-weight: 900;
+    color: #d97706;
+    line-height: 1.6;
+  }
+  .hook-banner p {
+    font-size: 14px;
+    color: #92400e;
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+  .hook-banner .highlight {
+    background: linear-gradient(transparent 60%, #fde68a 60%);
+    font-weight: 700;
+  }
+
+  /* ========== Section ========== */
+  .section {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.04);
+  }
+  .section h2 {
+    font-size: 18px;
+    font-weight: 900;
+    color: #3a3a3a;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section h2 .sec-icon { font-size: 24px; }
+
+  /* Accent top border */
+  .section.accent-green { border-top: 4px solid; border-image: linear-gradient(90deg, #5bb98c, #6cb4d8) 1; }
+  .section.accent-purple { border-top: 4px solid; border-image: linear-gradient(90deg, #6c5ce7, #a78bfa) 1; }
+  .section.accent-orange { border-top: 4px solid; border-image: linear-gradient(90deg, #f2956b, #fbbf24) 1; }
+  .section.accent-blue { border-top: 4px solid; border-image: linear-gradient(90deg, #6cb4d8, #5bb98c) 1; }
+
+  /* ========== Timeline ========== */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 8px; bottom: 8px;
+    width: 3px;
+    background: linear-gradient(to bottom, #5bb98c, #6cb4d8, #6c5ce7);
+    border-radius: 4px;
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    background: #faf8f5;
+    border-radius: 14px;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -24px; top: 18px;
+    width: 12px; height: 12px;
+    background: #fff;
+    border: 3px solid #5bb98c;
+    border-radius: 50%;
+  }
+  .tl-item:nth-child(even)::before { border-color: #6cb4d8; }
+  .tl-item:nth-child(3n)::before { border-color: #6c5ce7; }
+  .tl-item h3 { font-size: 15px; font-weight: 700; color: #3a3a3a; margin-bottom: 4px; }
+  .tl-item p { font-size: 13px; color: #666; line-height: 1.8; }
+
+  /* ========== Stumble Cards ========== */
+  .stumble-list { display: flex; flex-direction: column; gap: 14px; }
+  .stumble-card {
+    background: #fef7f0;
+    border-radius: 16px;
+    padding: 18px 20px;
+    border-left: 4px solid #f2956b;
+  }
+  .stumble-card .problem {
+    font-size: 14px;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .stumble-card .problem .p-icon { flex-shrink: 0; }
+  .stumble-card .solution {
+    font-size: 13px;
+    color: #2d6a4f;
+    background: #f0fdf4;
+    padding: 10px 14px;
+    border-radius: 10px;
+    line-height: 1.8;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .stumble-card .solution .s-icon { flex-shrink: 0; font-size: 16px; }
+
+  /* ========== Q&A ========== */
+  .qa-item { margin-bottom: 16px; }
+  .qa-q {
+    font-size: 14px;
+    font-weight: 700;
+    color: #6c5ce7;
+    padding: 12px 16px;
+    background: #f5f0ff;
+    border-radius: 14px 14px 4px 14px;
+    margin-bottom: 6px;
+    display: flex;
+    gap: 8px;
+  }
+  .qa-a {
+    font-size: 13px;
+    color: #444;
+    padding: 12px 16px;
+    background: #f0faf5;
+    border-radius: 4px 14px 14px 14px;
+    line-height: 1.8;
+    margin-left: 16px;
+    display: flex;
+    gap: 8px;
+  }
+  .qa-label {
+    font-weight: 900;
+    flex-shrink: 0;
+    font-size: 15px;
+  }
+  .qa-label.q { color: #6c5ce7; }
+  .qa-label.a { color: #5bb98c; }
+
+  /* ========== Voice Cards ========== */
+  .voice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 500px) { .voice-grid { grid-template-columns: 1fr; } }
+  .voice-card {
+    background: #f5f0ff;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+  .voice-card .v-emoji { font-size: 28px; margin-bottom: 6px; }
+  .voice-card .v-role { font-size: 11px; color: #9b8ec4; font-weight: 700; margin-bottom: 4px; }
+  .voice-card .v-text { font-size: 13px; color: #555; line-height: 1.7; }
+
+  /* ========== CTA / Homework ========== */
+  .cta-box {
+    background:
+      radial-gradient(ellipse at 30% 40%, rgba(91,185,140,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 60%, rgba(108,180,216,0.2) 0%, transparent 60%),
+      #f5f0ff;
+    border-radius: 24px;
+    padding: 36px 24px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .cta-box .cta-icon { font-size: 48px; margin-bottom: 12px; }
+  .cta-box h2 {
+    font-size: 20px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #6c5ce7, #5bb98c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+  .cta-box p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.9;
+  }
+  .cta-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    text-align: left;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(8px);
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    color: #444;
+  }
+  .cta-step .step-num {
+    background: linear-gradient(135deg, #6c5ce7, #5bb98c);
+    color: #fff;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  /* ========== Footer ========== */
+  .footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 12px;
+    color: #aaa;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <span class="hero-emoji e1">🤖</span>
+    <span class="hero-emoji e2">✨</span>
+    <span class="hero-emoji e3">💬</span>
+    <span class="hero-emoji e4">🚀</span>
+    <div class="badge">EVENT REPORT</div>
+    <h1>Claude初期導入<br>ハンズオンオフ会</h1>
+    <div class="subtitle">2026年4月1日 / hosted by おけもん</div>
+    <div class="stats-row">
+      <div class="stat-chip"><strong>7</strong>名参加</div>
+      <div class="stat-chip"><strong>2h42min</strong></div>
+      <div class="stat-chip"><strong>全員</strong>導入完了</div>
+    </div>
+  </div>
+
+  <!-- Hook Banner -->
+  <div class="hook-banner">
+    <div class="hook-icon">🎯</div>
+    <h2>「ドラえもんが、できた。」</h2>
+    <p>日本語で話しかけるだけで、パソコンの中身を整理してくれる。<br>
+    メール処理も、予約も、リサーチも。<br>
+    <span class="highlight">AIが「店員さん」から「自分だけの秘書」に変わった日。</span></p>
+  </div>
+
+  <!-- やったこと -->
+  <div class="section accent-green">
+    <h2><span class="sec-icon">📋</span> 2時間42分でやったこと</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <h3>AIエージェントってなに？</h3>
+        <p>チャットAI ＝「お店の店員さん」に相談するイメージ。AIエージェント ＝「家に来てくれるお手伝いさん」。自分のPCの中身を見て、ファイル整理・予約・メールまで実際にやってくれる</p>
+      </div>
+      <div class="tl-item">
+        <h3>Coworkをインストール＆初体験</h3>
+        <p>全員でダウンロード → Proプラン課金（月約3,000円）→ デスクトップに練習フォルダ作成 → プロンプトを貼るだけでフォルダやファイルを自動生成してくれるのを体験！</p>
+      </div>
+      <div class="tl-item">
+        <h3>claude.md ＝ 玄関のルールブック</h3>
+        <p>自分のプロフィールやルールを書いておくと、Claudeが毎回読んでくれる。使うほど「自分専用AI」に育っていく仕組み</p>
+      </div>
+      <div class="tl-item">
+        <h3>Claude in Chrome でブラウザ操作</h3>
+        <p>Chrome上のページをClaudeに操作させる拡張機能。求人サイト60件をリスト化、映画チケット予約、フライトキャンセルまで実演！</p>
+      </div>
+      <div class="tl-item">
+        <h3>スマホ連携（Dispatch）</h3>
+        <p>外出先からスマホでPCのClaudeに指示を出せる。ちょっとした確認はスマホのチャット版で、重要な作業は帰宅後にPC版で</p>
+      </div>
+      <div class="tl-item">
+        <h3>トークンの仕組みを理解</h3>
+        <p>5時間ごとにリセットされる枠 ＋ 週間上限の2段構え。チャットをこまめに新規作成すると節約できる。モデルは3種から選択可</p>
+      </div>
+      <div class="tl-item">
+        <h3>Claude Code にも触れてみた</h3>
+        <p>Coworkと同じAIエンジンの「開発者向け入口」。ターミナルから動かすぶん自由度が高く、Googleカレンダー連携や「毎朝タスク整理してくれる秘書」の設定もできる。まずはCoworkから慣れて、興味が出たらCode側も！</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- つまずきポイント -->
+  <div class="section accent-orange">
+    <h2><span class="sec-icon">⚡</span> みんながつまずいたポイント</h2>
+    <div class="stumble-list">
+      <div class="stumble-card">
+        <div class="problem"><span class="p-icon">😱</span> Windows版を間違えてダウンロードしちゃった！</div>
+        <div class="solution"><span class="s-icon">💡</span> ダウンロードページでOS（macOS / Windows）を確認してからクリック。焦らずゆっくりでOK</div>
+      </div>
+      <div class="stumble-card">
+        <div class="problem"><span class="p-icon">📶</span> Wi-Fiが重くてダウンロードが全然進まない…</div>
+        <div class="solution"><span class="s-icon">💡</span> スマホのテザリングに切り替えたら一瞬で解決！オフ会会場のWi-Fiは混みがちなので事前DLもアリ</div>
+      </div>
+      <div class="stumble-card">
+        <div class="problem"><span class="p-icon">🔴</span> Claude Codeの画面に赤いエラーが出てパニック！</div>
+        <div class="solution"><span class="s-icon">💡</span> 必要なツールが入ってないだけ。スクショを撮ってCoworkに「これどうしたらいい？」って聞けばOK</div>
+      </div>
+      <div class="stumble-card">
+        <div class="problem"><span class="p-icon">😵‍💫</span> トークンって何？使いすぎるとどうなるの？</div>
+        <div class="solution"><span class="s-icon">💡</span> AIの「ガソリン」みたいなもの。5時間で補給＋週間上限あり。チャットをこまめに新しくすると節約できる</div>
+      </div>
+      <div class="stumble-card">
+        <div class="problem"><span class="p-icon">📱</span> スマホから繋がらない…</div>
+        <div class="solution"><span class="s-icon">💡</span> PCがスリープしてると繋がらない。電源ON＆画面ロック解除の状態にしておこう</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q&A -->
+  <div class="section accent-purple">
+    <h2><span class="sec-icon">💬</span> みんなの「これどうなの？」</h2>
+    <div class="qa-item">
+      <div class="qa-q"><span class="qa-label q">Q</span> CoworkとClaude Codeって何が違うの？</div>
+      <div class="qa-a"><span class="qa-label a">A</span> 中身は同じAIエンジン！Coworkは「AIに仕事を丸投げできるモード」で選択肢UIがあって初心者にやさしい。Claude Codeは「AIと一緒にコードを書くモード」で開発者向け。上位・下位ではなく、入口が違うだけ！</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q"><span class="qa-label q">Q</span> フォルダを指定する意味って？</div>
+      <div class="qa-a"><span class="qa-label a">A</span> Claudeの作業場所（＝「お家」）を決めること。範囲を絞るとトークン節約にもなる。必要なら「PC全体見て」って指示すれば範囲外も見てくれるよ</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q"><span class="qa-label q">Q</span> ひとつのチャットでずっと話し続けていいの？</div>
+      <div class="qa-a"><span class="qa-label a">A</span> 長く続けると精度が下がる＆トークンも食う。話題が変わったら新しいチャットを開くのがコツ。claude.mdに書いてあることは引き継がれるから安心</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q"><span class="qa-label q">Q</span> Chrome拡張でログイン済みのサイトも使える？</div>
+      <div class="qa-a"><span class="qa-label a">A</span> Chromeでログインしてるサイト（Googleドライブ等）はそのままアクセスできる。ただしInstagram等のSNSはブロックされることがあるので向き不向きあり</div>
+    </div>
+    <div class="qa-item">
+      <div class="qa-q"><span class="qa-label q">Q</span> 精度を上げるにはどうしたらいい？</div>
+      <div class="qa-a"><span class="qa-label a">A</span> 「育成ゲーム」だと思って！日記、ブログ、MBTI、ストレングスファインダー…自分の情報を入れるほど「自分専用AI」に進化していくよ</div>
+    </div>
+  </div>
+
+  <!-- 参加者の声 -->
+  <div class="section accent-blue">
+    <h2><span class="sec-icon">🗣️</span> こんなメンバーが参加</h2>
+    <div class="voice-grid">
+      <div class="voice-card">
+        <div class="v-emoji">📝</div>
+        <div class="v-role">ブロガー</div>
+        <div class="v-text">ブログのサポートAIとして活用したい</div>
+      </div>
+      <div class="voice-card">
+        <div class="v-emoji">🏫</div>
+        <div class="v-role">高校英語教員</div>
+        <div class="v-text">テスト作成や英作文添削に使いたい</div>
+      </div>
+      <div class="voice-card">
+        <div class="v-emoji">📱</div>
+        <div class="v-role">SNS運用代行</div>
+        <div class="v-text">HP更新の案件にも活用したい</div>
+      </div>
+      <div class="voice-card">
+        <div class="v-emoji">🎬</div>
+        <div class="v-role">映像クリエイター</div>
+        <div class="v-text">今日からClaude本格デビュー！</div>
+      </div>
+      <div class="voice-card">
+        <div class="v-emoji">📊</div>
+        <div class="v-role">オンライン講座運営</div>
+        <div class="v-text">スプレッドシートアプリを改善したい</div>
+      </div>
+      <div class="voice-card">
+        <div class="v-emoji">🏥</div>
+        <div class="v-role">福祉サービス勤務</div>
+        <div class="v-text">ChatGPTからClaudeへ移行を検討</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <div class="cta-icon">🌱</div>
+    <h2>Claudeを「自分だけのAI」に<br>育てていこう！</h2>
+    <p>今日のオフ会でインストールは完了。<br>ここからは<strong>毎日ちょっとずつ情報を入れていく</strong>だけ。</p>
+    <div class="cta-steps">
+      <div class="cta-step">
+        <div class="step-num">1</div>
+        日記やメモをフォルダに入れてみる
+      </div>
+      <div class="cta-step">
+        <div class="step-num">2</div>
+        「これ調べて」「これまとめて」と話しかける
+      </div>
+      <div class="cta-step">
+        <div class="step-num">3</div>
+        claude.mdに自分のことを教えていく
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Claude初期導入ハンズオンオフ会 2026.04.01 / Report by おけもん
+  </div>
+
+</div>
+</body>
+</html>
