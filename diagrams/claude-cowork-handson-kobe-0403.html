@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude / Cowork 完全初心者向けハンズオン勉強会 神戸 — オフ会レポート 2026/4/3</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
+
+  :root {
+    --bg: #fdf8f3;
+    --bg-warm: #faf3ea;
+    --bg-mint: #eef9f6;
+    --bg-peach: #fff5f0;
+    --bg-lavender: #f4f1ff;
+    --bg-sky: #eef6ff;
+    --surface: #ffffff;
+    --purple: #7c5cbf;
+    --purple-soft: #e4d9f8;
+    --purple-bg: #f4f1ff;
+    --green: #5bb98c;
+    --green-soft: #d4f0e2;
+    --green-bg: #edf8f2;
+    --sky: #4a90d9;
+    --sky-soft: #cde5fa;
+    --sky-bg: #eef6ff;
+    --peach: #f07a55;
+    --peach-soft: #fdd8cb;
+    --lemon: #e8c840;
+    --lemon-soft: #fdf3c4;
+    --text: #4a3f35;
+    --text-dim: #7a7068;
+    --text-muted: #a89e94;
+    --border: rgba(139,115,85,0.1);
+    --shadow: 0 2px 16px rgba(139,115,85,0.08);
+    --shadow-hover: 0 8px 32px rgba(139,115,85,0.14);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.9;
+    font-size: 15px;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% 25%, rgba(228,217,248,0.55), transparent),
+      radial-gradient(ellipse 700px 450px at 85% 60%, rgba(212,240,226,0.5), transparent),
+      radial-gradient(ellipse 500px 400px at 50% 85%, rgba(253,216,203,0.4), transparent),
+      var(--bg-warm);
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 80px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,40 C360,80 720,0 1080,40 C1260,60 1380,20 1440,40 L1440,80 L0,80Z' fill='%23fdf8f3'/%3E%3C/svg%3E") no-repeat bottom center;
+    background-size: cover;
+  }
+  .hero-emoji {
+    font-size: 64px;
+    margin-bottom: 20px;
+    animation: float 4s ease-in-out infinite;
+    display: block;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 22px;
+    font-size: 13px;
+    color: var(--purple);
+    font-weight: 700;
+    margin-bottom: 22px;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 5.5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.35;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .hero h1 .pop {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--sky) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--text-dim);
+    max-width: 560px;
+    margin-bottom: 36px;
+    line-height: 1.75;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 24px;
+    text-align: center;
+    min-width: 110px;
+  }
+  .hero-stat .num {
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+  .hero-stat .num.purple { color: var(--purple); }
+  .hero-stat .num.green { color: var(--green); }
+  .hero-stat .num.sky { color: var(--sky); }
+  .hero-stat .num.peach { color: var(--peach); }
+  .hero-stat .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  /* ── Layout ── */
+  .container { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 72px 0; }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 900;
+    margin-bottom: 10px;
+    line-height: 1.35;
+  }
+  .section-desc {
+    color: var(--text-dim);
+    max-width: 600px;
+    margin-bottom: 40px;
+    font-size: 15px;
+  }
+
+  /* ── 参加者カード ── */
+  .attendees-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .attendee-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .attendee-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+  .attendee-icon { font-size: 36px; margin-bottom: 12px; }
+  .attendee-name {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .attendee-job {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .attendee-goal {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+
+  /* ── 比較セクション ── */
+  .compare-section { background: var(--bg-lavender); position: relative; }
+  .compare-section::before, .compare-section::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    left: 0;
+  }
+  .compare-section::before {
+    top: -1px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,20 C480,60 960,0 1440,20 L1440,0 L0,0Z' fill='%23fdf8f3'/%3E%3C/svg%3E") no-repeat top center;
+    background-size: cover;
+  }
+  .compare-section::after {
+    bottom: -1px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,40 C480,0 960,60 1440,40 L1440,60 L0,60Z' fill='%23fdf8f3'/%3E%3C/svg%3E") no-repeat bottom center;
+    background-size: cover;
+  }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: stretch;
+  }
+  @media (max-width: 640px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .compare-vs { display: none; }
+  }
+  .compare-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+  }
+  .compare-card .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    border-radius: 8px;
+    padding: 3px 10px;
+    margin-bottom: 12px;
+  }
+  .compare-card .badge.chat { background: var(--lemon-soft); color: #a08020; }
+  .compare-card .badge.agent { background: var(--purple-soft); color: var(--purple); }
+  .compare-card h3 {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+  .compare-card .tagline {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .compare-vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--purple);
+    width: 48px;
+  }
+  .compare-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .compare-item .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+  .dot-yellow { background: var(--lemon); }
+  .dot-purple { background: var(--purple); }
+
+  /* ── ツール比較 ── */
+  .tool-compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 640px) {
+    .tool-compare-grid { grid-template-columns: 1fr; }
+  }
+  .tool-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .tool-card .tool-icon { font-size: 40px; margin-bottom: 12px; }
+  .tool-card h3 {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .tool-card .tool-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .tool-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    border-radius: 8px;
+    padding: 3px 10px;
+    margin: 2px;
+  }
+  .tag-purple { background: var(--purple-soft); color: var(--purple); }
+  .tag-green { background: var(--green-soft); color: #3a8a64; }
+  .tag-sky { background: var(--sky-soft); color: #2a6099; }
+  .tag-peach { background: var(--peach-soft); color: #b85030; }
+  .tag-lemon { background: var(--lemon-soft); color: #a08020; }
+  .tool-desc {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.75;
+    margin-top: 14px;
+  }
+
+  /* ── ハンズオンタイムライン ── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--purple-soft), var(--green-soft));
+    border-radius: 2px;
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .tl-dot {
+    position: absolute;
+    left: -27px;
+    top: 4px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 3px solid var(--surface);
+    box-shadow: 0 0 0 2px var(--purple);
+  }
+  .tl-dot.green { box-shadow: 0 0 0 2px var(--green); }
+  .tl-dot.sky { box-shadow: 0 0 0 2px var(--sky); }
+  .tl-dot.peach { box-shadow: 0 0 0 2px var(--peach); }
+  .tl-dot-bg { background: var(--purple); }
+  .tl-dot-bg.green { background: var(--green); }
+  .tl-dot-bg.sky { background: var(--sky); }
+  .tl-dot-bg.peach { background: var(--peach); }
+  .tl-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .tl-step {
+    font-size: 11px;
+    font-weight: 800;
+    background: var(--purple-soft);
+    color: var(--purple);
+    border-radius: 8px;
+    padding: 2px 10px;
+  }
+  .tl-step.green { background: var(--green-soft); color: #3a8a64; }
+  .tl-step.sky { background: var(--sky-soft); color: #2a6099; }
+  .tl-step.peach { background: var(--peach-soft); color: #b85030; }
+  .tl-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .tl-body {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.75;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  /* ── 事例カード ── */
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .case-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .case-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+  .case-icon { font-size: 32px; margin-bottom: 12px; }
+  .case-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .case-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.75;
+  }
+  .case-result {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-soft);
+    border-radius: 8px;
+    padding: 4px 10px;
+    display: inline-block;
+  }
+
+  /* ── Q&A ── */
+  .qa-section { background: var(--bg-mint); position: relative; }
+  .qa-section::before, .qa-section::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    left: 0;
+  }
+  .qa-section::before {
+    top: -1px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,20 C480,60 960,0 1440,20 L1440,0 L0,0Z' fill='%23fdf8f3'/%3E%3C/svg%3E") no-repeat top center;
+    background-size: cover;
+  }
+  .qa-section::after {
+    bottom: -1px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,40 C480,0 960,60 1440,40 L1440,60 L0,60Z' fill='%23fdf8f3'/%3E%3C/svg%3E") no-repeat bottom center;
+    background-size: cover;
+  }
+  .qa-list { display: flex; flex-direction: column; gap: 16px; }
+  .qa-item {
+    background: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .qa-q {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 20px;
+    background: var(--bg);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .qa-q-icon {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--purple);
+    background: var(--purple-soft);
+    border-radius: 8px;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: serif;
+  }
+  .qa-a {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 20px;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+  .qa-a-icon {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--green);
+    background: var(--green-soft);
+    border-radius: 8px;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: serif;
+  }
+
+  /* ── 料金セクション ── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .price-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .price-card .price-icon { font-size: 40px; margin-bottom: 12px; }
+  .price-card h3 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .price-card .price-amount {
+    font-size: 2.4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .price-card .price-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .price-card .price-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.75;
+  }
+
+  /* ── まずやること ── */
+  .firststep-section { background: var(--bg-peach); position: relative; }
+  .firststep-section::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    left: 0;
+    top: -1px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,20 C480,60 960,0 1440,20 L1440,0 L0,0Z' fill='%23fdf8f3'/%3E%3C/svg%3E") no-repeat top center;
+    background-size: cover;
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .step-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .step-num {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--peach);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .step-card h3 {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .step-card p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 60px 24px 80px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 2;
+  }
+  footer .footer-logo {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--purple), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+  HERO
+════════════════════════════════════ -->
+<div class="hero">
+  <span class="hero-emoji">🤖</span>
+  <div class="hero-badge">📍 神戸オフ会レポート &nbsp;|&nbsp; 2026年4月3日</div>
+  <h1>AIって<span class="pop">家に住み着く</span>んです<br>— 初心者でも当日に触れた！</h1>
+  <p class="hero-sub">
+    「インストールすら怖い」から「実際にファイルを作れた」まで。<br>
+    Claude / Cowork を一緒に触ったハンズオン勉強会、全部レポートします。
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num purple">4</div><div class="label">参加者</div></div>
+    <div class="hero-stat"><div class="num green">約2h</div><div class="label">勉強会時間</div></div>
+    <div class="hero-stat"><div class="num sky">神戸</div><div class="label">会場</div></div>
+    <div class="hero-stat"><div class="num peach">2回目</div><div class="label">前日は梅田でも開催</div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+  参加者
+════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label" style="color:var(--purple)">👥 参加者</div>
+    <h2 class="section-title">今日の仲間たち、どんな人？</h2>
+    <p class="section-desc">AIに興味はあるけどまだ触ってない人から、具体的な活用イメージを持って来た人まで。</p>
+    <div class="attendees-grid">
+      <div class="attendee-card">
+        <div class="attendee-icon">🎨</div>
+        <div class="attendee-name">MU さん</div>
+        <div class="attendee-job">イラスト制作 / YouTuber（BGM投稿）</div>
+        <div class="attendee-goal">💬「YouTube投稿の作業を自動化したい。毎回の投稿準備が大変で…」</div>
+      </div>
+      <div class="attendee-card">
+        <div class="attendee-icon">🗣️</div>
+        <div class="attendee-name">しょうこさん</div>
+        <div class="attendee-job">英会話スクール関連</div>
+        <div class="attendee-goal">💬「オンラインでの発信にAIを活かしたい。どこから始めればいいかわからなかった」</div>
+      </div>
+      <div class="attendee-card">
+        <div class="attendee-icon">✍️</div>
+        <div class="attendee-name">ショートラテさん</div>
+        <div class="attendee-job">スタババイト＋副業ウェブライター</div>
+        <div class="attendee-goal">💬「Claude Codeを執筆に活かしたい。記事作成のスピードを上げたい」</div>
+      </div>
+      <div class="attendee-card">
+        <div class="attendee-icon">🎀</div>
+        <div class="attendee-name">ミカンさん</div>
+        <div class="attendee-job">ラッピング・装飾（最近フリーに）</div>
+        <div class="attendee-goal">💬「AIは完全初心者。新しいことに挑戦したくて参加。フリーになったので活用したい」</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  チャット型 vs エージェント型
+════════════════════════════════════ -->
+<section class="compare-section">
+  <div class="container" style="padding-top: 40px; padding-bottom: 40px;">
+    <div class="section-label" style="color:var(--purple)">💡 まず知っておくこと</div>
+    <h2 class="section-title">AIには2種類ある<br>— あなたが使うのはどっち？</h2>
+    <p class="section-desc">この違いを理解するだけで、何ができるかのイメージがガラッと変わる。</p>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <span class="badge chat">チャット型AI</span>
+        <h3>☕ スタバの店員</h3>
+        <p class="tagline">例：ChatGPT、Claudeのチャット画面</p>
+        <div class="compare-item">
+          <span class="dot dot-yellow"></span>
+          <span>常連客のことをなんとなく把握しているが、全部は知らない</span>
+        </div>
+        <div class="compare-item">
+          <span class="dot dot-yellow"></span>
+          <span>毎回「初めまして」から始まる（会話がリセットされる）</span>
+        </div>
+        <div class="compare-item">
+          <span class="dot dot-yellow"></span>
+          <span>「これ書いて」「これ調べて」の一問一答が得意</span>
+        </div>
+        <div class="compare-item">
+          <span class="dot dot-yellow"></span>
+          <span>自分のパソコンの中は覗けない</span>
+        </div>
+      </div>
+      <div class="compare-vs">VS</div>
+      <div class="compare-card">
+        <span class="badge agent">エージェント型AI</span>
+        <h3>🏠 家に住み着くAI</h3>
+        <p class="tagline">例：Claude Code、Cowork</p>
+        <div class="compare-item">
+          <span class="dot dot-purple"></span>
+          <span>自分のパソコンのフォルダを見に行けて、ファイルを作れる</span>
+        </div>
+        <div class="compare-item">
+          <span class="dot dot-purple"></span>
+          <span>フォルダにデータが増えるほど、できることが増える</span>
+        </div>
+        <div class="compare-item">
+          <span class="dot dot-purple"></span>
+          <span>「説明書（ルール）」を置いておくと次回も引き継いでくれる</span>
+        </div>
+        <div class="compare-item">
+          <span class="dot dot-purple"></span>
+          <span>ブラウザ操作・スプレッドシート・メール連携まで自分でやる</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  CoworkとClaude Codeの違い
+════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label" style="color:var(--green)">🛠️ ツール紹介</div>
+    <h2 class="section-title">CoworkとClaude Code<br>— 実は同じことができる、別々の入口</h2>
+    <p class="section-desc">どちらが上とか下とかじゃない。入口の形が違うだけ。どちらから始めても同じフォルダにアクセスできる。</p>
+    <div class="tool-compare-grid">
+      <div class="tool-card">
+        <div class="tool-icon">🌸</div>
+        <h3>Cowork</h3>
+        <div class="tool-sub">画面操作タイプ</div>
+        <div>
+          <span class="tool-tag tag-green">初心者フレンドリー</span>
+          <span class="tool-tag tag-lemon">ポップアップで選択肢</span>
+          <span class="tool-tag tag-peach">月1.5〜1.6万円</span>
+        </div>
+        <div class="tool-desc">
+          「何しますか？」って親切に聞いてくれる。ポチポチ選ぶだけで進められる。<br>
+          ただ、その親切さの分、トークン（スタミナ）の消費が多め。上限に達しやすい。
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">⌨️</div>
+        <h3>Claude Code</h3>
+        <div class="tool-sub">文字指示タイプ（ターミナル）</div>
+        <div>
+          <span class="tool-tag tag-purple">テキストで指示</span>
+          <span class="tool-tag tag-sky">トークン効率◎</span>
+          <span class="tool-tag tag-peach">$100〜$200/月</span>
+        </div>
+        <div class="tool-desc">
+          黒い画面（ターミナル）でテキストを打って指示する。慣れると圧倒的に速い。<br>
+          最初は戸惑うかもだけど、慣れれば何でもできる。おけもんはこっちメイン。
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px; background:var(--surface); border-radius:var(--radius); padding:20px 24px; box-shadow:var(--shadow); border:1px solid var(--border); font-size:14px; color:var(--text-dim); line-height:1.8;">
+      💡 <strong style="color:var(--text)">共通してできること：</strong> どちらもフォルダを指定すれば同じファイルを見に行ける。おけもんはCoworkとClaude Codeを同じフォルダに向けて使ってるので、どちらから操作しても結果が統合される。
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  ハンズオンで実際にやったこと
+════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label" style="color:var(--sky)">✋ ハンズオン実況</div>
+    <h2 class="section-title">当日、みんなで実際にやったこと</h2>
+    <p class="section-desc">「インストール」から「ブラウザ操作」まで、手を動かしながら進んだ。神戸は通信が快適でスムーズに完了！</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"><div class="tl-dot-bg"></div></div>
+        <div class="tl-header">
+          <span class="tl-step">STEP 1</span>
+          <span class="tl-title">📥 インストール＆アカウント作成</span>
+        </div>
+        <div class="tl-body">
+          Claudeアプリをダウンロード → Macの場合はApplicationsフォルダへドラッグ。Googleアカウントで登録OK。電話番号も設定。<br>
+          <strong>神戸のポイント：</strong>前日の梅田オフィスではダウンロードだけで30分以上かかった人も。今日の神戸オフィスは通信が快適で全員スムーズに完了！
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot green"><div class="tl-dot-bg green"></div></div>
+        <div class="tl-header">
+          <span class="tl-step green">STEP 2</span>
+          <span class="tl-title">📁 フォルダを「AIのお家」に指定</span>
+        </div>
+        <div class="tl-body">
+          デスクトップに「日付＋練習用」フォルダを作成。これをCowork / Claude Codeに指定することで、AIがそのフォルダを見に行けるようになる。<br>
+          <strong>確認できたこと：</strong>「旅行計画を作って」「3月の経費をExcelにまとめて」と言うと、実際にFinderで確認できるファイルができた！
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot sky"><div class="tl-dot-bg sky"></div></div>
+        <div class="tl-header">
+          <span class="tl-step sky">STEP 3</span>
+          <span class="tl-title">🌐 Chrome連携デモ</span>
+        </div>
+        <div class="tl-body">
+          Claude CodeにChrome拡張機能を入れるとブラウザを操作できるようになる。オフ会チャットに貼った指示文をコピペするだけで設定完了。<br>
+          <strong>デモ：</strong>「明日（4/4）の10時〜12時で神戸オフィスを予約して」と入力 → AIが実際に予約ページを探して操作しにいった！（うまくいくケース・いかないケースあり）
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot peach"><div class="tl-dot-bg peach"></div></div>
+        <div class="tl-header">
+          <span class="tl-step peach">STEP 4</span>
+          <span class="tl-title">🔗 MCPコネクタで他ツールと繋ぐ</span>
+        </div>
+        <div class="tl-body">
+          Coworkの「カスタマイズ」→「コネクタ」から各種サービスと連携。Google Drive、Googleカレンダー、Notion、Slack、GitHubなど多数が公式対応。<br>
+          <strong>参加者から出た話題：</strong>WordPress、Note、Chatworkの対応状況を確認。WordPressは連携◎、NoteはAIに確認要、Chatworkはリストにないので別途調査。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  リアルな自動化事例
+════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label" style="color:var(--peach)">🚀 実際の使い方</div>
+    <h2 class="section-title">「へぇ、それできるんだ！」<br>— 当日出てきたリアルな事例集</h2>
+    <p class="section-desc">参加者が実際に試したこと＋おけもんが日常で使ってる自動化の話。</p>
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="case-icon">📊</div>
+        <div class="case-title">Indeed求人60件超を毎日自動チェック</div>
+        <div class="case-desc">手動でチェックしてたら1時間以上かかる作業を自動化。応募者情報をスプレッドシートに自動入力。</div>
+        <span class="case-result">毎日ルーティンが消えた</span>
+      </div>
+      <div class="case-card">
+        <div class="case-icon">📺</div>
+        <div class="case-title">YouTubeライブの文字起こし自動取得→LINEに通知</div>
+        <div class="case-desc">学長のYouTubeライブが始まったら文字起こしを取得して、自動でLINEに送る仕組みを試作中。</div>
+        <span class="case-result">見逃しゼロに近づいた</span>
+      </div>
+      <div class="case-card">
+        <div class="case-icon">📬</div>
+        <div class="case-title">Chatworkメンション＆Gmailを朝に自動確認</div>
+        <div class="case-desc">「朝の確認」という1タスクが自動化。メールを開かなくても要件が来る。</div>
+        <span class="case-result">朝の準備がスムーズに</span>
+      </div>
+      <div class="case-card">
+        <div class="case-icon">🧾</div>
+        <div class="case-title">MUさん：3月分の領収書をExcelにまとめた</div>
+        <div class="case-desc">ハンズオン中に実際にCoworkで実施。写真を見てExcelに入力する作業があっという間に完了。</div>
+        <span class="case-result">当日その場でできた！</span>
+      </div>
+      <div class="case-card">
+        <div class="case-icon">📝</div>
+        <div class="case-title">ノート記事のタイトルとリンクを一括取得</div>
+        <div class="case-desc">参加者が実際にデモ実施。NoteのページをAIに読み込ませ、タイトルとリンクの一覧を自動取得することに成功。</div>
+        <span class="case-result">デモで成功！</span>
+      </div>
+      <div class="case-card">
+        <div class="case-icon">🎯</div>
+        <div class="case-title">過去記事を参考にした新記事作成</div>
+        <div class="case-desc">フォルダに自分の記事を蓄積しておくと「この記事と同じトーンで新しい記事を書いて」が使えるように。</div>
+        <span class="case-result">ライターさんに特に効く</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  Q&A全問
+════════════════════════════════════ -->
+<section class="qa-section">
+  <div class="container" style="padding-top:60px; padding-bottom:60px;">
+    <div class="section-label" style="color:var(--green)">❓ Q&A</div>
+    <h2 class="section-title">当日出た質問、全部答える</h2>
+    <p class="section-desc">「これ私も気になってた！」という声がいっぱい出た。</p>
+    <div class="qa-list">
+      <div class="qa-item">
+        <div class="qa-q"><div class="qa-q-icon">Q</div><div>ChatworkはMCPコネクタのリストに見当たらないのですが…</div></div>
+        <div class="qa-a"><div class="qa-a-icon">A</div><div>CoworkのコネクタリストにはChatworkの公式対応はない。Claude Codeのチャット画面で「Chatwork MCP使えますか？」と直接確認するのが一番早い。非公式で使えるケースもある。</div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q"><div class="qa-q-icon">Q</div><div>Noteってコネクタで連携できるんですか？</div></div>
+        <div class="qa-a"><div class="qa-a-icon">A</div><div>公式MCPの対応はまだないが、非公式APIで連携できる可能性がある。Claude Codeに「Noteと連携したいんだけど」と聞いてみると最新情報を教えてくれるので、試してみて。</div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q"><div class="qa-q-icon">Q</div><div>トークンって何？上限がきたらどうなるの？</div></div>
+        <div class="qa-a"><div class="qa-a-icon">A</div><div>トークンは会話するたびに消費される「スタミナ」みたいなもの。上限は5時間ごとにリセットされる（例：11時に上限→16時にリセット）。「5時間枠」と「週間枠」の2段階ある。設定の「使用料」で現在の消費量が確認できる。</div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q"><div class="qa-q-icon">Q</div><div>WordPressで自動投稿はできますか？</div></div>
+        <div class="qa-a"><div class="qa-a-icon">A</div><div>できる。MCPでWordPressと連携すれば、記事の自動投稿・リライトが可能。ライターさんやブロガーさんには特に使えるはず。</div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q"><div class="qa-q-icon">Q</div><div>他人のカレンダーや他人のアカウントも見られてしまうの？</div></div>
+        <div class="qa-a"><div class="qa-a-icon">A</div><div>連携できるのは自分がログインしているアカウントのみ。他人のカレンダーや他人のGmailは見られない。セキュリティ上も自分のアカウント範囲内でしか動かない。</div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q"><div class="qa-q-icon">Q</div><div>一度成功した指示をまた使いたい時はどうすればいい？</div></div>
+        <div class="qa-a"><div class="qa-a-icon">A</div><div>成功した指示のやり方は必ずファイルに記録しておくこと！翌日同じように試してもうまくいかないケースがある。「この作業の手順」として自分のフォルダに保存しておけば、次回AIに読み込ませて同じように動かせる。</div></div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q"><div class="qa-q-icon">Q</div><div>音声入力って精度どうなの？</div></div>
+        <div class="qa-a"><div class="qa-a-icon">A</div><div>Claude純正のマイク入力は精度が高く、ざっくりした話し言葉でも意図を汲み取ってくれる。ただしClaude画面上でしか使えない。おけもんはAquaVoice（月1,500〜1,800円）を使ってて、全アプリで音声入力できる。早めに慣れる価値あり！</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  料金・プラン
+════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label" style="color:var(--lemon); filter: brightness(0.85)">💰 料金の話</div>
+    <h2 class="section-title">「結局いくらかかるの？」<br>— 正直に全部教えます</h2>
+    <p class="section-desc">おけもんの場合は月3万円のMaxプランをオフ会開催で元を取る方針で使ってる。</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-icon">💎</div>
+        <h3>Claude Maxプラン</h3>
+        <div class="price-amount" style="color:var(--purple)">$200</div>
+        <div class="price-sub">約3万円/月</div>
+        <div class="price-desc">おけもんが使ってるプラン。一番トークン上限が高い。オフ会を5〜6回開催すると報酬で元が取れる計算。</div>
+      </div>
+      <div class="price-card">
+        <div class="price-icon">🌟</div>
+        <h3>Claude Proプラン</h3>
+        <div class="price-amount" style="color:var(--sky)">$100</div>
+        <div class="price-sub">約1.5万円/月</div>
+        <div class="price-desc">使い始めに試しやすいプラン。エージェント型の機能も使える。トークン上限はMaxより少ない。</div>
+      </div>
+      <div class="price-card">
+        <div class="price-icon">🌸</div>
+        <h3>Cowork</h3>
+        <div class="price-amount" style="color:var(--green)">1.5万</div>
+        <div class="price-sub">〜1.6万円/月</div>
+        <div class="price-desc">画面操作で直感的に使える分、トークン消費が多め。上限に達しやすいので注意。でも初心者にはとっつきやすい。</div>
+      </div>
+      <div class="price-card">
+        <div class="price-icon">⏱️</div>
+        <h3>トークンのリセット</h3>
+        <div class="price-amount" style="color:var(--peach)">5h</div>
+        <div class="price-sub">ごとにリセット</div>
+        <div class="price-desc">11時に上限→16時にリセット。「5時間枠」と「週間枠」の2段階。設定の「使用料」から今の消費量が確認できる。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  まず1つだけやること
+════════════════════════════════════ -->
+<section class="firststep-section">
+  <div class="container" style="padding-top:80px; padding-bottom:60px;">
+    <div class="section-label" style="color:var(--peach)">🎯 次の一歩</div>
+    <h2 class="section-title">「で、自分は何すればいい？」<br>— 今日から始める3ステップ</h2>
+    <p class="section-desc">難しく考えなくていい。まず繰り返し発生する小さな作業を1つ自動化するところから。</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>🗂️ フォルダを1つ作る</h3>
+        <p>デスクトップに「AI練習用」フォルダをひとつ。これがAIのお家になる。</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>📋 繰り返し作業を1つ探す</h3>
+        <p>毎月の経費精算・写真整理・メール確認…「毎回やってるな」と思う作業1つをAIに任せてみる。</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>📄 成功した手順を保存する</h3>
+        <p>うまくいった指示のやり方をフォルダに書き留めておく。これが自分だけの「自動化レシピ集」になる。</p>
+      </div>
+    </div>
+    <div style="margin-top:28px; background:var(--surface); border-radius:var(--radius); padding:24px 28px; box-shadow:var(--shadow); border:1px solid var(--border);">
+      <div style="font-size:15px; font-weight:800; color:var(--text); margin-bottom:10px;">🎤 音声入力もおすすめ！</div>
+      <div style="font-size:14px; color:var(--text-dim); line-height:1.8;">
+        ボイスレコーダーで日常を録音しておき、AIに加工させる方法が今のAI界隈でトレンドになってる。AquaVoiceなら全アプリで音声入力できて月1,500〜1,800円。「テキスト打つの面倒」という人は音声入力から入ると一気に使いやすくなる。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  Footer
+════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo">おけもんの森</div>
+  <div>Claude / Cowork 完全初心者向けハンズオン勉強会 神戸｜2026年4月3日</div>
+  <div style="margin-top: 4px;">前日（4/2）は梅田オフィスでも開催。参加してくれた皆さんありがとうございました！</div>
+  <div style="margin-top:16px; color:var(--text-muted); font-size:12px;">きょうちゃん図解 powered by おけもん</div>
+</footer>
+
+</body>
+</html>
