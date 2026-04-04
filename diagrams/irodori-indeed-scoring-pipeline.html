@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>irodori採用、AIがどこまでやってくれるの？ — Indeed応募者34名の採点を自動化した話</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: #0a0a1a;
+    color: #e8e8f0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #1a0a3e 0%, #0d1b3e 40%, #0a2a1e 100%);
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 40%, rgba(99,102,241,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(16,185,129,0.06) 0%, transparent 50%);
+  }
+  .hero h1 {
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 900;
+    background: linear-gradient(90deg, #818cf8, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    line-height: 1.5;
+  }
+  .hero .subtitle {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    margin-top: 12px;
+    position: relative;
+    line-height: 1.7;
+  }
+  .hero .date-badge {
+    display: inline-block;
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 0.8rem;
+    color: #a5b4fc;
+    margin-top: 16px;
+    position: relative;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .section-header .icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.3s;
+  }
+  .card:hover {
+    border-color: rgba(99,102,241,0.3);
+  }
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #c4b5fd;
+  }
+  .card p, .card li {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: #cbd5e1;
+  }
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .card ul li {
+    padding: 4px 0;
+    padding-left: 1.2em;
+    position: relative;
+  }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #818cf8;
+  }
+
+  /* Pipeline flow */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 20px 0;
+  }
+  .pipeline-step {
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .pipeline-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+    flex-shrink: 0;
+  }
+  .pipeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .pipeline-connector {
+    width: 2px;
+    flex: 1;
+    min-height: 20px;
+  }
+  .pipeline-content {
+    flex: 1;
+    padding-bottom: 20px;
+  }
+  .pipeline-content h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .pipeline-content p {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: #94a3b8;
+  }
+
+  .dot-manual { background: #f97316; }
+  .dot-auto { background: #34d399; }
+  .dot-semi { background: #fbbf24; }
+  .connector-manual { background: linear-gradient(to bottom, #f97316, #f97316); }
+  .connector-auto { background: linear-gradient(to bottom, #34d399, #34d399); }
+  .connector-semi { background: linear-gradient(to bottom, #fbbf24, #fbbf24); }
+
+  .tag-manual, .tag-auto, .tag-semi {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .tag-manual { background: rgba(249,115,22,0.2); color: #fb923c; border: 1px solid rgba(249,115,22,0.3); }
+  .tag-auto { background: rgba(52,211,153,0.2); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+  .tag-semi { background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+
+  /* Score bars */
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0;
+  }
+  .score-label {
+    width: 90px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .score-bar-bg {
+    flex: 1;
+    height: 28px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .score-bar {
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: width 1s ease;
+  }
+  .bar-excellent { background: linear-gradient(90deg, #818cf8, #6366f1); }
+  .bar-pass { background: linear-gradient(90deg, #34d399, #10b981); }
+  .bar-fail { background: linear-gradient(90deg, #f87171, #ef4444); }
+  .bar-pending { background: linear-gradient(90deg, #94a3b8, #64748b); }
+
+  /* Result comparison */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+  }
+  .comp-card {
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .comp-card.good {
+    border-color: rgba(52,211,153,0.3);
+  }
+  .comp-card.challenge {
+    border-color: rgba(249,115,22,0.3);
+  }
+  .comp-card h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .comp-card.good h4 { color: #34d399; }
+  .comp-card.challenge h4 { color: #fb923c; }
+  .comp-card li {
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: #cbd5e1;
+    padding: 2px 0;
+  }
+
+  /* Improvement cards */
+  .improve-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .improve-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .improve-item .improve-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  .improve-item h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #a5b4fc;
+  }
+  .improve-item p {
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: #94a3b8;
+  }
+  .improve-item .difficulty {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-weight: 700;
+  }
+  .diff-easy { background: rgba(52,211,153,0.2); color: #34d399; }
+  .diff-medium { background: rgba(251,191,36,0.2); color: #fbbf24; }
+  .diff-hard { background: rgba(249,115,22,0.2); color: #fb923c; }
+
+  /* Big number */
+  .big-number {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  .big-num-item {
+    text-align: center;
+  }
+  .big-num-item .num {
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+  .big-num-item .num.green { color: #34d399; }
+  .big-num-item .num.blue { color: #818cf8; }
+  .big-num-item .num.orange { color: #fb923c; }
+  .big-num-item .label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-top: 4px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+    font-size: 0.8rem;
+    color: #94a3b8;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Quote block */
+  .quote-block {
+    background: rgba(99,102,241,0.08);
+    border-left: 3px solid #818cf8;
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: #c4b5fd;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 16px 24px;
+    font-size: 0.75rem;
+    color: #475569;
+  }
+  .footer a {
+    color: #818cf8;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>irodoriの採用、<br>AIがどこまでやってくれるの？</h1>
+  <p class="subtitle">
+    Indeed応募者71名 → メール課題の自動採点を作った記録<br>
+    できたこと、できなかったこと、次どうする？
+  </p>
+  <div class="date-badge">2026年4月4日 時点</div>
+</div>
+
+<div class="container">
+
+  <!-- ざっくり数字 -->
+  <div class="section-header">
+    <div class="icon" style="background: rgba(99,102,241,0.15); color: #818cf8;">📊</div>
+    <h2>ざっくり、今こんな感じ</h2>
+  </div>
+
+  <div class="big-number">
+    <div class="big-num-item">
+      <div class="num blue">71</div>
+      <div class="label">Indeedからの応募者</div>
+    </div>
+    <div class="big-num-item">
+      <div class="num green">34</div>
+      <div class="label">課題回答をスプシに反映</div>
+    </div>
+    <div class="big-num-item">
+      <div class="num green">29</div>
+      <div class="label">AI自動採点が完了</div>
+    </div>
+    <div class="big-num-item">
+      <div class="num orange">5</div>
+      <div class="label">採点待ち（API制限）</div>
+    </div>
+  </div>
+
+  <!-- パイプライン -->
+  <div class="section-header">
+    <div class="icon" style="background: rgba(52,211,153,0.15); color: #34d399;">🔄</div>
+    <h2>応募から採点まで、どう流れてる？</h2>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div>AIが自動でやってくれる</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>人がちょっとだけ手伝う</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>人が手作業でやってる</div>
+  </div>
+
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <div class="pipeline-line">
+        <div class="pipeline-dot dot-manual"></div>
+        <div class="pipeline-connector connector-manual"></div>
+      </div>
+      <div class="pipeline-content">
+        <h4><span class="tag-manual">手作業</span> Indeedで応募が来る</h4>
+        <p>71名が応募。Indeed上でメッセージのやりとりが始まる。ここはIndeedの画面で確認するしかない</p>
+      </div>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="pipeline-line">
+        <div class="pipeline-dot dot-manual"></div>
+        <div class="pipeline-connector connector-manual"></div>
+      </div>
+      <div class="pipeline-content">
+        <h4><span class="tag-manual">手作業</span> 課題の回答をスプシにコピペ</h4>
+        <p>泉田さんがPDFで課題を送付 → 応募者が回答 → おけちゃんがIndeedからコピーしてスプレッドシートに貼り付け。<strong>ここが一番しんどいところ</strong></p>
+      </div>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="pipeline-line">
+        <div class="pipeline-dot dot-auto"></div>
+        <div class="pipeline-connector connector-auto"></div>
+      </div>
+      <div class="pipeline-content">
+        <h4><span class="tag-auto">自動化済み</span> 回答を「課題1」「課題2」に仕分け</h4>
+        <p>1つの枠にまとめて貼り付ければ、AIが回答時間・課題1・課題2に自動で分けてくれる。書き方がバラバラでも対応できる</p>
+      </div>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="pipeline-line">
+        <div class="pipeline-dot dot-auto"></div>
+        <div class="pipeline-connector connector-auto"></div>
+      </div>
+      <div class="pipeline-content">
+        <h4><span class="tag-auto">自動化済み</span> AIが100点満点で採点</h4>
+        <p>Gemini（GoogleのAI）が29の基準で自動採点。社内メール課題と情報収集課題をそれぞれ評価して、合計点を出す</p>
+      </div>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="pipeline-line">
+        <div class="pipeline-dot dot-auto"></div>
+        <div class="pipeline-connector connector-auto" style="min-height: 0; flex: 0;"></div>
+      </div>
+      <div class="pipeline-content">
+        <h4><span class="tag-auto">自動化済み</span> 結果をスプシに反映 + サマリー表示</h4>
+        <p>点数・判定（優秀/合格/不合格）・AIのコメントが自動で入る。サマリーシートで一覧も確認できる</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 採点結果 -->
+  <div class="section-header">
+    <div class="icon" style="background: rgba(129,140,248,0.15); color: #818cf8;">🎯</div>
+    <h2>29名の採点結果は？</h2>
+  </div>
+
+  <div class="card">
+    <div class="score-row">
+      <div class="score-label" style="color: #818cf8;">優秀<br>80点以上</div>
+      <div class="score-bar-bg">
+        <div class="score-bar bar-excellent" style="width: 58.6%;">17名</div>
+      </div>
+    </div>
+    <div class="score-row">
+      <div class="score-label" style="color: #34d399;">合格<br>60〜79点</div>
+      <div class="score-bar-bg">
+        <div class="score-bar bar-pass" style="width: 37.9%;">11名</div>
+      </div>
+    </div>
+    <div class="score-row">
+      <div class="score-label" style="color: #f87171;">不合格<br>49点以下</div>
+      <div class="score-bar-bg">
+        <div class="score-bar bar-fail" style="width: 3.5%;">1名</div>
+      </div>
+    </div>
+    <div class="score-row">
+      <div class="score-label" style="color: #94a3b8;">採点待ち</div>
+      <div class="score-bar-bg">
+        <div class="score-bar bar-pending" style="width: 14.7%;">5名</div>
+      </div>
+    </div>
+    <p style="margin-top: 16px; font-size: 0.85rem; color: #94a3b8;">
+      ※ AI採点は「参考値」です。最終判断は人間が行います。<br>
+      ※ 残り5名はGoogleのAPI制限（1日の使用上限）で一時停止中。近日中に再実行します。
+    </p>
+  </div>
+
+  <!-- できたこと / できなかったこと -->
+  <div class="section-header">
+    <div class="icon" style="background: rgba(251,191,36,0.15); color: #fbbf24;">⚖️</div>
+    <h2>正直に言うと、こんな感じ</h2>
+  </div>
+
+  <div class="comparison">
+    <div class="comp-card good">
+      <h4>✅ できたこと</h4>
+      <ul style="list-style: none; padding: 0;">
+        <li style="padding: 4px 0;">・スプシに入れれば採点は全自動</li>
+        <li style="padding: 4px 0;">・回答の仕分けも自動（書式バラバラでもOK）</li>
+        <li style="padding: 4px 0;">・29の評価基準で公平に点数化</li>
+        <li style="padding: 4px 0;">・サマリーシートで一覧把握</li>
+        <li style="padding: 4px 0;">・PDFの課題回答もAIが読み取れる</li>
+      </ul>
+    </div>
+    <div class="comp-card challenge">
+      <h4>😅 まだ課題なこと</h4>
+      <ul style="list-style: none; padding: 0;">
+        <li style="padding: 4px 0;">・Indeedからのコピペが手作業</li>
+        <li style="padding: 4px 0;">・71人全員に課題を送るのは多すぎ</li>
+        <li style="padding: 4px 0;">・抜け漏れの確認が大変</li>
+        <li style="padding: 4px 0;">・Indeedの自動データ取得は不安定</li>
+        <li style="padding: 4px 0;">・AI採点の精度はまだ検証中</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    💡 <strong>一言でまとめると：</strong><br>
+    「スプシに入れてからの自動化」はうまくいった。<br>
+    問題は「スプシに入れるまでの手作業」と「そもそも71人全員に送ってる」こと。
+  </div>
+
+  <!-- 改善案 -->
+  <div class="section-header">
+    <div class="icon" style="background: rgba(244,114,182,0.15); color: #f472b6;">🚀</div>
+    <h2>次の求人ではどうする？</h2>
+  </div>
+
+  <div class="card">
+    <p>今回わかったのは、<strong>「全員に課題を送ってから絞る」のは順番が逆</strong>ということ。<br>
+    業界平均では、71名の応募があったら課題に進むのは2〜3名。つまり、課題テストの<strong>前</strong>にフィルターが必要。</p>
+  </div>
+
+  <div class="improve-grid">
+    <div class="improve-item">
+      <div class="improve-icon">🚪</div>
+      <h4>Indeedの自動フィルター</h4>
+      <p>求人にスクリーナー質問を設定。条件に合わない人は自動で除外。<strong>追加費用ゼロ</strong></p>
+      <div class="difficulty diff-easy">すぐできる</div>
+    </div>
+    <div class="improve-item">
+      <div class="improve-icon">🤖</div>
+      <h4>応募プロフィールのAI評価</h4>
+      <p>応募者の経歴をAIが自動で点数化。上位の人だけに課題を送る</p>
+      <div class="difficulty diff-medium">仕組みを作る必要あり</div>
+    </div>
+    <div class="improve-item">
+      <div class="improve-icon">📝</div>
+      <h4>ミニ課題（やる気チェック）</h4>
+      <p>本課題の前に5分の簡易テスト。回答がない人＝そこまでの意欲、で終了</p>
+      <div class="difficulty diff-medium">仕組みを作る必要あり</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>理想の流れ（次回）</h3>
+    <div class="pipeline" style="margin-top: 12px;">
+      <div class="pipeline-step">
+        <div class="pipeline-line">
+          <div class="pipeline-dot" style="background: #818cf8;"></div>
+          <div class="pipeline-connector" style="background: #818cf8;"></div>
+        </div>
+        <div class="pipeline-content">
+          <h4>応募 71人</h4>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-line">
+          <div class="pipeline-dot dot-auto"></div>
+          <div class="pipeline-connector connector-auto"></div>
+        </div>
+        <div class="pipeline-content">
+          <h4>自動フィルターで条件チェック → 35〜50人に絞る</h4>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-line">
+          <div class="pipeline-dot dot-auto"></div>
+          <div class="pipeline-connector connector-auto"></div>
+        </div>
+        <div class="pipeline-content">
+          <h4>AIプロフィール評価 → 15〜25人に絞る</h4>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-line">
+          <div class="pipeline-dot dot-semi"></div>
+          <div class="pipeline-connector connector-semi"></div>
+        </div>
+        <div class="pipeline-content">
+          <h4>ミニ課題 → 8〜15人に絞る</h4>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="pipeline-line">
+          <div class="pipeline-dot dot-auto"></div>
+          <div class="pipeline-connector connector-auto" style="min-height: 0; flex: 0;"></div>
+        </div>
+        <div class="pipeline-content">
+          <h4>本課題 + AI自動採点 → 3〜5人で面接</h4>
+          <p style="color: #34d399; font-weight: 700;">← 今回作ったのはここ！</p>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top: 12px; font-size: 0.85rem; color: #94a3b8;">
+      課題を送る人数が71人→15人以下になるだけで、毎日の確認作業は<strong>約80%減</strong>。
+    </p>
+  </div>
+
+  <!-- まとめ -->
+  <div class="section-header">
+    <div class="icon" style="background: rgba(168,85,247,0.15); color: #a855f7;">✨</div>
+    <h2>で、次にやることは？</h2>
+  </div>
+
+  <div class="card">
+    <ul>
+      <li>残り5名の採点を完了する（API制限が解除されたら自動で走らせる）</li>
+      <li>「スクリーナー送付済み」の人を全員チェック（課題回答済みの見落としがないか）</li>
+      <li>AI採点の精度を検証する（人間の採点と比較して、ズレがないか確認）</li>
+      <li>次の求人では、Indeedのスクリーナー質問を設定してから募集する</li>
+    </ul>
+  </div>
+
+  <div class="quote-block">
+    🎯 <strong>ポイント：</strong>今回作った「メール課題の自動採点」の仕組み自体はちゃんと動いてる。<br>
+    次はその<strong>手前のフィルター</strong>を整えれば、運用がグッと楽になるはず。
+  </div>
+
+</div>
+
+<div class="footer">
+  irodori × AI採用パイプライン — 2026年4月4日<br>
+  <a href="https://okemonogatari-hash.github.io/html-share-box/">きょうちゃん図解 by おけもん</a>
+</div>
+
+</body>
+</html>
