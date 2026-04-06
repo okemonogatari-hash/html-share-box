@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Codeで会社経営する方法 | きょうちゃん図解</title>
+<style>
+  :root {
+    --bg: #faf8f5;
+    --paper: #fff;
+    --ink: #2d2a26;
+    --muted: #7a756d;
+    --line: rgba(0,0,0,0.07);
+    --accent: #6c5ce7;
+    --warm: #e17055;
+    --mint: #00b894;
+    --sky: #0984e3;
+    --honey: #fdcb6e;
+    --rose: #e84393;
+    --shadow: 0 8px 32px rgba(0,0,0,0.07);
+    --radius: 20px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    padding: 24px 16px 80px;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; }
+
+  /* ヒーロー */
+  .hero {
+    background: var(--paper);
+    border-radius: 28px;
+    padding: 44px 36px 36px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    text-align: center;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg, var(--accent), var(--warm), var(--honey), var(--mint));
+  }
+  .hero-label {
+    display: inline-block;
+    background: rgba(108,92,231,0.1);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 4px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(108,92,231,0.2);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 20px;
+  }
+  .hero-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .tag {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+  .tag-purple { background: rgba(108,92,231,0.1); color: var(--accent); }
+  .tag-warm { background: rgba(225,112,85,0.1); color: var(--warm); }
+  .tag-mint { background: rgba(0,184,148,0.1); color: var(--mint); }
+  .tag-sky { background: rgba(9,132,227,0.1); color: var(--sky); }
+
+  /* セクション */
+  .section {
+    background: var(--paper);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .section-num {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .num-purple { background: rgba(108,92,231,0.12); color: var(--accent); }
+  .num-warm { background: rgba(225,112,85,0.12); color: var(--warm); }
+  .num-mint { background: rgba(0,184,148,0.12); color: var(--mint); }
+  .num-sky { background: rgba(9,132,227,0.12); color: var(--sky); }
+  .num-honey { background: rgba(253,203,110,0.2); color: #c9a227; }
+  .num-rose { background: rgba(232,67,147,0.1); color: var(--rose); }
+  .section-title { font-size: 18px; font-weight: 800; line-height: 1.4; }
+  .section-desc { font-size: 14px; color: var(--muted); margin-top: 2px; }
+
+  /* 組織図 */
+  .org-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-top: 8px;
+  }
+  .org-top {
+    background: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(108,92,231,0.05));
+    border: 2px solid rgba(108,92,231,0.3);
+    border-radius: 14px;
+    padding: 14px 24px;
+    text-align: center;
+    min-width: 200px;
+    margin-bottom: 0;
+  }
+  .org-top-label { font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: 0.05em; }
+  .org-top-name { font-size: 16px; font-weight: 900; color: var(--ink); }
+  .org-top-sub { font-size: 12px; color: var(--muted); }
+
+  .org-line {
+    width: 2px;
+    height: 20px;
+    background: rgba(108,92,231,0.3);
+  }
+  .org-connector {
+    width: 100%;
+    height: 2px;
+    background: rgba(108,92,231,0.2);
+    max-width: 640px;
+    margin: 0;
+  }
+  .org-branches {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0;
+    max-width: 700px;
+  }
+  .org-branch-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .org-branch-line {
+    width: 2px;
+    height: 20px;
+    background: rgba(108,92,231,0.2);
+  }
+  .org-card {
+    border-radius: 12px;
+    padding: 12px 14px;
+    text-align: center;
+    min-width: 110px;
+    border: 1.5px solid transparent;
+  }
+  .oc-cmo { background: rgba(225,112,85,0.08); border-color: rgba(225,112,85,0.3); }
+  .oc-cpo { background: rgba(0,184,148,0.08); border-color: rgba(0,184,148,0.3); }
+  .oc-cfo { background: rgba(253,203,110,0.15); border-color: rgba(253,203,110,0.5); }
+  .oc-cso { background: rgba(9,132,227,0.07); border-color: rgba(9,132,227,0.3); }
+  .oc-cdo { background: rgba(232,67,147,0.07); border-color: rgba(232,67,147,0.3); }
+  .org-card-role { font-size: 17px; font-weight: 900; margin-bottom: 3px; }
+  .oc-cmo .org-card-role { color: var(--warm); }
+  .oc-cpo .org-card-role { color: var(--mint); }
+  .oc-cfo .org-card-role { color: #c9a227; }
+  .oc-cso .org-card-role { color: var(--sky); }
+  .oc-cdo .org-card-role { color: var(--rose); }
+  .org-card-name { font-size: 11px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .org-card-tasks { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* 知識ベース */
+  .knowledge-box {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .kb-item {
+    background: rgba(108,92,231,0.06);
+    border: 1.5px solid rgba(108,92,231,0.2);
+    border-radius: 10px;
+    padding: 10px 14px;
+    flex: 1;
+    min-width: 120px;
+  }
+  .kb-icon { font-size: 18px; margin-bottom: 4px; }
+  .kb-title { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 3px; }
+  .kb-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* ルール構造 */
+  .rule-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .rule-item {
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .ri-global { background: rgba(225,112,85,0.07); border: 1.5px solid rgba(225,112,85,0.25); }
+  .ri-folder { background: rgba(9,132,227,0.07); border: 1.5px solid rgba(9,132,227,0.25); }
+  .ri-skill { background: rgba(0,184,148,0.07); border: 1.5px solid rgba(0,184,148,0.25); }
+  .ri-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .ri-content {}
+  .ri-title { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+  .ri-global .ri-title { color: var(--warm); }
+  .ri-folder .ri-title { color: var(--sky); }
+  .ri-skill .ri-title { color: var(--mint); }
+  .ri-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .ri-example {
+    margin-top: 6px;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .ri-global .ri-example { background: rgba(225,112,85,0.1); color: var(--warm); }
+  .ri-folder .ri-example { background: rgba(9,132,227,0.1); color: var(--sky); }
+  .ri-skill .ri-example { background: rgba(0,184,148,0.1); color: var(--mint); }
+
+  /* 並列処理 */
+  .parallel-demo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+  @media (max-width: 600px) {
+    .parallel-demo { grid-template-columns: 1fr; }
+  }
+  .pd-screen {
+    border-radius: 12px;
+    padding: 14px;
+    border: 1.5px solid;
+    text-align: center;
+  }
+  .pd-1 { background: rgba(225,112,85,0.07); border-color: rgba(225,112,85,0.3); }
+  .pd-2 { background: rgba(9,132,227,0.07); border-color: rgba(9,132,227,0.3); }
+  .pd-3 { background: rgba(0,184,148,0.07); border-color: rgba(0,184,148,0.3); }
+  .pd-role { font-size: 13px; font-weight: 800; margin-bottom: 6px; }
+  .pd-1 .pd-role { color: var(--warm); }
+  .pd-2 .pd-role { color: var(--sky); }
+  .pd-3 .pd-role { color: var(--mint); }
+  .pd-task { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .pd-status {
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+    display: inline-block;
+  }
+  .pd-1 .pd-status { background: rgba(225,112,85,0.15); color: var(--warm); }
+  .pd-2 .pd-status { background: rgba(9,132,227,0.15); color: var(--sky); }
+  .pd-3 .pd-status { background: rgba(0,184,148,0.15); color: var(--mint); }
+
+  .parallel-note {
+    margin-top: 14px;
+    background: rgba(253,203,110,0.12);
+    border: 1.5px solid rgba(253,203,110,0.4);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #8a7200;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  /* コマンド一覧 */
+  .cmd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .cmd-item {
+    border-radius: 10px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--line);
+    background: var(--bg);
+  }
+  .cmd-name {
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .cmd-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .cmd-hot {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--warm);
+    background: rgba(225,112,85,0.1);
+    padding: 2px 7px;
+    border-radius: 999px;
+  }
+
+  /* 効果 */
+  .effect-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .effect-card {
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+    border: 1.5px solid;
+  }
+  .ec-1 { background: rgba(108,92,231,0.07); border-color: rgba(108,92,231,0.25); }
+  .ec-2 { background: rgba(0,184,148,0.07); border-color: rgba(0,184,148,0.25); }
+  .ec-3 { background: rgba(253,203,110,0.1); border-color: rgba(253,203,110,0.4); }
+  .ec-4 { background: rgba(225,112,85,0.07); border-color: rgba(225,112,85,0.25); }
+  .effect-num { font-size: 26px; font-weight: 900; margin-bottom: 4px; }
+  .ec-1 .effect-num { color: var(--accent); }
+  .ec-2 .effect-num { color: var(--mint); }
+  .ec-3 .effect-num { color: #c9a227; }
+  .ec-4 .effect-num { color: var(--warm); }
+  .effect-label { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .effect-detail { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* まとめ */
+  .summary-box {
+    background: linear-gradient(135deg, rgba(108,92,231,0.06), rgba(0,184,148,0.04));
+    border: 1.5px solid rgba(108,92,231,0.2);
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 12px;
+  }
+  .summary-title { font-size: 15px; font-weight: 800; color: var(--accent); margin-bottom: 12px; }
+  .summary-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .summary-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .ss-num {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .ss-text { font-size: 14px; color: var(--ink); line-height: 1.6; }
+  .ss-text strong { color: var(--accent); }
+
+  /* フッター */
+  .footer {
+    text-align: center;
+    padding: 28px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+  /* レスポンシブ */
+  @media (max-width: 600px) {
+    .section { padding: 24px 18px; }
+    .hero { padding: 32px 20px 28px; }
+    .org-branches { flex-direction: column; align-items: center; }
+    .org-branch-line { display: none; }
+    .org-connector { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="hero-label">Claude Code 活用法</div>
+    <h1>AIを「社員」にしたら、<br><span>会社が24時間動き続けた</span></h1>
+    <p>Claude Codeのフォルダー分けとルール設定で、5人の役員チームを作る方法。<br>1人で複数の仕事を同時に進める仕組みを図解します。</p>
+    <div class="hero-tags">
+      <span class="tag tag-purple">Claude Code</span>
+      <span class="tag tag-warm">会社経営</span>
+      <span class="tag tag-mint">AI自動化</span>
+      <span class="tag tag-sky">並列処理</span>
+    </div>
+  </div>
+
+  <!-- STEP 1: 組織設計 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num num-purple">1</div>
+      <div>
+        <div class="section-title">フォルダー＝部署として、AI役員を5人置く</div>
+        <div class="section-desc">「フォルダーに仕事の種類を割り当てる」だけで、役員室ができあがる</div>
+      </div>
+    </div>
+
+    <div class="org-chart">
+      <!-- 知識の倉庫 -->
+      <div class="org-top">
+        <div class="org-top-label">📚 共有知識ベース（コンテキスト）</div>
+        <div class="org-top-name">日記・考え・学び・社内情報</div>
+        <div class="org-top-sub">AIがここを読んで賢くなる。テキストで入れるだけ</div>
+      </div>
+      <div class="org-line"></div>
+      <div class="org-connector"></div>
+      <!-- 5つの役員 -->
+      <div class="org-branches">
+        <div class="org-branch-wrap">
+          <div class="org-branch-line"></div>
+          <div class="org-card oc-cmo">
+            <div class="org-card-role">CMO</div>
+            <div class="org-card-name">マーケ担当</div>
+            <div class="org-card-tasks">SNS投稿<br>YouTube台本<br>競合リサーチ</div>
+          </div>
+        </div>
+        <div class="org-branch-wrap">
+          <div class="org-branch-line"></div>
+          <div class="org-card oc-cpo">
+            <div class="org-card-role">CPO</div>
+            <div class="org-card-name">商品担当</div>
+            <div class="org-card-tasks">教材スライド<br>セミナー設計<br>商品企画</div>
+          </div>
+        </div>
+        <div class="org-branch-wrap">
+          <div class="org-branch-line"></div>
+          <div class="org-card oc-cfo">
+            <div class="org-card-role">CFO</div>
+            <div class="org-card-name">経理担当</div>
+            <div class="org-card-tasks">請求書作成<br>売上管理<br>契約書対応</div>
+          </div>
+        </div>
+        <div class="org-branch-wrap">
+          <div class="org-branch-line"></div>
+          <div class="org-card oc-cso">
+            <div class="org-card-role">CSO</div>
+            <div class="org-card-name">営業担当</div>
+            <div class="org-card-tasks">顧客対応<br>相談記録管理<br>提案資料</div>
+          </div>
+        </div>
+        <div class="org-branch-wrap">
+          <div class="org-branch-line"></div>
+          <div class="org-card oc-cdo">
+            <div class="org-card-role">CDO</div>
+            <div class="org-card-name">技術担当</div>
+            <div class="org-card-tasks">ツール開発<br>自動化設計<br>プロンプト管理</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 知識ベース補足 -->
+    <div class="knowledge-box">
+      <div class="kb-item">
+        <div class="kb-icon">📓</div>
+        <div class="kb-title">日記・考え事</div>
+        <div class="kb-desc">おけもんの思考をここに蓄積。AIが読んで文脈を理解する</div>
+      </div>
+      <div class="kb-item">
+        <div class="kb-icon">📋</div>
+        <div class="kb-title">一次情報</div>
+        <div class="kb-desc">打ち合わせ記録・顧客情報・商品仕様などをテキストで保存</div>
+      </div>
+      <div class="kb-item">
+        <div class="kb-icon">💡</div>
+        <div class="kb-title">戦略・方針</div>
+        <div class="kb-desc">会社の方向性・ターゲット像などを書いておけば、全員が共有</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: ルール設定 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num num-warm">2</div>
+      <div>
+        <div class="section-title">3種類のルールで、AIの動きを育てる</div>
+        <div class="section-desc">「毎回同じことを教えなくていい」仕組みをルールとして書き込む</div>
+      </div>
+    </div>
+
+    <div class="rule-stack">
+      <div class="rule-item ri-global">
+        <div class="ri-icon">🏢</div>
+        <div class="ri-content">
+          <div class="ri-title">CLAUDE.md — 全社共通ルール</div>
+          <div class="ri-desc">Claude Codeを起動するたびに自動で読み込まれる「会社憲法」。報告ルール・情報管理・品質基準など、全員に守ってほしいことを書く。<strong>3,000文字以内</strong>に絞るのがコツ。多すぎると言うことを聞かなくなる。</div>
+          <div class="ri-example">例：「成果物は必ず指定フォルダに保存する」「事実と意見を分けて書く」</div>
+        </div>
+      </div>
+      <div class="rule-item ri-folder">
+        <div class="ri-icon">📁</div>
+        <div class="ri-content">
+          <div class="ri-title">フォルダー別ルール — 部署専用の指示</div>
+          <div class="ri-desc">CMOフォルダにだけ、CFOフォルダにだけ——部署ごとの細かいルールはここに。全社ルールより長文でOK。対象が絞られているので、迷わず動いてくれる。</div>
+          <div class="ri-example">例：CMOなら「集客導線を意識した文体で書く」「競合調査は必ず参考資料フォルダに保存」</div>
+        </div>
+      </div>
+      <div class="rule-item ri-skill">
+        <div class="ri-icon">⚡</div>
+        <div class="ri-content">
+          <div class="ri-title">スキル — 呼び出せる専門家の知識</div>
+          <div class="ri-desc">「YouTube台本の専門家」「Excel処理の専門家」など、特定の仕事の得意技をスキルとして登録。作業を依頼すると<strong>自動でそのスキルが呼び出される</strong>。毎回プロンプトを書き直さなくていい。</div>
+          <div class="ri-example">例：YouTube台本スキル → 「伸びやすい構成」「話し方のトーン」「尺の目安」が自動適用</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: 並列実行 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num num-mint">3</div>
+      <div>
+        <div class="section-title">画面を分割して、3〜4人同時に動かす</div>
+        <div class="section-desc">1人が待っている間に、別の人に話しかける。待ち時間がゼロになる</div>
+      </div>
+    </div>
+
+    <div class="parallel-demo">
+      <div class="pd-screen pd-1">
+        <div class="pd-role">📣 マーケ担当</div>
+        <div class="pd-task">競合リサーチ中…<br>YouTube台本を<br>作成しています</div>
+        <div class="pd-status">▶ 動作中</div>
+      </div>
+      <div class="pd-screen pd-2">
+        <div class="pd-role">💼 営業担当</div>
+        <div class="pd-task">SNS投稿文の<br>バリエーションを<br>5パターン生成中</div>
+        <div class="pd-status">▶ 動作中</div>
+      </div>
+      <div class="pd-screen pd-3">
+        <div class="pd-role">📊 経理担当</div>
+        <div class="pd-task">今月分の請求書を<br>PDFで作成<br>完成待ち</div>
+        <div class="pd-status">▶ 動作中</div>
+      </div>
+    </div>
+
+    <div class="parallel-note">
+      <span style="font-size:18px;flex-shrink:0;">💡</span>
+      <span>1つの作業が終わるのを待たなくていい。右で動かしている間に左に話しかける。指示をどんどん入れておけば、順番に処理してくれる。話しかける手が止まらない限り、仕事は止まらない。</span>
+    </div>
+  </div>
+
+  <!-- STEP 4: AI同士の相談 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num num-sky">4</div>
+      <div>
+        <div class="section-title">AIにAIを分析させる — 「チーム調査」という技</div>
+        <div class="section-desc">複数のAIに別々の調査をさせて、最後に統合させる</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:150px;background:rgba(9,132,227,0.07);border:1.5px solid rgba(9,132,227,0.25);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:13px;font-weight:800;color:var(--sky);margin-bottom:4px;">🔍 エージェントA</div>
+          <div style="font-size:12px;color:var(--muted);">競合Aを深掘り調査</div>
+        </div>
+        <div style="flex:1;min-width:150px;background:rgba(9,132,227,0.07);border:1.5px solid rgba(9,132,227,0.25);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:13px;font-weight:800;color:var(--sky);margin-bottom:4px;">🔍 エージェントB</div>
+          <div style="font-size:12px;color:var(--muted);">競合Bを深掘り調査</div>
+        </div>
+        <div style="flex:1;min-width:150px;background:rgba(9,132,227,0.07);border:1.5px solid rgba(9,132,227,0.25);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:13px;font-weight:800;color:var(--sky);margin-bottom:4px;">🔍 エージェントC</div>
+          <div style="font-size:12px;color:var(--muted);">業界トレンド調査</div>
+        </div>
+      </div>
+      <div style="text-align:center;color:var(--muted);font-size:20px;">↓ 統合</div>
+      <div style="background:linear-gradient(135deg,rgba(9,132,227,0.1),rgba(0,184,148,0.08));border:1.5px solid rgba(9,132,227,0.3);border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:14px;font-weight:800;color:var(--sky);margin-bottom:6px;">📋 統合レポート完成</div>
+        <div style="font-size:13px;color:var(--muted);">3つの調査を合わせた、コンサル品質のアウトプット。<br>1人でやっていた調査より精度が高くなる。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: コマンド -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num num-honey">5</div>
+      <div>
+        <div class="section-title">毎日使うコマンド、これだけ覚えれば十分</div>
+        <div class="section-desc">スラッシュ（/）から始めるだけ。難しくない</div>
+      </div>
+    </div>
+
+    <div class="cmd-grid">
+      <div class="cmd-item" style="border-color:rgba(108,92,231,0.3);background:rgba(108,92,231,0.04);">
+        <div class="cmd-name">/compact</div>
+        <div class="cmd-desc">会話が長くなったら、要約して軽くする。重くなったらこれ</div>
+        <span class="cmd-hot">★ 一番使う</span>
+      </div>
+      <div class="cmd-item" style="border-color:rgba(108,92,231,0.3);background:rgba(108,92,231,0.04);">
+        <div class="cmd-name">/clear</div>
+        <div class="cmd-desc">会話をリセット。新しいタスクを始める前にスッキリさせる</div>
+        <span class="cmd-hot">★ 一番使う</span>
+      </div>
+      <div class="cmd-item">
+        <div class="cmd-name">/model</div>
+        <div class="cmd-desc">AIの賢さを切り替え。深く考えたいときはOpus、普段はSonnet</div>
+      </div>
+      <div class="cmd-item">
+        <div class="cmd-name">/cost</div>
+        <div class="cmd-desc">今日いくら使ったか確認。APIプランの人はここで確認</div>
+      </div>
+      <div class="cmd-item">
+        <div class="cmd-name">/memory</div>
+        <div class="cmd-desc">AIが覚えていることを確認・編集できる</div>
+      </div>
+      <div class="cmd-item">
+        <div class="cmd-name">/agent</div>
+        <div class="cmd-desc">AI分身（エージェント）を新しく作って管理する</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 効果まとめ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num num-rose">6</div>
+      <div>
+        <div class="section-title">実際どのくらい変わるの？</div>
+        <div class="section-desc">動画内での実数値・体感をそのまま紹介</div>
+      </div>
+    </div>
+
+    <div class="effect-row">
+      <div class="effect-card ec-1">
+        <div class="effect-num">100分→<br>45分</div>
+        <div class="effect-label">作業時間の変化</div>
+        <div class="effect-detail">台本・資料・開発レポートを並列処理することで、1つずつやっていた時間が半分以下に</div>
+      </div>
+      <div class="effect-card ec-2">
+        <div class="effect-num">15人</div>
+        <div class="effect-label">同時に動かせる</div>
+        <div class="effect-detail">慣れてくると15個の画面を同時に走らせることも。認知負荷はあるが慣れる</div>
+      </div>
+      <div class="effect-card ec-3">
+        <div class="effect-num">24時間</div>
+        <div class="effect-label">動き続ける</div>
+        <div class="effect-detail">経営者がやること：「話す・選ぶ」だけ。あとはAIチームが勝手に動く</div>
+      </div>
+      <div class="effect-card ec-4">
+        <div class="effect-num">0円</div>
+        <div class="effect-label">追加人件費</div>
+        <div class="effect-detail">月額数千円〜のClaude Codeプランで、役員5人相当のアウトプットが出せる</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 始め方まとめ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num num-purple">★</div>
+      <div>
+        <div class="section-title">じゃあ、最初に何をすればいいの？</div>
+        <div class="section-desc">この順番でやれば、今日から動き始められる</div>
+      </div>
+    </div>
+
+    <div class="summary-box">
+      <div class="summary-title">最初の3ステップ</div>
+      <div class="summary-steps">
+        <div class="summary-step">
+          <div class="ss-num">1</div>
+          <div class="ss-text"><strong>フォルダーを作る</strong> — 「コンテキスト」「CMO」「CPO」「CFO」「CSO」「CDO」の6フォルダーをプロジェクト内に作成する</div>
+        </div>
+        <div class="summary-step">
+          <div class="ss-num">2</div>
+          <div class="ss-text"><strong>CLAUDE.mdにルールを書く</strong> — 会社として守ってほしいことをシンプルに書く。3,000文字以内が目安</div>
+        </div>
+        <div class="summary-step">
+          <div class="ss-num">3</div>
+          <div class="ss-text"><strong>コンテキストに情報を入れていく</strong> — 日記・商品情報・顧客情報などをテキストで投入。入れるほど賢くなる</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p style="margin-bottom:8px;">📹 元動画：Claude Codeで会社経営をする方法（YouTube）</p>
+    <p>きょうちゃん図解 | <a href="https://okemonogatari-hash.github.io/html-share-box/">← ギャラリーに戻る</a></p>
+    <p style="margin-top:8px;font-size:11px;">2026.04.06 作成</p>
+  </div>
+
+</div>
+</body>
+</html>
