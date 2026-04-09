@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全国3,388件のリストを4日で作った話 | 税理士法人リストPJ完了報告</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: #f5f6fa;
+      color: #2d2d2d;
+      line-height: 1.7;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* ヘッダー */
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 40px 36px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      color: #a8d8ff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 span {
+      color: #ffd166;
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* 数字バナー */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 14px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .stat-num {
+      font-size: clamp(26px, 6vw, 36px);
+      font-weight: 900;
+      color: #0f3460;
+      line-height: 1.1;
+    }
+
+    .stat-unit {
+      font-size: 13px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* カード共通 */
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 28px 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .card-icon {
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #1a1a2e;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    /* フェーズ */
+    .phase-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .phase-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #f8f9ff;
+    }
+
+    .phase-badge {
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      line-height: 1.2;
+    }
+
+    .phase-badge.p1a { background: #4361ee; }
+    .phase-badge.p1b { background: #3a0ca3; }
+    .phase-badge.p2  { background: #7209b7; }
+
+    .phase-content .phase-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .phase-content .phase-desc {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .done-badge {
+      display: inline-block;
+      background: #d1fae5;
+      color: #065f46;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 6px;
+    }
+
+    /* タイムライン */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tl-item {
+      display: flex;
+      gap: 16px;
+      position: relative;
+    }
+
+    .tl-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      width: 2px;
+      height: calc(100% - 8px);
+      background: #e5e7eb;
+    }
+
+    .tl-dot {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #0f3460;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .tl-dot.gold { background: #ffd166; color: #1a1a2e; }
+
+    .tl-body {
+      padding: 6px 0 24px;
+    }
+
+    .tl-date {
+      font-size: 11px;
+      color: #999;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .tl-text {
+      font-size: 14px;
+      color: #2d2d2d;
+      margin-top: 2px;
+    }
+
+    /* プラン比較 */
+    .plan-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+    }
+
+    .plan-table th {
+      font-size: 12px;
+      color: #888;
+      font-weight: 600;
+      text-align: left;
+      padding: 0 12px 4px;
+    }
+
+    .plan-row td {
+      padding: 12px 14px;
+      font-size: 14px;
+      background: #f8f9ff;
+    }
+
+    .plan-row td:first-child { border-radius: 10px 0 0 10px; }
+    .plan-row td:last-child  { border-radius: 0 10px 10px 0; }
+
+    .plan-row.highlight td {
+      background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    }
+
+    .plan-name { font-weight: 700; }
+
+    .judge-ok   { color: #059669; font-weight: 700; }
+    .judge-meh  { color: #d97706; font-weight: 700; }
+    .judge-ng   { color: #dc2626; font-weight: 700; }
+
+    /* 費用 */
+    .cost-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .cost-box {
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .cost-box.actual { background: #eff6ff; }
+    .cost-box.manual { background: #fef3c7; }
+
+    .cost-label { font-size: 12px; color: #666; margin-bottom: 6px; }
+    .cost-value { font-size: 22px; font-weight: 900; }
+    .cost-box.actual .cost-value { color: #1d4ed8; }
+    .cost-box.manual .cost-value { color: #b45309; }
+    .cost-note  { font-size: 11px; color: #888; margin-top: 4px; }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #fef9ee, #fff3cd);
+      border-left: 4px solid #ffd166;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 14px;
+      color: #1a1a2e;
+    }
+
+    /* まとめ */
+    .summary-card {
+      background: linear-gradient(135deg, #0f3460, #1a1a5e);
+      color: white;
+      border-radius: 18px;
+      padding: 28px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .summary-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .summary-card p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.7;
+    }
+
+    .summary-card .highlight-text {
+      color: #ffd166;
+      font-weight: 700;
+    }
+
+    /* 注意書き */
+    .caution-box {
+      background: #fff5f5;
+      border-left: 4px solid #f87171;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #7f1d1d;
+      margin-top: 12px;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #bbb;
+      margin-top: 32px;
+      padding-bottom: 20px;
+    }
+
+    @media (max-width: 520px) {
+      .stats-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .cost-row  { grid-template-columns: 1fr 1fr; }
+      .card { padding: 20px 16px; }
+      .hero { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="hero-tag">税理士法人リストPJ 完了報告 🎉</div>
+    <h1>全国<span>3,388社</span>のリストを<br><span>4日間</span>で作り切った！</h1>
+    <p class="hero-sub">AIを最大8人同時に動かして、47都道府県を一気に制覇した話</p>
+  </div>
+
+  <!-- 数字ハイライト -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">3,388</div>
+      <div class="stat-unit">件のリスト</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">4日</div>
+      <div class="stat-unit">で完成</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">47</div>
+      <div class="stat-unit">都道府県すべて</div>
+    </div>
+  </div>
+
+  <!-- 何をやったか（3フェーズ） -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🗺️</div>
+      <div>
+        <div class="card-title">何を、どんな順番でやったの？</div>
+        <div class="card-sub">3ステップで完了しました</div>
+      </div>
+    </div>
+
+    <div class="phase-list">
+      <div class="phase-item">
+        <div class="phase-badge p1a">Step<br>1A</div>
+        <div class="phase-content">
+          <div class="phase-title">全国の税理士法人を「集める」<span class="done-badge">✅ 完了</span></div>
+          <div class="phase-desc">日本年金機構の公開データから、従業員5〜30人規模の税理士法人を全国収集。47都道府県・3,388件。</div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-badge p1b">Step<br>1B</div>
+        <div class="phase-content">
+          <div class="phase-title">各会社のホームページを「探す」<span class="done-badge">✅ 完了</span></div>
+          <div class="phase-desc">3,388件それぞれの公式サイトURLをAIが自動で検索・記録。発見率は県平均で約75〜85%。</div>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-badge p2">Step<br>2</div>
+        <div class="phase-content">
+          <div class="phase-title">データを管理ツールへ「入れる」<span class="done-badge">✅ 完了</span></div>
+          <div class="phase-desc">集めたデータをNotionというデータベースツールへ全件投入。法人名・住所・HP・担当者ステータスが一覧で管理できる状態に。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- タイムライン -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📅</div>
+      <div>
+        <div class="card-title">実質4日でどこまで進んだ？</div>
+        <div class="card-sub">2026年4月6日〜9日のあゆみ</div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot">1</div>
+        <div class="tl-body">
+          <div class="tl-date">4月6日（1日目）</div>
+          <div class="tl-text">PJスタート。北海道〜東北7県のデータ収集完了 🚀</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">2</div>
+        <div class="tl-body">
+          <div class="tl-date">4月7日（2日目）</div>
+          <div class="tl-text">関東・北陸エリアの収集完了</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">3</div>
+        <div class="tl-body">
+          <div class="tl-date">4月8日（3日目）</div>
+          <div class="tl-text">全47県のデータ取得完了！HP検索も首都圏・関西から開始</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot gold">🎉</div>
+        <div class="tl-body">
+          <div class="tl-date">4月9日（4日目）</div>
+          <div class="tl-text">HP検索・全47県完了 → Notion投入・全件完了！プロジェクト終了</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 私もできる？ -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🤔</div>
+      <div>
+        <div class="card-title">私たちも同じことができる？</div>
+        <div class="card-sub">使っているAIのプランによって変わります（正直に書きます）</div>
+      </div>
+    </div>
+
+    <table class="plan-table">
+      <thead>
+        <tr>
+          <th>プラン</th>
+          <th>月額</th>
+          <th>かかる時間</th>
+          <th>判定</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="plan-row highlight">
+          <td><span class="plan-name">Max 20x<br>（今回使用）</span></td>
+          <td>約30,000円</td>
+          <td>4日で完了</td>
+          <td><span class="judge-ok">✅ そのまま再現OK</span></td>
+        </tr>
+        <tr class="plan-row">
+          <td><span class="plan-name">Max 5x</span></td>
+          <td>約15,000円</td>
+          <td>約16日（4倍）</td>
+          <td><span class="judge-meh">△ 時間はかかるが可能</span></td>
+        </tr>
+        <tr class="plan-row">
+          <td><span class="plan-name">Pro（一般）</span></td>
+          <td>約3,000円</td>
+          <td>かなりの日数 ＋ 他の作業が止まる</td>
+          <td><span class="judge-ng">❌ 現実的に厳しい</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="caution-box" style="margin-top:14px;">
+      💡 <strong>なぜProだと難しいの？</strong><br>
+      今回はAIを最大8人同時に動かした。1人でやるより使うトークン（AIの作業量）が8倍近くになるので、月3,000円のプランでは数十分で上限に達する。上限に達するとAI全体が5時間止まるので、普段の業務まで止まってしまう。
+    </div>
+  </div>
+
+  <!-- 費用対効果 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">💴</div>
+      <div>
+        <div class="card-title">コストは？ 手作業と比べてどうなの？</div>
+        <div class="card-sub">数字で比べてみました</div>
+      </div>
+    </div>
+
+    <div class="cost-row">
+      <div class="cost-box actual">
+        <div class="cost-label">今回かかったコスト</div>
+        <div class="cost-value">約30,000円</div>
+        <div class="cost-note">Claude Max 20x / 月額</div>
+      </div>
+      <div class="cost-box manual">
+        <div class="cost-label">手作業で同じことをした場合</div>
+        <div class="cost-value">約70万円</div>
+        <div class="cost-note">時給2,500円 × 280時間</div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      ✨ 案件を1件受注できれば、余裕でコストを回収できる水準。<br>
+      さらに今回作ったスクリプト・手順は全部残してあるので、次回は同じことがすぐ再現できます。
+    </div>
+  </div>
+
+  <!-- 現在のデータの状態 -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📋</div>
+      <div>
+        <div class="card-title">今、データはどんな状態？</div>
+        <div class="card-sub">Notionで一元管理中</div>
+      </div>
+    </div>
+
+    <p style="font-size:14px; color:#444; margin-bottom:14px;">
+      「📋 税理士法人リスト v2」というデータベースに全3,388件が入っています。<br>
+      各社のステータスは「未確認」からスタート。アプローチしたら随時更新できます。
+    </p>
+
+    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+      <span style="background:#eff6ff; color:#1d4ed8; padding:6px 12px; border-radius:8px; font-size:13px; font-weight:600;">法人名</span>
+      <span style="background:#eff6ff; color:#1d4ed8; padding:6px 12px; border-radius:8px; font-size:13px; font-weight:600;">都道府県</span>
+      <span style="background:#eff6ff; color:#1d4ed8; padding:6px 12px; border-radius:8px; font-size:13px; font-weight:600;">所在地</span>
+      <span style="background:#eff6ff; color:#1d4ed8; padding:6px 12px; border-radius:8px; font-size:13px; font-weight:600;">ホームページ</span>
+      <span style="background:#eff6ff; color:#1d4ed8; padding:6px 12px; border-radius:8px; font-size:13px; font-weight:600;">従業員数</span>
+      <span style="background:#eff6ff; color:#1d4ed8; padding:6px 12px; border-radius:8px; font-size:13px; font-weight:600;">ステータス</span>
+    </div>
+
+    <div class="caution-box" style="margin-top:14px;">
+      ⚠️ <strong>残っている作業（小さめ）</strong><br>
+      ① HP発見済み分のURL反映（随時OK）<br>
+      ② 東京の一部区（千代田・中央・港・新宿・渋谷）に若干の漏れリスクあり → 任意・優先度低
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card">
+    <h3>🎉 ひとことまとめ</h3>
+    <p>
+      AIを8人同時に動かして、<span class="highlight-text">全国3,388件</span>の税理士法人リストを<span class="highlight-text">4日で完成</span>させました。<br>
+      手作業なら280時間・約70万円かかる作業が、月3万円のAIプランで再現できた証明です。<br><br>
+      スクリプトも手順もすべて残してあるので、次回以降はもっと速くできます。
+    </p>
+  </div>
+
+  <div class="footer">
+    作成: 2026-04-09 ｜ おけもんカンパニー あおいCDO × きょうちゃん<br>
+    読み手: なっつん・irodoriメンバー向け
+  </div>
+
+</div>
+</body>
+</html>
