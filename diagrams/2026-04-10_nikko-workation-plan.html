@@ -7,9 +7,9 @@
 <style>
   :root {
     --forest: #2d5a27;
-    --forest-light: #4a8a42;
+    --forest2: #4a8a42;
     --lake: #1a6b8a;
-    --lake-light: #3a9cbf;
+    --lake2: #3a9cbf;
     --wood: #8b5e3c;
     --gold: #c9963a;
     --silver: #7a8a96;
@@ -19,285 +19,249 @@
     --text: #2a2a2a;
     --muted: #6a6a6a;
     --border: rgba(0,0,0,0.08);
-    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+    --shadow: 0 4px 20px rgba(0,0,0,0.10);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
-    font-family: 'Hiragino Sans', 'Hiragino KGothic ProN', 'Yu Gothic', sans-serif;
+    font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.7;
   }
+  a { color: inherit; }
+  img { display: block; width: 100%; object-fit: cover; }
 
-  /* === HERO === */
+  /* ===== HERO ===== */
   .hero {
-    background: linear-gradient(160deg, #1a3a1a 0%, #2d5a27 40%, #1a6b8a 100%);
-    color: white;
-    padding: 60px 24px 80px;
-    text-align: center;
     position: relative;
+    height: 520px;
     overflow: hidden;
+    display: flex;
+    align-items: flex-end;
   }
-
-  .hero::before {
-    content: '';
+  .hero-bg {
     position: absolute;
     inset: 0;
-    background: url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=60') center/cover no-repeat;
-    opacity: 0.18;
+    background: url('https://images.unsplash.com/photo-1680957009417-2bc4bede47b2?w=1400&q=85') center/cover no-repeat;
+    transform: scale(1.03);
+    transition: transform 8s ease;
   }
-
-  .hero-inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
-
+  .hero:hover .hero-bg { transform: scale(1); }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,25,10,0.85) 0%, rgba(10,25,10,0.3) 55%, transparent 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 32px 44px;
+    color: white;
+    max-width: 720px;
+  }
   .hero-badge {
     display: inline-block;
     background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.35);
     border-radius: 20px;
-    padding: 4px 16px;
-    font-size: 13px;
-    letter-spacing: 0.05em;
-    margin-bottom: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
   }
-
   .hero h1 {
-    font-size: clamp(26px, 5vw, 42px);
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 16px;
+    font-size: clamp(24px,4.5vw,42px);
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 14px;
     letter-spacing: -0.02em;
   }
-
-  .hero h1 span { color: #a8e0b0; }
-
-  .hero-sub {
-    font-size: 16px;
-    color: rgba(255,255,255,0.8);
-    margin-bottom: 32px;
+  .hero h1 em { color: #a8e0b0; font-style: normal; }
+  .hero-sub { font-size: 15px; color: rgba(255,255,255,0.82); margin-bottom: 24px; }
+  .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+  .hero-chip {
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 600;
   }
 
-  .hero-stats {
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+  /* ===== LAYOUT ===== */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  .section { padding: 56px 0; }
+  .section-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  .divider { height: 1px; background: var(--border); }
 
-  .hero-stat {
-    background: rgba(255,255,255,0.12);
-    border-radius: 12px;
-    padding: 10px 20px;
-    text-align: center;
-  }
-
-  .hero-stat .num {
-    font-size: 22px;
-    font-weight: 700;
-    color: #a8e0b0;
-  }
-
-  .hero-stat .label {
-    font-size: 11px;
-    color: rgba(255,255,255,0.7);
-  }
-
-  /* === CONTAINER === */
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  /* === SECTION === */
-  .section {
-    padding: 56px 0;
-  }
-
-  .section-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-sub {
-    color: var(--muted);
-    font-size: 14px;
-    margin-bottom: 32px;
-  }
-
-  /* === JUNE FEATURES === */
-  .june-grid {
+  /* ===== PHOTO STRIP（6月の見どころ）===== */
+  .strip-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 220px 220px;
+    gap: 12px;
   }
-
-  .june-card {
-    background: var(--paper);
+  .strip-item {
+    position: relative;
     border-radius: 16px;
-    padding: 20px 16px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
+    overflow: hidden;
+    cursor: default;
+  }
+  .strip-item.tall { grid-row: span 2; }
+  .strip-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.4s ease;
+  }
+  .strip-item:hover .strip-bg { transform: scale(1.05); }
+  .strip-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.68) 0%, rgba(0,0,0,0.1) 55%, transparent 100%);
+  }
+  .strip-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    color: white;
+    z-index: 2;
+  }
+  .strip-label .sl-name { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .strip-label .sl-desc { font-size: 12px; color: rgba(255,255,255,0.8); }
+  .strip-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: white;
+    font-weight: 600;
+    z-index: 2;
   }
 
-  .june-card .icon { font-size: 32px; margin-bottom: 8px; }
-  .june-card .name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-  .june-card .desc { font-size: 12px; color: var(--muted); }
-
-  /* === PLANS === */
+  /* ===== PLAN CARDS ===== */
   .plans-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
     gap: 24px;
     align-items: start;
   }
-
   .plan-card {
     background: var(--paper);
     border-radius: 20px;
     overflow: hidden;
     box-shadow: var(--shadow);
+    transition: transform 0.25s;
+  }
+  .plan-card:hover { transform: translateY(-5px); }
+  .plan-card.pine { border: 2px solid rgba(201,150,58,0.5); }
+  .plan-card.bamboo { border: 2px solid rgba(58,156,191,0.4); }
+  .plan-card.plum { border: 2px solid rgba(74,138,66,0.4); }
+
+  /* カードのヒーロー写真エリア */
+  .card-photo {
     position: relative;
-    transition: transform 0.2s;
+    height: 200px;
+    overflow: hidden;
   }
-
-  .plan-card:hover { transform: translateY(-4px); }
-
-  .plan-card.pine {
-    border: 2px solid rgba(201, 150, 58, 0.5);
-    box-shadow: 0 8px 40px rgba(201, 150, 58, 0.15);
+  .card-photo img { height: 100%; transition: transform 0.4s; }
+  .plan-card:hover .card-photo img { transform: scale(1.05); }
+  .card-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
   }
-
-  .plan-card.bamboo {
-    border: 2px solid rgba(122, 138, 150, 0.4);
-  }
-
-  .plan-card.plum {
-    border: 2px solid rgba(155, 107, 74, 0.4);
-  }
-
-  .plan-header {
-    padding: 24px 24px 16px;
-    position: relative;
-  }
-
-  .plan-header.pine-h { background: linear-gradient(135deg, #3d2a0a, #7a5520); color: white; }
-  .plan-header.bamboo-h { background: linear-gradient(135deg, #1a3a4a, #2a6a8a); color: white; }
-  .plan-header.plum-h { background: linear-gradient(135deg, #1a3a1a, #2d6a27); color: white; }
-
-  .plan-label {
+  .card-photo-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    color: white;
     font-size: 11px;
-    letter-spacing: 0.1em;
-    opacity: 0.8;
-    margin-bottom: 4px;
-  }
-
-  .plan-name {
-    font-size: 24px;
     font-weight: 700;
-    margin-bottom: 8px;
+    padding: 4px 12px;
+    border-radius: 14px;
+    letter-spacing: 0.04em;
   }
+  .badge-pine { background: var(--gold); }
+  .badge-bamboo { background: var(--lake); }
+  .badge-plum { background: var(--forest); }
 
-  .plan-hotel {
-    font-size: 14px;
-    opacity: 0.85;
-    margin-bottom: 12px;
-  }
-
-  .plan-price {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .plan-body { padding: 24px; }
-
-  .plan-photo-btn {
-    display: block;
-    background: var(--bg);
+  .card-photo-price {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    background: rgba(0,0,0,0.55);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
     border-radius: 12px;
-    padding: 12px 16px;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-decoration: none;
-    color: var(--text);
-    border: 1px solid var(--border);
-    transition: background 0.15s;
+    backdrop-filter: blur(4px);
+  }
+  .card-photo-name {
+    position: absolute;
+    bottom: 12px;
+    left: 14px;
+    color: white;
+    font-size: 17px;
+    font-weight: 800;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
   }
 
-  .plan-photo-btn:hover { background: #ece9e3; }
+  .card-body { padding: 22px; }
 
-  .plan-photo-btn .btn-sub {
-    font-size: 11px;
+  .card-location {
+    font-size: 12px;
     color: var(--muted);
-    font-weight: 400;
-    margin-top: 2px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
-  .feature-list { list-style: none; margin-bottom: 20px; }
+  /* 写真ミニギャラリー（カード内） */
+  .mini-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .mini-gallery img {
+    height: 110px;
+    border-radius: 10px;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  .mini-gallery img:hover { transform: scale(1.03); }
+  .mini-gallery img.wide { grid-column: span 2; height: 130px; }
 
+  .feature-list { list-style: none; margin-bottom: 18px; }
   .feature-list li {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    padding: 8px 0;
+    padding: 9px 0;
     border-bottom: 1px solid var(--border);
     font-size: 14px;
   }
-
   .feature-list li:last-child { border-bottom: none; }
+  .fi { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
 
-  .feature-list li .fi { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .wk-bar { background: var(--bg); border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; }
+  .wk-label { font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+  .wk-track { background: #e0ddd8; border-radius: 4px; height: 8px; overflow: hidden; margin-bottom: 5px; }
+  .wk-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--forest), var(--lake)); }
+  .wk-note { font-size: 12px; color: var(--muted); }
 
-  .wk-bar {
-    margin-top: 16px;
-    background: var(--bg);
-    border-radius: 12px;
-    padding: 14px 16px;
-  }
-
-  .wk-bar .wk-label {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-
-  .wk-bar .wk-track {
-    background: #e0ddd8;
-    border-radius: 4px;
-    height: 8px;
-    overflow: hidden;
-    margin-bottom: 6px;
-  }
-
-  .wk-bar .wk-fill {
-    height: 100%;
-    border-radius: 4px;
-    background: linear-gradient(90deg, var(--forest), var(--lake));
-  }
-
-  .wk-bar .wk-note {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .plan-links {
-    display: flex;
-    gap: 10px;
-    margin-top: 16px;
-  }
-
+  .plan-links { display: flex; gap: 10px; }
   .plan-link {
     flex: 1;
     display: block;
@@ -309,40 +273,84 @@
     text-decoration: none;
     transition: opacity 0.15s;
   }
-
   .plan-link:hover { opacity: 0.8; }
+  .pl-official { background: var(--forest); color: white; }
+  .pl-sub { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
 
-  .plan-link.official {
+  /* ===== 食事フォトセクション ===== */
+  .food-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .food-item {
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+  }
+  .food-item img { height: 160px; transition: transform 0.35s; }
+  .food-item:hover img { transform: scale(1.06); }
+  .food-item .food-cap {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.65), transparent);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 20px 10px 10px;
+  }
+
+  /* ===== アクティビティ ===== */
+  .activity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .activity-card {
+    background: var(--paper);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s;
+  }
+  .activity-card:hover { transform: translateY(-4px); }
+  .activity-card img { height: 140px; }
+  .activity-body { padding: 14px 16px; }
+  .activity-body .a-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .activity-body .a-desc { font-size: 12px; color: var(--muted); }
+
+  /* ===== スケジュール ===== */
+  .schedule-wrap { overflow-x: auto; }
+  .schedule-table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    background: var(--paper);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .schedule-table th {
+    padding: 13px 18px;
     background: var(--forest);
     color: white;
+    font-size: 14px;
+    text-align: left;
   }
-
-  .plan-link.jalan {
-    background: var(--bg);
-    color: var(--text);
-    border: 1px solid var(--border);
+  .schedule-table td {
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: top;
   }
+  .schedule-table tr:last-child td { border-bottom: none; }
+  .schedule-table tr:nth-child(even) td { background: rgba(0,0,0,0.015); }
+  .time-cell { font-weight: 700; font-size: 12px; color: var(--muted); white-space: nowrap; }
 
-  .pine-accent { color: var(--gold); }
-  .bamboo-accent { color: var(--lake); }
-  .plum-accent { color: var(--forest-light); }
-
-  /* BEST タグ */
-  .best-tag {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: var(--gold);
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 12px;
-    letter-spacing: 0.05em;
-  }
-
-  /* === SCHEDULE === */
-  .schedule-table {
+  /* ===== 比較テーブル ===== */
+  .compare-table {
     width: 100%;
     border-collapse: collapse;
     background: var(--paper);
@@ -350,194 +358,179 @@
     overflow: hidden;
     box-shadow: var(--shadow);
   }
-
-  .schedule-table th {
-    padding: 14px 20px;
-    background: var(--forest);
-    color: white;
+  .compare-table th {
+    padding: 13px 18px;
     font-size: 14px;
     text-align: left;
+    background: var(--bg);
   }
-
-  .schedule-table td {
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
+  .compare-table th.pine-col { background: rgba(201,150,58,0.12); }
+  .compare-table th.bamboo-col { background: rgba(58,156,191,0.1); }
+  .compare-table th.plum-col { background: rgba(74,138,66,0.1); }
+  .compare-table td {
+    padding: 12px 18px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
     vertical-align: top;
   }
+  .compare-table tr:hover td { background: rgba(0,0,0,0.02); }
 
-  .schedule-table tr:last-child td { border-bottom: none; }
-  .schedule-table tr:nth-child(even) td { background: rgba(0,0,0,0.015); }
-
-  .time-cell {
-    font-weight: 700;
-    font-size: 12px;
-    color: var(--muted);
-    white-space: nowrap;
-  }
-
-  /* === ACTIVITY === */
-  .activity-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
-  }
-
-  .activity-card {
-    background: var(--paper);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: var(--shadow);
-    border-left: 4px solid var(--forest);
-  }
-
-  .activity-card.lake-border { border-left-color: var(--lake); }
-  .activity-card.gold-border { border-left-color: var(--gold); }
-
-  .activity-card .a-icon { font-size: 28px; margin-bottom: 8px; }
-  .activity-card .a-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-  .activity-card .a-desc { font-size: 13px; color: var(--muted); }
-
-  /* === NOTE === */
+  /* NOTE */
   .note-box {
     background: #fff8e8;
-    border: 1px solid rgba(201, 150, 58, 0.3);
+    border: 1px solid rgba(201,150,58,0.3);
     border-radius: 14px;
-    padding: 20px 24px;
+    padding: 18px 22px;
     font-size: 13px;
     color: #5a4a20;
-    margin-top: 40px;
+    margin-top: 32px;
   }
+  .note-box strong { font-weight: 700; }
 
-  .note-box .note-title {
-    font-weight: 700;
-    margin-bottom: 8px;
-    font-size: 14px;
-  }
-
-  /* === FOOTER === */
+  /* FOOTER */
   .footer {
     background: #1a2a1a;
-    color: rgba(255,255,255,0.6);
-    padding: 32px 24px;
+    color: rgba(255,255,255,0.55);
+    padding: 28px 24px;
     text-align: center;
     font-size: 12px;
   }
+  .footer a { color: rgba(255,255,255,0.75); }
 
-  .footer a { color: rgba(255,255,255,0.8); }
-
-  /* === DIVIDER === */
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 0;
-  }
-
-  @media (max-width: 640px) {
+  @media(max-width:768px){
+    .strip-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .strip-item.tall { grid-row: span 1; }
     .plans-grid { grid-template-columns: 1fr; }
-    .hero { padding: 40px 16px 56px; }
-    .hero h1 { font-size: 24px; }
-    .hero-stats { gap: 12px; }
-    .schedule-table { font-size: 12px; }
-    .schedule-table th, .schedule-table td { padding: 10px 12px; }
+    .food-grid { grid-template-columns: 1fr 1fr; }
+    .hero { height: 420px; }
+    .hero-content { padding: 0 20px 32px; }
+  }
+  @media(max-width:480px){
+    .strip-grid { grid-template-columns: 1fr; }
+    .food-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
+<!-- ===== HERO ===== -->
 <div class="hero">
-  <div class="hero-inner">
-    <div class="hero-badge">✦ 2026年 7月上旬 おすすめ</div>
-    <h1>奥日光で<span>仕事も旅行も</span>、<br>どっちも全力でいこう。</h1>
-    <p class="hero-sub">関東から2時間の大自然。温泉、新緑、中禅寺湖。<br>ワーケーション2泊3日 松竹梅プラン</p>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="num">2時間</div>
-        <div class="label">東京から（東武日光線）</div>
-      </div>
-      <div class="hero-stat">
-        <div class="num">1,269m</div>
-        <div class="label">中禅寺湖の標高</div>
-      </div>
-      <div class="hero-stat">
-        <div class="num">6〜7月</div>
-        <div class="label">新緑＋ツツジのベストシーズン</div>
-      </div>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ 2026年 7月上旬 ワーケーション企画</div>
+    <h1>奥日光で<em>仕事も旅行も</em>、<br>どっちも全力でいこう。</h1>
+    <p class="hero-sub">関東から2時間の大自然。温泉、新緑、中禅寺湖。<br>松竹梅3プランで全部みせます。</p>
+    <div class="hero-chips">
+      <span class="hero-chip">🗾 東京から約2時間</span>
+      <span class="hero-chip">♨️ 硫黄泉かけ流し</span>
+      <span class="hero-chip">🏔 標高1,269m</span>
+      <span class="hero-chip">🌿 6〜7月が最高</span>
     </div>
   </div>
 </div>
 
-<!-- 6月の見どころ -->
-<div class="section" style="background: var(--paper);">
+<!-- ===== 6月の絶景フォトウォール ===== -->
+<div class="section" style="background:var(--paper);">
   <div class="container">
     <h2 class="section-title">🌿 6〜7月の奥日光、何がいいの？</h2>
-    <p class="section-sub">東京の梅雨をよそに、1200mの高原は爽やか。この季節だけの絶景がある。</p>
-    <div class="june-grid">
-      <div class="june-card">
-        <div class="icon">🌸</div>
-        <div class="name">竜頭ノ滝</div>
-        <div class="desc">ツツジの赤紫が<br>滝を囲む絶景（6月）</div>
+    <p class="section-sub">東京の蒸し暑さをよそに、1200mの高原は爽やか。この季節だけの絶景が待ってる。</p>
+    <div class="strip-grid">
+
+      <!-- tall: 竜頭ノ滝 -->
+      <div class="strip-item tall">
+        <div class="strip-bg" style="background-image:url('https://images.unsplash.com/photo-1549548284-28057f92c497?w=800&q=80');"></div>
+        <div class="strip-overlay"></div>
+        <span class="strip-tag">📸 6月ベストシーズン</span>
+        <div class="strip-label">
+          <div class="sl-name">竜頭ノ滝</div>
+          <div class="sl-desc">赤紫のツツジが滝を囲む絶景。6月が一年で一番きれい</div>
+        </div>
       </div>
-      <div class="june-card">
-        <div class="icon">🌾</div>
-        <div class="name">戦場ヶ原</div>
-        <div class="desc">ワタスゲのふわふわ<br>湿原ハイク（6月中旬〜）</div>
+
+      <!-- 戦場ヶ原 -->
+      <div class="strip-item">
+        <div class="strip-bg" style="background-image:url('https://images.unsplash.com/photo-1658796769107-bcff9ea2b9b4?w=800&q=80');"></div>
+        <div class="strip-overlay"></div>
+        <span class="strip-tag">🌾 湿原ハイク</span>
+        <div class="strip-label">
+          <div class="sl-name">戦場ヶ原</div>
+          <div class="sl-desc">ワタスゲのふわふわ絨毯（6月中旬〜）</div>
+        </div>
       </div>
-      <div class="june-card">
-        <div class="icon">🌊</div>
-        <div class="name">中禅寺湖</div>
-        <div class="desc">カヌー・SUP<br>透き通るエメラルドブルー</div>
+
+      <!-- 新緑の森 -->
+      <div class="strip-item">
+        <div class="strip-bg" style="background-image:url('https://images.unsplash.com/photo-1579667246776-bb648259a001?w=800&q=80');"></div>
+        <div class="strip-overlay"></div>
+        <span class="strip-tag">🌲 新緑</span>
+        <div class="strip-label">
+          <div class="sl-name">奥日光の深緑</div>
+          <div class="sl-desc">梅雨期でも標高のおかげで空気が清涼</div>
+        </div>
       </div>
-      <div class="june-card">
-        <div class="icon">💧</div>
-        <div class="name">華厳の滝</div>
-        <div class="desc">新緑×大瀑布<br>イワツバメが飛ぶ</div>
+
+      <!-- 中禅寺湖 -->
+      <div class="strip-item">
+        <div class="strip-bg" style="background-image:url('https://images.unsplash.com/photo-1614651857407-9b22acceb43a?w=800&q=80');"></div>
+        <div class="strip-overlay"></div>
+        <span class="strip-tag">🏔 中禅寺湖</span>
+        <div class="strip-label">
+          <div class="sl-name">中禅寺湖</div>
+          <div class="sl-desc">エメラルドブルーの湖面。カヌー・SUP体験あり</div>
+        </div>
       </div>
-      <div class="june-card">
-        <div class="icon">🌼</div>
-        <div class="name">霧降高原</div>
-        <div class="desc">26万株のニッコウキスゲ<br>（6月下旬〜7月上旬）</div>
+
+      <!-- 華厳の滝 -->
+      <div class="strip-item">
+        <div class="strip-bg" style="background-image:url('https://images.unsplash.com/photo-1549548284-59577b18c508?w=800&q=80');"></div>
+        <div class="strip-overlay"></div>
+        <span class="strip-tag">💧 落差97m</span>
+        <div class="strip-label">
+          <div class="sl-name">華厳の滝</div>
+          <div class="sl-desc">新緑と大瀑布のコントラスト</div>
+        </div>
       </div>
-      <div class="june-card">
-        <div class="icon">🎣</div>
-        <div class="name">湯ノ湖</div>
-        <div class="desc">釣り解禁（5月〜）<br>シャクナゲの名所</div>
-      </div>
+
     </div>
   </div>
 </div>
 
 <div class="divider"></div>
 
-<!-- プランカード -->
+<!-- ===== プランカード ===== -->
 <div class="section">
   <div class="container">
     <h2 class="section-title">🏨 松竹梅 3プラン</h2>
-    <p class="section-sub">予算別に選べる3ライン。どれも温泉あり・Wi-Fiあり・自然の中。</p>
+    <p class="section-sub">予算に合わせて選べる3ライン。どれも温泉あり・Wi-Fiあり・自然の中。</p>
 
     <div class="plans-grid">
 
-      <!-- 松プラン：リッツカールトン -->
+      <!-- 松プラン -->
       <div class="plan-card pine">
-        <div class="plan-header pine-h">
-          <div class="best-tag">✦ 松プラン</div>
-          <div class="plan-label">PREMIUM — 一生に一度の体験</div>
-          <div class="plan-name">ザ・リッツ・カールトン日光</div>
-          <div class="plan-hotel">📍 中禅寺湖畔　全94室の和モダンリゾート</div>
-          <div class="plan-price">💰 2泊3日（2名）目安：30〜60万円</div>
+        <div class="card-photo">
+          <img src="https://images.unsplash.com/photo-1764445275219-f69854268c92?w=800&q=80" alt="リッツカールトン客室イメージ" loading="lazy">
+          <div class="card-photo-overlay"></div>
+          <span class="card-photo-badge badge-pine">✦ 松プラン</span>
+          <div class="card-photo-name">リッツ・カールトン日光</div>
+          <div class="card-photo-price">2泊3日 30〜60万円</div>
         </div>
-        <div class="plan-body">
-          <a href="https://www.ritzcarlton.com/en/hotels/tyonz-the-ritz-carlton-nikko/overview/" target="_blank" class="plan-photo-btn">
-            🏔 部屋から中禅寺湖と男体山が同時に見える
-            <div class="btn-sub">→ 公式サイトで写真を見る</div>
-          </a>
+        <div class="card-body">
+          <div class="card-location">📍 中禅寺湖畔 ｜ 全94室 和モダンリゾート</div>
+
+          <!-- ミニフォトギャラリー -->
+          <div class="mini-gallery">
+            <img src="https://images.unsplash.com/photo-1698448662779-a1df590b7ed4?w=600&q=80" alt="露天風呂" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1775380698199-99bccf824a0d?w=600&q=80" alt="客室からの眺め" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1735034757679-326e2c678979?w=800&q=80" alt="中禅寺湖の眺め" loading="lazy" class="wide">
+          </div>
+
           <ul class="feature-list">
-            <li><span class="fi">🌊</span><div><strong>部屋から湖が見える</strong><br>中禅寺湖ビュールームは57㎡以上。バルコニーからの眺望が別格</div></li>
-            <li><span class="fi">♨️</span><div><strong>湯元温泉の源泉を引いた大浴場</strong><br>1,200年の歴史ある硫黄泉が館内で楽しめる</div></li>
-            <li><span class="fi">💻</span><div><strong>仕事環境は最高水準</strong><br>全室デスク＋高速Wi-Fi。縁側ラウンジで働きながら湖を眺める生活</div></li>
-            <li><span class="fi">🍽</span><div><strong>食事もラウンジも別格</strong><br>アフタヌーンティー、和食・鉄板焼きレストラン完備</div></li>
-            <li><span class="fi">✨</span><div><strong>アメニティがフル装備</strong><br>浴衣・バスローブ・ナイトウェア・ミニバー（無料）・Blu-ray</div></li>
+            <li><span class="fi">🌊</span><div><strong>部屋から中禅寺湖と男体山が見える</strong><br>中禅寺湖ビュールーム57㎡以上。バルコニー付き</div></li>
+            <li><span class="fi">♨️</span><div><strong>湯元温泉1,200年の源泉を引いた大浴場</strong><br>硫黄の香りが漂う、本物の温泉体験</div></li>
+            <li><span class="fi">💻</span><div><strong>仕事環境は最高水準</strong><br>全室デスク＋高速Wi-Fi。縁側ラウンジで湖を眺めながら仕事</div></li>
+            <li><span class="fi">🍽</span><div><strong>アフタヌーンティーから鉄板焼きまで</strong><br>食事がすべてハイクオリティ。外に出る必要なし</div></li>
+            <li><span class="fi">✨</span><div><strong>アメニティが全部揃ってる</strong><br>浴衣・バスローブ・Blu-ray・ミニバー（無料）</div></li>
           </ul>
           <div class="wk-bar">
             <div class="wk-label">ワーケーション向き度</div>
@@ -545,74 +538,82 @@
             <div class="wk-note">★★★★★ 法人・リモートワークプランも展開中</div>
           </div>
           <div class="plan-links">
-            <a href="https://www.ritzcarlton.com/en/hotels/tyonz-the-ritz-carlton-nikko/overview/" target="_blank" class="plan-link official">公式サイト</a>
-            <a href="https://www.jtb.co.jp/kokunai-hotel/htl/3317015/plan/" target="_blank" class="plan-link jalan">JTBで見る</a>
+            <a href="https://www.ritzcarlton.com/en/hotels/tyonz-the-ritz-carlton-nikko/overview/" target="_blank" class="plan-link pl-official">公式サイト →</a>
+            <a href="https://www.jtb.co.jp/kokunai-hotel/htl/3317015/plan/" target="_blank" class="plan-link pl-sub">JTBで比較</a>
           </div>
         </div>
       </div>
 
-      <!-- 竹プラン：中禅寺金谷ホテル -->
+      <!-- 竹プラン -->
       <div class="plan-card bamboo">
-        <div class="plan-header bamboo-h">
-          <div class="best-tag" style="background: var(--silver);">✦ 竹プラン</div>
-          <div class="plan-label">STANDARD — 仕事も旅行も本気で楽しむ</div>
-          <div class="plan-name">中禅寺金谷ホテル</div>
-          <div class="plan-hotel">📍 中禅寺湖畔　ログハウス型リゾート</div>
-          <div class="plan-price">💰 2泊3日（2名）目安：11〜18万円</div>
+        <div class="card-photo">
+          <img src="https://images.unsplash.com/photo-1766585464510-ade8db98923a?w=800&q=80" alt="中禅寺金谷ホテルイメージ" loading="lazy">
+          <div class="card-photo-overlay"></div>
+          <span class="card-photo-badge badge-bamboo">✦ 竹プラン</span>
+          <div class="card-photo-name">中禅寺金谷ホテル</div>
+          <div class="card-photo-price">2泊3日 11〜18万円</div>
         </div>
-        <div class="plan-body">
-          <a href="https://www.kanayahotel.co.jp/ckh/" target="_blank" class="plan-photo-btn">
-            🌲 ミズナラの木立に囲まれた重厚なログハウス
-            <div class="btn-sub">→ 公式サイトで写真を見る（ワーケーションプランあり）</div>
-          </a>
+        <div class="card-body">
+          <div class="card-location">📍 中禅寺湖畔 ｜ ログハウス型リゾート</div>
+
+          <div class="mini-gallery">
+            <img src="https://images.unsplash.com/photo-1764057146191-ffbdc2c9c687?w=600&q=80" alt="温泉" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1630845351025-674a039c51b9?w=600&q=80" alt="客室" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1588011637159-458da884f3b2?w=800&q=80" alt="湖でカヌー" loading="lazy" class="wide">
+          </div>
+
           <ul class="feature-list">
-            <li><span class="fi">🏠</span><div><strong>カナダ人建築家設計のログハウス</strong><br>1992年建築。木の温もりが漂う空間で、仕事がはかどる</div></li>
-            <li><span class="fi">💻</span><div><strong>公式でワーケーションプランを展開中</strong><br>金谷ホテルグループがリモートワーカー向けに本格展開</div></li>
-            <li><span class="fi">🌊</span><div><strong>湖畔立地で中禅寺湖がすぐそこ</strong><br>仕事終わりにSUP・カヌー体験の手配もホテルで可能</div></li>
-            <li><span class="fi">♨️</span><div><strong>源泉かけ流し硫黄泉</strong><br>「空ぶろ」（露天）から星空が見える。夜の疲れを癒す</div></li>
-            <li><span class="fi">🎯</span><div><strong>仕事×観光のバランスが一番いい</strong><br>華厳の滝まで車5分。竜頭ノ滝15分。戦場ヶ原20分</div></li>
+            <li><span class="fi">🏠</span><div><strong>カナダ人建築家設計のログハウス</strong><br>1992年建築。木の温もりが仕事にも集中をもたらす</div></li>
+            <li><span class="fi">💻</span><div><strong>公式でワーケーションプランを展開中</strong><br>金谷グループがリモートワーカーに本気で寄り添うホテル</div></li>
+            <li><span class="fi">🌊</span><div><strong>湖畔立地でSUP・カヌーの手配もホテルで可能</strong><br>仕事終わりにそのまま湖へ出られる</div></li>
+            <li><span class="fi">♨️</span><div><strong>露天「空ぶろ」から星空が見える</strong><br>源泉かけ流し硫黄泉。夜が最高</div></li>
+            <li><span class="fi">🎯</span><div><strong>仕事×観光のバランスが3プランで一番いい</strong><br>竜頭ノ滝15分・戦場ヶ原20分・華厳の滝5分</div></li>
           </ul>
           <div class="wk-bar">
             <div class="wk-label">ワーケーション向き度</div>
             <div class="wk-track"><div class="wk-fill" style="width:85%;"></div></div>
-            <div class="wk-note">★★★★☆ このプランが「仕事も旅行も」で最コスパ</div>
+            <div class="wk-note">★★★★☆ コスパ最強ライン。はるか的にここが一番推し</div>
           </div>
           <div class="plan-links">
-            <a href="https://www.kanayahotel.co.jp/ckh/" target="_blank" class="plan-link official">公式サイト</a>
-            <a href="https://www.kanayahotel.co.jp/workation/" target="_blank" class="plan-link jalan">ワーケーションプラン</a>
+            <a href="https://www.kanayahotel.co.jp/ckh/" target="_blank" class="plan-link pl-official">公式サイト →</a>
+            <a href="https://www.kanayahotel.co.jp/workation/" target="_blank" class="plan-link pl-sub">ワーケーションプラン</a>
           </div>
         </div>
       </div>
 
-      <!-- 梅プラン：奥日光高原ホテル -->
+      <!-- 梅プラン -->
       <div class="plan-card plum">
-        <div class="plan-header plum-h">
-          <div class="best-tag" style="background: var(--bronze);">✦ 梅プラン</div>
-          <div class="plan-label">ECONOMY — 自然と温泉を全力で</div>
-          <div class="plan-name">奥日光高原ホテル</div>
-          <div class="plan-hotel">📍 湯元温泉エリア　源泉のそばの一軒宿</div>
-          <div class="plan-price">💰 2泊3日（2名）目安：4.4〜6.6万円</div>
+        <div class="card-photo">
+          <img src="https://images.unsplash.com/photo-1761929586535-589bc67b34a2?w=800&q=80" alt="奥日光高原ホテルイメージ" loading="lazy">
+          <div class="card-photo-overlay"></div>
+          <span class="card-photo-badge badge-plum">✦ 梅プラン</span>
+          <div class="card-photo-name">奥日光高原ホテル</div>
+          <div class="card-photo-price">2泊3日 4〜7万円</div>
         </div>
-        <div class="plan-body">
-          <a href="https://www.okunikko-kougenhotel.com/" target="_blank" class="plan-photo-btn">
-            ♨️ 日本4位の濃さの乳白色硫黄泉が売り
-            <div class="btn-sub">→ 公式サイトで写真を見る</div>
-          </a>
+        <div class="card-body">
+          <div class="card-location">📍 湯元温泉エリア ｜ 源泉のそばの宿</div>
+
+          <div class="mini-gallery">
+            <img src="https://images.unsplash.com/photo-1698448662779-a1df590b7ed4?w=600&q=80" alt="乳白色の温泉" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1766939366835-6551b36fd20b?w=600&q=80" alt="森の遊歩道" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1716187081579-fb595cca376f?w=800&q=80" alt="奥日光の滝" loading="lazy" class="wide">
+          </div>
+
           <ul class="feature-list">
-            <li><span class="fi">♨️</span><div><strong>温泉の濃さが本物</strong><br>日本で4番目に濃い硫黄泉。湯ノ湖すぐそば、源泉かけ流し</div></li>
-            <li><span class="fi">🌿</span><div><strong>1,200年の歴史ある湯元温泉に滞在</strong><br>観光地から離れた静かな場所で、森の空気の中で仕事できる</div></li>
-            <li><span class="fi">💻</span><div><strong>全館Wi-Fi完備</strong><br>仕事は「午前だけ」派に最適。午後は自然の中へ</div></li>
-            <li><span class="fi">🏔</span><div><strong>湯ノ湖・湯滝まで徒歩圏内</strong><br>戦場ヶ原まで車10分。奥日光の核心エリアにいる感覚</div></li>
-            <li><span class="fi">💰</span><div><strong>コスパが段違い</strong><br>2食付き2名で4.4万円〜。気軽に来やすい価格感</div></li>
+            <li><span class="fi">♨️</span><div><strong>日本で4番目に濃い硫黄泉</strong><br>乳白色の源泉かけ流し。温泉好きは絶対ここ</div></li>
+            <li><span class="fi">🌿</span><div><strong>湯ノ湖まで徒歩5分の静かな一軒宿</strong><br>観光地から離れた場所で、本当に「静か」に過ごせる</div></li>
+            <li><span class="fi">💻</span><div><strong>全館Wi-Fi完備</strong><br>「仕事は午前だけ派」に最適な環境</div></li>
+            <li><span class="fi">🏔</span><div><strong>奥日光の核心にいる</strong><br>湯滝5分・戦場ヶ原10分・竜頭ノ滝20分</div></li>
+            <li><span class="fi">💰</span><div><strong>2食付き2名で4.4万円〜</strong><br>気軽に来やすい。でも温泉の質は松プランと同じ源泉</div></li>
           </ul>
           <div class="wk-bar">
             <div class="wk-label">ワーケーション向き度</div>
             <div class="wk-track"><div class="wk-fill" style="width:65%;"></div></div>
-            <div class="wk-note">★★★☆☆ 仕事スペースは客室のみ。環境と自然は最高</div>
+            <div class="wk-note">★★★☆☆ 自然と温泉重視派。仕事は朝だけ割り切る人に◎</div>
           </div>
           <div class="plan-links">
-            <a href="https://www.okunikko-kougenhotel.com/" target="_blank" class="plan-link official">公式サイト</a>
-            <a href="https://www.jalan.net/yad337093/" target="_blank" class="plan-link jalan">じゃらんで見る</a>
+            <a href="https://www.okunikko-kougenhotel.com/" target="_blank" class="plan-link pl-official">公式サイト →</a>
+            <a href="https://www.jalan.net/yad337093/" target="_blank" class="plan-link pl-sub">じゃらんで見る</a>
           </div>
         </div>
       </div>
@@ -620,127 +621,175 @@
     </div>
 
     <div class="note-box">
-      <div class="note-title">⚠️ 注意：星野リゾート 界 日光は現在長期休館中</div>
-      2024年3月から改装のため長期休館中。再開時期は未定です（2026年4月現在）。
-      竹プランの代替として中禅寺金谷ホテルを推薦しています。
+      <strong>⚠️ 星野リゾート 界 日光は現在長期休館中（2024年3月〜、再開時期未定）</strong><br>
+      竹プランの代替として中禅寺金谷ホテルを推薦しています。2026年4月現在の情報。
     </div>
   </div>
 </div>
 
 <div class="divider"></div>
 
-<!-- アクティビティ -->
-<div class="section" style="background: var(--paper);">
+<!-- ===== 食事フォトセクション ===== -->
+<div class="section" style="background:var(--paper);">
+  <div class="container">
+    <h2 class="section-title">🍽 宿の食事、これも楽しみのひとつ</h2>
+    <p class="section-sub">奥日光の旅館は食事も本気。仕事のご褒美は、夕食の時間にとっておく。</p>
+    <div class="food-grid">
+      <div class="food-item">
+        <img src="https://images.unsplash.com/photo-1602273660127-a0000560a4c1?w=600&q=80" alt="懐石料理" loading="lazy" style="height:160px;width:100%;object-fit:cover;border-radius:14px;">
+        <div class="food-cap">懐石・会席料理</div>
+      </div>
+      <div class="food-item">
+        <img src="https://images.unsplash.com/photo-1629684782790-385ed5adb497?w=600&q=80" alt="日本の朝食" loading="lazy" style="height:160px;width:100%;object-fit:cover;border-radius:14px;">
+        <div class="food-cap">旅館の朝ごはん</div>
+      </div>
+      <div class="food-item">
+        <img src="https://images.unsplash.com/photo-1591224803255-6cfbba886c2c?w=600&q=80" alt="日本料理" loading="lazy" style="height:160px;width:100%;object-fit:cover;border-radius:14px;">
+        <div class="food-cap">夜の献立</div>
+      </div>
+      <div class="food-item">
+        <img src="https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=600&q=80" alt="和食" loading="lazy" style="height:160px;width:100%;object-fit:cover;border-radius:14px;">
+        <div class="food-cap">丁寧な一品</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== アクティビティ ===== -->
+<div class="section">
   <div class="container">
     <h2 class="section-title">🎒 仕事終わりに何する？</h2>
     <p class="section-sub">「仕事したから遊ぶ」がワーケーションの醍醐味。奥日光はやることが多すぎる。</p>
     <div class="activity-grid">
+
       <div class="activity-card">
-        <div class="a-icon">🛶</div>
-        <div class="a-name">カヌー・SUP（中禅寺湖）</div>
-        <div class="a-desc">標高1,269mの湖でパドリング。午後2時間の体験ツアーあり。初心者ガイドつき。ウェットスーツ込みで8,000円前後</div>
+        <img src="https://images.unsplash.com/photo-1588011637159-458da884f3b2?w=600&q=80" alt="カヌー" loading="lazy">
+        <div class="activity-body">
+          <div class="a-name">🛶 カヌー・SUP（中禅寺湖）</div>
+          <div class="a-desc">標高1,269mの湖でパドリング。体験ツアー8,000円前後。初心者OK</div>
+        </div>
       </div>
-      <div class="activity-card lake-border">
-        <div class="a-icon">🚶</div>
-        <div class="a-name">戦場ヶ原ハイキング</div>
-        <div class="a-desc">赤沼〜湯滝の木道コース（約2時間）。平坦で歩きやすい。6月中旬はワタスゲのふわふわが見頃。国際条約（ラムサール）登録の湿原</div>
-      </div>
-      <div class="activity-card gold-border">
-        <div class="a-icon">🌊</div>
-        <div class="a-name">竜頭ノ滝×ツツジ</div>
-        <div class="a-desc">6月が一年で一番きれい。赤紫のトウゴクミツバツツジが滝を額縁のように囲む。写真映え確実</div>
-      </div>
+
       <div class="activity-card">
-        <div class="a-icon">🧭</div>
-        <div class="a-name">ネイチャーガイドツアー</div>
-        <div class="a-desc">日光自然博物館・自然計画が通年実施。プロガイドと歩くと植物や歴史の話がおもしろい。半日コースあり</div>
+        <img src="https://images.unsplash.com/photo-1579667246776-bb648259a001?w=600&q=80" alt="ハイキング" loading="lazy">
+        <div class="activity-body">
+          <div class="a-name">🚶 戦場ヶ原ハイキング</div>
+          <div class="a-desc">赤沼〜湯滝の2時間コース。平坦な木道で誰でも歩ける</div>
+        </div>
       </div>
-      <div class="activity-card lake-border">
-        <div class="a-icon">💧</div>
-        <div class="a-name">華厳の滝</div>
-        <div class="a-desc">落差97m。エレベーターで観瀑台まで降りると水しぶきで涼しい。夏の朝一番がおすすめ。リッツ・金谷から徒歩〜車5分</div>
+
+      <div class="activity-card">
+        <img src="https://images.unsplash.com/photo-1549548284-28057f92c497?w=600&q=80" alt="滝" loading="lazy">
+        <div class="activity-body">
+          <div class="a-name">🌊 竜頭ノ滝×ツツジ</div>
+          <div class="a-desc">6月の赤紫のツツジが額縁みたい。写真映え確実</div>
+        </div>
       </div>
-      <div class="activity-card gold-border">
-        <div class="a-icon">🌼</div>
-        <div class="a-name">霧降高原キスゲ平</div>
-        <div class="a-desc">26万株のニッコウキスゲが一面に咲く（6月下旬〜7月上旬）。1,445段の階段を登ると絶景が待ってる</div>
+
+      <div class="activity-card">
+        <img src="https://images.unsplash.com/photo-1766939366835-6551b36fd20b?w=600&q=80" alt="森の散策" loading="lazy">
+        <div class="activity-body">
+          <div class="a-name">🧭 ネイチャーガイドツアー</div>
+          <div class="a-desc">プロと歩くと世界が変わる。半日コースあり</div>
+        </div>
       </div>
+
     </div>
   </div>
 </div>
 
 <div class="divider"></div>
 
-<!-- スケジュール -->
-<div class="section">
-  <div class="container">
-    <h2 class="section-title">📅 2泊3日のリアルなスケジュール</h2>
-    <p class="section-sub">「午前は仕事・午後は自然」のリズムで動くと、仕事の集中力が上がる。</p>
-    <table class="schedule-table">
-      <thead>
-        <tr>
-          <th style="width:90px;">タイミング</th>
-          <th>午前</th>
-          <th>午後</th>
-          <th>夜</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="time-cell">1日目</td>
-          <td>東京発。東武日光線で約2時間<br><small style="color:var(--muted);">特急スペーシア乗ればゆったり</small></td>
-          <td>チェックイン → 中禅寺湖・華厳の滝散策<br><small style="color:var(--muted);">到着日は観光モードで入る</small></td>
-          <td>温泉 → 夕食<br><small style="color:var(--muted);">早めに寝て翌朝に備える</small></td>
-        </tr>
-        <tr>
-          <td class="time-cell">2日目</td>
-          <td>🖥 仕事（部屋 or ラウンジ）<br><small style="color:var(--muted);">高原の朝は集中しやすい</small></td>
-          <td>戦場ヶ原ハイキング or カヌー体験<br><small style="color:var(--muted);">体を動かして頭をリセット</small></td>
-          <td>温泉 → 夕食 → 星空<br><small style="color:var(--muted);">市街地と違って星がきれい</small></td>
-        </tr>
-        <tr>
-          <td class="time-cell">3日目</td>
-          <td>🖥 仕事（午前中にまとめて）<br><small style="color:var(--muted);">チェックアウト前に集中</small></td>
-          <td>竜頭ノ滝 → 日光東照宮<br><small style="color:var(--muted);">帰りがけに世界遺産に寄る</small></td>
-          <td>東京帰着<br><small style="color:var(--muted);">17〜18時には帰れる</small></td>
-        </tr>
-      </tbody>
-    </table>
+<!-- ===== 温泉写真フィーチャー ===== -->
+<div style="position:relative; height:340px; overflow:hidden;">
+  <img src="https://images.unsplash.com/photo-1698448662779-a1df590b7ed4?w=1400&q=85" alt="温泉" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+  <div style="position:absolute;inset:0;background:linear-gradient(to right, rgba(10,25,10,0.8) 0%, rgba(10,25,10,0.3) 60%, transparent 100%);"></div>
+  <div style="position:absolute;top:50%;left:48px;transform:translateY(-50%);color:white;max-width:400px;">
+    <div style="font-size:13px;opacity:0.75;margin-bottom:10px;letter-spacing:0.1em;">♨️ 奥日光の温泉</div>
+    <div style="font-size:clamp(20px,3vw,32px);font-weight:800;line-height:1.3;margin-bottom:12px;">1,200年の歴史ある<br>湯元硫黄泉。</div>
+    <div style="font-size:14px;opacity:0.85;line-height:1.7;">日本で4番目に濃い硫黄泉。乳白色のお湯が疲れた体をほぐしてくれる。仕事の後に入る温泉は、格別においしい。</div>
   </div>
 </div>
 
 <div class="divider"></div>
 
-<!-- まとめ -->
-<div class="section" style="background: var(--paper); text-align: center; padding: 48px 20px;">
+<!-- ===== スケジュール ===== -->
+<div class="section" style="background:var(--paper);">
   <div class="container">
-    <h2 style="font-size:20px; margin-bottom:16px;">📊 ひと目でわかる比較</h2>
-    <table class="schedule-table" style="text-align:left; max-width:800px; margin:0 auto;">
+    <h2 class="section-title">📅 2泊3日のリアルなスケジュール</h2>
+    <p class="section-sub">「午前は仕事・午後は自然」のリズムで動くと、仕事の集中力が驚くほど上がる。</p>
+    <div class="schedule-wrap">
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th style="width:80px;"></th>
+            <th>☀️ 午前</th>
+            <th>🌤 午後</th>
+            <th>🌙 夜</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time-cell">1日目</td>
+            <td>東京発。東武特急スペーシアで約2時間<br><small style="color:var(--muted);">車内で仕事してもOK</small></td>
+            <td>チェックイン → 中禅寺湖・華厳の滝<br><small style="color:var(--muted);">到着日は観光モードで入る</small></td>
+            <td>温泉 → 夕食<br><small style="color:var(--muted);">早めに就寝。翌朝に備える</small></td>
+          </tr>
+          <tr>
+            <td class="time-cell">2日目</td>
+            <td>🖥 仕事（部屋 or ラウンジ）<br><small style="color:var(--muted);">高原の朝は集中できる</small></td>
+            <td>戦場ヶ原ハイキング or カヌー体験<br><small style="color:var(--muted);">体を動かして脳をリセット</small></td>
+            <td>温泉 → 夕食 → 星空<br><small style="color:var(--muted);">奥日光の夜は星が本当にきれい</small></td>
+          </tr>
+          <tr>
+            <td class="time-cell">3日目</td>
+            <td>🖥 仕事（午前中にまとめて）<br><small style="color:var(--muted);">チェックアウト前に集中</small></td>
+            <td>竜頭ノ滝 → 日光東照宮<br><small style="color:var(--muted);">帰りがけに世界遺産に寄る</small></td>
+            <td>東京帰着<br><small style="color:var(--muted);">17〜18時には帰れる</small></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== 比較テーブル ===== -->
+<div class="section">
+  <div class="container" style="text-align:center;">
+    <h2 class="section-title" style="text-align:left;">📊 ひと目でわかる比較</h2>
+    <table class="compare-table" style="max-width:860px;margin:0 auto;text-align:left;">
       <thead>
         <tr>
           <th></th>
-          <th>🌸 梅（高原ホテル）</th>
-          <th>🎋 竹（金谷ホテル）</th>
-          <th>🌺 松（リッツ）</th>
+          <th class="pine-col">🌺 松（リッツ）</th>
+          <th class="bamboo-col">🎋 竹（金谷ホテル）</th>
+          <th class="plum-col">🌸 梅（高原ホテル）</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>2泊3日/2名</td><td>4〜7万円</td><td>11〜18万円</td><td>30〜60万円</td></tr>
-        <tr><td>温泉</td><td>源泉かけ流し◎</td><td>源泉かけ流し◎</td><td>大浴場◎</td></tr>
-        <tr><td>中禅寺湖</td><td>車20分</td><td>湖畔すぐ</td><td>湖畔すぐ</td></tr>
-        <tr><td>ワーケーション</td><td>環境○</td><td>専用プランあり◎</td><td>最高水準◎</td></tr>
-        <tr><td>こんな人に</td><td>温泉と自然重視<br>コスパ派</td><td>仕事も遊びも<br>本気で楽しみたい</td><td>一度は体験したい<br>贅沢ワーケーション</td></tr>
+        <tr><td><strong>2泊3日/2名</strong></td><td>30〜60万円</td><td>11〜18万円</td><td>4〜7万円</td></tr>
+        <tr><td><strong>温泉</strong></td><td>大浴場◎</td><td>源泉かけ流し◎</td><td>日本4位の硫黄泉◎</td></tr>
+        <tr><td><strong>中禅寺湖</strong></td><td>湖畔すぐ</td><td>湖畔すぐ</td><td>車20分</td></tr>
+        <tr><td><strong>ワーケーション</strong></td><td>最高水準◎</td><td>専用プランあり◎</td><td>基本Wi-Fiのみ○</td></tr>
+        <tr><td><strong>食事</strong></td><td>複数レストラン◎</td><td>ホテル食◎</td><td>旅館の2食◎</td></tr>
+        <tr><td><strong>こんな人に</strong></td><td>一度は体験したい<br>贅沢派</td><td>仕事も遊びも<br>本気でやりたい</td><td>温泉と自然を<br>コスパで楽しみたい</td></tr>
       </tbody>
     </table>
-    <p style="margin-top:24px; font-size:14px; color:var(--muted);">
+    <p style="margin-top:20px;font-size:13px;color:var(--muted);">
       ※料金は変動します。予約時に公式サイト・じゃらんnet等で最新情報をご確認ください。
     </p>
   </div>
 </div>
 
+<!-- ===== FOOTER ===== -->
 <div class="footer">
   <p>奥日光ワーケーション 松竹梅プラン 2026年7月版 ✦ きょうちゃん（おけもんカンパニー）</p>
   <p style="margin-top:6px;"><a href="https://okemonogatari-hash.github.io/html-share-box/" target="_blank">← 図解ギャラリーに戻る</a></p>
+  <p style="margin-top:8px;font-size:11px;opacity:0.5;">写真: Unsplash（商用利用可フリー素材）</p>
 </div>
 
 </body>
