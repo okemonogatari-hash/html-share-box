@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>差がつくAI習慣10選｜1000人のAI融合メソッド</title>
+<style>
+  :root {
+    --ai1: #6c63ff;
+    --ai2: #a78bfa;
+    --ai3: #38bdf8;
+    --accent: #f472b6;
+    --green: #34d399;
+    --amber: #fbbf24;
+    --bg: #0f0e17;
+    --surface: #1a1830;
+    --card: #1e1d35;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0eeff;
+    --muted: #8b8aae;
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Sans','Yu Gothic',sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    padding: 80px 24px 60px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(108,99,255,0.25) 0%, transparent 50%),
+      radial-gradient(circle at 80% 30%, rgba(167,139,250,0.2) 0%, transparent 50%),
+      radial-gradient(circle at 50% 90%, rgba(56,189,248,0.15) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(108,99,255,0.2);
+    border: 1px solid rgba(108,99,255,0.5);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 12px;
+    color: var(--ai2);
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(135deg, var(--ai1), var(--ai2), var(--ai3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-desc {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 0 auto 28px;
+    line-height: 1.8;
+  }
+  .hero-source {
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+  .hero-source a {
+    color: var(--ai3);
+    text-decoration: none;
+  }
+
+  /* ===== PROBLEM ===== */
+  .problem-section {
+    max-width: 760px;
+    margin: 0 auto 48px;
+    padding: 0 20px;
+  }
+  .problem-box {
+    background: rgba(244,114,182,0.06);
+    border: 1px solid rgba(244,114,182,0.2);
+    border-radius: 16px;
+    padding: 28px 32px;
+    position: relative;
+  }
+  .problem-box::before {
+    content: '😭';
+    font-size: 28px;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .problem-box h2 {
+    font-size: 18px;
+    color: #f472b6;
+    margin-bottom: 12px;
+  }
+  .problem-box p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .problem-box strong {
+    color: var(--text);
+  }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    text-align: center;
+    margin: 56px 0 32px;
+    padding: 0 20px;
+  }
+  .section-title .label {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--ai2);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .section-title h2 {
+    font-size: clamp(20px,3.5vw,30px);
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .section-title p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  /* ===== SKILL GRID ===== */
+  .skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 26px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .skill-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-color, var(--ai1));
+    border-radius: 20px 20px 0 0;
+  }
+  .skill-num {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--card-color, var(--ai1));
+    background: rgba(108,99,255,0.1);
+    border: 1px solid rgba(108,99,255,0.2);
+    border-radius: 8px;
+    padding: 3px 10px;
+    margin-bottom: 14px;
+  }
+  .skill-emoji {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .skill-card h3 {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    line-height: 1.35;
+  }
+  .skill-card .level {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .level-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--card-color, var(--ai1));
+    display: inline-block;
+  }
+  .skill-card p {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .skill-card p strong {
+    color: var(--text);
+  }
+  .skill-tip {
+    margin-top: 14px;
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid var(--card-color, var(--ai1));
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .skill-tip strong {
+    color: var(--ai2);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* ===== PHASE LABELS ===== */
+  .phase-label {
+    text-align: center;
+    margin: 48px 0 20px;
+    padding: 0 20px;
+  }
+  .phase-badge {
+    display: inline-block;
+    border-radius: 40px;
+    padding: 8px 24px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .phase-badge.base {
+    background: rgba(52,211,153,0.1);
+    border: 1px solid rgba(52,211,153,0.3);
+    color: var(--green);
+  }
+  .phase-badge.advanced {
+    background: rgba(251,191,36,0.1);
+    border: 1px solid rgba(251,191,36,0.3);
+    color: var(--amber);
+  }
+  .phase-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* ===== SUMMARY ===== */
+  .summary-section {
+    max-width: 760px;
+    margin: 64px auto 0;
+    padding: 0 20px 80px;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, rgba(108,99,255,0.12), rgba(167,139,250,0.08));
+    border: 1px solid rgba(108,99,255,0.25);
+    border-radius: 20px;
+    padding: 36px 36px;
+    text-align: center;
+  }
+  .summary-box h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: var(--ai2);
+  }
+  .summary-box p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 12px;
+  }
+  .summary-box .cta {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .order-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .order-item {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .order-item span {
+    color: var(--ai2);
+    font-weight: 700;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.6;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) {
+    .skill-grid { grid-template-columns: 1fr; }
+    .problem-box { padding: 20px; }
+    .summary-box { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">AI習慣 × 差がつく10の方法</div>
+  <h1><span class="grad">AIと「融合」するための<br>10の習慣</span></h1>
+  <p class="hero-desc">
+    「AI使いたいけど続かない」「なんか置いてかれてる気がする」<br>
+    そんな人に向けた、1000人がリアルに実践している習慣の全解説。
+  </p>
+  <div class="hero-source">
+    出典：<a href="https://www.youtube.com/watch?v=MhAIyr617fA" target="_blank">「差がつくAI習慣」を全部まとめて解説するわ - YouTube</a>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<div class="problem-section">
+  <div class="problem-box">
+    <h2>「また置いてかれた…」の繰り返し、心当たりない？</h2>
+    <p>
+      AI使ってみた→<strong>楽しい！</strong>→1週間後、仕事が忙しくてやめる→<strong>戻れない</strong>→
+      気づいたら新しいツールが出てる→また置いてかれた感…この繰り返し。<br><br>
+      これは<strong>AIに慣れる前に距離を置いてしまう</strong>のが原因。
+      英語と同じで、毎日少しでも触れ続けることが大切。
+    </p>
+  </div>
+</div>
+
+<!-- BASE SKILLS 1-7 -->
+<div class="section-title">
+  <span class="label">10 Habits</span>
+  <h2>AIと仲良くなる10のステップ</h2>
+</div>
+
+<div class="phase-label">
+  <div class="phase-badge base">🌱 ベース編（1〜7）まずここから</div>
+  <div class="phase-desc">難しくない。ちょっとずつ慣れていく7つの習慣</div>
+</div>
+
+<div class="skill-grid">
+
+  <!-- Skill 1 -->
+  <div class="skill-card" style="--card-color: #6c63ff;">
+    <div class="skill-num">SKILL 01</div>
+    <span class="skill-emoji">🎙️</span>
+    <h3>とにかく毎日AIに話しかける</h3>
+    <div class="level"><span class="level-dot"></span>難易度：やさしい ／ 続けやすい</div>
+    <p>
+      仕事でも恋愛相談でも<strong>なんでもOK</strong>。音声入力（アクアボイス等）で
+      歩きながらでも使える。1日1回でいいから話しかける癖をつけること。<br><br>
+      疑問に思ったこと、ひらめき、ぐちでも全部入れていく。
+    </p>
+    <div class="skill-tip">
+      <strong>💡 ポイント</strong>
+      テーマごとにチャットを分ける。仕事の話と恋愛相談は別の窓で。
+      1つのチャットに詰め込みすぎるとAIがアホになる。
+    </div>
+  </div>
+
+  <!-- Skill 2 -->
+  <div class="skill-card" style="--card-color: #a78bfa;">
+    <div class="skill-num">SKILL 02</div>
+    <span class="skill-emoji">🪞</span>
+    <h3>AIで「自分のこと」を発掘する</h3>
+    <div class="level"><span class="level-dot"></span>難易度：やさしい ／ 自己理解が深まる</div>
+    <p>
+      AIはすごく便利な「自分を映す鏡」。「自分ってどんな人間か分析して」と
+      聞くと、<strong>自分では気づかなかった視点</strong>を出してくれる。
+    </p>
+    <div class="skill-tip">
+      <strong>💡 使い方</strong>
+      AIが出した分析に反論してみると面白い。「いや俺は感情豊かやで！」って
+      ツッコんでいくうちに自己理解がどんどん深まる。
+    </div>
+  </div>
+
+  <!-- Skill 3 -->
+  <div class="skill-card" style="--card-color: #38bdf8;">
+    <div class="skill-num">SKILL 03</div>
+    <span class="skill-emoji">📵</span>
+    <h3>目的なく情報収集するのをやめる</h3>
+    <div class="level"><span class="level-dot"></span>難易度：むずかしい ／ 勇気がいる</div>
+    <p>
+      XのAI情報、YouTube、ニュース…全部追いかけようとすると<strong>疲弊する</strong>。
+      「ホームページを作りたい」「この仕事を自動化したい」など、
+      <strong>目的が生まれてから調べる</strong>でOK。
+    </p>
+    <div class="skill-tip">
+      <strong>💡 例外</strong>
+      最新情報はLINEの配信1本だけ登録。それだけ見ておけば大事なトレンドは把握できる。
+      全部追いかけなくていい。
+    </div>
+  </div>
+
+  <!-- Skill 4 -->
+  <div class="skill-card" style="--card-color: #34d399;">
+    <div class="skill-num">SKILL 04</div>
+    <span class="skill-emoji">🗂️</span>
+    <h3>自分の「コンテキスト」を貯める</h3>
+    <div class="level"><span class="level-dot"></span>難易度：普通 ／ 未来の自分への投資</div>
+    <p>
+      日々の会話・ミーティング・ひらめきを全部<strong>文字起こし</strong>して
+      AIに渡す。自分の考え方・パターン・履歴がAIの記憶になる。<br><br>
+      Circlebackなどで録音→自動テキスト化が便利。
+    </p>
+    <div class="skill-tip">
+      <strong>💡 活用例</strong>
+      「1週間分のコンテキスト」をAIに渡して「使えそうなアイデアは？」と聞くと
+      自分でも気づかなかったアイデアが出てくる。
+    </div>
+  </div>
+
+  <!-- Skill 5 -->
+  <div class="skill-card" style="--card-color: #f472b6;">
+    <div class="skill-num">SKILL 05</div>
+    <span class="skill-emoji">🛠️</span>
+    <h3>AIに「ツール」を作ってもらう</h3>
+    <div class="level"><span class="level-dot"></span>難易度：普通 ／ 最初の1個が大事</div>
+    <p>
+      「毎日の献立を自動で提案するツールが欲しい」「Discord経由でTODO登録したい」
+      —そう<strong>言うだけでツールが出来上がる</strong>時代になった。<br><br>
+      プログラミング不要。Claude CodeやCursorで実現できる。
+    </p>
+    <div class="skill-tip">
+      <strong>💡 コツ</strong>
+      「何作ればいいか分からない」→AIに「どんなツール作れる？」と聞くだけでOK。
+      自分の困っていることを話すと提案してくれる。
+    </div>
+  </div>
+
+  <!-- Skill 6 -->
+  <div class="skill-card" style="--card-color: #fbbf24;">
+    <div class="skill-num">SKILL 06</div>
+    <span class="skill-emoji">⚡</span>
+    <h3>AIの返答を「素早く読む」訓練をする</h3>
+    <div class="level"><span class="level-dot"></span>難易度：地味 ／ じわじわ効く</div>
+    <p>
+      AIをたくさん使うほど<strong>長い文章を読む量が激増する</strong>。
+      全部丁寧に読もうとすると追いつかない。ざっと流し読みして
+      「重要な単語」だけキャッチする訓練が意外と大事。
+    </p>
+    <div class="skill-tip">
+      <strong>💡 やり方</strong>
+      横に広く視野を広げて、スクロールペースで読む。完全に理解できなくてもOK。
+      1日15分の訓練でじわじわ速くなる。
+    </div>
+  </div>
+
+  <!-- Skill 7 -->
+  <div class="skill-card" style="--card-color: #e879f9;">
+    <div class="skill-num">SKILL 07</div>
+    <span class="skill-emoji">🧩</span>
+    <h3>「AIパズル」で構造を組み換える</h3>
+    <div class="level"><span class="level-dot"></span>難易度：むずかしめ ／ 上級の本質</div>
+    <p>
+      AIが出した文章の「構造」を抜き出し、<strong>自分のケースに組み換える</strong>思考法。
+      例えば小説の論理構造→自分のプレゼンに応用、など。<br><br>
+      AIを「返答をもらう道具」ではなく「思考の素材」として使う感覚。
+    </p>
+    <div class="skill-tip">
+      <strong>💡 例</strong>
+      「この文章を構造化して短くまとめて」→構造化されたアウトプットをそのまま
+      別のことに応用する。AIを素材屋として使う。
+    </div>
+  </div>
+
+</div>
+
+<!-- ADVANCED SKILLS 8-10 -->
+<div class="phase-label" style="margin-top: 48px;">
+  <div class="phase-badge advanced">🔥 ガチ編（8〜10）ここからが差がつく</div>
+  <div class="phase-desc">AIに慣れてきたら挑戦。ここができると本当に強くなる</div>
+</div>
+
+<div class="skill-grid">
+
+  <!-- Skill 8 -->
+  <div class="skill-card" style="--card-color: #fb923c;">
+    <div class="skill-num">SKILL 08</div>
+    <span class="skill-emoji">🖥️</span>
+    <h3>複数のAIを「同時に」動かす（並列実行）</h3>
+    <div class="level"><span class="level-dot"></span>難易度：慣れが必要 ／ 生産性が一気に上がる</div>
+    <p>
+      AIを1つだけじゃなく、<strong>3〜6個を並行して動かす</strong>。
+      A窓では企画書作成、B窓では調査、C窓では文章校正—を同時進行。<br><br>
+      慣れると「1人で100人分働く」感覚になる。
+    </p>
+    <div class="skill-tip">
+      <strong>💡 注意</strong>
+      最近はClaude等でかなり自動化されてきた。全部手動で並列しなくても
+      良くなってきているが、考え方として知っておく価値がある。
+    </div>
+  </div>
+
+  <!-- Skill 9 -->
+  <div class="skill-card" style="--card-color: #4ade80;">
+    <div class="skill-num">SKILL 09</div>
+    <span class="skill-emoji">🤖</span>
+    <h3>「裏でAIが動く仕組み」を作る</h3>
+    <div class="level"><span class="level-dot"></span>難易度：難しい ／ できると最強</div>
+    <p>
+      「アンビエントエージェント」＝<strong>指示しなくても勝手にAIが動く仕組み</strong>のこと。
+      例えばDiscordにメッセージを入れると自動でTODOが登録される、
+      録音を解析してアイデアを抽出してくれる、など。
+    </p>
+    <div class="skill-tip">
+      <strong>💡 従来のAI vs アンビエント</strong>
+      従来：自分が呼び出した時だけ動く<br>
+      アンビエント：バックグラウンドで常時動いてサポートしてくれる
+    </div>
+  </div>
+
+  <!-- Skill 10 -->
+  <div class="skill-card" style="--card-color: #f43f5e;">
+    <div class="skill-num">SKILL 10</div>
+    <span class="skill-emoji">📣</span>
+    <h3>「AI好き」を周りに発信する</h3>
+    <div class="level"><span class="level-dot"></span>難易度：やさしいのに深い ／ 人生が変わる</div>
+    <p>
+      一番シンプルで、実は一番大事なこと。「AIが好き」と周りに言うだけで
+      <strong>AI案件が自分に来るようになる</strong>。教えることで自分もレベルアップする。<br><br>
+      人の悩みをAIで解決しようとする経験が、めちゃくちゃ自分を育てる。
+    </p>
+    <div class="skill-tip">
+      <strong>💡 発信の効果</strong>
+      「AI好きです」と言い続けると→悩みが届く→解決しようと頑張る→
+      自分のレベルが上がる→また好きになる。この好循環が最強。
+    </div>
+  </div>
+
+</div>
+
+<!-- SUMMARY -->
+<div class="summary-section">
+  <div class="summary-box">
+    <h2>どこから始めればいい？</h2>
+    <p>
+      1から順番にやるのがおすすめ。10番は一番シンプルに見えるけど、
+      AIに慣れてないとリアルに伝えられないから、まず1〜7を積み上げてから。
+    </p>
+    <div class="order-list">
+      <div class="order-item">🎙️ <span>1</span>毎日話しかける</div>
+      <div class="order-item">🪞 <span>2</span>自分を分析</div>
+      <div class="order-item">📵 <span>3</span>情報を絞る</div>
+      <div class="order-item">🗂️ <span>4</span>コンテキスト貯める</div>
+      <div class="order-item">🛠️ <span>5</span>ツールを作る</div>
+      <div class="order-item">⚡ <span>6</span>即読訓練</div>
+      <div class="order-item">🧩 <span>7</span>AIパズル</div>
+      <div class="order-item">🖥️ <span>8</span>並列実行</div>
+      <div class="order-item">🤖 <span>9</span>裏で動かす</div>
+      <div class="order-item">📣 <span>10</span>好きを発信</div>
+    </div>
+    <p class="cta">
+      「AIと融合する」ってのは、特別な才能じゃない。<br>
+      英語と同じで、毎日ちょっとずつ触れ続けた人が強くなる。
+    </p>
+  </div>
+</div>
+
+<div class="footer">
+  きょうちゃん図解 ✦ 2026-04-11 ／ 出典：1000人のAIチャンネル
+</div>
+
+</body>
+</html>
