@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英会話レッスンを"資産"に変える — GPTs × ナレッジ蓄積システム提案</title>
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-light: #2d4a7a;
+    --blue: #3b82f6;
+    --blue-soft: rgba(59,130,246,0.08);
+    --gold: #f59e0b;
+    --gold-soft: rgba(245,158,11,0.1);
+    --white: #ffffff;
+    --bg: #f8fafc;
+    --text: #1e293b;
+    --muted: #64748b;
+    --line: rgba(0,0,0,0.06);
+    --green: #10b981;
+    --green-soft: rgba(16,185,129,0.08);
+    --red: #ef4444;
+    --red-soft: rgba(239,68,68,0.08);
+    --orange: #f97316;
+    --orange-soft: rgba(249,115,22,0.08);
+    --shadow: 0 8px 30px rgba(0,0,0,0.08);
+    --radius: 20px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.8;
+  }
+
+  /* ===== ヘッダー ===== */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--white);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 40%, rgba(59,130,246,0.15), transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(245,158,11,0.1), transparent 50%);
+  }
+  .header * { position: relative; }
+  .header-label {
+    display: inline-block;
+    background: rgba(245,158,11,0.2);
+    border: 1px solid rgba(245,158,11,0.4);
+    color: var(--gold);
+    padding: 4px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: clamp(22px, 5vw, 36px);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+  .header h1 .accent { color: var(--gold); }
+  .header p {
+    font-size: 15px;
+    opacity: 0.85;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* ===== 共通 ===== */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+  .section {
+    margin: 40px auto;
+    max-width: 900px;
+    padding: 0 20px;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--gold);
+  }
+  .section-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* ===== 課題カード ===== */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .problem-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--orange);
+  }
+  .problem-card .icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+  .problem-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .problem-card p {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* ===== Before / After ===== */
+  .ba-wrapper {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  @media (max-width: 700px) {
+    .ba-wrapper {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .ba-arrow { transform: rotate(90deg); }
+  }
+  .ba-box {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+  }
+  .ba-box.before {
+    border: 2px solid var(--red);
+    border-top: 4px solid var(--red);
+  }
+  .ba-box.after {
+    border: 2px solid var(--green);
+    border-top: 4px solid var(--green);
+  }
+  .ba-label {
+    display: inline-block;
+    padding: 3px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .ba-label.before { background: var(--red-soft); color: var(--red); }
+  .ba-label.after { background: var(--green-soft); color: var(--green); }
+  .ba-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .ba-box li {
+    font-size: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .ba-box li:last-child { border-bottom: none; }
+  .ba-box li .mark { flex-shrink: 0; font-size: 16px; }
+  .ba-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: var(--blue);
+    padding: 0 16px;
+  }
+
+  /* ===== システム構成図 ===== */
+  .flow-container {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .flow-row:last-child { margin-bottom: 0; }
+  .flow-node {
+    background: var(--blue-soft);
+    border: 2px solid var(--blue);
+    border-radius: 16px;
+    padding: 14px 20px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .flow-node.gpt {
+    background: rgba(16,185,129,0.08);
+    border-color: var(--green);
+  }
+  .flow-node.claude {
+    background: rgba(245,158,11,0.08);
+    border-color: var(--gold);
+  }
+  .flow-node.user {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
+  }
+  .flow-node .node-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+  .flow-node .node-label { font-size: 13px; font-weight: 700; }
+  .flow-node .node-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .flow-node.user .node-sub { color: rgba(255,255,255,0.7); }
+  .flow-arrow {
+    font-size: 24px;
+    color: var(--muted);
+  }
+  .flow-arrow.down {
+    display: block;
+    text-align: center;
+    width: 100%;
+    font-size: 28px;
+    margin: 4px 0;
+  }
+  .flow-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+  }
+
+  /* ===== できること/できないこと ===== */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .cap-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .cap-card.can { border-top: 4px solid var(--green); }
+  .cap-card.caution { border-top: 4px solid var(--gold); }
+  .cap-card.cant { border-top: 4px solid var(--red); }
+  .cap-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cap-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .cap-card li {
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .cap-card li:last-child { border-bottom: none; }
+
+  /* ===== 導入ステップ ===== */
+  .steps {
+    position: relative;
+    padding-left: 40px;
+  }
+  .steps::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--blue), var(--green));
+    border-radius: 3px;
+  }
+  .step {
+    position: relative;
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .step:last-child { margin-bottom: 0; }
+  .step::before {
+    content: attr(data-step);
+    position: absolute;
+    left: -40px;
+    top: 20px;
+    width: 32px;
+    height: 32px;
+    background: var(--blue);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+  }
+  .step h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .step p {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .step .step-tag {
+    display: inline-block;
+    background: var(--gold-soft);
+    color: #b45309;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-top: 8px;
+  }
+
+  /* ===== ナレッジ例 ===== */
+  .knowledge-demo {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .knowledge-demo h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .k-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .k-tab {
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 2px solid var(--line);
+    background: var(--bg);
+    cursor: default;
+  }
+  .k-tab.active {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
+  }
+  .k-example {
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 13px;
+  }
+  .k-example .k-row {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: flex-start;
+  }
+  .k-example .k-row:last-child { border-bottom: none; }
+  .k-label {
+    font-weight: 700;
+    color: var(--navy);
+    min-width: 80px;
+    flex-shrink: 0;
+    font-size: 12px;
+  }
+  .k-value { color: var(--text); }
+  .k-badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 4px;
+  }
+  .k-badge.weak { background: var(--red-soft); color: var(--red); }
+  .k-badge.growing { background: var(--gold-soft); color: #b45309; }
+  .k-badge.strong { background: var(--green-soft); color: var(--green); }
+
+  /* ===== CTA ===== */
+  .cta {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: 40px 32px;
+    text-align: center;
+    margin: 40px auto;
+    max-width: 900px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta::before {
+    content: "";
+    position: absolute;
+    top: -50%; right: -30%;
+    width: 80%; height: 200%;
+    background: radial-gradient(circle, rgba(245,158,11,0.12), transparent 60%);
+  }
+  .cta * { position: relative; }
+  .cta h2 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .cta p {
+    font-size: 14px;
+    opacity: 0.85;
+    margin-bottom: 24px;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    padding: 12px 32px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(245,158,11,0.3);
+  }
+
+  /* ===== フッター ===== */
+  .footer {
+    text-align: center;
+    padding: 32px 20px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<div class="header">
+  <div class="header-label">営業提案資料 ／ ブレスト段階</div>
+  <h1>英会話レッスンを<br><span class="accent">"資産"</span>に変える</h1>
+  <p>GPTs音声レッスン × ナレッジ蓄積システムで<br>「話して終わり」を「積み上がる学び」に</p>
+</div>
+
+<!-- ===== 1. こんなこと、起きてませんか？ ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-num">1</span>
+    こんなこと、起きてませんか？
+  </div>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="icon">💨</div>
+      <h3>レッスンが"消えていく"</h3>
+      <p>GPTsでの英会話は楽しいし学びがある。でもレッスンが終わったら、何を話したか思い出せない。会話のログは埋もれていくだけ。</p>
+    </div>
+    <div class="problem-card">
+      <div class="icon">📋</div>
+      <h3>受講生の状況が見えない</h3>
+      <p>「最近どうですか？」と聞くしかない。受講生ごとの苦手パターンや成長度合いを、講師が把握する手段がない。</p>
+    </div>
+    <div class="problem-card">
+      <div class="icon">😶</div>
+      <h3>受講生が"伸びてる実感"を持てない</h3>
+      <p>毎週レッスンしてるけど、自分がどこまで来たのか分からない。成長が見えないとモチベーションが続かない。</p>
+    </div>
+    <div class="problem-card">
+      <div class="icon">🔄</div>
+      <h3>同じミスを繰り返してしまう</h3>
+      <p>前回も同じ間違いをしたはず…でも記録がないから気づけない。弱点が放置されたまま、レッスン回数だけが増えていく。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 2. Before / After ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-num">2</span>
+    どう変わる？ Before → After
+  </div>
+  <div class="ba-wrapper">
+    <div class="ba-box before">
+      <span class="ba-label before">Before — 今の状態</span>
+      <ul>
+        <li><span class="mark">😔</span>レッスンは良い体験だけど記録が残らない</li>
+        <li><span class="mark">😔</span>講師は受講生の進捗を感覚で把握</li>
+        <li><span class="mark">😔</span>受講生は「自分、伸びてるのかな…」と不安</li>
+        <li><span class="mark">😔</span>レッスン回数 ＝ ただの消費</li>
+      </ul>
+    </div>
+    <div class="ba-arrow">→</div>
+    <div class="ba-box after">
+      <span class="ba-label after">After — 導入後</span>
+      <ul>
+        <li><span class="mark">✨</span>毎回のレッスンが自動で記録・分析される</li>
+        <li><span class="mark">✨</span>講師はダッシュボードで一目で把握</li>
+        <li><span class="mark">✨</span>受講生は自分の成長ポートフォリオが見える</li>
+        <li><span class="mark">✨</span>レッスン回数 ＝ 積み上がる資産</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 3. こんなナレッジが自動で溜まる ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-num">3</span>
+    こんなナレッジが自動で溜まっていく
+  </div>
+  <div class="knowledge-demo">
+    <h3>🧑‍🎓 Aさんの学習カルテ（イメージ）</h3>
+    <div class="k-tabs">
+      <span class="k-tab active">単語・フレーズ</span>
+      <span class="k-tab">間違い記録</span>
+      <span class="k-tab">苦手傾向</span>
+      <span class="k-tab">成長レポート</span>
+    </div>
+    <div class="k-example">
+      <div class="k-row">
+        <span class="k-label">新出フレーズ</span>
+        <span class="k-value">"get the hang of it"（コツをつかむ）— 4/11のレッスンで初出</span>
+      </div>
+      <div class="k-row">
+        <span class="k-label">間違い記録</span>
+        <span class="k-value">"I go to there" → "I go there"（toが不要）<span class="k-badge weak">3回目</span></span>
+      </div>
+      <div class="k-row">
+        <span class="k-label">苦手傾向</span>
+        <span class="k-value">冠詞（a/the）の使い分け <span class="k-badge weak">苦手</span>　時制 <span class="k-badge growing">改善中</span>　前置詞 <span class="k-badge strong">OK</span></span>
+      </div>
+      <div class="k-row">
+        <span class="k-label">次回テーマ</span>
+        <span class="k-value">冠詞の使い分け（前回3箇所ミス → 重点練習を自動提案）</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 4. しくみ全体図 ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-num">4</span>
+    しくみ全体図 — 受講生は何もしなくていい
+  </div>
+  <div class="flow-container">
+    <!-- Row 1: ユーザー → GPTs -->
+    <div class="flow-row">
+      <div class="flow-node user">
+        <span class="node-icon">🗣️</span>
+        <span class="node-label">受講生</span>
+        <span class="node-sub">いつも通り話すだけ</span>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node gpt">
+        <span class="node-icon">🤖</span>
+        <span class="node-label">GPTs（音声レッスン）</span>
+        <span class="node-sub">今のGPTsをそのまま使う</span>
+      </div>
+    </div>
+    <!-- Arrow down -->
+    <span class="flow-arrow down">↓ レッスン終了時に自動送信</span>
+    <!-- Row 2: Webhook → ナレッジ化 -->
+    <div class="flow-row">
+      <div class="flow-node">
+        <span class="node-icon">📡</span>
+        <span class="node-label">Actions / Webhook</span>
+        <span class="node-sub">GPTsから自動でログ送信</span>
+      </div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node claude">
+        <span class="node-icon">🧠</span>
+        <span class="node-label">ナレッジ蓄積AI</span>
+        <span class="node-sub">ログ解析・自動分類・傾向分析</span>
+      </div>
+    </div>
+    <!-- Arrow down -->
+    <span class="flow-arrow down">↓ レポート自動生成</span>
+    <!-- Row 3: 講師ダッシュボード -->
+    <div class="flow-row">
+      <div class="flow-node user">
+        <span class="node-icon">👨‍🏫</span>
+        <span class="node-label">講師ダッシュボード</span>
+        <span class="node-sub">受講生ごとの成長が一目でわかる</span>
+      </div>
+    </div>
+    <div class="flow-note">
+      ポイント：受講生も講師も、<strong>今までと使い方を変える必要がない</strong>。裏側で勝手にナレッジが育つ。
+    </div>
+  </div>
+</div>
+
+<!-- ===== 5. できること / 注意点 / 難しいこと ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-num">5</span>
+    できること・注意点・今は難しいこと
+  </div>
+  <div class="cap-grid">
+    <div class="cap-card can">
+      <h3>✅ できること</h3>
+      <ul>
+        <li>📝 レッスン会話ログの自動蓄積</li>
+        <li>🔍 新出単語・フレーズの自動抽出</li>
+        <li>📊 受講生ごとの苦手分析・成長記録</li>
+        <li>🎯 次回レッスンテーマの自動提案</li>
+        <li>📈 週次・月次の進捗レポート自動生成</li>
+        <li>🏆 受講生が成長を実感できるポートフォリオ</li>
+      </ul>
+    </div>
+    <div class="cap-card caution">
+      <h3>⚠️ 確認が必要なこと</h3>
+      <ul>
+        <li>🔧 GPTsの編集権限が必要（Actions設定のため）</li>
+        <li>💳 受講生にChatGPT Plus契約が必要（音声対話のため）</li>
+        <li>📱 受講生がスマホ中心の場合、ログ取得方法の工夫が必要</li>
+        <li>🔗 GPTs Actionsの外部連携が技術的に可能か検証が必要</li>
+      </ul>
+    </div>
+    <div class="cap-card cant">
+      <h3>❌ 現時点では難しいこと</h3>
+      <ul>
+        <li>🎙️ 音声対話の自前構築（GPTsの品質に追いつくのが困難、コスト大）</li>
+        <li>📲 受講生に新しいアプリを入れてもらう運用（続かない）</li>
+        <li>⚡ 完全リアルタイムの発音チェック（将来的には可能性あり）</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 6. 導入ステップ ===== -->
+<div class="section">
+  <div class="section-title">
+    <span class="section-num">6</span>
+    導入ステップ — まずはヒアリングから
+  </div>
+  <div class="steps">
+    <div class="step" data-step="1">
+      <h3>現在のGPTsの構成・運用をヒアリング</h3>
+      <p>今のGPTsがどう動いているか、受講生がどう使っているかを教えてもらうだけ。ここで「何が作れるか」の精度が決まる。</p>
+      <span class="step-tag">無料・オンラインOK</span>
+    </div>
+    <div class="step" data-step="2">
+      <h3>ログ取得の仕組みを検証・構築</h3>
+      <p>GPTs ActionsでWebhook送信ができるか検証。受講生の操作は変えずに、裏側でログが飛ぶようにする。</p>
+    </div>
+    <div class="step" data-step="3">
+      <h3>ナレッジ蓄積・分析エンジンを構築</h3>
+      <p>受け取ったログから、単語抽出・苦手分析・成長記録を自動生成する仕組みを作る。</p>
+    </div>
+    <div class="step" data-step="4">
+      <h3>講師向けダッシュボードを構築</h3>
+      <p>「Aさんは冠詞が苦手」「Bさんは先週から時制が改善」など、受講生ごとの状況が一画面で見えるようにする。</p>
+    </div>
+    <div class="step" data-step="5">
+      <h3>テスト運用 → フィードバック → 本運用</h3>
+      <p>まず数名の受講生で試してみて、使い勝手を調整。問題なければ全体に展開。</p>
+      <span class="step-tag">ここまで最短2〜4週間</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CTA ===== -->
+<div class="container">
+  <div class="cta">
+    <h2>まずは30分、お話しませんか？</h2>
+    <p>今のGPTsの使い方を聞かせてもらうだけでOK。<br>「こんなことできるかも」が具体的に見えてきます。</p>
+    <span class="cta-btn">ヒアリングに申し込む（無料）</span>
+  </div>
+</div>
+
+<!-- ===== フッター ===== -->
+<div class="footer">
+  <p>提案資料 ／ ブレスト段階 ／ 2026.04.11</p>
+</div>
+
+</body>
+</html>
