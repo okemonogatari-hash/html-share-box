@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>読書会で出たおすすめ本まとめ｜2026.04.09</title>
+<style>
+  :root {
+    --bg: #faf8f5;
+    --paper: #fff;
+    --ink: #2d2a26;
+    --muted: #7a756d;
+    --line: rgba(0,0,0,0.06);
+    --accent: #8b5e3c;
+    --accent-soft: rgba(139,94,60,0.08);
+    --warm: #e17055;
+    --shadow: 0 8px 30px rgba(0,0,0,0.06);
+    --radius: 20px;
+    --max: 800px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(139,94,60,0.06), transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(232,67,147,0.04), transparent 35%);
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+  .page { width: min(var(--max), calc(100vw - 32px)); margin: 0 auto; padding: 32px 0 80px; }
+
+  /* ヒーロー */
+  .hero {
+    text-align: center;
+    padding: 48px 28px 40px;
+    margin-bottom: 32px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 32px;
+    box-shadow: var(--shadow);
+  }
+  .hero-emoji { font-size: 56px; margin-bottom: 12px; }
+  .hero h1 {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .hero-date {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 4px 16px;
+    background: var(--accent-soft);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* 本カード */
+  .book-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .book-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+  }
+  .book-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px; height: 100%;
+  }
+
+  .book-card.philosophy::before { background: #6c5ce7; }
+  .book-card.marketing::before { background: #e17055; }
+  .book-card.biography::before { background: #00b894; }
+  .book-card.fiction::before { background: #e84393; }
+  .book-card.nonfiction::before { background: #0984e3; }
+
+  .book-person {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .book-card.philosophy .book-person { background: rgba(108,92,231,0.1); color: #6c5ce7; }
+  .book-card.marketing .book-person { background: rgba(225,112,85,0.1); color: #e17055; }
+  .book-card.biography .book-person { background: rgba(0,184,148,0.1); color: #00b894; }
+  .book-card.fiction .book-person { background: rgba(232,67,147,0.1); color: #e84393; }
+  .book-card.nonfiction .book-person { background: rgba(9,132,227,0.1); color: #0984e3; }
+
+  .book-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .book-genre {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .book-desc {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.7;
+  }
+  .book-desc strong { color: var(--ink); }
+  .book-quote {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.02);
+    border-radius: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .book-quote::before { content: '💬 '; }
+
+  /* Audibleセクション */
+  .audible-box {
+    background: linear-gradient(135deg, #fff4e6, #fff9f0);
+    border: 2px solid rgba(253,203,110,0.5);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin: 32px 0;
+    text-align: center;
+  }
+  .audible-box h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .audible-price {
+    font-size: 36px;
+    font-weight: 900;
+    color: #e17055;
+    margin: 8px 0;
+  }
+  .audible-price span {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .audible-note {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* まとめ */
+  .summary-box {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px;
+    margin-top: 32px;
+  }
+  .summary-box h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .summary-item {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .summary-item .s-title { font-weight: 700; font-size: 14px; }
+  .summary-item .s-person { color: var(--muted); font-size: 12px; }
+
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 20px; }
+    .book-card { padding: 20px; }
+    .audible-price { font-size: 28px; }
+    .summary-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="hero-emoji">📚</div>
+    <h1>「次に読む本、決まった！」<br>読書好きが集まっておすすめ本をシェアしてみた</h1>
+    <div class="hero-sub">6人の読書好きがガチで推す本、全11冊</div>
+    <div class="hero-date">2026.04.09 読書会</div>
+  </div>
+
+  <!-- おけもん -->
+  <div class="book-card nonfiction">
+    <span class="book-person">おけもん</span>
+    <div class="book-title">In the Maga Church</div>
+    <div class="book-genre">ノンフィクション</div>
+    <div class="book-desc">
+      本屋大賞にもランクインした話題作。<strong>宗教とアメリカ政治</strong>をテーマにした一冊。
+      日本では「無宗教」が当たり前だけど、世界ではそうじゃない——そのギャップに気づかせてくれる。
+    </div>
+    <div class="book-quote">参加者からも「次これ読む！」の声。本屋大賞効果で注目度UP中</div>
+  </div>
+
+  <!-- 聖夜さん -->
+  <div class="book-card philosophy">
+    <span class="book-person">聖夜さん</span>
+    <div class="book-title">サピエンス全史 / 心はこうして作られる</div>
+    <div class="book-genre">哲学・人文科学</div>
+    <div class="book-desc">
+      哲学や自己啓発が好きという聖夜さんのチョイス。サピエンス全史は「人類がどこから来てどこへ行くのか」を壮大に描いた名著。
+      <strong>「心はこうして作られる」</strong>は、自分の心がどう形成されるかを科学的に紐解く一冊。
+    </div>
+    <div class="book-quote">ヴァイオレット・エヴァーガーデンも激推し。「構成と話の進め方が勉強になる」</div>
+  </div>
+
+  <!-- マッチ -->
+  <div class="book-card marketing">
+    <span class="book-person">マッチ</span>
+    <div class="book-title">勘違いさせる力</div>
+    <div class="book-genre">マーケティング・自己啓発</div>
+    <div class="book-desc">
+      ふろむださんの著作。<strong>「自分をどう見せるか」</strong>がテーマ。
+      勘違いしてもらうことでいい効果が得られる——ちょっとズルいけど、マーケティング的にも刺さる話が満載。
+    </div>
+    <div class="book-quote">「マーケティングの内容が結構入ってる」「こういう系が刺さった」</div>
+  </div>
+
+  <!-- 桜井さん -->
+  <div class="book-card biography">
+    <span class="book-person">桜井さん</span>
+    <div class="book-title">蘇る天才シリーズ / 殺し屋の営業</div>
+    <div class="book-genre">伝記・ビジネス小説</div>
+    <div class="book-desc">
+      「蘇る天才」は1冊につき1人の天才を紹介するシリーズ。ナイチンゲール、ガリレオなど。
+      <strong>オーディブルで聴いて「これ絶対面白いわ」</strong>ってなったそう。
+      「殺し屋の営業」は書店で平積みされてる話題作。タイトルのインパクトがすごい。
+    </div>
+    <div class="book-quote">殺し屋の営業は本屋大賞6位にランクイン。「タイトルがいいよね」と盛り上がった</div>
+  </div>
+
+  <!-- もちねこさん -->
+  <div class="book-card fiction">
+    <span class="book-person">もちねこさん</span>
+    <div class="book-title">春夏秋冬代行者 / ヴァイオレット・エヴァーガーデン</div>
+    <div class="book-genre">小説・ライトノベル</div>
+    <div class="book-desc">
+      「春夏秋冬代行者」は、春夏秋冬の季節を届ける代行者たちの物語。<strong>春の代行者が誘拐されて10年間冬が続く</strong>という設定がユニーク。
+      ヴァイオレット・エヴァーガーデンはアニメでも有名。原作小説も深い。
+    </div>
+    <div class="book-quote">「めっちゃ面白い」「いろんな関係の話があって引き込まれる」</div>
+  </div>
+
+  <!-- 吉高さん -->
+  <div class="book-card nonfiction">
+    <span class="book-person">吉高さん</span>
+    <div class="book-title">ホモデウス / ネクサス / ファクトフルネス</div>
+    <div class="book-genre">ノンフィクション・社会科学</div>
+    <div class="book-desc">
+      サピエンス全史の続編「ホモデウス」は、<strong>テクノロジーの進化の先に人類は「かつて神と呼んだもの」に近づいている</strong>という大胆な仮説。
+      「ネクサス」は情報革命の歴史。ファクトフルネスは<strong>「この世界に絶望しなくて済む本」</strong>。
+      著者は命がけで書き上げた——その事実だけでも感動できる。
+    </div>
+    <div class="book-quote">「本を読む前と後で自分が変わってる。そういう本」</div>
+  </div>
+
+  <!-- Audibleキャンペーン -->
+  <div class="audible-box">
+    <h2>🎧 Audible、今アツいらしい</h2>
+    <div class="audible-price">3ヶ月 99円<span> / 通常1,500円</span></div>
+    <div class="audible-note">
+      読書会の参加者も「ちょうどキャンペーン来たから入った！」の声多数。<br>
+      通勤・家事中に聴ける。「声が合わないと辛い」という正直な意見も。
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-box">
+    <h2>📖 今日出た本、ぜんぶ一覧</h2>
+    <div class="summary-grid">
+      <div class="summary-item" style="background:rgba(9,132,227,0.06);">
+        <div class="s-title">In the Maga Church</div>
+        <div class="s-person">おけもん推し</div>
+      </div>
+      <div class="summary-item" style="background:rgba(108,92,231,0.06);">
+        <div class="s-title">サピエンス全史</div>
+        <div class="s-person">聖夜さん推し</div>
+      </div>
+      <div class="summary-item" style="background:rgba(108,92,231,0.06);">
+        <div class="s-title">心はこうして作られる</div>
+        <div class="s-person">聖夜さん推し</div>
+      </div>
+      <div class="summary-item" style="background:rgba(225,112,85,0.06);">
+        <div class="s-title">勘違いさせる力</div>
+        <div class="s-person">マッチ推し</div>
+      </div>
+      <div class="summary-item" style="background:rgba(0,184,148,0.06);">
+        <div class="s-title">蘇る天才シリーズ</div>
+        <div class="s-person">桜井さん推し</div>
+      </div>
+      <div class="summary-item" style="background:rgba(0,184,148,0.06);">
+        <div class="s-title">殺し屋の営業</div>
+        <div class="s-person">桜井さん推し</div>
+      </div>
+      <div class="summary-item" style="background:rgba(232,67,147,0.06);">
+        <div class="s-title">春夏秋冬代行者</div>
+        <div class="s-person">もちねこさん推し</div>
+      </div>
+      <div class="summary-item" style="background:rgba(232,67,147,0.06);">
+        <div class="s-title">ヴァイオレット・エヴァーガーデン</div>
+        <div class="s-person">もちねこさん推し</div>
+      </div>
+      <div class="summary-item" style="background:rgba(9,132,227,0.06);">
+        <div class="s-title">ホモデウス</div>
+        <div class="s-person">吉高さん推し</div>
+      </div>
+      <div class="summary-item" style="background:rgba(9,132,227,0.06);">
+        <div class="s-title">ネクサス</div>
+        <div class="s-person">吉高さん推し</div>
+      </div>
+      <div class="summary-item" style="background:rgba(9,132,227,0.06);">
+        <div class="s-title">ファクトフルネス</div>
+        <div class="s-person">吉高さん推し</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    きょうちゃん図解 ✦ おけもんの森 ✦ 2026.04.09 読書会より
+  </div>
+
+</div>
+</body>
+</html>
