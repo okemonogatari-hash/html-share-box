@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>動画 × AI で YouTube運営が変わる — 3人コラボ提案</title>
+<style>
+  :root {
+    --bg: #0f1923;
+    --card: #1a2744;
+    --card-hover: #213050;
+    --text: #e8e6e1;
+    --muted: #8a9ab5;
+    --accent: #4fc3f7;
+    --accent2: #7c4dff;
+    --orange: #ff9100;
+    --green: #69f0ae;
+    --pink: #ff6090;
+    --yellow: #ffd740;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c",sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 56px 24px 48px;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #1a2744 0%, #0d2137 50%, #1a1a3e 100%);
+    border-radius: 24px;
+    border: 1px solid rgba(79,195,247,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--orange), var(--green));
+  }
+  .hero-emoji { font-size: 48px; margin-bottom: 12px; }
+  .hero h1 { font-size: 26px; font-weight: 800; line-height: 1.4; margin-bottom: 12px; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 14px; max-width: 600px; margin: 0 auto; }
+
+  /* Section */
+  .section { margin-bottom: 36px; }
+  .section-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    padding-left: 14px;
+    border-left: 4px solid var(--accent);
+    line-height: 1.4;
+  }
+  .section-title .emoji { margin-right: 6px; }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border: 1px solid rgba(79,195,247,0.12);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); border-color: rgba(79,195,247,0.3); }
+  .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
+  .card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* Problem card */
+  .problem-card {
+    background: linear-gradient(135deg, #2a1a1a, #1a2744);
+    border-color: rgba(255,96,144,0.3);
+  }
+  .problem-card h3 { color: var(--pink); }
+
+  /* Flow */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 16px 0;
+  }
+  .flow-step {
+    background: var(--card);
+    border: 1px solid rgba(79,195,247,0.15);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+  }
+  .flow-step + .flow-step { margin-top: 8px; }
+  .flow-step::after {
+    content: "↓";
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 1;
+  }
+  .flow-step:last-child::after { content: none; }
+  .flow-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .flow-text { font-size: 14px; }
+  .flow-text strong { color: var(--accent); }
+
+  /* Comparison grid */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 600px) { .compare { grid-template-columns: 1fr; } }
+  .compare-item {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .compare-item.before { border-left: 4px solid var(--pink); }
+  .compare-item.after { border-left: 4px solid var(--green); }
+  .compare-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .compare-item.before .compare-label { color: var(--pink); }
+  .compare-item.after .compare-label { color: var(--green); }
+  .compare-item p { font-size: 13px; color: var(--muted); }
+
+  /* Team cards */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 16px 0;
+  }
+  @media (max-width: 600px) { .team-grid { grid-template-columns: 1fr; } }
+  .team-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .team-card .team-emoji { font-size: 36px; margin-bottom: 8px; }
+  .team-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .team-card p { font-size: 12px; color: var(--muted); }
+  .team-card:nth-child(1) { border-top: 3px solid var(--accent); }
+  .team-card:nth-child(2) { border-top: 3px solid var(--orange); }
+  .team-card:nth-child(3) { border-top: 3px solid var(--green); }
+
+  /* Phase timeline */
+  .timeline { margin: 16px 0; }
+  .tl-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+  .tl-badge {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+  }
+  .tl-badge.ph1 { background: linear-gradient(135deg, var(--accent), #0288d1); }
+  .tl-badge.ph2 { background: linear-gradient(135deg, var(--orange), #f57c00); }
+  .tl-badge.ph3 { background: linear-gradient(135deg, var(--green), #00c853); }
+  .tl-content h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .tl-content p { font-size: 13px; color: var(--muted); }
+
+  /* Highlight box */
+  .highlight {
+    background: linear-gradient(135deg, rgba(79,195,247,0.1), rgba(124,77,255,0.1));
+    border: 1px solid rgba(79,195,247,0.25);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+    margin: 24px 0;
+  }
+  .highlight p { font-size: 16px; font-weight: 700; line-height: 1.6; }
+  .highlight .accent { color: var(--accent); }
+  .highlight .orange { color: var(--orange); }
+  .highlight .green { color: var(--green); }
+
+  /* Stats row */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  @media (max-width: 600px) { .stats { grid-template-columns: 1fr; } }
+  .stat {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-num { font-size: 28px; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* NEW badge */
+  .new-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--orange), #ff6d00);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding: 24px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-emoji">🎬</div>
+    <h1>動画 × AI で<br><span>YouTube運営</span>が変わる</h1>
+    <p>「なぜ刺さるか」を感覚からデータへ。分析から制作まで、AIが丸ごと回す時代の協業提案。</p>
+  </div>
+
+  <!-- 課題セクション -->
+  <div class="section">
+    <div class="section-title"><span class="emoji">💬</span> こんなこと、思ったことない？</div>
+    <div class="card problem-card">
+      <h3>YouTube運営のリアルな悩み</h3>
+      <p>「この動画、なんで伸びたんだろう？」「競合の動画を見てるけど、何が違うのか言語化できない」「編集に時間かかりすぎて、分析まで手が回らない」<br>—— 動画のプロほど、こういう悩みを抱えてる。</p>
+    </div>
+  </div>
+
+  <!-- 映像のコード化 -->
+  <div class="section">
+    <div class="section-title"><span class="emoji">🔍</span> AIで「映像の裏側」を読み解く</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">ホームページには裏にHTMLコードがある。同じように、動画にも「構造」がある。AIならそれを言語化できる。</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-text"><strong>動画を投げる</strong> — 広告動画やYouTubeコンテンツをAIに渡すだけ</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-text"><strong>1秒ごとに解析</strong> — 映像タイプ（実写？アニメ？スライド？）、テロップ、訴求パターンを自動分類</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-text"><strong>構造レポート出力</strong> — 「冒頭3秒で課題提示型フック → 8秒目で実績訴求」のように言語化</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-text"><strong>改善提案</strong> — 「競合と同パターンだがCTA位置が遅い。前倒しを推奨」</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>自分のチャンネルなら、さらに深掘りできる</h3>
+      <p>YouTube Analytics API（公式に提供されてる機能）で、<strong>何秒目で何%の人が離脱したか</strong>まで取れる。これと映像構造分析を組み合わせると——<br>「8秒目で30%離脱。ここはスライド→実写の切り替え地点。次は実写スタートで試そう」<br>…みたいな<strong>根拠のある改善</strong>ができるようになる。</p>
+    </div>
+  </div>
+
+  <!-- Before / After -->
+  <div class="section">
+    <div class="section-title"><span class="emoji">⚡</span> 何が変わる？ Before → After</div>
+    <div class="compare">
+      <div class="compare-item before">
+        <div class="compare-label">Before（今）</div>
+        <p>クリエイティブの良し悪しは<br>「回してみないとわからない」</p>
+      </div>
+      <div class="compare-item after">
+        <div class="compare-label">After（AI導入後）</div>
+        <p>投入前に構造分析で<br><strong>勝ちパターンとの一致度</strong>を確認</p>
+      </div>
+      <div class="compare-item before">
+        <div class="compare-label">Before（今）</div>
+        <p>競合の広告は目視で<br>「なんとなく」参考にする</p>
+      </div>
+      <div class="compare-item after">
+        <div class="compare-label">After（AI導入後）</div>
+        <p>競合100本を一括解析 →<br><strong>訴求パターンの統計データ</strong></p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">90%</div>
+        <div class="stat-label">分析工数の削減</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" style="color:var(--orange);">即日</div>
+        <div class="stat-label">損切り判断のスピード</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" style="color:var(--green);">DB化</div>
+        <div class="stat-label">勝ちパターンの再現性</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW: 動画編集もAIで -->
+  <div class="section">
+    <div class="section-title"><span class="emoji">🎥</span> 分析だけじゃない！編集もAIでできる時代 <span class="new-badge">NEW</span></div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">分析で「勝ちパターン」を見つけたら、次はそれを反映した動画をAIが作る。撮影だけ人間がやれば、あとは全部AIが回せる段階に来てる。</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-num" style="background:linear-gradient(135deg, var(--orange), #f57c00);">1</div>
+        <div class="flow-text"><strong>撮影素材を送る</strong> — スマホで撮った動画をポンと渡すだけ</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num" style="background:linear-gradient(135deg, var(--orange), #f57c00);">2</div>
+        <div class="flow-text"><strong>AIが自動編集</strong> — 無音カット、テロップ生成、効果音、イメージ画像・動画の挿入まで全自動</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num" style="background:linear-gradient(135deg, var(--orange), #f57c00);">3</div>
+        <div class="flow-text"><strong>品質チェックが自動で回る</strong> — 「テロップのズレない？音割れない？」をAIが検証、合格まで自動修正</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num" style="background:linear-gradient(135deg, var(--orange), #f57c00);">4</div>
+        <div class="flow-text"><strong>ブラウザで最終チェック</strong> — タイムライン上で微調整もできる。納品！</div>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-item" style="border-left:4px solid var(--accent);">
+        <div class="compare-label" style="color:var(--accent);">分析（知る）</div>
+        <p>「なぜ刺さるか」をデータ化<br>→ 勝ちパターンの再現性UP</p>
+      </div>
+      <div class="compare-item" style="border-left:4px solid var(--orange);">
+        <div class="compare-label" style="color:var(--orange);">制作（作る）</div>
+        <p>「刺さる動画」をAIが制作<br>→ 編集コスト・時間を大幅削減</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p>「分析して終わり」じゃない。<br><span class="accent">分析</span> → <span class="orange">制作</span> → <span class="green">投入</span> → <span class="accent">再分析</span><br>このサイクルを<strong>丸ごとAIで回せる。</strong></p>
+    </div>
+  </div>
+
+  <!-- チーム -->
+  <div class="section">
+    <div class="section-title"><span class="emoji">🤝</span> 3人で組んだら、どうなる？</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-emoji">🛠️</div>
+        <h4 style="color:var(--accent);">AI基盤構築</h4>
+        <p>映像分析システム構築<br>YouTube API連携<br>スキル設計・自動化</p>
+      </div>
+      <div class="team-card">
+        <div class="team-emoji">📊</div>
+        <h4 style="color:var(--orange);">広告データ分析</h4>
+        <p>Meta/Google API連携<br>ダッシュボード構築済み<br>4エージェント同時分析</p>
+      </div>
+      <div class="team-card">
+        <div class="team-emoji">🎯</div>
+        <h4 style="color:var(--green);">クリエイティブ判断</h4>
+        <p>現場の経験値と目利き<br>顧客接点・営業力<br>「刺さる」の最終判断</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>AIは道具。最終判断は人間の経験値</h3>
+      <p>「AIで誰でも作れるようになった。でも、刺さるかどうかはまた別」——これは本質。AIは分析と制作を高速化する道具。<strong>「これは刺さる」「これは違う」の判断ができるのは、現場で積み上げた経験値を持つ人だけ。</strong>その判断力をAIでブーストするのがこの提案。</p>
+    </div>
+  </div>
+
+  <!-- ロードマップ -->
+  <div class="section">
+    <div class="section-title"><span class="emoji">🗺️</span> まず何から始める？</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-badge ph1">Ph.1</div>
+        <div class="tl-content">
+          <h4>お試し（〜7月）</h4>
+          <p>広告動画1本をAI映像分析してみせる。競合チャンネル3つの公開データ分析レポートも無料で作る。<strong>口で説明するより、見せた方が早い。</strong></p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-badge ph2">Ph.2</div>
+        <div class="tl-content">
+          <h4>7月ワーケーションで壁打ち</h4>
+          <p>デモ結果を持ち寄って、3人で「これ本当に使えるか？」を検証。具体的なサービス設計を詰める。</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-badge ph3">Ph.3</div>
+        <div class="tl-content">
+          <h4>本格運用（8月〜）</h4>
+          <p>動画構造分析レポート、競合ベンチマーク、クリエイティブDB構築。YouTube運営代行 × AIの仕組みを回し始める。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="highlight" style="margin-top:36px;">
+    <p style="font-size:18px;">
+      <span class="green">経験値</span> × <span class="accent">AIの分析力</span> × <span class="orange">AIの制作力</span><br>
+      ＝ 「刺さるクリエイティブ」を<strong>量産できる仕組み</strong>
+    </p>
+    <p style="font-size:13px; color:var(--muted); margin-top:12px;">まずは1本、AIで分析してみせます。</p>
+  </div>
+
+  <div class="footer">
+    おけもんカンパニー — 2026.04.12
+  </div>
+
+</div>
+</body>
+</html>
