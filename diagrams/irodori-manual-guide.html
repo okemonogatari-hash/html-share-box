@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRODORIマニュアル図解 ー はじめてのあなたへ</title>
+<style>
+  :root {
+    --bg: #fefcf9;
+    --paper: #fff;
+    --ink: #2d2a26;
+    --muted: #7a756d;
+    --line: rgba(0,0,0,0.06);
+    --irodori-main: #e8734b;
+    --irodori-soft: rgba(232,115,75,0.08);
+    --irodori-warm: #f4a261;
+    --notion-yellow: #f0c040;
+    --notebook-blue: #4a90d9;
+    --drive-green: #34a853;
+    --portal-purple: #7c5cbf;
+    --case-teal: #2d9cdb;
+    --personal-rose: #e0627a;
+    --philo-gold: #d4a843;
+    --shadow: 0 6px 24px rgba(0,0,0,0.06);
+    --radius: 18px;
+    --max: 800px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(232,115,75,0.06), transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(244,162,97,0.05), transparent 35%),
+      radial-gradient(circle at 50% 90%, rgba(212,168,67,0.04), transparent 40%);
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  .page { width: min(var(--max), calc(100vw - 32px)); margin: 0 auto; padding: 32px 0 80px; }
+
+  /* ヒーロー */
+  .hero {
+    text-align: center;
+    padding: 48px 28px 36px;
+    margin-bottom: 28px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--irodori-main), var(--irodori-warm), var(--philo-gold), var(--case-teal), var(--portal-purple));
+  }
+  .hero-emoji { font-size: 48px; margin-bottom: 12px; }
+  .hero h1 {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 800;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--irodori-main), var(--irodori-warm));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p { font-size: 14px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block;
+    margin-top: 16px;
+    background: var(--irodori-soft);
+    color: var(--irodori-main);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(232,115,75,0.2);
+  }
+
+  /* ナビ */
+  .nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
+  .nav a {
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--muted);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    transition: all 0.2s;
+  }
+  .nav a:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+  /* セクション共通 */
+  .section {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .section::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .section-num {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  .section h2 {
+    font-size: clamp(17px, 3vw, 21px);
+    font-weight: 800;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  .section-lead {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+
+  /* 事業カード */
+  .biz-grid { display: flex; flex-direction: column; gap: 10px; }
+  .biz-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    transition: transform 0.2s;
+  }
+  .biz-card:hover { transform: translateX(4px); }
+  .biz-icon { font-size: 32px; flex-shrink: 0; }
+  .biz-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .biz-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .biz-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* 役割テーブル */
+  .role-grid { display: flex; flex-direction: column; gap: 8px; }
+  .role-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    align-items: start;
+    background: var(--bg);
+  }
+  .role-label {
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .role-label .emoji { font-size: 20px; }
+  .role-desc { font-size: 12px; color: var(--ink); line-height: 1.6; }
+  .role-desc .star { color: var(--irodori-main); font-weight: 700; }
+
+  /* ツールカード */
+  .tool-grid { display: flex; flex-direction: column; gap: 10px; }
+  .tool-card {
+    padding: 18px;
+    border-radius: 14px;
+    border-left: 4px solid;
+  }
+  .tool-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .tool-card p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .tool-card .use-example {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.7);
+    font-size: 12px;
+    color: var(--ink);
+  }
+  .tool-card .use-example::before {
+    content: "💡 ";
+  }
+
+  /* Notionページ */
+  .notion-grid { display: flex; flex-direction: column; gap: 10px; }
+  .notion-card {
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    position: relative;
+  }
+  .notion-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .notion-card p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .notion-card .point {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* フィロソフィー */
+  .philo-box {
+    text-align: center;
+    padding: 8px 0;
+  }
+  .philo-quote {
+    font-size: clamp(15px, 3vw, 19px);
+    font-weight: 700;
+    line-height: 1.8;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+  .philo-highlight {
+    background: linear-gradient(transparent 60%, rgba(212,168,67,0.25) 60%);
+  }
+  .philo-detail {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* フッター */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .footer a { color: var(--irodori-main); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .role-row { grid-template-columns: 1fr; }
+    .section { padding: 22px 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="hero-emoji">🌈</div>
+    <h1>IRODORIマニュアル図解</h1>
+    <p>はじめてIRODORIに参加するあなたへ。<br>「どんな会社？」「何を使うの？」「大切にしてることは？」<br>この1ページで全体像がつかめます。</p>
+    <div class="hero-badge">新メンバー向けガイド</div>
+  </div>
+
+  <!-- ナビ -->
+  <div class="nav">
+    <a href="#biz">🏢 事業</a>
+    <a href="#role">👥 役割</a>
+    <a href="#tool">🛠 ツール</a>
+    <a href="#notion">📘 Notion</a>
+    <a href="#philo">💛 フィロソフィー</a>
+  </div>
+
+  <!-- 1. 事業 -->
+  <div class="section" id="biz" style="border-top: none;">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg, var(--irodori-main), var(--irodori-warm));"></div>
+    <span class="section-num" style="background:var(--irodori-main);">01</span>
+    <h2>IRODORIって何してる会社？</h2>
+    <p class="section-lead">大きく3つの事業があります。どれも「お客様の"困った"を代わりに解決する」お仕事です。</p>
+    <div class="biz-grid">
+      <div class="biz-card" style="background: rgba(232,115,75,0.05);">
+        <div class="biz-icon">💼</div>
+        <div>
+          <h3>超・提案型オンライン秘書 <span class="biz-tag" style="background:var(--irodori-main);color:#fff;">メイン</span></h3>
+          <p>ただの事務代行じゃない。「こうしたらもっと良くなりますよ！」と提案までできるのがIRODORIの強み。</p>
+        </div>
+      </div>
+      <div class="biz-card" style="background: rgba(244,162,97,0.05);">
+        <div class="biz-icon">📊</div>
+        <div>
+          <h3>成果を追求する資料制作 <span class="biz-tag" style="background:var(--irodori-warm);color:#fff;">メイン</span></h3>
+          <p>「見やすいだけ」じゃなく「成果につながる」資料を作る。スライド・提案書・マニュアルなど。</p>
+        </div>
+      </div>
+      <div class="biz-card" style="background: rgba(52,168,83,0.05);">
+        <div class="biz-icon">📬</div>
+        <div>
+          <h3>名刺を売上に変えるDMマーケティング <span class="biz-tag" style="background:var(--drive-green);color:#fff;">拡大中</span></h3>
+          <p>机に眠ってる名刺の山、実はお宝かも。DMでお客様との関係を再起動する支援。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 役割 -->
+  <div class="section" id="role">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg, var(--case-teal), var(--portal-purple));"></div>
+    <span class="section-num" style="background:var(--case-teal);">02</span>
+    <h2>チームにはどんな役割があるの？</h2>
+    <p class="section-lead">6つの役割があります。◎がついてるのが「特に期待されてること」です。</p>
+    <div class="role-grid">
+      <div class="role-row">
+        <div class="role-label"><span class="emoji">👑</span> 代表</div>
+        <div class="role-desc"><span class="star">◎ 会社の方針を決める</span><br>クライアントの代表同士で話を進める</div>
+      </div>
+      <div class="role-row">
+        <div class="role-label"><span class="emoji">🤝</span> 営業</div>
+        <div class="role-desc"><span class="star">◎ 新しいお仕事を取ってくる</span><br>新規・既存のお客様との関係づくり</div>
+      </div>
+      <div class="role-row">
+        <div class="role-label"><span class="emoji">🎯</span> PM</div>
+        <div class="role-desc"><span class="star">◎ プロジェクトをスムーズに回す</span><br>スケジュール管理・判断・トラブル対応<br><span class="star">◎ 困ったら代表にエスカレーション</span></div>
+      </div>
+      <div class="role-row">
+        <div class="role-label"><span class="emoji">✍️</span> ライター</div>
+        <div class="role-desc"><span class="star">◎ 添削なしでお客様に出せる文章を書く</span><br>ヒアリング → 構成 → ライティングまで一気通貫</div>
+      </div>
+      <div class="role-row">
+        <div class="role-label"><span class="emoji">🎨</span> デザイナー</div>
+        <div class="role-desc"><span class="star">◎ 添削なしでお客様に出せるデザインを作る</span></div>
+      </div>
+      <div class="role-row">
+        <div class="role-label"><span class="emoji">📋</span> アシスタント</div>
+        <div class="role-desc"><span class="star">◎ 求められた作業を正確にこなす</span><br>記帳・リサーチ・事務・スケジュール調整・請求書送付など</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ツール -->
+  <div class="section" id="tool">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg, var(--notion-yellow), var(--notebook-blue), var(--drive-green));"></div>
+    <span class="section-num" style="background:var(--notebook-blue);">03</span>
+    <h2>毎日使う3つのツール</h2>
+    <p class="section-lead">難しいものはありません。どれも「触ってみたら意外と簡単！」と感じるはず。</p>
+    <div class="tool-grid">
+      <div class="tool-card" style="border-color: var(--notion-yellow); background: rgba(240,192,64,0.06);">
+        <h3><span style="font-size:20px;">📒</span> Notion</h3>
+        <p>IRODORIの<strong>すべての情報が集まる場所</strong>。メモ・タスク管理・マニュアル・案件ページ…全部ここ。<br>検索もしやすくて、慣れてない人でもすぐ使えるようになります！</p>
+        <div class="use-example">毎朝Notionを開いて「今日やること」をチェックするところからスタート！</div>
+      </div>
+      <div class="tool-card" style="border-color: var(--notebook-blue); background: rgba(74,144,217,0.06);">
+        <h3><span style="font-size:20px;">🤖</span> NotebookLM</h3>
+        <p>GoogleのAIツール。資料やマニュアルを読み込ませると、<strong>聞きたいことに答えてくれる</strong>便利な相棒。</p>
+        <div class="use-example">「請求書っていつまでに出すんだっけ？」→ マニュアルから即回答！</div>
+      </div>
+      <div class="tool-card" style="border-color: var(--drive-green); background: rgba(52,168,83,0.06);">
+        <h3><span style="font-size:20px;">📁</span> Google Drive</h3>
+        <p>PDF・スプレッドシート・ドキュメントなど、<strong>ファイルの保管庫</strong>。過去の制作物や資料もここにあります。</p>
+        <div class="use-example">時間があるときに過去の制作物を覗いてみると勉強になります！</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Notionページ -->
+  <div class="section" id="notion">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg, var(--portal-purple), var(--case-teal), var(--personal-rose));"></div>
+    <span class="section-num" style="background:var(--portal-purple);">04</span>
+    <h2>Notionで特によく使う3つのページ</h2>
+    <p class="section-lead">Notionの中でも、毎日お世話になるのがこの3つ。</p>
+    <div class="notion-grid">
+      <div class="notion-card" style="border-left: 4px solid var(--portal-purple); background: rgba(124,92,191,0.04);">
+        <h3>🏠 メンバーポータル</h3>
+        <p>よく使うリンク・メンバー紹介・勉強になる情報が集まった「みんなのホーム画面」。困ったらまずここ。</p>
+      </div>
+      <div class="notion-card" style="border-left: 4px solid var(--case-teal); background: rgba(45,156,219,0.04);">
+        <h3>📂 案件ページ</h3>
+        <p>お客様の情報や進捗をまとめるページ。「今どうなってる？次は何する？」が誰でも分かる状態をキープ！</p>
+        <div class="point" style="background: rgba(45,156,219,0.08);">
+          ✏️ <strong>ポイント：</strong>MTGやチャットで聞いた情報は、ささいなことでもここに書く！<br>
+          「あとで書こう」は忘れるもと。その場でメモが正解です。
+        </div>
+      </div>
+      <div class="notion-card" style="border-left: 4px solid var(--personal-rose); background: rgba(224,98,122,0.04);">
+        <h3>🙋 個人ページ</h3>
+        <p>自分の担当案件・社内タスクをまとめる「自分だけの作業スペース」。</p>
+        <div class="point" style="background: rgba(224,98,122,0.08);">
+          ☀️ <strong>朝イチの習慣：</strong>毎朝、個人ページで「今日やること」をチェックしてからお仕事スタート！
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. フィロソフィー -->
+  <div class="section" id="philo">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg, var(--philo-gold), var(--irodori-warm));"></div>
+    <span class="section-num" style="background:var(--philo-gold);">05</span>
+    <h2>IRODORIが大切にしていること</h2>
+    <div class="philo-box">
+      <div class="philo-quote">
+        仲間の言動に感動したら、<br>
+        心に留めるだけじゃなく<br>
+        <span class="philo-highlight">言葉にして伝えよう。</span>
+      </div>
+      <p class="philo-detail">
+        「ありがとう」「すごいね」「助かったよ」<br>
+        そのひと言が、お互いの気持ちを温かくする。<br><br>
+        IRODORIは<strong>前向きで、互いを尊重し合いながら<br>高め合える会社</strong>を目指しています。
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    きょうちゃん図解 ✦ IRODORI新メンバーガイド ✦ 2026.04.13<br>
+    <a href="https://okemonogatari-hash.github.io/html-share-box/">← ギャラリーに戻る</a>
+  </div>
+
+</div>
+</body>
+</html>
