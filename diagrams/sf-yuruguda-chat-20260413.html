@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ストレングスゆるぐだ雑談会 | 2026.4.13</title>
+<meta name="description" content="あなたの才能、ゆるく語ろう。ストレングスファインダー認定コーチおけもん主催のゆるぐだ雑談会。">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --bg: #fefcf9;
+    --paper: #fff;
+    --ink: #2d2a26;
+    --muted: #8a847a;
+    --line: rgba(0,0,0,0.06);
+    --warm: #e8a87c;
+    --warm-deep: #d4845a;
+    --coral: #e27d60;
+    --sage: #85b79d;
+    --sage-deep: #5f9a78;
+    --lavender: #b8a9c9;
+    --lavender-deep: #8e7bab;
+    --sky: #7db8d4;
+    --honey: #f0d78c;
+    --honey-deep: #d4b85c;
+    --blush: #f2c2c2;
+    --shadow: 0 4px 24px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 36px rgba(0,0,0,0.1);
+    --radius: 20px;
+    --max: 780px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Noto Sans JP", "Hiragino Maru Gothic ProN", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 15% 10%, rgba(232,168,124,0.08), transparent 50%),
+      radial-gradient(ellipse at 85% 30%, rgba(133,183,157,0.06), transparent 40%),
+      radial-gradient(ellipse at 50% 80%, rgba(184,169,201,0.05), transparent 40%);
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  .page {
+    width: min(var(--max), calc(100vw - 32px));
+    margin: 0 auto;
+    padding: 24px 0 80px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    text-align: center;
+    padding: 56px 32px 48px;
+    margin-bottom: 24px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--coral), var(--warm), var(--honey), var(--sage), var(--lavender));
+    border-radius: 28px 28px 0 0;
+  }
+
+  .hero-emoji { font-size: 48px; margin-bottom: 12px; }
+  .hero-date {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--warm), var(--coral));
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 16px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 38px);
+    font-weight: 900;
+    margin-bottom: 12px;
+    line-height: 1.3;
+    background: linear-gradient(135deg, var(--coral), var(--lavender-deep));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 440px;
+    margin: 0 auto;
+    line-height: 1.9;
+  }
+
+  /* ===== SECTION COMMON ===== */
+  .section {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 28px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s ease;
+  }
+  .section:hover { box-shadow: var(--shadow-hover); }
+
+  .section-icon { font-size: 32px; margin-bottom: 8px; }
+  .section h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+  .section p, .section li {
+    font-size: 14.5px;
+    color: #4a4540;
+    line-height: 1.9;
+  }
+
+  /* ===== PROFILE CARD ===== */
+  .profile {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--warm), var(--coral));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(226,125,96,0.25);
+  }
+  .profile-info { flex: 1; min-width: 220px; }
+  .profile-name {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .profile-title {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .profile-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid;
+  }
+  .badge-coach {
+    background: rgba(226,125,96,0.1);
+    color: var(--coral);
+    border-color: rgba(226,125,96,0.2);
+  }
+  .badge-session {
+    background: rgba(133,183,157,0.1);
+    color: var(--sage-deep);
+    border-color: rgba(133,183,157,0.2);
+  }
+  .badge-event {
+    background: rgba(184,169,201,0.1);
+    color: var(--lavender-deep);
+    border-color: rgba(184,169,201,0.2);
+  }
+
+  /* ===== TOP5 CARDS ===== */
+  .top5-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .top5-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid var(--line);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .top5-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
+  .top5-rank {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    opacity: 0.6;
+  }
+  .top5-name {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .top5-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .top5-card:nth-child(1) { background: rgba(226,125,96,0.06); border-color: rgba(226,125,96,0.15); }
+  .top5-card:nth-child(1) .top5-name { color: var(--coral); }
+  .top5-card:nth-child(2) { background: rgba(133,183,157,0.06); border-color: rgba(133,183,157,0.15); }
+  .top5-card:nth-child(2) .top5-name { color: var(--sage-deep); }
+  .top5-card:nth-child(3) { background: rgba(240,215,140,0.1); border-color: rgba(240,215,140,0.25); }
+  .top5-card:nth-child(3) .top5-name { color: var(--honey-deep); }
+  .top5-card:nth-child(4) { background: rgba(184,169,201,0.08); border-color: rgba(184,169,201,0.15); }
+  .top5-card:nth-child(4) .top5-name { color: var(--lavender-deep); }
+  .top5-card:nth-child(5) { background: rgba(125,184,212,0.08); border-color: rgba(125,184,212,0.15); }
+  .top5-card:nth-child(5) .top5-name { color: #5a9ab5; }
+
+  /* ===== RULES ===== */
+  .rules-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rules-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    background: rgba(0,0,0,0.015);
+    border-radius: 14px;
+    border: 1px solid var(--line);
+  }
+  .rule-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .rule-text { flex: 1; }
+  .rule-text strong { color: var(--ink); font-weight: 700; }
+
+  /* ===== TOPIC CARDS ===== */
+  .topics {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .topic-card {
+    padding: 24px;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  .topic-card:hover { transform: translateX(4px); }
+  .topic-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+  }
+  .topic-card:nth-child(1) { background: rgba(226,125,96,0.04); }
+  .topic-card:nth-child(1)::before { background: var(--coral); }
+  .topic-card:nth-child(2) { background: rgba(133,183,157,0.04); }
+  .topic-card:nth-child(2)::before { background: var(--sage); }
+  .topic-card:nth-child(3) { background: rgba(184,169,201,0.04); }
+  .topic-card:nth-child(3)::before { background: var(--lavender); }
+  .topic-card:nth-child(4) { background: rgba(240,215,140,0.06); }
+  .topic-card:nth-child(4)::before { background: var(--honey-deep); }
+
+  .topic-num {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    opacity: 0.5;
+    margin-bottom: 4px;
+  }
+  .topic-title {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .topic-hint {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    font-style: italic;
+  }
+  .topic-hint::before { content: "💡 "; }
+
+  /* ===== VOICE CARDS ===== */
+  .voices {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .voice-card {
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.015);
+    border: 1px solid var(--line);
+    position: relative;
+  }
+  .voice-quote {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+    opacity: 0.12;
+  }
+  .voice-text {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #4a4540;
+    margin-bottom: 8px;
+  }
+  .voice-who {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ===== FORMULA ===== */
+  .formula-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .formula-item {
+    text-align: center;
+    padding: 20px;
+    border-radius: 16px;
+    min-width: 120px;
+    border: 1px solid var(--line);
+  }
+  .formula-emoji { font-size: 32px; margin-bottom: 6px; }
+  .formula-label { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .formula-desc { font-size: 11px; color: var(--muted); }
+  .formula-op {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--muted);
+  }
+  .formula-item.talent { background: rgba(226,125,96,0.06); }
+  .formula-item.invest { background: rgba(133,183,157,0.06); }
+  .formula-item.strength { background: rgba(240,215,140,0.08); }
+
+  /* ===== DOMAINS ===== */
+  .domains {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .domain-card {
+    padding: 18px 16px;
+    border-radius: 14px;
+    text-align: center;
+    border: 1px solid var(--line);
+    transition: transform 0.3s ease;
+  }
+  .domain-card:hover { transform: translateY(-2px); }
+  .domain-emoji { font-size: 28px; margin-bottom: 4px; }
+  .domain-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .domain-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .domain-card:nth-child(1) { background: rgba(168,85,247,0.05); border-color: rgba(168,85,247,0.12); }
+  .domain-card:nth-child(2) { background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.12); }
+  .domain-card:nth-child(3) { background: rgba(59,130,246,0.05); border-color: rgba(59,130,246,0.1); }
+  .domain-card:nth-child(4) { background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.1); }
+
+  /* ===== HIGHLIGHT BOX ===== */
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(226,125,96,0.06), rgba(184,169,201,0.06));
+    border: 1px solid rgba(226,125,96,0.12);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .highlight-num {
+    font-size: clamp(36px, 8vw, 52px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--coral), var(--lavender-deep));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+  }
+  .highlight-text {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ===== CTA / CLOSING ===== */
+  .closing {
+    text-align: center;
+    padding: 40px 28px;
+  }
+  .closing-emoji { font-size: 42px; margin-bottom: 12px; }
+  .closing h2 {
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--sage-deep), var(--lavender-deep));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .closing p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 2;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.6;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .profile { flex-direction: column; text-align: center; }
+    .profile-badges { justify-content: center; }
+    .top5-grid { grid-template-columns: 1fr 1fr; }
+    .domains { grid-template-columns: 1fr; }
+    .formula-box { gap: 10px; }
+    .formula-item { min-width: 90px; padding: 14px; }
+    .section { padding: 28px 20px; }
+    .hero { padding: 40px 20px 36px; }
+  }
+
+  /* ===== ANIMATION ===== */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ===== HERO ===== -->
+  <header class="hero fade-up">
+    <div class="hero-emoji">🗡️🗺️</div>
+    <span class="hero-date">2026.4.13 Mon</span>
+    <h1>ストレングス<br>ゆるぐだ雑談会</h1>
+    <p class="hero-sub">
+      正解なんていらない。<br>
+      自分の才能を、ゆるく語って、<br>
+      ちょっとだけ好きになる時間。
+    </p>
+  </header>
+
+  <!-- ===== SELF INTRO ===== -->
+  <section class="section fade-up delay-1">
+    <div class="section-icon">🦫</div>
+    <h2>今日のナビゲーター</h2>
+    <div class="profile">
+      <div class="profile-avatar">🦫</div>
+      <div class="profile-info">
+        <div class="profile-name">おけもん</div>
+        <div class="profile-title">ストレングスファインダー認定コーチ</div>
+        <div class="profile-badges">
+          <span class="badge badge-coach">🎓 Gallup認定</span>
+          <span class="badge badge-session">💬 1,000人以上と対話</span>
+          <span class="badge badge-event">🎪 100回以上イベント主催</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHAT IS SF ===== -->
+  <section class="section fade-up delay-2">
+    <div class="section-icon">💎</div>
+    <h2>ストレングスファインダーって？</h2>
+    <p style="margin-bottom:16px;">
+      人が持つ才能を<strong>34の資質</strong>に分類して、<br>
+      あなたの中で特に強く出る<strong>TOP5</strong>を教えてくれるツール。<br>
+      Gallup社が開発した、世界3,000万人以上が受けた診断です。
+    </p>
+
+    <div class="formula-box">
+      <div class="formula-item talent">
+        <div class="formula-emoji">💎</div>
+        <div class="formula-label">才能</div>
+        <div class="formula-desc">つい自然にやっちゃう<br>考え方・行動のクセ</div>
+      </div>
+      <div class="formula-op">×</div>
+      <div class="formula-item invest">
+        <div class="formula-emoji">📚</div>
+        <div class="formula-label">投資</div>
+        <div class="formula-desc">知識を学んだり<br>スキルを磨いたり</div>
+      </div>
+      <div class="formula-op">=</div>
+      <div class="formula-item strength">
+        <div class="formula-emoji">⭐</div>
+        <div class="formula-label">強み</div>
+        <div class="formula-desc">安定して<br>すごい成果が出せる力</div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <div class="highlight-num">3,300万分の1</div>
+      <div class="highlight-text">あなたと同じTOP5の組み合わせを持つ人は、ほぼいない</div>
+    </div>
+  </section>
+
+  <!-- ===== 4 DOMAINS ===== -->
+  <section class="section fade-up delay-3">
+    <div class="section-icon">🌈</div>
+    <h2>34の資質は4つのグループに分かれる</h2>
+    <p style="margin-bottom: 12px;">自分の資質がどのグループに多いか、見てみると面白いよ！</p>
+    <div class="domains">
+      <div class="domain-card">
+        <div class="domain-emoji">⚡</div>
+        <div class="domain-name">実行力</div>
+        <div class="domain-desc">やると決めたら<br>最後までやり抜く</div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-emoji">🎤</div>
+        <div class="domain-name">影響力</div>
+        <div class="domain-desc">周りを巻き込み<br>動かしていく</div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-emoji">🤝</div>
+        <div class="domain-name">人間関係構築力</div>
+        <div class="domain-desc">つながりで<br>チームを強くする</div>
+      </div>
+      <div class="domain-card">
+        <div class="domain-emoji">💡</div>
+        <div class="domain-name">戦略的思考力</div>
+        <div class="domain-desc">情報を集め・考え<br>最善の道を見つける</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OKEMON TOP5 ===== -->
+  <section class="section fade-up">
+    <div class="section-icon">✨</div>
+    <h2>おけもんの TOP5 はこんな感じ</h2>
+    <p style="margin-bottom: 8px;">人間関係構築力に全振り。人の感情が見えるタイプです🦫</p>
+    <div class="top5-grid">
+      <div class="top5-card">
+        <div class="top5-rank">No.1</div>
+        <div class="top5-name">調和性</div>
+        <div class="top5-desc">みんなが心地よくいられる<br>場を自然に作る</div>
+      </div>
+      <div class="top5-card">
+        <div class="top5-rank">No.2</div>
+        <div class="top5-name">共感性</div>
+        <div class="top5-desc">相手の気持ちが<br>自分のことのように感じる</div>
+      </div>
+      <div class="top5-card">
+        <div class="top5-rank">No.3</div>
+        <div class="top5-name">アレンジ</div>
+        <div class="top5-desc">ごちゃっとしたものを<br>最適な組み合わせに整理</div>
+      </div>
+      <div class="top5-card">
+        <div class="top5-rank">No.4</div>
+        <div class="top5-name">親密性</div>
+        <div class="top5-desc">少数の人と<br>深くつながりたい</div>
+      </div>
+      <div class="top5-card">
+        <div class="top5-rank">No.5</div>
+        <div class="top5-name">最上志向</div>
+        <div class="top5-desc">「もっとよくなれる」を<br>見続ける</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TODAY'S RULES ===== -->
+  <section class="section fade-up">
+    <div class="section-icon">📋</div>
+    <h2>今日のゆるルール</h2>
+    <ul class="rules-list">
+      <li>
+        <span class="rule-icon">🙆</span>
+        <div class="rule-text"><strong>正解はない！</strong><br>資質の感じ方は人それぞれ。自分なりの言葉でOK</div>
+      </li>
+      <li>
+        <span class="rule-icon">👂</span>
+        <div class="rule-text"><strong>聞くだけでも全然OK</strong><br>無理に話さなくて大丈夫。うなずくだけで立派な参加</div>
+      </li>
+      <li>
+        <span class="rule-icon">🤝</span>
+        <div class="rule-text"><strong>比べない、否定しない</strong><br>「違い」は全部「個性」。上下はないよ</div>
+      </li>
+      <li>
+        <span class="rule-icon">😊</span>
+        <div class="rule-text"><strong>ご機嫌ファースト</strong><br>楽しいが最優先。難しく考えなくてOK</div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ===== TALK THEMES ===== -->
+  <section class="section fade-up">
+    <div class="section-icon">💬</div>
+    <h2>今日の雑談テーマ</h2>
+    <p style="margin-bottom: 8px;">気になるテーマがあったら、自由に話してみよう！</p>
+    <div class="topics">
+      <div class="topic-card">
+        <div class="topic-num">THEME 01</div>
+        <div class="topic-title">あなたの資質、ひとことで言うと？</div>
+        <p class="topic-hint">TOP資質に「あだ名」をつけてみよう。<br>例: 調和性 →「角を丸くする係」</p>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">THEME 02</div>
+        <div class="topic-title">その資質、日常でどう出てる？</div>
+        <p class="topic-hint">「つい〇〇しちゃう」が才能のサイン。<br>最近あった具体的なエピソード、聞かせて！</p>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">THEME 03</div>
+        <div class="topic-title">この資質に助けられた話 ＆ 暴走した話</div>
+        <p class="topic-hint">才能には表と裏がある。<br>「助かった〜！」も「やらかした〜！笑」もどっちも宝物</p>
+      </div>
+      <div class="topic-card">
+        <div class="topic-num">THEME 04</div>
+        <div class="topic-title">資質 × やりたいこと = ？</div>
+        <p class="topic-hint">自分の才能をどう活かしたい？<br>仕事でも趣味でも、妄想大歓迎✨</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VOICES ===== -->
+  <section class="section fade-up">
+    <div class="section-icon">🌟</div>
+    <h2>過去の参加者の声</h2>
+    <div class="voices">
+      <div class="voice-card">
+        <div class="voice-quote">"</div>
+        <div class="voice-text">
+          おけもんさんの「慎重さは優しさであり、<strong>最高の愛の形</strong>」という表現、とても深いです！
+        </div>
+        <div class="voice-who">慎重さオフ会参加者</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-quote">"</div>
+        <div class="voice-text">
+          これまでマイナスに捉えていた資質を、<strong>もっと大切にしてあげたい</strong>と思えるようになりました。
+        </div>
+        <div class="voice-who">慎重さオフ会参加者</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-quote">"</div>
+        <div class="voice-text">
+          自分も一緒にその出来事を経験しているような感覚で。<br><strong>安心して参加できる心地よいオフ会</strong>でした。
+        </div>
+        <div class="voice-who">イベントリピーター</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CLOSING ===== -->
+  <section class="section closing fade-up">
+    <div class="closing-emoji">🌿</div>
+    <h2>あなたの個性、最高。</h2>
+    <p>
+      「弱み」だと思ってたことに理由があった。<br>
+      「当たり前」にやってたことが才能だった。<br><br>
+      今日ここに来てくれた時点で、<br>
+      もう一歩、自分を好きになれてるはず。<br><br>
+      ゆるっと、楽しんでいきましょう 🦫✨
+    </p>
+  </section>
+
+</div>
+
+<footer class="footer">
+  おけもん🦫 ストレングスファインダー認定コーチ ｜ Powered by きょうちゃん図解
+</footer>
+
+</body>
+</html>
