@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIに「調べて」って言うだけ。3,388社のリストを4日で作った方法</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: #f5f6fa;
+      color: #2d2d2d;
+      line-height: 1.7;
+      padding: 20px;
+    }
+
+    .container { max-width: 760px; margin: 0 auto; }
+
+    /* ヒーロー */
+    .hero {
+      background: linear-gradient(135deg, #0f3460 0%, #1a1a5e 50%, #4a1a8a 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 40px 36px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      color: #c4b5fd;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(22px, 5vw, 30px);
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 .hl { color: #fbbf24; }
+
+    .hero-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.7;
+    }
+
+    /* 数字バナー */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 12px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .stat-num {
+      font-size: clamp(24px, 6vw, 34px);
+      font-weight: 900;
+      color: #4a1a8a;
+      line-height: 1.1;
+    }
+
+    .stat-unit { font-size: 12px; color: #888; margin-top: 4px; }
+
+    /* カード共通 */
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .card-icon { font-size: 26px; line-height: 1; }
+    .card-title { font-size: 17px; font-weight: 800; color: #1a1a2e; }
+    .card-sub { font-size: 13px; color: #888; margin-top: 2px; }
+
+    /* ビフォーアフター */
+    .ba-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: stretch;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .ba-box {
+      padding: 20px 16px;
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    .ba-box.before { background: #fef2f2; border: 2px solid #fecaca; }
+    .ba-box.after { background: #f0fdf4; border: 2px solid #bbf7d0; }
+
+    .ba-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .ba-box.before .ba-label { color: #dc2626; }
+    .ba-box.after .ba-label { color: #16a34a; }
+
+    .ba-value { font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+    .ba-box.before .ba-value { color: #991b1b; }
+    .ba-box.after .ba-value { color: #166534; }
+
+    .ba-note { font-size: 12px; color: #666; }
+
+    .ba-arrow {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      color: #bbb;
+      font-weight: 900;
+    }
+
+    /* ステップ */
+    .step-list { display: flex; flex-direction: column; gap: 16px; }
+
+    .step-item {
+      display: flex;
+      gap: 14px;
+      padding: 18px 16px;
+      border-radius: 14px;
+      background: #faf5ff;
+      border-left: 4px solid #8b5cf6;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      color: white;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .step-body .step-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .step-body .step-desc { font-size: 13px; color: #555; line-height: 1.6; }
+
+    /* 指示例 */
+    .prompt-card {
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      border: 2px solid rgba(251,191,36,0.3);
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .prompt-list { display: flex; flex-direction: column; gap: 18px; }
+
+    .prompt-item {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .prompt-header {
+      background: #1e1b4b;
+      color: white;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prompt-header .tag {
+      background: rgba(255,255,255,0.2);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+    }
+
+    .prompt-body {
+      padding: 14px 16px;
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.7;
+      border-left: 3px solid #8b5cf6;
+      margin: 12px;
+      padding-left: 14px;
+      background: #faf5ff;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .prompt-result {
+      padding: 10px 16px 14px;
+      font-size: 13px;
+      color: #059669;
+      font-weight: 600;
+    }
+
+    /* 応用セクション */
+    .use-case-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .use-case-item {
+      padding: 16px;
+      border-radius: 12px;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+    }
+
+    .use-case-item .uc-emoji { font-size: 28px; margin-bottom: 8px; }
+    .use-case-item .uc-title { font-size: 14px; font-weight: 700; color: #1e3a5f; margin-bottom: 4px; }
+    .use-case-item .uc-desc { font-size: 12px; color: #555; }
+
+    /* ポイント */
+    .point-box {
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      border-left: 4px solid #34d399;
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 14px;
+      color: #064e3b;
+      margin-top: 14px;
+    }
+
+    .info-box {
+      background: #f0fdf4;
+      border-left: 4px solid #34d399;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #064e3b;
+      margin-top: 12px;
+    }
+
+    .warn-box {
+      background: #fffbeb;
+      border-left: 4px solid #fbbf24;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #78350f;
+      margin-top: 12px;
+    }
+
+    /* タイムライン */
+    .timeline { display: flex; flex-direction: column; }
+
+    .tl-item {
+      display: flex;
+      gap: 16px;
+      position: relative;
+    }
+
+    .tl-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      width: 2px;
+      height: calc(100% - 8px);
+      background: #e5e7eb;
+    }
+
+    .tl-dot {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #4a1a8a;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .tl-dot.gold { background: #fbbf24; color: #1a1a2e; }
+
+    .tl-body { padding: 6px 0 24px; }
+    .tl-date { font-size: 11px; color: #999; font-weight: 600; letter-spacing: 0.05em; }
+    .tl-text { font-size: 14px; color: #2d2d2d; margin-top: 2px; }
+
+    /* まとめ */
+    .summary-card {
+      background: linear-gradient(135deg, #4a1a8a, #1a1a5e);
+      color: white;
+      border-radius: 18px;
+      padding: 32px 28px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .summary-card h3 { font-size: 19px; font-weight: 800; margin-bottom: 14px; }
+
+    .summary-card p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.8;
+    }
+
+    .summary-card .hl { color: #fbbf24; font-weight: 700; }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #bbb;
+      margin-top: 32px;
+      padding-bottom: 20px;
+    }
+
+    @media (max-width: 520px) {
+      .ba-grid { grid-template-columns: 1fr; gap: 8px; }
+      .ba-arrow { justify-content: center; transform: rotate(90deg); }
+      .use-case-grid { grid-template-columns: 1fr; }
+      .card, .prompt-card { padding: 20px 16px; }
+      .hero { padding: 28px 18px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="hero-tag">irodoriメンバー向けシェア 💡</div>
+    <h1>AIに<span class="hl">「調べて」</span>って言うだけ。<br><span class="hl">3,388社</span>のリストを<span class="hl">4日</span>で作った方法</h1>
+    <p class="hero-sub">
+      税理士法人リサーチで実際にやったこと、全部公開します。<br>
+      難しいことはやっていません。AIへの「お願い」を繰り返しただけ。
+    </p>
+  </div>
+
+  <!-- 数字 -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">3,388</div>
+      <div class="stat-unit">社のリスト完成</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">4日</div>
+      <div class="stat-unit">で全部終わった</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">47</div>
+      <div class="stat-unit">都道府県すべて</div>
+    </div>
+  </div>
+
+  <!-- ビフォーアフター -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">⚡</div>
+      <div>
+        <div class="card-title">手作業 vs AI、どれくらい違う？</div>
+        <div class="card-sub">同じ作業を人間がやった場合との比較</div>
+      </div>
+    </div>
+
+    <div class="ba-grid">
+      <div class="ba-box before">
+        <div class="ba-label">✋ 手作業でやった場合</div>
+        <div class="ba-value">2〜3ヶ月</div>
+        <div class="ba-note">1社ずつGoogle検索してコピペ<br>→ 約200〜280時間</div>
+      </div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-box after">
+        <div class="ba-label">🤖 AIでやった場合（今回）</div>
+        <div class="ba-value">4日</div>
+        <div class="ba-note">AIを最大8台同時に走らせて<br>全自動でリサーチ＆記録</div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      💡 人間がやったことは<strong>「AIへの指示出し」と「完了確認」だけ</strong>。<br>
+      調べる・まとめる・入力する、の3つは全部AIがやってくれた。
+    </div>
+  </div>
+
+  <!-- 3ステップ -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🗺️</div>
+      <div>
+        <div class="card-title">やったことは3ステップだけ</div>
+        <div class="card-sub">順番にお願いしていくだけ。特別なスキルは不要</div>
+      </div>
+    </div>
+
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">公開データから対象を「集める」</div>
+          <div class="step-desc">日本年金機構が公開しているデータから、従業員5〜30人の税理士法人を全国分拾ってきてもらった。47都道府県・3,388件。</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">1社ずつホームページを「探す」</div>
+          <div class="step-desc">3,388社それぞれのHPをAIが自動でGoogle検索。複数のAIを同時に走らせて、一気に終わらせた。発見率は県平均で75〜85%。</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">集めたデータをNotionに「入れる」</div>
+          <div class="step-desc">法人名・住所・HP・従業員数…全部まとめてNotionのデータベースへ自動入力。コピペの手間ゼロ。翌日からすぐ使える状態に。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AIへの指示の出し方（これが一番知りたいところ） -->
+  <div class="prompt-card">
+    <div class="card-header">
+      <div class="card-icon">💬</div>
+      <div>
+        <div class="card-title">実際にAIに出した指示はこんな感じ</div>
+        <div class="card-sub">コードは書いていない。日本語でお願いしただけ</div>
+      </div>
+    </div>
+
+    <div class="prompt-list">
+      <!-- 指示例1 -->
+      <div class="prompt-item">
+        <div class="prompt-header">
+          <span>📂</span> Step 1: データ収集
+          <span class="tag">日本語でOK</span>
+        </div>
+        <div class="prompt-body">
+          「日本年金機構の公開データから、<strong>従業員5〜30人の税理士法人</strong>を全国分集めて。<br>
+          都道府県ごとにまとめて、法人名・住所・従業員数を整理して」
+        </div>
+        <div class="prompt-result">→ AIが自動でデータを取得・整理。47都道府県分が一覧に✨</div>
+      </div>
+
+      <!-- 指示例2 -->
+      <div class="prompt-item">
+        <div class="prompt-header">
+          <span>🔍</span> Step 2: HP検索
+          <span class="tag">8台同時に稼働</span>
+        </div>
+        <div class="prompt-body">
+          「この3,388社の<strong>公式ホームページを1社ずつ検索</strong>して。<br>
+          見つかったらURLを記録。見つからなかった場合もそう書いて」
+        </div>
+        <div class="prompt-result">→ AIが自動で1社ずつGoogle検索。8台並列で一気に完了🚀</div>
+      </div>
+
+      <!-- 指示例3 -->
+      <div class="prompt-item">
+        <div class="prompt-header">
+          <span>📋</span> Step 3: Notion投入
+          <span class="tag">3,388件を自動入力</span>
+        </div>
+        <div class="prompt-body">
+          「集めたデータを<strong>Notionのデータベースに全件入れて</strong>。<br>
+          法人名・都道府県・住所・HP・従業員数・ステータスのカラムで」
+        </div>
+        <div class="prompt-result">→ コピペ地獄なし。3,388件がNotionに自動で入った📊</div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠️ <strong>ポイント:</strong> AIへの指示は「何をしてほしいか」を<strong>具体的に・日本語で</strong>書くだけ。<br>
+      プログラミングの知識は一切不要。「誰に・何を・どこから・どう整理するか」を伝えればOK。
+    </div>
+  </div>
+
+  <!-- 4日間のタイムライン -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📅</div>
+      <div>
+        <div class="card-title">4日間の流れ</div>
+        <div class="card-sub">朝指示を出して、夕方に進捗確認するイメージ</div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot">1</div>
+        <div class="tl-body">
+          <div class="tl-date">4月6日（1日目）</div>
+          <div class="tl-text">PJスタート。北海道〜東北7県のデータ収集完了 🚀</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">2</div>
+        <div class="tl-body">
+          <div class="tl-date">4月7日（2日目）</div>
+          <div class="tl-text">関東・北陸エリアの収集完了。一気にペースアップ</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">3</div>
+        <div class="tl-body">
+          <div class="tl-date">4月8日（3日目）</div>
+          <div class="tl-text">全47県のデータ取得完了！HP検索も開始</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot gold">🎉</div>
+        <div class="tl-body">
+          <div class="tl-date">4月9日（4日目）</div>
+          <div class="tl-text">HP検索 全県完了 → Notion投入完了。全ステップ終了！</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- こうやって使える（irodori向け） -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">✨</div>
+      <div>
+        <div class="card-title">同じやり方で、こんなことにも使える</div>
+        <div class="card-sub">税理士だけじゃない。「リスト作り」全般に応用できる</div>
+      </div>
+    </div>
+
+    <div class="use-case-grid">
+      <div class="use-case-item">
+        <div class="uc-emoji">🏢</div>
+        <div class="uc-title">別の業種のリスト作成</div>
+        <div class="uc-desc">社労士法人、会計事務所、弁護士法人…同じ手順で作れる</div>
+      </div>
+      <div class="use-case-item">
+        <div class="uc-emoji">📍</div>
+        <div class="uc-title">エリア特化のリサーチ</div>
+        <div class="uc-desc">「大阪の従業員10人以上の〇〇業」みたいな絞り込みも自在</div>
+      </div>
+      <div class="use-case-item">
+        <div class="uc-emoji">🌐</div>
+        <div class="uc-title">HP有無の一括チェック</div>
+        <div class="uc-desc">既存リストの「この会社、HPある？」を何百件でも自動調査</div>
+      </div>
+      <div class="use-case-item">
+        <div class="uc-emoji">📊</div>
+        <div class="uc-title">データの自動整理・投入</div>
+        <div class="uc-desc">集めたバラバラのデータをNotionやスプレッドシートへ自動入力</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      📦 今回使った手順は全部ドキュメント化してあるから、次に別の業種・エリアでやるときもそのまま使い回せる。
+    </div>
+  </div>
+
+  <!-- 使っているツール -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🛠️</div>
+      <div>
+        <div class="card-title">使ったのはこれだけ</div>
+        <div class="card-sub">特別な環境は不要。Claudeとインターネットがあれば動く</div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; gap:14px; align-items:flex-start; padding:14px 16px; background:#faf5ff; border-radius:12px;">
+        <div style="font-size:28px; flex-shrink:0;">🤖</div>
+        <div>
+          <div style="font-weight:700; font-size:15px; color:#1a1a2e;">Claude Code（AI）</div>
+          <div style="font-size:13px; color:#555; margin-top:2px;">日本語で指示を出すだけでリサーチ・データ整理・入力まで全部やってくれるAI。今回はMax 20xプラン（月約3万円）を使用。</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:14px; align-items:flex-start; padding:14px 16px; background:#f0f9ff; border-radius:12px;">
+        <div style="font-size:28px; flex-shrink:0;">📋</div>
+        <div>
+          <div style="font-weight:700; font-size:15px; color:#1a1a2e;">Notion（データベース）</div>
+          <div style="font-size:13px; color:#555; margin-top:2px;">集めたデータの管理先。AIが直接データを入れてくれるので、人間のコピペ作業はゼロ。</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#f0f4ff; border-left:4px solid #818cf8; border-radius:10px; padding:14px 16px; font-size:13px; color:#1e1b4b; margin-top:14px;">
+      💡 <strong>プランの違い:</strong> 月3万円のプランだと8台同時に動かせるので4日。月1.5万円のプランでも同じことはできるけど約16日かかる。月3千円のProプランだと他の業務も止まるので正直厳しい。
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card">
+    <h3>📝 まとめ</h3>
+    <p>
+      やったことはシンプル。<br>
+      <span class="hl">「ここからデータ集めて」「HPを調べて」「Notionに入れて」</span><br>
+      この3つをAIにお願いしただけ。<br><br>
+      手作業なら2〜3ヶ月かかるリサーチが、<span class="hl">4日で完了</span>。<br>
+      しかも仕組みは残してあるから、<span class="hl">次もすぐ同じことができる</span>。<br><br>
+      <span style="font-size:16px;">「AIに仕事をお願いする」、その第一歩のイメージが<br>この事例で伝わったら嬉しいです。</span>
+    </p>
+  </div>
+
+  <div class="footer">
+    作成: 2026-04-13 ｜ おけもんカンパニー<br>
+    irodoriメンバー向けナレッジシェア
+  </div>
+
+</div>
+</body>
+</html>
