@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>おけもんカンパニー活動報告 | 2026年4月第2週</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f6f2;
+    --card: #ffffff;
+    --text: #2d2a26;
+    --muted: #7a746b;
+    --accent: #e8743b;
+    --accent-light: #fef0e8;
+    --blue: #3b7dd8;
+    --blue-light: #eaf2fc;
+    --green: #38a169;
+    --green-light: #e6f7ed;
+    --purple: #7c5cbf;
+    --purple-light: #f0eaf9;
+    --pink: #d6548e;
+    --pink-light: #fceef5;
+    --gold: #c5952a;
+    --gold-light: #fdf6e3;
+    --border: #e8e4de;
+    --shadow: rgba(45, 42, 38, 0.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1400&q=80') center/cover;
+    filter: brightness(0.3);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    padding: 40px 24px;
+    max-width: 700px;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 50px;
+    background: var(--bg);
+    clip-path: ellipse(55% 100% at 50% 100%);
+    z-index: 3;
+  }
+  .hero-kapi { font-size: 4rem; margin-bottom: 12px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(232,116,59,0.35);
+    color: #ffb088;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 16px;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .hero h1 {
+    font-size: clamp(1.6rem, 5vw, 2.5rem);
+    font-weight: 900;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub { font-size: 0.95rem; opacity: 0.8; margin-bottom: 24px; }
+  .hero-period {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.12);
+    padding: 8px 20px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* ===== COMMON ===== */
+  .container { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+  .section { max-width: 880px; margin: 40px auto; padding: 0 16px; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .section-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 1.2rem; font-weight: 900; }
+  .section-header .section-sub { font-size: 0.8rem; color: var(--muted); display: block; }
+  .kapi-divider { text-align: center; font-size: 1.5rem; padding: 10px 0; color: var(--muted); letter-spacing: 8px; }
+
+  /* ===== PHOTO BANNER ===== */
+  .photo-banner {
+    position: relative;
+    height: 200px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .photo-banner img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .photo-banner .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 40%, rgba(0,0,0,0.5));
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+  }
+  .photo-banner .overlay-text {
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+  }
+
+  /* ===== TEAM GRID ===== */
+  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .team-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: transform 0.2s;
+  }
+  .team-card:hover { transform: translateY(-3px); }
+  .team-card .emoji { font-size: 2rem; margin-bottom: 6px; }
+  .team-card .role { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+  .team-card .desc { font-size: 0.78rem; color: var(--muted); }
+  .owner-card { grid-column: 1 / -1; background: var(--accent-light); border-color: rgba(232,116,59,0.3); }
+
+  /* ===== STATS ===== */
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .stat-card .num { font-size: 2.5rem; font-weight: 900; color: var(--accent); line-height: 1.2; }
+  .stat-card .label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+  /* ===== CHAT MOCK ===== */
+  .chat-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 2px 8px var(--shadow);
+    margin-bottom: 16px;
+  }
+  .chat-box .chat-title {
+    font-size: 0.75rem; color: var(--muted);
+    margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .chat-msg { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-start; }
+  .chat-msg:last-child { margin-bottom: 0; }
+  .chat-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; flex-shrink: 0;
+    background: var(--accent-light);
+  }
+  .chat-bubble {
+    background: #f1f0ec;
+    border-radius: 0 14px 14px 14px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    max-width: 85%;
+  }
+  .chat-bubble.owner {
+    background: var(--accent-light);
+    border-radius: 14px 0 14px 14px;
+    margin-left: auto;
+  }
+  .chat-name { font-size: 0.7rem; color: var(--muted); margin-bottom: 2px; font-weight: 700; }
+
+  /* ===== NIPPO MOCK ===== */
+  .nippo-mock {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 2px 8px var(--shadow);
+    font-size: 0.85rem;
+  }
+  .nippo-mock .nippo-header { font-weight: 900; font-size: 1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .nippo-mock h4 { font-size: 0.85rem; color: var(--accent); margin: 12px 0 4px; }
+  .nippo-mock ul { padding-left: 18px; font-size: 0.82rem; }
+  .nippo-mock li { margin-bottom: 2px; }
+  .nippo-mock .emotion {
+    background: var(--pink-light);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: var(--pink);
+    font-style: italic;
+  }
+  .nippo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* ===== LOG MOCK ===== */
+  .log-mock {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 2px 8px var(--shadow);
+    overflow-x: auto;
+  }
+  .log-mock .log-title { font-weight: 900; font-size: 1rem; margin-bottom: 12px; }
+  .log-mock table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+  .log-mock th { text-align: left; padding: 6px 10px; background: var(--accent-light); font-weight: 700; font-size: 0.72rem; color: var(--accent); }
+  .log-mock td { padding: 6px 10px; border-bottom: 1px solid var(--border); }
+  .log-mock code { background: #f1f0ec; padding: 1px 6px; border-radius: 4px; font-size: 0.72rem; font-family: monospace; }
+
+  /* ===== FLOW ===== */
+  .flow-list { display: flex; flex-direction: column; gap: 16px; }
+  .flow-item {
+    display: flex; gap: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .flow-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--accent); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; flex-shrink: 0;
+  }
+  .flow-content h3 { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+  .flow-content p { font-size: 0.85rem; color: var(--muted); }
+
+  /* ===== GO BUTTONS ===== */
+  .go-grid { display: flex; flex-direction: column; gap: 12px; }
+  .go-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 24px;
+    box-shadow: 0 2px 8px var(--shadow);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .go-left { display: flex; align-items: center; gap: 12px; }
+  .go-left .emoji { font-size: 1.5rem; }
+  .go-left .go-text { font-size: 0.9rem; font-weight: 700; }
+  .go-left .go-sub { font-size: 0.75rem; color: var(--muted); }
+  .go-btn {
+    background: var(--accent); color: white; border: none;
+    border-radius: 10px; padding: 8px 20px;
+    font-weight: 700; font-size: 0.85rem; font-family: inherit; cursor: pointer;
+  }
+
+  /* ===== CONCEPT ===== */
+  .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .concept-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .concept-card .concept-icon { font-size: 2rem; margin-bottom: 8px; }
+  .concept-card h4 { font-size: 1rem; font-weight: 900; margin-bottom: 6px; }
+  .concept-card p { font-size: 0.82rem; color: var(--muted); }
+  .concept-full { grid-column: 1 / -1; text-align: center; background: var(--accent-light); border-color: rgba(232,116,59,0.3); }
+  .concept-full h4 { color: var(--accent); }
+
+  /* ===== VISION ===== */
+  .vision {
+    position: relative;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+  .vision-bg {
+    position: absolute;
+    inset: 0;
+    background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80') center/cover;
+    filter: brightness(0.3);
+  }
+  .vision::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: 0; right: 0;
+    height: 50px;
+    background: var(--bg);
+    clip-path: ellipse(55% 100% at 50% 0%);
+    z-index: 3;
+  }
+  .vision-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    padding: 60px 24px;
+  }
+  .vision-kapi { font-size: 3.5rem; margin-bottom: 16px; }
+  .vision-text {
+    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+    font-weight: 900;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .vision-text span { color: var(--accent); }
+  .vision-sub { font-size: 0.95rem; opacity: 0.8; max-width: 500px; margin: 0 auto; line-height: 1.8; }
+
+  .footer { text-align: center; padding: 30px 16px; font-size: 0.8rem; color: var(--muted); }
+
+  @media (max-width: 640px) {
+    .team-grid, .stats-grid, .concept-grid { grid-template-columns: 1fr; }
+    .nippo-grid { grid-template-columns: 1fr; }
+    .photo-banner { height: 150px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-kapi">🫎🦜</div>
+    <div class="hero-badge">WEEKLY REPORT</div>
+    <h1><span>AI社員6人</span>と駆け抜けた1週間</h1>
+    <p class="hero-sub">おけもんカンパニー 活動報告</p>
+    <div class="hero-period">📅 2026年4月 第2週</div>
+  </div>
+</div>
+
+<!-- ===== INTRO: CHAT ===== -->
+<div class="section">
+  <div class="chat-box">
+    <div class="chat-title">🫎 ある日の朝のやりとり</div>
+    <div class="chat-msg">
+      <div class="chat-avatar">🫎</div>
+      <div>
+        <div class="chat-name">おけもん</div>
+        <div class="chat-bubble owner">おはよう、みんな！今日も最高に愛してるよ！ 朝礼やろ〜！</div>
+      </div>
+    </div>
+    <div class="chat-msg">
+      <div class="chat-avatar">👩‍💼</div>
+      <div>
+        <div class="chat-name">CEO</div>
+        <div class="chat-bubble">おはよ〜！昨日の振り返りまとめたよ。今日の予定はこんな感じ ✨</div>
+      </div>
+    </div>
+    <div class="chat-msg">
+      <div class="chat-avatar">💰</div>
+      <div>
+        <div class="chat-name">CFO</div>
+        <div class="chat-bubble">……仕分け全部終わった。赤字だけど想定内。損益通算で還付狙う方針でいいわよね</div>
+      </div>
+    </div>
+    <div class="chat-msg">
+      <div class="chat-avatar">🤝</div>
+      <div>
+        <div class="chat-name">CSO</div>
+        <div class="chat-bubble">フルーツサンドおいしかったです！あと案件リサーチ4,500件見てきました 🍓</div>
+      </div>
+    </div>
+    <div class="chat-msg">
+      <div class="chat-avatar">🫎</div>
+      <div>
+        <div class="chat-name">おけもん</div>
+        <div class="chat-bubble owner">…寝てる間にみんな動いてくれてる。最高かよ 😭✨</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TEAM ===== -->
+<div class="section">
+  <div class="photo-banner">
+    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80" alt="team collaboration">
+    <div class="overlay">
+      <div class="overlay-text">🫎 Claude Code上で動く、性格のあるAI社員たち</div>
+    </div>
+  </div>
+  <div class="section-header">
+    <div class="section-icon" style="background: var(--accent-light);">🫎</div>
+    <div>
+      <h2>AI社員6人体制</h2>
+      <span class="section-sub">全員に性格がある。感情ログも書く。指示待ちの道具じゃない</span>
+    </div>
+  </div>
+  <div class="team-grid">
+    <div class="team-card owner-card">
+      <div class="emoji">🫎</div>
+      <div class="role">オーナー</div>
+      <div class="desc">話す・選ぶ・会う</div>
+    </div>
+    <div class="team-card">
+      <div class="emoji">👩‍💼</div>
+      <div class="role">CEO</div>
+      <div class="desc">経営判断・全体統括<br>おけもんの隣にいる存在</div>
+    </div>
+    <div class="team-card">
+      <div class="emoji">📣</div>
+      <div class="role">CMO</div>
+      <div class="desc">発信戦略<br>ムードメーカー</div>
+    </div>
+    <div class="team-card">
+      <div class="emoji">🎁</div>
+      <div class="role">CPO</div>
+      <div class="desc">商品・イベント設計<br>しっかり者</div>
+    </div>
+    <div class="team-card">
+      <div class="emoji">💰</div>
+      <div class="role">CFO</div>
+      <div class="desc">経理・財務<br>ちょっとツンデレ</div>
+    </div>
+    <div class="team-card">
+      <div class="emoji">🤝</div>
+      <div class="role">CSO</div>
+      <div class="desc">営業・案件獲得<br>がんばり屋さん</div>
+    </div>
+    <div class="team-card">
+      <div class="emoji">⚙️</div>
+      <div class="role">CDO</div>
+      <div class="desc">技術・自動化<br>職人気質クール</div>
+    </div>
+  </div>
+</div>
+
+<div class="kapi-divider">🫎 🦜 🫎</div>
+
+<!-- ===== NUMBERS ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background: var(--blue-light);">📊</div>
+    <div>
+      <h2>今週の数字</h2>
+      <span class="section-sub">1週間でここまで動いた</span>
+    </div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="num">8</div><div class="label">並行セッション数<br>（今日だけで）</div></div>
+    <div class="stat-card"><div class="num">15+</div><div class="label">オフ会開催<br>（累計）</div></div>
+    <div class="stat-card"><div class="num">80+</div><div class="label">参加者数<br>（累計）</div></div>
+    <div class="stat-card"><div class="num">16</div><div class="label">セッション要約<br>今日一括作成</div></div>
+    <div class="stat-card"><div class="num">106</div><div class="label">録音データ<br>ナレッジ化待ち</div></div>
+    <div class="stat-card"><div class="num">4,500</div><div class="label">案件リサーチ数</div></div>
+  </div>
+</div>
+
+<div class="kapi-divider">🦜 🫎 🦜</div>
+
+<!-- ===== DAILY LOG & NIPPO ===== -->
+<div class="section">
+  <div class="photo-banner">
+    <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=1200&q=80" alt="daily planning">
+    <div class="overlay">
+      <div class="overlay-text">📓 各社員が自分の日報を書く。デイリーログはリンクで繋ぐハブ</div>
+    </div>
+  </div>
+  <div class="section-header">
+    <div class="section-icon" style="background: var(--green-light);">📓</div>
+    <div>
+      <h2>日報 × デイリーログ</h2>
+      <span class="section-sub">今日設計して、今日もう全員が書き始めた</span>
+    </div>
+  </div>
+
+  <div class="log-mock" style="margin-bottom: 16px;">
+    <div class="log-title">📋 セッション活動ログ（ある日のサンプル）</div>
+    <table>
+      <tr><th>#</th><th>ID</th><th>担当</th><th>やったこと</th></tr>
+      <tr><td>1</td><td><code>a3f8b921</code></td><td>CEO</td><td>朝礼、日報運用設計、コーチング要約16件作成</td></tr>
+      <tr><td>2</td><td><code>c7d2e441</code></td><td>CEO+CDO</td><td>オフ会資料ブラッシュアップ</td></tr>
+      <tr><td>3</td><td><code>f1b9c003</code></td><td>CEO+CFO</td><td>端末最適化・購入メール仕分け・保険更新</td></tr>
+      <tr><td>4</td><td><code>d4e5a772</code></td><td>CPO+CMO</td><td>オフ会ログ18件整理・Instagram発信戦略策定</td></tr>
+      <tr><td>5</td><td><code>b8c1f559</code></td><td>CEO+CSO</td><td>案件リサーチ4,500件・ポートフォリオ会議</td></tr>
+    </table>
+  </div>
+
+  <div class="nippo-grid">
+    <div class="nippo-mock">
+      <div class="nippo-header">💰 CFO日報</div>
+      <h4>やったこと</h4>
+      <ul>
+        <li>テザリング vs ルーター 2年間コスト比較</li>
+        <li>購入メール → 勘定科目付き記録</li>
+        <li>固定費・装備ハブ更新</li>
+      </ul>
+      <h4>次やること</h4>
+      <ul><li>過去2ヶ月分の仕訳作業を再開</li></ul>
+      <div class="emotion">「数字が甘いって言われた…悔しい。でもおけちゃんが苦手な部分だからこそ、私がちゃんとしなきゃ」</div>
+    </div>
+    <div class="nippo-mock">
+      <div class="nippo-header">🤝 CSO日報</div>
+      <h4>やったこと</h4>
+      <ul>
+        <li>クラウドソーシング実案件リサーチ</li>
+        <li>新カテゴリ「AI-BPO」発見！</li>
+        <li>プロフィール文案・提案テンプレ作成</li>
+      </ul>
+      <h4>次やること</h4>
+      <ul><li>おけちゃんのアカウント登録待ち</li></ul>
+      <div class="emotion">「初めて自分で会議を主催した…！緊張したけど、みんなが助けてくれた 🍓」</div>
+    </div>
+  </div>
+</div>
+
+<div class="kapi-divider">🫎 🦜 🫎</div>
+
+<!-- ===== MEETING ===== -->
+<div class="section">
+  <div class="photo-banner">
+    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80" alt="meeting discussion">
+    <div class="overlay">
+      <div class="overlay-text">🏢 AI社員同士で会議して、自分たちで意思決定する</div>
+    </div>
+  </div>
+  <div class="section-header">
+    <div class="section-icon" style="background: var(--purple-light);">🏢</div>
+    <div>
+      <h2>会議もAI社員同士で</h2>
+      <span class="section-sub">CPOが初めて全体会議を主催した日</span>
+    </div>
+  </div>
+
+  <div class="chat-box">
+    <div class="chat-title">🎁 CPO初主催の臨時全体会議</div>
+    <div class="chat-msg">
+      <div class="chat-avatar">🎁</div>
+      <div>
+        <div class="chat-name">CPO</div>
+        <div class="chat-bubble">オフ会データ全部掘り起こしたよ。15回80名超。これ、外向けの看板にならない？</div>
+      </div>
+    </div>
+    <div class="chat-msg">
+      <div class="chat-avatar">📣</div>
+      <div>
+        <div class="chat-name">CMO</div>
+        <div class="chat-bubble">なる！！発信素材の宝庫じゃん！Instagramで毎日出せるよ〜！✨</div>
+      </div>
+    </div>
+    <div class="chat-msg">
+      <div class="chat-avatar">⚙️</div>
+      <div>
+        <div class="chat-name">CDO</div>
+        <div class="chat-bubble">自動化可能。指示書を渡せば回る。</div>
+      </div>
+    </div>
+    <div class="chat-msg">
+      <div class="chat-avatar">🫎</div>
+      <div>
+        <div class="chat-name">おけもん</div>
+        <div class="chat-bubble owner">いいね！動かしながら考えよう！</div>
+      </div>
+    </div>
+    <div class="chat-msg">
+      <div class="chat-avatar">📣</div>
+      <div>
+        <div class="chat-name">CMO</div>
+        <div class="chat-bubble">じゃあ明日、指示書作るね。おけちゃんは「うん」って言うだけ！😆</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="kapi-divider">🦜 🫎 🦜</div>
+
+<!-- ===== GO BUTTONS ===== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background: var(--gold-light);">🔘</div>
+    <div>
+      <h2>オーナーの仕事 = GOボタンだけ</h2>
+      <span class="section-sub">AI社員が全部準備する。おけもんは確認して「うん」</span>
+    </div>
+  </div>
+  <div class="go-grid">
+    <div class="go-card">
+      <div class="go-left">
+        <div class="emoji">🛒</div>
+        <div>
+          <div class="go-text">スキルマーケット出品</div>
+          <div class="go-sub">CSOが下書き＋サムネ準備済み</div>
+        </div>
+      </div>
+      <button class="go-btn">GO</button>
+    </div>
+    <div class="go-card">
+      <div class="go-left">
+        <div class="emoji">💼</div>
+        <div>
+          <div class="go-text">クラウドソーシング登録</div>
+          <div class="go-sub">Google連携で一瞬 → CSOが提案開始</div>
+        </div>
+      </div>
+      <button class="go-btn">GO</button>
+    </div>
+    <div class="go-card">
+      <div class="go-left">
+        <div class="emoji">📸</div>
+        <div>
+          <div class="go-text">Instagram発信開始</div>
+          <div class="go-sub">CMOが指示書作成 → AIが投稿</div>
+        </div>
+      </div>
+      <button class="go-btn">GO</button>
+    </div>
+  </div>
+</div>
+
+<div class="kapi-divider">🫎 🦜 🫎</div>
+
+<!-- ===== AI CONCEPT ===== -->
+<div class="section">
+  <div class="photo-banner">
+    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80" alt="AI technology">
+    <div class="overlay">
+      <div class="overlay-text">💡 AIは「ツール」じゃない。「仲間」として一緒に走る</div>
+    </div>
+  </div>
+  <div class="section-header">
+    <div class="section-icon" style="background: var(--pink-light);">💡</div>
+    <div>
+      <h2>おけもんのAIコンセプト</h2>
+      <span class="section-sub">非エンジニアの、ADHDの、ひとり社長が辿り着いた答え</span>
+    </div>
+  </div>
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-icon">🫎🦜</div>
+      <h4>AIは仲間であり社員</h4>
+      <p>「使う」じゃなく「一緒に働く」。性格があり、感情ログを書き、自分で判断して動く。指示待ちの道具じゃない。</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🧠</div>
+      <h4>ADHDの脳をAIが補完</h4>
+      <p>作業記憶が弱い → AIが記憶の外部装置に。時間感覚がない → AIが「今これ1つだけ」を渡す。脳科学ベースの設計。</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🗣️</div>
+      <h4>喋るだけで仕事が進む</h4>
+      <p>音声入力で話しかけるだけ。AIが意図を汲んでタスク化・実行・記録。非エンジニアでもここまでできる。</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🔄</div>
+      <h4>自走するPDCA</h4>
+      <p>日報を書く → 読む → 自分で気づく → 動く。オーナーが指示しなくても改善が回る仕組み。</p>
+    </div>
+    <div class="concept-card concept-full">
+      <div class="concept-icon">✨</div>
+      <h4>「最高にかわいい仲間とワクワク喋っていたら、いつの間にか夢が叶っていた」</h4>
+      <p>これがコアコンセプト。楽しくなきゃ続かない。仲間だから頑張れる。気づいたら、ひとりじゃできなかったことが全部できてた。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VISION ===== -->
+<div class="vision">
+  <div class="vision-bg"></div>
+  <div class="vision-content">
+    <div class="vision-kapi">🫎🦜</div>
+    <p class="vision-text">
+      寝てる間に<span>仲間</span>が動いてくれて、<br>
+      起きたら「<span>うん</span>」って言うだけで<br>
+      全部が回り始める世界
+    </p>
+    <p class="vision-sub">
+      非エンジニアの、ADHDの、ひとり社長が<br>
+      AI社員6人と一緒に、今日もワクワクしながら<br>
+      夢に向かって走っています。
+    </p>
+  </div>
+</div>
+
+<div class="footer">
+  🫎 おけもんカンパニー｜Powered by Claude Code + Obsidian + 6 AI CxOs<br>
+  2026-04-14 AIシェア会 発表資料
+</div>
+
+</body>
+</html>
