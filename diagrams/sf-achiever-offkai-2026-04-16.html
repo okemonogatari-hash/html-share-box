@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>達成欲のトリセツ | ストレングスファインダー オフ会</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --orange-deep: #C05621;
+  --orange-mid: #DD6B20;
+  --orange-light: #ED8936;
+  --orange-glow: #FBD38D;
+  --warm-bg: #FFFAF0;
+  --warm-white: #FDFCFA;
+  --text: #2D2A26;
+  --text-muted: #6B665E;
+  --text-light: #9A9590;
+  --line: rgba(0,0,0,0.08);
+  --shadow-sm: 0 2px 12px rgba(0,0,0,0.06);
+  --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.12);
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text);
+  background: var(--warm-bg);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    linear-gradient(160deg, rgba(192,86,33,0.92) 0%, rgba(221,107,32,0.88) 50%, rgba(192,86,33,0.95) 100%),
+    url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80') center/cover;
+  color: #fff;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(to top, var(--warm-bg), transparent);
+}
+.hero-inner { position: relative; z-index: 2; padding: 60px 24px; }
+.hero-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 24px;
+  animation: heroFadeIn 0.8s 0.2s both;
+}
+.hero-name {
+  font-size: clamp(28px, 6vw, 52px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  animation: heroSlideUp 0.9s 0.3s both;
+}
+.hero-name span { color: var(--orange-glow); }
+.hero-tagline {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(15px, 3vw, 20px);
+  font-weight: 400;
+  opacity: 0.9;
+  margin-bottom: 8px;
+  animation: heroSlideUp 0.9s 0.5s both;
+}
+.hero-sub {
+  font-size: 14px;
+  opacity: 0.6;
+  margin-top: 16px;
+  animation: heroFadeIn 0.8s 0.7s both;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  animation: heroFadeIn 0.8s 1s both, bounce 2s 1.5s infinite;
+  opacity: 0.5;
+}
+
+@keyframes heroFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes heroSlideUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+/* ─── SECTIONS ─── */
+section { padding: 80px 0; }
+section:nth-child(even) { background: var(--warm-white); }
+
+.section-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--orange-mid);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-size: clamp(22px, 4vw, 32px);
+  color: var(--orange-deep);
+  margin-bottom: 16px;
+  position: relative;
+  display: inline-block;
+}
+.section-title::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: var(--orange-light);
+  margin-top: 8px;
+  transition: width 0.6s ease 0.2s;
+}
+.fade-in.is-visible .section-title::after { width: 40px; }
+
+.section-lead {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin-bottom: 48px;
+}
+
+/* ─── WHAT IS 達成欲 ─── */
+.what-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.what-text p { margin-bottom: 16px; font-size: 15px; color: var(--text-muted); }
+.what-text p:first-child::first-letter {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  float: left;
+  line-height: 1;
+  margin-right: 8px;
+  color: var(--orange-deep);
+}
+.what-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+.what-card .big-icon { font-size: 48px; color: var(--orange-mid); margin-bottom: 16px; }
+.what-card h3 { font-size: 18px; color: var(--orange-deep); margin-bottom: 8px; }
+.what-card p { font-size: 13px; color: var(--text-muted); }
+.what-card .domain {
+  display: inline-block;
+  background: rgba(221,107,32,0.1);
+  color: var(--orange-mid);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-top: 12px;
+  letter-spacing: 1px;
+}
+
+/* ─── ARUARU ─── */
+.aruaru-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.aruaru-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.aruaru-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.aruaru-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--orange-light);
+}
+.aruaru-card .aruaru-emoji { font-size: 28px; margin-bottom: 8px; }
+.aruaru-card h4 { font-size: 15px; color: var(--text); margin-bottom: 4px; }
+.aruaru-card p { font-size: 13px; color: var(--text-muted); }
+
+/* ─── PHOTO DIVIDER ─── */
+.photo-divider {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+.photo-divider::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(192,86,33,0.3), rgba(192,86,33,0.5));
+}
+
+/* ─── MANUAL ─── */
+.manual-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 32px;
+}
+.manual-box {
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+.manual-box.joy {
+  background: rgba(221,107,32,0.06);
+  border: 1px solid rgba(221,107,32,0.15);
+}
+.manual-box.pain {
+  background: rgba(45,90,123,0.05);
+  border: 1px solid rgba(45,90,123,0.12);
+}
+.manual-box h3 { font-size: 16px; margin-bottom: 16px; }
+.manual-box.joy h3 { color: var(--orange-deep); }
+.manual-box.pain h3 { color: #2D5A7B; }
+.manual-box ul { list-style: none; }
+.manual-box li {
+  font-size: 14px;
+  color: var(--text-muted);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  padding-left: 28px;
+  position: relative;
+  line-height: 1.7;
+}
+.manual-box li:last-child { border-bottom: none; }
+.manual-box.joy li::before { content: '\f06d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--orange-light); font-size: 12px; top: 12px; }
+.manual-box.pain li::before { content: '\f0e7'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: #6BA3BE; font-size: 12px; top: 12px; }
+
+/* ─── COMBO ─── */
+.combo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.combo-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.combo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.combo-pair {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--orange-mid);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.combo-card h4 { font-size: 15px; color: var(--text); margin-bottom: 8px; }
+.combo-card p { font-size: 13px; color: var(--text-muted); }
+
+/* ─── TALK THEMES ─── */
+.talk-list { max-width: 640px; }
+.talk-item {
+  display: flex;
+  gap: 16px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: flex-start;
+}
+.talk-item:last-child { border-bottom: none; }
+.talk-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(221,107,32,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange-mid);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.talk-text h4 { font-size: 15px; color: var(--text); margin-bottom: 4px; }
+.talk-text p { font-size: 13px; color: var(--text-muted); }
+
+/* ─── MESSAGE ─── */
+.message-box {
+  background: linear-gradient(135deg, var(--orange-deep), var(--orange-mid));
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  color: #fff;
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+.message-box h3 { font-size: 20px; margin-bottom: 20px; color: var(--orange-glow); }
+.message-box p { font-size: 15px; line-height: 2; opacity: 0.9; }
+.message-box .sign { margin-top: 24px; font-size: 13px; opacity: 0.6; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--orange-deep);
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  padding: 40px 24px;
+  font-size: 13px;
+}
+footer .brand {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+/* ─── ANIMATIONS ─── */
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-in.is-visible { opacity: 1; transform: translateY(0); }
+.stagger > * { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.stagger.is-visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(2) { transition-delay: 0.12s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(3) { transition-delay: 0.19s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(4) { transition-delay: 0.26s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(5) { transition-delay: 0.33s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(7) { transition-delay: 0.47s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(8) { transition-delay: 0.54s; opacity: 1; transform: none; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .what-grid, .manual-two, .aruaru-grid, .combo-grid { grid-template-columns: 1fr; }
+  .photo-divider { background-attachment: scroll; height: 150px; }
+  section { padding: 60px 0; }
+  .message-box { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">STRENGTHSFINDER OFFKAI</div>
+    <h1 class="hero-name"><span>達成欲</span>のトリセツ</h1>
+    <p class="hero-tagline">止まれない。だって、まだ今日やれることがあるから。</p>
+    <p class="hero-sub">2026.04.16 / SF認定コーチ おけもん</p>
+  </div>
+  <div class="hero-scroll"><i class="fas fa-chevron-down"></i></div>
+</section>
+
+<!-- ═══ WHAT IS ═══ -->
+<section>
+  <div class="container">
+    <div class="what-grid fade-in">
+      <div class="what-text">
+        <p>達成欲は「毎日、何かを成し遂げたい」というエンジンを持つ資質です。朝起きたらゼロに戻る。だから毎日、何かを積み上げないと落ち着かない。</p>
+        <p>これは「頑張り屋さん」とは少し違います。頑張るのが好きなんじゃなく、「やり遂げた」という手応えが必要なんです。ToDoリストを消す瞬間、一日の終わりに「今日はこれだけやった」と言える瞬間。それがないと、なんだかソワソワする。</p>
+        <p>達成欲が高い人は、自分では「普通にやってるだけ」と思ってることが多い。でも周りから見ると「なんでそんなに動けるの？」と驚かれてたりします。</p>
+      </div>
+      <div class="what-card">
+        <div class="big-icon"><i class="fas fa-fire"></i></div>
+        <h3>達成欲 / Achiever</h3>
+        <p>毎日リセットされるエンジン。<br>「今日も何かを成し遂げたい」が<br>止まらない原動力。</p>
+        <div class="domain">実行力の資質</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PHOTO DIVIDER ═══ -->
+<div class="photo-divider" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=80')"></div>
+
+<!-- ═══ ARUARU ═══ -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">ARUARU</div>
+      <h2 class="section-title">達成欲あるある</h2>
+      <p class="section-lead">「わかるーー！」が止まらなかったら、あなたは間違いなく達成欲の人です。</p>
+    </div>
+
+    <div class="aruaru-grid stagger">
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">&#x1F4DD;</div>
+        <h4>ToDoリストを消すのが快感</h4>
+        <p>終わったタスクにチェックを入れる瞬間がたまらない。わざわざ「もうやったこと」を書き足して消す時すらある。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">&#x1F634;</div>
+        <h4>休みの日でも「何かやらなきゃ」</h4>
+        <p>ゴロゴロしてると罪悪感。せっかくの休みなのに「今日何もしてない…」って焦り始める。休むのが一番難しい。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">&#x1F3C3;</div>
+        <h4>寝る前に今日を振り返って採点してる</h4>
+        <p>「今日は何やったっけ」と頭の中で棚卸し。たくさんやった日は満足して眠れる。何もできなかった日は布団の中でモヤモヤ。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">&#x1F4AA;</div>
+        <h4>「もっとやれたはず」が口癖</h4>
+        <p>十分やったのに満足できない。周りは「すごいね」って言ってくれるけど、自分の中では「まだ足りない」が消えない。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">&#x1F525;</div>
+        <h4>忙しい方がなぜか調子いい</h4>
+        <p>暇な日よりタスクが詰まってる日の方がイキイキしてる。エンジンがかかると止まらない。むしろ止め方がわからない。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">&#x1F62D;</div>
+        <h4>体調崩して初めて止まる</h4>
+        <p>自分からブレーキを踏めない。「もうちょっと」「あとこれだけ」で気づいたら深夜。体が先に悲鳴を上げる。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">&#x1F914;</div>
+        <h4>「頑張ってるね」に違和感</h4>
+        <p>別に頑張ってるつもりはない。ただやりたいからやってるだけ。でも周りからは「なんでそんなに動けるの？」って言われる。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">&#x1F3AF;</div>
+        <h4>ゴールした瞬間にもう次を探してる</h4>
+        <p>達成した喜びは一瞬。「よし、次は何しよう」がすぐ来る。余韻に浸るのが苦手。立ち止まることが怖いのかもしれない。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PHOTO DIVIDER ═══ -->
+<div class="photo-divider" style="background-image:url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1600&q=80')"></div>
+
+<!-- ═══ MANUAL ─── -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">YOUR MANUAL</div>
+      <h2 class="section-title">達成欲の取扱説明書</h2>
+      <p class="section-lead">達成欲は最強のエンジン。でもエンジンにもメンテナンスが必要です。喜ぶポイントと、気をつけたいポイント。</p>
+    </div>
+
+    <div class="manual-two fade-in">
+      <div class="manual-box joy">
+        <h3><i class="fas fa-sun"></i> こうすると達成欲が喜ぶ</h3>
+        <ul>
+          <li>小さくてもいいから「完了」を毎日作る。大きなプロジェクトは分解して、日々の達成感を確保する</li>
+          <li>「やったことリスト」を書く。ToDoじゃなくDoneリスト。一日の終わりに眺めると充電される</li>
+          <li>数字で進捗が見える仕組みを作る。歩数、読んだページ数、消化したタスク数。可視化は達成欲の燃料</li>
+          <li>「今日はこれだけやった」と認めてくれる人がそばにいると、エンジンの回りが全然違う</li>
+          <li>忙しい日こそ本領発揮。タスクが多い方が集中力が上がるなら、それは達成欲の正しい使い方</li>
+        </ul>
+      </div>
+      <div class="manual-box pain">
+        <h3><i class="fas fa-cloud-rain"></i> こうなると達成欲が苦しむ</h3>
+        <ul>
+          <li>「何も成し遂げられなかった日」が続くと、自己肯定感がどんどん下がる。でもそれは能力の問題じゃない</li>
+          <li>休むことに罪悪感を持つ。「休息も達成の一つ」と頭ではわかっていても、エンジンが許してくれない</li>
+          <li>人と比べて「あの人はもっとやってる」と焦る。達成欲のゲージは自分の中にあるのに、外に基準を置いてしまう</li>
+          <li>「量」で自分を測りすぎて、「質」や「楽しさ」を見失う。やることが目的化して、何のためにやってるか忘れる</li>
+          <li>周りが自分と同じペースで動かないことにイライラしてしまう。でもそれは相手に達成欲がないだけ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COMBOS ═══ -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">COMBINATIONS</div>
+      <h2 class="section-title">達成欲 × 他の資質</h2>
+      <p class="section-lead">達成欲は単体でも強いけど、他の資質と組み合わさると全然違う動き方をします。あなたの達成欲は、どのタイプ？</p>
+    </div>
+
+    <div class="combo-grid stagger">
+      <div class="combo-card">
+        <div class="combo-pair">達成欲 × 責任感</div>
+        <h4>「引き受けたら絶対やり遂げる」タイプ</h4>
+        <p>頼まれたら断れない＋やり始めたら止まれない。信頼は最強だけど、背負いすぎて燃え尽きる危険性大。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">達成欲 × 学習欲</div>
+        <h4>「学びそのものが達成」タイプ</h4>
+        <p>新しいことを知るたびにToDoが増える。資格、本、セミナー。インプットの達成感に酔いやすい。アウトプットとのバランスがカギ。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">達成欲 × 最上志向</div>
+        <h4>「やるなら最高品質で」タイプ</h4>
+        <p>量も質も妥協しない。すごいものが出来上がるけど、永遠に「まだ足りない」で終わらない。完成の定義を先に決めておくと救われる。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">達成欲 × 適応性</div>
+        <h4>「今日できることを今日やる」タイプ</h4>
+        <p>長期計画より目の前のタスクに全力。柔軟に動けるけど、振り返ると「結局何に向かってたんだっけ？」になりがち。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">達成欲 × 競争性</div>
+        <h4>「誰かに勝ちたい」がガソリン</h4>
+        <p>ライバルがいると燃える。でも比較の沼にハマると「あの人はもっとやってる」で自分を追い詰める。競う相手は昨日の自分がベスト。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">達成欲 × 共感性</div>
+        <h4>「人のために頑張りすぎる」タイプ</h4>
+        <p>相手の期待を感じ取って、それに応えようとエンジン全開。喜んでもらえるとさらに加速。でも自分のキャパは置き去りになりがち。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PHOTO DIVIDER ═══ -->
+<div class="photo-divider" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&q=80')"></div>
+
+<!-- ═══ TALK THEMES ═══ -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">TALK THEMES</div>
+      <h2 class="section-title">今日語ってみたいこと</h2>
+      <p class="section-lead">正解なんてありません。思いついたことを、そのまま話してみてください。</p>
+    </div>
+
+    <div class="talk-list stagger">
+      <div class="talk-item">
+        <div class="talk-icon"><i class="fas fa-check-double"></i></div>
+        <div class="talk-text">
+          <h4>最近「やった！」って思えた瞬間、ありますか？</h4>
+          <p>大きなことじゃなくてOK。小さな達成でも、あなたの達成欲はちゃんと喜んでたはず。</p>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-icon"><i class="fas fa-bed"></i></div>
+        <div class="talk-text">
+          <h4>「休む」って、得意ですか？</h4>
+          <p>休みの日にゴロゴロしてて罪悪感を感じたことがある人、きっと多いはず。みんなどうしてるんだろう。</p>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-icon"><i class="fas fa-battery-half"></i></div>
+        <div class="talk-text">
+          <h4>止め方、知ってますか？</h4>
+          <p>エンジンのかけ方は天才的。でもブレーキの踏み方って、誰かに教わったことあります？</p>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-icon"><i class="fas fa-heart"></i></div>
+        <div class="talk-text">
+          <h4>達成欲があってよかったな、と思う瞬間は？</h4>
+          <p>しんどい面もあるけど、この資質に助けられたこともきっとある。</p>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-icon"><i class="fas fa-users"></i></div>
+        <div class="talk-text">
+          <h4>周りの人に「頑張りすぎ」って言われたこと、ありますか？</h4>
+          <p>その時どう感じました？嬉しかった？それとも「そんなことないのに」って思った？</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MESSAGE ═══ -->
+<section style="background:var(--warm-bg);">
+  <div class="container">
+    <div class="message-box fade-in">
+      <h3>達成欲を持つあなたへ</h3>
+      <p>
+        毎日毎日、何かを成し遂げようとするあなた。<br>
+        それは当たり前のことじゃありません。<br><br>
+        今日も動いた。今日も頑張った。<br>
+        その事実を、ちゃんと自分で認めてあげてください。<br><br>
+        そして時には——<br>
+        「今日は何もしない」を、<br>
+        今日の達成にしてもいいんです。<br><br>
+        あなたのエンジンは、明日もちゃんと動きます。<br>
+        だから今日は、少し休んでも大丈夫。
+      </p>
+      <div class="sign">SF認定コーチ おけもん</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="brand">寄り添い型 個性診断師 おけもん</div>
+  <p>ストレングスファインダー オフ会 / 2026.04.16</p>
+</footer>
+
+<script>
+const animEls = document.querySelectorAll('.fade-in, .stagger');
+const animObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('is-visible');
+      animObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+animEls.forEach(el => {
+  const r = el.getBoundingClientRect();
+  if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+  else animObs.observe(el);
+});
+</script>
+
+</body>
+</html>
