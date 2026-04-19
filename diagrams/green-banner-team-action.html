@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green求人バナー自動化｜うちのチームがやったこと</title>
+<meta name="description" content="Greenの求人URLから職種別バナー構成を自動生成するまでの、チーム実働レポート。設計から実装デモまで今日1日で動かしました。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --navy:#1F2E4A;
+  --navy-light:#2E4368;
+  --green:#2BAE66;
+  --green-dark:#1F8A4E;
+  --green-soft:#E8F5EE;
+  --coral:#FF7A59;
+  --amber:#FFB547;
+  --cream:#FAF8F3;
+  --paper:#FFFFFF;
+  --text:#2D2D2D;
+  --text-light:#6B6B6B;
+  --border:#E5E0D5;
+  --f-serif:'Noto Serif JP',serif;
+  --f-sans:'Noto Sans JP',sans-serif;
+  --f-inter:'Inter',sans-serif;
+  --f-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--f-sans);background:var(--cream);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 24px 80px;}
+
+/* ===== COVER ===== */
+.cover{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);color:#fff;border-radius:14px;padding:64px 52px;margin-bottom:40px;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(31,46,74,0.22);}
+.cover::before{content:'';position:absolute;top:-100px;right:-80px;width:360px;height:360px;border:1px solid rgba(43,174,102,0.25);border-radius:50%;}
+.cover::after{content:'';position:absolute;bottom:-140px;left:-100px;width:440px;height:440px;border:1px solid rgba(43,174,102,0.12);border-radius:50%;}
+.cover-badge{display:inline-block;background:rgba(43,174,102,0.18);border:1px solid rgba(43,174,102,0.5);color:var(--green);font-family:var(--f-inter);font-size:11px;font-weight:700;letter-spacing:0.3em;padding:6px 14px;border-radius:3px;margin-bottom:20px;position:relative;z-index:1;}
+.cover-title{font-family:var(--f-serif);font-size:clamp(26px,3.6vw,38px);font-weight:700;line-height:1.6;letter-spacing:0.04em;margin-bottom:18px;position:relative;z-index:1;}
+.cover-title .accent{color:var(--green);}
+.cover-sub{font-size:15px;line-height:2;max-width:640px;opacity:0.92;position:relative;z-index:1;}
+.cover-meta{display:flex;gap:36px;margin-top:36px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.15);font-family:var(--f-inter);font-size:12px;letter-spacing:0.15em;position:relative;z-index:1;flex-wrap:wrap;}
+.cover-meta strong{color:var(--green);font-weight:600;margin-left:8px;}
+
+/* ===== KPI ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;}
+.kpi-card{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:22px 18px;text-align:center;}
+.kpi-card .num{font-family:var(--f-serif);font-size:30px;font-weight:700;color:var(--navy);line-height:1;margin-bottom:6px;}
+.kpi-card .num .unit{font-size:15px;color:var(--green-dark);margin-left:2px;}
+.kpi-card .lbl{font-family:var(--f-inter);font-size:10px;font-weight:600;letter-spacing:0.2em;color:var(--text-light);text-transform:uppercase;}
+@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* ===== SECTION ===== */
+section{background:var(--paper);border-radius:12px;padding:48px 40px;margin-bottom:26px;border:1px solid var(--border);}
+.sec-label{font-family:var(--f-inter);font-size:11px;font-weight:600;letter-spacing:0.35em;color:var(--green-dark);text-transform:uppercase;margin-bottom:12px;}
+.sec-title{font-family:var(--f-serif);font-size:clamp(22px,2.5vw,28px);font-weight:700;color:var(--navy);line-height:1.55;letter-spacing:0.04em;margin-bottom:14px;}
+.sec-title .accent{color:var(--green-dark);}
+.sec-lead{font-size:14.5px;color:var(--text);line-height:2;margin-bottom:28px;}
+
+/* ===== TIMELINE ===== */
+.timeline{position:relative;margin-top:12px;padding-left:32px;}
+.timeline::before{content:'';position:absolute;left:10px;top:12px;bottom:12px;width:2px;background:linear-gradient(to bottom,var(--green),rgba(43,174,102,0.2));}
+.tl-step{position:relative;padding:18px 0 26px 28px;}
+.tl-step::before{content:'';position:absolute;left:-28px;top:22px;width:22px;height:22px;border-radius:50%;background:var(--paper);border:3px solid var(--green);z-index:1;}
+.tl-step.done::before{background:var(--green);content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;line-height:1;padding-top:1px;}
+.tl-time{font-family:var(--f-inter);font-size:11px;font-weight:700;letter-spacing:0.2em;color:var(--green-dark);margin-bottom:6px;}
+.tl-head{font-family:var(--f-serif);font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px;letter-spacing:0.03em;}
+.tl-body{font-size:13.5px;color:var(--text);line-height:1.95;}
+.tl-body ul{list-style:none;margin-top:8px;}
+.tl-body li{position:relative;padding-left:18px;margin-bottom:4px;font-size:13px;}
+.tl-body li::before{content:'';position:absolute;left:0;top:12px;width:9px;height:1px;background:var(--green);}
+.tl-deliver{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:5px 12px;background:var(--green-soft);border:1px solid rgba(43,174,102,0.3);border-radius:4px;font-size:12px;color:var(--green-dark);font-weight:600;text-decoration:none;transition:background 0.2s;}
+.tl-deliver:hover{background:var(--green);color:#fff;}
+.tl-deliver i{font-size:10px;}
+
+/* ===== DELIVERABLES ===== */
+.del-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px;}
+.del-card{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:22px 20px;transition:transform 0.3s,border-color 0.3s;}
+.del-card:hover{transform:translateY(-3px);border-color:var(--green);}
+.del-tag{display:inline-block;font-family:var(--f-inter);font-size:9px;font-weight:700;letter-spacing:0.25em;padding:3px 10px;border-radius:3px;margin-bottom:10px;}
+.del-tag.doc{background:rgba(31,46,74,0.1);color:var(--navy);}
+.del-tag.html{background:rgba(255,181,71,0.2);color:#9C6608;}
+.del-tag.code{background:rgba(43,174,102,0.12);color:var(--green-dark);}
+.del-tag.sheet{background:rgba(255,122,89,0.14);color:#C4421F;}
+.del-card h4{font-family:var(--f-serif);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.55;}
+.del-card p{font-size:12.5px;color:var(--text-light);line-height:1.85;margin-bottom:10px;}
+.del-link{font-family:var(--f-mono);font-size:11px;color:var(--green-dark);text-decoration:none;word-break:break-all;display:inline-block;padding:6px 10px;background:var(--paper);border:1px solid var(--border);border-radius:4px;transition:background 0.2s;}
+.del-link:hover{background:var(--green-soft);}
+@media(max-width:640px){.del-grid{grid-template-columns:1fr;}}
+
+/* ===== TEAM ROLE ===== */
+.role-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;}
+.role-card{padding:20px 16px;background:var(--cream);border-radius:10px;border-top:3px solid var(--green);text-align:center;}
+.role-icon{width:44px;height:44px;border-radius:50%;background:var(--green-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;}
+.role-icon i{color:var(--green-dark);font-size:16px;}
+.role-title{font-family:var(--f-inter);font-size:10px;font-weight:700;letter-spacing:0.22em;color:var(--green-dark);margin-bottom:6px;}
+.role-card h5{font-family:var(--f-serif);font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.role-card p{font-size:12px;color:var(--text);line-height:1.8;}
+@media(max-width:768px){.role-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* ===== TECH STACK ===== */
+.tech-box{background:linear-gradient(135deg,var(--cream) 0%,var(--paper) 100%);border:1px solid var(--border);border-radius:10px;padding:28px 26px;margin-top:16px;}
+.tech-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:stretch;margin-top:12px;}
+.tech-step{background:var(--paper);border:1px solid var(--border);border-radius:8px;padding:18px 14px;text-align:center;position:relative;}
+.tech-step::after{content:'\f101';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--green);font-size:14px;z-index:1;background:var(--paper);padding:2px;}
+.tech-step:last-child::after{display:none;}
+.tech-num{font-family:var(--f-inter);font-size:10px;font-weight:700;color:var(--green-dark);letter-spacing:0.25em;margin-bottom:8px;}
+.tech-step h5{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.tech-step code{font-family:var(--f-mono);font-size:11px;color:var(--text-light);background:var(--cream);padding:3px 8px;border-radius:3px;display:inline-block;}
+@media(max-width:768px){.tech-flow{grid-template-columns:1fr 1fr;}.tech-step::after{content:'\f103';right:50%;top:auto;bottom:-14px;transform:translateX(50%);}}
+
+/* ===== PROOF ===== */
+.proof-box{background:var(--green-soft);border:2px solid rgba(43,174,102,0.3);border-radius:12px;padding:32px 28px;margin-top:16px;text-align:center;}
+.proof-text{font-family:var(--f-serif);font-size:clamp(18px,2.4vw,24px);font-weight:700;color:var(--navy);line-height:1.7;letter-spacing:0.03em;margin-bottom:18px;}
+.proof-text .hl{color:var(--green-dark);}
+.proof-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--green);color:#fff;text-decoration:none;border-radius:6px;font-weight:600;font-size:14px;letter-spacing:0.05em;transition:background 0.3s,transform 0.3s;margin:6px;}
+.proof-cta:hover{background:var(--green-dark);transform:translateY(-2px);}
+.proof-cta.ghost{background:var(--paper);color:var(--green-dark);border:2px solid var(--green);}
+.proof-cta.ghost:hover{background:var(--green);color:#fff;}
+.proof-cta i{font-size:12px;}
+
+/* ===== NEXT ===== */
+.next-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:16px;}
+.next-card{padding:22px 18px;background:var(--cream);border-radius:10px;text-align:center;}
+.next-num{font-family:var(--f-serif);font-size:30px;font-weight:700;color:var(--green-dark);line-height:1;margin-bottom:10px;}
+.next-card h5{font-family:var(--f-serif);font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.next-card p{font-size:12.5px;color:var(--text);line-height:1.8;}
+@media(max-width:640px){.next-grid{grid-template-columns:1fr;}}
+
+/* ===== FOOTER ===== */
+footer{text-align:center;padding:32px 0 8px;color:var(--text-light);font-size:12px;letter-spacing:0.1em;}
+footer .mark{font-family:var(--f-inter);font-weight:600;color:var(--green-dark);letter-spacing:0.25em;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-badge">TEAM ACTION REPORT</div>
+    <h1 class="cover-title">
+      ご提案から、<span class="accent">動く実物</span>まで。<br>
+      今日1日でここまで走りました。
+    </h1>
+    <p class="cover-sub">
+      Green求人から職種別バナー構成を自動生成する仕組み。<br>
+      設計→提案書→スクレイピング→AI原稿生成→スプシ自動書き込みまで、<br>
+      実働ベースで一気通貫で動かしたレポートです。
+    </p>
+    <div class="cover-meta">
+      <span>レポート日<strong>2026.04.19</strong></span>
+      <span>所要<strong>約5時間</strong></span>
+      <span>動かした成果物<strong>7点</strong></span>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="num">7<span class="unit">本</span></div>
+      <div class="lbl">Deliverables</div>
+    </div>
+    <div class="kpi-card">
+      <div class="num">3<span class="unit">職種</span></div>
+      <div class="lbl">Sample Jobs</div>
+    </div>
+    <div class="kpi-card">
+      <div class="num">9<span class="unit">案</span></div>
+      <div class="lbl">Copy Variants</div>
+    </div>
+    <div class="kpi-card">
+      <div class="num">3<span class="unit">秒</span></div>
+      <div class="lbl">API Write Time</div>
+    </div>
+  </div>
+
+  <!-- 01 タイムライン -->
+  <section>
+    <div class="sec-label">01 / Timeline</div>
+    <h2 class="sec-title">今日動いたこと、<span class="accent">時系列で</span>。</h2>
+    <p class="sec-lead">
+      案件の種を受け取ってから、動くデモが立ち上がるまでを時系列で。
+      各ステップで実物（ドキュメント・HTML・スプシ）を残してあります。
+    </p>
+
+    <div class="timeline">
+      <div class="tl-step done">
+        <div class="tl-time">STEP 01 — HEARING</div>
+        <div class="tl-head">案件ヒアリング ＆ INBOX登録</div>
+        <div class="tl-body">
+          友達経由で「Green求人広告のバナー制作運用、自動化できる？」の相談を受領。内容を整理して、タスク管理DBに案件の種として登録。
+          <ul>
+            <li>発注背景・現状フロー・ボトルネックを整理</li>
+            <li>案件タスクID <code>t098</code> 発番</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-step done">
+        <div class="tl-time">STEP 02 — REQUIREMENTS</div>
+        <div class="tl-head">参考スプシ調査 ＆ 要件定義v0.1</div>
+        <div class="tl-body">
+          既存の静止画構成スプシのフォーマットをAPI経由で取得して構造解析。ゴール・As-Is/To-Be業務フロー・提供スコープ3段階・技術スタック・未確定ヒアリング項目7つまで落とし込んだ要件定義書を作成。
+          <ul>
+            <li>既存フォーマット：週次1シート／職種×サイズ×文言共有</li>
+            <li>提供スコープ：Phase 0無料デモ → Phase 1月額 → Phase 2完全代替</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-step done">
+        <div class="tl-time">STEP 03 — PROPOSAL</div>
+        <div class="tl-head">ご提案図解HTML制作 ＆ GitHub Pages公開</div>
+        <div class="tl-body">
+          要件定義を元に、1枚で全体像が伝わる提案図解をHTMLで制作。As-Is/To-Be比較・裏側4ステップ・チーム体制・3段階プラン・次の一歩を構成。GitHub Pagesにデプロイして共有URL化。
+          <ul>
+            <li>読み物として3分で完読できる設計</li>
+            <li>共有URLですぐ先方にも送れる形</li>
+          </ul>
+          <a href="https://okemonogatari-hash.github.io/html-share-box/diagrams/green-banner-automation.html" class="tl-deliver" target="_blank">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>提案図解を開く
+          </a>
+        </div>
+      </div>
+
+      <div class="tl-step done">
+        <div class="tl-time">STEP 04 — SCRAPING</div>
+        <div class="tl-head">Green求人ページ3本を自動取得</div>
+        <div class="tl-body">
+          Green.co.jp の求人検索ページから多様性のある3職種（エンジニア／デザイナー／営業）をピックアップ。ブラウザ自動操作で各求人ページを巡回し、ページ内部のデータ構造からすべての求人情報を構造化抽出。
+          <ul>
+            <li>ログラス／アプリケーション基盤エンジニア（750-2000万）</li>
+            <li>グッドパッチ／UI/UXデザイナー（420-1200万・フルリモート）</li>
+            <li>カカクコム／食べログ アカウントセールス（600-740万）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-step done">
+        <div class="tl-time">STEP 05 — COPYWRITING</div>
+        <div class="tl-head">AIで職種別バナーコピー3案を生成</div>
+        <div class="tl-body">
+          各求人の「売り」「ターゲット人物像」をAIが読み解き、職種ごとにメイン／サブ／3案目のバナーコピーを生成。トーン（硬派・柔らかめ・モダン等）のテイスト指示と挿入テキストもセットで出力。合計9バナー分の構成案が約3分で揃った。
+          <ul>
+            <li>各職種 × コピー3案 × テイスト指示 × 挿入テキスト</li>
+            <li>年収・特徴・ペルソナも自動で引き込み</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-step done">
+        <div class="tl-time">STEP 06 — SHEETS API</div>
+        <div class="tl-head">Google Sheets APIで実スプシに自動書き込み</div>
+        <div class="tl-body">
+          生成した3職種×9コピー案を、Google Sheets APIで実スプシに書き込み。本物の運用スプシはDrive APIで自分のドライブにコピーして権限確保→新規シート追加→本物フォーマット準拠でデータ流し込み→書式整形（ヘッダ色・折り返し・列幅）まで一気通貫。
+          <ul>
+            <li>処理時間：約3秒</li>
+            <li>本物フォーマット（職種×①〜⑦コピー×メイン/サブ/コピー3）準拠</li>
+          </ul>
+          <a href="https://docs.google.com/spreadsheets/d/1LZqkWNTa3CuUCpooYK9Hz3Tig7uXRMVlrn3t-R5HGe8/edit#gid=863706764" class="tl-deliver" target="_blank">
+            <i class="fa-solid fa-table"></i>生成済みスプシを開く
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 成果物 -->
+  <section>
+    <div class="sec-label">02 / Deliverables</div>
+    <h2 class="sec-title">出来上がったもの、<span class="accent">全部あります</span>。</h2>
+    <p class="sec-lead">
+      「動く実物」が揃っている状態でこのレポートを書いてます。<br>
+      すべてこの場でお見せできる成果物です。
+    </p>
+
+    <div class="del-grid">
+      <div class="del-card">
+        <span class="del-tag doc">DOC</span>
+        <h4>要件定義書 v0.1</h4>
+        <p>案件背景・As-Is/To-Be・3段階提供スコープ・技術スタック・ヒアリング事項までまとめた設計ドキュメント。</p>
+      </div>
+
+      <div class="del-card">
+        <span class="del-tag html">HTML</span>
+        <h4>ご提案図解（Web公開済み）</h4>
+        <p>1枚で全体像を共有できる提案資料。スマホでもPCでも読める。GitHub Pagesに公開済み。</p>
+        <a href="https://okemonogatari-hash.github.io/html-share-box/diagrams/green-banner-automation.html" class="del-link" target="_blank">okemonogatari-hash.github.io/.../green-banner-automation.html</a>
+      </div>
+
+      <div class="del-card">
+        <span class="del-tag doc">DOC</span>
+        <h4>サンプル納品レポート（MD）</h4>
+        <p>3職種×コピー3案×テイスト指示×ターゲット人物像を、1画面で見通せる形でまとめたサンプル納品物。</p>
+      </div>
+
+      <div class="del-card">
+        <span class="del-tag sheet">CSV</span>
+        <h4>サンプル納品 fantas様形式（CSV）</h4>
+        <p>既存スプシへ直接貼り付けられる形のCSVアウトプット。デザイナー連携まで現状フローを変えずに接続可能。</p>
+      </div>
+
+      <div class="del-card">
+        <span class="del-tag code">API</span>
+        <h4>Google Sheets 自動書き込みスクリプト</h4>
+        <p>OAuth→新規スプシ作成／既存コピー→シート追加→データ流し込み→書式整形まで一気通貫で動かすPythonスクリプト。</p>
+      </div>
+
+      <div class="del-card">
+        <span class="del-tag sheet">SHEET</span>
+        <h4>本物フォーマット準拠サンプルスプシ</h4>
+        <p>アトラエGreen運用スプシをDrive APIでコピーして、新規サンプルシートを追加。実物のフォーマットのまま3職種分が生成済み。</p>
+        <a href="https://docs.google.com/spreadsheets/d/1LZqkWNTa3CuUCpooYK9Hz3Tig7uXRMVlrn3t-R5HGe8/edit" class="del-link" target="_blank">docs.google.com/spreadsheets/d/.../edit</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 技術スタック -->
+  <section>
+    <div class="sec-label">03 / Tech Stack</div>
+    <h2 class="sec-title">裏側で動いている<span class="accent">4つの工程</span>。</h2>
+    <p class="sec-lead">
+      魔法ではなく、それぞれの工程に向いた道具を組み合わせているだけ。<br>
+      各工程がちゃんと動くことは、今日この場で実証済みです。
+    </p>
+
+    <div class="tech-box">
+      <div class="tech-flow">
+        <div class="tech-step">
+          <div class="tech-num">01</div>
+          <h5>求人ページ取得</h5>
+          <code>Playwright</code>
+          <p style="font-size:11.5px;color:var(--text-light);margin-top:8px;line-height:1.7;">Green求人URLを自動で巡回</p>
+        </div>
+        <div class="tech-step">
+          <div class="tech-num">02</div>
+          <h5>構造化抽出</h5>
+          <code>Claude + Groq</code>
+          <p style="font-size:11.5px;color:var(--text-light);margin-top:8px;line-height:1.7;">職種・年収・売り・ペルソナを分解</p>
+        </div>
+        <div class="tech-step">
+          <div class="tech-num">03</div>
+          <h5>コピー生成</h5>
+          <code>Claude</code>
+          <p style="font-size:11.5px;color:var(--text-light);margin-top:8px;line-height:1.7;">メイン／サブ／3案目のコピーを生成</p>
+        </div>
+        <div class="tech-step">
+          <div class="tech-num">04</div>
+          <h5>スプシ書き込み</h5>
+          <code>Sheets API + Drive API</code>
+          <p style="font-size:11.5px;color:var(--text-light);margin-top:8px;line-height:1.7;">コピー→新規シート→データ流し込み</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 チーム -->
+  <section>
+    <div class="sec-label">04 / Team</div>
+    <h2 class="sec-title">動いた<span class="accent">4人の役割</span>。</h2>
+    <p class="sec-lead">
+      小さなチームですが、役割分担ははっきりしています。
+      ご連絡は窓口1人へ、中では全員動いている体制。
+    </p>
+
+    <div class="role-grid">
+      <div class="role-card">
+        <div class="role-icon"><i class="fa-solid fa-headset"></i></div>
+        <div class="role-title">CEO</div>
+        <h5>窓口・進捗管理</h5>
+        <p>案件全体の方向性・納期・優先度を管理</p>
+      </div>
+      <div class="role-card">
+        <div class="role-icon"><i class="fa-solid fa-file-contract"></i></div>
+        <div class="role-title">CSO</div>
+        <h5>案件設計・見積</h5>
+        <p>要件整理・提供スコープ・料金設計</p>
+      </div>
+      <div class="role-card">
+        <div class="role-icon"><i class="fa-solid fa-terminal"></i></div>
+        <div class="role-title">CDO</div>
+        <h5>技術実装</h5>
+        <p>API・スクレイピング・書き込み実装</p>
+      </div>
+      <div class="role-card">
+        <div class="role-icon"><i class="fa-solid fa-palette"></i></div>
+        <div class="role-title">DESIGN</div>
+        <h5>提案資料・図解</h5>
+        <p>社内外に共有する資料の可視化</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 PROOF -->
+  <section>
+    <div class="sec-label">05 / Proof</div>
+    <h2 class="sec-title">いちばんお伝えしたいこと。</h2>
+    <div class="proof-box">
+      <div class="proof-text">
+        この提案は <span class="hl">「できます」</span> ではなく、<br>
+        <span class="hl">「もう動いてます」</span> の段階です。
+      </div>
+      <p style="font-size:13.5px;color:var(--text);max-width:620px;margin:0 auto 20px;line-height:1.9;">
+        求人URLを受け取ってから、職種別バナー構成スプシが埋まるまでの一連のパイプラインを、
+        今日この場で実際に動かしました。Phase 0の無料デモは、この仕組みをあなたの求人1本で回すだけです。
+      </p>
+      <a href="https://okemonogatari-hash.github.io/html-share-box/diagrams/green-banner-automation.html" class="proof-cta ghost" target="_blank">
+        <i class="fa-solid fa-file-lines"></i>ご提案の詳細を見る
+      </a>
+      <a href="https://docs.google.com/spreadsheets/d/1LZqkWNTa3CuUCpooYK9Hz3Tig7uXRMVlrn3t-R5HGe8/edit" class="proof-cta" target="_blank">
+        <i class="fa-solid fa-table"></i>生成済みスプシを見る
+      </a>
+    </div>
+  </section>
+
+  <!-- 06 NEXT -->
+  <section>
+    <div class="sec-label">06 / Next Step</div>
+    <h2 class="sec-title">次の一歩。</h2>
+    <p class="sec-lead">
+      ここまでお見せした上で、話を前に進めるとしたら、こんな順番を想定しています。
+    </p>
+
+    <div class="next-grid">
+      <div class="next-card">
+        <div class="next-num">01</div>
+        <h5>30分ヒアリング</h5>
+        <p>現状の業務量／納品フォーマット／求人媒体／バナー画像生成の範囲を共有いただく回。</p>
+      </div>
+      <div class="next-card">
+        <div class="next-num">02</div>
+        <h5>実求人で無料デモ</h5>
+        <p>実際の運用案件の求人URLを1本いただいて、フル自動でアウトプットをお渡し。</p>
+      </div>
+      <div class="next-card">
+        <div class="next-num">03</div>
+        <h5>週次運用スタート</h5>
+        <p>アウトプットに納得いただけたら、契約書＋Phase 1（週次バッチ）で運用開始。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="mark">OKEMON COMPANY — TEAM ACTION REPORT</div>
+    <div style="margin-top:6px;">2026.04.19 / 実働5時間 / 7成果物 / 1提案</div>
+  </footer>
+
+</div>
+</body>
+</html>
