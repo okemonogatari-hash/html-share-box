@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green求人広告バナー制作の自動化｜ご提案</title>
+<meta name="description" content="Greenの求人URLを渡すだけで、職種別バナー構成スプシが自動で埋まる。広告運用者様向けの業務自動化ご提案。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --navy:#1F2E4A;
+  --navy-light:#2E4368;
+  --green:#2BAE66;
+  --green-dark:#1F8A4E;
+  --green-soft:#E8F5EE;
+  --coral:#FF7A59;
+  --cream:#FAF8F3;
+  --paper:#FFFFFF;
+  --text:#2D2D2D;
+  --text-light:#6B6B6B;
+  --border:#E5E0D5;
+  --f-serif:'Noto Serif JP',serif;
+  --f-sans:'Noto Sans JP',sans-serif;
+  --f-inter:'Inter',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--f-sans);background:var(--cream);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 24px 80px;}
+
+/* ========== COVER ========== */
+.cover{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);color:#fff;border-radius:14px;padding:72px 56px;margin-bottom:48px;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(31,46,74,0.22);}
+.cover::before{content:'';position:absolute;top:-100px;right:-80px;width:360px;height:360px;border:1px solid rgba(43,174,102,0.25);border-radius:50%;}
+.cover::after{content:'';position:absolute;bottom:-140px;left:-100px;width:440px;height:440px;border:1px solid rgba(43,174,102,0.12);border-radius:50%;}
+.cover-label{font-family:var(--f-inter);font-size:12px;font-weight:600;letter-spacing:0.4em;color:var(--green);margin-bottom:24px;position:relative;z-index:1;}
+.cover-label::before{content:'';display:inline-block;width:40px;height:1px;background:var(--green);vertical-align:middle;margin-right:16px;}
+.cover-title{font-family:var(--f-serif);font-size:clamp(26px,3.8vw,40px);font-weight:700;line-height:1.6;letter-spacing:0.04em;margin-bottom:22px;position:relative;z-index:1;}
+.cover-title .accent{color:var(--green);}
+.cover-sub{font-size:15px;line-height:2;max-width:640px;opacity:0.92;position:relative;z-index:1;}
+.cover-meta{display:flex;gap:40px;margin-top:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,0.15);font-family:var(--f-inter);font-size:12px;letter-spacing:0.15em;position:relative;z-index:1;flex-wrap:wrap;}
+.cover-meta span{opacity:0.85;}
+.cover-meta strong{color:var(--green);font-weight:600;margin-left:8px;}
+
+/* ========== SECTION ========== */
+section{background:var(--paper);border-radius:12px;padding:52px 44px;margin-bottom:28px;border:1px solid var(--border);}
+.sec-label{font-family:var(--f-inter);font-size:11px;font-weight:600;letter-spacing:0.35em;color:var(--green-dark);text-transform:uppercase;margin-bottom:12px;}
+.sec-title{font-family:var(--f-serif);font-size:clamp(22px,2.6vw,30px);font-weight:700;color:var(--navy);line-height:1.6;letter-spacing:0.04em;margin-bottom:16px;}
+.sec-title .accent{color:var(--green-dark);}
+.sec-lead{font-size:15px;color:var(--text);line-height:2;margin-bottom:32px;}
+
+/* ========== AS-IS / TO-BE ========== */
+.compare-grid{display:grid;grid-template-columns:1fr 60px 1fr;gap:20px;align-items:stretch;margin-top:24px;}
+.compare-col{padding:32px 28px;border-radius:10px;}
+.compare-col.asis{background:#FCF0EC;border:1px solid #F4C9BC;}
+.compare-col.tobe{background:var(--green-soft);border:1px solid #B5DFC5;}
+.compare-head{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px dashed rgba(0,0,0,0.12);}
+.compare-head .tag{font-family:var(--f-inter);font-size:10px;font-weight:700;letter-spacing:0.25em;padding:4px 10px;border-radius:3px;}
+.asis .tag{background:var(--coral);color:#fff;}
+.tobe .tag{background:var(--green);color:#fff;}
+.compare-head h3{font-family:var(--f-serif);font-size:17px;font-weight:700;color:var(--navy);letter-spacing:0.04em;}
+.compare-list{list-style:none;}
+.compare-list li{position:relative;padding-left:26px;font-size:14px;line-height:1.95;margin-bottom:12px;color:var(--text);}
+.compare-list li::before{position:absolute;left:0;top:3px;font-family:'Font Awesome 6 Free';font-weight:900;font-size:14px;}
+.asis .compare-list li::before{content:'\f057';color:var(--coral);}
+.tobe .compare-list li::before{content:'\f058';color:var(--green);}
+.compare-arrow{display:flex;align-items:center;justify-content:center;}
+.compare-arrow i{font-size:28px;color:var(--green-dark);}
+.compare-footer{margin-top:18px;padding-top:16px;border-top:1px dashed rgba(0,0,0,0.12);font-size:13px;color:var(--text-light);line-height:1.9;}
+.asis .compare-footer strong{color:var(--coral);}
+.tobe .compare-footer strong{color:var(--green-dark);}
+@media(max-width:768px){.compare-grid{grid-template-columns:1fr;}.compare-arrow{transform:rotate(90deg);padding:8px 0;}}
+
+/* ========== FLOW ========== */
+.flow-wrap{margin-top:16px;}
+.flow-step{display:grid;grid-template-columns:90px 1fr;gap:24px;padding:26px 0;border-bottom:1px dashed var(--border);position:relative;}
+.flow-step:last-child{border-bottom:none;}
+.flow-step::before{content:'';position:absolute;left:44px;top:70px;bottom:-16px;width:2px;background:linear-gradient(var(--green),transparent);opacity:0.35;}
+.flow-step:last-child::before{display:none;}
+.flow-num{font-family:var(--f-serif);font-size:40px;font-weight:700;color:var(--green-dark);line-height:1;text-align:center;}
+.flow-num small{display:block;font-family:var(--f-inter);font-size:9px;font-weight:500;letter-spacing:0.3em;color:var(--text-light);margin-bottom:6px;}
+.flow-body h3{font-family:var(--f-serif);font-size:18px;font-weight:700;color:var(--navy);letter-spacing:0.04em;margin-bottom:8px;}
+.flow-body p{font-size:14px;color:var(--text);line-height:1.95;margin-bottom:6px;}
+.flow-body .tech{font-family:var(--f-inter);font-size:11px;color:var(--text-light);letter-spacing:0.08em;margin-top:6px;}
+.flow-body .tech strong{color:var(--green-dark);font-weight:600;}
+@media(max-width:640px){.flow-step{grid-template-columns:1fr;gap:10px;}.flow-num{text-align:left;font-size:32px;}.flow-step::before{display:none;}}
+
+/* ========== TEAM ========== */
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:24px;}
+.team-card{padding:24px 22px;background:var(--cream);border-radius:10px;border-left:3px solid var(--green);transition:transform 0.3s;}
+.team-card:hover{transform:translateY(-3px);}
+.team-role{font-family:var(--f-inter);font-size:10px;font-weight:700;letter-spacing:0.25em;color:var(--green-dark);margin-bottom:6px;}
+.team-card h4{font-family:var(--f-serif);font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;letter-spacing:0.03em;}
+.team-card p{font-size:13px;color:var(--text);line-height:1.85;}
+@media(max-width:640px){.team-grid{grid-template-columns:1fr;}}
+
+/* ========== PLAN ========== */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px;}
+.plan-card{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:30px 26px;position:relative;transition:transform 0.3s,box-shadow 0.3s;}
+.plan-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(31,46,74,0.1);}
+.plan-card.featured{border-color:var(--green);border-width:2px;}
+.plan-card.featured::before{content:'おすすめ';position:absolute;top:-11px;left:26px;background:var(--green);color:#fff;font-family:var(--f-inter);font-size:10px;font-weight:700;letter-spacing:0.2em;padding:4px 12px;border-radius:3px;}
+.plan-phase{font-family:var(--f-inter);font-size:10px;font-weight:700;letter-spacing:0.3em;color:var(--green-dark);margin-bottom:8px;}
+.plan-title{font-family:var(--f-serif);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:14px;letter-spacing:0.03em;}
+.plan-price{font-family:var(--f-serif);font-size:26px;font-weight:700;color:var(--navy);margin-bottom:16px;}
+.plan-price .unit{font-size:13px;color:var(--text-light);font-weight:400;margin-left:4px;}
+.plan-price.free{color:var(--coral);}
+.plan-list{list-style:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.plan-list li{position:relative;padding-left:20px;font-size:13px;line-height:1.9;margin-bottom:8px;color:var(--text);}
+.plan-list li::before{content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;left:0;top:3px;font-size:11px;color:var(--green);}
+@media(max-width:768px){.plan-grid{grid-template-columns:1fr;}}
+
+/* ========== VALUE ========== */
+.value-box{background:linear-gradient(135deg,var(--green-soft) 0%,#D9EEDF 100%);border-radius:12px;padding:40px 36px;text-align:center;margin-top:8px;}
+.value-hero{font-family:var(--f-serif);font-size:clamp(22px,3vw,32px);font-weight:700;color:var(--navy);line-height:1.6;letter-spacing:0.04em;margin-bottom:14px;}
+.value-hero .num{color:var(--coral);font-size:1.2em;}
+.value-hero .arrow{color:var(--green-dark);margin:0 10px;}
+.value-sub{font-size:14px;color:var(--text);line-height:1.95;max-width:620px;margin:0 auto;}
+
+/* ========== NEXT ========== */
+.next-wrap{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:24px;}
+.next-card{padding:26px 22px;background:var(--cream);border-radius:10px;text-align:center;}
+.next-icon{width:52px;height:52px;border-radius:50%;background:var(--paper);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+.next-icon i{font-size:18px;color:var(--green-dark);}
+.next-card h4{font-family:var(--f-serif);font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.next-card p{font-size:12px;color:var(--text-light);line-height:1.8;}
+@media(max-width:768px){.next-wrap{grid-template-columns:1fr;}}
+
+/* ========== FOOTER ========== */
+footer{text-align:center;padding:32px 0 8px;color:var(--text-light);font-size:12px;letter-spacing:0.1em;}
+footer .mark{font-family:var(--f-inter);font-weight:600;color:var(--green-dark);letter-spacing:0.25em;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ========== COVER ========== -->
+  <div class="cover">
+    <div class="cover-label">PROPOSAL / BANNER AUTOMATION</div>
+    <h1 class="cover-title">
+      Green求人から<br>
+      職種別バナー構成を、<br>
+      <span class="accent">URL投げるだけで。</span>
+    </h1>
+    <p class="cover-sub">
+      「求人URLを1本ずつ開いて、原稿をコピペして、スプシに手貼りして…」<br>
+      毎週発生するこの作業、うちのチームが丸ごと巻き取ります。<br>
+      翌朝には、職種別のバナー構成スプシが埋まっている状態を。
+    </p>
+    <div class="cover-meta">
+      <span>提案日<strong>2026.04.19</strong></span>
+      <span>提案元<strong>おけもんカンパニー</strong></span>
+      <span>対象<strong>広告運用者様</strong></span>
+    </div>
+  </div>
+
+  <!-- ========== 1. AS-IS / TO-BE ========== -->
+  <section>
+    <div class="sec-label">01 / Before & After</div>
+    <h2 class="sec-title">今の作業と、<span class="accent">自動化後の世界</span>。</h2>
+    <p class="sec-lead">
+      Green求人広告の運用でいちばん時間が溶けるのは、バナー制作そのものより「職種ごとに原稿をまとめる下ごしらえ」のはず。<br>
+      そこを1枚の比較図で見てみます。
+    </p>
+
+    <div class="compare-grid">
+      <div class="compare-col asis">
+        <div class="compare-head">
+          <span class="tag">AS-IS</span>
+          <h3>今の進め方</h3>
+        </div>
+        <ul class="compare-list">
+          <li>Green求人URLを1本ずつブラウザで開く</li>
+          <li>仕事内容・年収・企業情報を手でコピペ</li>
+          <li>職種ごとにスプシに手貼りしてまとめる</li>
+          <li>文言案・テイスト指示を毎回ゼロから書く</li>
+          <li>これを <strong>毎週</strong> 繰り返す</li>
+        </ul>
+        <div class="compare-footer">
+          <strong>感覚値：</strong>職種10本で2〜3時間。週次で固定コスト化。
+        </div>
+      </div>
+
+      <div class="compare-arrow">
+        <i class="fa-solid fa-arrow-right-long"></i>
+      </div>
+
+      <div class="compare-col tobe">
+        <div class="compare-head">
+          <span class="tag">TO-BE</span>
+          <h3>自動化後の進め方</h3>
+        </div>
+        <ul class="compare-list">
+          <li>Green求人URLのリストを渡すだけ</li>
+          <li>AIが各ページを巡回して原稿を自動抽出</li>
+          <li>職種ごとに自動で整理・グルーピング</li>
+          <li>バナー用コピー3案 + テイスト指示まで生成</li>
+          <li>決まったフォーマットのスプシに自動で書き出し</li>
+        </ul>
+        <div class="compare-footer">
+          <strong>感覚値：</strong>URLを投げて、<strong>数分〜翌朝</strong>にはスプシが埋まっている。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 2. 業務フロー ========== -->
+  <section>
+    <div class="sec-label">02 / How it works</div>
+    <h2 class="sec-title">裏側で<span class="accent">何が起きているか</span>。</h2>
+    <p class="sec-lead">
+      魔法ではなくて、それぞれの工程に向いたAI・ツールを組み合わせているだけです。<br>
+      手作業だと重いところを、機械が得意な形に分解して流してます。
+    </p>
+
+    <div class="flow-wrap">
+      <div class="flow-step">
+        <div class="flow-num"><small>STEP</small>01</div>
+        <div class="flow-body">
+          <h3>求人ページを自動で開いて、中身を読み取る</h3>
+          <p>渡していただいたGreen求人URLを、ブラウザ自動操作ツールが順番に巡回。ページの中身をまるごと取得します。手でページを開く作業がゼロに。</p>
+          <div class="tech">使用技術：<strong>Playwright</strong>（ブラウザ自動操作）</div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-num"><small>STEP</small>02</div>
+        <div class="flow-body">
+          <h3>求人原稿を「使える形」に整理する</h3>
+          <p>職種名・仕事内容・年収レンジ・勤務地・求人の"売り"・想定ペルソナを、AIが構造化して抜き出します。ここがいちばん時間を溶かしていた下ごしらえ工程。</p>
+          <div class="tech">使用技術：<strong>Claude</strong> + <strong>Groq</strong>（大量テキスト要約）</div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-num"><small>STEP</small>03</div>
+        <div class="flow-body">
+          <h3>職種ごとにバナーコピー案を生成する</h3>
+          <p>職種のターゲット層・求人の訴求ポイントを踏まえて、タイトル案・キャッチ案・テイスト指示・挿入テキストを3パターン自動生成。人のレビューは残しつつ、ゼロから書く手間は消えます。</p>
+          <div class="tech">使用技術：<strong>Claude</strong>（日本語品質重視）</div>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-num"><small>STEP</small>04</div>
+        <div class="flow-body">
+          <h3>いつものスプシに、自動で書き出す</h3>
+          <p>既にお使いのスプシ（週次シート・職種別構成）のフォーマットをそのまま踏襲。週次シートの自動採番、職種ブロックの自動生成までやります。デザイナーさんへの流し方は今までと同じでOK。</p>
+          <div class="tech">使用技術：<strong>Google Sheets API</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 3. チーム ========== -->
+  <section>
+    <div class="sec-label">03 / Team</div>
+    <h2 class="sec-title">どんなチームが<span class="accent">動きますか</span>。</h2>
+    <p class="sec-lead">
+      小さな会社ですが、役割分担がはっきりしているので、窓口は1人・中で動くのは複数、という形で進みます。<br>
+      ご連絡はいつも1本の窓口へ。裏で全員が動きます。
+    </p>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-role">CEO / 窓口</div>
+        <h4>ご連絡・進捗管理の一本化</h4>
+        <p>案件全体の進捗・納期・優先度を管理。ご質問や方向転換は全部ここに投げていただければ、中で捌きます。</p>
+      </div>
+      <div class="team-card">
+        <div class="team-role">CSO / 営業・設計</div>
+        <h4>案件ヒアリングと見積もり</h4>
+        <p>お仕事の中身をヒアリングして、スコープと料金プランを設計。数字と合意形成を担当します。</p>
+      </div>
+      <div class="team-card">
+        <div class="team-role">CDO / 技術実装</div>
+        <h4>自動化パイプラインの構築</h4>
+        <p>Playwright・AI・スプレッドシート連携の実装担当。要件が固まったら、動くものを最短で仕上げます。</p>
+      </div>
+      <div class="team-card">
+        <div class="team-role">デザイン / 図解</div>
+        <h4>提案資料・業務フロー可視化</h4>
+        <p>この提案書もそう。社内外への共有資料を、読みやすい1枚の形で整えます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 4. VALUE ========== -->
+  <section>
+    <div class="sec-label">04 / Value</div>
+    <h2 class="sec-title">いちばんお伝えしたいこと。</h2>
+    <div class="value-box">
+      <div class="value-hero">
+        職種10本の下ごしらえ、<br>
+        <span class="num">2〜3時間</span><span class="arrow">→</span><span class="num">数分</span>。
+      </div>
+      <p class="value-sub">
+        作業を減らすだけじゃなくて、<strong>その時間を丸ごと別の仕事や休みに回せる</strong>ようにする、というのが本当の提供価値です。<br>
+        広告運用そのものの品質判断は、引き続き人間が担う。でも下ごしらえはAIで巻き取れる。その線引きで設計しています。
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== 5. PLAN ========== -->
+  <section>
+    <div class="sec-label">05 / Plan</div>
+    <h2 class="sec-title">料金プランは<span class="accent">3段階</span>。</h2>
+    <p class="sec-lead">
+      いきなり月額契約ではなく、まず「本当に動くのか？」を無料デモでご確認いただくところからスタートします。<br>
+      小さく試して、効果が出たら段階的に広げる形です。
+    </p>
+
+    <div class="plan-grid">
+      <div class="plan-card">
+        <div class="plan-phase">PHASE 0</div>
+        <div class="plan-title">まずは1本、無料デモ</div>
+        <div class="plan-price free">¥0</div>
+        <ul class="plan-list">
+          <li>Green求人URLを1本いただく</li>
+          <li>構造化抽出 + バナーコピー3案</li>
+          <li>1〜2営業日で納品</li>
+          <li>「へぇ、こう出てくるのか」を体験</li>
+        </ul>
+      </div>
+
+      <div class="plan-card featured">
+        <div class="plan-phase">PHASE 1</div>
+        <div class="plan-title">週次バッチ運用</div>
+        <div class="plan-price">¥2〜5万<span class="unit">／月</span></div>
+        <ul class="plan-list">
+          <li>週10〜30本の求人をバッチ処理</li>
+          <li>現行スプシにそのまま書き出し</li>
+          <li>毎週の下ごしらえを丸ごと巻き取り</li>
+          <li>職種の差し替え・追加にも柔軟対応</li>
+        </ul>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-phase">PHASE 2</div>
+        <div class="plan-title">スプシ運用まるごと代替</div>
+        <div class="plan-price">¥5〜10万<span class="unit">／月</span></div>
+        <ul class="plan-list">
+          <li>URLリストの受け取り窓口まで自動化</li>
+          <li>週次納品スプシを御社ブランドで提供</li>
+          <li>他媒体（doda等）への横展開も視野</li>
+          <li>時間を完全に買い戻せる水準</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6. NEXT STEP ========== -->
+  <section>
+    <div class="sec-label">06 / Next Step</div>
+    <h2 class="sec-title">次のステップ。</h2>
+    <p class="sec-lead">
+      話を前に進めるとしたら、順番はこんな形を想定しています。<br>
+      まずは気軽に、現状のスプシと求人URLを1本だけ共有いただければ動けます。
+    </p>
+
+    <div class="next-wrap">
+      <div class="next-card">
+        <div class="next-icon"><i class="fa-solid fa-comments"></i></div>
+        <h4>① 30分のヒアリング</h4>
+        <p>現状の業務量・納品フォーマット・求めるアウトプットを共有いただく回。</p>
+      </div>
+      <div class="next-card">
+        <div class="next-icon"><i class="fa-solid fa-flask"></i></div>
+        <h4>② Phase 0 無料デモ</h4>
+        <p>求人URL1本から、実際のアウトプットをお渡し。判断材料に。</p>
+      </div>
+      <div class="next-card">
+        <div class="next-icon"><i class="fa-solid fa-handshake"></i></div>
+        <h4>③ Phase 1 着手</h4>
+        <p>アウトプットに納得いただけたら、週次運用スタート。契約書を交わして。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="mark">OKEMON COMPANY</div>
+    <div style="margin-top:6px;">ワクワク喋ってたら、いつの間にか仕事が終わっている世界を。</div>
+  </footer>
+
+</div>
+</body>
+</html>
