@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>まさみさんの取扱説明書 〜2026年春の自分会議〜</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sakura:#FFB7C5;       /* 桜のピンク */
+  --sakura-deep:#F4859F;  /* 濃いめ桜 */
+  --plum:#E78AC4;         /* 梅 */
+  --lavender:#C9A9DD;     /* ラベンダー */
+  --sky:#A8D8EA;          /* 春の空 */
+  --leaf:#A6D9A1;         /* 若葉 */
+  --honey:#FFE4A0;        /* はちみつ */
+  --cream:#FFF5E8;        /* クリーム */
+  --paper:#FFFAF4;        /* 紙 */
+  --ink:#3D3344;          /* 墨 */
+  --ink-soft:#7A6C82;     /* 薄墨 */
+
+  /* ストレングス4領域 */
+  --executing:#9333EA;    /* 紫 実行力 */
+  --influencing:#F97316;  /* 橙 影響力 */
+  --relationship:#3B82F6; /* 青 人間関係構築力 */
+  --strategic:#10B981;    /* 緑 戦略的思考力 */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{font-family:'Zen Maru Gothic','Klee One',-apple-system,sans-serif;background:linear-gradient(180deg,#FFF0F4 0%,#FFFAF4 35%,#F4F8FF 100%);color:var(--ink);line-height:1.85;min-height:100vh}
+
+/* 桜の花びら */
+.petals{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.petal{position:absolute;width:14px;height:14px;background:radial-gradient(circle at 50% 30%, #FFC9D5, #FF99B0);border-radius:0 100% 0 100%;opacity:.55;animation:fall linear infinite}
+.petal:nth-child(1){left:5%;animation-duration:18s;animation-delay:0s;transform:scale(.8)}
+.petal:nth-child(2){left:15%;animation-duration:22s;animation-delay:3s;transform:scale(1.2)}
+.petal:nth-child(3){left:28%;animation-duration:20s;animation-delay:6s}
+.petal:nth-child(4){left:42%;animation-duration:25s;animation-delay:1s;transform:scale(.9)}
+.petal:nth-child(5){left:55%;animation-duration:19s;animation-delay:8s;transform:scale(1.1)}
+.petal:nth-child(6){left:68%;animation-duration:23s;animation-delay:4s}
+.petal:nth-child(7){left:80%;animation-duration:21s;animation-delay:10s;transform:scale(.85)}
+.petal:nth-child(8){left:92%;animation-duration:24s;animation-delay:7s;transform:scale(1.15)}
+.petal:nth-child(9){left:35%;animation-duration:26s;animation-delay:12s}
+.petal:nth-child(10){left:62%;animation-duration:20s;animation-delay:15s;transform:scale(.95)}
+@keyframes fall{
+  0%{transform:translateY(-10vh) rotate(0deg) scale(var(--s,1));opacity:0}
+  10%{opacity:.55}
+  90%{opacity:.55}
+  100%{transform:translateY(110vh) rotate(540deg) scale(var(--s,1));opacity:0}
+}
+
+.container{max-width:880px;margin:0 auto;padding:30px 20px 80px;position:relative;z-index:1}
+
+/* ヒーロー */
+.hero{text-align:center;padding:50px 20px 30px;animation:fadeUp 1s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.7);backdrop-filter:blur(10px);padding:6px 18px;border-radius:50px;font-size:13px;color:var(--sakura-deep);font-weight:700;letter-spacing:1px;margin-bottom:18px;border:1px solid rgba(244,133,159,.2)}
+.hero h1{font-size:2.6em;font-weight:900;background:linear-gradient(135deg,var(--sakura-deep),var(--plum) 50%,var(--lavender));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.4;letter-spacing:.02em}
+.hero .sub{margin-top:14px;font-size:1.05em;color:var(--ink-soft);font-weight:500}
+.hero .meta{margin-top:18px;font-size:.85em;color:var(--ink-soft);opacity:.8}
+.hero .meta span{display:inline-block;margin:0 8px}
+
+/* セクション見出し */
+.sec-title{display:flex;align-items:center;gap:12px;font-size:1.3em;font-weight:700;color:var(--ink);margin:48px 0 18px;padding:0 4px}
+.sec-title .num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--sakura),var(--plum));color:#fff;font-size:.85em;font-weight:800;box-shadow:0 4px 12px rgba(244,133,159,.35)}
+.sec-title .ja{font-family:'Klee One',serif}
+.sec-title .en{margin-left:auto;font-size:.7em;color:var(--ink-soft);font-weight:600;letter-spacing:2px;text-transform:uppercase}
+
+/* カード共通 */
+.card{background:var(--paper);border-radius:24px;padding:28px;margin-bottom:18px;box-shadow:0 8px 32px rgba(244,133,159,.10),0 2px 8px rgba(0,0,0,.04);border:1px solid rgba(255,183,197,.25)}
+
+/* 序文 */
+.intro-card{background:linear-gradient(135deg,rgba(255,255,255,.85),rgba(255,240,244,.6));text-align:center}
+.intro-card p{font-size:1em;line-height:2;color:var(--ink)}
+.intro-card .heart{display:inline-block;color:var(--sakura-deep);font-size:1.2em;margin:0 4px}
+
+/* ストレングスTOP10 */
+.strength-domains{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:20px;font-size:.75em}
+.domain-pill{padding:5px 12px;border-radius:50px;color:#fff;font-weight:700}
+.domain-pill.exec{background:var(--executing)}
+.domain-pill.infl{background:var(--influencing)}
+.domain-pill.rel{background:var(--relationship)}
+.domain-pill.str{background:var(--strategic)}
+.domain-pill.highlight{box-shadow:0 0 0 3px rgba(59,130,246,.3),0 0 20px rgba(59,130,246,.4);transform:scale(1.05)}
+
+.s-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.s-row{display:flex;align-items:center;gap:14px;padding:12px 14px;background:rgba(255,255,255,.65);border-radius:14px;transition:all .3s ease;border-left:5px solid transparent}
+.s-row:hover{transform:translateX(4px);background:rgba(255,255,255,.95);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.s-row.exec{border-left-color:var(--executing)}
+.s-row.infl{border-left-color:var(--influencing)}
+.s-row.rel{border-left-color:var(--relationship)}
+.s-row.str{border-left-color:var(--strategic)}
+.s-rank{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:900;font-size:.95em;color:#fff;background:linear-gradient(135deg,var(--sakura),var(--plum));flex-shrink:0}
+.s-row.top3 .s-rank{background:linear-gradient(135deg,#FFD700,#FFA500);color:#fff;box-shadow:0 3px 10px rgba(255,165,0,.4)}
+.s-name{font-weight:700;font-size:1.05em;min-width:90px}
+.s-bar-wrap{flex:1;height:8px;background:rgba(0,0,0,.05);border-radius:4px;overflow:hidden;position:relative}
+.s-bar{height:100%;border-radius:4px;animation:grow 1.4s ease-out forwards;transform-origin:left}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.s-bar.exec{background:linear-gradient(90deg,var(--executing),#C084FC)}
+.s-bar.infl{background:linear-gradient(90deg,var(--influencing),#FDBA74)}
+.s-bar.rel{background:linear-gradient(90deg,var(--relationship),#93C5FD)}
+.s-bar.str{background:linear-gradient(90deg,var(--strategic),#86EFAC)}
+.s-tag{font-size:.7em;font-weight:700;color:#fff;padding:3px 8px;border-radius:50px;flex-shrink:0}
+.s-tag.exec{background:var(--executing)}
+.s-tag.infl{background:var(--influencing)}
+.s-tag.rel{background:var(--relationship)}
+.s-tag.str{background:var(--strategic)}
+.s-note{margin-top:18px;padding:14px 18px;background:rgba(59,130,246,.08);border-left:4px solid var(--relationship);border-radius:8px;font-size:.92em;color:var(--ink)}
+.s-note strong{color:var(--relationship)}
+
+/* らしさカード */
+.kirari-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:8px}
+.kirari{background:linear-gradient(135deg,#fff,rgba(255,240,244,.4));border-radius:18px;padding:22px;border:1px solid rgba(255,183,197,.3);transition:all .3s ease;position:relative;overflow:hidden}
+.kirari::before{content:'';position:absolute;top:-30px;right:-30px;width:80px;height:80px;background:radial-gradient(circle,rgba(255,183,197,.3),transparent);border-radius:50%}
+.kirari:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(244,133,159,.18)}
+.kirari .icon{font-size:2em;margin-bottom:8px;display:block}
+.kirari h3{font-size:1.05em;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.kirari p{font-size:.9em;color:var(--ink-soft);line-height:1.7}
+
+/* 印象的な発言（吹き出し） */
+.quote-list{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+.quote{background:#fff;border-radius:18px;padding:22px 26px 22px 60px;position:relative;box-shadow:0 4px 14px rgba(0,0,0,.05);border-left:4px solid var(--sakura)}
+.quote::before{content:'❝';position:absolute;left:18px;top:8px;font-size:3em;color:var(--sakura);font-family:Georgia,serif;line-height:1}
+.quote p{font-size:1.02em;line-height:1.85;color:var(--ink);font-weight:500;margin:0}
+.quote .from{margin-top:10px;font-size:.78em;color:var(--ink-soft);text-align:right}
+.quote.pin{border-left-color:var(--plum);background:linear-gradient(135deg,#fff,rgba(231,138,196,.06))}
+.quote.pin::before{color:var(--plum)}
+
+/* 今の状態マップ */
+.state-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:14px 0 18px}
+.state-item{background:#fff;border-radius:16px;padding:18px 14px;text-align:center;border:2px dashed rgba(244,133,159,.4);transition:all .3s ease}
+.state-item:hover{border-style:solid;background:linear-gradient(135deg,#fff,rgba(255,228,160,.2));transform:translateY(-2px)}
+.state-item .emoji{font-size:1.8em;display:block;margin-bottom:6px}
+.state-item .label{font-size:.85em;font-weight:700;color:var(--ink)}
+.state-item .small{font-size:.7em;color:var(--ink-soft);margin-top:4px}
+.state-msg{background:linear-gradient(135deg,rgba(255,228,160,.4),rgba(255,183,197,.3));padding:18px 22px;border-radius:14px;text-align:center;font-weight:700;font-size:1.05em;color:var(--ink);line-height:1.8}
+
+/* もやもやBOX */
+.moya-box{background:linear-gradient(135deg,rgba(201,169,221,.15),rgba(168,216,234,.15));border-radius:20px;padding:26px;border:1px dashed rgba(201,169,221,.4)}
+.moya-box .head{font-weight:700;font-size:1em;color:var(--lavender);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.moya-list{display:flex;flex-direction:column;gap:12px}
+.moya-item{background:rgba(255,255,255,.7);padding:14px 18px;border-radius:12px;font-size:.95em;line-height:1.75;color:var(--ink);position:relative;padding-left:36px}
+.moya-item::before{content:'☁';position:absolute;left:14px;top:12px;font-size:1.2em;color:var(--lavender)}
+.moya-foot{margin-top:16px;padding-top:14px;border-top:1px dashed rgba(201,169,221,.3);font-size:.88em;color:var(--ink-soft);line-height:1.8;text-align:center}
+.moya-foot strong{color:var(--lavender)}
+
+/* 小さな一歩 */
+.step-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:8px}
+.step{background:#fff;border-radius:16px;padding:20px;border:1px solid rgba(255,183,197,.3);transition:all .3s ease;position:relative;overflow:hidden}
+.step::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--sakura),var(--plum),var(--lavender));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+.step:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(244,133,159,.18)}
+.step:hover::after{transform:scaleX(1)}
+.step .num-tag{display:inline-block;background:linear-gradient(135deg,var(--sakura),var(--plum));color:#fff;font-size:.7em;font-weight:800;padding:3px 10px;border-radius:50px;margin-bottom:10px;letter-spacing:1px}
+.step h4{font-size:1em;font-weight:700;margin-bottom:8px;color:var(--ink);line-height:1.5}
+.step p{font-size:.85em;color:var(--ink-soft);line-height:1.7}
+
+/* おけもんからの手紙 */
+.letter{background:linear-gradient(135deg,#fff,rgba(255,240,244,.5));border-radius:24px;padding:36px 30px;border:1px solid rgba(255,183,197,.4);box-shadow:0 8px 32px rgba(244,133,159,.12);position:relative}
+.letter::before{content:'🌸';position:absolute;top:-18px;left:50%;transform:translateX(-50%);background:#fff;padding:0 14px;font-size:1.8em}
+.letter .title{text-align:center;font-size:1.15em;font-weight:700;color:var(--sakura-deep);margin-bottom:20px}
+.letter p{font-size:1em;line-height:2.1;color:var(--ink);margin-bottom:14px}
+.letter p:last-child{margin-bottom:0}
+.letter .sign{margin-top:24px;text-align:right;font-size:.9em;color:var(--ink-soft);font-style:italic}
+.letter strong{color:var(--sakura-deep)}
+
+/* フッター */
+.footer{text-align:center;margin-top:60px;padding:30px 20px;color:var(--ink-soft);font-size:.85em;line-height:1.8}
+.footer .heart{color:var(--sakura-deep)}
+
+/* レスポンシブ */
+@media(max-width:600px){
+  .hero h1{font-size:1.9em}
+  .hero .sub{font-size:.95em}
+  .container{padding:20px 14px 60px}
+  .card{padding:22px 18px}
+  .sec-title{font-size:1.1em}
+  .s-name{min-width:75px;font-size:.95em}
+  .s-tag{display:none}
+  .quote{padding:20px 20px 20px 50px}
+  .quote::before{font-size:2.4em;left:14px;top:6px}
+  .quote p{font-size:.95em}
+  .letter{padding:28px 20px}
+}
+</style>
+</head>
+<body>
+
+<div class="petals">
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div>
+</div>
+
+<div class="container">
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="badge">🌸 PERSONAL CARD FOR MASAMI</div>
+    <h1>まさみさんの<br>取扱説明書</h1>
+    <div class="sub">〜 2026年春の自分会議 〜</div>
+    <div class="meta">
+      <span>📅 2026.04.21</span>
+      <span>⏰ 約2時間</span>
+      <span>📋 ストレングス34レビュー</span>
+    </div>
+  </div>
+
+  <!-- 序文 -->
+  <div class="card intro-card">
+    <p>
+      この日のお話、ぜんぶ<span class="heart">🌸</span>にして残しました。<br>
+      あとで読み返したり、迷ったときに開いたり、<br>
+      気が向いたら誰かに見せたり。<br>
+      <strong>まさみさんが「自分らしくいる」ためのお守り</strong>として、どうぞ。
+    </p>
+  </div>
+
+  <!-- ① ストレングス -->
+  <div class="sec-title">
+    <span class="num">1</span>
+    <span class="ja">あなたの強みベスト10</span>
+    <span class="en">Strengths</span>
+  </div>
+
+  <div class="card">
+    <div class="strength-domains">
+      <span class="domain-pill exec">実行力</span>
+      <span class="domain-pill infl">影響力</span>
+      <span class="domain-pill rel highlight">人間関係構築力 ✨</span>
+      <span class="domain-pill str">戦略的思考力</span>
+    </div>
+
+    <div class="s-list">
+      <div class="s-row exec top3">
+        <div class="s-rank">1</div>
+        <div class="s-name">達成欲</div>
+        <div class="s-bar-wrap"><div class="s-bar exec" style="width:100%"></div></div>
+        <div class="s-tag exec">実行</div>
+      </div>
+      <div class="s-row str top3">
+        <div class="s-rank">2</div>
+        <div class="s-name">学習欲</div>
+        <div class="s-bar-wrap"><div class="s-bar str" style="width:96%"></div></div>
+        <div class="s-tag str">戦略</div>
+      </div>
+      <div class="s-row rel top3">
+        <div class="s-rank">3</div>
+        <div class="s-name">ポジティブ</div>
+        <div class="s-bar-wrap"><div class="s-bar rel" style="width:92%"></div></div>
+        <div class="s-tag rel">人間</div>
+      </div>
+      <div class="s-row rel">
+        <div class="s-rank">4</div>
+        <div class="s-name">共感性</div>
+        <div class="s-bar-wrap"><div class="s-bar rel" style="width:88%"></div></div>
+        <div class="s-tag rel">人間</div>
+      </div>
+      <div class="s-row infl">
+        <div class="s-rank">5</div>
+        <div class="s-name">成長促進</div>
+        <div class="s-bar-wrap"><div class="s-bar infl" style="width:84%"></div></div>
+        <div class="s-tag infl">影響</div>
+      </div>
+      <div class="s-row infl">
+        <div class="s-rank">6</div>
+        <div class="s-name">社交性</div>
+        <div class="s-bar-wrap"><div class="s-bar infl" style="width:80%"></div></div>
+        <div class="s-tag infl">影響</div>
+      </div>
+      <div class="s-row str">
+        <div class="s-rank">7</div>
+        <div class="s-name">運命思考</div>
+        <div class="s-bar-wrap"><div class="s-bar str" style="width:76%"></div></div>
+        <div class="s-tag str">戦略</div>
+      </div>
+      <div class="s-row rel">
+        <div class="s-rank">8</div>
+        <div class="s-name">包含</div>
+        <div class="s-bar-wrap"><div class="s-bar rel" style="width:72%"></div></div>
+        <div class="s-tag rel">人間</div>
+      </div>
+      <div class="s-row str">
+        <div class="s-rank">9</div>
+        <div class="s-name">収集心</div>
+        <div class="s-bar-wrap"><div class="s-bar str" style="width:68%"></div></div>
+        <div class="s-tag str">戦略</div>
+      </div>
+      <div class="s-row exec">
+        <div class="s-rank">10</div>
+        <div class="s-name">目標志向</div>
+        <div class="s-bar-wrap"><div class="s-bar exec" style="width:64%"></div></div>
+        <div class="s-tag exec">実行</div>
+      </div>
+    </div>
+
+    <div class="s-note">
+      🌟 上位10個のうち <strong>4つが「人間関係構築力」</strong>。<br>
+      まさみさんは、<strong>人と関わるほど幸福度が上がる</strong>タイプ。事務でひとりでパソコンに向かう日々がしんどかったのは、自然なことだった。
+    </div>
+  </div>
+
+  <!-- ② らしさ -->
+  <div class="sec-title">
+    <span class="num">2</span>
+    <span class="ja">セッションで見えた「まさみさんらしさ」</span>
+    <span class="en">Your Essence</span>
+  </div>
+
+  <div class="kirari-grid">
+    <div class="kirari">
+      <span class="icon">🎯</span>
+      <h3>達成感が燃料</h3>
+      <p>予定が詰まってる方が嬉しい。電話を次々さばいてる時、達成欲がメラメラ燃える。「頑張りすぎなくていい」は全然響かない、それが素のあなた。</p>
+    </div>
+    <div class="kirari">
+      <span class="icon">🤝</span>
+      <h3>人と話すと充電</h3>
+      <p>コミスタ楽しい、初対面でも喋れる、家に1日いるのは無理。社交性が突出してて、人と関わる時間そのものが回復ポイント。</p>
+    </div>
+    <div class="kirari">
+      <span class="icon">📚</span>
+      <h3>知らないことを知るのが好き</h3>
+      <p>「できなかったことができるようになる」瞬間がご馳走。ホテル受付でソースの使い方を教わって覚えた時、ほんとに楽しかったやつ。</p>
+    </div>
+    <div class="kirari">
+      <span class="icon">🌸</span>
+      <h3>突発的な行動派</h3>
+      <p>前日の昼に決めて朝5時に上高地集合、流星群バレー合宿、お花見オフ会48名・200名…。「楽しそう」が動力源。フットワーク激軽。</p>
+    </div>
+    <div class="kirari">
+      <span class="icon">💛</span>
+      <h3>「ありがとう」が栄養</h3>
+      <p>家業の経理時代、間接的には役立ってたけど直接「ありがとう」がなくてしんどかった。<strong>誰かが元気になる瞬間に立ち会えると一番満たされる</strong>人。</p>
+    </div>
+  </div>
+
+  <!-- ③ 印象に残る発言 -->
+  <div class="sec-title">
+    <span class="num">3</span>
+    <span class="ja">あなたが言ってた、大事な言葉</span>
+    <span class="en">Your Voice</span>
+  </div>
+
+  <div class="quote-list">
+    <div class="quote pin">
+      <p>モヤモヤが解決したり、元気出ましたとか言ってくれたら嬉しいな。</p>
+      <div class="from">— なりたい自分の輪郭が出た瞬間</div>
+    </div>
+    <div class="quote">
+      <p>ほんまに（おけもんさん）みたいに こういうお仕事ができたらめっちゃいいなと思うんですけど、なんか難しそうやなっていうか、<strong>自分にはできなさそうやな</strong>って思ってしまって。</p>
+      <div class="from">— 興味とブロックが同時に出た本音</div>
+    </div>
+    <div class="quote">
+      <p>未来のこと考えたらロクなこと思いつかないくせ。だからもう最近、未来のこと考えないんですよ。</p>
+      <div class="from">— ぐっと素が出た一言</div>
+    </div>
+    <div class="quote">
+      <p>目標とかがないと頑張れる気になれない。やるべきことがあったらそれに向かってただやればいいだけ、それが見つかってない。</p>
+      <div class="from">— 今のモヤッとの正体</div>
+    </div>
+    <div class="quote">
+      <p>会社員12月までやってたときと違う時間で動けるのが嬉しい。自由な時間がある、それが結構でかいかもしれない。</p>
+      <div class="from">— 今の生活で大切にしたいこと</div>
+    </div>
+    <div class="quote">
+      <p>予定がなくて、ほんまにしてることがない日が めっちゃ苦手で。</p>
+      <div class="from">— 達成欲タイプの本能</div>
+    </div>
+    <div class="quote pin">
+      <p>「頑張りすぎなくていい」って言葉、<strong>全然響かない</strong>。</p>
+      <div class="from">— セッション中いちばん盛り上がった共感😂</div>
+    </div>
+  </div>
+
+  <!-- ④ 今の状態マップ -->
+  <div class="sec-title">
+    <span class="num">4</span>
+    <span class="ja">今の「混ざってる状態」は、過渡期として正解</span>
+    <span class="en">Where You Are</span>
+  </div>
+
+  <div class="card">
+    <p style="text-align:center;color:var(--ink-soft);margin-bottom:6px;font-size:.95em">いま、こういうものが混ざってる ↓</p>
+    <div class="state-map">
+      <div class="state-item">
+        <span class="emoji">🏘</span>
+        <div class="label">コミスタ</div>
+        <div class="small">人と関われる場</div>
+      </div>
+      <div class="state-item">
+        <span class="emoji">✍️</span>
+        <div class="label">ブログ</div>
+        <div class="small">表現してみる</div>
+      </div>
+      <div class="state-item">
+        <span class="emoji">💻</span>
+        <div class="label">オンライン秘書</div>
+        <div class="small">スキルを試す</div>
+      </div>
+      <div class="state-item">
+        <span class="emoji">🌸</span>
+        <div class="label">オフ会主催</div>
+        <div class="small">人を集める</div>
+      </div>
+      <div class="state-item">
+        <span class="emoji">🔍</span>
+        <div class="label">転職活動</div>
+        <div class="small">選択肢を持つ</div>
+      </div>
+      <div class="state-item">
+        <span class="emoji">☀️</span>
+        <div class="label">自由な時間</div>
+        <div class="small">これが嬉しい</div>
+      </div>
+    </div>
+    <div class="state-msg">
+      🌷 ぜんぶ「自分に合うもの探し」のための実験。<br>
+      <span style="color:var(--sakura-deep)">今の混ざってる状態は、迷子じゃなくて「過渡期」</span>として正解。
+    </div>
+  </div>
+
+  <!-- ⑤ もやもや -->
+  <div class="sec-title">
+    <span class="num">5</span>
+    <span class="ja">もやもやも、置いておいていい</span>
+    <span class="en">Soft Clouds</span>
+  </div>
+
+  <div class="moya-box">
+    <div class="head">☁ 今、こういう気持ちが浮かんでる</div>
+    <div class="moya-list">
+      <div class="moya-item">未来のことを考えると不安になる。だから考えないようにしてる。</div>
+      <div class="moya-item">「こういう仕事したい」って思っても、自分にはできなさそうって浮かんでくる。</div>
+      <div class="moya-item">目標がないと頑張れない自分がいる。でも、その目標が今は見つからない。</div>
+      <div class="moya-item">稼げてる人を見ると、何が違うんだろうって考えちゃう。</div>
+      <div class="moya-item">目標を高くしすぎると、できてない自分に落ち込む。</div>
+    </div>
+    <div class="moya-foot">
+      <strong>これは「治すもの」じゃなくて、「気づいておくもの」。</strong><br>
+      浮かんできたら「お、また来たな〜」って眺めるだけでOK。<br>
+      雲は流れていくし、流れていかなくてもそこにあっていい🌥
+    </div>
+  </div>
+
+  <!-- ⑥ 小さな一歩 -->
+  <div class="sec-title">
+    <span class="num">6</span>
+    <span class="ja">気が向いたら、やってみる小さな一歩</span>
+    <span class="en">Tiny Steps</span>
+  </div>
+
+  <div class="step-grid">
+    <div class="step">
+      <span class="num-tag">STEP 01</span>
+      <h4>真似事でいいから人の相談に乗ってみる</h4>
+      <p>オフィスで来た人の話を聞いて背中を押す。「コーチング」と名乗らなくていい、ただ聞くだけ。</p>
+    </div>
+    <div class="step">
+      <span class="num-tag">STEP 02</span>
+      <h4>スキルマーケットで100円から売ってみる</h4>
+      <p>達成欲を満たしつつ実践。1回でも売れたら「あ、できた」が手に入る。</p>
+    </div>
+    <div class="step">
+      <span class="num-tag">STEP 03</span>
+      <h4>周りに「私のいいところ教えて」と聞いてみる</h4>
+      <p>人間関係構築力タイプは、周りからの言葉が栄養。素直に聞きにいくのが正解。</p>
+    </div>
+    <div class="step">
+      <span class="num-tag">STEP 04</span>
+      <h4>バケットリスト（行きたい場所リスト）を作る</h4>
+      <p>未来を「不安」じゃなく「楽しみ」で埋める入口。旅好きなまさみさん向き。</p>
+    </div>
+    <div class="step">
+      <span class="num-tag">STEP 05</span>
+      <h4>達成感を見える化する</h4>
+      <p>ToDoが消える快感、ランニングのログ、なんでもOK。達成欲タイプは記録するほど元気が出る。</p>
+    </div>
+    <div class="step">
+      <span class="num-tag">STEP 06</span>
+      <h4>Claude Code を触ってみる</h4>
+      <p>74歳の方も触ってる時代。難しそうに見えても、「達成できた」が積み上がるのが楽しい世界。</p>
+    </div>
+    <div class="step">
+      <span class="num-tag">STEP 07</span>
+      <h4>突発オフ会、また企画する</h4>
+      <p>これはもう得意分野。動いてる時に栄養が入る。次は来週の木金で🌸</p>
+    </div>
+  </div>
+
+  <!-- ⑦ おけもんからの手紙 -->
+  <div class="sec-title">
+    <span class="num">7</span>
+    <span class="ja">最後に、おけもんから</span>
+    <span class="en">Letter</span>
+  </div>
+
+  <div class="letter">
+    <div class="title">まさみさんへ 🌸</div>
+    <p>
+      強みは伸ばして、苦手は対処でいい。<br>
+      右利きの人がわざわざ左で字を書く練習をしないのと同じで、<strong>得意な手をどんどん使う</strong>のが正解。
+    </p>
+    <p>
+      まさみさんの<strong>達成欲 × 社交性 × 成長促進</strong>は、ほんとに最強のセット。<br>
+      「人がいる場所」で「目に見える達成感」を積みながら「誰かが伸びるサポート」をする —— これがハマる場所、必ずあるから。
+    </p>
+    <p>
+      手段は最後でいい。コーチングか、秘書か、オフ会か、ブログか —— ぜんぶ手段。<br>
+      <strong>「自分らしく生きてたら、その波長に合う人が周りに来る」</strong> って、これマジです。今のまさみさんの周りに集まってる人を見たら、もうその証拠が出てる。
+    </p>
+    <p>
+      未来が怖い日があってもいい。目標が見つからない時期があってもいい。<br>
+      <strong>「今この瞬間に楽しい」を1個ずつ積んでいけば、勝手に未来になる</strong>から、大丈夫。
+    </p>
+    <p style="text-align:center;margin-top:24px;font-size:1.1em;color:var(--sakura-deep);font-weight:700">
+      また喋りましょ🌸
+    </p>
+    <div class="sign">— 2026年春、おけもんより</div>
+  </div>
+
+  <!-- フッター -->
+  <div class="footer">
+    🌸 このシートは、まさみさん専用のお守りです <span class="heart">♡</span><br>
+    気が向いたら、また見返してね。<br>
+    <span style="opacity:.6;font-size:.85em">作成: 2026.04.22 / セッション: 2026.04.21</span>
+  </div>
+
+</div>
+
+</body>
+</html>
