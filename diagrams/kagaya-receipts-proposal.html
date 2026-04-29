@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>紙の領収書、こうしませんか？ — 加賀谷会計事務所さま向け たたき台</title>
+<style>
+  :root {
+    --bg: #faf6ef;
+    --paper: #fff;
+    --ink: #2e2a24;
+    --muted: #7a756d;
+    --line: rgba(0,0,0,0.08);
+    --warm: #c08648;
+    --warm-soft: rgba(192,134,72,0.08);
+    --green: #4a8a5e;
+    --green-soft: rgba(74,138,94,0.08);
+    --rose: #c87675;
+    --rose-soft: rgba(200,118,117,0.08);
+    --honey: #e6b35c;
+    --honey-soft: rgba(230,179,92,0.10);
+    --shadow: 0 8px 30px rgba(0,0,0,0.07);
+    --radius: 18px;
+    --max: 900px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 5%, rgba(230,179,92,0.08), transparent 40%),
+      radial-gradient(circle at 85% 12%, rgba(74,138,94,0.06), transparent 40%);
+    line-height: 1.85;
+    font-size: 16px;
+  }
+  .page { width: min(var(--max), calc(100vw - 32px)); margin: 0 auto; padding: 40px 0 80px; }
+
+  /* ヘッダー */
+  .hero {
+    text-align: center;
+    padding: 56px 32px 44px;
+    margin-bottom: 32px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--warm), var(--honey), var(--green));
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: var(--warm-soft);
+    color: var(--warm);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 16px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+    letter-spacing: 0.05em;
+  }
+  .hero h1 {
+    font-size: clamp(24px, 4.5vw, 34px);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .hero h1 strong { color: var(--warm); }
+  .hero p.lead {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .hero-meta {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* セクション共通 */
+  section {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .sec-num {
+    display: inline-block;
+    width: 38px; height: 38px;
+    line-height: 38px;
+    text-align: center;
+    background: var(--warm);
+    color: #fff;
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 16px;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+  section h2 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    line-height: 1.4;
+  }
+  section h2 .label { display: inline-block; vertical-align: middle; }
+
+  /* 引用カード */
+  .quote-box {
+    background: var(--warm-soft);
+    border-left: 4px solid var(--warm);
+    padding: 18px 22px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .quote-box .q-label {
+    font-size: 12px;
+    color: var(--warm);
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+  .quote-box ul { list-style: none; margin: 8px 0 0 0; padding: 0; }
+  .quote-box ul li {
+    padding: 4px 0;
+    font-weight: 600;
+  }
+  .quote-box ul li::before {
+    content: "「";
+    color: var(--warm);
+  }
+  .quote-box ul li::after {
+    content: "」";
+    color: var(--warm);
+  }
+
+  /* 大事メモ */
+  .accent-line {
+    background: linear-gradient(120deg, transparent 0%, var(--honey-soft) 0%, var(--honey-soft) 100%);
+    padding: 2px 8px;
+    font-weight: 700;
+  }
+
+  /* リスト */
+  .check-list {
+    list-style: none;
+    padding: 0;
+    margin: 14px 0;
+  }
+  .check-list li {
+    padding: 10px 0 10px 32px;
+    position: relative;
+    border-bottom: 1px dashed var(--line);
+    font-size: 15px;
+  }
+  .check-list li:last-child { border-bottom: none; }
+  .check-list li::before {
+    content: "？";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 22px; height: 22px;
+    background: var(--green-soft);
+    color: var(--green);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  /* 実証セクション */
+  .demo-section {
+    background: linear-gradient(135deg, #fff 0%, var(--honey-soft) 100%);
+    border: 2px solid rgba(230,179,92,0.4);
+  }
+  .demo-section .sec-num { background: var(--honey); color: #fff; }
+  .demo-banner {
+    text-align: center;
+    background: var(--warm);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 18px;
+    letter-spacing: 0.05em;
+  }
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: stretch;
+    margin: 22px 0;
+  }
+  .ba-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .ba-card h4 {
+    font-size: 14px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--line);
+    color: var(--muted);
+    font-weight: 700;
+  }
+  .ba-card.before h4 { color: var(--rose); border-color: var(--rose); }
+  .ba-card.after h4 { color: var(--green); border-color: var(--green); }
+  .ba-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    border: 1px solid var(--line);
+  }
+  .ba-arrow {
+    text-align: center;
+    font-size: 28px;
+    color: var(--warm);
+    margin: 6px 0;
+  }
+  table.demo-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+  table.demo-table th, table.demo-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+  table.demo-table th {
+    background: var(--warm-soft);
+    color: var(--warm);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  table.demo-table td:nth-child(4) { text-align: right; font-weight: 700; }
+
+  .punch-line {
+    background: var(--green);
+    color: #fff;
+    padding: 16px 22px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 22px;
+    text-align: center;
+    line-height: 1.7;
+  }
+  .punch-line .small {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-top: 4px;
+  }
+
+  /* 提案2案 */
+  .plan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .plan-card {
+    background: #fff;
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.2s;
+  }
+  .plan-card.a { border-color: rgba(74,138,94,0.4); }
+  .plan-card.b { border-color: rgba(200,118,117,0.4); }
+  .plan-card .plan-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .plan-card.a .plan-tag { background: var(--green-soft); color: var(--green); }
+  .plan-card.b .plan-tag { background: var(--rose-soft); color: var(--rose); }
+  .plan-card h3 { font-size: 18px; margin-bottom: 12px; }
+  .plan-card .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line);
+    font-size: 14px;
+  }
+  .plan-card .step:last-child { border-bottom: none; }
+  .plan-card .step-num {
+    flex: 0 0 24px;
+    width: 24px; height: 24px;
+    background: var(--warm);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  /* 矢印フロー */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 18px 0;
+  }
+  .flow-step {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 90px;
+    text-align: center;
+  }
+  .flow-arrow { color: var(--muted); font-size: 18px; }
+
+  /* 締め */
+  .closing {
+    background: linear-gradient(135deg, var(--warm-soft), var(--honey-soft));
+    border: 1px solid rgba(192,134,72,0.2);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--line);
+    margin-top: 30px;
+  }
+  .footer .makers {
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 720px) {
+    .ba-grid, .plan-grid { grid-template-columns: 1fr; }
+    section { padding: 28px 22px; }
+    .hero { padding: 40px 22px 30px; }
+    section h2 { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <span class="hero-eyebrow">加賀谷会計事務所さま 向け たたき台</span>
+    <h1>紙の領収書、<strong>こうしませんか？</strong></h1>
+    <p class="lead">先生がやってくださるのは、紙を「写真で撮るか、読み取り機にかける」ところまで。<br>あとはこちらで、表にして、会計ソフトに流せる形までお作りします。</p>
+    <div class="hero-meta">2026年4月29日 ／ 株式会社IRODORI ✕ おけもんカンパニー</div>
+  </div>
+
+  <!-- ① 今わかっていること -->
+  <section>
+    <h2><span class="sec-num">1</span><span class="label">今わかっていること</span></h2>
+    <p>4月7日のお打ち合わせで、加賀谷先生からお話しいただいた、いま事務所さまが感じておられるお困りごと。</p>
+
+    <div class="quote-box">
+      <div class="q-label">先生のお言葉から</div>
+      <ul>
+        <li>手書きの領収書はまだ読めない</li>
+        <li>読み込みでうまくいかないものがまだまだある</li>
+        <li>社員さんには、コンサルのお仕事に集中してもらいたい</li>
+      </ul>
+    </div>
+
+    <p style="margin-top: 18px;">
+      <span class="accent-line">困りごとの中心は「紙の領収書の処理」</span>。<br>
+      ここはハッキリしています。ただ、<strong>細かいところはまだぼやっとしている</strong>状態です。
+    </p>
+  </section>
+
+  <!-- ② まだわからないこと -->
+  <section>
+    <h2><span class="sec-num">2</span><span class="label">次の打ち合わせで、一緒に確認したいこと</span></h2>
+    <p>細かいところを詰めるために、こちらが先生に教えていただきたいこと。</p>
+    <ul class="check-list">
+      <li>領収書って月にどれくらい来ますか？（顧問先1件あたり何枚くらい？）</li>
+      <li>いまは誰がその処理をやっていますか？（先生？職員さん？それとも顧問先のお客さま？）</li>
+      <li>どの工程が一番、時間を食っていますか？</li>
+      <li>「読めない」と感じるのは、具体的にどんな素材ですか？（手書き／レシート／ハンコのある紙／束ごと？）</li>
+      <li>先生としての、理想のかたちはどんな状態ですか？</li>
+    </ul>
+    <p style="margin-top: 14px; font-size: 14px; color: var(--muted);">
+      ※ ここが見えると、ご提案がぐっと具体的になります。
+    </p>
+  </section>
+
+  <!-- ③ 考え方の整理 -->
+  <section>
+    <h2><span class="sec-num">3</span><span class="label">先に、考え方をひとつ整理させてください</span></h2>
+    <p>少し前まで、「紙を読み取る精度」が大きな課題と言われていました。でも、<strong>いまは事情が変わってきています</strong>。</p>
+
+    <div style="background: var(--green-soft); border-radius: 12px; padding: 22px; margin: 18px 0; border: 1px dashed rgba(74,138,94,0.3);">
+      <p style="font-size: 17px; font-weight: 700; color: var(--green); margin-bottom: 10px;">📌 大事なところ</p>
+      <p>いまは、画像をAIに見せれば、<strong>字が崩れていても、かすれていても、ちゃんと読める時代</strong>になっています。<br>
+      しかも、<strong>特別な道具を買わなくても</strong>、私たちが普段使っているAI（ChatGPT・Claude・Geminiなど）で十分に形になります。</p>
+    </div>
+
+    <p>つまり、本当に大事なのは——</p>
+    <p style="font-size: 18px; font-weight: 800; color: var(--warm); text-align: center; margin: 20px 0; padding: 14px; background: var(--warm-soft); border-radius: 12px;">
+      「紙を、誰がどうやって、デジタルにするか」<br>
+      <span style="font-size: 15px; color: var(--ink); font-weight: 600;">↑ ここさえ決まれば、その先はぜんぶこちらで料理できます。</span>
+    </p>
+
+    <div class="flow-row">
+      <div class="flow-step" style="background: var(--rose-soft); border-color: var(--rose);">紙の領収書</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="background: var(--honey-soft); border-color: var(--honey); font-weight: 700;">★ ここを<br>どうするか</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="background: var(--green-soft); border-color: var(--green);">AI＋うちのチーム<br>でぜんぶ料理</div>
+    </div>
+  </section>
+
+  <!-- ④ 実証サンプル -->
+  <section class="demo-section">
+    <h2><span class="sec-num">4</span><span class="label">百聞は一見に如かず — 実際にやってみました</span></h2>
+    <span class="demo-banner">★ ここが今日の見どころ ★</span>
+    <p>「ほんとにそんなに簡単に読めるの？」というご質問がありそうなので、<strong>かなり雑な手書きメモ</strong>を、ふつうのAIに見せてみました。</p>
+
+    <div class="ba-grid">
+      <div class="ba-card before">
+        <h4>📷 入れたもの（こんなに雑です）</h4>
+        <img src="./assets/kagaya-handwritten-sample.jpg" alt="3列に分けて殴り書きした手書きの領収書メモ。コンビニのおかし・のみかい・しんかんせんなどが書かれている">
+        <p style="font-size: 12px; color: var(--muted); margin-top: 8px;">
+          ・字は崩れてる<br>
+          ・3列に殴り書き<br>
+          ・線もまっすぐじゃない<br>
+          ・写真は手持ちで撮影
+        </p>
+      </div>
+      <div class="ba-card after">
+        <h4>✨ AIが読み取って表にしてくれました</h4>
+        <table class="demo-table">
+          <thead>
+            <tr><th>日付</th><th>場所</th><th>内容</th><th>金額</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>4/29</td><td>コンビニ</td><td>おかし</td><td>100円</td></tr>
+            <tr><td>4/30</td><td>のみかい</td><td>おさけ</td><td>5,000円</td></tr>
+            <tr><td>5/1</td><td>しんかんせん</td><td>東京→大阪</td><td>12,800円</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 14px; padding: 10px 12px; background: var(--green-soft); border-radius: 8px; font-size: 13px;">
+          <strong style="color: var(--green);">仕訳の科目までAIが提案：</strong><br>
+          ・4/29 → 会議費／消耗品費<br>
+          ・4/30 → 交際費<br>
+          ・5/1 → 旅費交通費
+        </div>
+      </div>
+    </div>
+
+    <div class="ba-arrow">⬇</div>
+
+    <div class="punch-line">
+      これ、ぜんぶAIに画像を1枚見せただけ。<br>
+      <span class="small">特別な道具は使っていません。会計ソフトに取り込めるかたち（CSV）まで、このまま出せます。</span>
+    </div>
+  </section>
+
+  <!-- ⑤ 提案2案 -->
+  <section>
+    <h2><span class="sec-num">5</span><span class="label">先生にお願いしたい「ひと工夫」 — たたき台2案</span></h2>
+    <p>先ほどの<strong>「紙を、誰がどうやってデジタルにするか」</strong>の部分。先生のお手間がいちばん少ない方を選んでいただければと思います。</p>
+
+    <div class="plan-grid">
+      <div class="plan-card a">
+        <span class="plan-tag">A案</span>
+        <h3>📱 写メでパシャリ案</h3>
+        <div class="step"><span class="step-num">1</span><div>領収書を、スマホで<strong>写真を撮るだけ</strong></div></div>
+        <div class="step"><span class="step-num">2</span><div>共有のフォルダに<strong>放り込むだけ</strong></div></div>
+        <div class="step"><span class="step-num">3</span><div>あとは、こちらが受け取って料理します</div></div>
+        <p style="margin-top: 14px; padding: 10px; background: var(--green-soft); border-radius: 8px; font-size: 13px; color: var(--green); font-weight: 600;">
+          👍 一番手軽。出先でもパシャリで完結
+        </p>
+      </div>
+
+      <div class="plan-card b">
+        <span class="plan-tag">B案</span>
+        <h3>🖨 読み取り機でスキャン案</h3>
+        <div class="step"><span class="step-num">1</span><div>事務所の<strong>読み取り機にかける</strong></div></div>
+        <div class="step"><span class="step-num">2</span><div>共有のフォルダに<strong>保存するだけ</strong></div></div>
+        <div class="step"><span class="step-num">3</span><div>あとは、こちらが受け取って料理します</div></div>
+        <p style="margin-top: 14px; padding: 10px; background: var(--rose-soft); border-radius: 8px; font-size: 13px; color: var(--rose); font-weight: 600;">
+          👍 既に読み取り機をお持ちならスムーズ
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; padding: 18px; background: var(--paper); border-radius: 12px; border: 1px solid var(--line);">
+      <p style="font-weight: 700; margin-bottom: 8px;">📥 受け取ったあと、こちらでやること</p>
+      <div class="flow-row" style="margin: 8px 0;">
+        <div class="flow-step">受け取り</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">AIで読み取り</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">表に整理</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">仕訳の<br>科目候補</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">会計ソフトへ<br>取り込む形</div>
+      </div>
+      <p style="font-size: 13px; color: var(--muted); margin-top: 8px;">小川さんの秘書チームと、AI（普段から使っているもの）の合わせ技で進めます。</p>
+    </div>
+  </section>
+
+  <!-- ⑥ 締め -->
+  <section class="closing">
+    <h2><span class="sec-num">6</span><span class="label">次の打ち合わせで、一緒にやりたいこと</span></h2>
+    <ul class="check-list">
+      <li>実際の領収書の流れを、見せていただきたいです</li>
+      <li>量・頻度・素材の種類を、一緒に整理させてください</li>
+      <li>A案・B案、どちらが事務所のいまの動き方に馴染みそうかご相談</li>
+      <li>もしご興味があれば「机に溜まった名刺」のお話もできます</li>
+    </ul>
+    <p style="margin-top: 18px; padding: 16px; background: rgba(255,255,255,0.6); border-radius: 10px; font-size: 14px;">
+      📝 今日のたたき台は、<strong>先生のお話を聞く前のたたき台</strong>です。<br>
+      実際の流れをお聞きしてから、<strong>先生の事務所にいちばん馴染む形</strong>に仕立てなおします。<br>
+      気になるところ・ピンとこないところがあれば、遠慮なくお聞かせください。
+    </p>
+  </section>
+
+  <div class="footer">
+    紙の領収書、こうしませんか？ — 加賀谷会計事務所さま 向け たたき台<br>
+    <div class="makers">作成：株式会社IRODORI（小川 菜緒） ✕ おけもんカンパニー</div>
+    <div style="margin-top: 6px;">2026.04.29</div>
+  </div>
+
+</div>
+</body>
+</html>
