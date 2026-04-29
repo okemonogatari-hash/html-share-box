@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四ツ橋スナック風オフ会（仮）— PJ進行ページ</title>
+<style>
+  :root {
+    --bg: #fff8f1;
+    --paper: #fff;
+    --ink: #2b2520;
+    --muted: #7a6d63;
+    --line: rgba(0,0,0,0.07);
+    --neon-pink: #ff5b8a;
+    --neon-orange: #ff8c42;
+    --bordeaux: #8b2942;
+    --gold: #d4a850;
+    --teal: #2eb5a8;
+    --sky: #4a9ed9;
+    --pink-soft: rgba(255,91,138,0.08);
+    --orange-soft: rgba(255,140,66,0.10);
+    --gold-soft: rgba(212,168,80,0.12);
+    --teal-soft: rgba(46,181,168,0.10);
+    --sky-soft: rgba(74,158,217,0.10);
+    --shadow: 0 10px 30px rgba(139,41,66,0.08);
+    --radius: 22px;
+    --max: 980px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(255,91,138,0.07), transparent 38%),
+      radial-gradient(circle at 88% 92%, rgba(74,158,217,0.08), transparent 38%);
+    line-height: 1.8;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+  }
+  .page { width: min(var(--max), 100%); margin: 0 auto; }
+
+  /* ヒーロー */
+  .hero {
+    text-align: center;
+    padding: 36px 24px 28px;
+    background: linear-gradient(135deg, #fff 0%, #fff5ed 100%);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg, var(--bordeaux), var(--neon-pink), var(--neon-orange), var(--gold));
+  }
+  .hero .breadcrumb {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .hero .sub {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* 現在地バー */
+  .now-bar {
+    background: linear-gradient(135deg, var(--pink-soft), var(--orange-soft));
+    border: 2px solid var(--neon-pink);
+    border-radius: 18px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .now-bar .icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+  .now-bar .body { flex: 1; min-width: 200px; }
+  .now-bar .label {
+    font-size: 11px;
+    color: var(--bordeaux);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+  .now-bar .text {
+    font-size: 16px;
+    font-weight: 800;
+  }
+  .now-bar .text small {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* セクション共通 */
+  section {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  section h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  section .lead {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  /* 関係者マップ */
+  .people-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .p-card {
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    background: var(--paper);
+    transition: all 0.2s;
+  }
+  .p-card.lead-card { border-color: var(--bordeaux); background: var(--orange-soft); }
+  .p-card.proposer { border-color: var(--neon-orange); background: var(--orange-soft); }
+  .p-card.go { border-color: var(--teal); background: var(--teal-soft); }
+  .p-card.support { border-color: var(--gold); background: var(--gold-soft); }
+  .p-card.audience { border-color: var(--sky); background: var(--sky-soft); }
+  .p-name {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .p-role {
+    font-size: 11px;
+    color: var(--bordeaux);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .p-note {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* マイルストーン */
+  .ms-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    position: relative;
+  }
+  .ms-list::before {
+    content: "";
+    position: absolute;
+    top: 38px;
+    left: 8%;
+    right: 8%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--neon-pink), var(--neon-orange), var(--bordeaux));
+    z-index: 0;
+  }
+  .ms-card {
+    position: relative;
+    z-index: 1;
+    background: var(--paper);
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    padding: 16px 14px;
+    text-align: center;
+  }
+  .ms-card.now { border-color: var(--neon-pink); background: var(--pink-soft); }
+  .ms-card.next { border-color: var(--neon-orange); background: var(--orange-soft); }
+  .ms-card.fire { border-color: var(--bordeaux); background: linear-gradient(135deg, var(--gold-soft), var(--orange-soft)); }
+  .ms-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--neon-pink);
+    border: 3px solid #fff;
+    margin: 0 auto 8px;
+    box-shadow: 0 0 0 2px var(--neon-pink);
+  }
+  .ms-card.next .ms-dot { background: var(--neon-orange); box-shadow: 0 0 0 2px var(--neon-orange); }
+  .ms-card.fire .ms-dot { background: var(--bordeaux); box-shadow: 0 0 0 2px var(--bordeaux); }
+  .ms-month {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .ms-tag {
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--neon-pink);
+    border-radius: 999px;
+    padding: 2px 8px;
+    display: inline-block;
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+  }
+  .ms-card.next .ms-tag { background: var(--neon-orange); }
+  .ms-card.fire .ms-tag { background: var(--bordeaux); }
+  .ms-action {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .ms-action strong { color: var(--bordeaux); }
+  @media (max-width: 600px) {
+    .ms-list { grid-template-columns: 1fr; }
+    .ms-list::before { display: none; }
+  }
+
+  /* 決めたい項目テーブル */
+  .decide-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .decide-table th {
+    background: var(--bordeaux);
+    color: #fff;
+    font-weight: 700;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .decide-table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+    vertical-align: top;
+  }
+  .decide-table tr:last-child td { border-bottom: none; }
+  .status-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+  }
+  .status-ok { background: var(--teal-soft); color: var(--teal); border: 1px solid rgba(46,181,168,0.4); }
+  .status-warn { background: var(--orange-soft); color: var(--neon-orange); border: 1px solid rgba(255,140,66,0.4); }
+  .status-todo { background: rgba(0,0,0,0.04); color: var(--muted); border: 1px solid var(--line); }
+  .item-name { font-weight: 700; margin-bottom: 4px; }
+  .item-detail { font-size: 12px; color: var(--muted); }
+
+  /* 凡例 */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: rgba(0,0,0,0.02);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 12.5px;
+  }
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* 次の一手 */
+  .next-action {
+    background: linear-gradient(135deg, var(--pink-soft), var(--orange-soft));
+    border: 2px dashed var(--neon-pink);
+    border-radius: 16px;
+    padding: 18px 22px;
+    text-align: center;
+  }
+  .next-action .ttl {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--bordeaux);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .next-action .body {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .next-action .body small {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    padding: 18px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer .stamp {
+    display: inline-block;
+    border: 1.5px solid var(--bordeaux);
+    color: var(--bordeaux);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="breadcrumb">大阪チャット運営の部屋 ／ ０⇨１サポート</div>
+    <h1>📋 四ツ橋スナック風オフ会（仮） PJ進行表</h1>
+    <p class="sub">企画ページ → osaka-snack-event-plan.html ／ 最終更新：2026-04-29</p>
+  </div>
+
+  <!-- 現在地 -->
+  <div class="now-bar">
+    <div class="icon">📍</div>
+    <div class="body">
+      <div class="label">NOW</div>
+      <div class="text">企画固め中／7月開催で合意形成途中
+        <small>2026/04/29 時点：とらまめさん発案・たいさん即GO・「7月で2ヶ月募集」案がチャット内で共有された段階</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- 関係者マップ -->
+  <section>
+    <h2>👥 関係者マップ</h2>
+    <p class="lead">誰がどこに立ってるかを先に揃える。動かす前に「球を持ってる人」を見える化。</p>
+    <div class="people-grid">
+      <div class="p-card lead-card">
+        <div class="p-role">リード／管理人復帰</div>
+        <div class="p-name">🎤 おけもんさん</div>
+        <div class="p-note">2026/04/28 管理人ふっかつ。今回のキックオフの主役。会の方向性を決める役。</div>
+      </div>
+      <div class="p-card proposer">
+        <div class="p-role">提案者</div>
+        <div class="p-name">💡 とらまめさん</div>
+        <div class="p-note">「四ツ橋オフィスでスナック風」を最初に投げた人。前回のフォーマットを知ってる。</div>
+      </div>
+      <div class="p-card go">
+        <div class="p-role">即GO担当</div>
+        <div class="p-name">⚡ たいさん（鍼灸師）</div>
+        <div class="p-note">「いいですね！今ならいつでも！」と即賛同。日程確定で大事なキーマン。</div>
+      </div>
+      <div class="p-card support">
+        <div class="p-role">運営チーム（部屋）</div>
+        <div class="p-name">🤝 その他の管理者2名</div>
+        <div class="p-note">部屋の管理者は計4名。残り2名にも声かけて、運営体制をしっかり組む。</div>
+      </div>
+      <div class="p-card audience">
+        <div class="p-role">参加見込み</div>
+        <div class="p-name">🌱 大阪チャットメンバー</div>
+        <div class="p-note">部屋の参加者・大阪リベ大生が中心。0→1欲しい人に届くように告知設計が必要。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- マイルストーン -->
+  <section>
+    <h2>🛣 マイルストーン</h2>
+    <p class="lead">5月企画固め → 6月募集開始 → 7月本番。2ヶ月かけて夏のお祭りを作る。</p>
+    <div class="ms-list">
+      <div class="ms-card now">
+        <div class="ms-dot"></div>
+        <span class="ms-tag">NOW</span>
+        <div class="ms-month">5月</div>
+        <div class="ms-action">企画固め<br><strong>日程・場所・コンテンツ・予算</strong>を確定</div>
+      </div>
+      <div class="ms-card next">
+        <div class="ms-dot"></div>
+        <span class="ms-tag">NEXT</span>
+        <div class="ms-month">6月</div>
+        <div class="ms-action">募集開始<br><strong>部屋告知・拡散・参加リスト</strong>管理</div>
+      </div>
+      <div class="ms-card fire">
+        <div class="ms-dot"></div>
+        <span class="ms-tag">FIRE</span>
+        <div class="ms-month">7月</div>
+        <div class="ms-action">本番！<br><strong>四ツ橋オフィスで開催</strong>・議事録残し・次に繋ぐ</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 決めたい項目 -->
+  <section>
+    <h2>✅ 今すぐ決めたい4項目</h2>
+    <p class="lead">5月中にここを全部◯にしたい。一個ずつチャットで投げて回収していく。</p>
+    <table class="decide-table">
+      <thead>
+        <tr>
+          <th style="width: 22%;">項目</th>
+          <th style="width: 50%;">いま分かってること</th>
+          <th style="width: 28%;">ステータス</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="item-name">📅 日程</div>
+            <div class="item-detail">7月のどの土日？平日？</div>
+          </td>
+          <td>「7月開催」までは合意。日にちはこれから。たいさん「いつでもOK」発言あり。</td>
+          <td><span class="status-pill status-warn">△ 月だけ確定／日付未定</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="item-name">📍 場所</div>
+            <div class="item-detail">前回踏襲か別案か</div>
+          </td>
+          <td>「四ツ橋オフィスでスナック風」が大本命。空き状況の確認のみで確定できそう。</td>
+          <td><span class="status-pill status-ok">◯ 第一候補確定</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="item-name">🎤 コンテンツ</div>
+            <div class="item-detail">当日の流れ・進行</div>
+          </td>
+          <td>スナック風＝ゆるい交流ベース。ママ／マスター役・自己紹介の有無・持ちネタコーナーを検討中。</td>
+          <td><span class="status-pill status-warn">△ 骨子はあり／詳細協議中</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="item-name">💰 予算</div>
+            <div class="item-detail">参加費／会場費／お菓子代</div>
+          </td>
+          <td>過去の茶話会・新年会＆交流会のフォーマットを参考にする想定。具体額はまだ出てない。</td>
+          <td><span class="status-pill status-todo">□ 未着手</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 凡例 -->
+  <section>
+    <h2>📖 ステータス凡例</h2>
+    <div class="legend">
+      <div class="legend-row"><span class="status-pill status-ok">◯ 合意済</span> もう決まってる／変えなくていい</div>
+      <div class="legend-row"><span class="status-pill status-warn">△ 協議中</span> 部屋で議論中／結論はまだ</div>
+      <div class="legend-row"><span class="status-pill status-todo">□ 未着手</span> まだ誰も手をつけてない</div>
+    </div>
+  </section>
+
+  <!-- 次の一手 -->
+  <section style="background:transparent;border:none;box-shadow:none;padding:0;">
+    <div class="next-action">
+      <div class="ttl">🎯 次の一手</div>
+      <div class="body">
+        とらまめさん・たいさんに「7月の候補日2〜3個」を投げ返す
+        <small>合意のスピード感がある今のうちに、日付を1〜2個に絞り込む。場所空き確認はそのあとでOK。</small>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    最終更新：2026-04-29 ／ 大阪チャット運営の部屋<br>
+    <span class="stamp">🏮 企画ページはこちら → osaka-snack-event-plan.html</span>
+  </footer>
+</div>
+</body>
+</html>

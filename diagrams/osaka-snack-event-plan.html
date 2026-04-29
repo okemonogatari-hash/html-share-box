@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四ツ橋スナック風オフ会（仮）— 企画ページ</title>
+<style>
+  :root {
+    --bg: #fff8f1;
+    --paper: #fff;
+    --ink: #2b2520;
+    --muted: #7a6d63;
+    --line: rgba(0,0,0,0.07);
+    --neon-pink: #ff5b8a;
+    --neon-orange: #ff8c42;
+    --bordeaux: #8b2942;
+    --gold: #d4a850;
+    --teal: #2eb5a8;
+    --pink-soft: rgba(255,91,138,0.08);
+    --orange-soft: rgba(255,140,66,0.10);
+    --gold-soft: rgba(212,168,80,0.12);
+    --shadow: 0 10px 30px rgba(139,41,66,0.08);
+    --radius: 22px;
+    --max: 920px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(255,91,138,0.08), transparent 38%),
+      radial-gradient(circle at 88% 18%, rgba(255,140,66,0.10), transparent 35%),
+      radial-gradient(circle at 30% 92%, rgba(212,168,80,0.10), transparent 40%);
+    line-height: 1.8;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+  }
+  .page { width: min(var(--max), 100%); margin: 0 auto; }
+
+  /* ヒーロー */
+  .hero {
+    text-align: center;
+    padding: 44px 28px 36px;
+    background: linear-gradient(135deg, #fff 0%, #fff5ed 100%);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg, var(--neon-pink), var(--neon-orange), var(--gold), var(--bordeaux));
+  }
+  .hero .badge {
+    display: inline-block;
+    background: var(--bordeaux);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 999px;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-size: clamp(24px, 4.5vw, 36px);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg, var(--bordeaux), var(--neon-pink) 60%, var(--neon-orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 22px;
+  }
+  .info-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .info-cell {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 14px;
+    text-align: left;
+  }
+  .info-cell .label {
+    font-size: 11px;
+    color: var(--neon-pink);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+  .info-cell .value {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  /* セクション共通 */
+  section {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 32px 26px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  section h2 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  section .lead {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 22px;
+  }
+
+  /* コンセプト */
+  .concept-box {
+    background: linear-gradient(135deg, var(--orange-soft), var(--pink-soft));
+    border-left: 5px solid var(--neon-orange);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 18px;
+  }
+  .concept-box p {
+    font-size: 15px;
+    line-height: 1.85;
+  }
+  .concept-box .quote {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--bordeaux);
+    margin-bottom: 8px;
+  }
+
+  /* ターゲット */
+  .target-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .target-card {
+    background: var(--gold-soft);
+    border: 1.5px dashed rgba(212,168,80,0.5);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .target-card .emoji {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+  .target-card .ttl {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bordeaux);
+    margin-bottom: 4px;
+  }
+  .target-card .desc {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* 当日の流れ */
+  .timetable {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .tt-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 14px;
+    align-items: center;
+    background: var(--pink-soft);
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+  .tt-time {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--neon-pink);
+    text-align: center;
+  }
+  .tt-content {
+    font-size: 14px;
+  }
+  .tt-content .ttl {
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .tt-content .desc {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .tt-note {
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--muted);
+    text-align: center;
+    background: rgba(0,0,0,0.03);
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  /* タイムライン */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    position: relative;
+  }
+  .tl-month {
+    background: var(--paper);
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 16px;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .tl-month.now { border-color: var(--neon-pink); background: var(--pink-soft); }
+  .tl-month.go { border-color: var(--neon-orange); background: var(--orange-soft); }
+  .tl-month.fire { border-color: var(--bordeaux); background: linear-gradient(135deg, var(--gold-soft), var(--orange-soft)); }
+  .tl-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .tl-month-name {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 4px 0 8px;
+  }
+  .tl-action {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  @media (max-width: 540px) {
+    .timeline { grid-template-columns: 1fr; }
+  }
+
+  /* 過去資産 */
+  .archive-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .archive-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(46,181,168,0.06);
+    border-left: 3px solid var(--teal);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .archive-item .ic {
+    font-size: 22px;
+  }
+  .archive-item .body {
+    flex: 1;
+  }
+  .archive-item .title {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .archive-item .note {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* フッター */
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    padding: 18px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer .stamp {
+    display: inline-block;
+    border: 1.5px solid var(--bordeaux);
+    color: var(--bordeaux);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  .deco {
+    text-align: center;
+    margin: 4px 0 14px;
+    font-size: 18px;
+    letter-spacing: 0.4em;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="badge">大阪チャット運営の部屋 ／ ０⇨１サポート</div>
+    <h1>🏮 四ツ橋スナック風オフ会（仮）</h1>
+    <p class="sub">管理人ふっかつ記念 × 大阪リベ大生の最初の一歩を、ゆるーく後押し</p>
+    <div class="info-row">
+      <div class="info-cell">
+        <div class="label">📅 開催月</div>
+        <div class="value">2026年 7月</div>
+      </div>
+      <div class="info-cell">
+        <div class="label">📍 場所</div>
+        <div class="value">四ツ橋オフィス</div>
+      </div>
+      <div class="info-cell">
+        <div class="label">🎤 スタイル</div>
+        <div class="value">スナック風</div>
+      </div>
+      <div class="info-cell">
+        <div class="label">📣 募集期間</div>
+        <div class="value">5月〜6月（2ヶ月）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. これ、どんなオフ会？ -->
+  <section>
+    <h2>🍶 これ、どんなオフ会？</h2>
+    <p class="lead">「ちゃんとした勉強会」じゃなくて、ちゃんとゆるい場をやり直したい。</p>
+    <div class="concept-box">
+      <div class="quote">「前みたいに、四ツ橋オフィスでスナックみたいな感じ」</div>
+      <p>カウンター越しに話す感じで、その日来た人が今日の主役。<br>
+      自己紹介ガチガチじゃなくて、<strong>飲みながら・喋りながら・気付いたら新しい繋がりができてた</strong>、そんな夜を作る。</p>
+    </div>
+    <div class="concept-box" style="background:linear-gradient(135deg,var(--gold-soft),rgba(255,140,66,0.06));border-left-color:var(--gold);">
+      <div class="quote" style="color:var(--neon-orange);">2つの目的を1つの会で</div>
+      <p>① <strong>大阪リベ大生の0→1サポート</strong> — まだ繋がりがない人の「最初の一歩」<br>
+      ② <strong>管理人ふっかつキックオフ</strong> — おけもんさんが管理人に戻ってきたお祝い 🎉</p>
+    </div>
+  </section>
+
+  <!-- 2. こんな人に来てほしい -->
+  <section>
+    <h2>🎯 こんな人に来てほしい</h2>
+    <p class="lead">「行ってみたいけど自分なんて…」って思ってる人がメインターゲット。</p>
+    <div class="target-grid">
+      <div class="target-card">
+        <div class="emoji">🌱</div>
+        <div class="ttl">大阪リベ大生になったばっかりの人</div>
+        <div class="desc">「まだ誰とも話したことない」って人ほど大歓迎。新しい知り合い増やしに来てほしい。</div>
+      </div>
+      <div class="target-card">
+        <div class="emoji">🪐</div>
+        <div class="ttl">じろーさんオフ会くらいしか来たことない人</div>
+        <div class="desc">「常連の輪に入っていけるかな…」って迷ってる人。スナックは初対面歓迎の場所。</div>
+      </div>
+      <div class="target-card">
+        <div class="emoji">🌟</div>
+        <div class="ttl">何かやりたいけど一歩が出ない人</div>
+        <div class="desc">事業・副業・発信、なんでも。話してるうちに「あ、それやってみよ」になればOK。</div>
+      </div>
+      <div class="target-card">
+        <div class="emoji">🍻</div>
+        <div class="ttl">単純に久しぶりに集まりたい常連</div>
+        <div class="desc">管理人ふっかつ祝いに来てくれる人。新しい人を案内してくれたら嬉しい。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 当日のゆるい流れ -->
+  <section>
+    <h2>🕗 当日のゆるい流れ（イメージ）</h2>
+    <p class="lead">あくまで叩き台。ガチガチに決めない、決めない。</p>
+    <div class="timetable">
+      <div class="tt-row">
+        <div class="tt-time">19:00〜</div>
+        <div class="tt-content">
+          <div class="ttl">🚪 開店・ふらっと集合</div>
+          <div class="desc">来た人から飲み物を取ってカウンターに。受付ガチっぽくしない。</div>
+        </div>
+      </div>
+      <div class="tt-row">
+        <div class="tt-time">19:30〜</div>
+        <div class="tt-content">
+          <div class="ttl">🎙 ゆる開店挨拶 ＆ 自己紹介タイム</div>
+          <div class="desc">おけもんさんから「ふっかつしました〜」一言。からの参加者ひとこと自己紹介（強制じゃない）。</div>
+        </div>
+      </div>
+      <div class="tt-row">
+        <div class="tt-time">20:00〜</div>
+        <div class="tt-content">
+          <div class="ttl">🪑 だべりタイム本番</div>
+          <div class="desc">テーブル分けず、自由移動。ママ／マスター（ホスト役）が新参の人をベテランに繋ぐ係。</div>
+        </div>
+      </div>
+      <div class="tt-row">
+        <div class="tt-time">21:30〜</div>
+        <div class="tt-content">
+          <div class="ttl">🎤 持ちネタコーナー（任意）</div>
+          <div class="desc">持ち込み歓迎。「最近やってること」「今ハマってること」を1人3分くらいで。</div>
+        </div>
+      </div>
+      <div class="tt-row">
+        <div class="tt-time">22:30</div>
+        <div class="tt-content">
+          <div class="ttl">🌙 ゆる閉店</div>
+          <div class="desc">続きは二次会勝手にどうぞ。次回告知＆ハイタッチで解散。</div>
+        </div>
+      </div>
+    </div>
+    <div class="tt-note">⚠️ 時間帯・コンテンツは協議中。決まり次第このページが更新されます。</div>
+  </section>
+
+  <!-- 4. 企画から開催まで -->
+  <section>
+    <h2>📅 企画から開催までの2ヶ月</h2>
+    <p class="lead">2ヶ月かけて、ゆっくり集める。「来週どう？」じゃない、夏のお祭りの準備みたいに。</p>
+    <div class="timeline">
+      <div class="tl-month now">
+        <div class="tl-num">STEP 1</div>
+        <div class="tl-month-name">5月</div>
+        <div class="tl-action">企画固め<br><span style="color:var(--muted);font-size:12px;">日程・場所最終確定／コンテンツ確定／予算組み</span></div>
+      </div>
+      <div class="tl-month go">
+        <div class="tl-num">STEP 2</div>
+        <div class="tl-month-name">6月</div>
+        <div class="tl-action">募集開始<br><span style="color:var(--muted);font-size:12px;">部屋告知／チャット拡散／参加リスト管理</span></div>
+      </div>
+      <div class="tl-month fire">
+        <div class="tl-num">STEP 3</div>
+        <div class="tl-month-name">7月</div>
+        <div class="tl-action">本番！<br><span style="color:var(--muted);font-size:12px;">四ツ橋オフィスで開催／議事録残し／次に繋ぐ</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 過去の積み重ね -->
+  <section>
+    <h2>📚 部屋の積み重ね（参考にできるもの）</h2>
+    <p class="lead">ゼロから考えなくていい。先輩たちの記録がもう揃ってる。</p>
+    <div class="archive-list">
+      <div class="archive-item">
+        <div class="ic">📝</div>
+        <div class="body">
+          <div class="title">茶話会議事録（あこくまさん作 ／ もりみさん作）</div>
+          <div class="note">過去開催の議事録2本。当日の空気感・出た話題が分かる。</div>
+        </div>
+      </div>
+      <div class="archive-item">
+        <div class="ic">🎍</div>
+        <div class="body">
+          <div class="title">1月4日 新年会＆交流会のログ</div>
+          <div class="note">直近の交流会フォーマット。流れ・人数感の参考に。</div>
+        </div>
+      </div>
+      <div class="archive-item">
+        <div class="ic">📋</div>
+        <div class="body">
+          <div class="title">大阪チャット企画シート</div>
+          <div class="note">部屋に置いてある企画テンプレ。今回もここに記入していくのが筋。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <footer>
+    <div class="deco">🏮 ✦ 🍶 ✦ 🏮</div>
+    最終更新：2026-04-29 ／ 大阪チャット運営の部屋<br>
+    <span class="stamp">📋 PJ進行はこちら → osaka-snack-event-pj.html</span>
+  </footer>
+</div>
+</body>
+</html>
