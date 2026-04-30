@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodexとClaude Codeの違いが一目でわかる図解</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f6efe6;
+      --bg-2: #fffaf4;
+      --paper: rgba(255, 250, 244, 0.92);
+      --ink: #20303b;
+      --muted: #5f6d77;
+      --line: rgba(32, 48, 59, 0.1);
+      --orange: #e26d3d;
+      --orange-soft: #ffe2d5;
+      --teal: #157a6e;
+      --teal-soft: #dff4ee;
+      --navy: #294d7a;
+      --navy-soft: #dfeafb;
+      --gold: #d5a33d;
+      --gold-soft: #fff3d6;
+      --shadow: 0 24px 60px rgba(85, 57, 30, 0.12);
+    }
+
+    body {
+      font-family: "Avenir Next", "Hiragino Sans", "Yu Gothic", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(226, 109, 61, 0.16), transparent 26%),
+        radial-gradient(circle at 88% 12%, rgba(21, 122, 110, 0.14), transparent 22%),
+        linear-gradient(180deg, #f7f0e7 0%, #f2ece3 100%);
+      line-height: 1.8;
+      padding: 28px 16px 60px;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(255, 250, 244, 0.98), rgba(253, 242, 232, 0.96));
+      border: 1px solid rgba(226, 109, 61, 0.14);
+      border-radius: 30px;
+      padding: 42px 34px 34px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 240px;
+      height: 240px;
+      right: -60px;
+      top: -80px;
+      background: radial-gradient(circle, rgba(226, 109, 61, 0.22), rgba(226, 109, 61, 0.02) 70%);
+    }
+
+    .hero::after {
+      width: 220px;
+      height: 220px;
+      left: -70px;
+      bottom: -110px;
+      background: radial-gradient(circle, rgba(21, 122, 110, 0.18), rgba(21, 122, 110, 0.01) 72%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--orange-soft);
+      color: var(--orange);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 18px;
+      letter-spacing: 0.04em;
+    }
+
+    h1 {
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+      max-width: 860px;
+    }
+
+    .lead {
+      max-width: 840px;
+      font-size: 17px;
+      color: var(--muted);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .hook,
+    .hero-note {
+      position: relative;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 20px 18px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hook h2,
+    .hero-note h2 {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .hook strong {
+      color: var(--orange);
+    }
+
+    .mini-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .mini {
+      border-radius: 16px;
+      padding: 14px 12px;
+      background: #fffdfa;
+      border: 1px solid var(--line);
+    }
+
+    .mini .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .mini .value {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 28px 24px;
+      box-shadow: 0 10px 28px rgba(64, 46, 28, 0.06);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 22px;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .garden-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .garden-card,
+    .reason-card {
+      border-radius: 24px;
+      padding: 22px 20px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+    }
+
+    .garden-card {
+      background: linear-gradient(180deg, #f6fbf8 0%, #fffdfa 100%);
+      border-color: rgba(21, 122, 110, 0.16);
+    }
+
+    .reason-card {
+      background: linear-gradient(180deg, #fff9f2 0%, #fffdfa 100%);
+      border-color: rgba(226, 109, 61, 0.16);
+    }
+
+    .garden-card h3,
+    .reason-card h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .garden-card p,
+    .reason-card p {
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+
+    .garden-loop {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .loop-item {
+      border-radius: 18px;
+      padding: 14px 12px;
+      background: rgba(255,255,255,0.86);
+      border: 1px dashed rgba(32, 48, 59, 0.12);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .loop-item strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: var(--teal);
+    }
+
+    .reason-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .reason {
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(32, 48, 59, 0.08);
+      font-size: 14px;
+    }
+
+    .reason strong {
+      color: var(--orange);
+    }
+
+    .panel {
+      border-radius: 24px;
+      padding: 22px 20px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+    }
+
+    .panel.chat {
+      background: linear-gradient(180deg, #fff7f1 0%, #fffdfa 100%);
+      border-color: rgba(226, 109, 61, 0.16);
+    }
+
+    .panel.agent {
+      background: linear-gradient(180deg, #f4fbf8 0%, #fffdfa 100%);
+      border-color: rgba(21, 122, 110, 0.18);
+    }
+
+    .tag {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .chat .tag {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .agent .tag {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .panel h3 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .panel p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .stack-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px dashed rgba(32, 48, 59, 0.12);
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+
+    .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      font-weight: 800;
+    }
+
+    .chat .icon {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .agent .icon {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #23384b 0%, #32536c 100%);
+      color: #fff;
+      border-radius: 24px;
+      padding: 24px 22px;
+      margin-top: 18px;
+    }
+
+    .highlight-box h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .good-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .horizon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .horizon-card {
+      border-radius: 22px;
+      padding: 18px 16px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+      min-height: 100%;
+      box-shadow: 0 6px 20px rgba(53, 43, 30, 0.05);
+    }
+
+    .horizon-card:nth-child(1) {
+      background: linear-gradient(180deg, #fff8f1 0%, #fffdfa 100%);
+    }
+
+    .horizon-card:nth-child(2) {
+      background: linear-gradient(180deg, #f8fcff 0%, #fffdfa 100%);
+    }
+
+    .horizon-card:nth-child(3) {
+      background: linear-gradient(180deg, #f5fbf8 0%, #fffdfa 100%);
+    }
+
+    .horizon-card:nth-child(4) {
+      background: linear-gradient(180deg, #fff8fc 0%, #fffdfa 100%);
+    }
+
+    .horizon-time {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+      background: rgba(32, 48, 59, 0.08);
+    }
+
+    .horizon-card h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .horizon-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .usecase-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .usecase-flow,
+    .usecase-note {
+      border-radius: 24px;
+      padding: 22px 20px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+    }
+
+    .usecase-flow {
+      background: linear-gradient(180deg, #f8fcff 0%, #fffdfa 100%);
+      border-color: rgba(41, 77, 122, 0.16);
+    }
+
+    .usecase-note {
+      background: linear-gradient(180deg, #fff8f1 0%, #fffdfa 100%);
+      border-color: rgba(226, 109, 61, 0.16);
+    }
+
+    .usecase-flow h3,
+    .usecase-note h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .flow-step-card {
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(32, 48, 59, 0.08);
+      font-size: 14px;
+    }
+
+    .flow-step-card strong {
+      color: var(--navy);
+    }
+
+    .mini-example {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .mini-example .reason strong {
+      color: var(--navy);
+    }
+
+    .good-card {
+      background: #fffdfa;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px 16px;
+      box-shadow: 0 6px 20px rgba(53, 43, 30, 0.05);
+    }
+
+    .good-card .pill {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 5px 10px;
+      margin-bottom: 10px;
+    }
+
+    .good-card:nth-child(1) .pill,
+    .good-card:nth-child(4) .pill {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .good-card:nth-child(2) .pill,
+    .good-card:nth-child(5) .pill {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .good-card:nth-child(3) .pill {
+      background: var(--gold-soft);
+      color: #a77916;
+    }
+
+    .good-card h3 {
+      font-size: 20px;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .good-card p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .timeline-card,
+    .quote-card {
+      border-radius: 24px;
+      padding: 22px 20px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      align-items: start;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .num {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(135deg, var(--orange), #f09a4e);
+    }
+
+    .step h4 {
+      font-size: 16px;
+      margin-bottom: 3px;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .quote-card {
+      background: linear-gradient(160deg, #f8fcff 0%, #eef7ff 100%);
+      border-color: rgba(41, 77, 122, 0.16);
+    }
+
+    .quote-card h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: var(--navy);
+    }
+
+    blockquote {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+      font-size: 22px;
+      line-height: 1.7;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .quote-note {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .path-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .path {
+      border-radius: 22px;
+      padding: 18px 16px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+      min-height: 100%;
+    }
+
+    .path:nth-child(1) {
+      background: linear-gradient(180deg, #fff7f1 0%, #fffdfa 100%);
+    }
+
+    .path:nth-child(2) {
+      background: linear-gradient(180deg, #f6fbff 0%, #fffdfa 100%);
+    }
+
+    .path:nth-child(3) {
+      background: linear-gradient(180deg, #f3fbf8 0%, #fffdfa 100%);
+    }
+
+    .path .head {
+      display: inline-block;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 10px;
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .path:nth-child(1) .head {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .path:nth-child(2) .head {
+      background: var(--navy-soft);
+      color: var(--navy);
+    }
+
+    .path:nth-child(3) .head {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .path h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .path p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .path ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .path li {
+      font-size: 14px;
+      background: rgba(255,255,255,0.8);
+      border: 1px dashed rgba(32, 48, 59, 0.12);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+
+    .footer-cta {
+      background: linear-gradient(135deg, #e26d3d 0%, #d95b48 45%, #c84261 100%);
+      color: #fff;
+      border-radius: 28px;
+      padding: 30px 26px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-cta::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      bottom: -40px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 70%);
+    }
+
+    .footer-cta h2 {
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1.18;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .footer-cta p {
+      max-width: 820px;
+      font-size: 16px;
+      opacity: 0.95;
+    }
+
+    .footer-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .footer-point {
+      border-radius: 18px;
+      padding: 14px 12px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(6px);
+      font-size: 14px;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .timeline,
+      .compare,
+      .garden-grid,
+      .horizon-grid,
+      .usecase-wrap,
+      .good-grid,
+      .path-grid,
+      .footer-points {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-points {
+        grid-template-columns: 1fr;
+      }
+
+      .garden-loop {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 18px 12px 40px;
+      }
+
+      .hero,
+      .section,
+      .footer-cta {
+        padding: 22px 18px;
+        border-radius: 22px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      blockquote {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">AIを少し触っている人向けの入口ガイド</div>
+      <h1>「普通のChatGPT」と<br>「AIエージェント」の違い、<br><span style="color:#e26d3d;">Codexならかなり体感しやすい。</span></h1>
+      <p class="lead">
+        今日1日Codexを触ってみて感じたのは、<strong>“ほぼChatGPT感覚なのに、できることの景色が一段変わる”</strong>ということ。
+        なかじさんの動画エッセンスも踏まえると、特に初心者の入口としてはかなり「あり」でした。
+      </p>
+
+      <div class="hero-grid">
+        <div class="hook">
+          <h2>最初にひとことで言うと</h2>
+          <p>
+            普通のChatGPTが<strong>「会話して答えをもらうAI」</strong>だとしたら、
+            CodexのようなAIエージェントは<strong>「会話しながら、実際の作業まで進めていけるAI」</strong>です。
+          </p>
+          <div class="mini-points">
+            <div class="mini">
+              <div class="label">入り口</div>
+              <div class="value">ChatGPT感覚で入れる</div>
+            </div>
+            <div class="mini">
+              <div class="label">品質</div>
+              <div class="value">GPT-5.4でかなり高め</div>
+            </div>
+            <div class="mini">
+              <div class="label">安心感</div>
+              <div class="value">上限が来づらい</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-note">
+          <h2>今日のリアルな結論</h2>
+          <p>
+            正直、ChatGPTは解約しようかなと思っていたけど、
+            <strong>Codexがあるなら継続する価値は十分ある</strong>と感じました。
+          </p>
+          <p>
+            難しそうな“AIエージェント”を、ちゃんと
+            <strong>「自分も触れそう」な距離まで下げてくれる</strong>のが良かったです。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">おけもんがAIエージェントに惹かれる理由</h2>
+      <p class="section-sub">
+        もちろんコードを書いてアプリやツールを作るのも面白い。けれど一番ワクワクするのは、
+        <strong>「自分の庭が育っていくこと」</strong>です。
+      </p>
+
+      <div class="garden-grid">
+        <article class="garden-card">
+          <h3>AIエージェントは、<br>“自分の庭”を育てる存在</h3>
+          <p>
+            おけもんにとってAIエージェントの面白さは、単に作業を早くすることではありません。
+            自分のフォルダを読み込み、これまでの創作物や思考やメモを踏まえて返してくれて、
+            さらに出来上がったものをまた庭に戻していけるところです。
+          </p>
+          <p>
+            だから感覚としては、ただの便利ツールというより<strong>「あつ森を育てていく感じ」</strong>に近い。
+            置いたものが増えるほど、島に文脈が生まれ、次にできることも広がっていきます。
+          </p>
+
+          <div class="garden-loop">
+            <div class="loop-item"><strong>ためる</strong>メモ・創作物・会話を置く</div>
+            <div class="loop-item"><strong>読ませる</strong>フォルダごと文脈を渡す</div>
+            <div class="loop-item"><strong>一緒に作る</strong>下書き・整理・発想を進める</div>
+            <div class="loop-item"><strong>戻す</strong>成果物をまた庭に植える</div>
+          </div>
+        </article>
+
+        <article class="reason-card">
+          <h3>なぜ今これが大事なのか？</h3>
+          <p>
+            これは「おけもんが楽しいから」だけではなく、
+            <strong>これから先のAI時代においてかなり本質的な動き</strong>だと思っています。
+          </p>
+
+          <div class="reason-list">
+            <div class="reason"><strong>1. 文脈が資産になる</strong><br>その場限りの会話より、自分の中に蓄積されたナレッジの方が、あとから何度も使える。</div>
+            <div class="reason"><strong>2. AIが自分仕様に育つ</strong><br>フォルダ内の思考や創作物が増えるほど、返ってくる提案も自分に合ったものになっていく。</div>
+            <div class="reason"><strong>3. 出力が消えずに残る</strong><br>AIとのやりとりで生まれた成果物をまた庭に戻せるから、毎回ゼロから始まらない。</div>
+            <div class="reason"><strong>4. 未来の差になる</strong><br>これから重要になるのは、誰が一番多くAIを使ったかより、誰が一番自分の知識と文脈を育ててきたか。</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">まずここが違う<br>普通のChatGPT vs AIエージェント</h2>
+      <p class="section-sub">
+        イメージしづらい人向けに、ざっくり役割で分けると分かりやすいです。
+      </p>
+
+      <div class="compare">
+        <article class="panel chat">
+          <div class="tag">いつものAI</div>
+          <h3>普通のChatGPT</h3>
+          <p>基本は「質問する → 答えが返ってくる」の往復。相談相手としてはとても優秀です。</p>
+          <div class="stack">
+            <div class="stack-item">
+              <div class="icon">1</div>
+              <div><strong>聞く</strong><br>分からないことを質問する</div>
+            </div>
+            <div class="stack-item">
+              <div class="icon">2</div>
+              <div><strong>返ってくる</strong><br>説明、案、文章、アイデアが返る</div>
+            </div>
+            <div class="stack-item">
+              <div class="icon">3</div>
+              <div><strong>人が動く</strong><br>その先の実行や整理は自分で進める</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel agent">
+          <div class="tag">一歩先のAI</div>
+          <h3>AIエージェント</h3>
+          <p>会話しながら、調べる・整理する・作る・直すなど、作業の流れまで前に進めやすいのが特徴です。</p>
+          <div class="stack">
+            <div class="stack-item">
+              <div class="icon">1</div>
+              <div><strong>頼む</strong><br>「こうしてほしい」をまとめて渡す</div>
+            </div>
+            <div class="stack-item">
+              <div class="icon">2</div>
+              <div><strong>考えながら進む</strong><br>必要な手順を組み立てて処理する</div>
+            </div>
+            <div class="stack-item">
+              <div class="icon">3</div>
+              <div><strong>途中までやってくれる</strong><br>たたき台、調査、実務寄りのアウトプットまで届きやすい</div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="highlight-box">
+        <h3>ポイントはここ</h3>
+        <p>
+          AIエージェントは「別物の難しいツール」というより、
+          <strong>“答えて終わり”から“作業を前に進める”へ広がったAI</strong>と捉えるとかなり分かりやすいです。
+          その入口として、Codexはかなり優秀でした。
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">時間が経つほど効いてくる投資でもある</h2>
+      <p class="section-sub">
+        AIエージェント活用は、最初から爆発的な成果が出るというより、
+        <strong>ナレッジがたまるほど価値が増していく“複利型”の取り組み</strong>に近いです。
+      </p>
+
+      <div class="horizon-grid">
+        <article class="horizon-card">
+          <div class="horizon-time">1ヶ月後</div>
+          <h3>まだ手応えは薄いけど、種は見え始める</h3>
+          <p>最初は「これ意味あるのかな？」となりやすい時期。でも日記、音声ログ、メモが少しずつたまり、AIとの対話も自分っぽくなり始める。</p>
+          <p>この段階では、効果よりも<strong>“残す習慣”を作ること</strong>がいちばん大事。</p>
+        </article>
+
+        <article class="horizon-card">
+          <div class="horizon-time">3ヶ月後</div>
+          <h3>過去ログが効き始める</h3>
+          <p>似たテーマをAIが拾いやすくなり、「前にもこう言ってたよね」が起きてくる。1つの原液から複数媒体へ変換する流れも回しやすくなる。</p>
+          <p>このあたりで<strong>“庭が育ってきた感覚”</strong>が出始める。</p>
+        </article>
+
+        <article class="horizon-card">
+          <div class="horizon-time">1年後</div>
+          <h3>自分仕様の土台ができる</h3>
+          <p>思考の癖、価値観、言い回し、よく出る問いがたまり、AIがかなり自分仕様になる。発信、商品、共有資料もゼロから作らなくてよくなる。</p>
+          <p><strong>「資産がある人のAI活用」</strong>に入っていくタイミング。</p>
+        </article>
+
+        <article class="horizon-card">
+          <div class="horizon-time">3年後</div>
+          <h3>差がはっきり出る</h3>
+          <p>その場の便利さだけでAIを使ってきた人と、自分の文脈を育ててきた人で、出てくる質と速さに大きな差がつく。</p>
+          <p>ここではもう、AIを使うこと自体ではなく、<strong>何を積み上げてきたか</strong>が武器になる。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">こんな“無限ループ”も作れるかも</h2>
+      <p class="section-sub">
+        今日読み込んだ「好き勝手に書いたノートをAIで広げていく永久機関」の話を、おけもん流の庭づくりに重ねると、こんな活用イメージが見えてきます。
+      </p>
+
+      <div class="usecase-wrap">
+        <article class="usecase-flow">
+          <h3>1つのメモから、次の発信がどんどん生まれる</h3>
+          <p>
+            起点はあくまで<strong>自分の一次情報</strong>です。AIに最初から全部書かせるのではなく、
+            自分のノートや音声ログや壁打ちを種にして、AIが編集者として広げていくイメージです。
+          </p>
+
+          <div class="flow-steps">
+            <div class="flow-step-card"><strong>1. まず書く / 話す</strong><br>デイリーログ、音声ログ、セッションの気づきをそのまま庭に置く。</div>
+            <div class="flow-step-card"><strong>2. AIが問いを出す</strong><br>「この話の前提は？」「読者が気になるのは？」をAIエージェントに掘ってもらう。</div>
+            <div class="flow-step-card"><strong>3. 対話で深める</strong><br>AIとの壁打ちや人との会話で、もとのメモをさらに深くする。</div>
+            <div class="flow-step-card"><strong>4. 媒体を変える</strong><br>note下書き、X長文、Chatwork共有文、音声台本などに展開する。</div>
+            <div class="flow-step-card"><strong>5. できたものを庭に戻す</strong><br>完成した文章や図解や会話ログをまたObsidianに入れて、次の材料にする。</div>
+          </div>
+        </article>
+
+        <article class="usecase-note">
+          <h3>おけもんなら、たとえばこう使える</h3>
+          <p>
+            今日の動画要約の文脈を借りるなら、
+            <strong>「好き勝手に出した一次表現を、AIが届け方へ変換してくれる」</strong>という流れです。
+          </p>
+
+          <div class="mini-example">
+            <div class="reason"><strong>例1. 音声ログ → note下書き</strong><br>朝の壁打ち音声から、AIがテーマを抜き出し、読みやすい文章に整える。</div>
+            <div class="reason"><strong>例2. note → X長文 / 共有文</strong><br>もとの思想は変えずに、SNSやChatwork向けの届く形へ編集する。</div>
+            <div class="reason"><strong>例3. 会話 → 次の問い</strong><br>AIが「このテーマ、次はここを深めると面白い」と新しい問いを返してくれる。</div>
+            <div class="reason"><strong>例4. 成果物 → 再び庭へ</strong><br>できた図解や投稿をまた保存することで、次回はもっと自分っぽい提案が返ってくる。</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Codexのどこが良かったの？</h2>
+      <p class="section-sub">
+        なかじさんの動画エッセンスと、今日1日触った所感を重ねると、強みはこの5つに集約されます。
+      </p>
+
+      <div class="good-grid">
+        <article class="good-card">
+          <div class="pill">entry</div>
+          <h3>1. ほぼChatGPT感覚で触れる</h3>
+          <p>
+            これが一番大きいです。AIエージェントと聞くと身構えるけど、
+            Codexは<strong>入口の感覚がかなり素直</strong>。だから「ちょっと試してみよう」が起こりやすいです。
+          </p>
+        </article>
+
+        <article class="good-card">
+          <div class="pill">quality</div>
+          <h3>2. GPT-5.4でクオリティが高め</h3>
+          <p>
+            ただ簡単なだけじゃなく、今のバージョンになってから
+            <strong>“ちゃんと使える感”がかなりある</strong>。入口だけ優しいツールでは終わらない印象でした。
+          </p>
+        </article>
+
+        <article class="good-card">
+          <div class="pill">cost</div>
+          <h3>3. 上限が来づらいのが強い</h3>
+          <p>
+            なかじさんの動画でもここは大きな論点でしたが、
+            実際に使うと<strong>「まだいける」安心感</strong>がかなり大きいです。気軽に試行錯誤しやすいのは本当に助かります。
+          </p>
+        </article>
+
+        <article class="good-card">
+          <div class="pill">beginner</div>
+          <h3>4. 初心者の入口として“あり”</h3>
+          <p>
+            ターミナルや設定で最初につまずきやすい人でも、
+            Codexなら<strong>「AIエージェントってこういうことか」が体感しやすい</strong>。最初の1本としてかなり優秀です。
+          </p>
+        </article>
+
+        <article class="good-card">
+          <div class="pill">decision</div>
+          <h3>5. 継続する理由になる</h3>
+          <p>
+            「解約しようかな」が「続けようかな」に変わったのは、
+            それだけ<strong>実用の手応えがあった</strong>ということ。触って初めて良さが分かるタイプの強さがありました。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">動画のエッセンスで見る<br>CodexとClaude Codeの違い</h2>
+      <p class="section-sub">
+        なかじさんの比較をかなり乱暴に一言でまとめるなら、<strong>入口はCodex、深い作り込みはClaude Code</strong>です。
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-card">
+          <h3>ざっくり比較するとこう</h3>
+          <div class="steps">
+            <div class="step">
+              <div class="num">A</div>
+              <div>
+                <h4>Codex</h4>
+                <p>初心者向け。UIがシンプルで、まず触ってみるまでのハードルが低い。上限も来づらく、気軽に回しやすい。</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="num">B</div>
+              <div>
+                <h4>Claude Code</h4>
+                <p>作り込みや深い開発向け。ターミナル前提の場面もあり、慣れると強いけれど、最初の摩擦はやや大きい。</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="num">C</div>
+              <div>
+                <h4>デザインや作り込み</h4>
+                <p>動画ではClaude Code側に軍配。ただし、そこまで踏み込まない人にとってはCodexの気軽さがかなり魅力。</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="num">D</div>
+              <div>
+                <h4>結論</h4>
+                <p>どちらが絶対上ではなく、<strong>「自分にとって入りやすい方から始める」が正解</strong>。その意味でCodexはかなり強い入口。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quote-card">
+          <h3>初心者にとっての本音</h3>
+          <blockquote>
+            「すごいのは分かるけど、
+            それ、私にも触れるの？」
+          </blockquote>
+          <p class="quote-note">
+            Codexが良いのは、この不安をかなり減らしてくれるところ。
+            いきなり“ガチ勢の世界”に入る感じではなく、<strong>いつものChatGPTの延長線で、一歩先を体験できる</strong>のが大きいです。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">じゃあ、どんな人にCodexが向いてる？</h2>
+      <p class="section-sub">
+        「AIは少し触ってる。でもAIエージェントはまだピンと来てない」という人ほど、相性がいいと思います。
+      </p>
+
+      <div class="path-grid">
+        <article class="path">
+          <div class="head">for beginner</div>
+          <h3>まず入口を知りたい人</h3>
+          <p>AIエージェントの世界を、難しすぎず体感したい人向け。</p>
+          <ul>
+            <li>ChatGPTは使ったことがある</li>
+            <li>でもターミナルはちょっと怖い</li>
+            <li>まず「何ができるの？」を掴みたい</li>
+          </ul>
+        </article>
+
+        <article class="path">
+          <div class="head">for worker</div>
+          <h3>日常実務に混ぜたい人</h3>
+          <p>壁打ちだけでなく、調査や下書き、整理も少し前に進めたい人向け。</p>
+          <ul>
+            <li>調べものをまとめたい</li>
+            <li>たたき台を速く作りたい</li>
+            <li>手数を増やしたい</li>
+          </ul>
+        </article>
+
+        <article class="path">
+          <div class="head">for explorer</div>
+          <h3>ワクワクしながら試したい人</h3>
+          <p>理屈より先に、まず触って「おもしろい」を感じたい人向け。</p>
+          <ul>
+            <li>難しい設定は後回しでいい</li>
+            <li>まず体験してから判断したい</li>
+            <li>上限を気にしすぎず試したい</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="footer-cta">
+      <h2>AIエージェントは、<br>“一部のガチ勢だけのもの”じゃない。<br>未来のために庭を育てる道具でもある。</h2>
+      <p>
+        もし「AIエージェントって難しそう」と思っていたなら、
+        Codexはかなりいい入口です。
+        普通のChatGPTの延長線で触れながら、
+        <strong>“答えを聞くAI”から“自分の文脈を育てながら作業を進めるAI”へ景色が変わる感覚</strong>を味わえます。
+      </p>
+      <div class="footer-points">
+        <div class="footer-point"><strong>入口のシンプルさ</strong><br>だから最初の一歩が軽い</div>
+        <div class="footer-point"><strong>文脈がたまる</strong><br>使うほど自分の庭が育っていく</div>
+        <div class="footer-point"><strong>未来の資産になる</strong><br>ナレッジを自分の中に残していける</div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Codeって今どこまでできるの？｜おけもんカンパニー接続マップ</title>
+<style>
+  :root {
+    --bg: #fcf9f4;
+    --paper: #ffffff;
+    --ink: #3a3530;
+    --muted: #887f75;
+    --line: rgba(0,0,0,0.08);
+    --forest: #5a8a6e;
+    --forest-soft: rgba(90,138,110,0.10);
+    --moss: #8bb89a;
+    --berry: #d97c9a;
+    --berry-soft: rgba(217,124,154,0.10);
+    --honey: #e8b04d;
+    --honey-soft: rgba(232,176,77,0.12);
+    --sky: #7fb3d5;
+    --sky-soft: rgba(127,179,213,0.10);
+    --lavender: #b4a5d6;
+    --lavender-soft: rgba(180,165,214,0.10);
+    --peach: #f4a58a;
+    --peach-soft: rgba(244,165,138,0.10);
+    --cream: #fef3d9;
+    --shadow: 0 6px 24px rgba(90,138,110,0.12);
+    --shadow-soft: 0 3px 12px rgba(0,0,0,0.04);
+    --radius: 22px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 10% 5%, rgba(139,184,154,0.12), transparent 45%),
+      radial-gradient(circle at 90% 20%, rgba(244,165,138,0.10), transparent 40%),
+      radial-gradient(circle at 50% 80%, rgba(180,165,214,0.08), transparent 50%);
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+  .page { width: min(1100px, calc(100vw - 28px)); margin: 0 auto; padding: 28px 0 80px; }
+
+  /* ================= Hero ================= */
+  .hero {
+    text-align: center;
+    padding: 44px 28px 36px;
+    margin-bottom: 28px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 30px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; top:0; left:0; right:0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--forest), var(--moss), var(--honey), var(--berry), var(--lavender));
+  }
+  .hero-emoji { font-size: 40px; margin-bottom: 8px; }
+  .hero h1 {
+    font-size: clamp(22px, 3.6vw, 32px);
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+  .hero p { font-size: 14px; color: var(--muted); max-width: 560px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--forest-soft);
+    color: var(--forest);
+    padding: 5px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(90,138,110,0.18);
+  }
+
+  /* ================= Sections ================= */
+  .section {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 32px 26px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+  }
+  .section-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 4px 14px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  .label-now { background: var(--honey-soft); color: #b8832a; border: 1px solid rgba(232,176,77,0.3); }
+  .label-future { background: var(--berry-soft); color: #b85578; border: 1px solid rgba(217,124,154,0.3); }
+  .section h2 {
+    font-size: clamp(19px, 2.8vw, 25px);
+    font-weight: 800;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .section-lead {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 22px;
+  }
+
+  /* ================= Central map (1枚目) ================= */
+  .map {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 14px;
+    align-items: center;
+    margin-top: 18px;
+  }
+  .map-node {
+    background: var(--paper);
+    border-radius: 18px;
+    padding: 16px 16px;
+    border: 2px solid;
+    text-align: center;
+  }
+  .map-node .icon { font-size: 28px; margin-bottom: 4px; }
+  .map-node .title {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .map-node .desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .map-center {
+    grid-column: 2;
+    grid-row: 2;
+    background: linear-gradient(135deg, #fef9e8, #fef3d9);
+    border: 3px solid var(--honey);
+    border-radius: 22px;
+    padding: 22px 16px;
+    text-align: center;
+    box-shadow: 0 6px 24px rgba(232,176,77,0.2);
+  }
+  .map-center .icon { font-size: 44px; }
+  .map-center .title { font-size: 16px; font-weight: 800; margin-top: 4px; }
+  .map-center .desc { font-size: 12px; color: #a07a26; margin-top: 4px; line-height: 1.5; }
+
+  .node-memory { grid-column: 1; grid-row: 2; border-color: var(--lavender); background: var(--lavender-soft); }
+  .node-friends { grid-column: 2; grid-row: 1; border-color: var(--berry); background: var(--berry-soft); }
+  .node-hands { grid-column: 3; grid-row: 2; border-color: var(--sky); background: var(--sky-soft); }
+  .node-auto { grid-column: 2; grid-row: 3; border-color: var(--moss); background: var(--forest-soft); }
+
+  /* ================= Detail cards ================= */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .detail {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px 16px 14px;
+    border-top: 4px solid var(--forest);
+  }
+  .detail.memory { border-top-color: var(--lavender); }
+  .detail.friends { border-top-color: var(--berry); }
+  .detail.hands { border-top-color: var(--sky); }
+  .detail.auto { border-top-color: var(--moss); }
+
+  .detail-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .detail-head .emoji { font-size: 22px; }
+  .detail-head .name {
+    font-size: 14px;
+    font-weight: 800;
+  }
+  .detail-head .tag {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    background: #f5f2ec;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .detail ul { list-style: none; padding: 0; margin-top: 6px; }
+  .detail li {
+    font-size: 12.5px;
+    padding: 4px 0;
+    color: var(--ink);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    line-height: 1.55;
+  }
+  .detail li::before {
+    content: "🌿";
+    flex-shrink: 0;
+    font-size: 11px;
+    margin-top: 2px;
+  }
+  .detail.friends li::before { content: "🌸"; }
+  .detail.hands li::before { content: "✨"; }
+  .detail.auto li::before { content: "⏰"; }
+  .detail .mini-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed var(--line);
+  }
+
+  /* ================= Character list ================= */
+  .chara-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .chara-chip {
+    font-size: 11.5px;
+    background: var(--berry-soft);
+    color: #a2456a;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(217,124,154,0.25);
+    font-weight: 700;
+  }
+  .chara-chip.sub {
+    background: var(--cream);
+    color: #8a6a26;
+    border-color: rgba(232,176,77,0.3);
+  }
+
+  /* ================= Stats ================= */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .stat {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .stat .num {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--forest);
+    line-height: 1;
+  }
+  .stat .unit {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  .stat .label {
+    font-size: 11.5px;
+    color: var(--ink);
+    margin-top: 4px;
+    font-weight: 700;
+  }
+
+  /* ================= Future map (2枚目) ================= */
+  .layer-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 22px;
+  }
+  .layer {
+    background: var(--paper);
+    border: 2px solid;
+    border-radius: 18px;
+    padding: 16px 18px;
+    position: relative;
+  }
+  .layer-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .layer-head .emoji { font-size: 28px; }
+  .layer-head .title {
+    font-size: 15px;
+    font-weight: 800;
+  }
+  .layer-head .badge {
+    margin-left: auto;
+    font-size: 10.5px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .layer .desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .layer-claude { border-color: var(--honey); background: linear-gradient(135deg, #fef9e8, #fef3d9); }
+  .layer-claude .badge { background: var(--honey); color: #fff; }
+  .layer-new { border-color: var(--berry); background: linear-gradient(135deg, #fff0f4, #ffe4ec); box-shadow: 0 6px 24px rgba(217,124,154,0.18); }
+  .layer-new .badge { background: var(--berry); color: #fff; }
+  .layer-memory { border-color: var(--lavender); background: var(--lavender-soft); }
+  .layer-memory .badge { background: var(--lavender); color: #fff; }
+  .layer-hands { border-color: var(--sky); background: var(--sky-soft); }
+  .layer-hands .badge { background: var(--sky); color: #fff; }
+
+  .arrow-down {
+    text-align: center;
+    font-size: 22px;
+    color: var(--muted);
+    margin: -4px 0;
+  }
+
+  /* ================= Before After ================= */
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .ba-box {
+    padding: 18px 16px;
+    border-radius: 16px;
+    border: 2px solid;
+  }
+  .ba-before {
+    background: #faf6f1;
+    border-color: rgba(138,127,117,0.3);
+  }
+  .ba-after {
+    background: linear-gradient(135deg, #fff3f7, #ffe8f0);
+    border-color: var(--berry);
+  }
+  .ba-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .ba-box ul { list-style: none; padding: 0; }
+  .ba-box li {
+    font-size: 12.5px;
+    padding: 4px 0;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    line-height: 1.55;
+  }
+  .ba-before li::before { content: "😅"; flex-shrink: 0; }
+  .ba-after li::before { content: "✨"; flex-shrink: 0; }
+
+  /* ================= CxO x Notebook ================= */
+  .notebook-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .nb-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px 14px;
+    border-left: 4px solid var(--berry);
+  }
+  .nb-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-weight: 800;
+    font-size: 13.5px;
+  }
+  .nb-card p { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+  /* ================= Note ================= */
+  .note {
+    background: linear-gradient(135deg, #fef3d9, #fef9e8);
+    border: 2px solid var(--honey);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-top: 22px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .note .note-title {
+    font-weight: 800;
+    color: #a07a26;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+
+  /* ================= Footer ================= */
+  .foot {
+    text-align: center;
+    margin-top: 28px;
+    padding: 20px;
+    background: var(--paper);
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .foot strong { color: var(--forest); font-weight: 800; }
+
+  /* ================= Mobile ================= */
+  @media (max-width: 760px) {
+    .map {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto auto;
+    }
+    .map-center { grid-column: 1; grid-row: 3; }
+    .node-memory { grid-column: 1; grid-row: 2; }
+    .node-friends { grid-column: 1; grid-row: 1; }
+    .node-hands { grid-column: 1; grid-row: 4; }
+    .node-auto { grid-column: 1; grid-row: 5; }
+    .ba-grid { grid-template-columns: 1fr; }
+    .section { padding: 24px 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ================= HERO ================= -->
+  <div class="hero">
+    <div class="hero-emoji">🌲🦊🌸</div>
+    <h1>おけもんカンパニーのClaude Codeって<br>今どこまでできるの？</h1>
+    <p>「何が繋がってて、何ができるの？」を1枚でわかる接続マップ。<br>そして「NotebookLMを繋ぐと何が変わるのか」の未来予想図つき。</p>
+    <span class="hero-badge">📅 2026-04-24 時点の実測マップ</span>
+  </div>
+
+  <!-- ================= 1枚目 現状マップ ================= -->
+  <div class="section">
+    <span class="section-label label-now">📍 いまのおけもりの地図</span>
+    <h2>Claude Codeを真ん中にして、4方向にぐるっと繋がってる</h2>
+    <p class="section-lead">「頭」だけだったClaude Codeに、<strong>記憶・仲間・手足・時計</strong>がついて、人みたいな存在になってるよ〜</p>
+
+    <!-- 4方位マップ -->
+    <div class="map">
+      <div class="map-node map-center">
+        <div class="icon">🍯</div>
+        <div class="title">Claude Code</div>
+        <div class="desc">頭脳・会話・判断</div>
+      </div>
+      <div class="map-node node-memory">
+        <div class="icon">📚</div>
+        <div class="title">記憶（Vault）</div>
+        <div class="desc">Obsidian「おけ森」を毎回読む</div>
+      </div>
+      <div class="map-node node-friends">
+        <div class="icon">👯‍♀️</div>
+        <div class="title">仲間（キャラ）</div>
+        <div class="desc">CxO 6人＋派生キャラで役割分担</div>
+      </div>
+      <div class="map-node node-hands">
+        <div class="icon">🛠</div>
+        <div class="title">手足（接続）</div>
+        <div class="desc">MCP 14個＋API直叩き 8個</div>
+      </div>
+      <div class="map-node node-auto">
+        <div class="icon">⏰</div>
+        <div class="title">時計（Hooks）</div>
+        <div class="desc">決まった時間に勝手に動く</div>
+      </div>
+    </div>
+
+    <!-- 詳細カード -->
+    <div class="detail-grid">
+
+      <div class="detail memory">
+        <div class="detail-head">
+          <span class="emoji">📚</span>
+          <span class="name">記憶層：おけ森Vault</span>
+          <span class="tag">Obsidian</span>
+        </div>
+        <ul>
+          <li>毎日のデイリーログ（🏡今日の広場）</li>
+          <li>CxO日報・セッション引き継ぎ</li>
+          <li>MVV・フィロソフィー・タスクHub</li>
+          <li>セーブポイント（大きな節目の記録）</li>
+        </ul>
+        <div class="mini-note">💡 セッションが切れてもVaultに書けば記憶は残る</div>
+      </div>
+
+      <div class="detail friends">
+        <div class="detail-head">
+          <span class="emoji">👯‍♀️</span>
+          <span class="name">仲間：CxO 6人＋派生</span>
+          <span class="tag">計10+人</span>
+        </div>
+        <div class="chara-row">
+          <span class="chara-chip">🎤 はるかCEO</span>
+          <span class="chara-chip">🐱 あおいCDO</span>
+          <span class="chara-chip">🌸 りんCMO</span>
+          <span class="chara-chip">🫧 ゆいCPO</span>
+          <span class="chara-chip">💰 しーちゃんCFO</span>
+          <span class="chara-chip">🌿 まなCSO</span>
+        </div>
+        <div class="chara-row" style="margin-top: 6px;">
+          <span class="chara-chip sub">☀️ ひより</span>
+          <span class="chara-chip sub">✏️ きょうちゃん</span>
+          <span class="chara-chip sub">💎 みっちゃん</span>
+          <span class="chara-chip sub">🎀 コウ</span>
+        </div>
+        <div class="mini-note">💡 名前で呼びかけるとそのキャラに切り替わる</div>
+      </div>
+
+      <div class="detail hands">
+        <div class="detail-head">
+          <span class="emoji">🛠</span>
+          <span class="name">手足：MCP（連携口）</span>
+          <span class="tag">14個</span>
+        </div>
+        <ul>
+          <li>チャットワーク／Slack／Gmail／カレンダー</li>
+          <li>Notion（個人＋irodori）／Canva／Goodnotes</li>
+          <li>Apple Notes（iPhoneメモ直読み）</li>
+          <li>Chromeブラウザ操作／Playwright自動化</li>
+          <li>Circleback（会議の文字起こし取得）</li>
+        </ul>
+        <div class="mini-note">💡 MCP=アプリとAIを繋ぐ共通プラグ規格</div>
+      </div>
+
+      <div class="detail hands">
+        <div class="detail-head">
+          <span class="emoji">⚡</span>
+          <span class="name">手足：API直叩き</span>
+          <span class="tag">8個</span>
+        </div>
+        <ul>
+          <li>Groq（音声→文字起こし・大量要約）</li>
+          <li>Gemini（画像生成 nano-banana）</li>
+          <li>LINE通知／YouTube Data／Google各種</li>
+          <li>Chatwork REST（メンション取得）</li>
+        </ul>
+        <div class="mini-note">💰 OpenAI未接続・Gemini課金未登録（破産手続き中のため慎重）</div>
+      </div>
+
+      <div class="detail auto">
+        <div class="detail-head">
+          <span class="emoji">⏰</span>
+          <span class="name">時計：Hooks・自動実行</span>
+          <span class="tag">勝手に動く</span>
+        </div>
+        <ul>
+          <li>毎朝12時：学長ライブを自動で処理</li>
+          <li>セッション開始時：カンペを自動表示</li>
+          <li>終了時：デイリーログに自動追記</li>
+        </ul>
+        <div class="mini-note">💡 おけちゃんが指示しなくても動く仕組み</div>
+      </div>
+
+      <div class="detail">
+        <div class="detail-head">
+          <span class="emoji">✨</span>
+          <span class="name">スキル（コマンド）</span>
+          <span class="tag">40+個</span>
+        </div>
+        <ul>
+          <li>/色鮮やか・/circleback（会議分析）</li>
+          <li>/kyochan-diagram（この図解もコレ）</li>
+          <li>/netlify-deploy・/lp-create（LP公開）</li>
+          <li>/morning-todo（朝のToDo整理）</li>
+        </ul>
+        <div class="mini-note">💡 「/○○」って呼ぶだけで決まった仕事をやってくれる</div>
+      </div>
+    </div>
+
+    <!-- 数字でわかる -->
+    <div class="stats">
+      <div class="stat"><div class="num">6</div><div class="unit">人</div><div class="label">CxO本体</div></div>
+      <div class="stat"><div class="num">14</div><div class="unit">個</div><div class="label">MCP連携口</div></div>
+      <div class="stat"><div class="num">8</div><div class="unit">個</div><div class="label">API直接</div></div>
+      <div class="stat"><div class="num">40+</div><div class="unit">個</div><div class="label">スキル</div></div>
+      <div class="stat"><div class="num">22+</div><div class="unit">個</div><div class="label">外部サービス</div></div>
+    </div>
+  </div>
+
+  <!-- ================= 2枚目 NotebookLM未来図 ================= -->
+  <div class="section">
+    <span class="section-label label-future">🌸 NotebookLMが加わるとどうなるか</span>
+    <h2>「分厚い知識層」がまるっと1枚追加される世界</h2>
+    <p class="section-lead">今のClaude Codeに、おけちゃん専用の<strong>「引用付きで答えてくれる図書館」</strong>が繋がる。これが変化のキモ🌟</p>
+
+    <!-- 4層スタック -->
+    <div class="layer-stack">
+      <div class="layer layer-claude">
+        <div class="layer-head">
+          <span class="emoji">🍯</span>
+          <span class="title">Claude Code（頭・判断）</span>
+          <span class="badge">いまここ</span>
+        </div>
+        <div class="desc">会話・設計・文章生成・コード書き。おけちゃんと話す窓口。</div>
+      </div>
+
+      <div class="arrow-down">⬇️</div>
+
+      <div class="layer layer-memory">
+        <div class="layer-head">
+          <span class="emoji">📚</span>
+          <span class="title">記憶層：Obsidian Vault（おけ森）</span>
+          <span class="badge">いまある</span>
+        </div>
+        <div class="desc">日々のメモ・日報・決定事項。「起きたこと」の記録。</div>
+      </div>
+
+      <div class="arrow-down">⬇️</div>
+
+      <div class="layer layer-new">
+        <div class="layer-head">
+          <span class="emoji">🌸</span>
+          <span class="title">知識層：NotebookLM Pro</span>
+          <span class="badge">NEW✦追加分</span>
+        </div>
+        <div class="desc"><strong>300本まで資料を入れられる読書脳みそ。</strong>YouTube動画・PDF・URL投げるだけで、引用元付きで答えてくれる。</div>
+      </div>
+
+      <div class="arrow-down">⬇️</div>
+
+      <div class="layer layer-hands">
+        <div class="layer-head">
+          <span class="emoji">🛠</span>
+          <span class="title">手足：MCP 14個＋API 8個</span>
+          <span class="badge">いまある</span>
+        </div>
+        <div class="desc">チャットワーク・Gmail・Canva…外の世界とつながる口。</div>
+      </div>
+    </div>
+
+    <!-- Before/After -->
+    <div class="ba-grid">
+      <div class="ba-box ba-before">
+        <div class="ba-head">😅 今まで</div>
+        <ul>
+          <li>読んだ本の知識は頭の中でごちゃっと</li>
+          <li>動画の文字起こしは毎回Groqに頼む</li>
+          <li>発信ネタの根拠探しで毎回検索</li>
+          <li>営業資料、業界知識はその都度調べ直し</li>
+          <li>同じ資料を何回もClaudeに食べさせてる</li>
+        </ul>
+      </div>
+      <div class="ba-box ba-after">
+        <div class="ba-head">✨ NotebookLMが加わると</div>
+        <ul>
+          <li>一度入れたら「引用元つき」で呼び出せる</li>
+          <li>YouTube動画は URL投げるだけでOK</li>
+          <li>「学長ライブ300本から根拠引いて」が秒</li>
+          <li>業界別の専門書をノート分けして深い提案</li>
+          <li>Claudeは考えるだけ、調べ物はNotebookLM</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CxO x Notebook -->
+    <h2 style="margin-top: 32px; font-size: 18px;">🌈 CxOごとに専用ノートブックを持つイメージ</h2>
+    <p class="section-lead" style="margin-top: 4px;">それぞれの仕事に必要な資料だけ入れとくから、キャラごとに<strong>深さ</strong>が出るよ</p>
+
+    <div class="notebook-grid">
+      <div class="nb-card">
+        <div class="nb-head">🌸 りんCMOノート</div>
+        <p>学長ライブ300本＋マガジン＋読んだ本。発信ネタを引用つきで秒出し</p>
+      </div>
+      <div class="nb-card">
+        <div class="nb-head">🌿 まなCSOノート</div>
+        <p>クライアント業界の専門書30冊。商談中に引用つき回答で厚みUP</p>
+      </div>
+      <div class="nb-card">
+        <div class="nb-head">🫧 ゆいCPOノート</div>
+        <p>おけちゃんのMVV＋ポンコツ集＋日記。自己一致したコンテンツ設計</p>
+      </div>
+      <div class="nb-card">
+        <div class="nb-head">🐱 あおいCDOノート</div>
+        <p>Claude公式ドキュメント＋MCP仕様書。根拠ガチガチの技術設計</p>
+      </div>
+      <div class="nb-card">
+        <div class="nb-head">💰 しーちゃんCFOノート</div>
+        <p>確定申告・補助金資料・破産手続き関連。根拠つきで数字語れる</p>
+      </div>
+      <div class="nb-card">
+        <div class="nb-head">🌿 irodoriノート</div>
+        <p>商談録画全部＋秘書マニュアル。色鮮やかスキルが一段深くなる</p>
+      </div>
+    </div>
+
+    <!-- 注意書き -->
+    <div class="note">
+      <div class="note-title">🌟 いま繋げる方法（2026-04-24時点のファクト）</div>
+      Google公式のCLI／API解放は<strong>Enterprise版Preview</strong>のみ（Google Cloud契約＋有料）。<br>
+      個人のPro課金ユーザーが使える道は<strong>非公式MCPサーバー</strong>（<code>PleasePrompto/notebooklm-mcp</code>・<code>jacob-bd/notebooklm-mcp-cli</code>等）。<br>
+      認証はブラウザCookie方式。おけちゃんのPro課金アカウントでそのまま動く見込み。<br>
+      ※非公式ゆえ突然壊れるリスクあり。まずは1ノートで試してから本格運用の方針で🌱
+    </div>
+  </div>
+
+  <!-- ================= Footer ================= -->
+  <div class="foot">
+    <strong>おけもんカンパニー接続マップ</strong><br>
+    描画：きょうちゃん（あおいCDO傘下） ／ ファクトチェック：はるかCEO<br>
+    正本データ：<code>あおいCDO/AI運用/【一覧】MCP・API接続マスター.md</code>
+  </div>
+
+</div>
+</body>
+</html>
