@@ -4,869 +4,1777 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>🍊 オレンジさん取扱説明書 v1（仮版）</title>
+<title>オレンジさん 取扱説明書 ／ Strengths Guide v2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 :root {
   --paper: #FFFAF1;
   --paper-2: #FFF3E0;
+  --paper-3: #FFE7C7;
   --orange: #FF8C42;
   --orange-deep: #E76F51;
+  --orange-soft: #FFB17A;
   --sun: #FFD460;
   --leaf: #8DBF7A;
+  --leaf-deep: #4F8B3A;
   --ink: #3D2914;
   --muted: #8B6F47;
   --line: rgba(231, 111, 81, 0.18);
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Helvetica Neue", sans-serif;
-  line-height: 1.8;
-  letter-spacing: 0.02em;
-  -webkit-font-smoothing: antialiased;
-}
-body {
-  background:
-    radial-gradient(circle at 10% 0%, rgba(255, 212, 96, 0.18), transparent 40%),
-    radial-gradient(circle at 90% 100%, rgba(255, 140, 66, 0.12), transparent 40%),
-    var(--paper);
-  min-height: 100vh;
-  padding: 40px 20px 80px;
-}
-.wrap {
-  max-width: 880px;
-  margin: 0 auto;
+  --line-soft: rgba(231, 111, 81, 0.10);
+  --warn: #B05E2F;
+  --shadow-sm: 0 4px 16px rgba(231, 111, 81, 0.08);
+  --shadow-md: 0 8px 32px rgba(231, 111, 81, 0.12);
+  --shadow-lg: 0 20px 60px rgba(231, 111, 81, 0.18);
+
+  --serif: "Noto Serif JP", "游明朝", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --sans: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  --en: "Inter", sans-serif;
+  --hand: "Caveat", cursive;
 }
 
-/* ==== Hero ==== */
-.hero {
-  text-align: center;
-  padding: 56px 24px 40px;
-  background: linear-gradient(160deg, #FFE7C7, #FFF3E0 70%, var(--paper));
-  border-radius: 28px;
-  border: 2px solid var(--line);
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 32px;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.85;
+  letter-spacing: 0.025em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
-.hero::before {
+
+/* ====== Common ====== */
+.en {
+  font-family: var(--en);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.serif { font-family: var(--serif); }
+.hand { font-family: var(--hand); }
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+.section {
+  padding: 120px 0;
+  position: relative;
+}
+.section-head {
+  text-align: center;
+  margin-bottom: 70px;
+}
+.section-head .label {
+  color: var(--orange-deep);
+  margin-bottom: 18px;
+  display: inline-block;
+  position: relative;
+  padding: 0 24px;
+}
+.section-head .label::before,
+.section-head .label::after {
   content: "";
   position: absolute;
-  top: -60px; right: -60px;
-  width: 200px; height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--sun), transparent 70%);
-  opacity: 0.6;
+  top: 50%;
+  width: 16px;
+  height: 1px;
+  background: var(--orange);
 }
-.hero .badge {
-  display: inline-block;
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  color: var(--orange-deep);
-  background: rgba(255, 140, 66, 0.12);
-  padding: 6px 16px;
-  border-radius: 100px;
-  margin-bottom: 18px;
-  font-weight: 600;
-  position: relative;
-}
-.hero h1 {
-  font-size: 38px;
-  font-weight: 800;
-  line-height: 1.4;
-  margin-bottom: 14px;
-  position: relative;
-  letter-spacing: 0.02em;
-}
-.hero h1 .emoji { font-size: 48px; vertical-align: middle; }
-.hero .catch {
-  font-size: 18px;
-  color: var(--orange-deep);
+.section-head .label::before { left: 0; }
+.section-head .label::after { right: 0; }
+.section-head h2 {
+  font-family: var(--serif);
   font-weight: 700;
-  margin-bottom: 18px;
-  position: relative;
+  font-size: 32px;
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
 }
-.hero .catch span {
-  background: linear-gradient(transparent 60%, var(--sun) 60%);
-  padding: 0 4px;
-}
-.hero .lead {
-  font-size: 15px;
+.section-head .desc {
   color: var(--muted);
-  max-width: 560px;
+  font-size: 14px;
+  max-width: 580px;
   margin: 0 auto;
-  position: relative;
+  line-height: 1.95;
 }
 
-/* ==== Section ==== */
-.section {
-  margin: 56px 0 0;
-}
-.section-title {
-  font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 6px;
+/* ====== Hero ====== */
+.hero {
+  position: relative;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-.section-title .num {
-  display: inline-flex;
-  align-items: center;
   justify-content: center;
-  width: 30px; height: 30px;
-  background: var(--orange);
-  color: #fff;
-  border-radius: 50%;
-  font-size: 14px;
-  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(180deg, #FFEDD0 0%, var(--paper-2) 50%, var(--paper) 100%);
+  overflow: hidden;
+  padding: 100px 24px;
 }
-.section-sub {
-  color: var(--muted);
-  font-size: 14px;
-  margin-bottom: 20px;
-  margin-left: 40px;
+.hero-sun {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 212, 96, 0.55), transparent 60%);
+  filter: blur(20px);
+  animation: sunGlow 8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sunGlow {
+  0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.75; transform: translateX(-50%) scale(1.05); }
+}
+.hero-rays {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 700px;
+  height: 700px;
+  transform: translateX(-50%) translateY(-30%);
+  background:
+    conic-gradient(from 0deg at 50% 50%,
+      transparent 0deg,
+      rgba(255, 200, 100, 0.08) 8deg,
+      transparent 16deg,
+      transparent 38deg,
+      rgba(255, 200, 100, 0.06) 46deg,
+      transparent 54deg,
+      transparent 78deg,
+      rgba(255, 200, 100, 0.08) 86deg,
+      transparent 94deg,
+      transparent 120deg,
+      rgba(255, 200, 100, 0.06) 128deg,
+      transparent 136deg,
+      transparent 168deg,
+      rgba(255, 200, 100, 0.08) 176deg,
+      transparent 184deg);
+  pointer-events: none;
+  animation: rays 60s linear infinite;
+}
+@keyframes rays { to { transform: translateX(-50%) translateY(-30%) rotate(360deg); } }
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 780px;
+}
+.hero-label {
+  color: var(--orange-deep);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeIn 0.9s 0.2s forwards;
+}
+.hero-symbol {
+  font-size: 84px;
+  margin-bottom: 18px;
+  filter: drop-shadow(0 8px 20px rgba(231, 111, 81, 0.25));
+  opacity: 0;
+  animation: dropIn 1.1s 0.4s forwards;
+}
+@keyframes dropIn {
+  0% { opacity: 0; transform: translateY(-30px) rotate(-15deg); }
+  60% { transform: translateY(8px) rotate(5deg); }
+  100% { opacity: 1; transform: translateY(0) rotate(0); }
 }
 
-/* ==== Top5 cards ==== */
+.hero-title {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: slideUp 1s 0.7s forwards;
+}
+.hero-title .accent { color: var(--orange-deep); }
+.hero-title .small {
+  display: block;
+  font-size: 30px;
+  font-weight: 500;
+  margin-top: 8px;
+  letter-spacing: 0.18em;
+  color: var(--orange-deep);
+}
+
+.hero-catch {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 14px;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+  opacity: 0;
+  animation: slideUp 1s 1s forwards;
+}
+.hero-catch .hl {
+  background: linear-gradient(transparent 60%, rgba(255, 212, 96, 0.5) 60%);
+  padding: 0 8px;
+}
+
+.hero-sub {
+  font-family: var(--hand);
+  font-size: 28px;
+  color: var(--orange-deep);
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: slideUp 1s 1.2s forwards;
+  letter-spacing: 0.04em;
+}
+
+.hero-lead {
+  font-size: 14.5px;
+  color: var(--muted);
+  line-height: 2.2;
+  max-width: 540px;
+  margin: 0 auto;
+  opacity: 0;
+  animation: slideUp 1s 1.4s forwards;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  opacity: 0;
+  animation: fadeIn 1s 1.7s forwards;
+}
+.hero-scroll .scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--orange), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0%, 100% { transform: scaleY(0.4); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+}
+
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ====== Divider ====== */
+.divider {
+  height: 140px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 50%, var(--paper) 100%);
+}
+.divider .ornament {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: var(--orange-soft);
+  font-size: 14px;
+}
+.divider .ornament::before,
+.divider .ornament::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--orange-soft), transparent);
+}
+
+/* ====== Quote (Her Words) ====== */
+.quotes {
+  background: linear-gradient(180deg, var(--paper) 0%, #FFF8EA 100%);
+  padding: 130px 0 130px;
+  position: relative;
+}
+.quotes::before {
+  content: "";
+  position: absolute;
+  top: 60px; left: 8%;
+  font-family: var(--serif);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 212, 96, 0.2), transparent 60%);
+  pointer-events: none;
+}
+.quote-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 30px;
+}
+.quote-card {
+  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  padding: 36px 32px 32px;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s;
+}
+.quote-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.quote-card::before {
+  content: "“";
+  position: absolute;
+  top: -10px; left: 22px;
+  font-family: var(--serif);
+  font-size: 96px;
+  font-weight: 900;
+  color: var(--orange);
+  opacity: 0.25;
+  line-height: 1;
+}
+.quote-card .text {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 2.0;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  position: relative;
+  padding-left: 8px;
+}
+.quote-card .by {
+  margin-top: 18px;
+  font-family: var(--en);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-align: right;
+}
+.quote-card.feature {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, var(--paper-3), var(--paper-2));
+  border: none;
+  text-align: center;
+  padding: 50px 40px;
+}
+.quote-card.feature::before {
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 80px;
+}
+.quote-card.feature .text {
+  padding-left: 0;
+  font-size: 22px;
+  line-height: 1.95;
+}
+.quote-card.feature .by { text-align: center; margin-top: 22px; }
+
+/* ====== Top5 ====== */
+.strengths {
+  padding: 130px 0;
+  background: var(--paper);
+}
 .cards {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 24px;
 }
 .card {
   background: #fff;
-  border: 2px solid var(--line);
-  border-radius: 20px;
-  padding: 24px 22px;
+  border-left: 4px solid var(--orange);
+  border-top: 1px solid var(--line-soft);
+  border-right: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  border-radius: 2px;
+  padding: 38px 36px 34px;
   position: relative;
-  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s;
 }
-.card:hover { transform: translateY(-2px); }
-.card .rank {
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.card-rank {
   position: absolute;
-  top: -12px; left: 20px;
-  background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+  top: -1px; right: 36px;
+  background: var(--orange);
   color: #fff;
-  font-size: 12px;
+  font-family: var(--en);
   font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 100px;
-  letter-spacing: 0.1em;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  padding: 8px 16px;
+  border-radius: 0 0 2px 2px;
 }
-.card .name {
+.card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px; height: 56px;
+  background: linear-gradient(135deg, var(--paper-3), var(--paper-2));
+  border-radius: 50%;
+  color: var(--orange-deep);
   font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 4px;
-  color: var(--ink);
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  flex-wrap: wrap;
+  margin-bottom: 16px;
 }
-.card .name .en {
-  font-size: 12px;
-  color: var(--muted);
-  font-weight: 500;
+.card-name {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
   letter-spacing: 0.05em;
 }
-.card .one-liner {
-  font-size: 15px;
+.card-name-en {
+  font-family: var(--en);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.18em;
+  margin-bottom: 16px;
+  display: block;
+}
+.card-tagline {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--orange-deep);
+  font-weight: 500;
+  margin-bottom: 18px;
+  line-height: 1.7;
+}
+.card-desc {
+  font-size: 14.5px;
+  line-height: 2;
+  color: var(--ink);
+  margin-bottom: 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px dashed var(--line);
+}
+.card-block {
+  margin-bottom: 16px;
+}
+.card-block:last-child { margin-bottom: 0; }
+.card-block .head {
+  font-family: var(--en);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
   color: var(--orange-deep);
   font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.card .desc {
+.card-block .head i { font-size: 11px; }
+.card-block p {
   font-size: 14px;
+  line-height: 2;
   color: var(--ink);
-  line-height: 1.85;
-  margin-bottom: 14px;
 }
-.card .you {
-  background: linear-gradient(135deg, rgba(255, 212, 96, 0.18), rgba(255, 140, 66, 0.08));
-  border-left: 3px solid var(--orange);
-  padding: 14px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  line-height: 1.85;
-}
-.card .you b {
-  color: var(--orange-deep);
-  display: block;
-  font-size: 12px;
-  margin-bottom: 4px;
-  letter-spacing: 0.08em;
+.card-block.voice p {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink);
+  background: #FFF8EA;
+  padding: 14px 18px;
+  border-radius: 2px;
+  border-left: 2px solid var(--sun);
+  font-size: 14.5px;
+  line-height: 1.95;
 }
 
-/* ==== Mapping ==== */
+/* ====== Mapping ====== */
 .mapping {
+  padding: 130px 0;
+  background: linear-gradient(180deg, var(--paper) 0%, #FFF8EA 50%, var(--paper) 100%);
+}
+.map-list {
   background: #fff;
-  border: 2px solid var(--line);
-  border-radius: 20px;
-  padding: 28px 24px;
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  padding: 32px 36px;
+  box-shadow: var(--shadow-sm);
 }
 .map-row {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  gap: 14px;
+  gap: 24px;
   align-items: center;
-  padding: 14px 0;
-  border-bottom: 1px dashed var(--line);
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line-soft);
 }
 .map-row:last-child { border-bottom: none; }
+.map-row:first-child { padding-top: 0; }
 .map-episode {
-  font-size: 14px;
-  font-weight: 600;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 500;
   color: var(--ink);
-  background: linear-gradient(135deg, #FFF3E0, #FFFAF1);
-  padding: 12px 14px;
-  border-radius: 12px;
+  line-height: 1.85;
 }
 .map-arrow {
   color: var(--orange);
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 16px;
 }
 .map-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  justify-content: flex-end;
 }
 .map-tag {
-  font-size: 11px;
-  font-weight: 700;
+  font-family: var(--en);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   color: var(--orange-deep);
-  background: rgba(255, 140, 66, 0.12);
-  border: 1px solid var(--line);
+  border: 1px solid var(--orange-soft);
   padding: 5px 10px;
   border-radius: 100px;
   white-space: nowrap;
 }
+.map-tag.jp {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
 
-/* ==== Manual ==== */
+/* ====== Manual ====== */
 .manual {
+  padding: 130px 0;
+  background: var(--paper);
+}
+.manual-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 22px;
 }
 .manual-block {
   background: #fff;
-  border: 2px solid var(--line);
-  border-radius: 18px;
-  padding: 22px 20px;
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  padding: 36px 32px;
+  position: relative;
+  transition: transform 0.5s, box-shadow 0.5s;
+  box-shadow: var(--shadow-sm);
 }
+.manual-block:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .manual-block.full { grid-column: 1 / -1; }
-.manual-block .icon {
-  font-size: 28px;
-  margin-bottom: 6px;
+.manual-block .icon-circle {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--paper-3), var(--paper-2));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange-deep);
+  font-size: 20px;
+  margin-bottom: 16px;
 }
 .manual-block h3 {
-  font-size: 17px;
-  font-weight: 800;
-  margin-bottom: 12px;
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
   color: var(--ink);
+  margin-bottom: 18px;
+  letter-spacing: 0.04em;
 }
-.manual-block ul {
-  list-style: none;
-  padding: 0;
-}
+.manual-block ul { list-style: none; padding: 0; }
 .manual-block li {
   position: relative;
-  padding: 8px 0 8px 22px;
+  padding: 10px 0 10px 24px;
   font-size: 14px;
-  line-height: 1.8;
+  line-height: 1.95;
+  color: var(--ink);
 }
 .manual-block li::before {
-  content: "🍊";
+  content: "";
   position: absolute;
-  left: 0; top: 8px;
-  font-size: 12px;
+  left: 0; top: 19px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--orange);
+  opacity: 0.6;
 }
 
-/* ==== Shadow (strengths backside) ==== */
+/* ====== Insights ====== */
+.insights {
+  padding: 130px 0;
+  background: linear-gradient(180deg, var(--paper) 0%, #FFF3E0 100%);
+}
+.insight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.insight-item {
+  background: #fff;
+  border-radius: 4px;
+  padding: 30px 32px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 22px;
+  align-items: start;
+  border: 1px solid var(--line-soft);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.5s, box-shadow 0.5s;
+}
+.insight-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.insight-num {
+  font-family: var(--serif);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--orange);
+  line-height: 1;
+  font-style: italic;
+}
+.insight-body h4 {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+  letter-spacing: 0.03em;
+  line-height: 1.6;
+}
+.insight-body p {
+  font-size: 14px;
+  line-height: 1.95;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.insight-body .voice {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--orange-deep);
+  background: #FFF8EA;
+  padding: 12px 16px;
+  border-radius: 2px;
+  border-left: 2px solid var(--sun);
+  font-size: 13.5px;
+  line-height: 1.85;
+  margin-top: 12px;
+}
+
+/* ====== Shadow ====== */
+.shadow-sec {
+  padding: 130px 0;
+  background: var(--paper);
+}
 .shadow-list {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 22px;
 }
 .shadow-card {
   background: #fff;
-  border: 2px solid var(--line);
-  border-radius: 18px;
-  padding: 22px 22px;
-  position: relative;
+  border-top: 3px solid var(--orange-soft);
+  border-radius: 4px;
+  padding: 32px 32px 28px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.5s;
 }
-.shadow-card .shadow-head {
+.shadow-card:hover { box-shadow: var(--shadow-md); }
+.shadow-head {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin-bottom: 18px;
   flex-wrap: wrap;
 }
-.shadow-card .shadow-name {
-  font-size: 17px;
-  font-weight: 800;
+.shadow-icon {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 199, 110, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--warn);
+  font-size: 14px;
+}
+.shadow-name {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 700;
   color: var(--ink);
 }
-.shadow-card .badge-warn {
+.shadow-badge {
+  font-family: var(--en);
   font-size: 10px;
   font-weight: 700;
-  color: #B05E2F;
-  background: rgba(255, 199, 110, 0.35);
-  padding: 4px 10px;
+  letter-spacing: 0.18em;
+  color: var(--warn);
+  background: rgba(255, 199, 110, 0.3);
+  padding: 5px 12px;
   border-radius: 100px;
-  letter-spacing: 0.12em;
 }
-.shadow-card .points {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 14px;
-}
+.shadow-card .points { list-style: none; padding: 0; margin-bottom: 18px; }
 .shadow-card .points li {
   position: relative;
-  padding: 7px 0 7px 24px;
+  padding: 8px 0 8px 26px;
   font-size: 14px;
-  line-height: 1.85;
+  line-height: 1.9;
   color: var(--ink);
 }
 .shadow-card .points li::before {
-  content: "⚠️";
+  content: "\f071";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
   position: absolute;
-  left: 0; top: 7px;
+  left: 0; top: 9px;
+  color: var(--orange-deep);
+  opacity: 0.5;
   font-size: 12px;
 }
-.shadow-card .shield {
-  background: linear-gradient(135deg, rgba(141, 191, 122, 0.18), rgba(255, 250, 241, 0.7));
+.shadow-card .points li.voice {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink);
+  background: #FFF8EA;
+  padding: 12px 16px 12px 38px;
+  border-radius: 2px;
+  border-left: 2px solid var(--sun);
+  margin: 4px 0;
+}
+.shadow-card .points li.voice::before {
+  content: "\f10d";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  left: 16px;
+  top: 14px;
+  color: var(--orange);
+  opacity: 0.7;
+}
+.shield {
+  background: linear-gradient(135deg, rgba(141, 191, 122, 0.15), rgba(255, 250, 241, 0.7));
   border-left: 3px solid var(--leaf);
-  padding: 12px 14px;
-  border-radius: 8px;
-  font-size: 13.5px;
-  line-height: 1.85;
+  border-radius: 2px;
+  padding: 18px 20px;
 }
-.shadow-card .shield b {
-  color: #4F8B3A;
-  display: block;
-  font-size: 11px;
-  margin-bottom: 4px;
-  letter-spacing: 0.12em;
-}
-
-/* ==== Combo warning ==== */
-.combo {
-  background: linear-gradient(160deg, #FFF8E8, #FFFAF1);
-  border: 2px solid var(--line);
-  border-radius: 20px;
-  padding: 24px 22px;
-  margin-top: 16px;
-}
-.combo h4 {
-  font-size: 16px;
-  font-weight: 800;
-  margin-bottom: 6px;
-  color: var(--orange-deep);
+.shield-head {
+  font-family: var(--en);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: var(--leaf-deep);
+  font-weight: 700;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.combo-lead {
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 14px;
+.shield p {
+  font-size: 13.5px;
+  line-height: 1.95;
+  color: var(--ink);
+}
+
+/* ====== Combo ====== */
+.combo {
+  padding: 130px 0;
+  background: linear-gradient(180deg, var(--paper) 0%, #FFF8EA 100%);
+}
+.combo-list {
+  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  padding: 36px 36px 28px;
+  box-shadow: var(--shadow-sm);
 }
 .combo-row {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 14px;
+  grid-template-columns: 130px 1fr;
+  gap: 28px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line-soft);
   align-items: start;
-  padding: 14px 0;
-  border-bottom: 1px dashed var(--line);
 }
 .combo-row:last-child { border-bottom: none; padding-bottom: 0; }
+.combo-row:first-child { padding-top: 0; }
 .combo-tag {
-  font-size: 11px;
+  font-family: var(--serif);
+  font-size: 13.5px;
   font-weight: 700;
-  color: var(--orange-deep);
-  background: #fff;
-  border: 1.5px solid var(--orange);
-  padding: 8px 12px;
-  border-radius: 12px;
-  white-space: nowrap;
   text-align: center;
-  min-width: 72px;
+  padding: 14px 12px;
+  background: linear-gradient(135deg, var(--paper-3), var(--paper-2));
+  border-radius: 2px;
+  color: var(--orange-deep);
+  line-height: 1.5;
 }
-.combo-text { font-size: 14px; line-height: 1.85; }
+.combo-tag .x {
+  display: block;
+  font-family: var(--en);
+  font-size: 10px;
+  color: var(--muted);
+  margin: 2px 0;
+}
 .combo-text .pat {
-  font-weight: 700;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
   color: var(--ink);
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  line-height: 1.7;
 }
 .combo-text .fix {
-  color: #4F8B3A;
-  font-size: 13px;
-  font-weight: 600;
-}
-.combo-text .fix::before { content: "🛡 "; }
-
-/* ==== Note (gentle reminder) ==== */
-.gentle-note {
-  margin-top: 18px;
-  background: linear-gradient(135deg, rgba(141, 191, 122, 0.1), rgba(255, 250, 241, 0.6));
-  border: 1.5px dashed var(--leaf);
-  border-radius: 14px;
-  padding: 18px 20px;
   font-size: 13.5px;
-  line-height: 1.9;
-  color: var(--ink);
-  text-align: center;
-}
-.gentle-note .em { color: #4F8B3A; font-weight: 700; }
-
-/* ==== Message ==== */
-.message {
-  margin-top: 16px;
-  background: linear-gradient(135deg, #FFE7C7, #FFFAF1);
-  border: 2px solid var(--orange);
-  border-radius: 20px;
-  padding: 32px 28px;
-  text-align: center;
-}
-.message .heart {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-.message p {
-  font-size: 16px;
-  line-height: 2;
-  color: var(--ink);
+  color: var(--leaf-deep);
   font-weight: 500;
+  line-height: 1.85;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
 }
-.message p + p { margin-top: 14px; }
-.message .sign {
-  margin-top: 20px;
-  font-size: 13px;
-  color: var(--muted);
-  letter-spacing: 0.1em;
+.combo-text .fix i {
+  margin-top: 4px;
+  flex-shrink: 0;
 }
 
-/* ==== Footer ==== */
-.footer {
-  margin-top: 60px;
-  text-align: center;
-  font-size: 12px;
-  color: var(--muted);
+/* ====== Future ====== */
+.future {
+  padding: 130px 0;
+  background: linear-gradient(180deg, #FFF3E0 0%, var(--paper-3) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.future::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  right: -60px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 212, 96, 0.4), transparent 60%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+.future-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  position: relative;
+}
+.future-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  padding: 36px 32px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.5s, box-shadow 0.5s;
+}
+.future-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.future-card.full { grid-column: 1 / -1; }
+.future-card .icon-circle {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+.future-card h3 {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+}
+.future-card p {
+  font-size: 14px;
   line-height: 2;
+  color: var(--ink);
+}
+.future-card .voice {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--orange-deep);
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: #FFFAF1;
+  border-left: 2px solid var(--sun);
+  font-size: 13.5px;
+  line-height: 1.85;
+}
+
+/* ====== Closing ====== */
+.closing {
+  padding: 140px 0 100px;
+  background: var(--paper);
+  text-align: center;
+}
+.closing-letter {
+  background: #fff;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 70px 60px 60px;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--line-soft);
+}
+.closing-letter::before {
+  content: "";
+  position: absolute;
+  top: 16px; left: 16px; right: 16px; bottom: 16px;
+  border: 1px solid var(--line-soft);
+  pointer-events: none;
+}
+.closing-symbol {
+  font-size: 48px;
+  margin-bottom: 24px;
+  display: inline-block;
+  filter: drop-shadow(0 4px 12px rgba(231, 111, 81, 0.2));
+}
+.closing-letter h2 {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+}
+.closing-letter p {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 2.1;
+  color: var(--ink);
+  margin-bottom: 16px;
+  letter-spacing: 0.04em;
+}
+.closing-letter p strong {
+  color: var(--orange-deep);
+  font-weight: 700;
+  background: linear-gradient(transparent 60%, rgba(255, 212, 96, 0.5) 60%);
+  padding: 0 4px;
+}
+.closing-sign {
+  margin-top: 36px;
+  font-family: var(--hand);
+  font-size: 22px;
+  color: var(--orange-deep);
+  letter-spacing: 0.02em;
+}
+.closing-sign small {
+  display: block;
+  font-family: var(--en);
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: 0.18em;
+  margin-top: 8px;
+}
+
+/* ====== Footer ====== */
+.footer {
+  text-align: center;
+  padding: 60px 24px 40px;
+  background: var(--paper-2);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 2;
+  border-top: 1px solid var(--line-soft);
 }
 .footer .ver {
   display: inline-block;
   background: var(--orange);
   color: #fff;
-  padding: 4px 12px;
+  font-family: var(--en);
+  padding: 6px 16px;
   border-radius: 100px;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  margin-bottom: 8px;
+  letter-spacing: 0.18em;
+  margin-bottom: 12px;
+}
+.footer .meta {
+  font-family: var(--en);
+  letter-spacing: 0.15em;
+  margin-top: 14px;
+  font-size: 10.5px;
 }
 
-/* ==== Responsive ==== */
-@media (max-width: 640px) {
-  body { padding: 20px 12px 60px; }
-  .hero { padding: 40px 18px 30px; border-radius: 22px; }
-  .hero h1 { font-size: 26px; }
-  .hero h1 .emoji { font-size: 34px; }
-  .hero .catch { font-size: 15px; }
-  .section-title { font-size: 18px; }
-  .section-sub { margin-left: 0; font-size: 13px; }
-  .card { padding: 22px 18px; }
-  .card .name { font-size: 18px; }
-  .map-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    text-align: center;
-  }
-  .map-arrow { transform: rotate(90deg); }
-  .map-tags { justify-content: center; }
-  .manual { grid-template-columns: 1fr; }
+/* ====== Animations ====== */
+.fade-in,
+.fade-in-left,
+.fade-in-right,
+.stagger > * {
+  opacity: 0;
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.fade-in { transform: translateY(28px); }
+.fade-in-left { transform: translateX(-32px); }
+.fade-in-right { transform: translateX(32px); }
+.stagger > * { transform: translateY(24px); }
+
+.fade-in.is-visible,
+.fade-in-left.is-visible,
+.fade-in-right.is-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+.stagger.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.stagger.is-visible > *:nth-child(1) { transition-delay: 0.05s; }
+.stagger.is-visible > *:nth-child(2) { transition-delay: 0.15s; }
+.stagger.is-visible > *:nth-child(3) { transition-delay: 0.25s; }
+.stagger.is-visible > *:nth-child(4) { transition-delay: 0.35s; }
+.stagger.is-visible > *:nth-child(5) { transition-delay: 0.45s; }
+.stagger.is-visible > *:nth-child(6) { transition-delay: 0.55s; }
+.stagger.is-visible > *:nth-child(7) { transition-delay: 0.65s; }
+.stagger.is-visible > *:nth-child(8) { transition-delay: 0.75s; }
+
+.section-title-anim::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  background: var(--orange);
+  margin: 16px auto 0;
+  transition: width 0.7s ease 0.3s;
+}
+.fade-in.is-visible .section-title-anim::after { width: 48px; }
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+  .container { padding: 0 20px; }
+  .section { padding: 80px 0; }
+  .section-head { margin-bottom: 50px; }
+  .section-head h2 { font-size: 24px; }
+
+  .hero { min-height: auto; padding: 120px 20px 100px; }
+  .hero-symbol { font-size: 64px; }
+  .hero-title { font-size: 38px; letter-spacing: 0.04em; }
+  .hero-title .small { font-size: 22px; }
+  .hero-catch { font-size: 17px; }
+  .hero-sub { font-size: 24px; }
+  .hero-lead { font-size: 13px; }
+
+  .quote-grid { grid-template-columns: 1fr; gap: 20px; }
+  .quote-card { padding: 32px 24px 26px; }
+  .quote-card .text { font-size: 15.5px; }
+  .quote-card.feature { padding: 40px 24px; }
+  .quote-card.feature .text { font-size: 18px; }
+
+  .card { padding: 32px 24px 28px; }
+  .card-rank { right: 20px; }
+  .card-name { font-size: 22px; }
+
+  .map-list { padding: 24px 22px; }
+  .map-row { grid-template-columns: 1fr; gap: 10px; text-align: left; }
+  .map-arrow { transform: rotate(90deg); width: 20px; }
+  .map-tags { justify-content: flex-start; }
+
+  .manual-grid { grid-template-columns: 1fr; }
+  .manual-block { padding: 28px 24px; }
+  .manual-block h3 { font-size: 18px; }
+
+  .insight-item { grid-template-columns: 1fr; gap: 12px; padding: 26px 24px; }
+  .insight-num { font-size: 30px; }
+
+  .shadow-card { padding: 26px 24px 22px; }
+  .shadow-name { font-size: 17px; }
+
+  .combo-list { padding: 26px 22px 22px; }
+  .combo-row { grid-template-columns: 1fr; gap: 14px; }
+  .combo-tag { padding: 10px 12px; }
+
+  .future-grid { grid-template-columns: 1fr; }
+  .future-card { padding: 28px 24px; }
+  .future-card h3 { font-size: 17px; }
+
+  .closing-letter { padding: 50px 30px; }
+  .closing-letter h2 { font-size: 22px; }
+  .closing-letter p { font-size: 14.5px; }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: 32px; }
+  .hero-title .small { font-size: 19px; }
+  .section-head h2 { font-size: 22px; }
 }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <!-- ==== HERO ==== -->
-  <section class="hero">
-    <div class="badge">FOR ORANGE-SAN ／ STRENGTHS GUIDE</div>
-    <h1><span class="emoji">🍊</span> オレンジさん<br>取扱説明書</h1>
-    <div class="catch">— <span>行動派 × 太陽みたいな人</span> —</div>
-    <p class="lead">
-      いつも前向きで、流れに乗りながら新しい一歩を踏み出していくオレンジさん。<br>
-      その「らしさ」を、ストレングスファインダーTOP5から読み解いた1枚です🌱
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-rays"></div>
+  <div class="hero-sun"></div>
+  <div class="hero-content">
+    <div class="hero-label en">For Orange-san ／ Strengths Guide v2.0</div>
+    <div class="hero-symbol">🍊</div>
+    <h1 class="hero-title">
+      <span>オレンジさん</span>
+      <span class="small">取扱説明書</span>
+    </h1>
+    <p class="hero-catch">— <span class="hl">行動派 × 太陽みたいな人</span> —</p>
+    <p class="hero-sub">「やってみる」が口ぐせの、流れに乗れる人</p>
+    <p class="hero-lead">
+      自分の感覚が、他人と違うのかもしれない。<br>
+      そう気づきはじめたオレンジさんへ。<br>
+      「自分を知るっていうのがやりたい」── その想いに、<br>
+      ストレングスファインダーTOP5から、そっと答えを並べた1冊です。
     </p>
-  </section>
+  </div>
+  <div class="hero-scroll">
+    <span class="en">Scroll</span>
+    <span class="scroll-line"></span>
+  </div>
+</section>
 
-  <!-- ==== SECTION 1: Top5 ==== -->
-  <section class="section">
-    <h2 class="section-title"><span class="num">1</span>オレンジさんを支える5つの「らしさ」</h2>
-    <p class="section-sub">難しい言葉は脇に置いて、ふだんのオレンジさんの言葉で並べてみました。</p>
 
-    <div class="cards">
+<!-- ============ HER WORDS ============ -->
+<section class="section quotes">
+  <div class="container">
+    <div class="section-head fade-in">
+      <div class="label en">Her Words</div>
+      <h2 class="section-title-anim">オレンジさんが、セッションで語ったこと</h2>
+      <p class="desc">2026年5月のコーチングで、ご本人の口から出てきたフレーズ。<br>このページは、まずここから読みはじめてください。</p>
+    </div>
 
-      <div class="card">
-        <span class="rank">No.1</span>
-        <div class="name">ポジティブ <span class="en">／ Positivity</span></div>
-        <div class="one-liner">☀️ 周りを明るくしてしまう、太陽みたいな人</div>
-        <div class="desc">
-          人生を楽しむことを大切にする力。落ち込んでも自分で立て直せて、自然と周りの空気まで明るくしていく。
+    <div class="quote-grid stagger">
+
+      <div class="quote-card feature">
+        <p class="text">自分を知るっていうのが<br>やりたいなっていう。</p>
+        <div class="by">— Orange-san, 2026.05.02</div>
+      </div>
+
+      <div class="quote-card">
+        <p class="text">世界のどこでも暮らせる自信はありますね。<br>反対に、ずっと同じとこにいてくださいって言われるのは、しんどい。</p>
+        <div class="by">— On 適応性</div>
+      </div>
+
+      <div class="quote-card">
+        <p class="text">みんなが笑顔だったらいいかなっていう。<br>とりあえずコミュニケーション大事だから、なんか一言だけよ、みたいな。</p>
+        <div class="by">— On ポジティブ</div>
+      </div>
+
+      <div class="quote-card">
+        <p class="text">やってみます、もうやるのが一番ですよね。</p>
+        <div class="by">— On 活発性</div>
+      </div>
+
+      <div class="quote-card">
+        <p class="text">後輩たちは育てたいなとか、<br>目の前の人に伝えたいなとかは、ありますけどね。</p>
+        <div class="by">— On 成長促進</div>
+      </div>
+
+      <div class="quote-card">
+        <p class="text">自分の感覚が他人と違うんだなっていうのが、<br>最近すごく分かってる。<br>このまま生きてたらやばいなっていう。</p>
+        <div class="by">— Insight of the Day</div>
+      </div>
+
+      <div class="quote-card">
+        <p class="text">自分が楽しいなって思うように、<br>生きていきたいなって思って。</p>
+        <div class="by">— On the Future</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ DIVIDER ============ -->
+<div class="divider">
+  <div class="ornament">
+    <i class="fas fa-sun"></i>
+    <span class="en">Top 5 Strengths</span>
+    <i class="fas fa-sun"></i>
+  </div>
+</div>
+
+
+<!-- ============ TOP 5 STRENGTHS ============ -->
+<section class="section strengths">
+  <div class="container">
+    <div class="section-head fade-in">
+      <div class="label en">Section 01 ／ Top 5</div>
+      <h2 class="section-title-anim">オレンジさんを支える 5つの「らしさ」</h2>
+      <p class="desc">難しい言葉は脇に置いて、ふだんのオレンジさんの言葉で並べてみました。</p>
+    </div>
+
+    <div class="cards stagger">
+
+      <!-- ① ポジティブ -->
+      <div class="card fade-in">
+        <div class="card-rank">No. 01</div>
+        <div class="card-icon"><i class="fas fa-sun"></i></div>
+        <div class="card-name">ポジティブ</div>
+        <span class="card-name-en">Positivity</span>
+        <p class="card-tagline">周りを明るくしてしまう、太陽みたいな人。</p>
+        <p class="card-desc">人生を楽しむことを大切にする力。落ち込んでも自分で立て直せて、自然と周りの空気まで明るくしていく。</p>
+
+        <div class="card-block">
+          <div class="head"><i class="fas fa-leaf"></i>オレンジさんの場合</div>
+          <p>疲れていても「えー今日はムリ…」のあとに「そんな時こそ」と気持ちを立て直して、一歩動く。AIで物語を作ってると「楽しすぎて何時間も経ってる🙈」── これ、まさにポジティブの本気スイッチ。</p>
         </div>
-        <div class="you">
-          <b>ORANGE-SAN's</b>
-          疲れていても「えー今日はムリ…」のあとに「そんな時こそ」と気持ちを立て直して一歩動く。<br>
-          AIで物語を作ってると「楽しすぎて何時間も経ってる🙈」── これ、まさにポジティブの本気スイッチ。
+        <div class="card-block voice">
+          <div class="head"><i class="fas fa-quote-left"></i>セッションでの本人語</div>
+          <p>「みんなが笑顔だったらいいかなっていう。とりあえずコミュニケーション大事だから、なんか一言だけよみたいな。」<br>職場の後輩からは <strong>「あなたがいたから私は続けられました」</strong> と感謝され続けてきた人。</p>
         </div>
       </div>
 
-      <div class="card">
-        <span class="rank">No.2</span>
-        <div class="name">適応性 <span class="en">／ Adaptability</span></div>
-        <div class="one-liner">🌊 流れに乗るのが、ものすごく上手い</div>
-        <div class="desc">
-          先のことを決めすぎず、その瞬間に出てきたものを楽しめる力。変化や偶然のご縁を、味方につけられる。
+      <!-- ② 適応性 -->
+      <div class="card fade-in">
+        <div class="card-rank">No. 02</div>
+        <div class="card-icon"><i class="fas fa-water"></i></div>
+        <div class="card-name">適応性</div>
+        <span class="card-name-en">Adaptability</span>
+        <p class="card-tagline">流れに乗るのが、ものすごく上手い。</p>
+        <p class="card-desc">先のことを決めすぎず、その瞬間に出てきたものを楽しめる力。変化や偶然のご縁を、味方につけられる。</p>
+
+        <div class="card-block">
+          <div class="head"><i class="fas fa-leaf"></i>オレンジさんの場合</div>
+          <p>学長の「はよ入りや〜！」のひと言で、自然とリベ大入会。B'zオフ会で人と会う楽しさを知って、そのまま毎月オフ会参加へ。「無理に広くつながるより、流れの中で出会えた人を大切に」── そのスタンスがまさにこれ。</p>
         </div>
-        <div class="you">
-          <b>ORANGE-SAN's</b>
-          学長の「はよ入りや〜！」のひと言で、自然とリベ大入会。<br>
-          B'zオフ会で人と会う楽しさを知って、そのまま毎月オフ会参加へ。<br>
-          「無理に広くつながるより、流れの中で出会えた人を大切に」── そのスタンスが、まさにこれ。
+        <div class="card-block voice">
+          <div class="head"><i class="fas fa-quote-left"></i>セッションでの本人語</div>
+          <p>「<strong>世界のどこでも暮らせる自信はありますね。</strong> 全然行くよっていう。反対に、ずっと同じとこにいてくださいっていうのはしんどい。」<br>旦那さんからも <strong>「あなたが海外に住んでると言われても全然驚かない」</strong> と評されている。</p>
         </div>
       </div>
 
-      <div class="card">
-        <span class="rank">No.3</span>
-        <div class="name">活発性 <span class="en">／ Activator（思い立ったらすぐ動く力）</span></div>
-        <div class="one-liner">🚀 「やらないより、やって悔やむ」が口ぐせ</div>
-        <div class="desc">
-          考えるより先に動ける力。動きながら必要な答えを見つけていくタイプ。スタートが圧倒的に速い。
+      <!-- ③ 活発性 -->
+      <div class="card fade-in">
+        <div class="card-rank">No. 03</div>
+        <div class="card-icon"><i class="fas fa-bolt"></i></div>
+        <div class="card-name">活発性</div>
+        <span class="card-name-en">Activator ／ 思い立ったらすぐ動く力</span>
+        <p class="card-tagline">「やらないより、やって悔やむ」が口ぐせ。</p>
+        <p class="card-desc">考えるより先に動ける力。動きながら必要な答えを見つけていくタイプ。スタートが圧倒的に速い。</p>
+
+        <div class="card-block">
+          <div class="head"><i class="fas fa-leaf"></i>オレンジさんの場合</div>
+          <p>AIギフトビジネスを「やらないより、やって悔やむ精神」で始めた。クロードコードを触りはじめて、まず「JALとANAのセール通知を自動で送る」ように設定。気になったらまず動く人。</p>
         </div>
-        <div class="you">
-          <b>ORANGE-SAN's</b>
-          AIギフトビジネスを「やらないより、やって悔やむ精神」で始めた。<br>
-          メルカリ、せどり、NISA、保険見直し、格安SIM、FP3級…「気になったらやってみる」の積み重ねが今を作ってる。
+        <div class="card-block voice">
+          <div class="head"><i class="fas fa-quote-left"></i>セッションでの本人語</div>
+          <p>「<strong>やってみます、もうやるのが一番ですよね。</strong>」<br>友達がクロードを触ってないと知って、「<strong>じゃあなんでリベ入ってんの？</strong>」と衝撃を受けるくらい、動かない選択肢が頭にない人。</p>
         </div>
       </div>
 
-      <div class="card">
-        <span class="rank">No.4</span>
-        <div class="name">成長促進 <span class="en">／ Developer（人の伸びしろを見つける力）</span></div>
-        <div class="one-liner">🌱 人の「ちょっとできるようになった」が嬉しい人</div>
-        <div class="desc">
-          人の可能性に気付いて、応援し、一緒に喜べる力。教える・サポートするのが自然にできる。
+      <!-- ④ 成長促進 -->
+      <div class="card fade-in">
+        <div class="card-rank">No. 04</div>
+        <div class="card-icon"><i class="fas fa-seedling"></i></div>
+        <div class="card-name">成長促進</div>
+        <span class="card-name-en">Developer ／ 人の伸びしろを見つける力</span>
+        <p class="card-tagline">人の「ちょっとできるようになった」が嬉しい人。</p>
+        <p class="card-desc">人の可能性に気付いて、応援し、一緒に喜べる力。教える・サポートするのが自然にできる。</p>
+
+        <div class="card-block">
+          <div class="head"><i class="fas fa-leaf"></i>オレンジさんの場合</div>
+          <p>学長の「他者貢献」をいつも頭に置いて行動。離職率の高い職場で、新人が孤立しないよう自然に声をかけ、「他のスタッフ同士がセッションを持てるようにつなぐ」を当たり前にやってきた人。</p>
         </div>
-        <div class="you">
-          <b>ORANGE-SAN's</b>
-          学長の「他者貢献」をいつも頭に置いて行動。<br>
-          「同じく副業・起業に挑戦してる方、AIに興味ある方、気軽に話しかけてください🤝」── この一文に、成長促進が全部入ってる。<br>
-          歯科衛生士・3児のお母さん・乗馬…「人の小さな伸び」を見つけるアンテナが日常で鍛えられてる人。
+        <div class="card-block voice">
+          <div class="head"><i class="fas fa-quote-left"></i>セッションでの本人語</div>
+          <p>「<strong>後輩たちは育てたいなとか、目の前の人に伝えたいなとかはありますけどね。</strong>」<br>「みんなに本当にブレないねって言われるんです。だからやっぱり感覚が違うんだろうなみたいな。」── 自分にとって自然な行動が、人の成長を支えてきた。</p>
         </div>
       </div>
 
-      <div class="card">
-        <span class="rank">No.5</span>
-        <div class="name">原点思考 <span class="en">／ Context（過去から学ぶ力）</span></div>
-        <div class="one-liner">📖 「なぜ今こうなのか」を大切に進める人</div>
-        <div class="desc">
-          過去のいきさつや経験を、今と未来の判断に活かせる力。深い理解をもとに、ぶれずに動ける。
+      <!-- ⑤ 原点思考 -->
+      <div class="card fade-in">
+        <div class="card-rank">No. 05</div>
+        <div class="card-icon"><i class="fas fa-book-open"></i></div>
+        <div class="card-name">原点思考</div>
+        <span class="card-name-en">Context ／ 過去から学ぶ力</span>
+        <p class="card-tagline">「なぜ今こうなのか」を大切に進める人。</p>
+        <p class="card-desc">過去のいきさつや経験を、今と未来の判断に活かせる力。深い理解をもとに、ぶれずに動ける。</p>
+
+        <div class="card-block">
+          <div class="head"><i class="fas fa-leaf"></i>オレンジさんの場合</div>
+          <p>学長を知ったきっかけは、お母さんと中田あっちゃんの動画。「毎朝のライブを聴くうちに、どんどん引き込まれていった」── 急がず、自分の中で腑に落とす過程を大事にする人。乗馬の「少しずつできることが増えていく過程を楽しんでいる」も、原点思考のあたたかい現れ方。</p>
         </div>
-        <div class="you">
-          <b>ORANGE-SAN's</b>
-          学長を知ったきっかけは、お母さんと中田あっちゃんの動画。「毎朝のライブを聴くうちに、どんどん引き込まれていった」── 急がず、自分の中で腑に落とす過程を大事にする人。<br>
-          乗馬の「少しずつできることが増えていく過程を楽しんでいる」も、原点思考のあたたかい現れ方。
+        <div class="card-block voice">
+          <div class="head"><i class="fas fa-quote-left"></i>セッションでの本人語</div>
+          <p>「<strong>嫌なことが嫌だったから、しないとこって考える。</strong>」<br>過去の経験を、ちゃんと次に持ち越せる人。だから同じところで詰まらない。</p>
         </div>
       </div>
 
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ==== SECTION 2: Mapping ==== -->
-  <section class="section">
-    <h2 class="section-title"><span class="num">2</span>オレンジさんのエピソード × 資質</h2>
-    <p class="section-sub">日常のひとコマが、どの「らしさ」から生まれているのかをマッピング。</p>
 
-    <div class="mapping">
+<!-- ============ DIVIDER ============ -->
+<div class="divider">
+  <div class="ornament">
+    <i class="fas fa-feather"></i>
+    <span class="en">Episodes &amp; Strengths</span>
+    <i class="fas fa-feather"></i>
+  </div>
+</div>
+
+
+<!-- ============ MAPPING ============ -->
+<section class="section mapping">
+  <div class="container">
+    <div class="section-head fade-in">
+      <div class="label en">Section 02 ／ Episodes</div>
+      <h2 class="section-title-anim">オレンジさんのエピソード × 資質</h2>
+      <p class="desc">日常のひとコマが、どの「らしさ」から生まれているのかをマッピング。</p>
+    </div>
+
+    <div class="map-list fade-in">
 
       <div class="map-row">
         <div class="map-episode">「やらないより、やって悔やむ」精神でAIギフトビジネス開始</div>
-        <div class="map-arrow">→</div>
+        <div class="map-arrow"><i class="fas fa-arrow-right"></i></div>
         <div class="map-tags">
-          <span class="map-tag">活発性</span>
-          <span class="map-tag">ポジティブ</span>
+          <span class="map-tag jp">活発性</span>
+          <span class="map-tag jp">ポジティブ</span>
         </div>
       </div>
 
       <div class="map-row">
         <div class="map-episode">B'zオフ会から始まり、毎月どこかしらのオフ会に参加</div>
-        <div class="map-arrow">→</div>
+        <div class="map-arrow"><i class="fas fa-arrow-right"></i></div>
         <div class="map-tags">
-          <span class="map-tag">適応性</span>
-          <span class="map-tag">活発性</span>
-          <span class="map-tag">成長促進</span>
+          <span class="map-tag jp">適応性</span>
+          <span class="map-tag jp">活発性</span>
+          <span class="map-tag jp">成長促進</span>
         </div>
       </div>
 
       <div class="map-row">
         <div class="map-episode">アイデアをAIが形にしてくれて、気づいたら何時間も経ってる</div>
-        <div class="map-arrow">→</div>
+        <div class="map-arrow"><i class="fas fa-arrow-right"></i></div>
         <div class="map-tags">
-          <span class="map-tag">活発性</span>
-          <span class="map-tag">ポジティブ</span>
+          <span class="map-tag jp">活発性</span>
+          <span class="map-tag jp">ポジティブ</span>
         </div>
       </div>
 
       <div class="map-row">
         <div class="map-episode">学長の「他者貢献」をいつも頭に置いて行動</div>
-        <div class="map-arrow">→</div>
+        <div class="map-arrow"><i class="fas fa-arrow-right"></i></div>
         <div class="map-tags">
-          <span class="map-tag">成長促進</span>
-          <span class="map-tag">原点思考</span>
+          <span class="map-tag jp">成長促進</span>
+          <span class="map-tag jp">原点思考</span>
         </div>
       </div>
 
       <div class="map-row">
-        <div class="map-episode">疲れててもそこで気持ちを立て直して一歩動く</div>
-        <div class="map-arrow">→</div>
+        <div class="map-episode">疲れててもそこで気持ちを立て直して、一歩動く</div>
+        <div class="map-arrow"><i class="fas fa-arrow-right"></i></div>
         <div class="map-tags">
-          <span class="map-tag">ポジティブ</span>
-          <span class="map-tag">活発性</span>
+          <span class="map-tag jp">ポジティブ</span>
+          <span class="map-tag jp">活発性</span>
         </div>
       </div>
 
       <div class="map-row">
         <div class="map-episode">2024年夏、新しいiPhone資金を休日バイトでコツコツ貯めて購入</div>
-        <div class="map-arrow">→</div>
+        <div class="map-arrow"><i class="fas fa-arrow-right"></i></div>
         <div class="map-tags">
-          <span class="map-tag">原点思考</span>
-          <span class="map-tag">適応性</span>
+          <span class="map-tag jp">原点思考</span>
+          <span class="map-tag jp">適応性</span>
         </div>
       </div>
 
       <div class="map-row">
         <div class="map-episode">乗馬「少しずつできることが増えていく過程を楽しむ」</div>
-        <div class="map-arrow">→</div>
+        <div class="map-arrow"><i class="fas fa-arrow-right"></i></div>
         <div class="map-tags">
-          <span class="map-tag">成長促進</span>
-          <span class="map-tag">原点思考</span>
+          <span class="map-tag jp">成長促進</span>
+          <span class="map-tag jp">原点思考</span>
         </div>
       </div>
 
       <div class="map-row">
-        <div class="map-episode">アメリカ在住経験あり、完璧じゃなくても英会話を楽しむ</div>
-        <div class="map-arrow">→</div>
+        <div class="map-episode">職場で「あなたがいたから続けられた」と言われ続けてきた</div>
+        <div class="map-arrow"><i class="fas fa-arrow-right"></i></div>
         <div class="map-tags">
-          <span class="map-tag">適応性</span>
-          <span class="map-tag">ポジティブ</span>
+          <span class="map-tag jp">成長促進</span>
+          <span class="map-tag jp">ポジティブ</span>
+        </div>
+      </div>
+
+      <div class="map-row">
+        <div class="map-episode">B'zひと筋。「こんな素敵な人、他にいないからブレようがない」</div>
+        <div class="map-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="map-tags">
+          <span class="map-tag jp">親密性</span>
+          <span class="map-tag jp">原点思考</span>
         </div>
       </div>
 
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ==== SECTION 3: Manual ==== -->
-  <section class="section">
-    <h2 class="section-title"><span class="num">3</span>取扱説明書（Owner's Manual）</h2>
-    <p class="section-sub">オレンジさんがもっと輝くためのちょっとしたコツ。</p>
 
-    <div class="manual">
+<!-- ============ MANUAL ============ -->
+<section class="section manual">
+  <div class="container">
+    <div class="section-head fade-in">
+      <div class="label en">Section 03 ／ Owner's Manual</div>
+      <h2 class="section-title-anim">取扱説明書</h2>
+      <p class="desc">オレンジさんがもっと輝くための、ちょっとしたコツ。</p>
+    </div>
 
-      <div class="manual-block">
-        <div class="icon">✨</div>
-        <h3>こう接するとオレンジさんは輝く</h3>
+    <div class="manual-grid stagger">
+
+      <div class="manual-block fade-in">
+        <div class="icon-circle"><i class="fas fa-hand-sparkles"></i></div>
+        <h3>こう接すると、輝く</h3>
         <ul>
           <li>「いいじゃん、やってみよう」と背中を押してあげる</li>
           <li>新しい挑戦に対して、一緒にワクワクを共有する</li>
-          <li>これまで歩んできたエピソードに耳を傾ける</li>
+          <li>これまで歩んできたエピソードに、ちゃんと耳を傾ける</li>
           <li>小さな変化や成長に気づいて、言葉にして伝える</li>
         </ul>
       </div>
 
-      <div class="manual-block">
-        <div class="icon">🌿</div>
+      <div class="manual-block fade-in">
+        <div class="icon-circle"><i class="fas fa-leaf"></i></div>
         <h3>合う環境</h3>
         <ul>
           <li>動きながら学べる場（オフ会・実践コミュニティ）</li>
-          <li>新しい人・新しいことが自然に流れてくる場</li>
+          <li>新しい人・新しいことが、自然に流れてくる場</li>
           <li>ゆるく繋がれて、深掘りもできる仲間がいる場</li>
-          <li>AIみたいに「思いついたらすぐ形になる」道具がある場</li>
+          <li>AIみたいに「思いついたら、すぐ形になる」道具がある場</li>
         </ul>
       </div>
 
-      <div class="manual-block full">
-        <div class="icon">🌟</div>
+      <div class="manual-block full fade-in">
+        <div class="icon-circle"><i class="fas fa-star"></i></div>
         <h3>オレンジさんが活きる役割</h3>
         <ul>
           <li>新しい仲間を最初に迎え入れる「窓口役」</li>
-          <li>みんなが迷ってる時に最初の一歩を踏み出す「火付け役」</li>
+          <li>みんなが迷ってる時に、最初の一歩を踏み出す「火付け役」</li>
           <li>誰かの挑戦にそっと寄り添う「応援団長」</li>
           <li>場の空気を明るくする「太陽役」</li>
+          <li>離職率の高い場で、人と人をつなぐ「ハブ役」（職場で自然にやってきた事実そのもの）</li>
         </ul>
       </div>
 
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ==== SECTION 4: Shadow ==== -->
-  <section class="section">
-    <h2 class="section-title"><span class="num">4</span>強みの裏面 ／ 気をつけたいポイント</h2>
-    <p class="section-sub">どんな強みも、使いすぎると詰まりやすい瞬間があります。気付けると「お守り」になる、というだけの話🌱</p>
 
-    <div class="shadow-list">
+<!-- ============ DIVIDER ============ -->
+<div class="divider">
+  <div class="ornament">
+    <i class="fas fa-circle-half-stroke"></i>
+    <span class="en">Shadow Side</span>
+    <i class="fas fa-circle-half-stroke"></i>
+  </div>
+</div>
 
-      <div class="shadow-card">
+
+<!-- ============ INSIGHTS ============ -->
+<section class="section insights">
+  <div class="container">
+    <div class="section-head fade-in">
+      <div class="label en">Section 04 ／ Insights</div>
+      <h2 class="section-title-anim">セッションで、ハッとした瞬間</h2>
+      <p class="desc">2026年5月のコーチングで、ご本人が「あ、そうかも」と立ち止まったポイント。</p>
+    </div>
+
+    <div class="insight-list stagger">
+
+      <div class="insight-item fade-in">
+        <div class="insight-num">01</div>
+        <div class="insight-body">
+          <h4>「自分の当たり前」が、他人にとっての当たり前じゃない</h4>
+          <p>これまで、自分の感覚を疑ったことがあまりなかった。動けるのが当たり前、流れに乗れるのが当たり前。<br>だけど周りには「考えて精査して、納得いってから動きたい」人もいる、と知った瞬間。</p>
+          <p class="voice">「流れの当たり前を持ってたことが、他から見たら "できないよ" っていうことが、世の中にあるんだなっていう。」</p>
+        </div>
+      </div>
+
+      <div class="insight-item fade-in">
+        <div class="insight-num">02</div>
+        <div class="insight-body">
+          <h4>「適応性＝クールに対処できる」と思ってたけど、本当は「めっちゃ焦るタイプ」だった</h4>
+          <p>適応性が高いから、トラブル時にも動じない…と思いがちだけど、ご本人いわく <strong>「そんなことはできません、めっちゃ焦ります」</strong>。<br>強みのイメージと、自分の体感のズレに気づいた瞬間。これは恥ずかしいことじゃなく、強みの「形」を正しく知るチャンスです。</p>
+          <p class="voice">「めっちゃ焦ります、どうしようみたいな。クールな感じでふーんって、適応はできないですね。」</p>
+        </div>
+      </div>
+
+      <div class="insight-item fade-in">
+        <div class="insight-num">03</div>
+        <div class="insight-body">
+          <h4>退職時に言われた「あなたは憎まれ役を引き受けてた」</h4>
+          <p>自分では「そんな感じじゃなかった」のに、周りからは <strong>「あなたがいないとやばい」</strong> と言われていた。<br>無自覚に「上司と他のスタッフとの間に立つ」役割を担っていた、という事実が見えた瞬間。<br>これは成長促進＋ポジティブ＋アレンジが揃った人にだけ自然にできる動きで、他の人には真似できないものです。</p>
+        </div>
+      </div>
+
+      <div class="insight-item fade-in">
+        <div class="insight-num">04</div>
+        <div class="insight-body">
+          <h4>「これがしたいから目指す」が、自分にはしんどい</h4>
+          <p>信念や未来志向が真ん中ぐらいなぶん、「目標から逆算してやり抜く」が肌に合わない。それは弱みじゃなく、流れに乗りながら今を全力で楽しむ、という生き方の方が合っている、というだけの話。</p>
+          <p class="voice">「これがしたいからこれを目指してっていうのは、しんどいですよね。」</p>
+        </div>
+      </div>
+
+      <div class="insight-item fade-in">
+        <div class="insight-num">05</div>
+        <div class="insight-body">
+          <h4>「自分を知るっていうのがやりたい」が、今のテーマ</h4>
+          <p>自分の感覚と他人の感覚のズレに気づき始めた時期。これは強みが熟して次のステージに進むサインで、大人になってから来る人と来ない人がいます。<br>気づけたオレンジさんは、ここから何倍も自分のことが好きになれます🌱</p>
+          <p class="voice">「このまま生きてたらやばいなっていう。自分を知るっていうのがやりたいなっていう。」</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ SHADOW SIDE ============ -->
+<section class="section shadow-sec">
+  <div class="container">
+    <div class="section-head fade-in">
+      <div class="label en">Section 05 ／ Shadow Side</div>
+      <h2 class="section-title-anim">強みの裏面 ／ 気をつけたいポイント</h2>
+      <p class="desc">どんな強みも、使いすぎると詰まりやすい瞬間があります。<br>気付けるとお守りになる、というだけの話🌱</p>
+    </div>
+
+    <div class="shadow-list stagger">
+
+      <!-- ポジティブ -->
+      <div class="shadow-card fade-in">
         <div class="shadow-head">
-          <span class="shadow-name">☀️ ポジティブ の裏面</span>
-          <span class="badge-warn">CAUTION</span>
+          <span class="shadow-icon"><i class="fas fa-sun"></i></span>
+          <span class="shadow-name">ポジティブ の裏面</span>
+          <span class="shadow-badge en">Caution</span>
         </div>
         <ul class="points">
           <li>明るく振る舞いすぎて、自分のしんどさを言葉にできない瞬間がある</li>
           <li>深刻な相談に対して、つい「大丈夫だよ！」で軽く受けてしまうことも</li>
-          <li>「楽しい・前向き」を共有したい人と、「重さを共有したい」人とではテンポが合わないことがある</li>
+          <li class="voice">「裏表じゃないって言われる、パンって言っちゃうんですよね。だから人をよく傷つけるんだろうなって思って、そこをどうもっと気をつけていけばいいかなみたいな。」</li>
         </ul>
         <div class="shield">
-          <b>🛡 お守り</b>
-          信頼できる人に「今しんどい」を言葉にする日を、月に1回だけでも作る。<br>
-          オレンジさんが弱音を吐ける場所が、ポジティブを長く続ける燃料になります。
+          <div class="shield-head"><i class="fas fa-shield-halved"></i> Your Shield</div>
+          <p>信頼できる人に「今しんどい」を言葉にする日を、月に1回だけでも作る。<br>パンって言いそうになったら、深呼吸ひとつ。<strong>「自分にとっては当たり前」も、相手にとっては衝撃</strong>かも、と一拍置けるとお守りになります。</p>
         </div>
       </div>
 
-      <div class="shadow-card">
+      <!-- 適応性 -->
+      <div class="shadow-card fade-in">
         <div class="shadow-head">
-          <span class="shadow-name">🌊 適応性 の裏面</span>
-          <span class="badge-warn">CAUTION</span>
+          <span class="shadow-icon"><i class="fas fa-water"></i></span>
+          <span class="shadow-name">適応性 の裏面</span>
+          <span class="shadow-badge en">Caution</span>
         </div>
         <ul class="points">
           <li>流れに乗るのが上手すぎて、「自分が本当はどうしたいか」が見えなくなる時がある</li>
           <li>長期計画ベースの人とテンポが合わず、「で、結局どうしたいの？」が苦しい</li>
-          <li>頼まれごとを引き受けすぎて、自分の予定が後回しになりがち</li>
+          <li>トラブル時に「めっちゃ焦るタイプ」（クールに見えるタイプじゃない、を覚えておくと安心）</li>
+          <li class="voice">「めっちゃ焦ります、どうしようみたいな。そんな感じでクールな感じでふーんって、適応はできないですね。」</li>
         </ul>
         <div class="shield">
-          <b>🛡 お守り</b>
-          月1回でいい、「私はこれをやりたい」を1文だけ書き留める時間を作る。<br>
-          ふだんは流れに乗る人だからこそ、定点観測ができる場所が効きます。
+          <div class="shield-head"><i class="fas fa-shield-halved"></i> Your Shield</div>
+          <p>月1回でいい、「私はこれをやりたい」を1文だけ書き留める時間を作る。<br>そして焦った時は <strong>「焦ってる自分、それで普通」</strong> と認めるところから。クールに見せようとする必要はありません。</p>
         </div>
       </div>
 
-      <div class="shadow-card">
+      <!-- 活発性 -->
+      <div class="shadow-card fade-in">
         <div class="shadow-head">
-          <span class="shadow-name">🚀 活発性 の裏面</span>
-          <span class="badge-warn">CAUTION</span>
+          <span class="shadow-icon"><i class="fas fa-bolt"></i></span>
+          <span class="shadow-name">活発性 の裏面</span>
+          <span class="shadow-badge en">Caution</span>
         </div>
         <ul class="points">
-          <li>動きが早すぎて、検証や継続が手薄になりがち（始める > 続ける）</li>
-          <li>興味の対象が次々増えて、いつのまにか同時並行が多くなりがち</li>
-          <li>動いた後にふと「燃え尽き」が来ることがある</li>
-          <li>じっくり考える人にとっては、せっかちに見えてしまう瞬間も</li>
+          <li>動きが早すぎて、検証や継続が手薄になりがち（始める ＞ 続ける）</li>
+          <li>興味の対象が次々増えて、いつのまにか同時並行が多くなる</li>
+          <li>新しい道具（クロード／ChatGPT等）の情報量に圧倒され、迷子になることも</li>
+          <li class="voice">「ノウハウと教科書を見ながら、情報が多すぎて、何が何だか分からなくて。」</li>
         </ul>
         <div class="shield">
-          <b>🛡 お守り</b>
-          新しいものを始める前に「今走ってる本数」を見える化する（紙でもメモでも可）。<br>
-          全部やってOK。ただし「いま3本走ってる」って自覚があるだけで、燃え尽きが防げます。
+          <div class="shield-head"><i class="fas fa-shield-halved"></i> Your Shield</div>
+          <p>新しいものを始める前に、「今走ってる本数」を紙に書き出す。<br>クロードコードのような道具は、<strong>「全部覚えなくていい、使いながら覚える」</strong> モードで OK。情報を全部吸う必要はありません。</p>
         </div>
       </div>
 
-      <div class="shadow-card">
+      <!-- 成長促進 -->
+      <div class="shadow-card fade-in">
         <div class="shadow-head">
-          <span class="shadow-name">🌱 成長促進 の裏面</span>
-          <span class="badge-warn">CAUTION</span>
+          <span class="shadow-icon"><i class="fas fa-seedling"></i></span>
+          <span class="shadow-name">成長促進 の裏面</span>
+          <span class="shadow-badge en">Caution</span>
         </div>
         <ul class="points">
           <li>他者貢献マインドが強いぶん、自分のリソース（時間・お金・気力）を食われやすい</li>
-          <li>相談や応援が増えて、自分のチャレンジが後回しになる瞬間がある</li>
-          <li>「成長してくれない人」「動かない人」にちょっと残念さを感じることも</li>
+          <li>無自覚に「みんなの緩衝材」「憎まれ役」を引き受けてしまうことがある</li>
           <li>頼られる役を続けすぎて、自分のしんどさを言えなくなる</li>
+          <li class="voice">「『あなたはみんなの憎まれ役のポジションを引き受けた後に、あなたがいないとやばいね』みたいに言われて。私はそんな感じじゃなかったけど…」</li>
         </ul>
         <div class="shield">
-          <b>🛡 お守り</b>
-          応援は「無料」じゃなく、自分の時間と気力を使ってる、と意識する。<br>
-          そして「自分の応援団」を1人だけでも決めておく。応援する人にも、応援されるベースが必要です。
+          <div class="shield-head"><i class="fas fa-shield-halved"></i> Your Shield</div>
+          <p>応援は「無料」じゃない、自分の時間と気力を使ってる、と意識する。<br>そして <strong>「自分の応援団」を1人だけでも決めておく</strong>。応援する人にも、応援されるベースが必要です。</p>
         </div>
       </div>
 
-      <div class="shadow-card">
+      <!-- 原点思考 -->
+      <div class="shadow-card fade-in">
         <div class="shadow-head">
-          <span class="shadow-name">📖 原点思考 の裏面</span>
-          <span class="badge-warn">CAUTION</span>
+          <span class="shadow-icon"><i class="fas fa-book-open"></i></span>
+          <span class="shadow-name">原点思考 の裏面</span>
+          <span class="shadow-badge en">Caution</span>
         </div>
         <ul class="points">
           <li>「経緯」を大事にしすぎて、新しい変化への対応に時間がかかることがある</li>
-          <li>「なぜそうなったか」が分からないと動けない瞬間がある</li>
-          <li>過去の嫌な記憶も、忘れずに連れていきがち（=長く引きずる）</li>
+          <li>過去の嫌な記憶も忘れずに連れていきがち（=長く引きずる）</li>
         </ul>
         <div class="shield">
-          <b>🛡 お守り</b>
-          年に数回、「分からなくても、とりあえずやってみる日」を作る。<br>
-          原点思考×活発性のコンボが入ってる人だから、その日は活発性に主役を譲ってあげる感覚で🌱
+          <div class="shield-head"><i class="fas fa-shield-halved"></i> Your Shield</div>
+          <p>オレンジさんは原点思考が「ほどよい強さ」なので、ここはそんなに心配いりません。<br>むしろ、<strong>過去をきちんと持って今に活かせる強み</strong>として伸ばしていく方向で OK🌱</p>
         </div>
       </div>
 
     </div>
+  </div>
+</section>
 
-    <div class="combo">
-      <h4>🔔 組み合わせで起きやすいパターン</h4>
-      <p class="combo-lead">資質は単体じゃなくセットで動くから、組み合わせのクセも知っておくと安心です。</p>
+
+<!-- ============ COMBO PATTERNS ============ -->
+<section class="section combo">
+  <div class="container">
+    <div class="section-head fade-in">
+      <div class="label en">Section 06 ／ Combinations</div>
+      <h2 class="section-title-anim">組み合わせで、起きやすいパターン</h2>
+      <p class="desc">資質は単体じゃなくセットで動くから、組み合わせのクセも知っておくと安心です。</p>
+    </div>
+
+    <div class="combo-list fade-in">
 
       <div class="combo-row">
-        <div class="combo-tag">活発性<br>×<br>ポジティブ</div>
+        <div class="combo-tag">活発性<span class="x">×</span>ポジティブ</div>
         <div class="combo-text">
           <div class="pat">動いた結果が芳しくなくても「まあいっか🍊」で流せちゃう（=検証が手薄）</div>
-          <div class="fix">月末に「今月の振り返り20分」だけ予定に入れる。事業を伸ばす時に効きます。</div>
+          <div class="fix"><i class="fas fa-shield-halved"></i><span>月末に「今月の振り返り20分」だけ予定に入れる。AIギフトビジネスを伸ばす時に効きます。</span></div>
         </div>
       </div>
 
       <div class="combo-row">
-        <div class="combo-tag">適応性<br>×<br>活発性</div>
+        <div class="combo-tag">適応性<span class="x">×</span>活発性</div>
         <div class="combo-text">
-          <div class="pat">計画を立てない × すぐ動く で、いろんなことに同時着手→収拾がつかなくなる</div>
-          <div class="fix">「今走ってる3本」を紙に書き出す。書くだけで頭が整理されます。</div>
+          <div class="pat">計画を立てない × すぐ動く で、いろんなことに同時着手 → 収拾がつかなくなる</div>
+          <div class="fix"><i class="fas fa-shield-halved"></i><span>「今走ってる3本」を紙に書き出す。書くだけで頭が整理されます。</span></div>
         </div>
       </div>
 
       <div class="combo-row">
-        <div class="combo-tag">成長促進<br>×<br>ポジティブ</div>
+        <div class="combo-tag">成長促進<span class="x">×</span>ポジティブ</div>
         <div class="combo-text">
           <div class="pat">人を応援するモードが強すぎて、自分のしんどさを見せられない／抱え込みやすい</div>
-          <div class="fix">「自分の応援団は誰？」を1人決めておく。オレンジさんを応援する側がいないと続きません。</div>
+          <div class="fix"><i class="fas fa-shield-halved"></i><span>「自分の応援団は誰？」を1人決めておく。オレンジさんを応援する側がいないと、続きません。</span></div>
         </div>
       </div>
 
       <div class="combo-row">
-        <div class="combo-tag">原点思考<br>×<br>適応性</div>
+        <div class="combo-tag">原点思考<span class="x">×</span>適応性</div>
         <div class="combo-text">
-          <div class="pat">過去を大事にする × 流れに乗る、の合わせ技で、「自分が本当に何したいか」がぼやける瞬間がある</div>
-          <div class="fix">月1回「私はこうしたい」を1文だけ書き残す。流れに乗る人だからこそ「自分の意思」を残す習慣が効きます。</div>
+          <div class="pat">過去を大事にする × 流れに乗る、の合わせ技で「自分が本当に何したいか」がぼやけることがある</div>
+          <div class="fix"><i class="fas fa-shield-halved"></i><span>月1回「私はこうしたい」を1文書き残す。流れに乗る人だからこそ、「自分の意思」を残す習慣が効きます。</span></div>
         </div>
       </div>
 
       <div class="combo-row">
-        <div class="combo-tag">成長促進<br>×<br>活発性</div>
+        <div class="combo-tag">成長促進<span class="x">×</span>活発性</div>
         <div class="combo-text">
-          <div class="pat">周りの可能性に惹かれて動きすぎて、自分の事業（AIギフトビジネス）がブレやすい</div>
-          <div class="fix">「今期は◯◯を最優先」と1行決める。それ以外の応援は「余力があれば」モードに置く。</div>
+          <div class="pat">周りの可能性に惹かれて動きすぎて、自分のAIギフトビジネスがブレる瞬間が出てくる</div>
+          <div class="fix"><i class="fas fa-shield-halved"></i><span>「今期は◯◯を最優先」と1行決める。それ以外の応援は「余力があれば」モードに置く。</span></div>
         </div>
       </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ DIVIDER ============ -->
+<div class="divider">
+  <div class="ornament">
+    <i class="fas fa-compass"></i>
+    <span class="en">What's Next</span>
+    <i class="fas fa-compass"></i>
+  </div>
+</div>
+
+
+<!-- ============ FUTURE ============ -->
+<section class="section future">
+  <div class="container">
+    <div class="section-head fade-in">
+      <div class="label en">Section 07 ／ What's Next</div>
+      <h2 class="section-title-anim">これからのオレンジさん</h2>
+      <p class="desc">セッションで語ってくれた、ワクワクの種たち。</p>
     </div>
 
-    <div class="gentle-note">
-      強みの裏面は <span class="em">「直すべき欠点」じゃなく、強みの濃さの証拠</span>です。<br>
-      濃いから、使いすぎると詰まる。それだけ。<br>
-      気付いてあげれば、強みはもっと安心して伸びていきます🍊
+    <div class="future-grid stagger">
+
+      <div class="future-card full fade-in">
+        <div class="icon-circle"><i class="fas fa-wand-magic-sparkles"></i></div>
+        <h3>AIギフトビジネス：物語仕立て × マルチエージェント</h3>
+        <p>「クロードコードでマネージャーを立てて、エージェントのビジネスをやりたい。あなたはここやって、みたいな物語を作って、もっとここを変えよう、みたいなのをやりたい」── セッション中に出てきた、未来の構想。<br>
+        <strong>大切な人が主人公になる物語を、AIたちのチームで作る。</strong>これは活発性 × 成長促進 × ポジティブが揃った人にしか描けないビジネスです。</p>
+        <p class="voice">「AIで物語を作ってると、楽しすぎて何時間も経ってる🙈」── 没頭できる場所が、ちゃんとある。</p>
+      </div>
+
+      <div class="future-card fade-in">
+        <div class="icon-circle"><i class="fas fa-tooth"></i></div>
+        <h3>リベデンタルクリニック（神奈川）の検討</h3>
+        <p>働き方の選択肢として、神奈川のリベデンタルクリニックも視野に。「自分が楽しいなって思うように生きていきたい」という軸に沿った、新しい流れ。</p>
+      </div>
+
+      <div class="future-card fade-in">
+        <div class="icon-circle"><i class="fas fa-people-group"></i></div>
+        <h3>もっとオフ会、もっと出会い</h3>
+        <p>「たくさんオフ会行きたいんで、開いてください」「またクロコのオフ会、いいですか、リクエストしてもいいですか」── 場と人とのつながりが、オレンジさんの燃料。<br>これからもどんどん「行く」と「呼ぶ」を続けてOKです。</p>
+      </div>
+
+      <div class="future-card fade-in">
+        <div class="icon-circle"><i class="fas fa-heart"></i></div>
+        <h3>クロード布教中</h3>
+        <p>会う人みんなにクロードの話をして「えーまだ触ってないの？！」と衝撃を受ける日々。「井の中の蛙だなー」と気づきながらも、<strong>仲間にAIを届ける役</strong>を、自然にやってる人。これも立派な事業の入口。</p>
+      </div>
+
+      <div class="future-card fade-in">
+        <div class="icon-circle"><i class="fas fa-magnifying-glass-arrow-right"></i></div>
+        <h3>「自分を知る」ことを楽しむ</h3>
+        <p>これからは <strong>「自分の感覚 ≠ みんなの感覚」</strong> を前提に動く。それだけで、人との関わりが何倍もラクになります。<br>違いは、敵じゃなく、贈り物。</p>
+      </div>
+
     </div>
+  </div>
+</section>
 
-  </section>
 
-  <!-- ==== SECTION 5: Message ==== -->
-  <section class="section">
-    <div class="message">
-      <div class="heart">🍊</div>
+<!-- ============ CLOSING ============ -->
+<section class="section closing">
+  <div class="container">
+    <div class="closing-letter fade-in">
+      <div class="closing-symbol">🍊</div>
+      <h2>オレンジさんへ</h2>
       <p>
-        オレンジさんは、流れに乗りながら<br>
+        オレンジさんは、流れに乗りながら、<br>
         自分も周りも明るくする、<strong>太陽みたいな人</strong>。
       </p>
       <p>
@@ -875,25 +1783,64 @@ body {
       </p>
       <p>
         過去を大切にしながら、今を全力で楽しんで、<br>
-        誰かの成長に拍手を送れる人。
+        誰かの成長に、ちゃんと拍手を送れる人。
       </p>
       <p>
-        ── そんなオレンジさんが、これからどんな景色を見せてくれるのか、<br>
+        「<strong>自分の感覚が他人と違う</strong>」と気づいた今、<br>
+        ここからが、本当のオレンジさんの面白い時間。<br>
+        違うって分かるってことは、<strong>自分にちゃんと帰ってこれる</strong>ってこと。
+      </p>
+      <p>
+        これからどんな景色を見せてくれるのか、<br>
         私たちもとっても楽しみにしています🌱
       </p>
-      <div class="sign">From おけもんカンパニー × ゆいCPO</div>
+      <div class="closing-sign">
+        With love,<br>
+        おけもんカンパニー × ゆいCPO
+        <small>2026.05.02 ／ Strengths Coaching Session</small>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ==== Footer ==== -->
-  <footer class="footer">
-    <div class="ver">v1.0 ／ 仮版</div><br>
-    この取扱説明書は、ストレングスファインダーTOP5資質と<br>
-    オレンジさんご本人のリベシティプロフィールから作成したセッション用ドラフトです。<br>
-    セッション中の対話で、もっとぴったりな表現にアップデートしていきます🌱<br><br>
-    🍊 ＝ 行動派 × 太陽みたいな人
-  </footer>
 
-</div>
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="ver">v 2.0 ／ Session Update</div><br>
+  この取扱説明書は、ストレングスファインダーTOP5資質と<br>
+  2026年5月のコーチングセッションでの本人語をもとに作成した、<br>
+  オレンジさんへのプライベートな1冊です。<br>
+  セッション後の対話で、また少しずつアップデートしていきます🌱<br>
+  <div class="meta">🍊 Action Type × Sun-Like Person ／ Davis Yukari</div>
+</footer>
+
+
+<script>
+(function() {
+  const animEls = document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .stagger');
+  if (!('IntersectionObserver' in window)) {
+    animEls.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  animEls.forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      el.classList.add('is-visible');
+    } else {
+      obs.observe(el);
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
