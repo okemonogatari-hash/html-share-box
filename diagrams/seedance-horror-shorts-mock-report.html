@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SeedanceホラーShorts 初回モック報告</title>
+  <meta name="description" content="Seedance 2.0 Fastを使ったホラーShorts初回モックの検証報告書">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #15171a;
+      --muted: #5d6470;
+      --line: #d9dde4;
+      --paper: #f7f8fa;
+      --panel: #ffffff;
+      --accent: #b51f2a;
+      --accent-soft: #fff0f1;
+      --ok: #176b4d;
+      --warn: #9a5b00;
+      --shadow: 0 18px 44px rgba(18, 25, 38, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.72;
+      color: var(--ink);
+      background: var(--paper);
+      letter-spacing: 0;
+    }
+
+    a { color: var(--accent); }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 22px 64px;
+    }
+
+    header {
+      display: grid;
+      gap: 18px;
+      padding: 30px 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 56px);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 820px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    main {
+      display: grid;
+      gap: 26px;
+      margin-top: 30px;
+    }
+
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 26px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 22px 0 8px;
+      font-size: 17px;
+      letter-spacing: 0;
+    }
+
+    p { margin: 0 0 14px; }
+
+    ul, ol {
+      margin: 10px 0 0;
+      padding-left: 1.2em;
+    }
+
+    li + li { margin-top: 6px; }
+
+    .video-wrap {
+      display: grid;
+      grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .video-card {
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+      aspect-ratio: 9 / 16;
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.16), transparent 22%),
+        linear-gradient(180deg, #1d2026, #0e0f12);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-card::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 7px;
+      pointer-events: none;
+    }
+
+    .play-mark {
+      width: 76px;
+      height: 76px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.94);
+      color: #15171a;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      margin-bottom: 20px;
+      padding-left: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .video-card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .video-card p {
+      margin: 0 0 18px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #fff;
+      color: #15171a;
+      text-decoration: none;
+      font-weight: 800;
+      position: relative;
+      z-index: 1;
+    }
+
+    .summary-grid,
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .metric {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    th, td {
+      border-top: 1px solid var(--line);
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 700;
+      background: #fbfcfd;
+    }
+
+    .status-good { color: var(--ok); font-weight: 700; }
+    .status-warn { color: var(--warn); font-weight: 700; }
+    .status-bad { color: var(--accent); font-weight: 700; }
+
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+      padding: 16px 18px;
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer {
+      margin-top: 32px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .video-wrap,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid,
+      .score-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page { padding: 24px 14px 42px; }
+      section { padding: 20px; }
+      .summary-grid,
+      .score-grid {
+        grid-template-columns: 1fr;
+      }
+      th, td {
+        font-size: 13px;
+        padding: 10px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <p class="eyebrow">Seedance 2.0 Fast 検証レポート</p>
+      <h1>ホラーShorts 初回モック報告</h1>
+      <p class="lead">
+        参考動画の構成・演出を分解し、Seedance 2.0 Fastでどこまで短尺ホラー動画の方向性を可視化できるかを検証しました。
+        本ページはカドッチさん確認用の初回モック報告です。
+      </p>
+      <div class="meta">
+        <span class="pill">作成日: 2026-05-04</span>
+        <span class="pill">動画: YouTube限定公開</span>
+        <span class="pill">生成: Seedance 2.0 Fast</span>
+        <span class="pill">編集接続: 追加$0</span>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <h2>確認用モック動画</h2>
+        <div class="video-wrap">
+          <div class="video-card">
+            <div class="play-mark">▶</div>
+            <h3>初回モック v011</h3>
+            <p>YouTube限定公開で確認できます。埋め込み再生エラー回避のため、別タブで開く形式にしています。</p>
+            <a class="button" href="https://youtu.be/rPBpjhJf5NE" target="_blank" rel="noopener">YouTubeで見る</a>
+          </div>
+          <div>
+            <p>
+              これは完成版ではなく、生成AIを使った方向性確認用の初回モックです。
+              参考動画をそのままコピーするのではなく、黒い無表情の主人公、白灰色のマンション廊下、浴室の視線、冷蔵庫の違和感、ドア前の気づきという主要要素を6カットに再構成しました。
+            </p>
+            <p>
+              YouTube限定公開URL:
+              <a href="https://youtu.be/rPBpjhJf5NE" target="_blank" rel="noopener">https://youtu.be/rPBpjhJf5NE</a>
+            </p>
+            <p>
+              今回のトレース元動画:
+              <a href="https://www.youtube.com/shorts/eCibTrN-7OY" target="_blank" rel="noopener">https://www.youtube.com/shorts/eCibTrN-7OY</a>
+            </p>
+            <div class="summary-grid">
+              <div class="metric"><strong>27.5秒</strong><span>編集後の尺</span></div>
+              <div class="metric"><strong>6カット</strong><span>一気通貫モック</span></div>
+              <div class="metric"><strong>720x1280</strong><span>縦型9:16</span></div>
+              <div class="metric"><strong>$9.76</strong><span>生成概算コスト</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>今回の目的</h2>
+        <p>
+          元トレース動画
+          <a href="https://www.youtube.com/shorts/eCibTrN-7OY" target="_blank" rel="noopener">「意味が分かると怖い話」系のYouTube Shorts</a>
+          を参考に、生成AIを使ってホラー動画をどの程度モック化できるかを確認することが目的です。
+          今回は完成動画ではなく、コスト感・工数感・再現可能性を見るための検証素材として制作しました。
+        </p>
+        <div class="callout">
+          <p>
+            一言でいうと「このくらいのコストとスピードで、ホラーShortsの骨格モックまで作れるか」を見てもらうための資料です。
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>制作方法</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>工程</th>
+              <th>内容</th>
+              <th>使用したもの</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>解析</td>
+              <td>参考動画を見て、ストーリー、ショット構成、怖さの演出要素を分解</td>
+              <td>フレーム抽出、文字起こし、目視レビュー</td>
+            </tr>
+            <tr>
+              <td>設計</td>
+              <td>主要シーンを6カットに整理し、Seedance用プロンプトに変換</td>
+              <td>プロンプト設計</td>
+            </tr>
+            <tr>
+              <td>生成</td>
+              <td>5秒動画を複数生成し、使えるカットを採用</td>
+              <td>Seedance 2.0 Fast text-to-video</td>
+            </tr>
+            <tr>
+              <td>編集</td>
+              <td>生成済み動画を0.55秒クロスフェードで接続</td>
+              <td>ローカルffmpeg編集</td>
+            </tr>
+            <tr>
+              <td>検証</td>
+              <td>元動画と比較し、できた点と弱い点を整理</td>
+              <td>セルフレビュー</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>再現できたこと</h2>
+        <div class="two-col">
+          <div>
+            <h3>映像モチーフ</h3>
+            <ul>
+              <li>黒い無表情の主人公</li>
+              <li>白灰色のマンション廊下</li>
+              <li>浴室で視線を感じる演出</li>
+              <li>冷蔵庫の飲料カートンによる違和感</li>
+              <li>ドア前で気づくラストカット</li>
+            </ul>
+          </div>
+          <div>
+            <h3>運用面</h3>
+            <ul>
+              <li>YouTube UIやブラウザUIを除いたクリーンな縦動画化</li>
+              <li>6カットを約27秒の通しモックに編集</li>
+              <li>編集接続部分は追加AIクレジットなし</li>
+              <li>コストと工数をスプレッドシートに記録</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>まだ弱いこと</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>状態</th>
+              <th>コメント</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>赤髪・白装束の幽霊</td>
+              <td class="status-bad">弱い</td>
+              <td>元動画の重要モチーフだが、今回の生成では黒い人型寄りになった。次回の最優先改善点。</td>
+            </tr>
+            <tr>
+              <td>元動画の簡素な3D Shorts感</td>
+              <td class="status-warn">やや弱い</td>
+              <td>Seedanceの出力が高精細なシネマCG寄り。低ポリ/簡素CG指定を強める必要がある。</td>
+            </tr>
+            <tr>
+              <td>ナレーション・字幕・赤文字タイトル</td>
+              <td class="status-bad">未実装</td>
+              <td>今回は映像生成検証を優先。文字や音声は後編集で入れる想定。</td>
+            </tr>
+            <tr>
+              <td>リビング・ソファの中盤</td>
+              <td class="status-bad">未実装</td>
+              <td>元動画64秒に対して、今回は27.5秒の圧縮モック。中盤シーンは省略。</td>
+            </tr>
+            <tr>
+              <td>牛乳オチの伝わりやすさ</td>
+              <td class="status-warn">要補強</td>
+              <td>冷蔵庫と飲料は出るが、「3ヶ月不在なのに新鮮」という意味は字幕/ナレーションで補う必要がある。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>コストと工数</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>区分</th>
+              <th>概算コスト</th>
+              <th>工数</th>
+              <th>備考</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>参考動画解析・要件整理</td>
+              <td>$0.00</td>
+              <td>約60分</td>
+              <td>ローカル解析。Seedance未使用。</td>
+            </tr>
+            <tr>
+              <td>Seedance生成</td>
+              <td>約$9.76</td>
+              <td>約45分</td>
+              <td>5秒動画8ジョブ相当。既存実測の5秒約$1.22をもとに算出。</td>
+            </tr>
+            <tr>
+              <td>ローカル編集つなぎ</td>
+              <td>$0.00</td>
+              <td>約15分</td>
+              <td>ffmpegでクロスフェード接続。追加AI生成なし。</td>
+            </tr>
+            <tr>
+              <th>合計</th>
+              <th>約$9.76</th>
+              <th>約120分</th>
+              <th>実請求はfal.aiの明細確認後に差し替え推奨。</th>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">
+          先行のSeedance動作確認テスト$1.22まで含める場合は、合計約$10.98です。
+        </p>
+      </section>
+
+      <section>
+        <h2>次にやるなら</h2>
+        <ol>
+          <li>幽霊シーンだけ再生成し、赤髪・白装束・廊下奥で静止を強める</li>
+          <li>ナレーション、字幕、赤文字タイトルを後編集で追加する</li>
+          <li>リビングの青紫霧、ソファ睡眠シーンを追加し、元動画に近い尺にする</li>
+          <li>全体を低ポリ/簡素3D Shorts風に寄せ、シネマCG感を抑える</li>
+          <li>本番化する場合は、参照画像を使ったimage-to-video/reference-to-videoでキャラ一貫性を上げる</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>今回の位置づけ</h2>
+        <p>
+          今回の動画は、完成版ではなく初回モックです。
+          目的は「生成AIで短尺ホラー動画の構成をどこまで早く可視化できるか」を確認することです。
+        </p>
+        <p>
+          方向性が合っていれば、次のステップでは幽霊シーン、字幕、ナレーション、タイトル演出を足して、より完成動画に近づけます。
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      Seedance horror shorts mock report / Generated and edited for validation use.
+    </footer>
+  </div>
+</body>
+</html>
