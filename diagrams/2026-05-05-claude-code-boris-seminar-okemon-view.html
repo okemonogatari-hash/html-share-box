@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code公式セミナーをおけもん視点で読み解く</title>
+<title>Claude Code 触り出した人へ — 何から始めればいいの？</title>
 <style>
   :root {
     --bg: #faf6f0;
@@ -21,6 +21,7 @@
     --rose-soft: rgba(232,67,147,0.08);
     --sky: #74b9ff;
     --sky-soft: rgba(116,185,255,0.12);
+    --sky-deep: #0984e3;
     --honey-soft: rgba(253,203,110,0.18);
     --shadow: 0 8px 30px rgba(0,0,0,0.06);
     --radius: 20px;
@@ -35,10 +36,9 @@
     line-height: 1.7;
     padding: 24px 16px 80px;
   }
-  .container {
-    max-width: var(--max);
-    margin: 0 auto;
-  }
+  .container { max-width: var(--max); margin: 0 auto; }
+
+  /* ヒーロー */
   .hero {
     background: linear-gradient(135deg, #fff8f0, #fff);
     padding: 32px 28px;
@@ -64,7 +64,6 @@
     font-weight: 800;
     line-height: 1.4;
     margin-bottom: 10px;
-    color: #2d2a26;
   }
   .hero .sub {
     font-size: 14px;
@@ -76,6 +75,7 @@
     color: var(--accent);
     font-weight: 600;
   }
+
   .section {
     background: var(--paper);
     border-radius: var(--radius);
@@ -93,11 +93,50 @@
     align-items: center;
     gap: 10px;
   }
-  .section-title .emoji {
-    font-size: 24px;
+  .section-title .emoji { font-size: 24px; }
+
+  /* Claude Codeって何？ */
+  .what-is {
+    background: linear-gradient(135deg, var(--sky-soft), #fff);
+    border: 2px solid rgba(116,185,255,0.3);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .what-is h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--sky-deep);
+    margin-bottom: 12px;
+  }
+  .what-is p {
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+  .what-is .compare {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  @media (min-width: 720px) {
+    .what-is .compare { grid-template-columns: 1fr 1fr; }
+  }
+  .compare .box {
+    background: #fff;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+  }
+  .compare .box .label {
+    font-weight: 700;
+    color: var(--sky-deep);
+    font-size: 12px;
+    margin-bottom: 6px;
   }
 
-  /* 7つのコツ一覧 */
+  /* 7つのコツ */
   .tips-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -122,73 +161,20 @@
     font-size: 13px;
     margin-bottom: 8px;
   }
-  .tip-card h4 {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    color: var(--ink);
-  }
-  .tip-card p {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
+  .tip-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .tip-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
 
-  /* 実装状況テーブル */
-  .impl-table {
-    border-radius: 14px;
-    overflow: hidden;
-    border: 1.5px solid var(--line);
-  }
-  .impl-row {
-    display: grid;
-    grid-template-columns: 50px 1fr 80px;
-    align-items: center;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--line);
-    font-size: 14px;
-  }
-  .impl-row:last-child { border-bottom: none; }
-  .impl-row.done { background: var(--mint-soft); }
-  .impl-row.todo { background: var(--warn-soft); }
-  .impl-row .num-cell {
-    font-weight: 700;
-    color: var(--muted);
-    font-size: 13px;
-  }
-  .impl-row .label {
-    color: var(--ink);
-  }
-  .impl-row .status {
-    text-align: right;
-    font-weight: 700;
-    font-size: 13px;
-  }
-  .impl-row.done .status { color: var(--mint); }
-  .impl-row.todo .status { color: #d68910; }
-
-  .summary-banner {
-    margin-top: 18px;
-    padding: 16px 18px;
-    background: linear-gradient(135deg, var(--mint-soft), var(--honey-soft));
-    border-radius: 14px;
-    text-align: center;
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--ink);
-  }
-
-  /* 1つだけやることハイライト */
-  .one-thing {
+  /* ★ メイン：5ステップ実践ガイド ★ */
+  .step-banner {
     background: linear-gradient(135deg, #fff5e6, #ffe8d6);
     border: 3px solid var(--accent);
     border-radius: var(--radius);
-    padding: 28px 24px;
-    box-shadow: 0 12px 40px rgba(225,112,85,0.15);
-    margin-bottom: 24px;
+    padding: 24px;
     text-align: center;
+    margin-bottom: 24px;
+    box-shadow: 0 12px 40px rgba(225,112,85,0.12);
   }
-  .one-thing .pill {
+  .step-banner .pill {
     display: inline-block;
     background: var(--accent);
     color: #fff;
@@ -196,37 +182,155 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: 700;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
-  .one-thing h2 {
-    font-size: 22px;
+  .step-banner h2 {
+    font-size: 24px;
     font-weight: 800;
-    line-height: 1.5;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
-  .one-thing .quote {
-    background: #fff;
-    padding: 16px 20px;
-    border-radius: 14px;
-    margin-top: 16px;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--accent);
-    border: 2px dashed rgba(225,112,85,0.3);
+  .step-banner .small {
+    font-size: 13px;
+    color: var(--muted);
   }
 
-  /* Before / After 対比 */
+  .step {
+    background: var(--paper);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    border-left: 6px solid var(--accent);
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .step-header .step-num {
+    background: var(--accent);
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .step-header .step-title {
+    flex: 1;
+  }
+  .step-header h3 {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+  .step-header .step-tag {
+    font-size: 11px;
+    color: var(--mint);
+    font-weight: 700;
+  }
+  .step-body p {
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+  .step-body .try-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+  .example-box {
+    background: #2d2a26;
+    color: #f5f1ea;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 8px;
+  }
+  .example-box .prompt {
+    color: #fdcb6e;
+  }
+  .example-list {
+    list-style: none;
+    padding: 0;
+  }
+  .example-list li {
+    background: var(--accent-soft);
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    border-left: 3px solid var(--accent);
+  }
+  .example-list li .you {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  /* キーバインド */
+  .keys-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  @media (min-width: 720px) {
+    .keys-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .key-card {
+    background: #f8f6f1;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    border: 1.5px solid var(--line);
+  }
+  .key-card kbd {
+    display: inline-block;
+    background: #2d2a26;
+    color: #f5f1ea;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: "SF Mono", monospace;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+  }
+  .key-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .key-card p {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Before/After */
   .ba-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
+    margin-top: 12px;
   }
   @media (min-width: 720px) {
     .ba-grid { grid-template-columns: 1fr 1fr; }
   }
   .ba-card {
-    border-radius: 16px;
-    padding: 20px;
+    border-radius: 14px;
+    padding: 16px;
     border: 2px solid;
   }
   .ba-card.before {
@@ -238,86 +342,55 @@
     border-color: rgba(0,184,148,0.3);
   }
   .ba-card .ba-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
-    margin-bottom: 12px;
-    padding: 4px 10px;
-    border-radius: 12px;
+    margin-bottom: 10px;
+    padding: 3px 10px;
+    border-radius: 10px;
     display: inline-block;
   }
-  .ba-card.before .ba-label {
-    background: var(--rose);
-    color: #fff;
-  }
-  .ba-card.after .ba-label {
-    background: var(--mint);
-    color: #fff;
-  }
+  .ba-card.before .ba-label { background: var(--rose); color: #fff; }
+  .ba-card.after .ba-label { background: var(--mint); color: #fff; }
   .ba-card .you-said {
     background: #fff;
-    padding: 12px 14px;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
     line-height: 1.6;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-  }
-  .ba-card .you-said .who {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 700;
-    margin-bottom: 4px;
   }
   .ba-card .arrow {
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     color: var(--muted);
-    margin: 8px 0;
+    margin: 6px 0;
   }
   .ba-card .result {
     font-weight: 700;
     text-align: center;
-    font-size: 14px;
-    padding: 10px;
+    font-size: 13px;
+    padding: 8px;
     border-radius: 10px;
+    margin-top: 6px;
   }
   .ba-card.before .result { background: rgba(232,67,147,0.12); color: var(--rose); }
   .ba-card.after .result { background: rgba(0,184,148,0.15); color: var(--mint); }
 
-  /* ADHD効く理由 */
-  .why-adhd {
-    background: linear-gradient(135deg, var(--sky-soft), #fff);
-    border: 2px solid rgba(116,185,255,0.3);
-    border-radius: var(--radius);
-    padding: 24px 22px;
-    margin-bottom: 24px;
-  }
-  .why-adhd h3 {
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 14px;
-    color: #0984e3;
-  }
-  .why-adhd ul {
-    list-style: none;
-    padding: 0;
-  }
-  .why-adhd li {
-    padding: 10px 0 10px 32px;
-    position: relative;
-    font-size: 14px;
+  /* CLAUDE.mdの例 */
+  .md-example {
+    background: #2d2a26;
+    color: #f5f1ea;
+    padding: 16px;
+    border-radius: 10px;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px;
     line-height: 1.7;
-    border-bottom: 1px dashed rgba(116,185,255,0.2);
+    margin-top: 8px;
   }
-  .why-adhd li:last-child { border-bottom: none; }
-  .why-adhd li::before {
-    content: "💡";
-    position: absolute;
-    left: 4px;
-    top: 10px;
-  }
+  .md-example .comment { color: #7a756d; }
+  .md-example .heading { color: #fdcb6e; }
 
-  /* 具体的な使い方事例 */
+  /* ボリスの実例 */
   .cases {
     display: grid;
     grid-template-columns: 1fr;
@@ -342,16 +415,8 @@
     font-weight: 700;
     margin-bottom: 8px;
   }
-  .case-card h4 {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  .case-card p {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
+  .case-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .case-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
 
   /* Q&A */
   .qa {
@@ -368,13 +433,43 @@
   }
   .qa .a {
     font-size: 13px;
-    color: var(--ink);
     line-height: 1.7;
-    padding-left: 18px;
+    padding-left: 16px;
     border-left: 3px solid var(--accent);
   }
 
-  /* 締め */
+  /* チェックリスト */
+  .checklist {
+    background: linear-gradient(135deg, var(--mint-soft), #fff);
+    border: 2px solid rgba(0,184,148,0.3);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .checklist h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--mint);
+    margin-bottom: 14px;
+  }
+  .checklist ul { list-style: none; padding: 0; }
+  .checklist li {
+    padding: 8px 0 8px 32px;
+    position: relative;
+    font-size: 14px;
+    border-bottom: 1px dashed rgba(0,184,148,0.2);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: "☐";
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    font-size: 18px;
+    color: var(--mint);
+    font-weight: 700;
+  }
+
   .footer-msg {
     text-align: center;
     padding: 28px 20px;
@@ -382,14 +477,10 @@
     border-radius: var(--radius);
     margin-top: 16px;
   }
-  .footer-msg .heart {
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
+  .footer-msg .heart { font-size: 32px; margin-bottom: 10px; }
   .footer-msg p {
     font-size: 15px;
     font-weight: 700;
-    color: var(--ink);
     line-height: 1.7;
   }
   .footer-msg .small {
@@ -398,7 +489,6 @@
     margin-top: 12px;
     font-weight: 400;
   }
-
   .meta {
     text-align: center;
     color: var(--muted);
@@ -412,213 +502,247 @@
 
   <!-- ヒーロー -->
   <div class="hero">
-    <span class="badge">📺 公式セミナー読み解き</span>
-    <h1>Claude Code 30分セミナーを<br>「おけもん視点」で読み解く</h1>
-    <p class="sub">2026-04-19 サンフランシスコ Anthropic イベント</p>
-    <p class="speaker">登壇：ボリスさん（Claude Codeを作った本人 / Anthropic技術スタッフ）</p>
+    <span class="badge">🚀 Claude Code はじめてガイド</span>
+    <h1>Claude Code 触り出したけど<br>「何したらいいの？」って人へ</h1>
+    <p class="sub">公式セミナー（Anthropic・2026-04-19・30分）の中身を、初心者向けに翻訳した実践ガイド</p>
+    <p class="speaker">登壇：ボリスさん（Claude Codeを作った本人）</p>
   </div>
 
-  <!-- ① ボリスが教えた7つのコツ -->
+  <!-- Claude Codeって何？ -->
+  <div class="what-is">
+    <h3>📖 そもそも Claude Code って何？</h3>
+    <p>**ターミナル（黒い画面）で動くAIアシスタント**。コードを書くだけじゃなくて、ファイルを調べたり、調べ物したり、Gitを操作したり、メールを下書きしたり、なんでも頼める。</p>
+    <div class="compare">
+      <div class="box">
+        <div class="label">これまでのAI</div>
+        コードの「次の1行」を予測して補完してくれる
+      </div>
+      <div class="box">
+        <div class="label">Claude Code</div>
+        「機能まるごと作って」「バグ直して」が頼める
+      </div>
+    </div>
+  </div>
+
+  <!-- 7つのコツ一覧 -->
   <div class="section">
-    <div class="section-title"><span class="emoji">🎯</span>ボリスが30分で教えてくれた7つのコツ</div>
+    <div class="section-title"><span class="emoji">🎯</span>ボリスが教えてくれた7つのコツ（全体像）</div>
     <div class="tips-grid">
-      <div class="tip-card">
-        <div class="num">1</div>
-        <h4>最初の準備をしよう</h4>
-        <p>画面の見た目・ショートカット・声で話しかけられる設定など、使いやすくしておく</p>
-      </div>
-      <div class="tip-card">
-        <div class="num">2</div>
-        <h4>まず「質問」から始めよう</h4>
-        <p>いきなり頼まず、まず聞く。「これってどうなってる？」と聞くだけでAIに慣れる</p>
-      </div>
-      <div class="tip-card">
-        <div class="num">3</div>
-        <h4>動く前に「作戦」を聞こう</h4>
-        <p>大きい仕事ほど、いきなり作らせず「先にどう進めるつもり？」と確認する</p>
-      </div>
-      <div class="tip-card">
-        <div class="num">4</div>
-        <h4>自分の道具を教えてあげよう</h4>
-        <p>普段使っているツール（チャットワーク・Notion等）をAIに繋いでおく</p>
-      </div>
-      <div class="tip-card">
-        <div class="num">5</div>
-        <h4>背景情報をまとめておこう</h4>
-        <p>「うちはこういう前提で動いてるよ」をメモにまとめておくと毎回説明しなくて済む</p>
-      </div>
-      <div class="tip-card">
-        <div class="num">6</div>
-        <h4>便利キーを覚えよう</h4>
-        <p>「待って」「これ覚えて」「全部見せて」を一発で押せるキーがある</p>
-      </div>
-      <div class="tip-card">
-        <div class="num">7</div>
-        <h4>同時に何人も動かそう</h4>
-        <p>1つのAIだけじゃなく、複数のAIを同時に走らせて並列で仕事させる</p>
-      </div>
+      <div class="tip-card"><div class="num">1</div><h4>最初の準備をしよう</h4><p>画面の見た目・ショートカット・声入力の設定をしておく</p></div>
+      <div class="tip-card"><div class="num">2</div><h4>まず「質問」から始めよう</h4><p>いきなり頼まず、聞くだけ。「これってどうなってる？」</p></div>
+      <div class="tip-card"><div class="num">3</div><h4>動く前に「作戦」を聞こう</h4><p>大きい仕事は「先にどう進める？」と確認してから動かす</p></div>
+      <div class="tip-card"><div class="num">4</div><h4>自分の道具を教えよう</h4><p>普段使うツール（Notion等）をAIに繋ぐ</p></div>
+      <div class="tip-card"><div class="num">5</div><h4>背景情報をまとめよう</h4><p>「うちの前提」をメモにしておくと毎回説明しなくて済む</p></div>
+      <div class="tip-card"><div class="num">6</div><h4>便利キーを覚えよう</h4><p>「許可」「覚えて」「止まって」を一発で押せる</p></div>
+      <div class="tip-card"><div class="num">7</div><h4>同時に何個も動かそう</h4><p>慣れたら複数のAIに同時並行で仕事させる</p></div>
     </div>
   </div>
 
-  <!-- ② おけもんカンパニー実装状況 -->
+  <!-- ★ メイン：5ステップ実践ガイド ★ -->
+  <div class="step-banner">
+    <span class="pill">⭐ ここがメイン</span>
+    <h2>今日からこの順番でやってみよう</h2>
+    <p class="small">5つのステップ。1日1個でも、1週間で全部回せる量にしてある</p>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title">
+        <h3>まず「質問」だけしてみる</h3>
+        <div class="step-tag">📅 今日やる / 5分</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Claude Codeを開いたら、何かを<b>作らせる前に「聞くだけ」</b>から始めよう。これが一番の上達への近道、ってボリスも言ってる。Anthropicでは新人さんがコレやって、慣れる期間が2〜3週間→2〜3日になった。</p>
+
+      <div class="try-label">▼ こう打ってみよう（コピーしてOK）</div>
+      <ul class="example-list">
+        <li><div class="you">質問例①</div>このフォルダって何のプロジェクト？要約して</li>
+        <li><div class="you">質問例②</div>このファイル、どこから呼ばれてる？</li>
+        <li><div class="you">質問例③</div>ここ最近どんな変更があった？git logまとめて</li>
+        <li><div class="you">質問例④</div>この関数、なんでこんなに引数多いの？git履歴から理由探して</li>
+      </ul>
+      <p style="margin-top:12px;font-size:12px;color:var(--muted);">💡 ポイント：いきなり「○○作って」じゃなく、まず「○○ってどうなってる？」。これだけで「あ、こいつ何ができるか分かってきた」感覚が掴める。</p>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title">
+        <h3>大きい仕事は「先に作戦聞いて」と言う</h3>
+        <div class="step-tag">📅 今日やる / 1分で覚えられる</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>頼み方を <b>「○○して」→「○○したい、先に進め方教えて」</b> に変えるだけ。これでAIが暴走して見当違いのものを作っちゃう事故が激減する。</p>
+
+      <div class="ba-grid">
+        <div class="ba-card before">
+          <span class="ba-label">❌ いきなり頼む</span>
+          <div class="you-said">ログイン機能を実装して</div>
+          <div class="arrow">↓</div>
+          <div class="you-said">（200行のコードが完成）<br>はい、できました！</div>
+          <div class="arrow">↓</div>
+          <div class="result">「想像と違う…」<br>全部書き直し</div>
+        </div>
+        <div class="ba-card after">
+          <span class="ba-label">⭕️ 先に作戦を聞く</span>
+          <div class="you-said">ログイン機能を作りたい。<b>先にどう実装するつもりか教えて</b></div>
+          <div class="arrow">↓</div>
+          <div class="you-said">①メアド+PW認証 ②セッション管理は… ③DBテーブルは…</div>
+          <div class="arrow">↓</div>
+          <div class="result">「OK、進めて」<br>一発で意図通り ✨</div>
+        </div>
+      </div>
+      <p style="margin-top:12px;font-size:12px;color:var(--muted);">💡 ポイント：「考えてから動いて」ってお願いするだけ。プランモード等の特別な機能は不要。</p>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div class="step-title">
+        <h3>便利キー、3つだけ覚える</h3>
+        <div class="step-tag">📅 明日やる / 体に染み込ませる</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>全部覚えなくていい。<b>この3つだけ</b>覚えれば作業速度が一気に上がる。</p>
+      <div class="keys-grid">
+        <div class="key-card">
+          <kbd>Shift + Tab</kbd>
+          <h4>毎回の確認をスキップ</h4>
+          <p>AIの編集を全部自動承認。テスト書かせる時とか便利</p>
+        </div>
+        <div class="key-card">
+          <kbd>#</kbd>
+          <h4>「これ覚えて」</h4>
+          <p>#を打って文字書くと、AIが永続的に覚えてくれる</p>
+        </div>
+        <div class="key-card">
+          <kbd>Esc</kbd>
+          <h4>止まって・やり直し</h4>
+          <p>AIが暴走したら即停止。2回押すと履歴に戻れる</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;font-size:12px;color:var(--muted);">💡 おまけ：<kbd style="background:#2d2a26;color:#f5f1ea;padding:2px 6px;border-radius:4px;font-size:11px;">!</kbd> でターミナルコマンドが直接打てる、<kbd style="background:#2d2a26;color:#f5f1ea;padding:2px 6px;border-radius:4px;font-size:11px;">Ctrl+R</kbd> でAIが見てる全画面を見せてくれる。</p>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div class="step-title">
+        <h3>「うちの前提」をメモにまとめる（CLAUDE.md）</h3>
+        <div class="step-tag">📅 今週中にやる / 15分</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>プロジェクトの根っこに <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">CLAUDE.md</code> ってファイルを置いとくと、AIが毎回最初に読んでくれる。<b>「毎回これ説明するのめんどい」を全部ここに書いとく</b>。</p>
+
+      <div class="try-label">▼ 最低限こんな感じで書く</div>
+      <div class="md-example">
+<span class="heading"># このプロジェクトについて</span>
+社内向けAIアシスタント。Next.jsで作ってる。
+
+<span class="heading"># よく使うコマンド</span>
+- npm run dev — 開発サーバー起動
+- npm test — テスト実行
+
+<span class="heading"># 大事なルール</span>
+- DBは触らないで（読み取りのみOK）
+- パスワード等は環境変数から取ること
+
+<span class="heading"># 重要なファイル</span>
+- src/lib/auth.ts — 認証の中枢
+      </div>
+      <p style="margin-top:12px;font-size:12px;color:var(--muted);">💡 ポイント：長くしすぎない。AIが毎回読むので、長いとトークン無駄にする。最初は10〜20行で十分。</p>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div class="step-title">
+        <h3>慣れてきたら、同時に何個も動かす</h3>
+        <div class="step-tag">📅 来週やる / 慣れてから</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>1個のClaude Codeじゃなくて、<b>ターミナルを複数開いて並列で走らせる</b>。1人がコード書いてる間に、もう1人がドキュメント書いてる、みたいな状態。</p>
+      <p style="font-size:13px;">最初はターミナルのタブを2つ開いて、別々の作業を頼んでみる。慣れたらgit worktreeで複数の作業ブランチを並列で動かす、というのがプロの使い方らしい。</p>
+      <p style="margin-top:12px;font-size:12px;color:var(--muted);">💡 ポイント：いきなりやらない。STEP 1〜4が体に染みてからでいい。</p>
+    </div>
+  </div>
+
+  <!-- ボリスの実例 -->
   <div class="section">
-    <div class="section-title"><span class="emoji">📊</span>おけもんカンパニーの実装状況</div>
-    <div class="impl-table">
-      <div class="impl-row done">
-        <div class="num-cell">①</div>
-        <div class="label">最初の準備</div>
-        <div class="status">✅ 済み</div>
-      </div>
-      <div class="impl-row todo">
-        <div class="num-cell">②</div>
-        <div class="label">まず質問から始める</div>
-        <div class="status">⚠️ 伸びしろ</div>
-      </div>
-      <div class="impl-row todo">
-        <div class="num-cell">③</div>
-        <div class="label">動く前に作戦を聞く</div>
-        <div class="status">⚠️ 伸びしろ</div>
-      </div>
-      <div class="impl-row done">
-        <div class="num-cell">④</div>
-        <div class="label">自分の道具を教える</div>
-        <div class="status">✅ 済み</div>
-      </div>
-      <div class="impl-row done">
-        <div class="num-cell">⑤</div>
-        <div class="label">背景情報をまとめる</div>
-        <div class="status">✅ 済み</div>
-      </div>
-      <div class="impl-row todo">
-        <div class="num-cell">⑥</div>
-        <div class="label">便利キーを覚える</div>
-        <div class="status">⚠️ 伸びしろ</div>
-      </div>
-      <div class="impl-row done">
-        <div class="num-cell">⑦</div>
-        <div class="label">同時に何人も動かす</div>
-        <div class="status">✅ 済み</div>
-      </div>
-    </div>
-    <div class="summary-banner">
-      🎉 <b>7つ中4つはもう実装済み！</b> 残り3つのうち、今日やるのは <b>たった1つ</b> でいい
-    </div>
-  </div>
-
-  <!-- ③ 今日やること1つだけ -->
-  <div class="one-thing">
-    <span class="pill">⭐ 今日から実践するならコレだけ</span>
-    <h2>動く前に「作戦」を聞く</h2>
-    <p style="font-size:14px;color:var(--muted);">いきなり頼まずに、先に「どう進めるつもり？」と確認するだけ</p>
-    <div class="quote">
-      「○○して」<br>
-      ↓ ちょっとだけ変える<br>
-      「○○したい、先に流れ教えて」
-    </div>
-  </div>
-
-  <!-- ④ Before / After -->
-  <div class="section">
-    <div class="section-title"><span class="emoji">🔄</span>たとえばこんな感じ（DM作成のケース）</div>
-    <div class="ba-grid">
-      <div class="ba-card before">
-        <span class="ba-label">❌ いつもの頼み方</span>
-        <div class="you-said">
-          <div class="who">おけちゃん</div>
-          ゆかさんへのDM作って
-        </div>
-        <div class="arrow">↓</div>
-        <div class="you-said">
-          <div class="who">AI</div>
-          （いきなり長文DM完成）<br>
-          はい、こちらで作成しました！
-        </div>
-        <div class="arrow">↓</div>
-        <div class="result">「ちょっと違うな…」<br>書き直しになる</div>
-      </div>
-
-      <div class="ba-card after">
-        <span class="ba-label">⭕️ 一言だけ変える</span>
-        <div class="you-said">
-          <div class="who">おけちゃん</div>
-          ゆかさんへのDM作りたいんだけど、<b>先にどんな流れで書くつもりか教えて</b>
-        </div>
-        <div class="arrow">↓</div>
-        <div class="you-said">
-          <div class="who">AI</div>
-          まず軽くお礼、次に近況、最後にカジュアル面談の打診で書こうかと
-        </div>
-        <div class="arrow">↓</div>
-        <div class="you-said">
-          <div class="who">おけちゃん</div>
-          そうそう、近況のとこは○○入れて
-        </div>
-        <div class="arrow">↓</div>
-        <div class="result">一発でハマるDMが出る ✨</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ⑤ ADHDのおけちゃんに効く理由 -->
-  <div class="why-adhd">
-    <h3>💙 なんでこれ、ADHDのおけちゃんにこそ効くの？</h3>
-    <ul>
-      <li><b>途中で軌道修正できる</b>から、「あ、こっちじゃなかった」が早く分かる</li>
-      <li><b>やり直しがほぼゼロ</b>になるから、エネルギーの無駄遣いが減る</li>
-      <li>AIに作戦を喋らせると、<b>ついでにおけちゃんの頭の整理も進む</b></li>
-      <li>「先に流れ教えて」の<b>一言だけ覚えればいい</b>から、ルール覚える負担なし</li>
-    </ul>
-  </div>
-
-  <!-- ⑥ ボリスが話してた具体的な使い方 -->
-  <div class="section">
-    <div class="section-title"><span class="emoji">💼</span>ボリスが話してた「実際のすごい使い方」</div>
+    <div class="section-title"><span class="emoji">💼</span>ボリス本人がいつもやってる使い方</div>
     <div class="cases">
-      <div class="case-card">
-        <span class="case-tag">新人教育</span>
-        <h4>新人さんが慣れる期間が<br>2〜3週間 → 2〜3日に</h4>
-        <p>新人さんが「これってどうなってる？」とAIに聞きまくることで、先輩に質問する時間が激減した</p>
-      </div>
       <div class="case-card">
         <span class="case-tag">毎週月曜</span>
         <h4>「今週何やった？」を<br>AIにまとめさせる</h4>
-        <p>ボリスさん自身、毎週月曜の定例前にAIに「今週何出した？」と聞いて、そのまま報告書にコピペしてる</p>
+        <p>定例ミーティング前にAIに「今週何コミットした？」と聞いて、そのまま報告書にコピペしてる</p>
+      </div>
+      <div class="case-card">
+        <span class="case-tag">Git操作</span>
+        <h4>「コミット、プッシュ、PR」<br>の3単語で全部やる</h4>
+        <p>細かい指示なし。AIが履歴見て、コミットメッセージ考えて、ブランチ作って、プルリク出してくれる</p>
       </div>
       <div class="case-card">
         <span class="case-tag">画像で指示</span>
         <h4>デザインの絵を見せて<br>「これ作って」</h4>
-        <p>画像をドラッグ&ドロップで渡して「これ作って」と頼む。AIが見て、作って、確認して、直してを繰り返す</p>
+        <p>画像をドラッグ&ドロップ。AIが見て→作って→スクショで確認→直す、をループ。だいたい3周で完成</p>
       </div>
       <div class="case-card">
         <span class="case-tag">声で指示</span>
-        <h4>キーボードを叩かず<br>声で話しかける</h4>
-        <p>Macの音声入力をオンにして、ボリスさんは「もう一人のエンジニアに話しかけるみたいに」AIに喋ってる</p>
+        <h4>キーボード叩かず<br>声で話しかける</h4>
+        <p>Macの音声入力をオン。「もう一人のエンジニアに話しかけるみたいに」AIに喋ってる</p>
       </div>
     </div>
   </div>
 
-  <!-- ⑦ Q&Aコーナー -->
+  <!-- Q&A -->
   <div class="section">
     <div class="section-title"><span class="emoji">❓</span>会場からのQ&A（全3問）</div>
     <div class="qa">
-      <div class="q">Q1. 作るときに一番難しかったのはどこ？</div>
-      <div class="a">「AIが命令を実行する時の安全装置」が一番むずかしかった。毎回「実行しますか？」って聞かれると面倒だけど、勝手に動くと危ない。安全と便利のバランスをとる仕組み作りが大変だった。</div>
+      <div class="q">Q1. 作るときに一番難しかったのは？</div>
+      <div class="a">「AIが命令を実行する時の安全装置」が一番難しかった。毎回確認すると面倒、勝手に動くと危ない。安全と便利のバランスをとる仕組み作りが大変だった。</div>
     </div>
     <div class="qa">
-      <div class="q">Q2. 画像とか写真もAIに渡せるの？</div>
-      <div class="a">渡せます。最初から対応してます。画像をドラッグ&ドロップ、ファイルパスを渡す、コピー&ペーストの3パターン全部OK。デザインの絵を渡して「これ作って」とよく使います。</div>
+      <div class="q">Q2. 画像とか写真もAIに渡せる？</div>
+      <div class="a">渡せます。最初から対応してます。①ドラッグ&ドロップ ②ファイルパスを渡す ③コピー&ペースト の3パターン全部OK。デザイン画像を渡して「これ作って」とよく使う。</div>
     </div>
     <div class="qa">
       <div class="q">Q3. AI研究そのものにも使ってる？</div>
-      <div class="a">めちゃくちゃ使ってます。Anthropic社内では技術職の<b>約8割が毎日Claude Code使ってる</b>。研究者もエンジニアも両方。</div>
+      <div class="a">めちゃくちゃ使ってます。Anthropic社内では技術職の<b>約8割が毎日Claude Code使ってる</b>。研究者もエンジニアも両方。Jupyter Notebookも編集できる。</div>
     </div>
+  </div>
+
+  <!-- 1週間チェックリスト -->
+  <div class="checklist">
+    <h3>📝 1週間チャレンジ・チェックリスト</h3>
+    <ul>
+      <li>初日：何か質問だけしてみる（コードに触らない）</li>
+      <li>2日目：「先に作戦聞いて」を1回使ってみる</li>
+      <li>3日目：Shift+Tab・#・Esc を1回ずつ使ってみる</li>
+      <li>週末：CLAUDE.md を10行だけ書いてみる</li>
+      <li>来週：ターミナル2つ開いて並列で動かしてみる</li>
+    </ul>
   </div>
 
   <!-- 締め -->
   <div class="footer-msg">
     <div class="heart">🌷</div>
-    <p>難しい話は全部AI側でやっとくから、<br>おけちゃんは「先に作戦聞く」だけ覚えてて☺️</p>
-    <p class="small">それだけで、これまでの「やり直しの時間」がぜんぶ未来の自由時間に変わるよ</p>
+    <p>難しい話は飛ばしてOK。<br>まず「質問だけ」から始めてみて☺️</p>
+    <p class="small">それだけでもう、AIと働くスタートラインに立ててるよ</p>
   </div>
 
   <div class="meta">
