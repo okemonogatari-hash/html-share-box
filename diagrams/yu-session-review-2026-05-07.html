@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ゆぅのトリセツ | HSP・共感の温度で動く人</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --hydrangea-deep: #5C6B9C;
+  --hydrangea-mid:  #7B8AB8;
+  --hydrangea-light:#A8B3D4;
+  --hydrangea-glow: #DCE2F0;
+  --rose-mid: #C99BA7;
+  --rose-light: #EBD2D8;
+  --leaf: #93B79B;
+  --leaf-deep: #6E9A78;
+  --warm-bg: #FBF7F0;
+  --warm-white: #FFFCF7;
+  --text: #2D3142;
+  --text-muted: #6E7592;
+  --text-light: #ADB1C2;
+  --line: rgba(0,0,0,0.07);
+  --shadow-sm: 0 2px 12px rgba(92,107,156,0.08);
+  --shadow-md: 0 8px 30px rgba(92,107,156,0.10);
+  --shadow-lg: 0 16px 48px rgba(92,107,156,0.16);
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text);
+  background: var(--warm-bg);
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    linear-gradient(160deg, rgba(92,107,156,0.85) 0%, rgba(168,179,212,0.65) 45%, rgba(201,155,167,0.78) 100%),
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.4), transparent 60%),
+    linear-gradient(135deg, #5C6B9C 0%, #C99BA7 100%);
+  color: #fff;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 18% 28%, rgba(255,255,255,0.18) 0%, transparent 8%),
+    radial-gradient(circle at 78% 35%, rgba(255,255,255,0.15) 0%, transparent 7%),
+    radial-gradient(circle at 38% 70%, rgba(255,255,255,0.16) 0%, transparent 9%),
+    radial-gradient(circle at 88% 78%, rgba(255,255,255,0.13) 0%, transparent 6%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(to top, var(--warm-bg), transparent);
+}
+.hero-inner { position: relative; z-index: 2; padding: 60px 24px; }
+.hero-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 24px;
+  animation: heroFadeIn 0.8s 0.2s both;
+}
+.hero-name {
+  font-size: clamp(28px, 6vw, 52px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  animation: heroSlideUp 0.9s 0.3s both;
+  letter-spacing: 0.04em;
+}
+.hero-name span { color: #FFE9F0; }
+.hero-tagline {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(15px, 3vw, 20px);
+  font-weight: 400;
+  opacity: 0.92;
+  margin-bottom: 8px;
+  animation: heroSlideUp 0.9s 0.5s both;
+}
+.hero-sub {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 16px;
+  animation: heroFadeIn 0.8s 0.7s both;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  animation: heroFadeIn 0.8s 1s both, bounce 2s 1.5s infinite;
+  opacity: 0.6;
+}
+
+@keyframes heroFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes heroSlideUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+/* ─── SECTIONS ─── */
+section { padding: 80px 0; }
+section:nth-child(even) { background: var(--warm-white); }
+
+.section-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--hydrangea-mid);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-size: clamp(22px, 4vw, 30px);
+  color: var(--hydrangea-deep);
+  margin-bottom: 16px;
+  position: relative;
+  display: inline-block;
+}
+.section-title::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: var(--hydrangea-light);
+  margin-top: 8px;
+  transition: width 0.6s ease 0.2s;
+}
+.fade-in.is-visible .section-title::after { width: 40px; }
+
+.section-lead {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+
+/* ─── ABOUT YOU ─── */
+.what-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.what-text p { margin-bottom: 16px; font-size: 15px; color: var(--text-muted); }
+.what-text p:first-child::first-letter {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 36px;
+  float: left;
+  line-height: 1;
+  margin-right: 8px;
+  color: var(--hydrangea-deep);
+}
+.what-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+.what-card .big-icon { font-size: 44px; color: var(--hydrangea-mid); margin-bottom: 16px; }
+.what-card h3 { font-size: 18px; color: var(--hydrangea-deep); margin-bottom: 8px; }
+.what-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+.what-card .meta {
+  display: flex; flex-direction:column; gap:6px;
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-size: 12px; color: var(--text-light);
+}
+
+/* ─── PERSONA SUMMARY ─── */
+.persona-summary {
+  margin-top: 48px;
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+}
+.persona-summary h3 {
+  font-size: 16px;
+  color: var(--hydrangea-deep);
+  margin-bottom: 18px;
+  text-align: center;
+}
+.persona-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.persona-cell {
+  background: rgba(168,179,212,0.10);
+  border-radius: var(--radius);
+  padding: 18px 14px;
+  text-align: center;
+  border: 1px solid rgba(168,179,212,0.22);
+}
+.persona-cell .em { font-size: 24px; display: block; margin-bottom: 6px; }
+.persona-cell .lbl { font-size: 13px; font-weight: 700; color: var(--text); }
+.persona-cell .sub { font-size: 11px; color: var(--text-light); margin-top: 4px; line-height: 1.6; }
+.persona-note {
+  margin-top: 16px;
+  padding: 14px 18px;
+  background: rgba(147,183,155,0.10);
+  border-left: 3px solid var(--leaf);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.85;
+}
+.persona-note strong { color: var(--leaf-deep); }
+
+/* ─── PHOTO DIVIDER ─── */
+.photo-divider {
+  height: 180px;
+  background: linear-gradient(120deg, #5C6B9C 0%, #A8B3D4 50%, #C99BA7 100%);
+  position: relative;
+  overflow: hidden;
+}
+.photo-divider::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 22% 30%, rgba(255,255,255,0.22), transparent 9%),
+    radial-gradient(circle at 76% 60%, rgba(255,255,255,0.18), transparent 8%),
+    radial-gradient(circle at 46% 80%, rgba(255,255,255,0.15), transparent 7%);
+}
+
+/* ─── ARUARU ─── */
+.aruaru-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.aruaru-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.aruaru-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.aruaru-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--hydrangea-light);
+}
+.aruaru-card .aruaru-emoji { font-size: 28px; margin-bottom: 8px; }
+.aruaru-card h4 { font-size: 15px; color: var(--text); margin-bottom: 4px; }
+.aruaru-card p { font-size: 13px; color: var(--text-muted); }
+
+/* ─── MANUAL ─── */
+.manual-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 28px;
+}
+.manual-box {
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+.manual-box.joy {
+  background: rgba(147,183,155,0.10);
+  border: 1px solid rgba(147,183,155,0.25);
+}
+.manual-box.pain {
+  background: rgba(92,107,156,0.06);
+  border: 1px solid rgba(92,107,156,0.16);
+}
+.manual-box h3 { font-size: 16px; margin-bottom: 16px; }
+.manual-box.joy h3 { color: var(--leaf-deep); }
+.manual-box.pain h3 { color: var(--hydrangea-deep); }
+.manual-box ul { list-style: none; }
+.manual-box li {
+  font-size: 14px;
+  color: var(--text-muted);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  padding-left: 28px;
+  position: relative;
+  line-height: 1.8;
+}
+.manual-box li:last-child { border-bottom: none; }
+.manual-box.joy li::before { content: '\f06d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--leaf); font-size: 12px; top: 12px; }
+.manual-box.pain li::before { content: '\f0e7'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--hydrangea-light); font-size: 12px; top: 12px; }
+
+/* ─── QUOTES ─── */
+.quote-list { display: flex; flex-direction: column; gap: 16px; }
+.quote-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 28px 24px 60px;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s;
+}
+.quote-card:hover { transform: translateX(3px); }
+.quote-card::before {
+  content: '\201C';
+  font-family: 'Noto Serif JP', serif;
+  position: absolute;
+  left: 18px; top: 14px;
+  font-size: 56px;
+  color: var(--hydrangea-light);
+  line-height: 1;
+}
+.quote-card p {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--text);
+  font-weight: 400;
+  margin: 0;
+}
+.quote-card .from {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-light);
+  text-align: right;
+}
+.quote-card.pin {
+  background: linear-gradient(135deg, rgba(168,179,212,0.10), rgba(201,155,167,0.10));
+  border-color: rgba(92,107,156,0.20);
+}
+
+/* ─── STATE MAP ─── */
+.state-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin: 24px 0;
+}
+.state-cell {
+  background: var(--warm-white);
+  border: 2px dashed rgba(92,107,156,0.30);
+  border-radius: var(--radius);
+  padding: 20px 14px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.state-cell:hover { border-style: solid; transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.state-cell .em { font-size: 28px; display: block; margin-bottom: 8px; }
+.state-cell .lbl { font-size: 14px; font-weight: 700; color: var(--text); }
+.state-cell .sub { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+.state-conclusion {
+  background: linear-gradient(135deg, rgba(168,179,212,0.30), rgba(201,155,167,0.22));
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  text-align: center;
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 500;
+  line-height: 2;
+}
+.state-conclusion strong { color: var(--hydrangea-deep); }
+
+/* ─── MOYA ─── */
+.moya-box {
+  background: linear-gradient(135deg, rgba(92,107,156,0.06), rgba(168,179,212,0.10));
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  border: 1px dashed rgba(92,107,156,0.25);
+}
+.moya-box .head {
+  font-size: 14px;
+  color: var(--hydrangea-deep);
+  font-weight: 700;
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+.moya-list { display: flex; flex-direction: column; gap: 10px; }
+.moya-item {
+  background: rgba(255,255,255,0.7);
+  padding: 14px 18px 14px 42px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.85;
+  position: relative;
+}
+.moya-item::before {
+  content: '\2601';
+  position: absolute;
+  left: 14px; top: 12px;
+  font-size: 18px;
+  color: var(--hydrangea-mid);
+  opacity: 0.7;
+}
+.moya-foot {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(92,107,156,0.2);
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.85;
+}
+.moya-foot strong { color: var(--hydrangea-deep); }
+
+/* ─── STEPS ─── */
+.step-list { display: flex; flex-direction: column; gap: 14px; }
+.step-item {
+  display: flex;
+  gap: 18px;
+  padding: 22px 24px;
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: transform 0.3s, box-shadow 0.3s;
+  align-items: flex-start;
+}
+.step-item:hover { transform: translateX(4px); box-shadow: var(--shadow-sm); }
+.step-num {
+  flex-shrink: 0;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--hydrangea-mid), var(--rose-mid));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+.step-text h4 {
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 4px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 700;
+}
+.step-text p { font-size: 13px; color: var(--text-muted); line-height: 1.8; }
+
+/* ─── MESSAGE ─── */
+.message-box {
+  background: linear-gradient(135deg, var(--hydrangea-deep), var(--rose-mid));
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  color: #fff;
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.message-box::before {
+  content: '\1F33F';
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--warm-bg);
+  padding: 0 14px;
+  font-size: 28px;
+}
+.message-box h3 { font-size: 20px; margin-bottom: 20px; color: var(--hydrangea-glow); }
+.message-box p { font-size: 15px; line-height: 2.15; opacity: 0.95; }
+.message-box .sign { margin-top: 24px; font-size: 13px; opacity: 0.75; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--hydrangea-deep);
+  color: rgba(255,255,255,0.65);
+  text-align: center;
+  padding: 40px 24px;
+  font-size: 13px;
+}
+footer .brand {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+/* ─── ANIMATIONS ─── */
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-in.is-visible { opacity: 1; transform: translateY(0); }
+.stagger > * { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.stagger.is-visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(2) { transition-delay: 0.12s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(3) { transition-delay: 0.19s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(4) { transition-delay: 0.26s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(5) { transition-delay: 0.33s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(7) { transition-delay: 0.47s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(8) { transition-delay: 0.54s; opacity: 1; transform: none; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .what-grid, .manual-two, .aruaru-grid { grid-template-columns: 1fr; }
+  .photo-divider { height: 130px; }
+  section { padding: 60px 0; }
+  .message-box { padding: 32px 24px; }
+  .quote-card { padding: 22px 20px 22px 50px; font-size: 14px; }
+  .quote-card::before { font-size: 44px; left: 14px; top: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">SESSION REVIEW · 2026.05.07</div>
+    <h1 class="hero-name"><span>ゆぅ</span>のトリセツ</h1>
+    <p class="hero-tagline">気が合う人と笑い合いたい、共感の温度で動く繊細さん。</p>
+    <p class="hero-sub">1時間40分のセッションを、お持ち帰りの取扱説明書に</p>
+  </div>
+  <div class="hero-scroll"><i class="fas fa-chevron-down"></i></div>
+</section>
+
+<!-- ═══ ABOUT YOU ═══ -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">ABOUT YOU</div>
+      <h2 class="section-title">ゆぅさんって、どんな人？</h2>
+      <p class="section-lead">セッション中の言葉と、CQ診断（個性発見テスト）の結果から見えてきた、ゆぅさんの輪郭です。</p>
+    </div>
+
+    <div class="what-grid fade-in">
+      <div class="what-text">
+        <p>ゆぅさんは、<strong>人の気持ちにふっと気づける、共感の温度がとても高い人</strong>です。CQ診断では「感情表現」と「共感性」が両方高めに出るタイプ＝シンパシータイプ。一般に「繊細さん／HSP」と呼ばれる人と、感性の作りがよく似ています。</p>
+
+        <p>「自分は不器用で、ひっそりマイペース」と何度も言いますが、それは<strong>欠点ではなく、感性が深く繊細にできているサイン</strong>。雑にできない・適当にできない・相手の気持ちを置いていけない——その丁寧さが、ゆぅさんの一番の素材です。</p>
+
+        <p>セッション後半で「ジャッジしてたかも」「面白そうって感情、忘れてたかも」と言葉にしてくれた瞬間、すでにゆぅさん自身が一番大事な扉を開けています。</p>
+      </div>
+      <div class="what-card">
+        <div class="big-icon"><i class="fas fa-leaf"></i></div>
+        <h3>ゆぅさん / Yuu</h3>
+        <p style="font-size:13px;color:var(--text-muted);">広島県・主婦・第2子妊娠中</p>
+        <div class="meta">
+          <span>🌷 リベシティ歴：2年4ヶ月（2024/1〜・イルカ会員）</span>
+          <span>💬 直近：繊細さんチャット聞き専／#2週間チャレンジ参加中</span>
+          <span>🎬 好きなもの：ジブリ（魔女の宅急便）・Disney・甘いもの・洋楽</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="persona-summary fade-in">
+      <h3>CQ診断（個性発見テスト）でとくに高かったところ</h3>
+      <div class="persona-grid">
+        <div class="persona-cell">
+          <span class="em">💗</span>
+          <div class="lbl">共感性</div>
+          <div class="sub">相手の気持ちを<br>そのまま感じ取れる</div>
+        </div>
+        <div class="persona-cell">
+          <span class="em">🎭</span>
+          <div class="lbl">感情表現</div>
+          <div class="sub">気持ちが豊か。<br>機嫌に合わせて動く</div>
+        </div>
+        <div class="persona-cell">
+          <span class="em">🌷</span>
+          <div class="lbl">尊重</div>
+          <div class="sub">相手の意見を<br>自然に受け入れる</div>
+        </div>
+        <div class="persona-cell">
+          <span class="em">🌙</span>
+          <div class="lbl">控えめさ</div>
+          <div class="sub">主導権は取らず、<br>共感で繋がるタイプ</div>
+        </div>
+      </div>
+      <div class="persona-note">
+        この組み合わせは、<strong>「シンパシータイプ＝共感の温度で動く人」</strong>。<br>
+        強みは「人の気持ちに気づける／相手にとっての正解を返したくなる／空気を察する」。<br>
+        逆にエネルギーを消耗しやすいのは「人の感情を背負いすぎる／自分を出せず溜め込む／合わない場で頑張りすぎる」場面。<br>
+        だから<strong>「気の合う人を選ぶ自由」</strong>が、ゆぅさんには大事なお守りになります。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PHOTO DIVIDER ═══ -->
+<div class="photo-divider"></div>
+
+<!-- ═══ ARUARU ═══ -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">YUU ARUARU</div>
+      <h2 class="section-title">ゆぅさんあるある</h2>
+      <p class="section-lead">セッション中に「あ〜それ私や」って何度も言ってたパターン。これ、繊細さん＋共感タイプの典型仕様です。</p>
+    </div>
+
+    <div class="aruaru-grid stagger">
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">😊</div>
+        <h4>機嫌で世界の色が変わる</h4>
+        <p>機嫌がいい日はめちゃ動ける、落ちる日は何もできない。「振り回されてる感じ」と言ってたあれ。感情のラリーが豊かな人ほど、振れ幅も大きく出ます。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">🫧</div>
+        <h4>「相手の正解」を返したくなる</h4>
+        <p>聞かれた瞬間、「この人はどう答えてほしいかな」が先に浮かぶ。気遣いの才能。ただし、自分の気持ちが置き去りになりやすい注意ポイントでもある。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">🪞</div>
+        <h4>夫の機嫌を察知して、言葉を飲み込む</h4>
+        <p>「自分の気持ちを言おうとすると、ゴニャゴニャになっちゃう」。これは雰囲気を読みすぎて、自分の輪郭がぼやけている状態。共感タイプの代表的なクセ。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">🌀</div>
+        <h4>うまくいかないと、ゼロからやり直しがち</h4>
+        <p>「これ今3度目やってて、何やってるんだろう」と笑ってたところ。完璧にできない自分が許せなくて、途中をリセットしてしまう。実はこれ「諦め」じゃなくて「やり直す力」の現れ。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">🍙</div>
+        <h4>嫌なことの壁を一気に越えられない</h4>
+        <p>FP3級の文字が頭に入らず投げ出してしまった話。これは根性のなさじゃなく、繊細さんが「自分を守るブレーキ」を素直に踏める証拠。雑に進めない人の特性。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">👯‍♀️</div>
+        <h4>「同じ気持ちの人」がいると一気に動ける</h4>
+        <p>「共感できる仲間がいたら頑張れる」「ご主人と一緒なら登れる気がする」。一人より二人、二人より気が合う仲間。共感の温度で動くエンジンの正体です。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">🌬</div>
+        <h4>一人は好き、でも一人になるのは怖い</h4>
+        <p>セッションで一番ハッとした本音。マイペースに過ごしたい気持ちと、繋がっていたい気持ち。両方あって自然。両方守っていい矛盾です。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-emoji">🎬</div>
+        <h4>世界観に深く入り込める</h4>
+        <p>魔女の宅急便、洋楽、家族や子どもとの空気。ゆぅさんは「世界に深く入り込んで味わう力」が高い人。これは創作・発信・人を癒す仕事の素材になる感性です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PHOTO DIVIDER ═══ -->
+<div class="photo-divider"></div>
+
+<!-- ═══ MANUAL ─── -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">YOUR MANUAL</div>
+      <h2 class="section-title">ゆぅさんの取扱説明書</h2>
+      <p class="section-lead">エンジンが気持ちよく動く環境と、消耗してしまう環境。両方を知っておくと、「あ、いまこの状態だな」と扱いやすくなります。</p>
+    </div>
+
+    <div class="manual-two fade-in">
+      <div class="manual-box joy">
+        <h3><i class="fas fa-sun"></i> こうするとゆぅが満たされる</h3>
+        <ul>
+          <li>気が合う人・共感できる人と、ゆるく一緒にいる時間。実家のお母さん・お姉さんと美味しいもの食べる時間、子どもと部屋で遊ぶ時間。「気を使わず楽に話せる」の温度。</li>
+          <li>「面白そう」を、深く掘らずに小さく試す。スマホ置いて街歩き、行きたかったカフェ、知らない道、ジブリの世界みたいな景色を探しに行く。</li>
+          <li>夫と「いいねいいね」を共有できる瞬間。母の日に花束をくれたあの感動みたいに、楽しいを分かち合える時間が栄養。</li>
+          <li>「できた／できない」じゃなく、「面白かった／心地よかった」で振り返る。共感タイプはジャッジで動かず、感覚で動くと一番進めます。</li>
+          <li>聞き専でもいい場・小さい人数の集まり。広島オフィスの管理人さんがいる時間に、ふらっと顔を出す程度。</li>
+        </ul>
+      </div>
+      <div class="manual-box pain">
+        <h3><i class="fas fa-cloud-rain"></i> こうなるとゆぅが苦しむ</h3>
+        <ul>
+          <li>合わない場・気を使う場で、ずっと笑顔を作っている時。共感力が高いほど消耗が早い。早めに離脱して大丈夫。</li>
+          <li>「これができない自分はダメ」とジャッジが始まった瞬間。ジャッジが乗っかった瞬間に、エンジンが切れます。</li>
+          <li>「みんなはできてるのに、自分は…」の比較。SNSや他人のすごい話を見続けていると、共感タイプは丸ごと吸い込まれてしまう。</li>
+          <li>夫の機嫌を察して、自分の気持ちをまるっと飲み込む時間。短期的にはスムーズでも、後で必ずモヤッと残る。</li>
+          <li>大きな目標を立てて、毎日できなかった自分を責めるルーティン。共感タイプは「日々の小さな心地よさ」を積む方が続きます。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUOTES ═══ -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">YOUR VOICE</div>
+      <h2 class="section-title">あなたが言ってた、大事な言葉</h2>
+      <p class="section-lead">セッション中、ふっと出てきた本音の言葉たち。あとで読み返したい一節を残しておきます。</p>
+    </div>
+
+    <div class="quote-list fade-in">
+      <div class="quote-card pin">
+        <p>ジャッジしてたんかな、決めつけてるかもしれない。</p>
+        <div class="from">— セッション中に、自分でハッと気づいた瞬間</div>
+      </div>
+      <div class="quote-card pin">
+        <p>面白そうという、そういう感情みたいなの、ちょっと忘れてたかもしれない。</p>
+        <div class="from">— 一番の自己発見ポイント</div>
+      </div>
+      <div class="quote-card">
+        <p>結構、自分の中で制限してたかもしれないです、勝手に。</p>
+        <div class="from">— 自己理解が深まった一言</div>
+      </div>
+      <div class="quote-card">
+        <p>一人は好きだけど、一人になるのは怖い。笑うのも怖い、っていう気持ちもあるのかもしれません。</p>
+        <div class="from">— ぐっと素が出た本音</div>
+      </div>
+      <div class="quote-card">
+        <p>共感してほしいのかな。同じ気持ちの人がいたりとか、共感できる仲間を見つけたい。</p>
+        <div class="from">— ゆぅさんが本当にほしいもの</div>
+      </div>
+      <div class="quote-card">
+        <p>夫と一緒に、いいねいいねって、小金持ち山に登りたい。</p>
+        <div class="from">— 言葉にできた理想の景色</div>
+      </div>
+      <div class="quote-card pin">
+        <p>1ヶ月後、自分のやりたいことが、ふっと5つくらい言えたらいいな。</p>
+        <div class="from">— 自分で決めた、次のゴール</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATE MAP ═══ -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">WHERE YOU ARE</div>
+      <h2 class="section-title">いまの「振り出しに戻る感じ」も、過渡期として正解</h2>
+      <p class="section-lead">FP3級・洋楽YouTube・2週間チャレンジ・繊細さんチャット・このセッション。ゆぅさんは止まってるんじゃなくて、自分に合うものを丁寧に試している最中です。</p>
+    </div>
+
+    <div class="state-grid fade-in">
+      <div class="state-cell">
+        <span class="em">📚</span>
+        <div class="lbl">FP3級</div>
+        <div class="sub">将来のために<br>挑戦してみた</div>
+      </div>
+      <div class="state-cell">
+        <span class="em">🎵</span>
+        <div class="lbl">洋楽ブログ</div>
+        <div class="sub">好きなことから<br>形にしてみた</div>
+      </div>
+      <div class="state-cell">
+        <span class="em">🌱</span>
+        <div class="lbl">2週チャレンジ</div>
+        <div class="sub">仲間と一緒に<br>続ける感覚</div>
+      </div>
+      <div class="state-cell">
+        <span class="em">🤍</span>
+        <div class="lbl">繊細さんチャット</div>
+        <div class="sub">聞き専でも<br>いられる場所</div>
+      </div>
+      <div class="state-cell">
+        <span class="em">🌷</span>
+        <div class="lbl">このセッション</div>
+        <div class="sub">プロに頼ってみる<br>大きな一歩</div>
+      </div>
+      <div class="state-cell">
+        <span class="em">🪴</span>
+        <div class="lbl">妊娠中の今</div>
+        <div class="sub">育む時間。<br>無理しない時期</div>
+      </div>
+    </div>
+
+    <div class="state-conclusion fade-in">
+      ぜんぶ「自分に合うもの探し」のための、丁寧な実験。<br>
+      <strong>「振り出しに戻ってる」んじゃなくて、「自分の感覚で選び直してる」</strong>。<br>
+      しかも妊娠中という、いちばん繊細な時期に。<br>
+      動けないんじゃなくて、ちゃんと立ち止まれる人だから、ここまで来てる。
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MOYA ═══ -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">SOFT CLOUDS</div>
+      <h2 class="section-title">もやもやも、置いておいていい</h2>
+      <p class="section-lead">セッションで出てきた「不安・ブロック」たち。消そうとしなくて大丈夫。気づいておくだけで、振り回されにくくなります。</p>
+    </div>
+
+    <div class="moya-box fade-in">
+      <div class="head">☁ 今、こういう気持ちが浮かんでる</div>
+      <div class="moya-list">
+        <div class="moya-item">過去にできなかった自分が、フラッシュバックみたいにふと出てくる。</div>
+        <div class="moya-item">「やりたい」って気持ちはあるのに、「自分にはできなさそう」が先に立ってしまう。</div>
+        <div class="moya-item">夫に気持ちを話そうとすると、空回りして結局言えない。</div>
+        <div class="moya-item">嫌なことを乗り越えられない自分が、「根性がない」「腐ってる」って感じる。</div>
+        <div class="moya-item">繊細さんの話を聞いて、「自分は他者貢献できてる人とは違うのかも」って思ってしまう。</div>
+        <div class="moya-item">芯がグラグラしてて、自分の本当の気持ちが嘘か本物か分からない。</div>
+      </div>
+      <div class="moya-foot">
+        <strong>これは「治すもの」じゃなくて「気づいておくもの」。</strong><br>
+        浮かんできたら「あ、また来たな〜」って眺めるだけでOK。<br>
+        雲は流れていくし、流れていかなくてもそこにあっていい🌥<br>
+        ジャッジを乗せないだけで、雲は半分の重さになります。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STEPS ═══ -->
+<section>
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">TINY STEPS</div>
+      <h2 class="section-title">気が向いたら、踏める小さな一歩</h2>
+      <p class="section-lead">全部やる必要なし。「これならできるかも」を1個だけ選んでみて。<strong>ゆぅさんは、踏めば次が見えてくる人。</strong>1ヶ月後にやってみた感想を、また聞かせて🌷</p>
+    </div>
+
+    <div class="step-list fade-in">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-text">
+          <h4>「面白そう」を、3分の散歩から</h4>
+          <p>スマホを置いて、近所を3分だけ歩く。気になったお店に入ってみる、知らない道を曲がってみる。「面白そう」の感度を取り戻す、いちばん小さな練習。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-text">
+          <h4>「できた／できなかった」を「面白かった／心地よかった」に置き換える</h4>
+          <p>1日1個でいい、寝る前に「今日心地よかったこと」を1つ思い出す。共感タイプは感覚で記録した方が、自分の好きが見えてきます。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-text">
+          <h4>気の合う場所に、聞き専でフラッと寄る</h4>
+          <p>広島オフィスの管理人さんがいる時間帯に、お茶飲みに行くだけ。雑談ゼロでもOK。共感の温度で動く人は、「同じ温度の場」に居るだけで充電されます。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-text">
+          <h4>夫に「これ、いいねって言ってほしい」を1つだけ伝える</h4>
+          <p>気持ちを丸ごとぶつける必要なし。「これ嬉しかったから、いいねって言ってほしいな」だけでOK。ご主人にも、共感の通り道がはっきり見えます。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">05</div>
+        <div class="step-text">
+          <h4>「ジャッジしてたかも」と気づいたら、深呼吸して保留する</h4>
+          <p>消そうとしなくていい。「あ、またジャッジが来た」って眺めるだけ。共感タイプはジャッジを外した瞬間、自分の感覚が動き出します。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">06</div>
+        <div class="step-text">
+          <h4>洋楽ブログは「やりたかったらやる」感覚で再開してOK</h4>
+          <p>止まってる罪悪感は要らない。「あの曲やっぱり好き」って思った日に1行書く、それだけで再起動。何に面白さを感じ、何にしんどさを感じるかを、丁寧に切り分けていく。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">07</div>
+        <div class="step-text">
+          <h4>1ヶ月後のフォローセッションで、5つ言えるかやってみる</h4>
+          <p>ゆぅさん自身が決めたゴール。できなくても全然OK、「2つしか出てこなかった」も大事な情報。やってみた感想を、また一緒に整理しましょう。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MESSAGE ═══ -->
+<section style="background:var(--warm-bg);">
+  <div class="container">
+    <div class="message-box fade-in">
+      <h3>ゆぅさんへ</h3>
+      <p>
+        妊娠中という、いちばん繊細な時期に、<br>
+        「自分のことを、ちゃんと知りたい」って動いてくれてありがとうございました。<br><br>
+        ゆぅさんは、不器用じゃないです。<br>
+        雑にできない、適当にできない、相手の気持ちを置き去りにできない——<br>
+        <strong>それは、丁寧に深く受け取れる人にしか持てない素材</strong>です。<br><br>
+        「振り出しに戻る」を3度繰り返したのは、諦め癖じゃなくて、<br>
+        <strong>毎回ちゃんと「これは違うかも」と感じ取れた感性の証拠</strong>。<br>
+        ジャッジを少し外して、「面白そう」を思い出すだけで、<br>
+        その感性は、ぜんぶ味方に変わります。<br><br>
+        夫さんと、いいねいいねで小金持ち山に登る景色。<br>
+        自分の好きを、共感できる誰かにつなげる景色。<br>
+        ぜんぶ、ゆぅさんの中に、もう用意されています。<br><br>
+        できる／できないじゃなく、<br>
+        <strong>「面白そう」と「心地よかった」を毎日1個ずつ集めていく</strong>。<br>
+        それだけで、未来は勝手に近づいてきます。<br><br>
+        1ヶ月後、また会いましょ🌷
+      </p>
+      <div class="sign">— 2026年5月、おけもんより</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="brand">寄り添い型 個性診断師　おけもん</div>
+  <div>2026.05.07 ／ ゆぅさん振り返りシート</div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(
+  (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add('is-visible')),
+  { threshold: 0.15 }
+);
+document.querySelectorAll('.fade-in, .stagger').forEach((el) => observer.observe(el));
+</script>
+</body>
+</html>
