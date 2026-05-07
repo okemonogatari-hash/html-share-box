@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>おけもん流 MCP×API 課題ドリブン設計図 — 2026.05.07</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --bg: #FAF7F2;
+    --paper: #FFFFFF;
+    --ink: #1A202C;
+    --ink-soft: #4A5568;
+    --muted: #718096;
+    --accent: #ED8936;
+    --accent-deep: #C05621;
+    --teal: #319795;
+    --indigo: #4C51BF;
+    --rose: #D53F8C;
+    --line: #E2E8F0;
+    --paper-warm: #FFF8EE;
+    --shadow: 0 12px 30px rgba(26, 32, 44, 0.08);
+    --shadow-strong: 0 20px 50px rgba(26, 32, 44, 0.14);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    padding: 24px 16px 80px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #1A202C 0%, #2D3748 60%, #C05621 140%);
+    color: #fff;
+    padding: 56px 40px 48px;
+    border-radius: 24px;
+    box-shadow: var(--shadow-strong);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -120px; right: -100px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(237, 137, 54, 0.35), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(237, 137, 54, 0.18);
+    border: 1px solid rgba(237, 137, 54, 0.5);
+    color: #FBD38D;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(28px, 4.4vw, 42px);
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 18px;
+    color: #fff;
+  }
+  .hero h1 .accent { color: #FBD38D; }
+  .hero .lead {
+    font-size: 16px;
+    line-height: 1.85;
+    color: #E2E8F0;
+    max-width: 700px;
+  }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    font-size: 12px;
+    color: #CBD5E0;
+  }
+  .hero-meta span i { color: #FBD38D; margin-right: 6px; }
+
+  /* ===== CORE BELIEF ===== */
+  .core-belief {
+    background: var(--paper-warm);
+    border: 2px dashed var(--accent);
+    border-radius: 20px;
+    padding: 32px 32px 28px;
+    margin-bottom: 36px;
+    text-align: center;
+    position: relative;
+  }
+  .core-belief .label {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: #fff;
+    padding: 4px 18px;
+    border-radius: 999px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  }
+  .core-belief blockquote {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(18px, 2.4vw, 24px);
+    font-weight: 700;
+    line-height: 1.7;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .core-belief blockquote .hl {
+    background: linear-gradient(transparent 70%, rgba(237, 137, 54, 0.4) 70%);
+    padding: 0 4px;
+  }
+  .core-belief .sub {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-head {
+    display: flex; align-items: baseline; gap: 12px;
+    margin: 48px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .section-head .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px; font-weight: 500;
+    color: var(--accent);
+  }
+  .section-head h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(20px, 2.8vw, 26px);
+    font-weight: 700;
+  }
+  .section-head .en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.18em;
+    margin-left: auto;
+  }
+
+  /* ===== SCENE CARDS ===== */
+  .scenes { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  .scene {
+    background: var(--paper);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .scene-head {
+    display: flex; align-items: center; gap: 16px;
+    padding: 22px 26px;
+    border-bottom: 1px solid var(--line);
+  }
+  .scene-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    display: grid; place-items: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+  .scene-icon.s1 { background: rgba(49, 151, 149, 0.12); color: var(--teal); }
+  .scene-icon.s2 { background: rgba(237, 137, 54, 0.14); color: var(--accent-deep); }
+  .scene-icon.s3 { background: rgba(76, 81, 191, 0.12); color: var(--indigo); }
+  .scene-icon.s4 { background: rgba(213, 63, 140, 0.12); color: var(--rose); }
+  .scene-text h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .scene-text .scene-sub {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  .scene-body { padding: 24px 26px 26px; }
+  .tools {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .tool {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: #FCFCFA;
+    position: relative;
+  }
+  .tool .tool-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .tool .tool-name .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+  }
+  .badge.mcp { background: #319795; color: #fff; }
+  .badge.api { background: #ED8936; color: #fff; }
+  .badge.connector { background: #4C51BF; color: #fff; }
+  .badge.special { background: #4A5568; color: #fff; }
+  .tool .tool-use {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .scene-real {
+    background: var(--paper-warm);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+  }
+  .scene-real .real-label {
+    font-weight: 700;
+    color: var(--accent-deep);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* ===== PRINCIPLES ===== */
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .principle {
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 24px 22px;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .principle .p-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.18em;
+    margin-bottom: 8px;
+  }
+  .principle h4 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .principle p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+  }
+  .principle .icon {
+    position: absolute; top: 22px; right: 22px;
+    font-size: 22px;
+    color: var(--accent);
+    opacity: 0.3;
+  }
+
+  /* ===== Q&A ===== */
+  .qa {
+    background: linear-gradient(135deg, #1A202C 0%, #2D3748 100%);
+    color: #fff;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: var(--shadow-strong);
+  }
+  .qa-q {
+    background: rgba(237, 137, 54, 0.15);
+    border-left: 4px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 18px;
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .qa-q .who {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #FBD38D;
+    margin-bottom: 6px;
+    letter-spacing: 0.1em;
+  }
+  .qa-a {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #E2E8F0;
+  }
+  .qa-a .key {
+    color: #FBD38D;
+    font-weight: 700;
+    background: rgba(237, 137, 54, 0.1);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.85;
+  }
+  footer a { color: var(--accent-deep); text-decoration: none; word-break: break-all; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { opacity: 0; }
+  .fade-in.is-visible { animation: fadeUp 0.7s ease both; }
+  .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.18s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.31s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.44s; }
+
+  /* ===== LEGEND ===== */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    margin: 8px 0 24px;
+    padding: 12px 16px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+
+  @media (max-width: 720px) {
+    .hero { padding: 40px 24px 36px; }
+    .scene-head { padding: 18px 20px; }
+    .scene-body { padding: 18px 20px 22px; }
+    .qa { padding: 24px 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <span class="hero-tag"><i class="fa-solid fa-bolt"></i> 一枚物 / オフ会フォロー資料</span>
+    <h1>「課題ドリブン」で繋ぐ。<br>おけもん流 <span class="accent">MCP × API</span> 実務マップ</h1>
+    <p class="lead">
+      2026年5月7日21時のリベシティ Claude Code相談会で<br>
+      「ポケモンはどんなコネクタ・MCP・APIを使ってるの？」って聞かれたから、<br>
+      <strong style="color:#FBD38D;">普段の実務シーンごと</strong>に並べてみたよ。<br>
+      飾り棚じゃなくて、毎日触ってるやつだけ。
+    </p>
+    <div class="hero-meta">
+      <span><i class="fa-regular fa-calendar"></i> 2026.05.07</span>
+      <span><i class="fa-solid fa-circle-user"></i> おけもんカンパニー</span>
+      <span><i class="fa-solid fa-link"></i> 個人事業主 × AI × 非エンジニア</span>
+    </div>
+  </header>
+
+  <!-- ===== CORE BELIEF ===== -->
+  <section class="core-belief fade-in">
+    <span class="label">CORE BELIEF</span>
+    <blockquote>
+      「<span class="hl">何を繋ぐか</span>」より、<br>
+      「<span class="hl">今、解決したい課題に繋げられるか</span>」。
+    </blockquote>
+    <p class="sub">→ 流行ってるから入れる、有名だから入れる、はやらない。<br>
+    「いま、自分の手元に困ってる業務がある」→「それを楽にできるツールを後から探す」だけ。</p>
+  </section>
+
+  <!-- ===== SECTION 1: 4 SCENES ===== -->
+  <div class="section-head">
+    <span class="num">01</span>
+    <h2>4つの実務シーン × 使ってるツール</h2>
+    <span class="en">DAILY USE CASES</span>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="badge mcp" style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.08em;">MCP</span> ローカル設定（claude.json）</span>
+    <span class="legend-item"><span class="badge connector" style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.08em;">CONN</span> 公式コネクタ（GUIでオン）</span>
+    <span class="legend-item"><span class="badge api" style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.08em;">API</span> 直接利用（環境変数）</span>
+    <span class="legend-item"><span class="badge special" style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.08em;">EXT</span> Chrome拡張系</span>
+  </div>
+
+  <div class="scenes stagger">
+
+    <!-- SCENE 1 -->
+    <article class="scene fade-in">
+      <div class="scene-head">
+        <div class="scene-icon s1"><i class="fa-solid fa-microphone-lines"></i></div>
+        <div class="scene-text">
+          <h3>① 議事録・文字起こしを残したい</h3>
+          <div class="scene-sub">SCENE 01 — RECORDING & TRANSCRIPTS</div>
+        </div>
+      </div>
+      <div class="scene-body">
+        <div class="tools">
+          <div class="tool">
+            <div class="tool-name"><span class="badge mcp">MCP</span> Circleback</div>
+            <div class="tool-use">オフ会・MTGの自動議事録。Zoom録音→文字起こしを Vault に原液保存。今日の21時もこれで。</div>
+          </div>
+          <div class="tool">
+            <div class="tool-name"><span class="badge api">API</span> YouTube Transcript</div>
+            <div class="tool-use">YouTube動画の文字起こしを取得。学長ライブ・他人セミナーを自分用ノウハウに転換する起点。</div>
+          </div>
+          <div class="tool">
+            <div class="tool-name"><span class="badge api">API</span> Groq（要約担当）</div>
+            <div class="tool-use">取れた文字起こしは自分で読まずにGroqへ。llama-3.3-70bで爆速要約→活用事例リスト化。</div>
+          </div>
+        </div>
+        <div class="scene-real">
+          <span class="real-label">REAL VOICE — 普段の流れ</span>
+          オフ会終わり → Circleback処理待ち2-3時間 → Transcript取得 → Vaultの「コンテキスト/トランスクリプト原液/」へ保存 → Groqで要約 → 担当フォルダに格納。<strong>「自分の声以外も自動で残る」</strong>のが一番の安心ポイント。
+        </div>
+      </div>
+    </article>
+
+    <!-- SCENE 2 -->
+    <article class="scene fade-in">
+      <div class="scene-head">
+        <div class="scene-icon s2"><i class="fa-brands fa-google"></i></div>
+        <div class="scene-text">
+          <h3>② Google系で情報を取りたい・動かしたい</h3>
+          <div class="scene-sub">SCENE 02 — GOOGLE WORKSPACE & YOUTUBE</div>
+        </div>
+      </div>
+      <div class="scene-body">
+        <div class="tools">
+          <div class="tool">
+            <div class="tool-name"><span class="badge connector">CONN</span> Gmail</div>
+            <div class="tool-use">受信検索・整理。クライアント連絡・税理士・弁護士まわりは公式コネクタで安定。</div>
+          </div>
+          <div class="tool">
+            <div class="tool-name"><span class="badge connector">CONN</span> Google Calendar</div>
+            <div class="tool-use">予定参照・自動登録。面談・債権者集会・旅行も全部ここ経由。</div>
+          </div>
+          <div class="tool">
+            <div class="tool-name"><span class="badge connector">CONN → </span><span class="badge api">API</span> Google Drive</div>
+            <div class="tool-use">公式コネクタはエラー多め。最近は<strong>直接Drive APIを叩く</strong>方向に切替。</div>
+          </div>
+          <div class="tool">
+            <div class="tool-name"><span class="badge api">API</span> YouTube Data</div>
+            <div class="tool-use">動画リサーチ・チャンネル分析の最近のメイン。学長ライブまわりで毎日触ってる。</div>
+          </div>
+        </div>
+        <div class="scene-real">
+          <span class="real-label">REAL VOICE — 公式コネクタ→直APIへ移行した話</span>
+          公式コネクタで「Drive全部操作できます！」って書いてあるけど、実際は<strong>結構エラー出る</strong>。試して限界を感じたら、用途別に直接APIを叩く構成に変える。これは「コネクタが悪い」んじゃなくて、自分の用途が公式想定を超えただけ。
+        </div>
+      </div>
+    </article>
+
+    <!-- SCENE 3 -->
+    <article class="scene fade-in">
+      <div class="scene-head">
+        <div class="scene-icon s3"><i class="fa-regular fa-comments"></i></div>
+        <div class="scene-text">
+          <h3>③ 業務チャットを自動で動かしたい</h3>
+          <div class="scene-sub">SCENE 03 — BUSINESS CHAT AUTOMATION</div>
+        </div>
+      </div>
+      <div class="scene-body">
+        <div class="tools">
+          <div class="tool">
+            <div class="tool-name"><span class="badge mcp">MCP</span> Chatwork</div>
+            <div class="tool-use">業務委託先のPMチャットへの日次自動投稿（朝礼ダッシュボード等）。会話操作も可能。</div>
+          </div>
+          <div class="tool">
+            <div class="tool-name"><span class="badge api">API</span> Chatwork（Webhook）</div>
+            <div class="tool-use">GitHub Actions cron 16:00 から直接POST。Pythonスクリプト化済。</div>
+          </div>
+          <div class="tool">
+            <div class="tool-name"><span class="badge connector">CONN</span> Slack</div>
+            <div class="tool-use">リベシティ外で使うことあり。最近は出番少なめ。「使うときだけ触る」が原則。</div>
+          </div>
+        </div>
+        <div class="scene-real">
+          <span class="real-label">REAL VOICE — ジワジワ効くやつ</span>
+          Chatwork APIは<strong>普段使いの実務にいちばん効いてる</strong>。毎日同じ報告作業をAIに任せられる感動が大きい。「報告書きたくない病」のADHD当事者にとって、これがあるだけで業務が回る。
+        </div>
+      </div>
+    </article>
+
+    <!-- SCENE 4 -->
+    <article class="scene fade-in">
+      <div class="scene-head">
+        <div class="scene-icon s4"><i class="fa-solid fa-brain"></i></div>
+        <div class="scene-text">
+          <h3>④ 大量データを要約したい・自分で読みたくない</h3>
+          <div class="scene-sub">SCENE 04 — LARGE DATA SUMMARIZATION</div>
+        </div>
+      </div>
+      <div class="scene-body">
+        <div class="tools">
+          <div class="tool">
+            <div class="tool-name"><span class="badge api">API</span> Groq（llama-3.3-70b）</div>
+            <div class="tool-use">巨大なJSON・トランスクリプト・Notionデータを丸ごと投げて要約。速度爆速・無料枠で十分回る。</div>
+          </div>
+          <div class="tool">
+            <div class="tool-name"><span class="badge mcp">MCP</span> Notion（個人 / 業務委託先）</div>
+            <div class="tool-use">2系統運用。<strong>絶対混ぜない</strong>。業務委託先専用MCPと個人用MCPはガードレール明記。</div>
+          </div>
+          <div class="tool">
+            <div class="tool-name"><span class="badge mcp">MCP</span> Apple Notes</div>
+            <div class="tool-use">Mac標準メモを自動取り込み・整理。手書き入力のモバイル走り書きをVault連携に。</div>
+          </div>
+          <div class="tool">
+            <div class="tool-name"><span class="badge mcp">MCP</span> fal.ai</div>
+            <div class="tool-use">画像・動画生成系の試作。用途を絞って使ってる。</div>
+          </div>
+        </div>
+        <div class="scene-real">
+          <span class="real-label">REAL VOICE — Groqルール</span>
+          「大量データはClaude本体に読ませない、Groqに投げる」が鉄則。トークン節約＋速度＋コスト全部解決。<strong>「自分で読まない、AIに読ませる」</strong>を徹底したら、扱える情報量が10倍になった。
+        </div>
+      </div>
+    </article>
+
+    <!-- SCENE 5 (Bonus): Browser -->
+    <article class="scene fade-in">
+      <div class="scene-head">
+        <div class="scene-icon s1" style="background:rgba(74,85,104,0.12);color:#4A5568;"><i class="fa-brands fa-chrome"></i></div>
+        <div class="scene-text">
+          <h3>⑤ ブラウザを直接操作したい（おまけ）</h3>
+          <div class="scene-sub">BONUS — BROWSER AUTOMATION</div>
+        </div>
+      </div>
+      <div class="scene-body">
+        <div class="tools">
+          <div class="tool">
+            <div class="tool-name"><span class="badge special">EXT</span> claude-in-chrome</div>
+            <div class="tool-use">本人ログイン中の<strong>実Chrome</strong>を直接操作できる公式拡張。リベシティ画面・GitHub Actions・スプシCSV取得まで。</div>
+          </div>
+        </div>
+        <div class="scene-real">
+          <span class="real-label">REAL VOICE — トークン消費の桁が違う</span>
+          以前 Playwright MCP を試したらトークン爆食い＋暴走前科あり。実Chrome経由だと<strong>ログイン作業ゼロ・桁違いに省トークン</strong>。デフォルトで使ってる。
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- ===== SECTION 2: PRINCIPLES ===== -->
+  <div class="section-head">
+    <span class="num">02</span>
+    <h2>選び方の3原則</h2>
+    <span class="en">DESIGN PRINCIPLES</span>
+  </div>
+
+  <div class="principles stagger">
+    <div class="principle fade-in">
+      <i class="fa-solid fa-clock-rotate-left icon"></i>
+      <div class="p-num">PRINCIPLE 01</div>
+      <h4>「やりたいこと」が先、ツールは後</h4>
+      <p>流行ってるから入れる、はやらない。<strong>困ってる業務が出てきた時にだけ</strong>入れる。先入れ禁止、後付けOK。だからツール棚には飾りがない。</p>
+    </div>
+    <div class="principle fade-in">
+      <i class="fa-solid fa-stairs icon"></i>
+      <div class="p-num">PRINCIPLE 02</div>
+      <h4>まずコネクタ、ダメなら直API</h4>
+      <p>公式コネクタは<strong>ポチっと押すだけ</strong>。これが最初の一歩。限界を感じたらピンポイントでAPI直叩きへ。Driveで実際に経験した移行ルート。</p>
+    </div>
+    <div class="principle fade-in">
+      <i class="fa-solid fa-key icon"></i>
+      <div class="p-num">PRINCIPLE 03</div>
+      <h4>APIキーは必ず環境変数に</h4>
+      <p>設定ファイル・スキル本体に直書き禁止。すべて <code style="font-family:'JetBrains Mono',monospace;background:#FFF8EE;padding:1px 6px;border-radius:4px;font-size:12px;">~/.zshenv</code> に集約。<strong>学長の呪文</strong>でAPIキー漏洩は AI が消してくれるけど、最初から書かないのが一番。</p>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: Q&A ===== -->
+  <div class="section-head">
+    <span class="num">03</span>
+    <h2>オフ会で出た質問への回答</h2>
+    <span class="en">QUESTION FROM 2026-05-07</span>
+  </div>
+
+  <section class="qa fade-in">
+    <div class="qa-q">
+      <span class="who">Q | 会場参加者</span>
+      おけもんは普段、どんなコネクタ・MCP・APIを使ってるんですか？
+    </div>
+    <div class="qa-a">
+      使ってるのは<span class="key">ローカルMCP 4個 / 公式コネクタ 9個 / 直接API 7個 / Chrome拡張 1個</span>。<br>
+      ただし <strong style="color:#FBD38D;">「これだけ使ってますよ自慢」じゃない</strong>。<br>
+      <br>
+      実際の使用頻度は <span class="key">①Circleback（議事録）／②Google系＋YouTube Data API（リサーチ）／③Chatwork（自動投稿）／④Groq（大量データ要約）</span> の4本柱に集中。<br>
+      <br>
+      公式コネクタが不安定なやつ（Google Drive）は<span class="key">直APIに切り替え</span>。最近YouTubeリサーチが増えてきたから<span class="key">YouTube Data APIとTranscript API</span>の出番が爆増。<br>
+      <br>
+      <strong style="color:#FBD38D;">結論：「何を繋ぐか」より「今解決したい課題に繋げられるかどうか」</strong>。<br>
+      その視点で選んでいくと、棚に飾りがなくなる。全部実戦投入されてるやつだけが残る。
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>📚 関連資料</p>
+    <p>
+      ・21時オフ会 公開LP: <a href="https://okemonogatari-hash.github.io/portfolio-seikotsuin-lp/okemon-claude-code-life.html">okemon-claude-code-life.html</a><br>
+      ・Claude Code初心者虎の巻（みずやん共同編集）: <a href="https://okemonogatari-hash.github.io/claude-code-beginner-guide/">claude-code-beginner-guide</a><br>
+      ・図解共有ボックス: <a href="https://okemonogatari-hash.github.io/html-share-box/">html-share-box</a>
+    </p>
+    <p style="margin-top:16px;">
+      作成: 2026.05.07 ／ おけもんカンパニー＝個人事業主 × 6人専属AI × 非エンジニア<br>
+      この資料も Claude Code で作成しました 🛠️
+    </p>
+  </footer>
+
+</div>
+
+<script>
+  const els = document.querySelectorAll('.fade-in');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+    else obs.observe(el);
+  });
+</script>
+
+</body>
+</html>
