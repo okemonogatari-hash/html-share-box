@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5/10 MTG用 カーケア起点 実験プラン図解</title>
+  <style>
+    :root {
+      --ink: #202124;
+      --muted: #667085;
+      --line: #d9e1e8;
+      --paper: #fbfcf8;
+      --white: #ffffff;
+      --green: #1f7a5a;
+      --blue: #2468a2;
+      --gold: #b7791f;
+      --red: #b42318;
+      --teal-soft: #e8f4ef;
+      --blue-soft: #e8f0fb;
+      --gold-soft: #fff4d6;
+      --red-soft: #fdebea;
+      --shadow: 0 16px 40px rgba(32, 33, 36, .08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Yu Gothic UI", "Noto Sans JP", sans-serif;
+      line-height: 1.55;
+      letter-spacing: 0;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 42px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+      gap: 20px;
+      align-items: stretch;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ffffff 0%, #f7fbf4 58%, #edf6fb 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 12px;
+      font-size: clamp(30px, 4vw, 54px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin-bottom: 0;
+      color: #344054;
+      font-size: 18px;
+    }
+
+    .hero-card {
+      display: grid;
+      gap: 12px;
+      padding: 20px;
+      border: 1px solid rgba(31, 122, 90, .18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .82);
+    }
+
+    .metric {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 12px;
+      align-items: baseline;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .metric:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .section {
+      margin-top: 20px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: 0 10px 28px rgba(32, 33, 36, .05);
+    }
+
+    .section h2 {
+      margin-bottom: 16px;
+      font-size: 22px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .step {
+      position: relative;
+      min-height: 112px;
+      padding: 16px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .step::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -9px;
+      width: 16px;
+      height: 16px;
+      border-top: 2px solid var(--line);
+      border-right: 2px solid var(--line);
+      transform: translateY(-50%) rotate(45deg);
+      background: var(--white);
+      z-index: 2;
+    }
+
+    .step:last-child::after {
+      display: none;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .step span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .step.product { background: var(--teal-soft); border-color: #b7dbc9; }
+    .step.video { background: var(--blue-soft); border-color: #bdd0ea; }
+    .step.kpi { background: var(--gold-soft); border-color: #ecd187; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .panel {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .panel h3 {
+      margin-bottom: 8px;
+      font-size: 17px;
+    }
+
+    .panel p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .persona {
+      border-left: 5px solid var(--green);
+    }
+
+    .video-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .video-row {
+      display: grid;
+      grid-template-columns: 130px 1fr 46px;
+      gap: 12px;
+      align-items: center;
+      min-height: 42px;
+    }
+
+    .video-name {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .bar {
+      overflow: hidden;
+      height: 14px;
+      border-radius: 999px;
+      background: #edf1f5;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .budget {
+      display: grid;
+      gap: 8px;
+    }
+
+    .budget-row {
+      display: grid;
+      grid-template-columns: 1fr 90px;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .budget-row:last-child {
+      border-bottom: 0;
+      font-weight: 800;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .month {
+      padding: 18px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .month h3 {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      margin-bottom: 12px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--blue);
+      font-size: 15px;
+    }
+
+    .month ul {
+      margin: 0;
+      padding-left: 19px;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .decision {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .go {
+      border-color: #9ccfb8;
+      background: var(--teal-soft);
+    }
+
+    .stop {
+      border-color: #f5b5ad;
+      background: var(--red-soft);
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .check {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 20px;
+      border-left: 6px solid var(--gold);
+      border-radius: 8px;
+      background: #fff8e5;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .grid-2,
+      .grid-3,
+      .timeline,
+      .decision,
+      .checklist {
+        grid-template-columns: 1fr;
+      }
+
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .step::after {
+        top: auto;
+        right: 50%;
+        bottom: -9px;
+        transform: translateX(50%) rotate(135deg);
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .hero,
+      .section {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">カドッチPJ / 2026-05-10 MTG用</p>
+        <h1>カーケア起点<br>月5万円・3ヶ月実験プラン</h1>
+        <p class="lead">
+          最初から最終商品を固定しきらず、仮出口商品を1つ置いて動画を逆算する。
+          30日で反応、60日で初売上、90日で回収筋を見るためのたたき台。
+        </p>
+      </div>
+      <aside class="hero-card" aria-label="今回の前提">
+        <div class="metric">
+          <span class="metric-label">仮商品</span>
+          <span class="metric-value">カーケア用品 / 車内清掃セット</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">ペルソナ</span>
+          <span class="metric-value">30代男性</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">制作数</span>
+          <span class="metric-value">月20本 / 3ヶ月60本</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">予算</span>
+          <span class="metric-value">月50,000円</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <h2>全体の流れ</h2>
+      <div class="flow" aria-label="商品からKPIまでの流れ">
+        <div class="step product">
+          <strong>1. 仮出口商品</strong>
+          <span>カーケア用品を売る前提にする</span>
+        </div>
+        <div class="step product">
+          <strong>2. 仮ペルソナ</strong>
+          <span>30代男性の生活・欲求から考える</span>
+        </div>
+        <div class="step video">
+          <strong>3. 動画5型</strong>
+          <span>Before/After、清潔感、自己啓発など</span>
+        </div>
+        <div class="step video">
+          <strong>4. 月20本</strong>
+          <span>勝ち型が見える量まで出す</span>
+        </div>
+        <div class="step kpi">
+          <strong>5. KPI確認</strong>
+          <span>再生より商品導線を重視</span>
+        </div>
+        <div class="step kpi">
+          <strong>6. 30/60/90判断</strong>
+          <span>続けるか、商品か動画型を変える</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>商品と見るべき相手</h2>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>仮出口商品</h3>
+          <p>フォームクリーナー、車内ブラシ、クロス、消臭剤、コーティング剤。最初はAmazon/Rakuten/YouTube Shopping/固定コメント導線で反応を見る。</p>
+        </div>
+        <div class="panel">
+          <h3>中期の回収先</h3>
+          <p>通常アフィリだけで大きく回収するのは遠い。洗車スターターキット、OEM、自社商品、企業案件化まで見ておく。</p>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top: 14px;">
+        <div class="panel persona">
+          <h3>車通勤の男性</h3>
+          <p>毎日使う車が生活空間化。車内を整えることが、朝の気分や仕事の入り方につながる。</p>
+        </div>
+        <div class="panel persona">
+          <h3>家族持ち男性</h3>
+          <p>子どもや家族を乗せた後に車内が汚れる。短時間で戻せる商品が刺さりやすい。</p>
+        </div>
+        <div class="panel persona">
+          <h3>人を乗せる男性</h3>
+          <p>ニオイや汚れを見られたくない。清潔感、印象、信頼感の訴求が使える。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>月20本の動画配分</h2>
+      <div class="grid-2">
+        <div class="video-list" aria-label="動画配分">
+          <div class="video-row">
+            <span class="video-name">Before/After</span>
+            <div class="bar"><span style="width: 100%;"></span></div>
+            <span class="count">6本</span>
+          </div>
+          <div class="video-row">
+            <span class="video-name">清潔感・印象</span>
+            <div class="bar"><span style="width: 67%;"></span></div>
+            <span class="count">4本</span>
+          </div>
+          <div class="video-row">
+            <span class="video-name">自己啓発</span>
+            <div class="bar"><span style="width: 67%;"></span></div>
+            <span class="count">4本</span>
+          </div>
+          <div class="video-row">
+            <span class="video-name">道具比較</span>
+            <div class="bar"><span style="width: 50%;"></span></div>
+            <span class="count">3本</span>
+          </div>
+          <div class="video-row">
+            <span class="video-name">生活ドラマ</span>
+            <div class="bar"><span style="width: 50%;"></span></div>
+            <span class="count">3本</span>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>動画例</h3>
+          <p>「車内のこの汚れ、17秒でここまで落ちる」</p>
+          <p>「車内が汚い男、意外と見られてる」</p>
+          <p>「朝、車を整える男は仕事も整う」</p>
+          <p>「車内清掃、結局これ3つでよかった」</p>
+          <p>「急に人を乗せることになった男」</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>月5万円のざっくり配分</h2>
+      <div class="grid-2">
+        <div class="budget">
+          <div class="budget-row"><span>HEYGEN Creator</span><span>5,000円</span></div>
+          <div class="budget-row"><span>Seedance / fal.ai</span><span>15,000円</span></div>
+          <div class="budget-row"><span>編集・字幕・素材</span><span>5,000円</span></div>
+          <div class="budget-row"><span>リンク計測・予備ツール</span><span>5,000円</span></div>
+          <div class="budget-row"><span>再生成・失敗吸収</span><span>15,000円</span></div>
+          <div class="budget-row"><span>バッファ</span><span>5,000円</span></div>
+          <div class="budget-row"><span>合計</span><span>50,000円</span></div>
+        </div>
+        <div class="panel">
+          <h3>今回見るKPI</h3>
+          <p>広告収益ではなく、商品導線が動くかを見る。再生数、リンククリック、商品質問、保存、初売上を追う。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>30日・60日・90日の見立て</h2>
+      <div class="timeline">
+        <div class="month">
+          <h3>30日</h3>
+          <ul>
+            <li>20本制作</li>
+            <li>総再生 3万から8万</li>
+            <li>クリック 50から150</li>
+            <li>商品質問 3件以上</li>
+          </ul>
+        </div>
+        <div class="month">
+          <h3>60日</h3>
+          <ul>
+            <li>累計40本</li>
+            <li>月8万から20万再生</li>
+            <li>初売上 or 強い商品反応</li>
+            <li>勝ち型へ寄せる</li>
+          </ul>
+        </div>
+        <div class="month">
+          <h3>90日</h3>
+          <ul>
+            <li>累計60本</li>
+            <li>月15万から50万再生</li>
+            <li>月5万円回収筋の確認</li>
+            <li>継続 or 大幅ピボット</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>判断ライン</h2>
+      <div class="decision">
+        <div class="panel go">
+          <h3>GOの目安</h3>
+          <p>30日でクリック50以上、商品質問3件以上、1万再生前後の動画が1本。60日で初売上か強い商品反応。90日で月5万円回収の筋が見える。</p>
+        </div>
+        <div class="panel stop">
+          <h3>ピボットの目安</h3>
+          <p>30日で総再生2万未満、クリック30未満、商品質問ほぼゼロ。60日で1万再生超えゼロ、クリック100未満、初売上ゼロ。</p>
+        </div>
+      </div>
+      <div class="message">
+        撤退はPJ終了ではなく、出口商品か動画型を変えるという意味。
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>5/10で決めたいこと</h2>
+      <div class="checklist">
+        <div class="check">カーケア用品で30日試すか</div>
+        <div class="check">月5万円で3ヶ月見るか</div>
+        <div class="check">月20本でよいか</div>
+        <div class="check">動画5型で進めるか</div>
+        <div class="check">KPIの粒度はこれでよいか</div>
+        <div class="check">最初の1本を何にするか</div>
+      </div>
+    </section>
+
+    <p class="footer">created by Codex / 2026-05-09 / カドッチPJ</p>
+  </main>
+</body>
+</html>
