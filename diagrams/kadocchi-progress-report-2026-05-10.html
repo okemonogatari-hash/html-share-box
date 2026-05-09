@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5/10 MTG用 カドッチPJ 進捗報告（4/18 Kickoff〜5/9）</title>
+  <style>
+    :root {
+      --ink: #202124;
+      --muted: #667085;
+      --line: #d9e1e8;
+      --paper: #fbfcf8;
+      --white: #ffffff;
+      --green: #1f7a5a;
+      --blue: #2468a2;
+      --gold: #b7791f;
+      --red: #b42318;
+      --teal-soft: #e8f4ef;
+      --blue-soft: #e8f0fb;
+      --gold-soft: #fff4d6;
+      --red-soft: #fdebea;
+      --gray-soft: #f5f7fa;
+      --shadow: 0 16px 40px rgba(32, 33, 36, .08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Yu Gothic UI", "Noto Sans JP", sans-serif;
+      line-height: 1.55;
+      letter-spacing: 0;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 42px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+      gap: 20px;
+      align-items: stretch;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ffffff 0%, #f7fbf4 58%, #edf6fb 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      margin-bottom: 12px;
+      font-size: clamp(28px, 3.8vw, 48px);
+      line-height: 1.1;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin-bottom: 0;
+      color: #344054;
+      font-size: 17px;
+    }
+
+    .hero-card {
+      display: grid;
+      gap: 12px;
+      padding: 20px;
+      border: 1px solid rgba(36, 104, 162, .18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .82);
+    }
+
+    .metric {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 12px;
+      align-items: baseline;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .metric:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .metric-value {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .section {
+      margin-top: 20px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: 0 10px 28px rgba(32, 33, 36, .05);
+    }
+
+    .section h2 {
+      margin-bottom: 16px;
+      font-size: 22px;
+    }
+
+    /* タイムライン */
+    .timeline-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 16px;
+      align-items: stretch;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .tl-item.pivot {
+      background: var(--gold-soft);
+      border-color: #ecd187;
+    }
+
+    .tl-item.now {
+      background: var(--teal-soft);
+      border-color: #9ccfb8;
+    }
+
+    .tl-date {
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .tl-date small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .tl-body strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .tl-body p {
+      margin: 0;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      vertical-align: middle;
+    }
+
+    .badge.gold { background: var(--gold); }
+    .badge.green { background: var(--green); }
+
+    /* 成果物 */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .panel {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .panel h3 {
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .panel p {
+      margin: 0 0 8px;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .panel a {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .panel a:hover { background: #d6e4f4; }
+
+    /* 方向転換ボックス */
+    .pivot-box {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .pivot-card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .pivot-card.before {
+      background: var(--gray-soft);
+      color: var(--muted);
+    }
+
+    .pivot-card.after {
+      background: var(--teal-soft);
+      border-color: #9ccfb8;
+    }
+
+    .pivot-card h4 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .pivot-card.after h4 { color: var(--green); }
+
+    .pivot-card p {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .pivot-arrow {
+      text-align: center;
+      font-size: 32px;
+      color: var(--blue);
+      font-weight: 800;
+    }
+
+    /* 今日決めたい */
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .check {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .next-link {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-left: 6px solid var(--blue);
+      border-radius: 8px;
+      background: var(--blue-soft);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .next-link a {
+      color: var(--blue);
+      text-decoration: underline;
+      word-break: break-all;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .grid-2,
+      .grid-3,
+      .checklist,
+      .pivot-box {
+        grid-template-columns: 1fr;
+      }
+
+      .pivot-arrow {
+        transform: rotate(90deg);
+      }
+
+      .tl-item {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { width: 100%; padding: 0; }
+      .hero, .section { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">カドッチPJ / 2026-05-10 MTG用 / 進捗報告</p>
+        <h1>4/18 Kickoff から<br>今日（5/9）までの進捗報告</h1>
+        <p class="lead">
+          初回MTG（4/10）の「3人で売上作れないっすか」から、<strong>商品起点 → バズ型起点 → 仮出口商品起点</strong> へ方向転換しながら進めてきた約3週間の流れを、明日のMTG用に整理。
+          ここから先の仮説は、別資料「カーケア起点プラン」に繋ぎます。
+        </p>
+      </div>
+      <aside class="hero-card" aria-label="このPJの全体感">
+        <div class="metric">
+          <span class="metric-label">PJ期間</span>
+          <span class="metric-value">2026-04-18〜（実証実験中）</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">実装数</span>
+          <span class="metric-value">主な成果物 7点</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">方向転換</span>
+          <span class="metric-value">4/28 で1度発生</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">今日の位置</span>
+          <span class="metric-value">仮説整理 → MTGすり合わせ</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <h2>これまでの流れ（タイムライン）</h2>
+      <div class="timeline-list">
+        <div class="tl-item">
+          <div class="tl-date">2026-04-10<small>初回近況MTG</small></div>
+          <div class="tl-body">
+            <strong>3人MTG（おけもん・野田・カドッチ）<span class="badge green">種まき</span></strong>
+            <p>カドッチ発言「3人で売上作れないっすか」← このPJの種。</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2026-04-18<small>Kickoff MTG</small></div>
+          <div class="tl-body">
+            <strong>Phase 1 合意：①〜⑥のAI自動化実験で走り出す</strong>
+            <p>商品設定〜ヒット要素抽出までをAIで一気通貫。LP2本（本体・育毛剤ケース）納品。Zoomチャットに9工程フローを共有。</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2026-04-19<small>育毛剤モック</small></div>
+          <div class="tl-body">
+            <strong>育毛剤ジャンルでサンプル成果物完走</strong>
+            <p>51動画・44チャンネル・29,382字・テンプレ20個・台本1本を約2.5hで生成。人力換算3〜5日 → AI 20〜30倍時短。</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2026-04-27<small>サンプル共有</small></div>
+          <div class="tl-body">
+            <strong>カドッチへLINE送付 → 反応「AIでこれはエグい」</strong>
+            <p>「内容詳しく聞きたいので来週また打ち合わせお願いできますか？」と返信あり。来週MTG確定へ。</p>
+          </div>
+        </div>
+
+        <div class="tl-item pivot">
+          <div class="tl-date">2026-04-28<small>進捗MTG</small></div>
+          <div class="tl-body">
+            <strong>🔄 方向転換：商品起点 → バズパターン先行型へ<span class="badge gold">PIVOT</span></strong>
+            <p>「①〜⑥AI自動化」より「動画生成までの一気通貫PDCA」を優先する方針へ。OEM × YouTube Shopping、クロージングAI化、二刀流ビジネスモデルの3軸が新議題に。</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2026-05-03<small>fal.ai接続</small></div>
+          <div class="tl-body">
+            <strong>fal MCP接続＋Seedance動作確認1本完了</strong>
+            <p>5秒9:16ホラーテスト：実測 $1.22（前想定$1.21にほぼドンピシャ）。コスト実測ログMD＋専用スプシ（カドッチ共有OK）開設。</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2026-05-04<small>動画モック</small></div>
+          <div class="tl-body">
+            <strong>SeedanceホラーShorts初回モック v011 完了 → カドッチ共有済</strong>
+            <p>27.5秒・6カット・720x1280。生成概算 $9.76／編集追加 $0。YouTube限定公開＋GitHub Pages報告書化まで完了。</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2026-05-07<small>商品仮説</small></div>
+          <div class="tl-body">
+            <strong>Codex版 商品仮説リサーチ完了（9カテゴリ比較）</strong>
+            <p>初回検証＝洗車・カーケア用品、高収益探索＝退職/転職・退職代行系として整理。5/10統合スプシに反映。</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2026-05-09<small>予算・KPI</small></div>
+          <div class="tl-body">
+            <strong>予算・KPI・損益分岐ラフプラン完成</strong>
+            <p>30日5〜10万円、60〜90日15〜30万円の実験枠で整理。広告収益ではなく商品/相談導線で回収を見る方針に。</p>
+          </div>
+        </div>
+
+        <div class="tl-item now">
+          <div class="tl-date">2026-05-09<small>仮説整理（今ココ）</small></div>
+          <div class="tl-body">
+            <strong>仮出口商品起点プランへ補正 → MTG用図解完成<span class="badge">NOW</span></strong>
+            <p>複数候補を並列に探すのではなく、まず仮出口商品＝カーケア用品 / 仮ペルソナ＝30代男性 を置いて、月5万円・月20本・3ヶ月60本で検証する形へ。明日のMTGで方向性をすり合わせる。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>方向転換のポイント（4/28 進捗MTGで合意）</h2>
+      <div class="pivot-box">
+        <div class="pivot-card before">
+          <h4>BEFORE（4/18 Kickoff時点）</h4>
+          <p>商品起点で、①〜⑥のAI自動化を全工程で再現性検証する</p>
+        </div>
+        <div class="pivot-arrow">→</div>
+        <div class="pivot-card after">
+          <h4>AFTER（4/28 進捗MTG後）</h4>
+          <p>バズ型起点で、動画生成までの一気通貫PDCAを最低1周回す</p>
+        </div>
+      </div>
+      <p style="margin-top: 14px; color: #344054; font-size: 14px;">
+        さらに 5/7〜5/9 で <strong>「仮出口商品を1つ置いて、そこから動画型を逆算する」</strong> 形へ補正。理由：複数候補を並列探索すると意思決定が薄まる／30日で結果が出る最小単位を作りたいから。
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>主な成果物（共有可能なもの）</h2>
+      <div class="grid-3">
+        <div class="panel">
+          <h3>① Phase 1 報告書 HTML</h3>
+          <p>4/28 進捗MTG用に、要件定義＋実装フロー＋結果サマリー＋判定5項目を1枚に集約。</p>
+          <a href="https://okemonogatari-hash.github.io/portfolio-seikotsuin-lp/ai-youtube-affiliate-research-flow.html" target="_blank" rel="noopener">公開URLを開く →</a>
+        </div>
+        <div class="panel">
+          <h3>② 育毛剤モック スプシ（8タブ）</h3>
+          <p>51動画/44チャンネル/29,382字/テンプレ20個＋台本1本。Phase 1 サンプル成果物。</p>
+          <a href="https://docs.google.com/spreadsheets/d/1GtbLWX2IPgNqIMpVzXC_SVRFmPDv7rSMel1ubdVFL8I/edit" target="_blank" rel="noopener">スプシを開く →</a>
+        </div>
+        <div class="panel">
+          <h3>③ 横断バズShorts分析（7タブ）</h3>
+          <p>普段見ない15ジャンル × 海外含む。61本実走行＋なぜバズ7法則＋日本人ウケ厳選Top20。</p>
+          <a href="https://docs.google.com/spreadsheets/d/1DMnj7-ZHgboAACh2xttgun6Yk91bMub_2j9yhaop5Ds/edit" target="_blank" rel="noopener">スプシを開く →</a>
+        </div>
+        <div class="panel">
+          <h3>④ Seedance ホラーShorts モック</h3>
+          <p>27.5秒・6カット・720x1280。生成概算 $9.76／編集追加 $0。YouTube限定公開＋報告書化済。</p>
+          <a href="https://okemonogatari-hash.github.io/html-share-box/diagrams/seedance-horror-shorts-mock-report.html" target="_blank" rel="noopener">報告書を開く →</a>
+        </div>
+        <div class="panel">
+          <h3>⑤ fal.ai コスト実測ログ</h3>
+          <p>カドッチ請求対象として透明開示前提の専用スプシ。5秒$1.22 実測。</p>
+          <a href="https://docs.google.com/spreadsheets/d/1h68-aVeyKc7FUHyi_xSH8sIUmVgavICS0krW_MkQ15w/edit" target="_blank" rel="noopener">スプシを開く →</a>
+        </div>
+        <div class="panel">
+          <h3>⑥ 5/10 統合スプシ（5タブ）</h3>
+          <p>商品候補仮説 / 動画型仮説 / ツール運用案 / 5/10確認事項 / 予算KPIプラン。</p>
+          <a href="https://docs.google.com/spreadsheets/d/1YX3typypctlwXCOKCOyTeGxJne39cIrCbuW_FNiDjJ0/edit" target="_blank" rel="noopener">スプシを開く →</a>
+        </div>
+        <div class="panel">
+          <h3>⑦ カーケア起点 実験プラン</h3>
+          <p>仮出口商品＝カーケア用品で、月5万円・月20本・3ヶ月60本を検証する設計図。</p>
+          <a href="https://okemonogatari-hash.github.io/html-share-box/diagrams/kadocchi-car-care-plan-2026-05-10.html" target="_blank" rel="noopener">プランHTMLを開く →</a>
+        </div>
+        <div class="panel">
+          <h3>⑧ AI×YouTube支援LP（本体＋育毛剤ケース）</h3>
+          <p>本体LPと育毛剤ケースのブランチLPを2本納品済。</p>
+          <a href="https://okemonogatari-hash.github.io/portfolio-seikotsuin-lp/ai-youtube-support.html" target="_blank" rel="noopener">本体LPを開く →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>明日（5/10 MTG）で決めたいこと</h2>
+      <div class="checklist">
+        <div class="check">仮出口商品 = カーケア で30日試すかの合意</div>
+        <div class="check">月予算 5万円・月20本・3ヶ月60本でよいか</div>
+        <div class="check">動画5型（Before/After / 清潔感 / 自己啓発 / 比較 / 生活ドラマ）でいいか</div>
+        <div class="check">30/60/90日の判断ラインの粒度確認</div>
+        <div class="check">最初の1本を何から作るか</div>
+        <div class="check">カドッチ側の商品リサーチ・希望ジャンルとの突き合わせ</div>
+      </div>
+      <div class="next-link">
+        🔗 詳しい仮説は次の資料にまとめてあります：<br>
+        <a href="https://okemonogatari-hash.github.io/html-share-box/diagrams/kadocchi-car-care-plan-2026-05-10.html" target="_blank" rel="noopener">
+          5/10 MTG用 カーケア起点 月5万円・3ヶ月実験プラン →
+        </a>
+      </div>
+    </section>
+
+    <p class="footer">created by はるかCEO / 2026-05-09 / カドッチPJ</p>
+  </main>
+</body>
+</html>
