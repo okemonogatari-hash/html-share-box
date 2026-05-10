@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🏠 カドッチPJ ハブ｜進捗・資料一覧</title>
+  <style>
+    :root {
+      --ink: #202124;
+      --muted: #667085;
+      --line: #d9e1e8;
+      --paper: #fbfcf8;
+      --white: #ffffff;
+      --green: #1f7a5a;
+      --blue: #2468a2;
+      --gold: #b7791f;
+      --red: #b42318;
+      --teal-soft: #e8f4ef;
+      --blue-soft: #e8f0fb;
+      --gold-soft: #fff4d6;
+      --red-soft: #fdebea;
+      --okemon: #2468a2;
+      --kadochi: #b7791f;
+      --shadow: 0 16px 40px rgba(32, 33, 36, .08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      line-height: 1.6;
+    }
+    .page { width: min(1100px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 40px; }
+
+    /* HERO */
+    .hero {
+      padding: 36px 32px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f7fbf4 0%, #edf6fb 100%);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .hero .eyebrow {
+      color: var(--green);
+      font-weight: 700;
+      font-size: 13px;
+      margin: 0 0 8px;
+    }
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 4.5vw, 44px);
+      line-height: 1.1;
+    }
+    .hero .lead {
+      margin: 0 0 18px;
+      font-size: 16px;
+      color: #344054;
+      max-width: 700px;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .hero-meta strong { color: var(--ink); }
+
+    /* CTA カード（スプシメイン） */
+    .cta-spreadsheet {
+      display: block;
+      margin: 24px 0;
+      padding: 28px 32px;
+      background: linear-gradient(135deg, #1f7a5a 0%, #2468a2 100%);
+      border-radius: 12px;
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 12px 32px rgba(31, 122, 90, .25);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .cta-spreadsheet:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(31, 122, 90, .35);
+    }
+    .cta-spreadsheet .label {
+      font-size: 13px;
+      opacity: .85;
+      margin: 0 0 6px;
+      letter-spacing: .04em;
+      font-weight: 700;
+    }
+    .cta-spreadsheet .title {
+      font-size: 26px;
+      font-weight: 800;
+      margin: 0 0 6px;
+    }
+    .cta-spreadsheet .desc {
+      font-size: 14px;
+      opacity: .92;
+      margin: 0;
+    }
+
+    /* ボール表示 */
+    .ball-section {
+      margin: 28px 0;
+      padding: 24px;
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+    .ball-section h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .ball-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .ball-card {
+      padding: 16px;
+      border: 2px solid var(--line);
+      border-radius: 10px;
+    }
+    .ball-card.okemon { border-color: var(--okemon); background: var(--blue-soft); }
+    .ball-card.kadochi { border-color: var(--kadochi); background: var(--gold-soft); }
+    .ball-card .role {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .ball-card.okemon .role { background: var(--okemon); color: white; }
+    .ball-card.kadochi .role { background: var(--kadochi); color: white; }
+    .ball-card h3 { margin: 4px 0 6px; font-size: 16px; }
+    .ball-card p { margin: 0; font-size: 13px; color: #344054; }
+    .ball-card .deadline {
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--red);
+    }
+
+    /* セクション */
+    .section {
+      margin-top: 24px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* リンクグリッド */
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .link-card {
+      display: block;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      text-decoration: none;
+      color: inherit;
+      transition: all .18s ease;
+    }
+    .link-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(36, 104, 162, .12);
+    }
+    .link-card .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 8px;
+      background: var(--teal-soft);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .link-card h3 { margin: 4px 0 4px; font-size: 14px; }
+    .link-card p { margin: 0; font-size: 12px; color: var(--muted); }
+
+    /* 計算前提 */
+    .frame-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .frame-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    .frame-table td:first-child { color: var(--muted); width: 40%; }
+    .frame-table td:last-child { font-weight: 700; }
+
+    /* 動画リスト分布 */
+    .dist-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .dist-card {
+      padding: 14px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      text-align: center;
+      background: #fff;
+    }
+    .dist-card .num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+    }
+    .dist-card .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .ball-grid, .link-grid { grid-template-columns: 1fr; }
+      .dist-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <!-- HERO -->
+    <section class="hero">
+      <p class="eyebrow">🏠 カドッチPJ ハブダッシュボード</p>
+      <h1>AI×ショート動画×アフィリ自動運用<br><small style="font-size: .55em; color: var(--muted); font-weight: 400;">が成立するかの実験PJ</small></h1>
+      <p class="lead">
+        おけもん・かどっち 二人の進捗と資料が一発でわかるハブ。
+        編集はスプシ、閲覧はこのページ、必要な資料は全部リンクで飛べる。
+      </p>
+      <div class="hero-meta">
+        <span><strong>ペルソナ</strong>：40代男性ゴルファー</span>
+        <span><strong>月30本</strong>（1日1本）</span>
+        <span><strong>次回MTG</strong>：2026-05-18（月）21:00</span>
+      </div>
+    </section>
+
+    <!-- CTA：スプシメイン -->
+    <a class="cta-spreadsheet" href="https://docs.google.com/spreadsheets/d/1AkinX2ouuHIut8PkjFpmLithEJj71CsrFaV6y7aokf0" target="_blank" rel="noopener">
+      <p class="label">📊 編集・判定はこちら（リンクで誰でもコメント・編集可）</p>
+      <p class="title">カドッチPJ ハブダッシュボード（スプシ）</p>
+      <p class="desc">🏠ホーム / 🎬動画リスト30案＋判定欄 / 📂成果物リンク / ✅ToDo / 💬議事録</p>
+    </a>
+
+    <!-- ボール所在 -->
+    <section class="ball-section">
+      <h2>⚾ 今のボール（誰が何やってる）</h2>
+      <div class="ball-grid">
+        <div class="ball-card kadochi">
+          <span class="role">🟧 かどっち</span>
+          <h3>動画案30本を○/△/×で判定</h3>
+          <p>スプシ「🎬動画リスト」のL列にプルダウンあり。コメントもOK。</p>
+          <p class="deadline">⏰ 期限：2026-05-17（5/18MTG前日）</p>
+        </div>
+        <div class="ball-card okemon">
+          <span class="role">🟦 おけもん</span>
+          <h3>動画案30本作成→共有</h3>
+          <p>ペルソナ起点で30本生成済。スプシ反映＆カドッチへLINE共有。</p>
+          <p class="deadline">✅ 完了（2026-05-11深夜）</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 計算前提 -->
+    <section class="section">
+      <h2>📐 計算前提（おけもんフレーム）</h2>
+      <table class="frame-table">
+        <tr><td>利益目標</td><td>¥1,000,000/月</td></tr>
+        <tr><td>動画投稿数</td><td>30本/月（1日1本）</td></tr>
+        <tr><td>アフィリ報酬率</td><td>10%（楽天料率アップ枠 / ASP高単価想定）</td></tr>
+        <tr><td>クリック→購入CVR</td><td>1%</td></tr>
+        <tr><td>再生→アフィリリンクCTR</td><td>0.5%</td></tr>
+        <tr><td>編集コスト</td><td>¥3,000/本（外注前提・AI素材＋編集）</td></tr>
+      </table>
+    </section>
+
+    <!-- 動画案分布 -->
+    <section class="section">
+      <h2>🎬 動画案30本 ジャンル分布（ペルソナ起点）</h2>
+      <p style="margin: 0 0 8px; font-size: 14px; color: #344054;">
+        40代男性ゴルファーが日常で見るショート動画ジャンル全方位。<strong>ゴルフ＝集客フック・ブランディング装置</strong>、収益源は健康・経済・身だしなみ。
+      </p>
+      <div class="dist-grid">
+        <div class="dist-card"><div class="num">8</div><div class="label">🏌️ ゴルフ</div></div>
+        <div class="dist-card"><div class="num">8</div><div class="label">💪 健康・身体</div></div>
+        <div class="dist-card"><div class="num">6</div><div class="label">💰 経済・お金</div></div>
+        <div class="dist-card"><div class="num">4</div><div class="label">✂️ 身だしなみ</div></div>
+        <div class="dist-card"><div class="num">4</div><div class="label">🏕 サウナ・キャンプ</div></div>
+      </div>
+    </section>
+
+    <!-- 主要資料リンク -->
+    <section class="section">
+      <h2>📋 主要資料（過去の検討HTML）</h2>
+      <div class="link-grid">
+        <a class="link-card" href="kadocchi-car-care-plan-2026-05-10.html" target="_blank">
+          <span class="tag">📋 メイン資料</span>
+          <h3>カーケアプラン本体（プランA + プランB Top10）</h3>
+          <p>商品単価逆算100万円シミュ・5/10MTG用フル資料</p>
+        </a>
+        <a class="link-card" href="kadocchi-progress-report-2026-05-10.html" target="_blank">
+          <span class="tag">📋 メイン資料</span>
+          <h3>進捗報告HTML（4/18-5/9）</h3>
+          <p>Kickoffからの流れ集約・MTG冒頭用</p>
+        </a>
+        <a class="link-card" href="kadocchi-plan-b-job-2026-05-10.html" target="_blank">
+          <span class="tag">📑 ブランチ</span>
+          <h3>プランB-転職深掘り</h3>
+          <p>ASP7社比較・職種別実報酬・100万円シミュ8シナリオ</p>
+        </a>
+        <a class="link-card" href="kadocchi-plan-b-golf-2026-05-10.html" target="_blank">
+          <span class="tag">📑 ブランチ</span>
+          <h3>プランB-ゴルフ深掘り</h3>
+          <p>RIZAP/チキン/ステップ4トップ・5シナリオ</p>
+        </a>
+        <a class="link-card" href="seedance-horror-shorts-mock-report.html" target="_blank">
+          <span class="tag">🎬 動画モック</span>
+          <h3>Seedanceモック報告書</h3>
+          <p>27.5秒・6カット・$9.76モック検証</p>
+        </a>
+        <a class="link-card" href="https://youtu.be/rPBpjhJf5NE" target="_blank">
+          <span class="tag">🎬 動画</span>
+          <h3>SeedanceホラーShortsモック動画</h3>
+          <p>YouTube限定公開・初回モック実物</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- 共有スプシ -->
+    <section class="section">
+      <h2>📊 共有スプシ（既存）</h2>
+      <div class="link-grid">
+        <a class="link-card" href="https://docs.google.com/spreadsheets/d/1AkinX2ouuHIut8PkjFpmLithEJj71CsrFaV6y7aokf0" target="_blank">
+          <span class="tag" style="background: #fff4d6; color: #b7791f;">⭐ NEW</span>
+          <h3>カドッチPJ ハブダッシュボード</h3>
+          <p>本ダッシュボード本体（5シート・編集可）</p>
+        </a>
+        <a class="link-card" href="https://docs.google.com/spreadsheets/d/1YX3typypctlwXCOKCOyTeGxJne39cIrCbuW_FNiDjJ0/edit" target="_blank">
+          <span class="tag">📊 既存</span>
+          <h3>5/10商品仮説×動画型×ツール運用</h3>
+          <p>Codex版仮説の統合スプシ</p>
+        </a>
+        <a class="link-card" href="https://docs.google.com/spreadsheets/d/1h68-aVeyKc7FUHyi_xSH8sIUmVgavICS0krW_MkQ15w/edit" target="_blank">
+          <span class="tag">💰 コスト</span>
+          <h3>fal.aiコスト実測ログ</h3>
+          <p>Seedance 5秒$1.22実測ベース</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- 過去LP -->
+    <section class="section">
+      <h2>🎨 過去LP・ポートフォリオ</h2>
+      <div class="link-grid">
+        <a class="link-card" href="https://okemonogatari-hash.github.io/portfolio-seikotsuin-lp/ai-youtube-affiliate-research-flow.html" target="_blank">
+          <span class="tag">🎨 LP</span>
+          <h3>AI×YouTube Affiliate Research Flow</h3>
+          <p>Phase 1報告書（4/28デプロイ）</p>
+        </a>
+        <a class="link-card" href="https://okemonogatari-hash.github.io/portfolio-seikotsuin-lp/ai-youtube-support.html" target="_blank">
+          <span class="tag">🎨 LP</span>
+          <h3>本体LP（AI YouTube Support）</h3>
+          <p>4/18 Kickoff時納品</p>
+        </a>
+        <a class="link-card" href="https://okemonogatari-hash.github.io/portfolio-seikotsuin-lp/ai-youtube-affiliate-case.html" target="_blank">
+          <span class="tag">🎨 LP</span>
+          <h3>ブランチLP（育毛剤ケース）</h3>
+          <p>4/19 ジャンル別ケース納品</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- このページの使い方 -->
+    <section class="section" style="background: var(--blue-soft); border-color: var(--blue);">
+      <h2>💡 このページとスプシの使い方</h2>
+      <div style="font-size: 14px; line-height: 1.8;">
+        <p><strong>👀 確認は</strong>このHTMLハブ（常に最新・GitHub Pages公開）</p>
+        <p><strong>✏️ 編集・判定は</strong>スプシ（コメント・○/△/×プルダウン・自由記述OK）</p>
+        <p><strong>🔄 更新</strong>：おけもん側で動きがあればスプシ更新→ハブHTMLにも反映（必要に応じて）</p>
+        <p style="margin-top: 12px; padding: 10px; background: white; border-radius: 6px; font-size: 13px;">
+          📱 <strong>カドッチさんへ</strong>：スプシ「🎬動画リスト」シートのL列「カドッチ判定」がプルダウン式（◎採用 / ◯検討 / △微妙 / ❌不採用）。気になる案にはM列の「判定コメント」に自由メモください。5/18 MTGまでに完了お願いします🙏
+        </p>
+      </div>
+    </section>
+
+    <p class="footer">
+      🏠 カドッチPJ ハブ / created by はるかCEO 2026-05-10 23:50<br>
+      🟦 おけもん × 🟧 かどっち の共同実験PJ「AI自動化×ショート動画×アフィリ自動運用」
+    </p>
+  </main>
+</body>
+</html>
