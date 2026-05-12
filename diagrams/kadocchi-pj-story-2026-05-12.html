@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🌟 カドッチPJ ストーリー｜3人ではじめた実験</title>
+  <style>
+    :root {
+      --ink: #1a1d24;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --paper: #fefce8;
+      --white: #ffffff;
+      --okemon: #2563eb;
+      --kadochi: #f59e0b;
+      --noda: #10b981;
+      --highlight: #ec4899;
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --gradient-4: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #fff8e1;
+      background-image:
+        radial-gradient(at 20% 30%, rgba(102, 126, 234, .08) 0px, transparent 50%),
+        radial-gradient(at 80% 20%, rgba(245, 87, 108, .08) 0px, transparent 50%),
+        radial-gradient(at 40% 80%, rgba(79, 172, 254, .08) 0px, transparent 50%);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      line-height: 1.7;
+    }
+    .page { width: min(1100px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 60px; }
+
+    /* HERO 物語の入り口 */
+    .hero-story {
+      position: relative;
+      padding: 60px 40px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #1a1d24 0%, #2d3748 100%);
+      color: white;
+      overflow: hidden;
+      margin-bottom: 40px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, .15);
+    }
+    .hero-story::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 60%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(245, 158, 11, .25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-story::after {
+      content: '';
+      position: absolute;
+      bottom: -50%;
+      left: -10%;
+      width: 60%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(37, 99, 235, .25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .hero-date {
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(245, 158, 11, .2);
+      border: 1px solid rgba(245, 158, 11, .4);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fbbf24;
+      margin-bottom: 16px;
+      letter-spacing: .05em;
+    }
+    .hero-quote {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0 0 24px;
+      letter-spacing: -.01em;
+    }
+    .hero-quote .highlight {
+      background: linear-gradient(120deg, transparent 0%, transparent 40%, rgba(251, 191, 36, .4) 40%, rgba(251, 191, 36, .4) 90%, transparent 90%);
+      padding: 0 4px;
+    }
+    .hero-sub {
+      font-size: 16px;
+      opacity: .85;
+      max-width: 600px;
+      margin: 0 0 24px;
+    }
+    .hero-signature {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      opacity: .7;
+      font-style: italic;
+    }
+
+    /* セクション共通 */
+    .section {
+      margin-top: 36px;
+      padding: 32px;
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .06);
+    }
+    .section h2 {
+      margin: 0 0 16px;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -.01em;
+    }
+    .section h2 .emoji {
+      display: inline-block;
+      margin-right: 8px;
+      font-size: 28px;
+    }
+    .section .desc {
+      color: #4b5563;
+      font-size: 15px;
+      margin: 0 0 20px;
+    }
+
+    /* 3人の登場人物 */
+    .characters {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .char-card {
+      padding: 24px 20px;
+      border-radius: 16px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .char-card.okemon {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      border: 2px solid var(--okemon);
+    }
+    .char-card.kadochi {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border: 2px solid var(--kadochi);
+    }
+    .char-card.noda {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      border: 2px solid var(--noda);
+    }
+    .char-emoji {
+      font-size: 48px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .char-name {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 4px;
+    }
+    .char-role {
+      font-size: 12px;
+      font-weight: 700;
+      opacity: .7;
+      margin-bottom: 12px;
+    }
+    .char-desc {
+      font-size: 13px;
+      color: #374151;
+      margin: 0;
+    }
+
+    /* 3軸ガイド */
+    .axes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .axis-card {
+      padding: 28px 24px;
+      border-radius: 16px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .axis-card.a1 { background: var(--gradient-1); }
+    .axis-card.a2 { background: var(--gradient-3); }
+    .axis-card.a3 { background: var(--gradient-4); }
+    .axis-num {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      background: rgba(255, 255, 255, .25);
+      border-radius: 50%;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .axis-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0 0 8px;
+    }
+    .axis-desc {
+      font-size: 13px;
+      opacity: .92;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* タイムライン */
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+      margin-top: 24px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      bottom: 8px;
+      width: 3px;
+      background: linear-gradient(180deg, var(--kadochi) 0%, var(--okemon) 50%, var(--highlight) 100%);
+      border-radius: 2px;
+    }
+    .tl-item {
+      position: relative;
+      padding-bottom: 24px;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -27px;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid var(--okemon);
+    }
+    .tl-item.highlight::before {
+      background: var(--highlight);
+      border-color: var(--highlight);
+      box-shadow: 0 0 0 6px rgba(236, 72, 153, .2);
+    }
+    .tl-item.future::before {
+      background: white;
+      border-color: var(--muted);
+      border-style: dashed;
+    }
+    .tl-date {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .tl-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 4px;
+    }
+    .tl-item.highlight .tl-title {
+      color: var(--highlight);
+    }
+    .tl-desc {
+      font-size: 13px;
+      color: #4b5563;
+      margin: 0;
+    }
+
+    /* 今やってること */
+    .now-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .now-card {
+      padding: 24px;
+      border-radius: 16px;
+      background: #fef3c7;
+      border: 2px dashed var(--kadochi);
+    }
+    .now-card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #92400e;
+    }
+    .now-card p {
+      margin: 0;
+      font-size: 13px;
+      color: #78350f;
+    }
+
+    /* 数字 */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .stat {
+      padding: 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-radius: 14px;
+    }
+    .stat-num {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--okemon);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-weight: 700;
+    }
+
+    /* 目指す未来 */
+    .future-box {
+      padding: 36px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #ec4899 100%);
+      color: white;
+      text-align: center;
+      margin-top: 36px;
+    }
+    .future-eyebrow {
+      font-size: 13px;
+      opacity: .9;
+      letter-spacing: .1em;
+      margin: 0 0 8px;
+    }
+    .future-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      margin: 0 0 16px;
+      line-height: 1.2;
+    }
+    .future-desc {
+      font-size: 15px;
+      opacity: .95;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* リンクボタン */
+    .links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+    .link-btn {
+      display: block;
+      padding: 20px 24px;
+      border-radius: 14px;
+      background: white;
+      border: 2px solid var(--line);
+      text-decoration: none;
+      color: var(--ink);
+      transition: all .2s;
+    }
+    .link-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, .08);
+      border-color: var(--okemon);
+    }
+    .link-btn .label {
+      font-size: 11px;
+      color: var(--muted);
+      margin: 0 0 4px;
+      font-weight: 700;
+      letter-spacing: .05em;
+    }
+    .link-btn .title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .characters, .axes, .now-grid, .links { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .hero-story { padding: 40px 24px; }
+      .section { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <!-- HERO -->
+    <section class="hero-story">
+      <div class="hero-content">
+        <span class="hero-date">📅 2026年4月10日 — はじまりの一言</span>
+        <h1 class="hero-quote">
+          <span class="highlight">「3人で売上作れないっすか」</span>
+        </h1>
+        <p class="hero-sub">
+          近況MTGでのカドッチさんの何気ない一言から、このプロジェクトは始まった。<br>
+          おけもん × かどっち × 野田 — 3人の友人が、AIで何ができるか試してみる実験。
+        </p>
+        <p class="hero-signature">
+          🤝 友達同士の挑戦 — 利益最大化が主目的じゃない。失敗データにも価値がある。
+        </p>
+      </div>
+    </section>
+
+    <!-- 登場人物 -->
+    <section class="section">
+      <h2><span class="emoji">👥</span>登場人物</h2>
+      <p class="desc">3人それぞれが違う武器を持ち寄って、一つのPJに挑む。</p>
+      <div class="characters">
+        <div class="char-card okemon">
+          <div class="char-emoji">🟦</div>
+          <h3 class="char-name">おけもん</h3>
+          <p class="char-role">AI実装 × 商品設計</p>
+          <p class="char-desc">Claude Code・MCP・AIエージェントの実装力。ペルソナ設計と全体プロデュース。</p>
+        </div>
+        <div class="char-card kadochi">
+          <div class="char-emoji">🟧</div>
+          <h3 class="char-name">かどっち</h3>
+          <p class="char-role">YouTube × 営業</p>
+          <p class="char-desc">YouTube運営の知見・クロージング技術・市場感覚。商品判断と運用最終決定。</p>
+        </div>
+        <div class="char-card noda">
+          <div class="char-emoji">🟩</div>
+          <h3 class="char-name">野田</h3>
+          <p class="char-role">アカウント運用 × 安全性</p>
+          <p class="char-desc">アカウント管理・運用安全性の担当。PJ運営の土台を守る役割。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3軸ガイド -->
+    <section class="section">
+      <h2><span class="emoji">🌱</span>このPJの3軸</h2>
+      <p class="desc">普通の営業案件じゃない。3つの軸が同居する特殊PJ。</p>
+      <div class="axes">
+        <div class="axis-card a1">
+          <span class="axis-num">①</span>
+          <h3 class="axis-title">友人関係軸</h3>
+          <p class="axis-desc">カドッチは友人。お金で動かない前提。営業案件として処理しない。関係性の温度を最優先。</p>
+        </div>
+        <div class="axis-card a2">
+          <span class="axis-num">②</span>
+          <h3 class="axis-title">AI自動化テスト軸</h3>
+          <p class="axis-desc">AIで動画自動化どこまでできるかの探求。<strong style="background: rgba(255,255,255,.25); padding: 0 4px; border-radius: 4px;">失敗データにも価値がある</strong>。急がない・成果を急がない。</p>
+        </div>
+        <div class="axis-card a3">
+          <span class="axis-num">③</span>
+          <h3 class="axis-title">将来の授業軸</h3>
+          <p class="axis-desc">3人で授業やりたい未来への第一歩。商業案件じゃない。仲間と作る未来への投資。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 検証ポイント -->
+    <section class="section">
+      <h2><span class="emoji">🎯</span>検証ポイント（何を確かめたいか）</h2>
+      <div class="now-grid">
+        <div class="now-card">
+          <h3>① AIでショート動画量産できるか？</h3>
+          <p>Claude Code × Higgsfield・Codex × HEYGEN で、月30本（1日1本）のショート動画をAI完結で作れるか。編集外注なしでどこまで行けるか。</p>
+        </div>
+        <div class="now-card">
+          <h3>② アフィリ収益が立つか？</h3>
+          <p>動画 → アフィリリンク → 購入完結の自動フローで、月¥40,000のツール費に対して収益が立つか。LINE誘導や情報商材を挟まず、純アフィリ自動運用で勝負。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- これまでの軌跡 -->
+    <section class="section">
+      <h2><span class="emoji">📅</span>これまでの軌跡</h2>
+      <p class="desc">起点の一言から、ここまで5回のMTGを重ねてきた。</p>
+      <div class="timeline">
+        <div class="tl-item highlight">
+          <div class="tl-date">2026-04-10</div>
+          <h3 class="tl-title">🌟 起点：カドッチ「3人で売上作れないっすか」</h3>
+          <p class="tl-desc">近況MTGでの一言が全ての始まり。広告自動化・AI活用の話題から、3人で実験PJをスタートする方針へ。</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2026-04-18</div>
+          <h3 class="tl-title">Kickoff MTG（Phase 1合意）</h3>
+          <p class="tl-desc">①〜⑥AI自動化パッケージ設計合意・LP2本納品・役割分担確定。「すごい時代、ほんまに何でもできる」（おけもん）</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2026-04-28</div>
+          <h3 class="tl-title">進捗MTG（Phase 1.5転換）</h3>
+          <p class="tl-desc">商品起点 → バズパターン起点へ大転換。「相手の感情曲線が読めない」（カドッチ最深発言）→ クロージングAI化の核。OEM×YouTubeショッピング軸浮上。</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">2026-05-10</div>
+          <h3 class="tl-title">戦略MTG（方向性確定）</h3>
+          <p class="tl-desc">動画1本¥3,000で量産方針・ターゲット30-50代・1年で月100万円規模のコンテンツ資産を目指す。「当たる前提で動くものじゃない」（カドッチ）</p>
+        </div>
+        <div class="tl-item future">
+          <div class="tl-date">2026-05-18 21:00</div>
+          <h3 class="tl-title">🔮 次回MTG（最初の1本決定）</h3>
+          <p class="tl-desc">動画案30本の判定結果を持ち寄り、AIで作る最初の1本を決める。実験スタート。</p>
+        </div>
+        <div class="tl-item future">
+          <div class="tl-date">2027年（1年後）</div>
+          <h3 class="tl-title">🌟 目標：月100万円規模のコンテンツ資産</h3>
+          <p class="tl-desc">AI完結で月30本投稿の運用が回り、アフィリ収益が立っている状態へ。そして3人で授業をやる未来へ。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 数字で見る現状 -->
+    <section class="section">
+      <h2><span class="emoji">📊</span>数字で見る現状</h2>
+      <p class="desc">2026-05-12時点の準備状況。</p>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">5</div>
+          <div class="stat-label">MTG回数</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">30</div>
+          <div class="stat-label">動画案（生成済）</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">57</div>
+          <div class="stat-label">参考バズ動画</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">¥40k</div>
+          <div class="stat-label">月運用コスト見込</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 目指す未来 -->
+    <section class="future-box">
+      <p class="future-eyebrow">🌟 — 目指す未来 — 🌟</p>
+      <h2 class="future-title">「失敗してもデータが資産になる。<br>成功したら3人で授業をやる」</h2>
+      <p class="future-desc">
+        このPJは、商業的な成功だけを目的にしていない。<br>
+        AIと友達と一緒に挑戦する過程そのものが、未来への投資。
+      </p>
+    </section>
+
+    <!-- リンク -->
+    <section class="section">
+      <h2><span class="emoji">🔗</span>次のページへ</h2>
+      <div class="links">
+        <a class="link-btn" href="kadocchi-hub-2026-05-10.html">
+          <p class="label">🏠 HUB</p>
+          <p class="title">PJハブダッシュボード</p>
+        </a>
+        <a class="link-btn" href="https://docs.google.com/spreadsheets/d/1AkinX2ouuHIut8PkjFpmLithEJj71CsrFaV6y7aokf0" target="_blank">
+          <p class="label">📊 SPREADSHEET</p>
+          <p class="title">動画リスト＆判定スプシ</p>
+        </a>
+        <a class="link-btn" href="kadocchi-car-care-plan-2026-05-10.html">
+          <p class="label">📋 STRATEGY</p>
+          <p class="title">カーケアプラン本体（プランA+B）</p>
+        </a>
+        <a class="link-btn" href="https://youtu.be/rPBpjhJf5NE" target="_blank">
+          <p class="label">🎬 MOCK VIDEO</p>
+          <p class="title">Seedanceホラーモック動画</p>
+        </a>
+      </div>
+    </section>
+
+    <p class="footer">
+      🌟 カドッチPJ ストーリーページ / created by はるかCEO 2026-05-12<br>
+      🟦 おけもん × 🟧 かどっち × 🟩 野田 の友達3人が挑む AI自動化×ショート動画×アフィリ実験PJ
+    </p>
+  </main>
+</body>
+</html>
