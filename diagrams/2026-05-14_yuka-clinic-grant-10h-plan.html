@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10時間プラン詳細｜人材開発支援助成金（事業展開等リスキリング支援コース）</title>
+<style>
+  :root {
+    --paper: #fdfdfd;
+    --sky: #e7f3fa;
+    --sky-deep: #5fa8d3;
+    --mint: #e8f5e9;
+    --mint-deep: #6bb77a;
+    --warm: #fff7ec;
+    --warm-deep: #e0a96d;
+    --pink: #fde6ec;
+    --pink-deep: #d97a96;
+    --text: #2c3e50;
+    --muted: #6b7c8c;
+    --line: rgba(95,168,211,0.18);
+    --shadow: 0 2px 12px rgba(95,168,211,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+    background: linear-gradient(135deg, #fafdff 0%, #f4faf6 100%);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 20px 12px 60px;
+  }
+  .container { max-width: 880px; margin: 0 auto; }
+
+  .breadcrumb {
+    background: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--muted);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .breadcrumb a { color: var(--sky-deep); text-decoration: none; font-weight: 600; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  .hero {
+    background: linear-gradient(135deg, var(--warm) 0%, var(--sky) 100%);
+    border-radius: 24px;
+    padding: 36px 28px;
+    text-align: center;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .hero .tag { display: inline-block; background: var(--warm-deep); color: white; padding: 4px 14px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 14px; }
+  .hero h1 { font-size: 26px; color: var(--text); font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+  .hero .sub { font-size: 14px; color: var(--muted); }
+
+  .section { background: white; border-radius: 20px; padding: 30px 26px; margin-bottom: 22px; box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .section h2 { font-size: 20px; color: var(--warm-deep); margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+  .section .lead { color: var(--muted); font-size: 13px; margin-bottom: 18px; }
+
+  /* 自己負担シミュレーション */
+  .sim-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  .sim-table th, .sim-table td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .sim-table th { background: var(--sky); color: var(--sky-deep); font-weight: 600; width: 65%; }
+  .sim-table td { text-align: right; font-weight: 600; }
+  .sim-table tr.minus td { color: var(--mint-deep); }
+  .sim-table tr.total { background: var(--warm); }
+  .sim-table tr.total th, .sim-table tr.total td { font-size: 16px; color: var(--warm-deep); border-bottom: none; }
+
+  /* 流れ */
+  .flow { display: grid; gap: 12px; margin-top: 16px; }
+  .flow-step { display: grid; grid-template-columns: 50px 1fr; gap: 14px; align-items: stretch; }
+  .flow-step .num { background: var(--sky-deep); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; }
+  .flow-step .body { background: #fafafa; border-radius: 12px; padding: 12px 16px; border-left: 4px solid var(--sky-deep); }
+  .flow-step .body h4 { font-size: 14px; margin-bottom: 4px; }
+  .flow-step .body p { font-size: 12px; color: var(--muted); }
+
+  /* 研修内容 */
+  .curriculum { display: grid; gap: 10px; }
+  .curr-row { display: grid; grid-template-columns: 60px 1fr 80px; gap: 14px; align-items: center; padding: 14px 16px; background: var(--mint); border-radius: 10px; }
+  .curr-row .time { font-weight: 800; color: var(--mint-deep); font-size: 14px; }
+  .curr-row .title { font-size: 14px; }
+  .curr-row .h { background: white; padding: 4px 8px; border-radius: 8px; font-size: 11px; text-align: center; color: var(--muted); font-weight: 600; }
+
+  /* 確認5点 */
+  .check-list { display: grid; gap: 10px; margin-top: 14px; }
+  .check-item { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 14px 16px; background: var(--pink); border-radius: 10px; align-items: start; }
+  .check-item .ic { font-size: 18px; font-weight: 800; color: var(--pink-deep); }
+  .check-item .text { font-size: 13px; line-height: 1.6; }
+  .check-item .text strong { color: var(--pink-deep); }
+
+  /* メリットボックス */
+  .merits { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 14px; }
+  .merit { background: linear-gradient(135deg, white, var(--mint)); border: 1px solid var(--mint-deep); border-radius: 12px; padding: 16px; }
+  .merit .ic { font-size: 24px; margin-bottom: 6px; }
+  .merit h4 { font-size: 14px; color: var(--mint-deep); margin-bottom: 4px; }
+  .merit p { font-size: 12px; color: var(--text); }
+
+  /* 注意 */
+  .warn { background: #fff5f5; border-left: 4px solid #f5b8b8; border-radius: 8px; padding: 14px 18px; margin-top: 18px; font-size: 13px; line-height: 1.7; }
+  .warn strong { color: #c75858; }
+
+  footer { text-align: center; padding: 30px 12px 10px; color: var(--muted); font-size: 12px; }
+  footer .back-link { display: inline-block; margin-top: 12px; padding: 10px 20px; background: var(--sky-deep); color: white; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="breadcrumb">
+    <a href="2026-05-14_yuka-clinic-ai-thanks.html">← メイン資料に戻る</a>
+    　／　10時間プラン詳細
+  </div>
+
+  <div class="hero">
+    <div class="tag">本命候補① 詳細プラン</div>
+    <h1>人材開発支援助成金<br>10時間プランで始めるご提案 🌿</h1>
+    <p class="sub">小さく始めて、手応えを見ながら次のフェーズへ</p>
+  </div>
+
+  <!-- なぜ10時間？ -->
+  <div class="section">
+    <h2>🌱 なぜ「10時間プラン」をおすすめするか</h2>
+    <p class="lead">皆さま4名は本業（年間3,000件の判定業務）でとても忙しい。だから「小さく始めて、効果を確かめてから広げる」のが現実的です。</p>
+    <div class="merits">
+      <div class="merit">
+        <div class="ic">⏱</div>
+        <h4>業務を止める時間が短い</h4>
+        <p>10時間なら、シフトを大きく崩さずに受講可能</p>
+      </div>
+      <div class="merit">
+        <div class="ic">💰</div>
+        <h4>立替負担が一番軽い</h4>
+        <p>研修費上限¥30万 → 立替額も最小で済む</p>
+      </div>
+      <div class="merit">
+        <div class="ic">🌿</div>
+        <h4>「試して、広げる」が可能</h4>
+        <p>手応えあれば次は100時間プランで深掘りもできる（補助率は同じ75%）</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 自己負担シミュ -->
+  <div class="section">
+    <h2>💴 自己負担シミュレーション</h2>
+    <p class="lead">上限ぴったり（¥30万）で組んだ場合の試算です。あくまで概算ですが、実質負担はとても小さくなります。</p>
+    <table class="sim-table">
+      <tr>
+        <th>研修費（おけもん側に支払い）</th>
+        <td>¥300,000</td>
+      </tr>
+      <tr class="minus">
+        <th>経費助成 75%（厚労省から後日返ってくる）</th>
+        <td>−¥225,000</td>
+      </tr>
+      <tr class="minus">
+        <th>賃金助成 ¥1,000/h × 4名 × 10時間</th>
+        <td>−¥40,000</td>
+      </tr>
+      <tr class="total">
+        <th>実質自己負担（皆さまの最終負担）</th>
+        <td>約 ¥35,000</td>
+      </tr>
+    </table>
+    <p style="font-size:11px;color:var(--muted);margin-top:14px;">※ 補助金は「後払い」のため、最初は¥300,000を立替→申請→交付（数ヶ月後）の流れになります。<br>※ 4名全員が正社員＆雇用保険適用、研修中が業務時間扱い、という前提での試算です。</p>
+  </div>
+
+  <!-- 10時間の中身案 -->
+  <div class="section">
+    <h2>📚 10時間の中身（案）</h2>
+    <p class="lead">5/22に皆さまのご意見伺いながら最終確定しますが、たたき台はこちら。</p>
+    <div class="curriculum">
+      <div class="curr-row">
+        <span class="time">①</span>
+        <span class="title">AI業務改善の全体像／個人情報の安全な扱い方</span>
+        <span class="h">2時間</span>
+      </div>
+      <div class="curr-row">
+        <span class="time">②</span>
+        <span class="title">請求書システム（スプシ＋自動メール）の使い方研修</span>
+        <span class="h">3時間</span>
+      </div>
+      <div class="curr-row">
+        <span class="time">③</span>
+        <span class="title">訪問リマインドシステム（カレンダー連動）の使い方研修</span>
+        <span class="h">2時間</span>
+      </div>
+      <div class="curr-row">
+        <span class="time">④</span>
+        <span class="title">日常運用のコツ／トラブル時の対処法</span>
+        <span class="h">2時間</span>
+      </div>
+      <div class="curr-row">
+        <span class="time">⑤</span>
+        <span class="title">次フェーズ（就業区分判定）への準備＋質問会</span>
+        <span class="h">1時間</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 申請から交付までの流れ -->
+  <div class="section">
+    <h2>🗓 申請から交付までの流れ</h2>
+    <p class="lead">こちらが書類作成のサポート＋研修提供を担当。皆さまは確認・承認・申請がメインになります。</p>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="num">1</div>
+        <div class="body">
+          <h4>事業内職業能力開発計画の策定（事前準備）</h4>
+          <p>厚労省が定める計画書を策定。おけもん側で書類サポート可能</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">2</div>
+        <div class="body">
+          <h4>訓練計画届の提出（研修開始の1ヶ月前まで）</h4>
+          <p>労働局に提出。研修内容・受講者・時間を申請</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">3</div>
+        <div class="body">
+          <h4>研修実施（10時間）</h4>
+          <p>外部研修機関（おけもん）が実施。出席記録・カリキュラム記録を残す</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">4</div>
+        <div class="body">
+          <h4>支給申請（研修終了から2ヶ月以内）</h4>
+          <p>実績報告書・領収書等を労働局へ提出</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">5</div>
+        <div class="body">
+          <h4>審査 → 交付（数ヶ月後）</h4>
+          <p>無事認定されれば、経費助成75% + 賃金助成が振り込まれます</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5/22までに確認 -->
+  <div class="section">
+    <h2>📋 5/22までに、皆さまに確認したいこと</h2>
+    <p class="lead">10時間プランで進めるなら、以下の5点が必要要件です。</p>
+    <div class="check-list">
+      <div class="check-item">
+        <span class="ic">①</span>
+        <span class="text"><strong>雇用保険適用事業所</strong>であること（一般社団法人でも適用ならOK）</span>
+      </div>
+      <div class="check-item">
+        <span class="ic">②</span>
+        <span class="text">受講対象者（保健師チーム）が<strong>全員「正社員」</strong>であること（パート・嘱託は対象外）</span>
+      </div>
+      <div class="check-item">
+        <span class="ic">③</span>
+        <span class="text"><strong>事業内職業能力開発計画</strong>を策定して周知できる体制があること（書類サポートはおけもんが）</span>
+      </div>
+      <div class="check-item">
+        <span class="ic">④</span>
+        <span class="text"><strong>職業能力開発推進者</strong>の選任ができること（社内から1名指名）</span>
+      </div>
+      <div class="check-item">
+        <span class="ic">⑤</span>
+        <span class="text">研修10時間を<strong>業務時間扱い</strong>として組めること（賃金助成¥1,000/hを受けるための条件）</span>
+      </div>
+    </div>
+    <div class="warn">
+      <strong>⚠️ おけもんからのお約束</strong><br>
+      ・補助金の<strong>申請代行（社労士業務）は法律上できません</strong>。書類作成のお手伝い・制度情報提供・研修提供までが範囲です<br>
+      ・補助金制度は年度ごとに変わるため、最新要件は厚労省公式サイトで必ず確認してから進めます
+    </div>
+  </div>
+
+  <footer>
+    <p style="font-size:13px;">皆さまのご状況を5/22に伺って、最終的な計画をご提案します🌷</p>
+    <a href="2026-05-14_yuka-clinic-ai-thanks.html" class="back-link">← メイン資料に戻る</a>
+    <p style="margin-top:20px;">一般社団法人 健康管理支援室 御中</p>
+    <p>おけもんカンパニー｜ 2026-05-14</p>
+  </footer>
+
+</div>
+</body>
+</html>
