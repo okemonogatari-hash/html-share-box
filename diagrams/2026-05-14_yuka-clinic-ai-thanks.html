@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>本日はありがとうございました｜健康管理支援室 御中 AI業務改善 ご訪問まとめ</title>
+<style>
+  :root {
+    --paper: #fdfdfd;
+    --sky: #e7f3fa;
+    --sky-deep: #5fa8d3;
+    --mint: #e8f5e9;
+    --mint-deep: #6bb77a;
+    --warm: #fff7ec;
+    --warm-deep: #e0a96d;
+    --pink: #fde6ec;
+    --pink-deep: #d97a96;
+    --text: #2c3e50;
+    --muted: #6b7c8c;
+    --line: rgba(95,168,211,0.18);
+    --shadow: 0 2px 12px rgba(95,168,211,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+    background: linear-gradient(135deg, #fafdff 0%, #f4faf6 100%);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 20px 12px 60px;
+  }
+  .container { max-width: 880px; margin: 0 auto; }
+
+  /* ヘッダー */
+  .hero {
+    background: linear-gradient(135deg, var(--sky) 0%, var(--mint) 100%);
+    border-radius: 24px;
+    padding: 40px 32px;
+    text-align: center;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .hero .greeting { font-size: 14px; color: var(--muted); margin-bottom: 12px; letter-spacing: 0.1em; }
+  .hero h1 { font-size: 30px; color: var(--text); font-weight: 700; line-height: 1.4; margin-bottom: 16px; }
+  .hero .sub { font-size: 16px; color: var(--muted); }
+  .hero .date { display: inline-block; margin-top: 20px; padding: 8px 20px; background: white; border-radius: 999px; font-size: 13px; color: var(--sky-deep); font-weight: 600; border: 1px solid var(--line); }
+
+  /* セクション共通 */
+  .section { background: white; border-radius: 20px; padding: 32px 28px; margin-bottom: 24px; box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .section h2 { font-size: 22px; color: var(--sky-deep); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+  .section .lead { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .badge { display: inline-block; background: var(--sky); color: var(--sky-deep); padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+
+  /* お礼セクション */
+  .thanks { background: linear-gradient(135deg, white, var(--pink)); }
+  .thanks h2 { color: var(--pink-deep); }
+  .thanks p { font-size: 15px; color: var(--text); margin-bottom: 12px; }
+
+  /* 11業務俯瞰 */
+  .biz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 16px; }
+  .biz-card { background: var(--warm); border-left: 4px solid var(--warm-deep); padding: 14px 16px; border-radius: 8px; font-size: 13px; }
+  .biz-card .num { display: inline-block; background: var(--warm-deep); color: white; width: 22px; height: 22px; border-radius: 50%; text-align: center; font-size: 12px; line-height: 22px; margin-right: 8px; font-weight: 700; }
+  .biz-card.priority { background: var(--pink); border-left-color: var(--pink-deep); position: relative; }
+  .biz-card.priority::after { content: "最優先"; position: absolute; top: -8px; right: 8px; background: var(--pink-deep); color: white; font-size: 10px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+
+  /* before/after 比較 */
+  .compare { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: stretch; margin: 20px 0; }
+  .compare-box { padding: 20px; border-radius: 16px; }
+  .compare-box.before { background: #fff5f5; border: 1px dashed #f5b8b8; }
+  .compare-box.after { background: var(--mint); border: 1px solid var(--mint-deep); }
+  .compare-box h4 { font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .compare-box.before h4 { color: #c75858; }
+  .compare-box.after h4 { color: var(--mint-deep); }
+  .compare-box ul { list-style: none; }
+  .compare-box li { font-size: 13px; padding: 4px 0; color: var(--text); }
+  .compare-box li::before { content: "・"; }
+  .arrow { display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--mint-deep); }
+  @media (max-width: 720px) {
+    .compare { grid-template-columns: 1fr; }
+    .arrow { transform: rotate(90deg); padding: 4px 0; }
+  }
+
+  /* 数字カード */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-top: 16px; }
+  .stat { background: linear-gradient(135deg, white, var(--sky)); border: 1px solid var(--line); border-radius: 14px; padding: 18px; text-align: center; }
+  .stat .big { font-size: 28px; font-weight: 800; color: var(--sky-deep); line-height: 1.1; }
+  .stat .unit { font-size: 12px; color: var(--muted); margin-left: 2px; }
+  .stat .label { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  /* セキュリティ */
+  .sec-list { margin-top: 16px; }
+  .sec-row { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; background: var(--mint); border-radius: 12px; margin-bottom: 10px; }
+  .sec-row .check { font-size: 22px; flex-shrink: 0; }
+  .sec-row .text { font-size: 14px; }
+  .sec-row .text strong { color: var(--mint-deep); }
+
+  /* 補助金 */
+  .grant-box { background: linear-gradient(135deg, var(--warm) 0%, white 100%); border: 2px solid var(--warm-deep); border-radius: 18px; padding: 24px; text-align: center; }
+  .grant-box .rate { font-size: 56px; font-weight: 900; color: var(--warm-deep); line-height: 1; }
+  .grant-box .rate-sub { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+  .grant-flow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  .grant-flow .col { background: white; border-radius: 12px; padding: 14px; border: 1px solid var(--line); }
+  .grant-flow .col h5 { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .grant-flow .col .price { font-size: 22px; font-weight: 800; }
+  .grant-flow .col.full .price { color: #999; text-decoration: line-through; }
+  .grant-flow .col.own .price { color: var(--warm-deep); }
+
+  /* ロードマップ */
+  .roadmap { display: grid; gap: 14px; margin-top: 16px; }
+  .phase { display: grid; grid-template-columns: 80px 1fr; gap: 16px; align-items: stretch; }
+  .phase .ph-label { background: var(--sky-deep); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 16px 8px; }
+  .phase .ph-label .ph-num { font-size: 24px; font-weight: 800; line-height: 1; }
+  .phase .ph-label .ph-sub { font-size: 10px; margin-top: 2px; }
+  .phase.p2 .ph-label { background: var(--mint-deep); }
+  .phase.p3 .ph-label { background: var(--warm-deep); }
+  .phase .ph-body { background: #fafafa; border-radius: 12px; padding: 14px 18px; border-left: 4px solid var(--sky-deep); }
+  .phase.p2 .ph-body { border-left-color: var(--mint-deep); }
+  .phase.p3 .ph-body { border-left-color: var(--warm-deep); }
+  .phase .ph-body h4 { font-size: 15px; margin-bottom: 6px; }
+  .phase .ph-body p { font-size: 13px; color: var(--muted); }
+
+  /* 次回 */
+  .next-meet { background: linear-gradient(135deg, var(--pink), white); border: 2px solid var(--pink-deep); border-radius: 18px; padding: 26px; }
+  .next-meet .when { font-size: 22px; font-weight: 800; color: var(--pink-deep); text-align: center; margin-bottom: 8px; }
+  .next-meet .where { text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 18px; }
+  .agenda { display: grid; gap: 8px; }
+  .agenda-item { background: white; border-radius: 10px; padding: 10px 14px; font-size: 13px; display: flex; gap: 10px; align-items: center; }
+  .agenda-item .ic { font-size: 18px; }
+
+  /* 宿題 */
+  .homework { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  @media (max-width: 720px) { .homework { grid-template-columns: 1fr; } }
+  .hw-col { padding: 18px; border-radius: 14px; }
+  .hw-col.them { background: var(--mint); border: 1px solid var(--mint-deep); }
+  .hw-col.us { background: var(--sky); border: 1px solid var(--sky-deep); }
+  .hw-col h4 { font-size: 14px; margin-bottom: 10px; }
+  .hw-col ul { list-style: none; }
+  .hw-col li { padding: 6px 0; font-size: 13px; border-bottom: 1px dashed rgba(0,0,0,0.06); }
+  .hw-col li:last-child { border-bottom: none; }
+  .hw-col li::before { content: "□  "; color: var(--muted); }
+
+  /* フッター */
+  footer { text-align: center; padding: 30px 12px 10px; color: var(--muted); font-size: 12px; }
+  footer .heart { color: var(--pink-deep); font-size: 18px; }
+  footer .org { font-size: 13px; color: var(--text); font-weight: 600; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ヘッダー -->
+  <div class="hero">
+    <div class="greeting">2026.05.14（木）ご訪問の御礼</div>
+    <h1>本日は貴重なお時間を<br>ありがとうございました 🌷</h1>
+    <p class="sub">ご相談いただいた内容とこれからの進め方を、1枚にまとめました</p>
+    <div class="date">一般社団法人 健康管理支援室 御中</div>
+  </div>
+
+  <!-- お礼 -->
+  <div class="section thanks">
+    <h2>🌸 まずは、ありがとうございました</h2>
+    <p>本日は保健師チームの皆さまの大切な業務のお話を、丁寧に聞かせていただき本当にありがとうございました。</p>
+    <p>「事務員さんを増やすか、AIを入れるか」という大切な判断のタイミングで声をかけていただけたこと、すごく嬉しく思っています。</p>
+    <p>お話を伺って <strong>「これは確かに毎月大変だ…」</strong>と感じる場面がたくさんありました。同時に、<strong>AIで楽になりそうな部分もはっきり見えました</strong>。次回5/22に、実際に触れる叩き台でご提案させてください 🌿</p>
+  </div>
+
+  <!-- 11業務俯瞰 -->
+  <div class="section">
+    <h2>📋 今日伺った、皆さまのお仕事</h2>
+    <p class="lead">11個の業務を整理させていただきました。すべて大切なお仕事ですが、まずは<strong>赤い「最優先」2つから</strong>叩き台を作ります。</p>
+    <div class="biz-grid">
+      <div class="biz-card priority"><span class="num">1</span>請求書業務（企業×産業医）</div>
+      <div class="biz-card priority"><span class="num">2</span>訪問リマインドメール</div>
+      <div class="biz-card"><span class="num">3</span>議事録の整理</div>
+      <div class="biz-card"><span class="num">4</span>意見書の清書・PDF納品</div>
+      <div class="biz-card"><span class="num">5</span>委員会の提出資料作成</div>
+      <div class="biz-card"><span class="num">6</span>就業区分判定の集約</div>
+      <div class="biz-card"><span class="num">7</span>労基署への検診報告</div>
+      <div class="biz-card"><span class="num">8</span>面談（メンタル・健康指導）</div>
+      <div class="biz-card"><span class="num">9</span>PDF化・パスワード設定</div>
+      <div class="biz-card"><span class="num">10</span>ストレスチェック反映</div>
+      <div class="biz-card"><span class="num">11</span>メール添付・郵送発送</div>
+    </div>
+  </div>
+
+  <!-- 最優先① 請求書 -->
+  <div class="section">
+    <h2>💰 ① 請求書業務 — 月末の山を、なだらかに</h2>
+    <p class="lead">長谷川さんが1人で背負っている月末の請求書、まずここから楽になりませんか？</p>
+    <div class="compare">
+      <div class="compare-box before">
+        <h4>😵 今の流れ</h4>
+        <ul>
+          <li>紙の出務記録表をスキャン</li>
+          <li>Excelに1件ずつ手打ち</li>
+          <li>企業ごとに別ファイル</li>
+          <li>2重チェック</li>
+          <li>去年と目視で照合</li>
+          <li>PDF化→メール or 印刷郵送</li>
+        </ul>
+      </div>
+      <div class="arrow">▶</div>
+      <div class="compare-box after">
+        <h4>🌿 AIが入ったあと</h4>
+        <ul>
+          <li>紙はそのまま使えます</li>
+          <li>スマホで写真を撮るだけ</li>
+          <li>金額・消費税は自動計算</li>
+          <li>1つのスプシで全企業管理</li>
+          <li>過去データと自動照合</li>
+          <li>メール／印刷を1クリックで</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 最優先② リマインド -->
+  <div class="section">
+    <h2>📅 ② 訪問リマインドメール — 「あ、明日だった」を、なくす</h2>
+    <p class="lead">過去メールを遡らなくても、Googleカレンダーが教えてくれます。</p>
+    <div class="compare">
+      <div class="compare-box before">
+        <h4>😵 今の流れ</h4>
+        <ul>
+          <li>過去メールを遡って探す</li>
+          <li>テンプレを毎回作り直す</li>
+          <li>送るタイミングを忘れがち</li>
+          <li>前日・当日になることも</li>
+        </ul>
+      </div>
+      <div class="arrow">▶</div>
+      <div class="compare-box after">
+        <h4>🌿 AIが入ったあと</h4>
+        <ul>
+          <li>Googleカレンダーと連動</li>
+          <li>1週間前・前日に下書きが届く</li>
+          <li>内容を確認してボタン1つで送信</li>
+          <li>送り忘れがゼロに</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 規模感 -->
+  <div class="section">
+    <h2>📊 今日伺った数字、整理しました</h2>
+    <p class="lead">こうして並べると、AIの出番がある場所がよく見えます。</p>
+    <div class="stats">
+      <div class="stat">
+        <div><span class="big">3,000</span><span class="unit">件/年</span></div>
+        <div class="label">就業区分判定の年間規模</div>
+      </div>
+      <div class="stat">
+        <div><span class="big">971</span><span class="unit">件/月</span></div>
+        <div class="label">繁忙期（10月頃）</div>
+      </div>
+      <div class="stat">
+        <div><span class="big">323</span><span class="unit">件/月</span></div>
+        <div class="label">閑散期（2月頃）</div>
+      </div>
+      <div class="stat">
+        <div><span class="big">¥3,000</span><span class="unit">/月</span></div>
+        <div class="label">PC1台あたりAI利用料 目安</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セキュリティ -->
+  <div class="section">
+    <h2>🔒 個人情報の取り扱い、お約束</h2>
+    <p class="lead">大切な健康情報を扱うお仕事だからこそ、ここは丁寧に進めます。</p>
+    <div class="sec-list">
+      <div class="sec-row">
+        <span class="check">✅</span>
+        <span class="text"><strong>企業名や訪問日程など、公開してOKの情報だけ</strong>をAIに扱わせる方針で合意しました</span>
+      </div>
+      <div class="sec-row">
+        <span class="check">✅</span>
+        <span class="text"><strong>個人名は「番号」に置き換えてからAIに処理させ</strong>、最後に人の手で名前に戻す運用案でご提案いただきました（先方からのご提案、すごく良い設計です）</span>
+      </div>
+      <div class="sec-row">
+        <span class="check">✅</span>
+        <span class="text"><strong>「AIの学習に使わない」設定</strong>はこちらで責任を持って対応します</span>
+      </div>
+      <div class="sec-row">
+        <span class="check">📨</span>
+        <span class="text">本当のリスクは「AIから漏れる」より<strong>「メールの誤送信」「フィッシング詐欺」</strong>の方が大きいので、そこにも一緒に注意します</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 補助金 -->
+  <div class="section">
+    <h2>💴 補助金 — 「AI活用研修」枠が使えそうです</h2>
+    <p class="lead">5/22までに具体的な制度名を1〜2本に絞ってお持ちします。</p>
+    <div class="grant-box">
+      <div class="rate">75%</div>
+      <div class="rate-sub">補助率の見込み（AI活用研修系の補助金）</div>
+      <div class="grant-flow">
+        <div class="col full">
+          <h5>もし補助金なしなら</h5>
+          <div class="price">¥800,000</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;">※あくまで仮の例</div>
+        </div>
+        <div class="col own">
+          <h5>補助金75%適用後の自己負担</h5>
+          <div class="price">¥200,000</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;">※あくまで仮の例</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:14px;">※ 補助金は基本「後払い」のため、一旦の立替が必要です。具体的な制度・期間は5/22に整理してお持ちします。</p>
+    </div>
+  </div>
+
+  <!-- ロードマップ -->
+  <div class="section">
+    <h2>🗺 段階的にゆっくり進めましょう</h2>
+    <p class="lead">いきなり全部AI化はせず、皆さまが慣れたペースで広げていく前提です。</p>
+    <div class="roadmap">
+      <div class="phase">
+        <div class="ph-label">
+          <div class="ph-num">1</div>
+          <div class="ph-sub">今月〜</div>
+        </div>
+        <div class="ph-body">
+          <h4>請求書フロー＋訪問リマインド</h4>
+          <p>長谷川さんの月末の負担を減らす＋訪問の取りこぼしをゼロに</p>
+        </div>
+      </div>
+      <div class="phase p2">
+        <div class="ph-label">
+          <div class="ph-num">2</div>
+          <div class="ph-sub">来月以降</div>
+        </div>
+        <div class="ph-body">
+          <h4>就業区分判定フロー</h4>
+          <p>バラバラ様式の検診結果をAIで読み取り、判定区分を自動振り分け＋報告書の一括生成</p>
+        </div>
+      </div>
+      <div class="phase p3">
+        <div class="ph-label">
+          <div class="ph-num">3</div>
+          <div class="ph-sub">その後</div>
+        </div>
+        <div class="ph-body">
+          <h4>周辺業務（意見書・委員会・労基報告）</h4>
+          <p>残りの手作業を、皆さまの希望順で1つずつAI化していきます</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 次回 -->
+  <div class="section">
+    <h2>🎯 次回 5/22（火）にお会いするとき</h2>
+    <div class="next-meet">
+      <div class="when">2026年5月22日（火） 14:30〜</div>
+      <div class="where">📍 大阪市中央区本町2-2-5 本町第2ビル7階</div>
+      <div class="agenda">
+        <div class="agenda-item"><span class="ic">📊</span><span>請求書フロー＋リマインドの<strong>叩き台を実際に動かしてご覧いただきます</strong></span></div>
+        <div class="agenda-item"><span class="ic">💴</span><span>補助金の具体的な制度名・申請の流れ・費用感をお持ちします</span></div>
+        <div class="agenda-item"><span class="ic">📁</span><span>個人情報を含まないサンプルデータで叩き台を確認</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 宿題 -->
+  <div class="section">
+    <h2>📝 5/22までの、それぞれの宿題</h2>
+    <p class="lead">お互いの「やっておくと当日が早く進むこと」をまとめました。</p>
+    <div class="homework">
+      <div class="hw-col them">
+        <h4>🌿 健康管理支援室 皆さまへ</h4>
+        <ul>
+          <li>個人情報を含まないサンプルデータ</li>
+          <li>請求書の空のExcelテンプレート</li>
+          <li>メールドメインの管理元の確認<br><span style="font-size:11px;color:var(--muted);">　（Gmail移行のご検討の参考に）</span></li>
+        </ul>
+      </div>
+      <div class="hw-col us">
+        <h4>🤝 こちら（おけもん側）から</h4>
+        <ul>
+          <li>請求書＋リマインドの叩き台メール送付<br><span style="font-size:11px;color:var(--muted);">　（〜5/21まで・費用なし）</span></li>
+          <li>補助金制度のリサーチ＋見通し</li>
+          <li>当日のデモ準備（実際に触れる状態）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="heart">🌸</div>
+    <p>本日は本当にありがとうございました。<br>次回お会いできるのを楽しみにしております。</p>
+    <p class="org">一般社団法人 健康管理支援室 御中</p>
+    <p style="margin-top:10px;">おけもんカンパニー｜ 2026-05-14</p>
+  </footer>
+
+</div>
+</body>
+</html>
