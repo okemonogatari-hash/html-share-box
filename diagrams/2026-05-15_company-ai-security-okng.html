@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会社でAIを使うときの OK / NG 線引きガイド｜仙人動画＋医療系考慮版</title>
+<style>
+  :root {
+    --bg: #fef9f3;
+    --paper: #ffffff;
+    --ink: #2d2a26;
+    --muted: #7a716a;
+    --ok: #00b894;
+    --gray: #fdcb6e;
+    --ng: #ff6b6b;
+    --accent1: #ff6b9d;
+    --accent2: #6c5ce7;
+    --line: rgba(45,42,38,0.12);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: linear-gradient(180deg, #fef9f3 0%, #fff5ec 100%);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    line-height: 1.7;
+    padding: 24px 16px 64px;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; }
+
+  /* ヘッダー */
+  .hero {
+    text-align: center;
+    padding: 32px 20px 24px;
+    margin-bottom: 28px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #fff 0%, #ffeef5 100%);
+    border: 2px solid rgba(255,107,157,0.2);
+    box-shadow: 0 4px 20px rgba(255,107,157,0.1);
+  }
+  .hero .badge {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .hero h1 {
+    font-size: 26px;
+    line-height: 1.4;
+    margin: 8px 0 12px;
+    font-weight: 800;
+  }
+  .hero .sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .hero .source {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 16px;
+    background: rgba(108,92,231,0.08);
+    border-radius: 12px;
+    font-size: 12px;
+    color: var(--accent2);
+    text-decoration: none;
+  }
+
+  /* イントロ */
+  .intro {
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 22px 20px;
+    margin-bottom: 32px;
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .intro p { margin: 0 0 10px; font-size: 14px; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { color: var(--accent2); }
+
+  /* 大セクション見出し */
+  .sec-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 800;
+    margin: 36px 0 18px;
+    padding-left: 8px;
+  }
+  .sec-title .pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .pill-ok { background: var(--ok); }
+  .pill-gray { background: var(--gray); color: #6b4f00; }
+  .pill-ng { background: var(--ng); }
+
+  /* カード */
+  .card {
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 18px 18px 14px;
+    margin-bottom: 14px;
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: relative;
+    overflow: hidden;
+  }
+  .card.ok::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: var(--ok);
+  }
+  .card.gray::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: var(--gray);
+  }
+  .card.ng::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: var(--ng);
+  }
+  .card h3 {
+    font-size: 16px;
+    margin: 0 0 8px;
+    padding-left: 10px;
+    font-weight: 700;
+  }
+  .card .meta {
+    padding-left: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .card .body {
+    padding-left: 10px;
+    font-size: 14px;
+  }
+  .card .body p { margin: 0 0 6px; }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 4px;
+    margin-top: 4px;
+  }
+  .tag-ok { background: rgba(0,184,148,0.12); color: var(--ok); }
+  .tag-gray { background: rgba(253,203,110,0.18); color: #b08300; }
+  .tag-ng { background: rgba(255,107,107,0.12); color: var(--ng); }
+
+  /* 仙人テク応用 */
+  .tech-box {
+    background: linear-gradient(135deg, #fff 0%, #fff5ec 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 14px;
+    border: 1px solid var(--line);
+  }
+  .tech-box h4 {
+    font-size: 15px;
+    margin: 0 0 8px;
+    color: var(--accent2);
+  }
+  .tech-box p {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  /* 注意ボックス */
+  .note {
+    background: linear-gradient(135deg, #fff7ed 0%, #ffe9d6 100%);
+    border-left: 5px solid var(--accent1);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+  .note strong { color: #c2185b; }
+
+  /* 5/22提案文 */
+  .proposal {
+    background: linear-gradient(135deg, #f0fffa 0%, #d4f7eb 100%);
+    border: 2px solid var(--ok);
+    border-radius: 16px;
+    padding: 22px;
+    margin: 24px 0;
+  }
+  .proposal h4 {
+    margin: 0 0 12px;
+    color: var(--ok);
+    font-size: 15px;
+  }
+  .proposal p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  /* フッター */
+  footer {
+    margin-top: 40px;
+    padding: 24px 20px;
+    background: var(--paper);
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  footer a { color: var(--accent2); text-decoration: none; }
+  footer h5 { margin: 0 0 8px; color: var(--ink); font-size: 13px; }
+
+  /* 簡易テーブル */
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 13px;
+  }
+  table.matrix th, table.matrix td {
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    text-align: left;
+  }
+  table.matrix th {
+    background: rgba(108,92,231,0.06);
+    font-weight: 700;
+  }
+  .ok-cell { background: rgba(0,184,148,0.08); color: #008f6e; font-weight: 700; }
+  .gray-cell { background: rgba(253,203,110,0.15); color: #a17800; font-weight: 700; }
+  .ng-cell { background: rgba(255,107,107,0.1); color: #c0392b; font-weight: 700; }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 22px; }
+    .sec-title { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="badge">セキュリティ線引きガイド</div>
+    <h1>会社でAIを使うとき、<br>これはOK／これはNG</h1>
+    <p class="sub">AI仙人動画ベース＋医療系の追加考慮版（2026-05-15）</p>
+    <a class="source" href="https://www.youtube.com/watch?v=R5o_MPwm2Bc" target="_blank">📺 元動画：「【消すかも】仕事でCopilotやGeminiしか使えない会社でプロレベルにAIを使うテクニック」</a>
+  </div>
+
+  <!-- イントロ -->
+  <div class="intro">
+    <p>「会社の規定がきびしくてAIが使えない…」と悩む人向けの<strong>セーフライン地図</strong>。</p>
+    <p>AI仙人 R5o_MPwm2Bc（2026-05-15公開）のグレーゾーン解説をベースに、<strong>医療系（要配慮個人情報）の追加考慮</strong>を上乗せした。会社・業界によって判断は変わるので、最終的には<strong>必ず社内のAI規定を確認</strong>すること。</p>
+  </div>
+
+  <!-- セクション1：OK -->
+  <h2 class="sec-title"><span class="pill pill-ok">✅ OK</span>明確にOKと言える範囲</h2>
+
+  <div class="card ok">
+    <h3>🅰 Copilot / Gemini に顧客データを入れる</h3>
+    <p class="meta">＝ MS365 / Google Drive にくっついてるAI</p>
+    <div class="body">
+      <p>「ボリュームゾーンとしては Copilot や Gemini に、お客さんからもらった情報を入れるのは割とOKとされてる」（仙人）</p>
+      <p>Drive / OneDrive に置いてあるデータには既にこれらAIがくっついてる → 実務上の合意ライン。</p>
+      <span class="tag tag-ok">議事録</span>
+      <span class="tag tag-ok">顧客データ</span>
+      <span class="tag tag-ok">名前レベル</span>
+    </div>
+  </div>
+
+  <div class="card ok">
+    <h3>🅱 Teams / Google Meet の録音・文字起こし</h3>
+    <p class="meta">＝ 純正ツールの録音 → 議事録AI</p>
+    <div class="body">
+      <p>「Teams の文字起こしはいい。フォルダに落として Copilot に入れて議事録／提案書を作って」（仙人）</p>
+      <p><strong>オフライン会議でも PC を机に置いて Teams 録音回す</strong>テクで、コンテキストを溜める。</p>
+      <span class="tag tag-ok">純正ルート</span>
+      <span class="tag tag-ok">議事録自動化</span>
+    </div>
+  </div>
+
+  <div class="card ok">
+    <h3>🅲 家のAIで一般リサーチ・スキル向上</h3>
+    <p class="meta">＝ 仕事文脈をぼかす運用</p>
+    <div class="body">
+      <p>「一般的なことを調べる分には家でOK。わざわざ会社の弱いAIを使う必要もない」（仙人）</p>
+      <p>家で先に学んで、その<strong>発想として</strong>会社に持ち込むのは合法ルート。</p>
+      <span class="tag tag-ok">学習OFF前提</span>
+      <span class="tag tag-ok">業務外調査</span>
+    </div>
+  </div>
+
+  <div class="card ok">
+    <h3>🅳 ダミーデータ＋カラム名変換</h3>
+    <p class="meta">＝ カラム名だけ持ち帰る戦術</p>
+    <div class="body">
+      <p>「会社のデータとよく似たデータでカラム名も全部変えて、どこの会社か分からないものを作る」（仙人）</p>
+      <p>家のAIでダミーから自動化ロジックを構築 → 完成品を会社へ。<strong>個人情報も実データも持ち帰らない</strong>。</p>
+      <span class="tag tag-ok">著作人格性なし</span>
+      <span class="tag tag-ok">ロジック構築</span>
+    </div>
+  </div>
+
+  <div class="card ok">
+    <h3>🅴 印刷物経由 / 写真→OCR</h3>
+    <p class="meta">＝ 物理ルート</p>
+    <div class="body">
+      <p>「印刷は<strong>絶対オッケー</strong>」「写真撮って PC に送って Gemini に読ませる、行ける」（仙人）</p>
+      <p>家で作った叩き台を印刷で持参 → 社内で使う流れは仙人公認。</p>
+      <span class="tag tag-ok">物理持込</span>
+      <span class="tag tag-ok">OCR経由</span>
+    </div>
+  </div>
+
+  <div class="card ok">
+    <h3>🅵 学習OFF設定</h3>
+    <p class="meta">＝ 全AIで前提</p>
+    <div class="body">
+      <p>「学習はオフにしといた方がいい。これは絶対に守る」（仙人）</p>
+      <p>Copilot / Gemini / Claude / ChatGPT すべて<strong>学習データ利用OFFは大前提</strong>。</p>
+      <span class="tag tag-ok">必須前提</span>
+    </div>
+  </div>
+
+  <!-- セクション2：グレー -->
+  <h2 class="sec-title"><span class="pill pill-gray">🟡 グレー</span>条件付きでOK（要・取引先同意）</h2>
+
+  <div class="card gray">
+    <h3>🅖 取引先データのスキャン → OCR</h3>
+    <p class="meta">＝ 検診結果・顧客書類など</p>
+    <div class="body">
+      <p>「取引先企業の理解・同意が必要、慎重に進める」（湯川さん側合意ライン）</p>
+      <p><strong>クリア条件</strong>：取引先 1 社からパイロット同意取り → Gemini（Drive 内）で実施 → 学習OFF徹底 → 段階拡大。</p>
+      <span class="tag tag-gray">パイロット運用</span>
+      <span class="tag tag-gray">段階導入</span>
+    </div>
+  </div>
+
+  <div class="card gray">
+    <h3>🅗 個人メール → 会社メールへの送信</h3>
+    <p class="meta">＝「逆方向」</p>
+    <div class="body">
+      <p>「会社から送るはやばいけど、会社に送るはギリセーフ」（仙人）</p>
+      <p>家でリサーチ済みの一般情報を会社の自分宛に送るのはギリOK。<strong>逆方向（会社から家AIへ）は NG</strong>。</p>
+      <span class="tag tag-gray">逆方向</span>
+    </div>
+  </div>
+
+  <div class="card gray">
+    <h3>🅘 情シスへの粘り強い交渉</h3>
+    <p class="meta">＝ Circleback 等の導入希望</p>
+    <div class="body">
+      <p>「100〜400 人くらいの企業さん、特に上場してない会社は割と通る」（仙人）</p>
+      <p>家でやった成果を「責任持ってやります」と見せに行く形が最強。<strong>上場・大企業は厳しい</strong>。</p>
+      <span class="tag tag-gray">中小企業向け</span>
+    </div>
+  </div>
+
+  <!-- セクション3：NG -->
+  <h2 class="sec-title"><span class="pill pill-ng">❌ NG</span>これだけは避ける</h2>
+
+  <div class="card ng">
+    <h3>🅙 マイナンバー・カード情報など一意特定情報</h3>
+    <p class="meta">＝ ガチの個人情報</p>
+    <div class="body">
+      <p>「個人が一意に特定される情報は、ジェミニにもコパイロットにも入れたらアカン」（仙人）</p>
+      <p>必ず<strong>番号化</strong>してから処理する。</p>
+      <span class="tag tag-ng">即アウト</span>
+    </div>
+  </div>
+
+  <div class="card ng">
+    <h3>🅚 Claude / ChatGPT に学習ON で実データ</h3>
+    <p class="meta">＝ 外部AI ✕ 実データ ✕ 学習ON</p>
+    <div class="body">
+      <p>会社の文脈・お客様情報を学習ON のまま外部AIに突っ込むのは「普通に大炎上」（仙人）</p>
+      <p>必要なら<strong>チームプラン契約＋ログ取得</strong>で稟議を通す。</p>
+      <span class="tag tag-ng">学習ON厳禁</span>
+    </div>
+  </div>
+
+  <div class="card ng">
+    <h3>🅛 iPhone での勝手録音</h3>
+    <p class="meta">＝ 純正以外の録音手段</p>
+    <div class="body">
+      <p>「規約違反になる会社が多い。怒られる」（仙人）</p>
+      <p>Circleback or 純正ツール（Teams / Google Meet）の録音を使う。</p>
+      <span class="tag tag-ng">規約違反多発</span>
+    </div>
+  </div>
+
+  <div class="card ng">
+    <h3>🅜 エンタープライズ／上場でグレー戦術ゴリ押し</h3>
+    <p class="meta">＝ 規模ミス</p>
+    <div class="body">
+      <p>「車内規定とかセキュリティ認証取ってるかとか色々ある。エンタープライズでこれやるとさすがにヤバい」（仙人）</p>
+      <p>大企業では<strong>正攻法（情シス→経営層へ稟議）のみ</strong>。</p>
+      <span class="tag tag-ng">規模見極め</span>
+    </div>
+  </div>
+
+  <!-- 仙人テク応用 -->
+  <h2 class="sec-title">🛠 仙人テクの実践応用</h2>
+
+  <div class="tech-box">
+    <h4>① ダミーデータ戦術</h4>
+    <p>カラム名のみ持ち帰り → 家AIでダミーデータ生成 → 自動化ロジック構築 → 印刷物で持参。<strong>個人情報も実データも家に行かない</strong>のが本質。</p>
+  </div>
+
+  <div class="tech-box">
+    <h4>② 印刷物経由</h4>
+    <p>家でClaude Code等で組んだ叩き台は<strong>印刷で持参</strong>。写真→OCR→Geminiも仙人公認ルート。</p>
+  </div>
+
+  <div class="tech-box">
+    <h4>③ トップダウン説得</h4>
+    <p>「現場ボトムアップは地雷」（仙人）。<strong>責任者・経営層から落とす</strong>のが王道。実物を見せて「私が責任持ってやります」と上げる。</p>
+  </div>
+
+  <!-- 医療系の追加考慮 -->
+  <div class="note">
+    <p>🩺 <strong>医療系・要配慮個人情報の壁</strong></p>
+    <p>病歴・健診結果は<strong>個人情報保護法 第2条第3項「要配慮個人情報」</strong>として通常の個人情報より厳しい扱いが必要。さらに<strong>厚労省「医療情報システムの安全管理ガイドライン」</strong>の対象領域でもある。</p>
+    <p>→ 医療系では「番号化→AI処理→人間が戻す」運用が事実上の<strong>必須プロトコル</strong>。</p>
+  </div>
+
+  <!-- 5/22提案 -->
+  <div class="proposal">
+    <h4>💡 セーフラインの提案（湯川さん案件 5/22叩き台デモ用）</h4>
+    <p>公開情報（企業名・訪問日程・契約パターン）はそのままAIに扱わせる前提でOK。個人名は番号に置換 → AI処理 → 最後に人間が変換する運用に。学習OFFは全AIで徹底、メール送信は必ず人間チェック後にボタン押下。検診結果スキャンは取引先1社から同意取り → Gemini（Drive内）でパイロット運用 → 段階拡大。最大リスクはAI漏洩よりヒューマンエラーなので、誤送信防止チェック工程を運用設計に組み込む。</p>
+  </div>
+
+  <!-- 簡易マトリクス -->
+  <h2 class="sec-title">📋 一覧マトリクス（ひと目で判断）</h2>
+
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th>業務・データ</th>
+        <th>Copilot/Gemini<br>(MS365/Drive内)</th>
+        <th>Claude/ChatGPT<br>(外部・学習OFF)</th>
+        <th>家のAI</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>企業名・スケジュール</td>
+        <td class="ok-cell">OK</td>
+        <td class="ok-cell">OK</td>
+        <td class="ok-cell">OK</td>
+      </tr>
+      <tr>
+        <td>議事録・お客様資料</td>
+        <td class="ok-cell">OK</td>
+        <td class="gray-cell">グレー</td>
+        <td class="ng-cell">NG</td>
+      </tr>
+      <tr>
+        <td>請求書フォーマット・契約パターン</td>
+        <td class="ok-cell">OK</td>
+        <td class="gray-cell">グレー</td>
+        <td class="ok-cell">OK*</td>
+      </tr>
+      <tr>
+        <td>個人名（メール内レベル）</td>
+        <td class="ok-cell">OK</td>
+        <td class="gray-cell">グレー</td>
+        <td class="ng-cell">NG</td>
+      </tr>
+      <tr>
+        <td>検診結果スキャン</td>
+        <td class="gray-cell">グレー</td>
+        <td class="ng-cell">NG</td>
+        <td class="ng-cell">NG</td>
+      </tr>
+      <tr>
+        <td>マイナンバー・健康情報セット</td>
+        <td class="ng-cell">NG</td>
+        <td class="ng-cell">NG</td>
+        <td class="ng-cell">NG</td>
+      </tr>
+      <tr>
+        <td>ダミーデータ（カラム名変換済）</td>
+        <td class="ok-cell">OK</td>
+        <td class="ok-cell">OK</td>
+        <td class="ok-cell">OK</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px; color:var(--muted); margin-top:8px;">* 家のAIでも「ダミーデータ＋カラム名変換」が前提。実データはNG。</p>
+
+  <!-- フッター -->
+  <footer>
+    <h5>📚 根拠リンク</h5>
+    <p>📺 AI仙人 動画 R5o_MPwm2Bc（2026-05-15公開）：<a href="https://www.youtube.com/watch?v=R5o_MPwm2Bc" target="_blank">「【消すかも】仕事でCopilotやGeminiしか使えない会社でプロレベルにAIを使うテクニック」</a></p>
+    <p>🩺 厚労省「医療情報システムの安全管理に関するガイドライン」：<a href="https://www.mhlw.go.jp/stf/shingi/0000516275.html" target="_blank">厚生労働省</a></p>
+    <p>📝 個人情報保護法 第2条第3項「要配慮個人情報」</p>
+    <br>
+    <h5>🌱 制作</h5>
+    <p>はるかCEO（おけもんカンパニー）<br>2026-05-15／湯川さん案件 5/22叩き台デモ向け<br>※会社・業界・規模で判断は変わります。最終的には必ず社内のAI規定を確認してください。</p>
+  </footer>
+
+</div>
+</body>
+</html>
