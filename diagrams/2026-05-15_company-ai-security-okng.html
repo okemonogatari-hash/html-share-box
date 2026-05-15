@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>会社でAIを使うときの OK / NG 線引きガイド｜仙人動画＋医療系考慮版</title>
+<title>会社でAIを使うときの OK / NG 線引きガイド｜本当に怖い「人のミス」対策つき</title>
 <style>
   :root {
     --bg: #fef9f3;
@@ -13,6 +13,7 @@
     --ok: #00b894;
     --gray: #fdcb6e;
     --ng: #ff6b6b;
+    --human: #e17055;
     --accent1: #ff6b9d;
     --accent2: #6c5ce7;
     --line: rgba(45,42,38,0.12);
@@ -106,6 +107,7 @@
   .pill-ok { background: var(--ok); }
   .pill-gray { background: var(--gray); color: #6b4f00; }
   .pill-ng { background: var(--ng); }
+  .pill-human { background: var(--human); }
 
   /* カード */
   .card {
@@ -139,6 +141,13 @@
     width: 6px;
     background: var(--ng);
   }
+  .card.human::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: var(--human);
+  }
   .card h3 {
     font-size: 16px;
     margin: 0 0 8px;
@@ -156,6 +165,8 @@
     font-size: 14px;
   }
   .card .body p { margin: 0 0 6px; }
+  .card .body ul { margin: 6px 0 0; padding-left: 18px; }
+  .card .body li { margin-bottom: 4px; font-size: 13.5px; }
   .tag {
     display: inline-block;
     padding: 2px 8px;
@@ -168,6 +179,7 @@
   .tag-ok { background: rgba(0,184,148,0.12); color: var(--ok); }
   .tag-gray { background: rgba(253,203,110,0.18); color: #b08300; }
   .tag-ng { background: rgba(255,107,107,0.12); color: var(--ng); }
+  .tag-human { background: rgba(225,112,85,0.12); color: var(--human); }
 
   /* 仙人テク応用 */
   .tech-box {
@@ -187,6 +199,79 @@
     margin: 0;
   }
 
+  /* 衝撃イントロ（ヒューマンエラー扉） */
+  .shock {
+    background: linear-gradient(135deg, #fff5f2 0%, #ffe2d6 100%);
+    border-radius: 18px;
+    padding: 26px 22px;
+    margin: 36px 0 20px;
+    border: 2px solid rgba(225,112,85,0.3);
+    box-shadow: 0 4px 14px rgba(225,112,85,0.1);
+    text-align: center;
+  }
+  .shock h2 {
+    margin: 0 0 10px;
+    font-size: 22px;
+    color: var(--human);
+    font-weight: 800;
+  }
+  .shock p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.8;
+  }
+  .shock .big {
+    display: block;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--human);
+    margin: 12px 0 6px;
+  }
+  .shock .quote {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* チェックリストボックス */
+  .checklist {
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 22px;
+    margin: 24px 0;
+    border: 2px solid var(--ok);
+  }
+  .checklist h4 {
+    margin: 0 0 12px;
+    color: var(--ok);
+    font-size: 15px;
+  }
+  .checklist ul {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  .checklist li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .checklist li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--ok);
+    font-weight: 700;
+    font-size: 16px;
+  }
+
   /* 注意ボックス */
   .note {
     background: linear-gradient(135deg, #fff7ed 0%, #ffe9d6 100%);
@@ -197,25 +282,6 @@
     font-size: 14px;
   }
   .note strong { color: #c2185b; }
-
-  /* 5/22提案文 */
-  .proposal {
-    background: linear-gradient(135deg, #f0fffa 0%, #d4f7eb 100%);
-    border: 2px solid var(--ok);
-    border-radius: 16px;
-    padding: 22px;
-    margin: 24px 0;
-  }
-  .proposal h4 {
-    margin: 0 0 12px;
-    color: var(--ok);
-    font-size: 15px;
-  }
-  .proposal p {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.8;
-  }
 
   /* フッター */
   footer {
@@ -254,6 +320,8 @@
   @media (max-width: 480px) {
     .hero h1 { font-size: 22px; }
     .sec-title { font-size: 18px; }
+    .shock h2 { font-size: 19px; }
+    .shock .big { font-size: 24px; }
   }
 </style>
 </head>
@@ -262,16 +330,18 @@
 
   <!-- ヒーロー -->
   <div class="hero">
-    <div class="badge">セキュリティ線引きガイド</div>
+    <div class="badge">AIセキュリティガイド</div>
     <h1>会社でAIを使うとき、<br>これはOK／これはNG</h1>
-    <p class="sub">AI仙人動画ベース＋医療系の追加考慮版（2026-05-15）</p>
-    <a class="source" href="https://www.youtube.com/watch?v=R5o_MPwm2Bc" target="_blank">📺 元動画：「【消すかも】仕事でCopilotやGeminiしか使えない会社でプロレベルにAIを使うテクニック」</a>
+    <p class="sub">…でも、本当に怖いのは「人のミス」のほうでした。</p>
+    <a class="source" href="https://www.youtube.com/watch?v=R5o_MPwm2Bc" target="_blank">📺 元動画：AI仙人「【消すかも】仕事でCopilotやGeminiしか使えない会社でプロレベルにAIを使うテクニック」</a>
   </div>
 
   <!-- イントロ -->
   <div class="intro">
     <p>「会社の規定がきびしくてAIが使えない…」と悩む人向けの<strong>セーフライン地図</strong>。</p>
-    <p>AI仙人 R5o_MPwm2Bc（2026-05-15公開）のグレーゾーン解説をベースに、<strong>医療系（要配慮個人情報）の追加考慮</strong>を上乗せした。会社・業界によって判断は変わるので、最終的には<strong>必ず社内のAI規定を確認</strong>すること。</p>
+    <p>AI仙人の動画で語られていた<strong>グレーゾーンの実用ライン</strong>を、3層（OK / グレー / NG）に整理した。</p>
+    <p>そしてもう一つ大切な話。<strong>AIのリスクよりも、実は「人のミス」のほうがはるかに事故率が高い</strong>。後半でその対策にも触れる。</p>
+    <p style="color:var(--muted); font-size:12.5px;">※会社・業界・規模によって判断は変わる。最終的には<strong>必ず社内のAI規定を確認</strong>してください。</p>
   </div>
 
   <!-- セクション1：OK -->
@@ -281,7 +351,7 @@
     <h3>🅰 Copilot / Gemini に顧客データを入れる</h3>
     <p class="meta">＝ MS365 / Google Drive にくっついてるAI</p>
     <div class="body">
-      <p>「ボリュームゾーンとしては Copilot や Gemini に、お客さんからもらった情報を入れるのは割とOKとされてる」（仙人）</p>
+      <p>「ボリュームゾーンとしては Copilot や Gemini に、お客さんからもらった情報を入れるのは割とOKとされてる」</p>
       <p>Drive / OneDrive に置いてあるデータには既にこれらAIがくっついてる → 実務上の合意ライン。</p>
       <span class="tag tag-ok">議事録</span>
       <span class="tag tag-ok">顧客データ</span>
@@ -293,7 +363,7 @@
     <h3>🅱 Teams / Google Meet の録音・文字起こし</h3>
     <p class="meta">＝ 純正ツールの録音 → 議事録AI</p>
     <div class="body">
-      <p>「Teams の文字起こしはいい。フォルダに落として Copilot に入れて議事録／提案書を作って」（仙人）</p>
+      <p>「Teams の文字起こしはいい。フォルダに落として Copilot に入れて議事録／提案書を作って」</p>
       <p><strong>オフライン会議でも PC を机に置いて Teams 録音回す</strong>テクで、コンテキストを溜める。</p>
       <span class="tag tag-ok">純正ルート</span>
       <span class="tag tag-ok">議事録自動化</span>
@@ -304,7 +374,7 @@
     <h3>🅲 家のAIで一般リサーチ・スキル向上</h3>
     <p class="meta">＝ 仕事文脈をぼかす運用</p>
     <div class="body">
-      <p>「一般的なことを調べる分には家でOK。わざわざ会社の弱いAIを使う必要もない」（仙人）</p>
+      <p>「一般的なことを調べる分には家でOK。わざわざ会社の弱いAIを使う必要もない」</p>
       <p>家で先に学んで、その<strong>発想として</strong>会社に持ち込むのは合法ルート。</p>
       <span class="tag tag-ok">学習OFF前提</span>
       <span class="tag tag-ok">業務外調査</span>
@@ -315,7 +385,7 @@
     <h3>🅳 ダミーデータ＋カラム名変換</h3>
     <p class="meta">＝ カラム名だけ持ち帰る戦術</p>
     <div class="body">
-      <p>「会社のデータとよく似たデータでカラム名も全部変えて、どこの会社か分からないものを作る」（仙人）</p>
+      <p>「会社のデータとよく似たデータでカラム名も全部変えて、どこの会社か分からないものを作る」</p>
       <p>家のAIでダミーから自動化ロジックを構築 → 完成品を会社へ。<strong>個人情報も実データも持ち帰らない</strong>。</p>
       <span class="tag tag-ok">著作人格性なし</span>
       <span class="tag tag-ok">ロジック構築</span>
@@ -326,7 +396,7 @@
     <h3>🅴 印刷物経由 / 写真→OCR</h3>
     <p class="meta">＝ 物理ルート</p>
     <div class="body">
-      <p>「印刷は<strong>絶対オッケー</strong>」「写真撮って PC に送って Gemini に読ませる、行ける」（仙人）</p>
+      <p>「印刷は<strong>絶対オッケー</strong>」「写真撮って PC に送って Gemini に読ませる、行ける」</p>
       <p>家で作った叩き台を印刷で持参 → 社内で使う流れは仙人公認。</p>
       <span class="tag tag-ok">物理持込</span>
       <span class="tag tag-ok">OCR経由</span>
@@ -337,20 +407,20 @@
     <h3>🅵 学習OFF設定</h3>
     <p class="meta">＝ 全AIで前提</p>
     <div class="body">
-      <p>「学習はオフにしといた方がいい。これは絶対に守る」（仙人）</p>
+      <p>「学習はオフにしといた方がいい。これは絶対に守る」</p>
       <p>Copilot / Gemini / Claude / ChatGPT すべて<strong>学習データ利用OFFは大前提</strong>。</p>
       <span class="tag tag-ok">必須前提</span>
     </div>
   </div>
 
   <!-- セクション2：グレー -->
-  <h2 class="sec-title"><span class="pill pill-gray">🟡 グレー</span>条件付きでOK（要・取引先同意）</h2>
+  <h2 class="sec-title"><span class="pill pill-gray">🟡 グレー</span>条件付きでOK</h2>
 
   <div class="card gray">
     <h3>🅖 取引先データのスキャン → OCR</h3>
     <p class="meta">＝ 検診結果・顧客書類など</p>
     <div class="body">
-      <p>「取引先企業の理解・同意が必要、慎重に進める」（湯川さん側合意ライン）</p>
+      <p>取引先企業の理解・同意が必要、慎重に進めるライン。</p>
       <p><strong>クリア条件</strong>：取引先 1 社からパイロット同意取り → Gemini（Drive 内）で実施 → 学習OFF徹底 → 段階拡大。</p>
       <span class="tag tag-gray">パイロット運用</span>
       <span class="tag tag-gray">段階導入</span>
@@ -361,7 +431,7 @@
     <h3>🅗 個人メール → 会社メールへの送信</h3>
     <p class="meta">＝「逆方向」</p>
     <div class="body">
-      <p>「会社から送るはやばいけど、会社に送るはギリセーフ」（仙人）</p>
+      <p>「会社から送るはやばいけど、会社に送るはギリセーフ」</p>
       <p>家でリサーチ済みの一般情報を会社の自分宛に送るのはギリOK。<strong>逆方向（会社から家AIへ）は NG</strong>。</p>
       <span class="tag tag-gray">逆方向</span>
     </div>
@@ -369,9 +439,9 @@
 
   <div class="card gray">
     <h3>🅘 情シスへの粘り強い交渉</h3>
-    <p class="meta">＝ Circleback 等の導入希望</p>
+    <p class="meta">＝ 新規ツールの導入希望</p>
     <div class="body">
-      <p>「100〜400 人くらいの企業さん、特に上場してない会社は割と通る」（仙人）</p>
+      <p>「100〜400 人くらいの企業さん、特に上場してない会社は割と通る」</p>
       <p>家でやった成果を「責任持ってやります」と見せに行く形が最強。<strong>上場・大企業は厳しい</strong>。</p>
       <span class="tag tag-gray">中小企業向け</span>
     </div>
@@ -384,7 +454,7 @@
     <h3>🅙 マイナンバー・カード情報など一意特定情報</h3>
     <p class="meta">＝ ガチの個人情報</p>
     <div class="body">
-      <p>「個人が一意に特定される情報は、ジェミニにもコパイロットにも入れたらアカン」（仙人）</p>
+      <p>「個人が一意に特定される情報は、Copilot にも Gemini にも入れたらアカン」</p>
       <p>必ず<strong>番号化</strong>してから処理する。</p>
       <span class="tag tag-ng">即アウト</span>
     </div>
@@ -394,7 +464,7 @@
     <h3>🅚 Claude / ChatGPT に学習ON で実データ</h3>
     <p class="meta">＝ 外部AI ✕ 実データ ✕ 学習ON</p>
     <div class="body">
-      <p>会社の文脈・お客様情報を学習ON のまま外部AIに突っ込むのは「普通に大炎上」（仙人）</p>
+      <p>会社の文脈・お客様情報を学習ON のまま外部AIに突っ込むのは「普通に大炎上」。</p>
       <p>必要なら<strong>チームプラン契約＋ログ取得</strong>で稟議を通す。</p>
       <span class="tag tag-ng">学習ON厳禁</span>
     </div>
@@ -404,7 +474,7 @@
     <h3>🅛 iPhone での勝手録音</h3>
     <p class="meta">＝ 純正以外の録音手段</p>
     <div class="body">
-      <p>「規約違反になる会社が多い。怒られる」（仙人）</p>
+      <p>「規約違反になる会社が多い。怒られる」</p>
       <p>Circleback or 純正ツール（Teams / Google Meet）の録音を使う。</p>
       <span class="tag tag-ng">規約違反多発</span>
     </div>
@@ -414,14 +484,14 @@
     <h3>🅜 エンタープライズ／上場でグレー戦術ゴリ押し</h3>
     <p class="meta">＝ 規模ミス</p>
     <div class="body">
-      <p>「車内規定とかセキュリティ認証取ってるかとか色々ある。エンタープライズでこれやるとさすがにヤバい」（仙人）</p>
+      <p>「車内規定とかセキュリティ認証取ってるかとか色々ある。エンタープライズでこれやるとさすがにヤバい」</p>
       <p>大企業では<strong>正攻法（情シス→経営層へ稟議）のみ</strong>。</p>
       <span class="tag tag-ng">規模見極め</span>
     </div>
   </div>
 
   <!-- 仙人テク応用 -->
-  <h2 class="sec-title">🛠 仙人テクの実践応用</h2>
+  <h2 class="sec-title">🛠 グレーをホワイトに寄せるテク</h2>
 
   <div class="tech-box">
     <h4>① ダミーデータ戦術</h4>
@@ -430,25 +500,137 @@
 
   <div class="tech-box">
     <h4>② 印刷物経由</h4>
-    <p>家でClaude Code等で組んだ叩き台は<strong>印刷で持参</strong>。写真→OCR→Geminiも仙人公認ルート。</p>
+    <p>家で組んだ叩き台は<strong>印刷で持参</strong>。写真→OCR→Geminiも公認ルート。</p>
   </div>
 
   <div class="tech-box">
     <h4>③ トップダウン説得</h4>
-    <p>「現場ボトムアップは地雷」（仙人）。<strong>責任者・経営層から落とす</strong>のが王道。実物を見せて「私が責任持ってやります」と上げる。</p>
+    <p>「現場ボトムアップは地雷」。<strong>責任者・経営層から落とす</strong>のが王道。実物を見せて「私が責任持ってやります」と上げる。</p>
   </div>
 
-  <!-- 医療系の追加考慮 -->
+  <!-- ── ここから新セクション：ヒューマンエラー対策 ── -->
+
+  <div class="shock">
+    <h2>⚠ ところで…</h2>
+    <p>AIから情報が漏れるリスクは確かに気にすべき。<br>でも、現場で実際に事故ってる原因の大半は──</p>
+    <span class="big">「人のミス」</span>
+    <p>AIに気をつけても、ここを止められないと意味がない。</p>
+    <div class="quote">「最大のリスクはAIからの情報漏洩よりも、メール誤送信やフィッシング詐欺などのヒューマンエラー」</div>
+  </div>
+
+  <h2 class="sec-title"><span class="pill pill-human">⚠ HUMAN</span>実はAIより怖い「人のミス」</h2>
+
+  <div class="card human">
+    <h3>🅝 メール誤送信</h3>
+    <p class="meta">＝ CC・宛先・添付の事故</p>
+    <div class="body">
+      <ul>
+        <li>CCに別の取引先が混ざってた／BCCにすべきところをCC</li>
+        <li>添付ファイルを間違えた（別顧客のExcelをそのまま送信）</li>
+        <li>オートコンプリートで宛先が「似た名前の別人」になった</li>
+        <li>返信時に「全員に返信」で社外秘情報を社外へ</li>
+      </ul>
+      <p><strong>対策</strong>：送信前の人間チェック工程を必ず入れる／添付ファイル名に顧客名を必須化／メーラーの送信遅延機能（5〜30秒）を有効化。</p>
+      <span class="tag tag-human">最頻発</span>
+      <span class="tag tag-human">送信前チェック</span>
+    </div>
+  </div>
+
+  <div class="card human">
+    <h3>🅞 フィッシング詐欺</h3>
+    <p class="meta">＝ 偽メール／偽サイト</p>
+    <div class="body">
+      <ul>
+        <li>取引先や上司を装ったメールで業務情報を入力</li>
+        <li>「請求書PDFが届きました」リンクから偽ログイン画面へ</li>
+        <li>AI時代の進化：<strong>本物そっくりの社内文体・本人の声まで生成される</strong>。「上司から音声で指示が来た」も疑う時代</li>
+      </ul>
+      <p><strong>対策</strong>：URLは必ずホバーで確認／お金や情報を求める急ぎ依頼は<strong>別ルート（電話・チャット）で本人確認</strong>／二要素認証を全アカウントで有効化。</p>
+      <span class="tag tag-human">急増中</span>
+      <span class="tag tag-human">別ルート確認</span>
+    </div>
+  </div>
+
+  <div class="card human">
+    <h3>🅟 公開された場所に機密置き忘れ</h3>
+    <p class="meta">＝「うっかり公開」事故</p>
+    <div class="body">
+      <ul>
+        <li>共有Driveの権限設定ミスで<strong>「リンクを知る全員」</strong>になっていた</li>
+        <li>Slackで取引先名を全社チャンネルに誤投稿</li>
+        <li>GitHubの公開リポジトリにAPIキーや認証情報をコミット</li>
+        <li>Notionで「ウェブに公開」のまま顧客情報を載せた</li>
+      </ul>
+      <p><strong>対策</strong>：共有設定は<strong>毎回確認</strong>を癖にする／機密フォルダはアクセス制限テンプレートを使う／重要リポジトリには secrets スキャナを入れる。</p>
+      <span class="tag tag-human">気づかれない事故</span>
+      <span class="tag tag-human">権限見直し</span>
+    </div>
+  </div>
+
+  <div class="card human">
+    <h3>🅠 画面の覗き見（ショルダーハック）</h3>
+    <p class="meta">＝ 物理的に「見られる」</p>
+    <div class="body">
+      <ul>
+        <li>カフェ・新幹線で背後から画面を見られる</li>
+        <li>Zoom画面共有で<strong>別ウィンドウ・通知</strong>が映り込み（LINE通知で個人名がポロり）</li>
+        <li>オフィスに来た外部業者にホワイトボードを見られる</li>
+      </ul>
+      <p><strong>対策</strong>：覗き見防止フィルターを貼る／画面共有前に通知をOFF（macOS：集中モード／Windows：応答不可）／重要画面はディスプレイ向きを壁側へ。</p>
+      <span class="tag tag-human">移動中・在宅</span>
+      <span class="tag tag-human">通知OFF</span>
+    </div>
+  </div>
+
+  <div class="card human">
+    <h3>🅡 物理的な紛失</h3>
+    <p class="meta">＝ USBメモリ・印刷物・PC</p>
+    <div class="body">
+      <ul>
+        <li>USBメモリ・SDカードを移動中に紛失</li>
+        <li>印刷物を電車・カフェに置き忘れ</li>
+        <li>業務PC・スマホをタクシーに置き忘れ</li>
+        <li>古いPCを処分時にデータ消去せず売却</li>
+      </ul>
+      <p><strong>対策</strong>：USB持ち出しは原則禁止／印刷物は持ち帰り or その場でシュレッダー／PC紛失時の遠隔ワイプを必ず設定／処分前に完全消去ソフト。</p>
+      <span class="tag tag-human">物理ルート</span>
+      <span class="tag tag-human">遠隔ワイプ</span>
+    </div>
+  </div>
+
+  <div class="card human">
+    <h3>🅢 AI送信前後のチェック忘れ</h3>
+    <p class="meta">＝ ヒトとAIの境目</p>
+    <div class="body">
+      <ul>
+        <li><strong>学習ONのままだった</strong>ことに気づかず実データを入力</li>
+        <li>個人名を番号化する前に、AIに実名のまま貼ってしまった</li>
+        <li>AIが生成した文章を読まずに送信→事実と違う内容を発信</li>
+        <li>会議録音をAI要約させたあと、要約に<strong>機密発言が残ってる</strong>のに気づかず共有</li>
+      </ul>
+      <p><strong>対策</strong>：AI使用前のチェックリストを目に見えるところに貼る／番号化は必ずスクリプトで自動化（手作業はミス源）／AI出力は最低1回読んでから人間が送信ボタンを押す。</p>
+      <span class="tag tag-human">AIの周辺</span>
+      <span class="tag tag-human">仕組み化</span>
+    </div>
+  </div>
+
+  <!-- 5項目チェックリスト -->
+  <div class="checklist">
+    <h4>🛡 ヒューマンエラーを激減させる「5つの仕組み」</h4>
+    <ul>
+      <li>メール送信遅延（5〜30秒）を全員でON。送信後に気づける時間を作る</li>
+      <li>共有Drive・Slack・Notion・GitHubの公開設定を月1回見直す日を決める</li>
+      <li>覗き見防止フィルター＋画面共有前は通知OFFをチームのルールにする</li>
+      <li>USB持ち出し禁止／印刷物の持ち帰り or シュレッダー徹底</li>
+      <li>AIに渡す前・出す後の「人間チェック」を必ず作業フローに組み込む</li>
+    </ul>
+  </div>
+
+  <!-- 医療系の追加考慮（補足）-->
   <div class="note">
-    <p>🩺 <strong>医療系・要配慮個人情報の壁</strong></p>
-    <p>病歴・健診結果は<strong>個人情報保護法 第2条第3項「要配慮個人情報」</strong>として通常の個人情報より厳しい扱いが必要。さらに<strong>厚労省「医療情報システムの安全管理ガイドライン」</strong>の対象領域でもある。</p>
-    <p>→ 医療系では「番号化→AI処理→人間が戻す」運用が事実上の<strong>必須プロトコル</strong>。</p>
-  </div>
-
-  <!-- 5/22提案 -->
-  <div class="proposal">
-    <h4>💡 セーフラインの提案（湯川さん案件 5/22叩き台デモ用）</h4>
-    <p>公開情報（企業名・訪問日程・契約パターン）はそのままAIに扱わせる前提でOK。個人名は番号に置換 → AI処理 → 最後に人間が変換する運用に。学習OFFは全AIで徹底、メール送信は必ず人間チェック後にボタン押下。検診結果スキャンは取引先1社から同意取り → Gemini（Drive内）でパイロット運用 → 段階拡大。最大リスクはAI漏洩よりヒューマンエラーなので、誤送信防止チェック工程を運用設計に組み込む。</p>
+    <p>🩺 <strong>医療・金融・法律など要配慮個人情報を扱う業界の追加考慮</strong></p>
+    <p>病歴・健診結果は<strong>個人情報保護法 第2条第3項「要配慮個人情報」</strong>として通常の個人情報より厳しい扱いが必要。さらに業界によって<strong>厚労省「医療情報システムの安全管理ガイドライン」</strong>などの業法・ガイドラインが上乗せされる。</p>
+    <p>→ こうした業界では「番号化→AI処理→人間が戻す」運用が事実上の<strong>必須プロトコル</strong>。</p>
   </div>
 
   <!-- 簡易マトリクス -->
@@ -489,13 +671,13 @@
         <td class="ng-cell">NG</td>
       </tr>
       <tr>
-        <td>検診結果スキャン</td>
+        <td>取引先データのスキャン</td>
         <td class="gray-cell">グレー</td>
         <td class="ng-cell">NG</td>
         <td class="ng-cell">NG</td>
       </tr>
       <tr>
-        <td>マイナンバー・健康情報セット</td>
+        <td>マイナンバー・要配慮個人情報</td>
         <td class="ng-cell">NG</td>
         <td class="ng-cell">NG</td>
         <td class="ng-cell">NG</td>
@@ -512,13 +694,13 @@
 
   <!-- フッター -->
   <footer>
-    <h5>📚 根拠リンク</h5>
+    <h5>📚 根拠・参考</h5>
     <p>📺 AI仙人 動画 R5o_MPwm2Bc（2026-05-15公開）：<a href="https://www.youtube.com/watch?v=R5o_MPwm2Bc" target="_blank">「【消すかも】仕事でCopilotやGeminiしか使えない会社でプロレベルにAIを使うテクニック」</a></p>
     <p>🩺 厚労省「医療情報システムの安全管理に関するガイドライン」：<a href="https://www.mhlw.go.jp/stf/shingi/0000516275.html" target="_blank">厚生労働省</a></p>
     <p>📝 個人情報保護法 第2条第3項「要配慮個人情報」</p>
     <br>
-    <h5>🌱 制作</h5>
-    <p>はるかCEO（おけもんカンパニー）<br>2026-05-15／湯川さん案件 5/22叩き台デモ向け<br>※会社・業界・規模で判断は変わります。最終的には必ず社内のAI規定を確認してください。</p>
+    <h5>🌱 ご利用にあたって</h5>
+    <p>会社・業界・規模によって判断は変わります。最終的には必ず社内のAI規定を確認してください。<br>このガイドは<strong>「考えるたたき台」</strong>として使ってもらえれば嬉しいです。</p>
   </footer>
 
 </div>
