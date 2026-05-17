@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026-05-18 カドッチMTG用 AI動画ツール・予算資料</title>
+  <style>
+    :root {
+      --bg: #f7f6f1;
+      --paper: #fffdf8;
+      --ink: #202124;
+      --muted: #5f665f;
+      --line: #d9d5c8;
+      --green: #1f7a5c;
+      --amber: #b56a18;
+      --blue: #315f8f;
+      --red: #a23c34;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      line-height: 1.72;
+      letter-spacing: 0;
+    }
+    a { color: var(--blue); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 28px 20px 64px; }
+    header {
+      padding: 28px 0 22px;
+      border-bottom: 2px solid var(--line);
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    h1 {
+      margin: 0;
+      max-width: 920px;
+      font-size: clamp(28px, 4.2vw, 48px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+    .lead {
+      max-width: 900px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0 0;
+    }
+    .nav a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.55);
+      color: var(--ink);
+      font-size: 13px;
+      text-decoration: none;
+    }
+    section {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      line-height: 1.28;
+      letter-spacing: 0;
+    }
+    h3 {
+      margin: 18px 0 8px;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+    p { margin: 0 0 12px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      padding: 16px;
+    }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+    .callout {
+      border-left: 5px solid var(--green);
+      background: #edf6ef;
+      padding: 14px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 14px 0 0;
+    }
+    .warn {
+      border-left-color: var(--amber);
+      background: #fff4df;
+    }
+    .risk {
+      border-left-color: var(--red);
+      background: #fff0ee;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      display: table;
+    }
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #ebe7da;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .tag {
+      display: inline-block;
+      margin: 0 4px 6px 0;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: #e6efe9;
+      color: #15513c;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .price {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1.2;
+      margin: 4px 0 6px;
+    }
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    ol, ul { margin-top: 8px; padding-left: 1.4em; }
+    li { margin: 5px 0; }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .step {
+      min-height: 118px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      padding: 12px;
+    }
+    .step strong {
+      display: block;
+      color: var(--green);
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    footer {
+      padding: 26px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 860px) {
+      .span-4, .span-6, .span-8 { grid-column: span 12; }
+      .flow { grid-template-columns: 1fr; }
+      table { display: block; overflow-x: auto; }
+      th, td { min-width: 150px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">カドッチPJ / 2026-05-18 21:00 MTG</p>
+      <h1>AIショート動画のツール・予算・ナレーション/音楽方針</h1>
+      <p class="lead">今日の目的は、ツールを全部契約することではなく、40代男性ゴルファー向けの「最初の1本」をどの制作ラインで検証するか決めること。</p>
+      <nav class="nav" aria-label="ページ内メニュー">
+        <a href="#summary">結論</a>
+        <a href="#history">PJの流れ</a>
+        <a href="#stack">ツール構成</a>
+        <a href="#budget">予算</a>
+        <a href="#voice">ナレーション/音楽</a>
+        <a href="#xtrend">X最新傾向</a>
+        <a href="#examples">投稿実例</a>
+        <a href="#questions">確認質問</a>
+      </nav>
+    </header>
+
+    <section id="summary">
+      <h2>今日の結論</h2>
+      <div class="grid">
+        <div class="panel span-8">
+          <h3>推奨ライン</h3>
+          <p><strong>Higgsfield + CapCut</strong> を基本にして、ナレーション品質が必要なら <strong>ElevenLabs</strong>、AI先生や顔出し風の説明者が必要なら <strong>HeyGen</strong> を追加する。</p>
+          <p>音楽は初回はCapCut内BGMで十分。シリーズ化やブランドBGMを作りたい段階でSuno有料プランを検討する。</p>
+          <div class="callout">
+            <strong>会議での言い方：</strong>「今日は全部盛りではなく、最初の1本を作る制作ラインを決めましょう。Higgsfieldで素材を作り、CapCutで編集し、声だけ必要に応じてElevenLabsで比較するのがいちばん判断しやすいです。」
+          </div>
+        </div>
+        <div class="panel span-4">
+          <h3>予算の置き方</h3>
+          <p class="price">30日 5〜10万円</p>
+          <p>過去資料の30日検証枠と整合。最初は月額固定費を抑え、生成費だけ実測ログ化する。</p>
+          <p class="small">為替・地域価格・クレジット消費は変動。契約前にログイン後の価格画面を確認。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="history">
+      <h2>PJの流れ</h2>
+      <table>
+        <thead>
+          <tr><th>日付</th><th>進んだこと</th><th>今日へのつながり</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>4/28</td><td>リサーチだけでなくAI動画生成まで1周回す方針へ</td><td>動画制作を実測する流れが始まった</td></tr>
+          <tr><td>5/4</td><td>Seedanceで27.5秒モック生成。概算 $9.76</td><td>AI動画の画づくりとコスト感が見えた</td></tr>
+          <tr><td>5/10</td><td>カーケア固定から40代男性ゴルファーのペルソナ起点へ転換</td><td>商品先行ではなく、悩み起点で動画を選ぶ</td></tr>
+          <tr><td>5/17-18</td><td>Grok/Xと公式情報で、Higgsfield・CapCut・ElevenLabs・Suno・HeyGenを再確認</td><td>今日のツール・予算・声・音楽の判断材料</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="stack">
+      <h2>推奨ツール構成</h2>
+      <div class="flow">
+        <div class="step"><strong>1. 台本</strong>Codex / Claude / ChatGPT / Grokで、悩み・フック・CTAを作る。</div>
+        <div class="step"><strong>2. 映像</strong>Higgsfieldを第一候補。必要に応じてSeedance / Kling / Veo比較。</div>
+        <div class="step"><strong>3. 声</strong>仮音声はCapCut。本番品質ならElevenLabs。</div>
+        <div class="step"><strong>4. 編集</strong>CapCutで縦動画、字幕、BGM、テンポ調整。</div>
+        <div class="step"><strong>5. 判断</strong>完視聴率、保存、コメント、商品導線で次を決める。</div>
+      </div>
+      <table style="margin-top: 16px;">
+        <thead>
+          <tr><th>ツール</th><th>役割</th><th>今日の扱い</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Higgsfield</td><td>AI映像素材、MCP、複数モデル利用</td><td>第一候補。ただし料金はクレジット制として慎重に扱う</td></tr>
+          <tr><td>CapCut</td><td>縦動画編集、字幕、テンプレ、簡易AI音声</td><td>初回の仕上げ担当</td></tr>
+          <tr><td>ElevenLabs</td><td>自然なナレーション、商用ライセンス、声質調整</td><td>本番候補。声の信頼感を上げたい時に追加</td></tr>
+          <tr><td>HeyGen</td><td>AIアバター、AI先生、多言語化</td><td>顔出し説明者が必要なら追加。初回必須ではない</td></tr>
+          <tr><td>Suno</td><td>オリジナルBGM、シリーズジングル</td><td>初回は保留。シリーズ化で検討</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="budget">
+      <h2>予算感</h2>
+      <div class="grid">
+        <div class="panel span-4">
+          <h3>ミニ検証</h3>
+          <p class="price">0〜1万円/月</p>
+          <p>CapCut + 既存LLM + 必要最低限のAI生成。まず1〜3本だけ試す。</p>
+        </div>
+        <div class="panel span-4">
+          <h3>推奨30日検証</h3>
+          <p class="price">5〜10万円</p>
+          <p>Higgsfield + CapCut + ElevenLabs or Suno。固定費と生成費を分けてログ化。</p>
+        </div>
+        <div class="panel span-4">
+          <h3>アバター強化</h3>
+          <p class="price">2〜5万円/月 + 生成費</p>
+          <p>HeyGenを追加。AI先生・説明者が前面に出る場合だけ。</p>
+        </div>
+      </div>
+      <div class="callout warn">
+        <strong>既存実測：</strong>Seedanceは5秒 $1.22、27.5秒モック概算 $9.76。1本3,000円前後で収まるかは、生成カット数と再生成回数次第。
+      </div>
+      <table style="margin-top: 16px;">
+        <thead>
+          <tr><th>ツール</th><th>確認済みの価格メモ</th><th>リンク</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Higgsfield</td><td>公式ガイド上はクレジット制。モデル・長さ・解像度で消費が変動</td><td><a href="https://higgsfield.ai/pricing">Pricing</a> / <a href="https://geo.higgsfield.ai/higgsfield-ai-pricing-plans-how-it-works">credit guide</a></td></tr>
+          <tr><td>HeyGen</td><td>Free月3本、Creator $29/月、Pro $49/月</td><td><a href="https://www.heygen.com/pricing">Pricing</a></td></tr>
+          <tr><td>ElevenLabs</td><td>Starter $6/月、Creator $22/月、Pro $99/月</td><td><a href="https://elevenlabs.io/pricing">Pricing</a></td></tr>
+          <tr><td>Suno</td><td>Freeは商用利用なし。Pro $8/月、Premier $24/月は新規曲の商用利用権あり</td><td><a href="https://suno.com/pricing">Pricing</a></td></tr>
+          <tr><td>CapCut</td><td>価格は地域・端末・プロモーションで変動。ログイン後に確認</td><td><a href="https://www.capcut.com/help/how-much-does-capcut-pro-cost">Pricing help</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="voice">
+      <h2>ナレーションと音楽</h2>
+      <div class="grid">
+        <div class="panel span-6">
+          <h3>ナレーション</h3>
+          <p><span class="tag">仮音声</span> CapCutで高速に作る。</p>
+          <p><span class="tag">本番候補</span> ElevenLabsで自然な声にする。</p>
+          <p><span class="tag">AI先生</span> HeyGenでアバター付きにする。</p>
+          <p class="small">ゴルフ・健康・体の使い方に寄るほど、声の信頼感が重要。</p>
+        </div>
+        <div class="panel span-6">
+          <h3>音楽</h3>
+          <p><span class="tag">初回</span> CapCut内BGM/効果音で十分。</p>
+          <p><span class="tag">シリーズ化</span> SunoでオリジナルBGMや短いジングルを作る。</p>
+          <p class="small">流行音源の商用・アフィリエイト利用は慎重に扱う。</p>
+        </div>
+      </div>
+      <div class="callout risk">
+        <strong>YouTube注意：</strong>リアルに見えるAI映像、他人の声クローン、実在しない出来事の再現は、altered/synthetic contentとして開示対象になり得る。<a href="https://support.google.com/youtube/answer/14328491">公式ヘルプ</a>を確認。
+      </div>
+    </section>
+
+    <section id="xtrend">
+      <h2>X/Grokで見えた最新傾向</h2>
+      <table>
+        <thead>
+          <tr><th>増えている話題</th><th>カドッチPJでの使いどころ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>HiggsfieldのVirality Predictorやモデル比較</td><td>作る前にフックや構成を見直す視点として使える</td></tr>
+          <tr><td>CapCut + ElevenLabs + Sunoのfaceless Shorts制作</td><td>40代男性ゴルファー向けTips動画に相性がいい</td></tr>
+          <tr><td>AIアバター + アフィリエイト</td><td>HeyGenを入れるならこの方向。ただし初回は盛りすぎ注意</td></tr>
+          <tr><td>Seedance / Kling / Veo / Soraの比較</td><td>映像美より商品導線が先。比較は2本目以降でよい</td></tr>
+        </tbody>
+      </table>
+      <p class="small" style="margin-top: 12px;">参考Xリンク：
+        <a href="https://x.com/Maruo_0314/status/2055627843867185273">Maruo</a> /
+        <a href="https://x.com/shun_aiLaboo/status/2056018540717883870">shun</a> /
+        <a href="https://x.com/panchaaan_2/status/2051538076825194967">panchaaan</a> /
+        <a href="https://x.com/ankoku_othello/status/2056021677113577647">ankoku_othello</a>
+      </p>
+    </section>
+
+    <section id="examples">
+      <h2>投稿リンクつき参考動画</h2>
+      <p>Grokで候補を出した後、投稿URLを個別に開き、本文でツール名が明示されているものを確認。ここでは「投稿本文のファクト」と「カドッチPJでの仮説」を分ける。</p>
+      <table>
+        <thead>
+          <tr><th>方向性</th><th>投稿リンク</th><th>投稿本文で明示されたファクト</th><th>カドッチPJでの仮説</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Image2 -> Seedance</td>
+            <td><a href="https://x.com/Naonekozamurai/status/2055558873323278443">なおさん</a></td>
+            <td>「GPT Image 2.0で画像生成」「Seedance 2.0で動画生成」と明示。</td>
+            <td>キーフレームをChatGPT Image2で作り、Seedanceで動画化する本命フロー。</td>
+          </tr>
+          <tr>
+            <td>Image2 + Seedance広告風</td>
+            <td><a href="https://x.com/nxnusratul/status/2056019358506512522">NUSRATさん</a></td>
+            <td>“Made with Seedance 2.0 + GPT image 2” と明示。</td>
+            <td>商品・道具系の高級感ある縦動画に応用。</td>
+          </tr>
+          <tr>
+            <td>Seedance単体</td>
+            <td><a href="https://x.com/nyaa_toraneko/status/2055995913194344918">Nobu-Kobayashiさん</a></td>
+            <td>「Seedance 2.0に生成させた動画」と明示。</td>
+            <td>複雑な動き・カメラワーク検証。ただしゴルフ動作は監修前提。</td>
+          </tr>
+          <tr>
+            <td>Higgsfield上のKling</td>
+            <td><a href="https://x.com/rovvmut_/status/2024536213768851499">Heisenbergさん</a></td>
+            <td>“Created with Kling 3.0 on Higgsfield AI.” と明示。</td>
+            <td>Higgsfieldを複数動画モデルの窓口として説明しやすい。</td>
+          </tr>
+          <tr>
+            <td>Higgsfield上のSeedance</td>
+            <td><a href="https://x.com/bassel_amin/status/2056038332585345409">Basel de' Mediciさん</a></td>
+            <td>“using @higgsfield Seedance 2.0” と明示。</td>
+            <td>既存動画をSeedanceで再制作する比較検証に使える。</td>
+          </tr>
+          <tr>
+            <td>ナレーション</td>
+            <td><a href="https://x.com/shun_aiLaboo/status/2056018540717883870">shunさん</a></td>
+            <td>ChatGPT、ElevenLabs、CapCut AIの役割分担を明示。</td>
+            <td>ゴルフTips動画の初回自動化フローに近い。</td>
+          </tr>
+          <tr>
+            <td>BGM/楽曲</td>
+            <td><a href="https://x.com/omusubihitotu/status/2054881442682024437">おむすびひとつさん</a></td>
+            <td>「Suno AI Proで楽曲生成、Grok Imagineで映像作成」と明示。</td>
+            <td>シリーズBGMやジングルの参考。Tips動画では主張が強い可能性。</td>
+          </tr>
+          <tr>
+            <td>音楽起点MV</td>
+            <td><a href="https://x.com/midori_tatsuta/status/2054478921094271450">みどりさん</a></td>
+            <td>Sunoで曲作成、ChatGPTで動画プロンプト、Seedance 2.0で生成と明示。</td>
+            <td>BGMを先に作り、動画側を合わせる逆順フローの参考。</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <strong>追補後の判断：</strong>投稿リンク上のファクトでは、Image2 -> Seedance、Higgsfield上のKling/Seedance、ElevenLabsナレーション、Suno音楽、CapCut編集は確認できた。一方で、Seedance/Higgsfieldだけで最終ナレーションまで完結する実務投稿は少ないため、初回はElevenLabsやCapCutを別に置く方が堅い。
+      </div>
+    </section>
+
+    <section id="questions">
+      <h2>カドッチさんに聞く質問</h2>
+      <ol>
+        <li>40代男性ゴルファーの中で、最初に刺したい悩みは「飛距離」「スコア」「体の不安」「見た目」「道具代」のどれか。</li>
+        <li>AIナレーションで進めてよいか。声は男性/女性/落ち着き/元気のどれがよいか。</li>
+        <li>AIアバター先生を出したいか。映像+ナレーションだけでよいか。</li>
+        <li>30日検証の上限は5万円でいくか、10万円まで見るか。</li>
+        <li>商品導線は、ゴルフ用品・健康ケア・身だしなみ・練習器具のどれから始めるか。</li>
+      </ol>
+      <div class="callout">
+        <strong>1本目案：</strong>「40代ゴルファー、朝5分で飛距離を落とさない準備」。共感フック → NG習慣 → 5分ルーティン → 商品/道具の自然導線。
+      </div>
+    </section>
+
+    <footer>
+      <p>作成: Codex / 2026-05-18 JST。価格は公式ページと公開情報ベース。最終契約前に各サービスのログイン後価格・商用利用条件・クレジット消費を再確認。</p>
+      <p>参考: <a href="https://blog.youtube/creator-and-artist-stories/youtube-shopping-expansion-500-subscribers/">YouTube Shopping expansion</a> / <a href="https://support.google.com/youtube/answer/14328491">YouTube synthetic content disclosure</a> / <a href="https://higgsfield.ai/blog/Generate-AI-Videos-From-Claude-with-Higgsfield-MCP">Higgsfield MCP</a> / <a href="https://www.heygen.com/blog/generate-ai-videos-with-claude">HeyGen MCP</a></p>
+    </footer>
+  </div>
+</body>
+</html>
