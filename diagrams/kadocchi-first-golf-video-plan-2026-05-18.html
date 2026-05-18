@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>カドッチPJ 1本目ゴルフ動画 制作工程</title>
+  <style>
+    :root {
+      --bg: #f7f6f1;
+      --paper: #fffdf8;
+      --ink: #202124;
+      --muted: #62675f;
+      --line: #d9d4c7;
+      --green: #1f7a5c;
+      --blue: #315f8f;
+      --amber: #a66b1f;
+      --red: #a34035;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      line-height: 1.7;
+      letter-spacing: 0;
+    }
+    a { color: var(--blue); text-underline-offset: 3px; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 26px 20px 64px; }
+    header { border-bottom: 2px solid var(--line); padding: 24px 0 20px; }
+    .eyebrow { margin: 0 0 8px; color: var(--green); font-size: 13px; font-weight: 700; }
+    h1 { margin: 0; max-width: 930px; font-size: clamp(28px, 4vw, 46px); line-height: 1.18; letter-spacing: 0; }
+    .lead { max-width: 900px; margin: 14px 0 0; color: var(--muted); font-size: 17px; }
+    .nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .nav a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.6);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+    }
+    section { padding: 28px 0; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0 0 14px; font-size: 24px; line-height: 1.28; letter-spacing: 0; }
+    h3 { margin: 18px 0 8px; font-size: 18px; line-height: 1.35; }
+    p { margin: 0 0 12px; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .panel { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+    .price { margin: 4px 0 6px; color: var(--green); font-size: 28px; font-weight: 800; line-height: 1.2; }
+    .small { color: var(--muted); font-size: 13px; }
+    .callout {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-left: 5px solid var(--green);
+      border-radius: 0 8px 8px 0;
+      background: #edf6ef;
+    }
+    .warn { border-left-color: var(--amber); background: #fff4df; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      display: table;
+    }
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+    th { background: #ebe7da; font-weight: 700; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .step {
+      min-height: 124px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    .step strong { display: block; color: var(--green); font-size: 13px; margin-bottom: 4px; }
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #242620;
+      color: #f7f3e8;
+      font-size: 13px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+    footer { padding-top: 24px; color: var(--muted); font-size: 13px; }
+    @media (max-width: 860px) {
+      .span-4, .span-6, .span-8 { grid-column: span 12; }
+      .steps { grid-template-columns: 1fr; }
+      table { display: block; overflow-x: auto; }
+      th, td { min-width: 150px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">カドッチPJ / 5月18日MTG ブランチページ</p>
+      <h1>もし1本目を作るなら：40代ゴルファー、朝5分で飛距離を落とさない準備</h1>
+      <p class="lead">本編資料の表を、1本の動画制作工程までチャンクダウン。目的は、制作ライン・自動化範囲・予算感を会議でそのまま話せる状態にすること。</p>
+      <nav class="nav" aria-label="ページ内メニュー">
+        <a href="#video">動画案</a>
+        <a href="#line">制作ライン</a>
+        <a href="#facts">ファクト/仮説</a>
+        <a href="#storyboard">構成</a>
+        <a href="#steps">工程</a>
+        <a href="#budget">予算</a>
+        <a href="#prompts">プロンプト</a>
+        <a href="#questions">確認事項</a>
+      </nav>
+    </header>
+
+    <section id="video">
+      <h2>ピックアップする1本</h2>
+      <div class="grid">
+        <div class="panel span-8">
+          <h3>仮タイトル</h3>
+          <p><strong>40代ゴルファー、朝5分で飛距離を落とさない準備</strong></p>
+          <p>40代男性ゴルファーの「昔より飛ばない」「朝イチで体が硬い」「練習時間がない」に刺す実用Tip動画。広告感より、保存して見返したくなる実用性を優先する。</p>
+        </div>
+        <div class="panel span-4">
+          <h3>完成イメージ</h3>
+          <p class="price">35〜45秒</p>
+          <p>YouTube Shorts / TikTok / Instagram Reels向け 9:16。</p>
+        </div>
+      </div>
+      <table style="margin-top:16px;">
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>ターゲット</td><td>40代男性ゴルファー。昔より飛ばない、朝イチで体が硬い、でも練習時間は少ない。</td></tr>
+          <tr><td>動画型</td><td>実用Tip / NG習慣 / Before-After。</td></tr>
+          <tr><td>商品導線仮</td><td>ストレッチバンド、ウォームアップ器具、ゴルフ練習用品、姿勢ケア用品。</td></tr>
+          <tr><td>今日の目的</td><td>完璧な広告ではなく、最初の1本をAIで作る場合の制作ラインとコストを見える化する。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="line">
+      <h2>採用する制作ライン</h2>
+      <div class="callout">
+        <strong>MVP本命：</strong>ChatGPT Image2 → Seedance 2.0 → ElevenLabs → CapCut
+      </div>
+      <div class="steps" style="margin-top:14px;">
+        <div class="step"><strong>1. 台本</strong>ChatGPT / Codexで構成、台詞、CTAを作る。</div>
+        <div class="step"><strong>2. 画像</strong>ChatGPT Image2で9:16キーフレームを4〜6枚作る。</div>
+        <div class="step"><strong>3. 動画</strong>Seedance 2.0で5〜8秒クリップへ動かす。</div>
+        <div class="step"><strong>4. 声</strong>ElevenLabsで正確な日本語ナレーションを作る。</div>
+        <div class="step"><strong>5. 編集</strong>CapCutで字幕、BGM、CTA、テンポを整える。</div>
+      </div>
+    </section>
+
+    <section id="facts">
+      <h2>ファクトと仮説</h2>
+      <table>
+        <thead><tr><th>種別</th><th>内容</th><th>根拠</th></tr></thead>
+        <tbody>
+          <tr><td>ファクト</td><td>X投稿で「GPT Image 2.0で画像生成」「Seedance 2.0で動画生成」と明示された例がある。</td><td><a href="https://x.com/Naonekozamurai/status/2055558873323278443">なおさんの投稿</a></td></tr>
+          <tr><td>ファクト</td><td>X投稿で「ChatGPT → ElevenLabs → CapCut AI」の役割分担が明示された例がある。</td><td><a href="https://x.com/shun_aiLaboo/status/2056018540717883870">shunさんの投稿</a></td></tr>
+          <tr><td>ファクト</td><td>falのSeedance 2.0 fast image-to-videoは、720pで $0.2419/sec、generate_audio パラメータを持つ。</td><td><a href="https://fal.ai/models/bytedance/seedance-2.0/fast/image-to-video">fal.ai Seedance 2.0</a></td></tr>
+          <tr><td>ファクト</td><td>GPT-Image-2は画像生成モデルとして料金掲載。画像とテキストのトークン課金。</td><td><a href="https://openai.com/api/pricing/">OpenAI API Pricing</a></td></tr>
+          <tr><td>仮説</td><td>このゴルフTips動画では、Seedance内蔵音声よりElevenLabsの別ナレーションの方が安全。</td><td>正確な日本語台詞、声質、音量、後編集を制御しやすい。</td></tr>
+          <tr><td>仮説</td><td>初回はSunoでBGMを作らず、CapCut内BGMで十分。</td><td>Tips動画ではBGMが強いと情報が伝わりにくい。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="storyboard">
+      <h2>完成動画の構成</h2>
+      <table>
+        <thead><tr><th>秒数</th><th>画</th><th>ナレーション</th><th>テロップ</th></tr></thead>
+        <tbody>
+          <tr><td>0〜3秒</td><td>朝のゴルフ場。40代男性が腰を気にする。</td><td>朝イチ、体が硬いまま打っていませんか？</td><td>朝イチで飛ばない人へ</td></tr>
+          <tr><td>3〜8秒</td><td>いきなりフルスイングしてミスするイメージ。</td><td>40代からは、いきなり振るほど飛距離が落ちやすいです。</td><td>いきなりフルスイングNG</td></tr>
+          <tr><td>8〜18秒</td><td>股関節をゆるめる。</td><td>まず股関節。左右30秒ずつ、ゆっくり動かします。</td><td>1. 股関節30秒</td></tr>
+          <tr><td>18〜28秒</td><td>肩甲骨と胸を開く。</td><td>次に肩甲骨。クラブを持つ前に、胸を開いておきます。</td><td>2. 肩甲骨30秒</td></tr>
+          <tr><td>28〜36秒</td><td>軽い素振り。</td><td>最後に7割の素振り。体が起きてから、1打目に入ります。</td><td>3. 7割素振り</td></tr>
+          <tr><td>36〜45秒</td><td>ストレッチバンド/練習器具のカット。</td><td>朝の5分で、今日の1打目は変わります。</td><td>保存してラウンド前に見る</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="steps">
+      <h2>制作工程</h2>
+      <table>
+        <thead><tr><th>#</th><th>工程</th><th>作業内容</th><th>出力</th><th>自動化度</th><th>目安時間</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>台本生成</td><td>35〜45秒の台本とカット割りを作る。</td><td>台本、秒数表、テロップ案</td><td>高</td><td>10分</td></tr>
+          <tr><td>2</td><td>監修チェック</td><td>ゴルフ動作として危ない表現・言い切りを避ける。</td><td>修正版台本</td><td>人間必須</td><td>10〜20分</td></tr>
+          <tr><td>3</td><td>Image2素材</td><td>9:16キーフレームを4〜6枚作る。</td><td>PNG/JPG素材</td><td>中〜高</td><td>15〜30分</td></tr>
+          <tr><td>4</td><td>Seedance動画化</td><td>各キーフレームを5〜8秒で動画化。</td><td>MP4クリップ4〜6本</td><td>中</td><td>20〜45分</td></tr>
+          <tr><td>5</td><td>ナレーション</td><td>ElevenLabsで日本語ナレーション。</td><td>WAV/MP3</td><td>高</td><td>5〜10分</td></tr>
+          <tr><td>6</td><td>編集</td><td>CapCutで動画、音声、字幕、BGMを合わせる。</td><td>35〜45秒Shorts</td><td>中</td><td>30〜60分</td></tr>
+          <tr><td>7</td><td>最終確認</td><td>誤情報、音量、字幕、CTA、商品導線を見る。</td><td>修正版MP4</td><td>人間必須</td><td>15〜30分</td></tr>
+          <tr><td>8</td><td>投稿準備</td><td>タイトル、概要欄、リンク、ハッシュタグ。</td><td>投稿セット</td><td>高</td><td>10分</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn">
+        初回は素材の当たり外れを見るため2〜3時間。テンプレ化後は45〜90分まで短縮できる見込み。
+      </div>
+    </section>
+
+    <section id="budget">
+      <h2>予算感</h2>
+      <div class="grid">
+        <div class="panel span-4">
+          <h3>1本目の変動費</h3>
+          <p class="price">1,500〜4,000円</p>
+          <p>Image2を契約内、Seedanceを30〜60秒ぶん、ElevenLabsを月枠内で使う想定。</p>
+        </div>
+        <div class="panel span-4">
+          <h3>再生成多め</h3>
+          <p class="price">5,000〜8,000円</p>
+          <p>Seedanceの作り直しが多い、BGMや声を複数比較する場合。</p>
+        </div>
+        <div class="panel span-4">
+          <h3>30日検証</h3>
+          <p class="price">5〜10万円</p>
+          <p>週2本程度、6〜8本で台本・素材・声・編集を比較する本命枠。</p>
+        </div>
+      </div>
+      <table style="margin-top:16px;">
+        <thead><tr><th>費目</th><th>計算</th><th>目安</th></tr></thead>
+        <tbody>
+          <tr><td>Image2画像生成</td><td>ChatGPT契約内なら追加0円相当。API利用時はGPT-Image-2の画像/テキストトークン課金。</td><td>0〜数百円程度として扱う</td></tr>
+          <tr><td>Seedance動画生成</td><td>720p fast $0.2419/sec。30秒で約 $7.26、再生成込み60秒で約 $14.51。</td><td>約1,100〜2,300円</td></tr>
+          <tr><td>ElevenLabs音声</td><td>Starter $6/月、Creator $22/月など。45秒ナレーションは月枠内なら追加小。</td><td>月額内。追加なら数十〜数百円程度</td></tr>
+          <tr><td>CapCut編集</td><td>Freeでも可。Proが必要なら月額課金。</td><td>0〜2,000円/月程度</td></tr>
+          <tr><td>BGM</td><td>初回はCapCut内BGM。Sunoを使うなら有料プラン検討。</td><td>0円〜</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="prompts">
+      <h2>具体プロンプトたたき台</h2>
+      <h3>Image2用キーフレーム</h3>
+      <pre>9:16 vertical realistic short video keyframe.
+A Japanese man in his early 40s at a golf course in the morning, before the first tee shot.
+He looks slightly stiff around the hips and lower back, holding a golf club casually.
+Soft morning light, realistic skin texture, calm professional YouTube Shorts style, not dramatic, not anime.
+No text, no logos, no brand marks.</pre>
+      <h3>Seedance用モーション</h3>
+      <pre>Animate this vertical keyframe into a realistic 5-second video.
+The man gently shifts his weight, rotates his hips slowly, and prepares for a warm-up before golfing.
+Camera: subtle handheld push-in, natural morning light, realistic physics.
+No exaggerated swing, no unsafe movement, no text overlay.
+Generate ambient golf course sound only if audio is enabled.</pre>
+      <h3>ElevenLabs用ナレーション</h3>
+      <pre>朝イチ、体が硬いまま打っていませんか。
+40代からは、いきなり振るほど飛距離が落ちやすくなります。
+まず股関節、次に肩甲骨、最後に7割の素振り。
+ラウンド前の5分で、今日の1打目は変わります。
+保存して、次のラウンド前に見返してください。</pre>
+    </section>
+
+    <section id="questions">
+      <h2>MTGで聞くこと</h2>
+      <ol>
+        <li>1本目は「飛距離」訴求でよいか。腰痛予防、スコア安定、朝イチのミス防止の方がよいか。</li>
+        <li>ゴルフ動作の監修はカドッチさん側で見てもらえるか。</li>
+        <li>商品導線はストレッチバンド系でよいか。ゴルフ練習器具へ寄せるか。</li>
+        <li>声は男性ナレーションか、落ち着いた女性ナレーションか。</li>
+        <li>まず1本を2〜3時間で作る検証にするか、最初から3本ABテストにするか。</li>
+      </ol>
+      <div class="callout">
+        OKが出たら、次は正式台本、Image2プロンプト4〜6枚分、Seedanceプロンプト4〜6本分、ElevenLabs声タイプ候補、CapCut編集指示書へ落とす。
+      </div>
+    </section>
+
+    <footer>
+      <p>作成: Codex / 2026-05-18 JST。価格は公開情報と既存実測ログベースの概算。契約前にログイン後価格と商用利用条件を再確認。</p>
+      <p>参考: <a href="https://x.com/Naonekozamurai/status/2055558873323278443">Image2 -> Seedance投稿</a> / <a href="https://x.com/shun_aiLaboo/status/2056018540717883870">ChatGPT -> ElevenLabs -> CapCut投稿</a> / <a href="https://fal.ai/models/bytedance/seedance-2.0/fast/image-to-video">fal Seedance pricing</a> / <a href="https://openai.com/api/pricing/">OpenAI pricing</a> / <a href="https://elevenlabs.io/pricing">ElevenLabs pricing</a></p>
+    </footer>
+  </div>
+</body>
+</html>
