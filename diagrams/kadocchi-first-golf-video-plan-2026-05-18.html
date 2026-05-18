@@ -17,6 +17,7 @@
       --red: #a34035;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       background: var(--bg);
@@ -73,6 +74,64 @@
       color: var(--green);
       font-size: 13px;
       font-weight: 800;
+    }
+    .floating-toc {
+      position: fixed;
+      top: 112px;
+      right: max(18px, calc((100vw - 1320px) / 2));
+      width: 154px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,253,248,.96);
+      box-shadow: 0 10px 28px rgba(32,33,36,.10);
+    }
+    .floating-toc strong {
+      color: var(--green);
+      font-size: 12px;
+      line-height: 1.2;
+    }
+    .floating-toc a {
+      display: block;
+      padding: 6px 8px;
+      border-radius: 6px;
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1.25;
+      text-decoration: none;
+    }
+    .floating-toc a:hover {
+      background: #edf6ef;
+      color: #15513c;
+    }
+    .floating-toc .to-top {
+      margin-top: 4px;
+      border-top: 1px solid var(--line);
+      border-radius: 0;
+      color: var(--green);
+      font-weight: 800;
+    }
+    .back-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 30;
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 7px 12px;
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      background: var(--green);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 10px 28px rgba(32,33,36,.16);
     }
     section { padding: 28px 0; border-bottom: 1px solid var(--line); }
     h2 { margin: 0 0 14px; font-size: 24px; line-height: 1.28; letter-spacing: 0; }
@@ -142,11 +201,34 @@
       .steps { grid-template-columns: 1fr; }
       table { display: block; overflow-x: auto; }
       th, td { min-width: 150px; }
+      body { padding-bottom: 58px; }
+      .back-top {
+        left: 18px;
+        right: 18px;
+        justify-content: center;
+      }
+    }
+    @media (max-width: 1240px) {
+      .floating-toc { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="wrap" id="top">
+    <aside class="floating-toc" aria-label="追従目次">
+      <strong>目次</strong>
+      <a href="#video">動画案</a>
+      <a href="#line">制作ライン</a>
+      <a href="#facts">ファクト/仮説</a>
+      <a href="#script-links">動画/台本</a>
+      <a href="#storyboard">構成</a>
+      <a href="#steps">工程</a>
+      <a href="#budget">予算</a>
+      <a href="#prompts">プロンプト</a>
+      <a href="#questions">確認事項</a>
+      <a class="to-top" href="#top">上へ戻る</a>
+    </aside>
+    <a class="back-top" href="#top">目次へ戻る</a>
     <header>
       <p class="eyebrow">カドッチPJ / 5月18日MTG ブランチページ</p>
       <h1>もし1本目を作るなら：40代ゴルファー、朝5分で飛距離を落とさない準備</h1>
