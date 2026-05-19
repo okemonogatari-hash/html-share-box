@@ -606,6 +606,91 @@
   </div>
 </section>
 
+<!-- セクション10：おけ森でその場で実装してみた -->
+<section class="sec" data-num="10">
+  <h2><span class="emo">🛠</span>同じ日のうちに、おけ森でその場で実装してみた</h2>
+  <p>この記事を図解しながら、おけ森側に「Hermes Agentの思想で運用基盤を整理する」改革を<strong>その日のうちに3つ入れました</strong>🌱 ちょっと自慢みたいになるけど、見てね。</p>
+
+  <!-- 改革① 圧縮 -->
+  <div class="okemon-memo">
+    <div class="title">① CLAUDE.md を「薄く」する（Tier1常駐の圧縮）</div>
+    Hermes の MEMORY.md は <strong>2,200字制限</strong>。おけ森のCLAUDE.mdは半年運用で<strong>359行まで膨らんで</strong>た。<br>これをHermes思想で「常駐は薄く・詳細は外に逃がす」に整理。
+    <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;">
+      <div style="background:#fff;border-radius:10px;padding:10px 16px;border:1px solid var(--line);text-align:center;">
+        <div style="font-size:11px;color:var(--muted);">Before</div>
+        <div style="font-size:24px;font-weight:700;color:var(--coral);">359行</div>
+        <div style="font-size:11px;color:var(--muted);">毎セッション必読</div>
+      </div>
+      <div style="font-size:24px;color:var(--lavender);">→</div>
+      <div style="background:#fff;border-radius:10px;padding:10px 16px;border:1px solid var(--line);text-align:center;">
+        <div style="font-size:11px;color:var(--muted);">After</div>
+        <div style="font-size:24px;font-weight:700;color:var(--turquoise);">165行</div>
+        <div style="font-size:11px;color:var(--muted);">▲54%圧縮</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 改革② Hook強制 -->
+  <div class="okemon-memo" style="border-color:var(--coral);">
+    <div class="title" style="color:var(--coral);">② 守らせたいルールは「書く」じゃなく「毎回出す」（Hook強制）</div>
+    「振る／繋ぐ／別チャットで」などの<strong>サイロ化発言</strong>が、CLAUDE.mdに禁止と書いてあるのに繰り返し起きてた。<br>原因：禁止リストは「出した後に気づく」性質。応答する<strong>直前</strong>にチェックが入らない限り守られない。
+    <div class="loop" style="margin-top:14px;">
+      <div class="steps">
+        <div class="step">おけちゃん<br>入力</div>
+        <div class="arr">→</div>
+        <div class="step">Hook起動<br>(UserPromptSubmit)</div>
+        <div class="arr">→</div>
+        <div class="step">NGリストを<br>AIの目の前に注入</div>
+        <div class="arr">→</div>
+        <div class="step">AIが応答<br>セルフチェック</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted);text-align:center;">
+      = Hermes の <strong>Curator思想</strong>（守らせたいことは仕組みに）の応用
+    </div>
+  </div>
+
+  <!-- 改革③ 段階的開示 -->
+  <div class="okemon-memo" style="border-color:var(--turquoise);">
+    <div class="title" style="color:var(--turquoise);">③ 詳細ルールは「呼ばれたら読む」（段階的開示）</div>
+    Hermes のスキルは <strong>「名前と一言だけ常駐／本文は必要時にロード」</strong>の段階的開示。<br>これをそのまま `~/.claude/rules/*.md` に適用。各MD冒頭に <code>trigger</code> キーワードを書いて、場面が来たら呼ばれる構造に。
+    <div style="background:#fff;border-radius:8px;padding:12px 14px;margin-top:12px;font-size:12px;font-family:monospace;color:var(--ink);overflow-x:auto;">
+trigger:<br>
+&nbsp;&nbsp;- 広場<br>
+&nbsp;&nbsp;- デイリーログ<br>
+&nbsp;&nbsp;- 日報<br>
+context: 広場・3層記録・日報の書き方<br>
+related: [[session-flow]] / [[file-locations]]
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted);">
+      → 「広場」と話題が出たら自動でこのMDが召喚される設計。<strong>Hermes Agentに移植する時もそのまま使える</strong>形にしておいた🌱
+    </div>
+  </div>
+
+  <!-- 思想の合体 -->
+  <div class="punch">
+    <span class="label">設計思想の合体</span>
+    <span class="lav">kepano「File over app・薄く・短く」</span>×<span class="tur">Hermes「Progressive Disclosure」</span><br>= おけ森の 3層構造（常駐／召喚／強制）
+  </div>
+
+  <div style="background:linear-gradient(135deg, rgba(139,123,184,0.05), rgba(63,166,163,0.05));border-radius:12px;padding:18px;margin-top:14px;">
+    <div style="display:grid;grid-template-columns:80px 1fr;gap:12px;align-items:start;margin-bottom:10px;">
+      <div style="background:var(--gold);color:#fff;padding:6px;border-radius:8px;text-align:center;font-weight:700;font-size:13px;">常駐<br>Tier1</div>
+      <div style="font-size:13px;color:var(--ink-soft);"><strong>CLAUDE.md 165行</strong> — 人格／核心ルール／決裁権限。<strong>絶対に毎回読まれるもの</strong>だけ残す</div>
+    </div>
+    <div style="display:grid;grid-template-columns:80px 1fr;gap:12px;align-items:start;margin-bottom:10px;">
+      <div style="background:var(--turquoise);color:#fff;padding:6px;border-radius:8px;text-align:center;font-weight:700;font-size:13px;">召喚<br>Tier2</div>
+      <div style="font-size:13px;color:var(--ink-soft);"><strong>rules/*.md 7本</strong> — 場面で呼ばれる詳細ルール。「広場」「タスク」等のキーワードで自動召喚</div>
+    </div>
+    <div style="display:grid;grid-template-columns:80px 1fr;gap:12px;align-items:start;">
+      <div style="background:var(--coral);color:#fff;padding:6px;border-radius:8px;text-align:center;font-weight:700;font-size:13px;">強制<br>Tier3</div>
+      <div style="font-size:13px;color:var(--ink-soft);"><strong>hooks/*.sh</strong> — 守らせたいガード。毎ターン物理的にAIの目の前に出る</div>
+    </div>
+  </div>
+
+  <p style="margin-top:14px;font-size:14px;color:var(--ink-soft);">図解作って → 学んで → その日のうちに自分の運用に組み込む。<strong>これがいちさんの言う「実際に使って事業に入れる」</strong>の体感だった🪞</p>
+</section>
+
 <!-- 締めメッセージ -->
 <section class="finale">
   <div class="eyebrow">🌟 ここからが本題 🌟</div>
