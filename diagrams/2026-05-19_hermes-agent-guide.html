@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>使うほど賢くなるAI「Hermes Agent」って何者？ ｜ きょうちゃん図解</title>
+<style>
+  :root{
+    --paper:#fbf8f3;
+    --paper-2:#f3eee2;
+    --ink:#2c2a3a;
+    --ink-soft:#5a5670;
+    --muted:#8a869c;
+    --lavender:#8b7bb8;
+    --lavender-soft:#d8cfe8;
+    --turquoise:#3fa6a3;
+    --turquoise-soft:#c9e6e5;
+    --gold:#c89b3f;
+    --gold-soft:#f0e2bf;
+    --coral:#d96a73;
+    --line:#d8d2c0;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at top, rgba(139,123,184,0.08), transparent 60%),
+      radial-gradient(ellipse at bottom, rgba(63,166,163,0.08), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic","メイリオ",sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:32px 22px 80px}
+
+  /* ヘッダー */
+  .hero{
+    text-align:center;
+    padding:48px 16px 36px;
+    border-bottom:2px dashed var(--line);
+    margin-bottom:36px;
+  }
+  .hero .eyebrow{
+    display:inline-block;
+    background:var(--lavender);
+    color:#fff;
+    padding:6px 18px;
+    border-radius:999px;
+    font-size:12px;
+    letter-spacing:0.12em;
+    font-weight:700;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(24px,5vw,34px);
+    margin:0 0 12px;
+    line-height:1.45;
+    color:var(--ink);
+  }
+  .hero h1 .accent{
+    background:linear-gradient(transparent 60%, var(--gold-soft) 60%);
+    padding:0 4px;
+  }
+  .hero .sub{
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:640px;
+    margin:0 auto;
+  }
+  .hero .source{
+    display:inline-block;
+    margin-top:18px;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .hero .source a{color:var(--lavender);text-decoration:none;border-bottom:1px dotted var(--lavender)}
+
+  /* セクション */
+  .sec{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:28px 24px;
+    margin-bottom:24px;
+    box-shadow:0 2px 8px rgba(44,42,58,0.04);
+    position:relative;
+  }
+  .sec::before{
+    content:attr(data-num);
+    position:absolute;
+    top:-14px;left:24px;
+    background:var(--lavender);
+    color:#fff;
+    width:32px;height:32px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:14px;
+    box-shadow:0 4px 10px rgba(139,123,184,0.3);
+  }
+  .sec h2{
+    font-size:clamp(19px,3.2vw,22px);
+    margin:8px 0 18px;
+    color:var(--ink);
+    line-height:1.45;
+  }
+  .sec h2 .emo{margin-right:8px}
+  .sec p{margin:0 0 14px;color:var(--ink-soft);font-size:15px}
+  .sec p strong{color:var(--ink);background:var(--gold-soft);padding:0 4px;border-radius:3px}
+
+  /* 一言ボックス */
+  .punch{
+    background:linear-gradient(135deg, rgba(139,123,184,0.08), rgba(63,166,163,0.08));
+    border-left:4px solid var(--lavender);
+    padding:18px 22px;
+    border-radius:0 12px 12px 0;
+    font-size:17px;
+    font-weight:600;
+    color:var(--ink);
+    margin:18px 0 4px;
+  }
+  .punch .label{
+    display:inline-block;
+    font-size:11px;
+    color:var(--lavender);
+    letter-spacing:0.1em;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+
+  /* 翻訳ノート */
+  .note{
+    background:var(--paper-2);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:14px 0;
+  }
+  .note .key{
+    color:var(--gold);
+    font-weight:700;
+    margin-right:6px;
+  }
+
+  /* 比較カード */
+  .compare{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin:18px 0;
+  }
+  @media(max-width:560px){.compare{grid-template-columns:1fr}}
+  .compare .card{
+    background:var(--paper-2);
+    border-radius:12px;
+    padding:16px;
+    font-size:14px;
+  }
+  .compare .card.bad{border-top:3px solid var(--coral)}
+  .compare .card.good{border-top:3px solid var(--turquoise)}
+  .compare .card h4{margin:0 0 10px;font-size:14px;color:var(--ink)}
+  .compare .card h4 .ico{margin-right:6px}
+  .compare .card ul{margin:0;padding-left:18px;color:var(--ink-soft)}
+  .compare .card li{margin-bottom:6px}
+
+  /* 3層メモリ図 */
+  .tiers{margin:22px 0 8px}
+  .tier{
+    display:flex;
+    align-items:stretch;
+    border-radius:14px;
+    overflow:hidden;
+    margin-bottom:12px;
+    border:1px solid var(--line);
+  }
+  .tier .badge{
+    flex:0 0 80px;
+    background:var(--lavender);
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    padding:14px 8px;
+  }
+  .tier .badge .num{font-size:22px;line-height:1}
+  .tier .badge .lbl{font-size:11px;margin-top:4px;letter-spacing:0.05em}
+  .tier .body{flex:1;padding:14px 18px;background:#fff}
+  .tier .body h4{margin:0 0 4px;font-size:15px;color:var(--ink)}
+  .tier .body p{margin:0;font-size:13px;color:var(--ink-soft)}
+  .tier.t1 .badge{background:var(--gold)}
+  .tier.t2 .badge{background:var(--turquoise)}
+  .tier.t3 .badge{background:var(--lavender)}
+
+  .tier-meta{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:10px;
+  }
+
+  /* ループ図（Curator/GEPA） */
+  .loop{
+    background:var(--paper-2);
+    border-radius:14px;
+    padding:18px;
+    margin:16px 0;
+  }
+  .loop h4{margin:0 0 12px;font-size:14px;color:var(--lavender);letter-spacing:0.05em}
+  .loop .steps{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+  }
+  .loop .step{
+    flex:1;
+    min-width:130px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    font-size:13px;
+    color:var(--ink);
+    text-align:center;
+  }
+  .loop .arr{
+    color:var(--lavender);
+    font-weight:700;
+    font-size:18px;
+  }
+  @media(max-width:560px){.loop .arr{transform:rotate(90deg)}}
+
+  /* 対応表 */
+  .map-table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0 6px;
+    margin:18px 0 8px;
+    font-size:14px;
+  }
+  .map-table th{
+    text-align:left;
+    padding:10px 14px;
+    background:var(--lavender);
+    color:#fff;
+    font-weight:700;
+    font-size:13px;
+  }
+  .map-table th:first-child{border-radius:10px 0 0 10px}
+  .map-table th:last-child{border-radius:0 10px 10px 0}
+  .map-table td{
+    background:#fff;
+    padding:12px 14px;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    color:var(--ink);
+  }
+  .map-table td:first-child{
+    border-left:1px solid var(--line);
+    border-radius:10px 0 0 10px;
+    font-weight:600;
+    color:var(--lavender);
+  }
+  .map-table td:last-child{
+    border-right:1px solid var(--line);
+    border-radius:0 10px 10px 0;
+  }
+  .map-table td .check{color:var(--turquoise);font-weight:700;margin-right:4px}
+  .map-table td .pending{color:var(--coral);font-weight:700;margin-right:4px}
+
+  /* 締めメッセージ */
+  .finale{
+    background:linear-gradient(135deg, var(--lavender) 0%, var(--turquoise) 100%);
+    color:#fff;
+    border-radius:18px;
+    padding:36px 28px;
+    text-align:center;
+    margin:30px 0 20px;
+    box-shadow:0 12px 28px rgba(139,123,184,0.25);
+  }
+  .finale .eyebrow{
+    font-size:12px;
+    letter-spacing:0.15em;
+    opacity:0.85;
+    margin-bottom:10px;
+  }
+  .finale h2{
+    margin:0 0 14px;
+    font-size:clamp(20px,4vw,26px);
+    line-height:1.45;
+    color:#fff;
+  }
+  .finale .flow{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:20px 0 10px;
+    font-size:14px;
+  }
+  .finale .pill{
+    background:rgba(255,255,255,0.2);
+    padding:8px 16px;
+    border-radius:999px;
+    font-weight:600;
+    backdrop-filter:blur(4px);
+  }
+  .finale .arr{font-size:20px;opacity:0.7}
+  .finale .closing{
+    margin-top:18px;
+    font-size:14px;
+    opacity:0.95;
+    line-height:1.7;
+  }
+
+  /* おけ森メモ */
+  .okemon-memo{
+    background:var(--paper-2);
+    border:1px dashed var(--gold);
+    border-radius:14px;
+    padding:18px 20px;
+    margin:18px 0 8px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .okemon-memo .title{
+    font-weight:700;
+    color:var(--gold);
+    margin-bottom:6px;
+    font-size:13px;
+  }
+
+  /* フッター */
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:40px;
+    line-height:1.8;
+  }
+  footer a{color:var(--lavender);text-decoration:none}
+
+  /* 強調インライン */
+  .ink{color:var(--ink);font-weight:700}
+  .lav{color:var(--lavender);font-weight:700}
+  .tur{color:var(--turquoise);font-weight:700}
+  .gld{color:var(--gold);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ヘッダー -->
+<header class="hero">
+  <span class="eyebrow">きょうちゃん図解 ・ AI / エージェント</span>
+  <h1>使うほど賢くなるAI<br>「<span class="accent">Hermes Agent</span>」って何者？</h1>
+  <p class="sub">「セッション閉じたら全部忘れる」普通のAIから、「<strong>自分の文脈と手順を蓄えていく相棒</strong>」へ。<br>いちさん（@ichiaimarketer）の1万字級攻略マニュアル＊を、ぎゅっと図解にしました。</p>
+  <div class="source">
+    ＊出典：<a href="https://x.com/ichiaimarketer/status/2056550724054683745" target="_blank" rel="noopener">いち｜AI社員と働く経営者・Hermes Agent完全攻略マニュアル（2026.05.19・27,000インプ）</a>
+  </div>
+</header>
+
+<!-- セクション1：そもそも何が違う -->
+<section class="sec" data-num="1">
+  <h2><span class="emo">🤔</span>普通のAIと、何がそんなに違うの？</h2>
+  <p>ChatGPTやClaudeに「私のことは○○って覚えといて」って頼んでも、新しいチャット開いたらまっさら。これ、みんなが感じてる<strong>「セッション閉じたら全部忘れる問題」</strong>のこと。</p>
+
+  <div class="compare">
+    <div class="card bad">
+      <h4><span class="ico">😅</span>普通のAIエージェント</h4>
+      <ul>
+        <li>セッション終わったらゼロリセット</li>
+        <li>同じミスを3回しても覚えない</li>
+        <li>昨日10分で見つけた答えも消える</li>
+        <li>毎回プロンプトを書き直すハメに</li>
+      </ul>
+    </div>
+    <div class="card good">
+      <h4><span class="ico">✨</span>Hermes Agent</h4>
+      <ul>
+        <li>性格・知識・手順をディスクに残す</li>
+        <li>「3週間前に話した内容」を検索できる</li>
+        <li>うまくいった手順を自分でメモに残す</li>
+        <li>使うほどに賢くなる（複利が効く）</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="punch">
+    <span class="label">ひとことで言うと</span>
+    Hermes Agent ＝ <span class="lav">「使うほど自分専用に育っていくAI」</span>
+  </div>
+
+  <div class="note">
+    <span class="key">補足：</span>同じく永続メモリ系で有名な「OpenClaw」もあるけど、いちさん曰く設計思想が <span class="ink">"向きが逆"</span>。OpenClaw＝チャットアプリの中にAIを差し込んだもの／Hermes＝学習するAIの周りに窓口を巻きつけたもの。Hermesは<strong>"育てる"が主役</strong>。
+  </div>
+</section>
+
+<!-- セクション2：SOUL.md -->
+<section class="sec" data-num="2">
+  <h2><span class="emo">🪞</span>まず「あなたは誰？」を1枚に書く（SOUL.md）</h2>
+  <p>メモリや手順の話の前に、<strong>「このAIは誰なのか」</strong>という人格を最初に決めます。性格・しゃべり方・絶対やらないこと・大切にしてること。これを1ファイルにまとめておくのが <span class="lav">SOUL.md（ソウル・エムディー）</span>。</p>
+
+  <div class="note">
+    <span class="key">SOUL.md って？</span>"魂"の意味。AIにとっての性格設定シート。一度書いたら基本ほぼ動かさない<strong>「固定された額縁」</strong>みたいなもの。
+  </div>
+
+  <p>このSOUL.mdが、AIの一番最初に毎回読まれます。だからプロジェクトが変わってもセッションが変わっても、<span class="ink">性格はずっと同じ</span>。違うチャットで話してるのに、ちゃんと「いつものあの子」が返してくれる。</p>
+
+  <div class="punch">
+    <span class="label">要するに</span>
+    記憶やスキルは"動く部品"／SOUL.mdは"その部品が動く<span class="gld">舞台</span>"
+  </div>
+</section>
+
+<!-- セクション3：3層メモリ -->
+<section class="sec" data-num="3">
+  <h2><span class="emo">📚</span>記憶のしまい方を「3段階」で分けてる</h2>
+  <p>Hermesの記憶は1個の箱じゃなくて、<strong>用途と速度が違う3つの層</strong>でできてます。よく使うものは手元、使うかわからないものは奥の倉庫。実家のクローゼットみたいなイメージ。</p>
+
+  <div class="tiers">
+    <div class="tier t1">
+      <div class="badge"><div class="num">1</div><div class="lbl">手元</div></div>
+      <div class="body">
+        <h4>📌 常時持ち歩く小さなメモ帳</h4>
+        <p>「自分が学んだ教訓」と「相手のプロフィール」を、それぞれ2,200字／1,375字の超短いMarkdownに。AIは毎回これを見て話す。<strong>満タンの80%まで来たら自分で要約・整理</strong>する仕組み付き。</p>
+      </div>
+    </div>
+    <div class="tier t2">
+      <div class="badge"><div class="num">2</div><div class="lbl">本棚</div></div>
+      <div class="body">
+        <h4>🔍 全会話を検索できる本棚</h4>
+        <p>過去の全チャットがデータベースに保存されていて、「あれ何だっけ」と思ったら<strong>本文丸ごと検索できる</strong>。3週間前の会話だろうが見つけ出せる。容量はほぼ無限。</p>
+      </div>
+    </div>
+    <div class="tier t3">
+      <div class="badge"><div class="num">3</div><div class="lbl">倉庫</div></div>
+      <div class="body">
+        <h4>🗄 さらに深い長期倉庫（外付け）</h4>
+        <p>もっと大きな記憶が必要なら、外部の8種類の倉庫プラグインを繋げる。会話のたびに関連メモを引き出して、終わったら新しいメモを自動でしまってくれる。</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="tier-meta">🍃 手元 → 本棚 → 倉庫の順で「常に見える ⇄ 容量無限」のトレードオフを設計してる</p>
+
+  <div class="okemon-memo">
+    <div class="title">🌳 おけ森との対応</div>
+    Tier1＝ <span class="ink">~/.claude/...memory/</span> ／ Tier2＝ <span class="ink">jsonl ＋ cchist</span>（過去全会話検索ツール） ／ Tier3＝ <span class="ink">Obsidian Vault「000 おけ森/」</span>。<br>つまりおけ森、<strong>知らずにHermesと同じ構造に着地してる</strong>。
+  </div>
+</section>
+
+<!-- セクション4：自己進化スキル -->
+<section class="sec" data-num="4">
+  <h2><span class="emo">🧩</span>「やり方」もAIが自分でメモして溜めていく</h2>
+  <p>記憶が「事実」を扱う層だとしたら、<strong>「やり方」を扱う層がスキル</strong>。料理本でいうレシピみたいなもの。AIが「これうまくいった！」を発見するたびに、自分でレシピを書いて保存していきます。</p>
+
+  <div class="note">
+    <span class="key">レシピが増えるタイミング：</span>5回以上ツールを使った複雑な作業をやり切ったとき／エラーを乗り越えて答えにたどり着いたとき／人から「もっとこうして」と直されたとき。
+  </div>
+
+  <p>レシピが100個になっても重くならないように、<strong>「タイトルと一言説明だけ最初に見て、本文は必要になったら読みに行く」</strong>という賢い読み方をします。図書館の本の背表紙だけまず見る感じ🍃</p>
+
+  <div class="punch">
+    <span class="label">大事なポイント</span>
+    AIが<span class="tur">自分で</span>「次の自分のため」にレシピを残してくれる
+  </div>
+</section>
+
+<!-- セクション5：Curator -->
+<section class="sec" data-num="5">
+  <h2><span class="emo">🧹</span>自動で書庫を片付けてくれる人（Curator）</h2>
+  <p>放っとくとレシピが何百個も溜まって、似たようなのも増えて散らかります。それを<strong>勝手にお片付けしてくれる管理人</strong>が <span class="lav">Curator（キュレーター）</span>。</p>
+
+  <div class="loop">
+    <h4>📅 Curatorのお仕事フロー</h4>
+    <div class="steps">
+      <div class="step">7日間アイドル<br>＋2時間お留守</div>
+      <div class="arr">→</div>
+      <div class="step">バックグラウンドで<br>こっそり起動</div>
+      <div class="arr">→</div>
+      <div class="step">30日使ってない<br>レシピ＝休眠フラグ</div>
+      <div class="arr">→</div>
+      <div class="step">90日経ったら<br>倉庫送り（削除NG）</div>
+    </div>
+  </div>
+
+  <p>大事なのは <span class="ink">「絶対に消さない」</span> こと。最悪でも倉庫に退避するだけ、コマンド1つで元に戻せる。しかも片付け前に必ずスナップショット（その時点の丸ごとコピー）を取る念の入れよう。</p>
+
+  <div class="note">
+    <span class="key">人がいじったやつには触らない：</span>あなたが手で書いたレシピや、外から入れた公式レシピは<strong>絶対に対象外</strong>。AIが自分で作ったレシピだけが片付け対象。よくできてる🤝
+  </div>
+</section>
+
+<!-- セクション6：GEPA -->
+<section class="sec" data-num="6">
+  <h2><span class="emo">🧪</span>もう一歩深く：失敗ログから自動で進化する（GEPA）</h2>
+  <p>AIには弱点があって、<strong>「自分の出来栄えを甘く採点しがち」</strong>。「うまくできた！」って自己評価して、実はイマイチなレシピを正解として保存しちゃう。</p>
+
+  <p>そこで別ツールの <span class="lav">GEPA（ジーパ）</span> が「AIの自己評価」じゃなくて<strong>実行ログの中身そのもの</strong>を読みに行きます。「どこで失敗したか」「何を間違えたか」を直接見て、改良案を作って提案する仕組み。</p>
+
+  <div class="loop">
+    <h4>🔄 GEPAのお仕事フロー</h4>
+    <div class="steps">
+      <div class="step">今のレシピを<br>取り出す</div>
+      <div class="arr">→</div>
+      <div class="step">実行ログから<br>失敗箇所を分析</div>
+      <div class="arr">→</div>
+      <div class="step">改良案を<br>たくさん生成</div>
+      <div class="arr">→</div>
+      <div class="step">テストで合格した<br>"提案"を送る</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <span class="key">良心的なところ：</span>GEPAは絶対に勝手にレシピを書き換えない。あくまで<strong>「こんな改善案はどうですか？」と提案するだけ</strong>。受け入れるかは人間が決める。
+  </div>
+
+  <p>しかも <span class="ink">GPU不要・1回 $2〜$10</span> で動く。大きな学習装置を回す前に、まず試す価値あるよ、というのがいちさんの推し方。</p>
+</section>
+
+<!-- セクション7：プロファイル -->
+<section class="sec" data-num="7">
+  <h2><span class="emo">👥</span>1人から10人へ：性格違いのAIを並走させる</h2>
+  <p>Hermesのいちばん面白いのが <span class="lav">プロファイル機能</span>。<strong>「デザイナー」「プログラマー」「リサーチャー」みたいに、専門の違うAIを何人でも並走</strong>できる。</p>
+
+  <p>それぞれが完全に独立。性格（SOUL.md）も、記憶も、覚えてるレシピも、別人。中身は同じHermesなのに、3人の「中の人」が違う、っていう状態を作れます。</p>
+
+  <div class="punch">
+    <span class="label">これって…</span>
+    自分の会社に<span class="tur">専門の違う社員が何人かいる</span>のと同じ状態じゃない？
+  </div>
+
+  <div class="okemon-memo">
+    <div class="title">🌳 おけ森との対応</div>
+    まさにこれ。おけもんカンパニーの<strong>「11人のAI社員」</strong>（はるか・あおい・ひより・りん・ゆい・まな・しーちゃん・みっちゃん・きょうちゃん・なっつん・コウ）が、Hermesでいう <span class="ink">プロファイル</span>。性格別・専門別に並走してる構造、完全に一致。
+  </div>
+</section>
+
+<!-- セクション8：おけ森との対応表 -->
+<section class="sec" data-num="8">
+  <h2><span class="emo">🌳</span>つまり「おけ森」、これ全部もう持ってる説</h2>
+  <p>Hermes Agentの仕組みを一個ずつ並べてみたら、<strong>おけもんカンパニーが半年前から独力でやってきたこと</strong>とほぼ一致してました。並べるとこんな感じ👇</p>
+
+  <table class="map-table">
+    <thead>
+      <tr><th>Hermes Agent</th><th>おけもんカンパニー</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>SOUL.md（人格）</td><td><span class="check">✓</span>CLAUDE.md＋11キャラのスキル</td></tr>
+      <tr><td>Tier1メモリ（手元）</td><td><span class="check">✓</span>~/.claude/...memory/</td></tr>
+      <tr><td>Tier2（本棚・全会話検索）</td><td><span class="check">✓</span>jsonl＋cchist</td></tr>
+      <tr><td>Tier3（長期倉庫）</td><td><span class="check">✓</span>Obsidian Vault「000 おけ森/」</td></tr>
+      <tr><td>自己進化スキル</td><td><span class="check">✓</span>~/.claude/skills/（自作スキル群）</td></tr>
+      <tr><td>Curator（自動掃除）</td><td><span class="pending">△</span>未実装・思想は同じ「忘れる前提」</td></tr>
+      <tr><td>GEPA（自動進化）</td><td><span class="pending">△</span>未実装・取り入れ候補</td></tr>
+      <tr><td>プロファイル（複数AI）</td><td><span class="check">✓</span>11人カンパニー</td></tr>
+    </tbody>
+  </table>
+
+  <div class="punch">
+    <span class="label">気づき</span>
+    むしろ <span class="gld">キャラ性・関係性・温度</span> まで設計してる分、Hermesの先に行ってる部分もある
+  </div>
+
+  <div class="note">
+    <span class="key">取り入れるとしたら：</span>① Curator的な「30日休眠 → 90日倉庫送り」をチャットノート／日報にも応用 ② GEPA的な「実行ログを読んで改善案を出す」をスキル品質改善に応用。この2つは未来の宿題🌱
+  </div>
+</section>
+
+<!-- セクション9：いちさんのスタンス -->
+<section class="sec" data-num="9">
+  <h2><span class="emo">💬</span>いちさん本人の言葉：「派手に語る」でも「斜に構える」でもなく</h2>
+  <p>記事の後半で、いちさん本人のスタンスが書かれてました。これがめちゃくちゃ大事な温度感。</p>
+
+  <div class="compare">
+    <div class="card bad">
+      <h4><span class="ico">📢</span>こうじゃない</h4>
+      <ul>
+        <li>派手に煽って期待値だけ上げる</li>
+        <li>少し触って「使えない」と切り捨てる</li>
+        <li>本質を理解しないまま流行を追う</li>
+      </ul>
+    </div>
+    <div class="card good">
+      <h4><span class="ico">🌱</span>こうあるべき</h4>
+      <ul>
+        <li>実際に使って事業に入れる</li>
+        <li>成果が出る形まで落とし込む</li>
+        <li>最後は<strong>実績で判断してもらう</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <p>いちさん自身の実績：<strong>外注ほぼ0で年商1億／VC未調達／半年で上場企業M&A経験／1年でX 15アカ計13万フォロワー</strong>。<br>「AIすごい」で終わらず、AIで本当に事業を回し、売上を作って動かしてきた人の言葉なんだなと。</p>
+
+  <div class="punch">
+    <span class="label">AGI観</span>
+    AGIは突然完成品で届かない。<span class="lav">「少し不完全だけど未来を感じるツール」</span>として現れる。<br>今触り続けるか、ここでかなり差がつく。
+  </div>
+</section>
+
+<!-- 締めメッセージ -->
+<section class="finale">
+  <div class="eyebrow">🌟 ここからが本題 🌟</div>
+  <h2>セカンドブレインの<br>「ゲームチェンジ」が始まってる</h2>
+  <p style="margin:0 0 6px;opacity:0.95;font-size:14px;">今までは「集めるだけで読み返さない墓場ノート」が普通。<br>でもこれからは——</p>
+
+  <div class="flow">
+    <span class="pill">📝 保存する</span>
+    <span class="arr">→</span>
+    <span class="pill">🌱 勝手に育つ</span>
+    <span class="arr">→</span>
+    <span class="pill">💌 自分に返ってくる</span>
+  </div>
+
+  <p class="closing">
+    主役が「<strong>集める人間</strong>」から「<strong>使って育てるAI</strong>」に変わる。<br>
+    Hermes Agentはその入口の1つ。<br>
+    そして<span style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:6px;">おけもんカンパニーは、流行る前にもう同じ場所にいる</span>。
+  </p>
+</section>
+
+<!-- フッター -->
+<footer>
+  📘 出典：<a href="https://x.com/ichiaimarketer/status/2056550724054683745" target="_blank" rel="noopener">いち｜AI社員と働く経営者「Hermes Agent完全攻略マニュアル」（2026.05.19）</a><br>
+  原文：<a href="https://x.com/akshay_pachaar/status/2054564519280804028" target="_blank" rel="noopener">Akshay Pachaar 氏 Hermes Agent Masterclass</a> ／ GitHub: NousResearch/hermes-agent<br>
+  <br>
+  🎨 きょうちゃん図解 ・ 2026.05.19 ／ おけもんカンパニー
+</footer>
+
+</div>
+</body>
+</html>
