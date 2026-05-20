@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>watchmen - 使うほどAIが仕事を覚える仕組み</title>
+<style>
+  :root {
+    --bg: #f6faf7;
+    --paper: #ffffff;
+    --ink: #17342f;
+    --muted: #5f6f69;
+    --line: #dfe9e3;
+    --green: #2b8a67;
+    --coral: #c95243;
+    --gold: #d9a831;
+    --blue: #347f9b;
+    --soft-green: #e5f4ed;
+    --soft-coral: #fae8e4;
+    --soft-gold: #fbf1cf;
+    --shadow: 0 18px 50px rgba(26, 59, 52, 0.10);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.75;
+    letter-spacing: 0;
+  }
+  a { color: var(--blue); }
+  .wrap { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
+  .top {
+    background: linear-gradient(180deg, #ffffff 0%, #eef8f1 100%);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero {
+    min-height: 88vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+    padding: 48px 0 34px;
+  }
+  .eyebrow {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--green);
+    border-radius: 50%;
+  }
+  h1 {
+    font-size: 44px;
+    line-height: 1.18;
+    margin: 0 0 18px;
+  }
+  .lead {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 0 24px;
+  }
+  .source-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .source-row a {
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .visual {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    padding: 22px;
+  }
+  .terminal {
+    background: #17231f;
+    color: #eaf8f0;
+    border-radius: 8px;
+    padding: 18px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+    min-height: 230px;
+  }
+  .terminal .dim { color: #90a79e; }
+  .terminal .ok { color: #8ee0b7; }
+  .terminal .warn { color: #f0c76d; }
+  .memory-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .memory-strip div {
+    min-height: 74px;
+    border-radius: 8px;
+    padding: 12px;
+    background: var(--soft-green);
+    border: 1px solid #cce8d9;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  section { padding: 56px 0; }
+  section h2 { font-size: 28px; line-height: 1.35; margin: 0 0 10px; }
+  .section-lead { color: var(--muted); margin: 0 0 24px; max-width: 740px; }
+  .grid { display: grid; gap: 16px; }
+  .grid.three { grid-template-columns: repeat(3, 1fr); }
+  .grid.two { grid-template-columns: repeat(2, 1fr); }
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px;
+    box-shadow: 0 8px 22px rgba(26, 59, 52, 0.06);
+  }
+  .card h3 { margin: 0 0 8px; font-size: 18px; line-height: 1.4; }
+  .card p { margin: 0; color: var(--muted); }
+  .tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 999px;
+    padding: 4px 10px;
+    margin-bottom: 10px;
+  }
+  .green { background: var(--soft-green); color: var(--green); }
+  .coral { background: var(--soft-coral); color: var(--coral); }
+  .gold { background: var(--soft-gold); color: #8c6710; }
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    align-items: stretch;
+  }
+  .step {
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+  }
+  .step b { display: block; margin-bottom: 8px; }
+  .step span { color: var(--muted); font-size: 13px; }
+  .note {
+    background: #17342f;
+    color: #f3fbf6;
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .note h2 { color: #ffffff; }
+  .note p { color: #d9eee4; }
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .action {
+    background: var(--paper);
+    border-left: 6px solid var(--green);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .footer {
+    border-top: 1px solid var(--line);
+    padding: 28px 0 40px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (max-width: 860px) {
+    .hero, .grid.three, .grid.two, .flow, .actions { grid-template-columns: 1fr; }
+    h1 { font-size: 32px; }
+    .lead { font-size: 16px; }
+    .memory-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap hero">
+    <div>
+      <div class="eyebrow">watchmenを日常語で</div>
+      <h1>AIに毎回説明する時間を、少しずつ減らす仕組み。</h1>
+      <p class="lead">watchmenは、Claude CodeやCodexでやった作業をあとから読み返し、よく出る手順を「次回も使える仕事メモ」に変えてくれるローカル寄りのOSSです。</p>
+      <div class="source-row">
+        <a href="https://x.com/driaforall/status/2056421008546897989">元動画</a>
+        <a href="https://github.com/firstbatchxyz/watchmen">GitHub</a>
+        <a href="https://x.com/AiAircle34052/status/2057004662696603990">Aircle投稿</a>
+      </div>
+    </div>
+    <div class="visual" aria-label="watchmenの流れ">
+      <div class="terminal">
+        <div class="dim">$ watchmen init</div>
+        <br>
+        <div class="ok">scan: Claude Code sessions</div>
+        <div class="ok">scan: Codex sessions</div>
+        <div class="warn">found repeated workflow: HTML diagram publishing</div>
+        <div class="warn">found repeated workflow: project handoff notes</div>
+        <br>
+        <div>write bundles/project/skills/...</div>
+        <div>refresh CLAUDE.md + AGENTS.md</div>
+      </div>
+      <div class="memory-strip">
+        <div>作業ログ</div>
+        <div>よく使う手順</div>
+        <div>スキル化</div>
+        <div>次回へ持ち越し</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>つまり、何をしてくれるの？</h2>
+    <p class="section-lead">「前も説明したよね」を、AI側の作業メモに変える道具です。魔法ではなく、あなたの作業履歴を読んで、次に使える形へ整理します。</p>
+    <div class="grid three">
+      <div class="card">
+        <span class="tag green">1. 覚える</span>
+        <h3>作業の流れを集める</h3>
+        <p>Claude Code、Codex、pi.devなどのセッション履歴を読み、実際に何をしていたかを集めます。</p>
+      </div>
+      <div class="card">
+        <span class="tag coral">2. まとめる</span>
+        <h3>繰り返しを見つける</h3>
+        <p>同じような確認、同じような手順、同じようなファイル構成を見つけて、仕事の型にします。</p>
+      </div>
+      <div class="card">
+        <span class="tag gold">3. 渡す</span>
+        <h3>次のAIに渡せる形へ</h3>
+        <p>`SKILL.md`、`CLAUDE.md`、`AGENTS.md`のような、AIが読める作業メモへ書き出します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#ffffff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <h2>流れはこの5ステップ</h2>
+    <p class="section-lead">人間が毎回「このプロジェクトではこうしてね」と説明する代わりに、作業履歴から下ごしらえします。</p>
+    <div class="flow">
+      <div class="step"><b>セッションを見る</b><span>過去のClaude CodeやCodexの作業ログを読む。</span></div>
+      <div class="step"><b>根拠を残す</b><span>どの作業から判断したかを追える形にする。</span></div>
+      <div class="step"><b>手順を作る</b><span>よく使う流れをスキル束にする。</span></div>
+      <div class="step"><b>前提を書く</b><span>プロジェクト概要をCLAUDE.mdやAGENTS.mdにする。</span></div>
+      <div class="step"><b>次回に効く</b><span>新しいAIセッションが迷いにくくなる。</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>保存されるもの</h2>
+    <p class="section-lead">READMEでは、成果物はローカルの `~/.watchmen/` や `bundles/`、`analyses/` に置かれる説明になっています。</p>
+    <div class="grid two">
+      <div class="card">
+        <h3>スキル束</h3>
+        <p>`SKILL.md`、補助スクリプト、参考資料。毎回やる作業を、AIが呼び出せる手順として残します。</p>
+      </div>
+      <div class="card">
+        <h3>プロジェクト前提メモ</h3>
+        <p>`CLAUDE.md` と `AGENTS.md`。Claude CodeでもCodexでも読める、プロジェクトの共通カンペです。</p>
+      </div>
+      <div class="card">
+        <h3>分析メモ</h3>
+        <p>日ごとの作業傾向や、スキル候補の判断材料。あとで「なぜこのスキルができたか」を追えます。</p>
+      </div>
+      <div class="card">
+        <h3>ローカル画面</h3>
+        <p>`127.0.0.1:8979` のダッシュボードで、どのプロジェクトが育っているかを見る設計です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap note">
+    <h2>おけ森で使うなら、いきなり本番導入しない</h2>
+    <p>これはローカル履歴、APIキー、OAuth、作業ログを扱う道具です。便利そうだから即導入ではなく、まずはテスト用プロジェクトで「今のセッション保存ルールと何が重なるか」を見るのがよさそうです。</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>次にやるなら</h2>
+    <div class="actions">
+      <div class="action"><b>読む</b><br>READMEと `plugin-codex/` の中身だけ先に確認する。</div>
+      <div class="action"><b>比べる</b><br>おけ森の `session-save` や日報運用と役割が重なるか見る。</div>
+      <div class="action"><b>試す</b><br>本番Vaultではなく、ダミーの小さいプロジェクトで動かす。</div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <div class="wrap">
+    Source: Dria X post, Aircle X post, firstbatchxyz/watchmen README. Created 2026-05-21.
+  </div>
+</div>
+</body>
+</html>
