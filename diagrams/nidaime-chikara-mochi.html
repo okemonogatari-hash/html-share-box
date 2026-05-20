@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二代目力餅 | 大阪・手打ちうどん</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:    #faf6f0;
+      --sand:     #ede5d8;
+      --warm:     #c9a87a;
+      --brown:    #7c5c3e;
+      --dark:     #2e1f0e;
+      --red:      #b03e2c;
+      --green:    #3d5a3e;
+      --white:    #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ──────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(250,246,240,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(201,168,122,0.3);
+      transition: background .3s;
+    }
+
+    .logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--brown);
+      letter-spacing: .12em;
+    }
+    .logo span { color: var(--red); }
+
+    nav a {
+      font-size: .82rem;
+      letter-spacing: .14em;
+      color: var(--dark);
+      text-decoration: none;
+      margin-left: 36px;
+      transition: color .2s;
+    }
+    nav a:hover { color: var(--warm); }
+
+    /* ── HERO ──────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 64px 80px;
+      position: relative;
+    }
+
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a87a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-text { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      font-size: .75rem;
+      letter-spacing: .3em;
+      color: var(--warm);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(3.2rem, 5vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .hero-title .accent {
+      color: var(--warm);
+      display: block;
+      font-size: .6em;
+      letter-spacing: .2em;
+    }
+
+    .hero-sub {
+      font-size: .9rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,.65);
+      margin-top: 28px;
+      max-width: 360px;
+    }
+
+    .hero-cta {
+      margin-top: 48px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 36px;
+      border: 1px solid var(--warm);
+      color: var(--warm);
+      font-size: .82rem;
+      letter-spacing: .2em;
+      text-decoration: none;
+      transition: all .25s;
+    }
+    .hero-cta:hover {
+      background: var(--warm);
+      color: var(--dark);
+    }
+    .hero-cta svg { width: 16px; height: 16px; }
+
+    .hero-right {
+      position: relative;
+      background: linear-gradient(145deg, #1a0f06 0%, #3d2612 50%, #5a3820 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 大きな丼のイラスト */
+    .bowl-scene {
+      position: relative;
+      width: 380px;
+      height: 380px;
+    }
+
+    .steam-wrap {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 18px;
+    }
+
+    .steam {
+      width: 10px;
+      border-radius: 50px;
+      background: rgba(255,255,255,.18);
+      animation: steamRise 2.4s ease-in-out infinite;
+    }
+    .steam:nth-child(1) { height: 56px; animation-delay: 0s; }
+    .steam:nth-child(2) { height: 72px; animation-delay: .4s; }
+    .steam:nth-child(3) { height: 48px; animation-delay: .8s; }
+
+    @keyframes steamRise {
+      0%   { opacity: 0; transform: translateY(0) scaleX(1); }
+      30%  { opacity: .5; }
+      80%  { opacity: .2; transform: translateY(-40px) scaleX(1.3); }
+      100% { opacity: 0; transform: translateY(-60px) scaleX(.9); }
+    }
+
+    .bowl-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 20px 48px rgba(0,0,0,.7));
+    }
+
+    /* 和柄装飾 */
+    .hero-pattern {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      width: 120px;
+      height: 120px;
+      opacity: .12;
+    }
+
+    /* ── DIVIDER ─────────────────────────────── */
+    .divider {
+      background: var(--brown);
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .divider span {
+      font-size: .72rem;
+      letter-spacing: .35em;
+      color: rgba(255,255,255,.7);
+    }
+    .divider-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--warm);
+    }
+
+    /* ── SECTION BASE ───────────────────────── */
+    section { padding: 96px 0; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .section-label {
+      font-size: .7rem;
+      letter-spacing: .35em;
+      color: var(--warm);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--dark);
+    }
+
+    .section-lead {
+      font-size: .92rem;
+      line-height: 2;
+      color: #5a4a38;
+      margin-top: 20px;
+      max-width: 560px;
+    }
+
+    /* ── STORY ─────────────────────────────── */
+    .story {
+      background: var(--white);
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-top: 64px;
+    }
+
+    .story-visual {
+      position: relative;
+    }
+
+    .story-img-main {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: linear-gradient(135deg, #3d2612 0%, #7c5c3e 60%, #c9a87a 100%);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .story-img-accent {
+      position: absolute;
+      bottom: -28px;
+      right: -28px;
+      width: 55%;
+      aspect-ratio: 1;
+      background: var(--sand);
+      border: 6px solid var(--white);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .story-number {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 7rem;
+      font-weight: 700;
+      color: rgba(255,255,255,.12);
+      line-height: 1;
+    }
+
+    .story-kanji {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--brown);
+    }
+
+    .story-text h3 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .story-text p {
+      font-size: .9rem;
+      line-height: 2.1;
+      color: #5a4a38;
+      margin-bottom: 20px;
+    }
+
+    .story-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-left: 3px solid var(--warm);
+      background: var(--cream);
+      font-size: .82rem;
+      color: var(--brown);
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    /* ── MENU ──────────────────────────────── */
+    .menu { background: var(--cream); }
+
+    .menu-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+    }
+
+    .menu-tabs {
+      display: flex;
+      gap: 4px;
+    }
+
+    .tab {
+      padding: 10px 28px;
+      font-size: .8rem;
+      letter-spacing: .1em;
+      border: 1px solid var(--sand);
+      background: transparent;
+      cursor: pointer;
+      transition: all .2s;
+      color: #888;
+    }
+    .tab.active {
+      background: var(--brown);
+      color: var(--white);
+      border-color: var(--brown);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .menu-card {
+      background: var(--white);
+      overflow: hidden;
+      transition: transform .3s;
+      cursor: pointer;
+    }
+    .menu-card:hover { transform: translateY(-4px); }
+    .menu-card:hover .menu-card-img { transform: scale(1.04); }
+
+    .menu-card-img-wrap {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+
+    .menu-card-img {
+      width: 100%;
+      height: 100%;
+      transition: transform .5s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+    }
+
+    /* 各メニューの背景グラデ */
+    .bg-kake    { background: linear-gradient(135deg,#e8d5b5,#c9a87a); }
+    .bg-kitsune { background: linear-gradient(135deg,#f5e6b0,#e8b84b); }
+    .bg-niku    { background: linear-gradient(135deg,#e8c8a0,#b06040); }
+    .bg-tempura { background: linear-gradient(135deg,#f2e4c0,#d4a050); }
+    .bg-chikara { background: linear-gradient(135deg,#ddd5c8,#a08060); }
+    .bg-kamatama{ background: linear-gradient(135deg,#fdf0d0,#e8c84a); }
+
+    .menu-card-body {
+      padding: 22px 24px;
+    }
+
+    .menu-card-name {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .menu-card-desc {
+      font-size: .78rem;
+      line-height: 1.8;
+      color: #888;
+    }
+
+    .menu-card-price {
+      margin-top: 14px;
+      font-size: .82rem;
+      color: var(--red);
+      font-weight: 500;
+    }
+    .menu-card-price .yen { font-size: 1.1rem; font-weight: 700; }
+
+    /* ── FEATURES ───────────────────────────── */
+    .features {
+      background: var(--dark);
+      color: var(--white);
+    }
+
+    .features .section-title { color: var(--white); }
+    .features .section-lead { color: rgba(255,255,255,.6); }
+
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+    }
+
+    .feat-card {
+      padding: 48px 36px;
+      background: rgba(255,255,255,.04);
+      transition: background .2s;
+    }
+    .feat-card:hover { background: rgba(201,168,122,.1); }
+
+    .feat-icon {
+      font-size: 2.4rem;
+      margin-bottom: 24px;
+    }
+
+    .feat-card h3 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .feat-card p {
+      font-size: .83rem;
+      line-height: 2;
+      color: rgba(255,255,255,.55);
+    }
+
+    /* ── INFO ──────────────────────────────── */
+    .info { background: var(--sand); }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 64px;
+      align-items: start;
+      margin-top: 60px;
+    }
+
+    .info-map {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #c8d8c0 0%, #a0b890 50%, #3d5a3e 100%);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-map::after {
+      content: '大阪府';
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-family: 'Noto Serif JP', serif;
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--white);
+      background: rgba(0,0,0,.4);
+      padding: 6px 14px;
+      letter-spacing: .1em;
+    }
+
+    .info-table {
+      width: 100%;
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(124,92,62,.15);
+      font-size: .88rem;
+    }
+
+    .info-label {
+      font-weight: 500;
+      color: var(--brown);
+      letter-spacing: .1em;
+    }
+
+    .info-value {
+      line-height: 1.8;
+      color: var(--dark);
+    }
+
+    .info-value a {
+      color: var(--red);
+      text-decoration: none;
+    }
+
+    /* ── RESERVATION ─────────────────────── */
+    .reservation {
+      background: var(--brown);
+      text-align: center;
+      padding: 96px 40px;
+    }
+
+    .reservation .section-label { color: var(--warm); }
+
+    .reservation .section-title {
+      color: var(--white);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+    }
+
+    .reservation p {
+      font-size: .9rem;
+      color: rgba(255,255,255,.65);
+      margin: 20px auto;
+      max-width: 480px;
+      line-height: 2;
+    }
+
+    .reserve-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 52px;
+      background: var(--warm);
+      color: var(--dark);
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-decoration: none;
+      margin-top: 32px;
+      transition: all .25s;
+    }
+    .reserve-btn:hover { background: var(--cream); }
+
+    .tel {
+      display: block;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--warm);
+      letter-spacing: .08em;
+      margin-top: 40px;
+    }
+
+    .tel-note {
+      font-size: .75rem;
+      color: rgba(255,255,255,.45);
+      margin-top: 8px;
+    }
+
+    /* ── FOOTER ───────────────────────────── */
+    footer {
+      background: var(--dark);
+      padding: 48px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .footer-logo span { color: var(--warm); }
+
+    .footer-copy {
+      font-size: .72rem;
+      color: rgba(255,255,255,.35);
+      letter-spacing: .1em;
+    }
+
+    /* ── SCROLL REVEAL ───────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ──────────────────────── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 55vw; }
+      .story-grid, .info-grid { grid-template-columns: 1fr; }
+      .menu-grid { grid-template-columns: repeat(2, 1fr); }
+      .feat-grid { grid-template-columns: 1fr; gap: 2px; }
+      header { padding: 14px 24px; }
+      nav a { margin-left: 20px; font-size: .75rem; }
+      .story-img-accent { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .menu-grid { grid-template-columns: 1fr; }
+      .hero-left { padding: 100px 32px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="logo"><span>二代目</span>力餅</div>
+  <nav>
+    <a href="#story">物語</a>
+    <a href="#menu">メニュー</a>
+    <a href="#info">店舗情報</a>
+    <a href="#reservation">ご予約</a>
+  </nav>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Nidaime Chikara Mochi · Osaka</p>
+      <h1 class="hero-title">
+        <span class="accent">手打ちうどん</span>
+        二代目<br>力餅
+      </h1>
+      <p class="hero-sub">
+        先代から受け継いだ出汁と、<br>
+        毎朝手打ちする麺。<br>
+        大阪の日常に、ほっとする一杯を。
+      </p>
+      <a href="#menu" class="hero-cta">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+        メニューを見る
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="bowl-scene">
+      <div class="steam-wrap">
+        <div class="steam"></div>
+        <div class="steam"></div>
+        <div class="steam"></div>
+      </div>
+      <!-- うどんの丼SVGイラスト -->
+      <svg class="bowl-svg" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">
+        <!-- 影 -->
+        <ellipse cx="190" cy="355" rx="140" ry="18" fill="rgba(0,0,0,.35)"/>
+        <!-- 丼本体 -->
+        <ellipse cx="190" cy="220" rx="148" ry="38" fill="#5a3820"/>
+        <path d="M42 220 Q42 320 190 330 Q338 320 338 220 Z" fill="#7c5c3e"/>
+        <path d="M42 220 Q42 316 190 326 Q338 316 338 220 Z" fill="#8a6845"/>
+        <!-- どんぶりのリム -->
+        <ellipse cx="190" cy="220" rx="148" ry="38" fill="#9a7855" stroke="#b89060" stroke-width="3"/>
+        <!-- 汁の表面 -->
+        <ellipse cx="190" cy="220" rx="140" ry="32" fill="#b8862a" opacity=".9"/>
+        <ellipse cx="190" cy="218" rx="136" ry="29" fill="#d4a040"/>
+        <!-- 汁の色グラデ -->
+        <ellipse cx="190" cy="216" rx="132" ry="26" fill="url(#soupGrad)"/>
+        <defs>
+          <radialGradient id="soupGrad" cx="40%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#e8c060"/>
+            <stop offset="60%" stop-color="#c8902a"/>
+            <stop offset="100%" stop-color="#a07020"/>
+          </radialGradient>
+          <radialGradient id="mochGrad" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#f8f0e0"/>
+            <stop offset="70%" stop-color="#e8d8b0"/>
+            <stop offset="100%" stop-color="#c8b880"/>
+          </radialGradient>
+        </defs>
+        <!-- うどん麺 -->
+        <g opacity=".95">
+          <path d="M110 210 Q140 205 160 215 Q180 225 200 212 Q220 200 245 208 Q265 215 270 210" stroke="#faf0d8" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M120 222 Q148 217 168 226 Q188 235 208 222 Q228 210 255 218 Q272 225 280 220" stroke="#f5e8c0" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M105 232 Q130 226 150 235 Q170 244 195 232 Q218 221 245 228 Q265 234 278 230" stroke="#faf0d8" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+          <path d="M115 243 Q142 237 165 245 Q185 252 208 241 Q228 231 250 238 Q268 244 275 240" stroke="#f0e0b8" stroke-width="5" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- かまぼこ（ピンク） -->
+        <ellipse cx="155" cy="208" rx="28" ry="14" fill="#f8c8c0"/>
+        <ellipse cx="155" cy="207" rx="26" ry="12" fill="#fce0d8"/>
+        <line x1="155" y1="196" x2="155" y2="220" stroke="#f8a0a0" stroke-width="1.5" opacity=".6"/>
+        <!-- ねぎ（緑） -->
+        <g fill="#5a9050" opacity=".9">
+          <ellipse cx="225" cy="205" rx="5" ry="3" transform="rotate(-20,225,205)"/>
+          <ellipse cx="234" cy="202" rx="4.5" ry="2.5" transform="rotate(-15,234,202)"/>
+          <ellipse cx="218" cy="200" rx="4" ry="2.5" transform="rotate(-25,218,200)"/>
+          <ellipse cx="242" cy="206" rx="4" ry="2.5" transform="rotate(-10,242,206)"/>
+        </g>
+        <!-- 揚げ（きつねいろ） -->
+        <path d="M172 198 L198 196 L202 215 L168 218 Z" fill="#d4900a" opacity=".85"/>
+        <path d="M172 198 L198 196 L202 215 L168 218 Z" fill="none" stroke="#b87020" stroke-width="1"/>
+        <!-- 麩 -->
+        <ellipse cx="250" cy="215" rx="12" ry="8" fill="#f0d890"/>
+        <ellipse cx="250" cy="214" rx="10" ry="6" fill="#f8e8a0"/>
+        <!-- 丼のふち装飾ライン -->
+        <ellipse cx="190" cy="220" rx="148" ry="38" fill="none" stroke="rgba(255,220,120,.25)" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <!-- 和柄装飾（右下） -->
+    <svg class="hero-pattern" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#c9a87a" stroke-width="1">
+        <circle cx="60" cy="60" r="50"/>
+        <circle cx="60" cy="60" r="35"/>
+        <circle cx="60" cy="60" r="20"/>
+        <line x1="60" y1="10" x2="60" y2="110"/>
+        <line x1="10" y1="60" x2="110" y2="60"/>
+        <line x1="24" y1="24" x2="96" y2="96"/>
+        <line x1="96" y1="24" x2="24" y2="96"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ── DIVIDER ── -->
+<div class="divider">
+  <span>HANDMADE UDON</span>
+  <div class="divider-dot"></div>
+  <span>OSAKA SINCE 1998</span>
+  <div class="divider-dot"></div>
+  <span>SECOND GENERATION</span>
+</div>
+
+<!-- ── STORY ── -->
+<section class="story" id="story">
+  <div class="container">
+    <p class="section-label reveal">Our Story</p>
+    <h2 class="section-title reveal">受け継いだ出汁と、<br>今日の麺。</h2>
+    <p class="section-lead reveal">
+      父が昭和の終わりに始めた「力餅」を、二代目として守り続けて二十余年。
+      変わらない出汁の味と、毎朝の手打ちだけが、私たちの誇りです。
+    </p>
+
+    <div class="story-grid">
+      <div class="story-visual reveal">
+        <div class="story-img-main">
+          <div class="story-number">力</div>
+        </div>
+        <div class="story-img-accent">
+          <div class="story-kanji">二代目</div>
+        </div>
+      </div>
+
+      <div class="story-text reveal">
+        <h3>
+          大阪の台所で、<br>
+          受け継がれる味。
+        </h3>
+        <p>
+          「力餅」という屋号は、先代の父が「食べた人に力がみなぎる一杯を届けたい」
+          という思いから名付けたもの。その言葉通り、毎日コトコト炊いた
+          昆布と鰹の合わせ出汁は、今も変わらぬレシピで作り続けています。
+        </p>
+        <p>
+          二代目として継いだのは、屋号だけではありません。
+          早朝4時から始める麺打ちの作業、仕込みの姿勢、
+          そしてお客さまを迎える気持ち。すべてが父から教わったものです。
+        </p>
+        <p>
+          大阪府で、今日も一杯一杯に心を込めて。
+          どうぞ、温かい出汁の香りとともにお越しください。
+        </p>
+        <div class="story-badge">
+          🍜 &nbsp; 手打ち麺・毎朝仕込み &nbsp;｜&nbsp; 昆布×鰹 合わせ出汁
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MENU ── -->
+<section class="menu" id="menu">
+  <div class="container">
+    <div class="menu-header">
+      <div>
+        <p class="section-label reveal">Menu</p>
+        <h2 class="section-title reveal">おすすめメニュー</h2>
+      </div>
+      <div class="menu-tabs reveal">
+        <button class="tab active">うどん</button>
+        <button class="tab">サイド</button>
+        <button class="tab">定食</button>
+      </div>
+    </div>
+
+    <div class="menu-grid">
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <div class="menu-card-img bg-chikara">🍜</div>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-name">力もちうどん</div>
+          <div class="menu-card-desc">餅を2枚のせた看板メニュー。とろけるお餅と出汁が絡んで、食べ応え満点。</div>
+          <div class="menu-card-price"><span class="yen">¥980</span>（税込）</div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <div class="menu-card-img bg-kake">🍵</div>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-name">かけうどん</div>
+          <div class="menu-card-desc">出汁そのものを味わうシンプルな一杯。ネギと天かすだけの潔さが美しい。</div>
+          <div class="menu-card-price"><span class="yen">¥620</span>（税込）</div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <div class="menu-card-img bg-kitsune">🦊</div>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-name">きつねうどん</div>
+          <div class="menu-card-desc">甘辛く炊いた大きな油揚げが一枚。大阪うどんの王道、定番中の定番。</div>
+          <div class="menu-card-price"><span class="yen">¥780</span>（税込）</div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <div class="menu-card-img bg-niku">🥩</div>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-name">肉うどん</div>
+          <div class="menu-card-desc">甘辛く煮た牛肉がたっぷり。出汁と肉の旨味が絶妙に溶け合う大阪定番の味。</div>
+          <div class="menu-card-price"><span class="yen">¥1,050</span>（税込）</div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <div class="menu-card-img bg-tempura">🍤</div>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-name">天ぷらうどん</div>
+          <div class="menu-card-desc">海老天とかき揚げの2種盛り。サクサクの衣が出汁に溶けていく瞬間が最高。</div>
+          <div class="menu-card-price"><span class="yen">¥1,180</span>（税込）</div>
+        </div>
+      </div>
+
+      <div class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <div class="menu-card-img bg-kamatama">🥚</div>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-name">釜玉うどん</div>
+          <div class="menu-card-desc">打ちたて茹でたてに卵を絡めて。シンプルだからこそ、麺の旨味が際立つ一杯。</div>
+          <div class="menu-card-price"><span class="yen">¥750</span>（税込）</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="features">
+  <div class="container">
+    <p class="section-label reveal">Our Promise</p>
+    <h2 class="section-title reveal">三つのこだわり</h2>
+    <p class="section-lead reveal">二代目が守り続ける、力餅の流儀。</p>
+
+    <div class="feat-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon">🌾</div>
+        <h3>毎朝手打ちの麺</h3>
+        <p>
+          小麦粉の配合から水加減まで、その日の気温と湿度に合わせて調整。
+          機械では出せない「手の感覚」で、もちもちとした食感を生み出します。
+        </p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">🐟</div>
+        <h3>先代直伝の合わせ出汁</h3>
+        <p>
+          北海道産昆布と枕崎の本枯れ節を使った合わせ出汁。
+          先代から変えていないレシピで、毎朝4時間かけてとります。
+        </p>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">❤️</div>
+        <h3>大阪の日常食として</h3>
+        <p>
+          高すぎず、気取らず、でも手を抜かない。
+          街の人が毎日でも来たくなるような、
+          「大阪の日常」にある一杯であり続けることが目標です。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INFO ── -->
+<section class="info" id="info">
+  <div class="container">
+    <p class="section-label reveal">Access & Info</p>
+    <h2 class="section-title reveal">店舗情報</h2>
+
+    <div class="info-grid">
+      <div class="reveal">
+        <div class="info-map">🗺️</div>
+      </div>
+      <div class="reveal">
+        <table class="info-table">
+          <tr class="info-row">
+            <td class="info-label">店名</td>
+            <td class="info-value">二代目 力餅</td>
+          </tr>
+          <tr class="info-row">
+            <td class="info-label">所在地</td>
+            <td class="info-value">大阪府<br><span style="font-size:.8rem;color:#888;">（詳細はお電話にてご確認ください）</span></td>
+          </tr>
+          <tr class="info-row">
+            <td class="info-label">営業時間</td>
+            <td class="info-value">
+              11:00 〜 14:30（L.O. 14:00）<br>
+              17:00 〜 20:30（L.O. 20:00）<br>
+              <span style="font-size:.78rem;color:#888;">※麺がなくなり次第終了</span>
+            </td>
+          </tr>
+          <tr class="info-row">
+            <td class="info-label">定休日</td>
+            <td class="info-value">火曜日・第3水曜日</td>
+          </tr>
+          <tr class="info-row">
+            <td class="info-label">席数</td>
+            <td class="info-value">カウンター8席 ／ テーブル16席</td>
+          </tr>
+          <tr class="info-row">
+            <td class="info-label">お支払い</td>
+            <td class="info-value">現金・PayPay</td>
+          </tr>
+          <tr class="info-row">
+            <td class="info-label">Instagram</td>
+            <td class="info-value"><a href="#">@nidaime_chikaramochi</a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RESERVATION ── -->
+<section class="reservation" id="reservation">
+  <p class="section-label reveal">Reservation & Contact</p>
+  <h2 class="section-title reveal" style="color:#fff;">ご予約・お問い合わせ</h2>
+  <p class="reveal">
+    お席のご予約はお電話にて承っております。<br>
+    団体様（8名以上）のご来店はお早めにご連絡ください。
+  </p>
+  <span class="tel reveal">000-0000-0000</span>
+  <p class="tel-note reveal">営業時間内にお気軽にどうぞ</p>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo"><span>二代目</span>力餅</div>
+  <div class="footer-copy">© 2024 二代目 力餅 All Rights Reserved.</div>
+</footer>
+
+<script>
+  // スクロールアニメーション
+  const allReveals = Array.from(document.querySelectorAll('.reveal'));
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  allReveals.forEach((el, i) => {
+    el.style.transitionDelay = (i % 4) * 0.08 + 's';
+    observer.observe(el);
+  });
+
+  // フォールバック：2秒後に全部表示
+  setTimeout(() => {
+    allReveals.forEach(el => el.classList.add('visible'));
+  }, 2000);
+
+  // ヘッダースクロール
+  window.addEventListener('scroll', () => {
+    document.querySelector('header').style.boxShadow =
+      window.scrollY > 40 ? '0 2px 20px rgba(0,0,0,.08)' : 'none';
+  });
+
+  // メニュータブ
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
