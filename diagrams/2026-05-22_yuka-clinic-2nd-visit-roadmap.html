@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2回目訪問まとめ｜進捗・今後の流れ・お金の話｜健康管理支援室 御中</title>
+<style>
+  :root {
+    --paper: #fdfdfd;
+    --sky: #e7f3fa;
+    --sky-deep: #5fa8d3;
+    --mint: #e8f5e9;
+    --mint-deep: #6bb77a;
+    --warm: #fff7ec;
+    --warm-deep: #e0a96d;
+    --pink: #fde6ec;
+    --pink-deep: #d97a96;
+    --text: #2c3e50;
+    --muted: #6b7c8c;
+    --line: rgba(95,168,211,0.18);
+    --shadow: 0 2px 12px rgba(95,168,211,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+    background: linear-gradient(135deg, #fafdff 0%, #f4faf6 100%);
+    color: var(--text);
+    line-height: 1.75;
+    padding: 20px 12px 60px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* breadcrumb */
+  .breadcrumb {
+    background: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--muted);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .breadcrumb a { color: var(--sky-deep); text-decoration: none; font-weight: 600; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  /* hero */
+  .hero {
+    background: linear-gradient(135deg, var(--mint) 0%, var(--sky) 100%);
+    border-radius: 24px;
+    padding: 40px 32px;
+    text-align: center;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .hero .greeting { font-size: 14px; color: var(--muted); margin-bottom: 12px; letter-spacing: 0.1em; }
+  .hero h1 { font-size: 28px; color: var(--text); font-weight: 700; line-height: 1.45; margin-bottom: 16px; }
+  .hero .sub { font-size: 15px; color: var(--muted); }
+  .hero .date { display: inline-block; margin-top: 18px; padding: 8px 20px; background: white; border-radius: 999px; font-size: 13px; color: var(--mint-deep); font-weight: 600; border: 1px solid var(--line); }
+
+  /* section */
+  .section { background: white; border-radius: 20px; padding: 32px 28px; margin-bottom: 22px; box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .section h2 { font-size: 21px; color: var(--sky-deep); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+  .section .lead { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .section h3 { font-size: 16px; color: var(--text); margin: 18px 0 8px; }
+  .section p { font-size: 14px; margin-bottom: 10px; }
+
+  /* 進捗タイムライン */
+  .timeline { margin-top: 14px; }
+  .tl-row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; padding: 12px 0; border-bottom: 1px dashed var(--line); align-items: flex-start; }
+  .tl-row:last-child { border-bottom: none; }
+  .tl-date { font-size: 12px; color: var(--sky-deep); font-weight: 700; padding-top: 2px; }
+  .tl-body { font-size: 14px; }
+  .tl-body strong { color: var(--text); }
+  .tl-body .quote { background: var(--pink); border-radius: 10px; padding: 10px 14px; margin-top: 6px; font-size: 13px; color: var(--pink-deep); border-left: 3px solid var(--pink-deep); }
+
+  /* 仕組み図 */
+  .system-flow { display: grid; grid-template-columns: 1fr 30px 1fr 30px 1fr; gap: 8px; align-items: center; margin: 20px 0; }
+  .sys-box { background: var(--sky); border: 1px solid var(--sky-deep); border-radius: 14px; padding: 16px 12px; text-align: center; font-size: 13px; }
+  .sys-box .ic { font-size: 28px; display: block; margin-bottom: 6px; }
+  .sys-box strong { display: block; font-size: 13px; color: var(--sky-deep); margin-bottom: 4px; }
+  .sys-arrow { text-align: center; font-size: 22px; color: var(--sky-deep); }
+  @media (max-width: 720px) {
+    .system-flow { grid-template-columns: 1fr; }
+    .sys-arrow { transform: rotate(90deg); }
+  }
+
+  /* roadmap */
+  .roadmap { display: grid; gap: 18px; margin-top: 14px; }
+  .phase { display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: stretch; }
+  .phase .ph-label { background: var(--sky-deep); color: white; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 18px 8px; }
+  .phase .ph-label .ph-num { font-size: 20px; font-weight: 800; line-height: 1; }
+  .phase .ph-label .ph-sub { font-size: 11px; margin-top: 4px; text-align: center; }
+  .phase.p2 .ph-label { background: var(--mint-deep); }
+  .phase.p3 .ph-label { background: var(--warm-deep); }
+  .phase .ph-body { background: #fafafa; border-radius: 14px; padding: 16px 20px; border-left: 4px solid var(--sky-deep); }
+  .phase.p2 .ph-body { border-left-color: var(--mint-deep); }
+  .phase.p3 .ph-body { border-left-color: var(--warm-deep); }
+  .phase .ph-body h4 { font-size: 16px; margin-bottom: 8px; color: var(--text); }
+  .phase .ph-body p { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .phase .ph-body ul { list-style: none; padding-left: 0; }
+  .phase .ph-body li { font-size: 13px; padding: 3px 0; color: var(--text); }
+  .phase .ph-body li::before { content: "・"; color: var(--muted); }
+  .phase .ph-body .cost { display: inline-block; margin-top: 10px; padding: 4px 12px; background: white; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid var(--line); }
+  .phase.p1 .ph-body .cost { color: var(--sky-deep); border-color: var(--sky-deep); }
+  .phase.p2 .ph-body .cost { color: var(--mint-deep); border-color: var(--mint-deep); }
+  .phase.p3 .ph-body .cost { color: var(--warm-deep); border-color: var(--warm-deep); }
+
+  /* 補助金 計算ボックス */
+  .calc { background: linear-gradient(135deg, var(--warm) 0%, white 100%); border: 2px solid var(--warm-deep); border-radius: 18px; padding: 24px; margin-top: 16px; }
+  .calc-title { text-align: center; font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+  .calc-row { display: flex; justify-content: space-between; padding: 10px 4px; font-size: 14px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+  .calc-row.minus { color: var(--mint-deep); }
+  .calc-row.total { background: var(--warm); margin: 8px -8px -8px; padding: 14px 12px; border-radius: 10px; border-bottom: none; font-size: 16px; font-weight: 800; color: var(--warm-deep); }
+  .calc-row .label { color: var(--text); }
+  .calc-row .num { font-weight: 700; }
+  .calc-note { font-size: 12px; color: var(--muted); margin-top: 12px; text-align: center; }
+
+  /* 範囲表 */
+  .scope { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  @media (max-width: 720px) { .scope { grid-template-columns: 1fr; } }
+  .scope-col { padding: 18px; border-radius: 14px; }
+  .scope-col.yes { background: var(--mint); border: 1px solid var(--mint-deep); }
+  .scope-col.no { background: #fff5f5; border: 1px dashed #f5b8b8; }
+  .scope-col h4 { font-size: 14px; margin-bottom: 10px; }
+  .scope-col.yes h4 { color: var(--mint-deep); }
+  .scope-col.no h4 { color: #c75858; }
+  .scope-col ul { list-style: none; }
+  .scope-col li { padding: 5px 0; font-size: 13px; color: var(--text); }
+  .scope-col.yes li::before { content: "○ "; color: var(--mint-deep); font-weight: 700; }
+  .scope-col.no li::before { content: "× "; color: #c75858; font-weight: 700; }
+
+  /* 支払い構造 */
+  .pay-box { background: var(--sky); border: 1px solid var(--sky-deep); border-radius: 14px; padding: 18px; margin-top: 16px; }
+  .pay-box h4 { font-size: 14px; color: var(--sky-deep); margin-bottom: 10px; }
+  .pay-box ul { list-style: none; padding-left: 0; }
+  .pay-box li { padding: 5px 0; font-size: 13px; }
+  .pay-box li::before { content: "▸ "; color: var(--sky-deep); }
+
+  /* 今日のゴール */
+  .goals { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  @media (max-width: 720px) { .goals { grid-template-columns: 1fr; } }
+  .goal-col { padding: 18px; border-radius: 14px; }
+  .goal-col.do { background: var(--pink); border: 1px solid var(--pink-deep); }
+  .goal-col.skip { background: #f5f5f5; border: 1px dashed #cccccc; }
+  .goal-col h4 { font-size: 14px; margin-bottom: 10px; }
+  .goal-col.do h4 { color: var(--pink-deep); }
+  .goal-col.skip h4 { color: var(--muted); }
+  .goal-col ul { list-style: none; }
+  .goal-col li { padding: 6px 0; font-size: 13px; border-bottom: 1px dashed rgba(0,0,0,0.06); }
+  .goal-col li:last-child { border-bottom: none; }
+  .goal-col.do li::before { content: "✓ "; color: var(--pink-deep); font-weight: 700; }
+  .goal-col.skip li::before { content: "□ "; color: var(--muted); }
+
+  /* 宿題 */
+  .homework { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  @media (max-width: 720px) { .homework { grid-template-columns: 1fr; } }
+  .hw-col { padding: 18px; border-radius: 14px; }
+  .hw-col.them { background: var(--mint); border: 1px solid var(--mint-deep); }
+  .hw-col.us { background: var(--sky); border: 1px solid var(--sky-deep); }
+  .hw-col h4 { font-size: 14px; margin-bottom: 10px; }
+  .hw-col ul { list-style: none; }
+  .hw-col li { padding: 6px 0; font-size: 13px; border-bottom: 1px dashed rgba(0,0,0,0.06); }
+  .hw-col li:last-child { border-bottom: none; }
+  .hw-col li::before { content: "□  "; color: var(--muted); }
+
+  /* footer */
+  footer { text-align: center; padding: 30px 12px 10px; color: var(--muted); font-size: 12px; }
+  footer .heart { color: var(--pink-deep); font-size: 18px; }
+  footer .org { font-size: 13px; color: var(--text); font-weight: 600; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- breadcrumb -->
+  <div class="breadcrumb">
+    <a href="./2026-05-14_yuka-clinic-ai-thanks.html">🌸 5/14 ご訪問まとめ</a>
+    &nbsp;＞&nbsp;
+    <a href="./2026-05-14_yuka-clinic-grant-10h-plan.html">💰 補助金10時間プラン詳細</a>
+    &nbsp;＞&nbsp;
+    <strong>📋 5/22 2回目訪問まとめ（このページ）</strong>
+  </div>
+
+  <!-- hero -->
+  <div class="hero">
+    <div class="greeting">2026.05.22（火）2回目ご訪問のまとめ</div>
+    <h1>進捗・今後の流れ・<br>契約とお金のお話 🌷</h1>
+    <p class="sub">前回（5/14）からの動きと、ここからの進め方を1枚にまとめました</p>
+    <div class="date">健康管理支援室 御中</div>
+  </div>
+
+  <!-- 1. 進捗報告 -->
+  <div class="section">
+    <h2>① 前回から今日までの進捗</h2>
+    <p class="lead">「叩き台を作って次回お見せします」とお約束した内容、無事カタチになりました 🌱</p>
+
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-date">5/14 (木)</div>
+        <div class="tl-body">
+          <strong>1回目ご訪問・ヒアリング完了</strong><br>
+          11業務の整理、最優先2つ（請求書／訪問リマインド）の特定、補助金プランの方向性まで合意
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">5/16 (土)</div>
+        <div class="tl-body">
+          <strong>叩き台システム構築完了</strong>（土曜のうちに一気に組み上げ）<br>
+          Googleスプレッドシート（顧客台帳）＋ Google Apps Script（自動化）の組み合わせで実装
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">5/18 (月)</div>
+        <div class="tl-body">
+          <strong>初回 自動配信 本番テスト成功 ⚡</strong><br>
+          朝9:00 ぴったりに Googleサーバーが自動起動 → 3社分のリマインド下書きを Gmail に自動保存 → ゆかさんに通知メール配信、すべて 3.91秒で完了
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-date">5/18 09:09</div>
+        <div class="tl-body">
+          <strong>ゆかさんから 9分以内にお返事 💗</strong>
+          <div class="quote">
+            「リマインドメール届きました！すごくわかりやすいです！感動 🥹<br>
+            これはかなり業務改善できると思います。みんなにも共有しておきますね。」
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>🛠 動いている仕組み（このページの後ろの実物デモでお見せします）</h3>
+    <div class="system-flow">
+      <div class="sys-box">
+        <span class="ic">📊</span>
+        <strong>顧客台帳</strong>
+        Googleスプレッドシート1枚
+      </div>
+      <div class="sys-arrow">▶</div>
+      <div class="sys-box">
+        <span class="ic">⚙️</span>
+        <strong>Googleサーバー</strong>
+        毎朝9:00 自動チェック
+      </div>
+      <div class="sys-arrow">▶</div>
+      <div class="sys-box">
+        <span class="ic">📧</span>
+        <strong>Gmail</strong>
+        下書き保存＋通知配信
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-top:14px;">
+      ✨ <strong>パソコンを起動していなくても動きます</strong>（Googleのクラウドが処理）。誤送信防止のため、最終送信ボタンは人間が押す運用にしてあります。
+    </p>
+  </div>
+
+  <!-- 2. 今後の流れ -->
+  <div class="section">
+    <h2>② これからの進め方（3段階ロードマップ）</h2>
+    <p class="lead">いきなり全部やらず、<strong>体験 → 本格化 → 拡張</strong>の3段階で、無理なく進めるご提案です。</p>
+
+    <div class="roadmap">
+      <div class="phase p1">
+        <div class="ph-label">
+          <div class="ph-num">Phase 1</div>
+          <div class="ph-sub">体験フェーズ<br>5月末〜6月中旬</div>
+        </div>
+        <div class="ph-body">
+          <h4>本物データでリマインドを動かしてみる</h4>
+          <p>サンプル3社の代わりに、御社の実クライアントを顧客台帳に乗せて、6月から本物の朝メールが届く状態へ。</p>
+          <ul>
+            <li>個人情報を含まないサンプルクライアントデータを共有いただく</li>
+            <li>空のExcelテンプレ（既存の請求書フォーマット等）をいただく</li>
+            <li>顧客台帳スプシに反映 → 翌週から本番稼働</li>
+          </ul>
+          <span class="cost">💴 費用：AIツール運用 月¥3,000（クラウド料）／サービス料は要相談</span>
+        </div>
+      </div>
+
+      <div class="phase p2">
+        <div class="ph-label">
+          <div class="ph-num">Phase 2</div>
+          <div class="ph-sub">本格化フェーズ<br>6月後半〜7月</div>
+        </div>
+        <div class="ph-body">
+          <h4>AI業務棚卸し研修 ＋ 補助金申請準備</h4>
+          <p>請求書業務・意見書清書・訪問記録など、保健師さんが日常的に触れるAI活用の研修プログラムを設計。雇用保険被保険者の保健師さん2名以上を対象に補助金申請。</p>
+          <ul>
+            <li>研修カリキュラム設計（御社業務に合わせてカスタマイズ）</li>
+            <li>人材開発支援助成金の申請準備（社労士先生連携）</li>
+            <li>理事長・事務長への説明資料作成サポート</li>
+          </ul>
+          <span class="cost">💴 費用：研修費 約¥300,000（実質負担は ③ をご参照）</span>
+        </div>
+      </div>
+
+      <div class="phase p3">
+        <div class="ph-label">
+          <div class="ph-num">Phase 3</div>
+          <div class="ph-sub">拡張フェーズ<br>8月以降</div>
+        </div>
+        <div class="ph-body">
+          <h4>研修実施＋ AIツール拡張</h4>
+          <p>補助金フル活用しながら研修実施。ご要望に応じて自動化の範囲を広げていきます。</p>
+          <ul>
+            <li>請求書自動発行（複数社×契約パターン対応）</li>
+            <li>Googleカレンダー連動でリマインドをポップアップ通知化</li>
+            <li>必要に応じてLINE等への通知連携</li>
+            <li>月次ダッシュボード（理事長報告用）</li>
+          </ul>
+          <span class="cost">💴 費用：拡張規模に応じてご相談</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 契約・支払い -->
+  <div class="section">
+    <h2>③ 契約とお金のお話</h2>
+    <p class="lead">いちばん大事なところを、隠さずクリアにお伝えします。</p>
+
+    <h3>💴 補助金シミュレーション（Phase 2 研修30万円の場合）</h3>
+    <div class="calc">
+      <div class="calc-title">人材開発支援助成金（事業展開等リスキリング支援コース）</div>
+      <div class="calc-row">
+        <span class="label">研修費（おけもん提供）</span>
+        <span class="num">¥300,000</span>
+      </div>
+      <div class="calc-row minus">
+        <span class="label">経費助成（75%）</span>
+        <span class="num">− ¥225,000</span>
+      </div>
+      <div class="calc-row minus">
+        <span class="label">賃金助成（2名×12時間×¥1,000/h）</span>
+        <span class="num">− ¥24,000</span>
+      </div>
+      <div class="calc-row total">
+        <span class="label">法人 実質負担</span>
+        <span class="num">¥51,000</span>
+      </div>
+      <p class="calc-note">※ 補助金は法人様が後日受給。研修費は通常通り当方にお支払いいただき、御社で受給される構造です。</p>
+    </div>
+
+    <h3>📌 補助金の対象範囲（はっきり線引き）</h3>
+    <div class="scope">
+      <div class="scope-col yes">
+        <h4>対象になる方</h4>
+        <ul>
+          <li>雇用保険被保険者</li>
+          <li>正社員・契約社員</li>
+          <li>雇用保険加入のパートさん</li>
+        </ul>
+      </div>
+      <div class="scope-col no">
+        <h4>対象外の方</h4>
+        <ul>
+          <li>業務委託契約の方</li>
+          <li>雇用保険未加入のパートさん</li>
+          <li>役員（理事長等）</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-top:14px;">
+      🎯 <strong>0→1の実証ライン</strong>：保健師3名＋長谷川さんの中で、雇用保険被保険者が <strong>2名以上</strong> いらっしゃれば申請が成立します。雇用形態の整理をお願いできますでしょうか。
+    </p>
+
+    <h3>🤝 おけもん側がやれる範囲・やれない範囲</h3>
+    <div class="scope">
+      <div class="scope-col yes">
+        <h4>当方が対応できること</h4>
+        <ul>
+          <li>研修プログラムの設計・実施</li>
+          <li>申請書類作成のサポート</li>
+          <li>理事長・事務長への説明資料作成</li>
+          <li>システム構築・運用サポート</li>
+        </ul>
+      </div>
+      <div class="scope-col no">
+        <h4>当方では対応不可</h4>
+        <ul>
+          <li>補助金の<strong>申請代行</strong>（社労士法の関係）</li>
+          <li>→ 御社の顧問社労士先生と連携が必要</li>
+          <li>→ 社労士先生いらっしゃらない場合は紹介可</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>💳 お支払いの仕組み</h3>
+    <div class="pay-box">
+      <h4>シンプルで、いつもの取引と同じ流れ</h4>
+      <ul>
+        <li>当方は<strong>個人事業主として開業済み</strong>（請求書発行可・適格事業者登録は別途相談）</li>
+        <li>振込先：銀行口座（住信SBIネット銀行 普通）</li>
+        <li>お支払いタイミング：<strong>着手金＋完了金の分割払い</strong>、もしくは月次でのご対応も可</li>
+        <li>研修費は通常通りお支払いいただき、補助金は<strong>御社が後日受給</strong>される構造</li>
+        <li>Phase 1の体験フェーズは、まずは<strong>軽い金額からスタート</strong>できるよう柔軟に対応</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. 今日のゴール -->
+  <div class="section">
+    <h2>🎯 今日この場でのゴール</h2>
+    <p class="lead">全部今日決めなくて大丈夫です。むしろ「持ち帰って検討」する部分を整理するのが目的です。</p>
+    <div class="goals">
+      <div class="goal-col do">
+        <h4>今日決めたいこと</h4>
+        <ul>
+          <li>Phase 1（体験フェーズ）に進む意向の合意</li>
+          <li>サンプルデータ提供のタイミング</li>
+          <li>理事長・事務長への説明の進め方</li>
+          <li>次回打ち合わせの日程</li>
+        </ul>
+      </div>
+      <div class="goal-col skip">
+        <h4>今日決めなくていいこと</h4>
+        <ul>
+          <li>研修内容の詳細</li>
+          <li>補助金申請の具体スケジュール</li>
+          <li>Phase 2/3 の細かい仕様</li>
+          <li>契約形態・金額の最終決定</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 宿題 -->
+  <div class="section">
+    <h2>📝 次回までの宿題（持ち帰り）</h2>
+    <p class="lead">お互いに準備するもの、お互いに無理ないペースで。</p>
+    <div class="homework">
+      <div class="hw-col them">
+        <h4>御社からいただきたいもの</h4>
+        <ul>
+          <li>個人情報を含まないサンプルクライアントデータ</li>
+          <li>空のExcelテンプレ（請求書・出務記録表など）</li>
+          <li>メールドメインの管理元（情報システム担当）</li>
+          <li>保健師3名＋長谷川さんの雇用形態の整理</li>
+          <li>理事長・事務長へのお話のしやすさ</li>
+        </ul>
+      </div>
+      <div class="hw-col us">
+        <h4>当方で準備するもの</h4>
+        <ul>
+          <li>本日のお話まとめ（このページ）の更新版</li>
+          <li>体験フェーズの見積もり書</li>
+          <li>研修プログラム カリキュラム案</li>
+          <li>理事長・事務長への説明資料 ドラフト</li>
+          <li>セキュリティ線引きシート（業務×AI のOK/NG表）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 思いをお伝えする一言 -->
+  <div class="section thanks" style="background: linear-gradient(135deg, white, var(--pink));">
+    <h2 style="color: var(--pink-deep);">🌷 改めて、お礼とお願い</h2>
+    <p>前回のヒアリングから1週間と少しで、ここまでカタチにできたのは、ゆかさんと現場の皆さまが「この業務を本当に楽にしたい」というお気持ちを丁寧にお話くださったからです。</p>
+    <p>AI業務改善は<strong>一気にやらなくて大丈夫</strong>です。小さく始めて、効果を見ながら広げていく。御社の現場のリズムに合わせて、伴走させてください 🌿</p>
+    <p>そして、技術的なことは全部こちらでやります。皆さまには「これ楽になった？」「これ便利？」を率直に教えていただくことだけ、お願いできれば嬉しいです。</p>
+  </div>
+
+  <footer>
+    <p>このまとめは2026年5月22日（火）のご訪問の振り返りです <span class="heart">♥</span></p>
+    <p class="org">おけもん（三又謙次郎）／ ワタシトリセツ</p>
+  </footer>
+
+</div>
+</body>
+</html>
