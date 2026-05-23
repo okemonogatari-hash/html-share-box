@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>リベ読書LOG 📚 アーカイブ | おけもんカンパニー</title>
+  <meta name="description" content="リベシティ「リベ読書LOG」ちーちゃん主催のゆるっと読書会アーカイブ。各回の推し本リストへのハブ。">
+
+  <meta property="og:title" content="リベ読書LOG 📚 アーカイブ">
+  <meta property="og:description" content="ちーちゃん主催の読書会、毎回の推し本をぜんぶここに。">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --color-primary: #4A3F5C;
+      --color-primary-dark: #35304A;
+      --color-accent: #C4915E;
+      --color-accent-light: #D4A574;
+      --color-pink: #E4A5AE;
+      --color-bg: #FBF6EE;
+      --color-bg-warm: #F5EDE0;
+      --color-text: #2D2738;
+      --color-text-light: #6D6278;
+      --color-border: #E8DDC8;
+      --color-wood: #B8926A;
+      --color-wood-dark: #7A5E42;
+      --color-star: #E6B54A;
+
+      --shadow-sm: 0 4px 12px rgba(74, 63, 92, 0.06);
+      --shadow-md: 0 10px 30px rgba(74, 63, 92, 0.09);
+      --shadow-book: 0 20px 40px rgba(74, 63, 92, 0.15);
+
+      --font-serif: 'Shippori Mincho', 'Noto Serif JP', serif;
+      --font-sans: 'Noto Sans JP', sans-serif;
+      --font-inter: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.8;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: 80vh;
+      padding: 80px 24px 100px;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at top right, rgba(228, 165, 174, 0.25), transparent 60%),
+        radial-gradient(ellipse at bottom left, rgba(196, 145, 94, 0.22), transparent 60%),
+        linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-warm) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-inter);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      color: var(--color-accent);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeIn 0.8s 0.2s forwards;
+    }
+
+    .hero-eyebrow i { margin-right: 8px; }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1.3;
+      margin-bottom: 20px;
+      max-width: 900px;
+      opacity: 0;
+      animation: fadeIn 0.8s 0.4s forwards;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-serif);
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--color-text-light);
+      max-width: 600px;
+      margin-bottom: 50px;
+      opacity: 0;
+      animation: fadeIn 0.8s 0.6s forwards;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeIn 0.8s 0.8s forwards;
+    }
+
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-stat-num {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 5vw, 48px);
+      font-weight: 700;
+      color: var(--color-accent);
+      line-height: 1;
+    }
+
+    .hero-stat-num span {
+      font-size: 0.5em;
+      color: var(--color-text-light);
+      margin-left: 4px;
+    }
+
+    .hero-stat-label {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      color: var(--color-text-light);
+      margin-top: 10px;
+    }
+
+    .hero-host {
+      margin-top: 60px;
+      padding: 18px 28px;
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(8px);
+      border-radius: 50px;
+      border: 1px solid var(--color-border);
+      font-family: var(--font-serif);
+      font-size: 15px;
+      color: var(--color-text);
+      box-shadow: var(--shadow-sm);
+      opacity: 0;
+      animation: fadeIn 0.8s 1s forwards;
+    }
+
+    .hero-host strong {
+      color: var(--color-pink);
+      font-weight: 600;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 24px;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-inter);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      color: var(--color-accent);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      color: var(--color-primary);
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    /* SESSIONS GRID */
+    .sessions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 36px;
+    }
+
+    .session-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .session-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-book);
+    }
+
+    .session-card.upcoming {
+      background: linear-gradient(135deg, #fff 0%, #FAF3E8 100%);
+      border: 2px dashed var(--color-accent-light);
+    }
+
+    .session-card.upcoming:hover {
+      transform: translateY(-3px);
+    }
+
+    .session-cover {
+      height: 180px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .session-cover.vol1 {
+      background: linear-gradient(135deg, #6c5ce7 0%, #e84393 100%);
+    }
+    .session-cover.vol2 {
+      background: linear-gradient(135deg, #4A3F5C 0%, #C4915E 100%);
+    }
+    .session-cover.vol3 {
+      background: linear-gradient(135deg, #E4A5AE 0%, #D4A574 100%);
+    }
+
+    .session-cover::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(0,0,0,0.1), transparent 50%);
+    }
+
+    .session-vol {
+      font-family: var(--font-serif);
+      font-size: 72px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.95);
+      letter-spacing: 0.05em;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .session-vol-label {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      font-family: var(--font-inter);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      color: rgba(255,255,255,0.9);
+      z-index: 1;
+    }
+
+    .session-body {
+      padding: 32px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .session-date {
+      font-family: var(--font-inter);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .session-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+
+    .session-desc {
+      font-size: 14px;
+      color: var(--color-text-light);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .session-meta {
+      display: flex;
+      gap: 16px;
+      padding: 14px 0;
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 20px;
+    }
+
+    .session-meta-item {
+      flex: 1;
+      text-align: center;
+    }
+
+    .session-meta-num {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1;
+    }
+
+    .session-meta-num span {
+      font-size: 0.6em;
+      color: var(--color-text-light);
+      margin-left: 2px;
+    }
+
+    .session-meta-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--color-text-light);
+      margin-top: 6px;
+    }
+
+    .session-highlights {
+      margin-bottom: 24px;
+    }
+
+    .session-highlight-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--color-text-light);
+      margin-bottom: 10px;
+    }
+
+    .session-highlight-books {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .session-highlight-book {
+      font-size: 12px;
+      padding: 5px 10px;
+      background: var(--color-bg-warm);
+      color: var(--color-text);
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+    }
+
+    .session-highlight-book.star {
+      background: rgba(230, 181, 74, 0.18);
+      border-color: rgba(230, 181, 74, 0.4);
+      color: var(--color-wood-dark);
+    }
+
+    .session-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      background: var(--color-primary);
+      color: white;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .session-cta:hover {
+      background: var(--color-primary-dark);
+    }
+
+    .session-cta i {
+      transition: transform 0.2s;
+    }
+
+    .session-cta:hover i {
+      transform: translateX(4px);
+    }
+
+    .session-cta.disabled {
+      background: var(--color-border);
+      color: var(--color-text-light);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .upcoming-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 6px 12px;
+      background: var(--color-pink);
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      border-radius: 50px;
+      z-index: 2;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ABOUT */
+    .about {
+      background: linear-gradient(135deg, var(--color-bg-warm) 0%, var(--color-bg) 100%);
+      padding: 80px 24px;
+      margin-top: 40px;
+    }
+
+    .about-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-text {
+      font-family: var(--font-serif);
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--color-text);
+      line-height: 2;
+      margin-bottom: 40px;
+    }
+
+    .about-text strong {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    .about-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      background: white;
+      color: var(--color-primary);
+      border: 2px solid var(--color-primary);
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .about-cta:hover {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 50px 24px;
+      text-align: center;
+      background: var(--color-primary-dark);
+      color: rgba(255,255,255,0.7);
+    }
+
+    .footer-logo {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      color: white;
+      margin-bottom: 12px;
+    }
+
+    .footer-text {
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .footer-text a {
+      color: var(--color-accent-light);
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .hero-stats { gap: 20px; }
+      .container { padding: 60px 18px; }
+      .sessions-grid { gap: 24px; }
+      .session-body { padding: 24px 22px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <i class="fas fa-book-open"></i>LIBECITY × CHIICHAN
+    </div>
+    <h1 class="hero-title">
+      リベ読書LOG 📚<br>
+      ゆるっと読書会アーカイブ
+    </h1>
+    <p class="hero-subtitle">
+      朝5時半、ovice。<br>
+      仲間たちが持ち寄った推し本が並んでいく場所。
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">3<span>回</span></div>
+        <div class="hero-stat-label">SESSIONS</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">19<span>+</span></div>
+        <div class="hero-stat-label">BOOKS</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">10<span>+</span></div>
+        <div class="hero-stat-label">READERS</div>
+      </div>
+    </div>
+
+    <div class="hero-host">
+      📖 主催：<strong>ちーちゃん</strong>　&nbsp;|&nbsp;　会場：ovice
+    </div>
+  </section>
+
+  <!-- SESSIONS -->
+  <section class="container">
+    <div class="section-eyebrow">SESSIONS</div>
+    <h2 class="section-title">これまでの読書会、これからの読書会</h2>
+
+    <div class="sessions-grid">
+
+      <!-- Vol.1 -->
+      <article class="session-card">
+        <div class="session-cover vol1">
+          <span class="session-vol-label">VOL. 01</span>
+          <span class="session-vol">第1夜</span>
+        </div>
+        <div class="session-body">
+          <div class="session-date">
+            <i class="far fa-calendar"></i>2026.04.09 (木) 朝5:30〜
+          </div>
+          <h3 class="session-title">最初の本棚<br>—— 11冊で開いた朝</h3>
+          <p class="session-desc">
+            おけもんが「イン・ザ・メガチャーチ」、桜井さんが「殺し屋の営業術」、聖夜さんが「サピエンス全史」「即興する脳」、吉高さんが「ホモ・デウス」「NEXUS」「FACTFULNESS」…哲学・小説・マーケが入り混じった豪華な第1夜。
+          </p>
+          <div class="session-meta">
+            <div class="session-meta-item">
+              <div class="session-meta-num">11<span>冊</span></div>
+              <div class="session-meta-label">BOOKS</div>
+            </div>
+            <div class="session-meta-item">
+              <div class="session-meta-num">6<span>人</span></div>
+              <div class="session-meta-label">READERS</div>
+            </div>
+          </div>
+          <div class="session-highlights">
+            <div class="session-highlight-label">この夜のキーワード</div>
+            <div class="session-highlight-books">
+              <span class="session-highlight-book star">⭐ 殺し屋の営業術</span>
+              <span class="session-highlight-book">サピエンス全史</span>
+              <span class="session-highlight-book">FACTFULNESS</span>
+              <span class="session-highlight-book">ヴァイオレット・エヴァーガーデン</span>
+            </div>
+          </div>
+          <a href="diagrams/book-club-recommended-reads-2026-04-09.html" class="session-cta">
+            この夜の本棚を見る <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- Vol.2 -->
+      <article class="session-card">
+        <div class="session-cover vol2">
+          <span class="session-vol-label">VOL. 02</span>
+          <span class="session-vol">第2夜</span>
+        </div>
+        <div class="session-body">
+          <div class="session-date">
+            <i class="far fa-calendar"></i>2026.04.17 (金) 朝5:30〜
+          </div>
+          <h3 class="session-title">温度のある8冊<br>—— おけもんが「殺し屋」を語った朝</h3>
+          <p class="session-desc">
+            おけもんが「殺し屋の営業術」を改めて推した第2夜。「移動する人はうまくいく」「100日チャレンジ」「さみしい夜のページをめくれ」など、行動・物語・人生観が織り重なるラインナップ。
+          </p>
+          <div class="session-meta">
+            <div class="session-meta-item">
+              <div class="session-meta-num">8<span>冊</span></div>
+              <div class="session-meta-label">BOOKS</div>
+            </div>
+            <div class="session-meta-item">
+              <div class="session-meta-num">5<span>人+</span></div>
+              <div class="session-meta-label">READERS</div>
+            </div>
+          </div>
+          <div class="session-highlights">
+            <div class="session-highlight-label">この夜のキーワード</div>
+            <div class="session-highlight-books">
+              <span class="session-highlight-book star">⭐ 殺し屋の営業術</span>
+              <span class="session-highlight-book">移動する人はうまくいく</span>
+              <span class="session-highlight-book">100日チャレンジ</span>
+              <span class="session-highlight-book">プロだけが知っている小説の書き方</span>
+            </div>
+          </div>
+          <a href="diagrams/book-club-recommended-reads-2026-04-17.html" class="session-cta">
+            この夜の本棚を見る <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- Vol.3 (upcoming) -->
+      <article class="session-card upcoming">
+        <span class="upcoming-badge">COMING SOON</span>
+        <div class="session-cover vol3">
+          <span class="session-vol-label">VOL. 03</span>
+          <span class="session-vol">第3夜</span>
+        </div>
+        <div class="session-body">
+          <div class="session-date">
+            <i class="far fa-calendar"></i>2026.05.25 (月) 朝5:30〜
+          </div>
+          <h3 class="session-title">朝5時半、また会える<br>—— 第3夜、開催予定</h3>
+          <p class="session-desc">
+            小説・ビジネス本・ノンフィクション、ジャンル不問。朝からゆるっと本の話をする時間。当日のoviceリンクは、リベシティ「リベ読書LOG📖」チャットでアナウンスされます。
+          </p>
+          <div class="session-meta">
+            <div class="session-meta-item">
+              <div class="session-meta-num">?<span>冊</span></div>
+              <div class="session-meta-label">BOOKS</div>
+            </div>
+            <div class="session-meta-item">
+              <div class="session-meta-num">?<span>人</span></div>
+              <div class="session-meta-label">READERS</div>
+            </div>
+          </div>
+          <div class="session-highlights">
+            <div class="session-highlight-label">予告</div>
+            <div class="session-highlight-books">
+              <span class="session-highlight-book">あなたの推し本、待ってます📕</span>
+            </div>
+          </div>
+          <span class="session-cta disabled">
+            開催後にアーカイブ公開 <i class="far fa-clock"></i>
+          </span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about">
+    <div class="about-inner">
+      <div class="section-eyebrow">ABOUT</div>
+      <h2 class="section-title">この読書会のこと</h2>
+      <p class="about-text">
+        リベシティの<strong>「リベ読書LOG📖」</strong>チャットで、<strong>ちーちゃん</strong>主催のもと不定期に開かれている早朝読書会。<br>
+        朝5時半、oviceに集まって、最近読んだ本・推したい本をゆるっと持ち寄って話す時間。<br><br>
+        ジャンルは小説・ビジネス・ノンフィクション、なんでもあり。<br>
+        本の話だけじゃなくて、その本を「いま選んだ理由」を聞ける場所。<br><br>
+        このアーカイブは、過去の本棚をいつでも見返せるように、おけもんカンパニーで勝手に作っているハブです。📚✨
+      </p>
+      <a href="https://libecity.com/room_list?room_id=zs1LoKpygHtm1BVqdUnI" class="about-cta" target="_blank" rel="noopener">
+        <i class="fab fa-rocketchat"></i>リベシティのチャットを見る
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">📚 リベ読書LOG アーカイブ</div>
+    <div class="footer-text">
+      Curated by <a href="https://okemonogatari-hash.github.io/html-share-box/">おけもんカンパニー</a><br>
+      Hosted by ちーちゃん × Libecity<br>
+      最終更新：2026-05-24
+    </div>
+  </footer>
+
+</body>
+</html>
