@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KID クエスト ─ Claude in Chrome シェア会の冒険記</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a1a;
+    --window: #0033aa;
+    --window-edge: #ffffff;
+    --ink: #ffffff;
+    --yellow: #ffe14b;
+    --gold: #f5c542;
+    --hp-green: #6cd64c;
+    --mp-blue: #6cb6ff;
+    --red: #ff6b6b;
+    --gray: #8b8da6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DotGothic16', 'Press Start 2P', monospace;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.9;
+    font-size: 16px;
+    min-height: 100vh;
+    padding: 16px;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(108,182,255,.08) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(245,197,66,.08) 0, transparent 40%);
+  }
+
+  /* ピクセルウィンドウ */
+  .win {
+    background: var(--window);
+    border: 4px solid var(--window-edge);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 0 auto 16px;
+    max-width: 880px;
+    position: relative;
+    box-shadow:
+      inset 0 0 0 2px var(--window),
+      inset 0 0 0 4px var(--window-edge),
+      0 0 0 2px #000,
+      4px 4px 0 rgba(0,0,0,.6);
+  }
+  .win::before {
+    content: "";
+    position: absolute;
+    top: 2px; left: 2px; right: 2px; bottom: 2px;
+    border: 1px solid rgba(255,255,255,.2);
+    pointer-events: none;
+    border-radius: 4px;
+  }
+
+  /* ステータスバー */
+  .status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.65rem;
+    line-height: 1.6;
+  }
+  .status .pc-name { color: var(--yellow); margin-bottom: 4px; font-size: 0.7rem; }
+  .status .bar { font-size: 0.6rem; color: var(--gray); }
+  .status .hp { color: var(--hp-green); }
+  .status .mp { color: var(--mp-blue); }
+  .status .lv { color: var(--yellow); }
+
+  /* タイトル */
+  .title-screen {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .title-screen .game-logo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(1.4rem, 4.5vw, 2.4rem);
+    color: var(--yellow);
+    text-shadow:
+      2px 2px 0 #c89900,
+      4px 4px 0 #000,
+      -2px -2px 0 #fff200,
+      0 0 18px rgba(255,225,75,.4);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+  .title-screen .sub {
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .title-screen .press {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.65rem;
+    color: var(--ink);
+    animation: blink 1.2s steps(2) infinite;
+    margin-top: 30px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* チャプター切り替えボタン */
+  .chapter-nav {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 24px 0;
+  }
+  .chapter-nav button {
+    font-family: 'DotGothic16', monospace;
+    background: var(--window);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    padding: 10px 22px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    transition: all .15s;
+    letter-spacing: 0.05em;
+  }
+  .chapter-nav button:hover {
+    background: var(--yellow);
+    color: var(--window);
+    transform: translate(-1px,-1px);
+  }
+  .chapter-nav button.active {
+    background: var(--yellow);
+    color: var(--window);
+    border-color: var(--gold);
+    box-shadow: 0 0 12px rgba(255,225,75,.5);
+  }
+  .chapter-nav .arrow { color: var(--yellow); margin-right: 6px; }
+
+  /* チャプターの見出し */
+  .chapter-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    color: var(--yellow);
+    text-align: center;
+    padding: 14px;
+    border: 2px solid var(--yellow);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    background: rgba(255,225,75,.08);
+    text-shadow: 1px 1px 0 #000;
+    line-height: 1.5;
+  }
+  .chapter-meta {
+    text-align: center;
+    color: var(--gold);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+
+  /* メッセージウィンドウ風 */
+  .msg {
+    font-size: 1rem;
+    line-height: 2.0;
+    padding: 4px 0;
+  }
+  .msg .narration {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .msg::after {
+    content: "▼";
+    color: var(--yellow);
+    margin-left: 8px;
+    animation: blink 1s steps(2) infinite;
+  }
+  .msg.no-cursor::after { content: ""; }
+
+  /* セクションタイトル（章内） */
+  .sec-h {
+    font-family: 'Press Start 2P', monospace;
+    color: var(--yellow);
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    background: rgba(255,255,255,.05);
+    border-left: 5px solid var(--yellow);
+    margin: 0 0 14px;
+    letter-spacing: 0.05em;
+  }
+
+  /* パーティーリスト */
+  .party {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .party-member {
+    border: 2px solid var(--ink);
+    padding: 12px 14px;
+    border-radius: 4px;
+    background: rgba(0,0,0,.2);
+  }
+  .party-member .nm {
+    color: var(--yellow);
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+  .party-member .cls {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    color: var(--mp-blue);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .party-member .desc { font-size: 0.85rem; color: var(--ink); }
+
+  /* イベントログ（タイムライン） */
+  .events { list-style: none; padding: 0; }
+  .events li {
+    padding: 10px 0 10px 24px;
+    position: relative;
+    border-bottom: 1px dashed rgba(255,255,255,.2);
+    font-size: 0.95rem;
+  }
+  .events li:last-child { border-bottom: none; }
+  .events li::before {
+    content: "▸";
+    color: var(--yellow);
+    position: absolute;
+    left: 4px;
+    top: 10px;
+  }
+  .events .ph {
+    color: var(--yellow);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    margin-right: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ボスモンスター（つまずきポイント） */
+  .boss {
+    border: 3px solid var(--red);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    background: rgba(255,107,107,.08);
+    position: relative;
+  }
+  .boss.advanced {
+    border-color: var(--mp-blue);
+    background: rgba(108,182,255,.08);
+  }
+  .boss .boss-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    color: var(--red);
+    background: var(--bg);
+    padding: 4px 10px;
+    border: 2px solid var(--red);
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .boss.advanced .boss-label {
+    color: var(--mp-blue);
+    border-color: var(--mp-blue);
+  }
+  .boss h4 {
+    font-family: 'DotGothic16', monospace;
+    font-size: 1.1rem;
+    color: var(--yellow);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .boss .voice {
+    background: rgba(0,0,0,.3);
+    padding: 10px 14px;
+    border-left: 4px solid var(--gold);
+    margin: 10px 0;
+    font-size: 0.9rem;
+    color: #e9e9e9;
+    font-style: italic;
+    border-radius: 0 4px 4px 0;
+  }
+  .boss .voice .who {
+    display: block;
+    font-style: normal;
+    color: var(--gold);
+    font-size: 0.75rem;
+    margin-top: 4px;
+  }
+  .boss .resolve {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(108,214,76,.1);
+    border-left: 4px solid var(--hp-green);
+    font-size: 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+  .boss .resolve .label {
+    color: var(--hp-green);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  /* 宝箱（ことば） */
+  .treasure-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .treasure {
+    border: 2px dashed var(--gold);
+    padding: 14px 16px;
+    border-radius: 6px;
+    background: rgba(245,197,66,.06);
+  }
+  .treasure .got {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    color: var(--gold);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .treasure .item {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .treasure .from-who {
+    font-size: 0.78rem;
+    color: var(--mp-blue);
+  }
+
+  /* レベルアップ */
+  .levelup {
+    border: 3px solid var(--yellow);
+    padding: 20px;
+    text-align: center;
+    background: rgba(255,225,75,.08);
+    border-radius: 6px;
+    margin: 20px 0;
+  }
+  .levelup .lvtitle {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.9rem;
+    color: var(--yellow);
+    text-shadow: 1px 1px 0 #000;
+    margin-bottom: 14px;
+  }
+  .levelup p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+  .levelup .gain {
+    color: var(--hp-green);
+    margin-top: 8px;
+    font-size: 0.85rem;
+  }
+
+  /* 章を隠す */
+  .chapter { display: none; }
+  .chapter.active { display: block; }
+
+  /* セーブポイント */
+  .save {
+    text-align: center;
+    padding: 14px;
+    color: var(--gold);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+  }
+  .save .ico { font-size: 1.4rem; color: var(--hp-green); margin: 0 6px; }
+
+  /* 「次へ」「前へ」 */
+  .nav-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .nav-bottom button {
+    flex: 1;
+    min-width: 130px;
+    font-family: 'DotGothic16', monospace;
+    background: var(--window);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    padding: 12px 18px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    border-radius: 4px;
+  }
+  .nav-bottom button:hover {
+    background: var(--yellow);
+    color: var(--window);
+  }
+  .nav-bottom button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* 装備（イベント） */
+  .equip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .equip-card {
+    border: 2px solid var(--gold);
+    padding: 12px;
+    border-radius: 4px;
+    background: rgba(245,197,66,.05);
+  }
+  .equip-card .e-name {
+    color: var(--gold);
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+  .equip-card .e-effect {
+    font-size: 0.82rem;
+    color: var(--ink);
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 8px; font-size: 14px; }
+    .win { padding: 14px 16px; }
+    .status { grid-template-columns: 1fr; }
+    .nav-bottom button { font-size: 0.85rem; padding: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ───────────────────── タイトル画面 ───────────────────── -->
+<div class="win title-screen">
+  <div class="game-logo">KID クエスト</div>
+  <div class="sub">─ Claude in Chrome、伝説の冒険記 ─</div>
+  <div style="margin: 20px auto; max-width: 520px; font-size: 0.95rem; color: var(--gold);">
+    そこは、AIという未踏の大陸。<br>
+    旅人「KID」と「おけもん」、そして仲間たちが、<br>
+    詰まりやすいダンジョンを越えていく物語。
+  </div>
+  <div class="press">▼ SELECT CHAPTER ▼</div>
+</div>
+
+<!-- ───────────────────── ステータスバー ───────────────────── -->
+<div class="win">
+  <div class="status">
+    <div>
+      <div class="pc-name">KID</div>
+      <div class="bar">LV. <span class="lv">7</span></div>
+      <div class="bar">HP <span class="hp">88/88</span></div>
+      <div class="bar">MP <span class="mp">42/42</span></div>
+      <div class="bar">職業：くうしゅかせんし</div>
+    </div>
+    <div>
+      <div class="pc-name">おけもん</div>
+      <div class="bar">LV. <span class="lv">??</span></div>
+      <div class="bar">HP <span class="hp">∞</span></div>
+      <div class="bar">MP <span class="mp">∞</span></div>
+      <div class="bar">職業：けんじゃ（11人召喚）</div>
+    </div>
+    <div>
+      <div class="pc-name">パーティー</div>
+      <div class="bar">所持G：<span class="gold-amount" style="color: var(--gold)">3,500</span></div>
+      <div class="bar">なかま：<span style="color: var(--yellow)">5</span></div>
+      <div class="bar">魔法書：<span style="color: var(--mp-blue)">Claude Code</span></div>
+      <div class="bar">アイテム：<span style="color: var(--gold)">ことばの宝箱 ×17</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────── 章ナビ ───────────────────── -->
+<div class="win">
+  <div class="msg no-cursor" style="text-align:center; margin-bottom:12px;">
+    <span class="narration">▼ どの章を冒険する？ ▼</span>
+  </div>
+  <div class="chapter-nav">
+    <button class="active" onclick="showChapter(1)"><span class="arrow">▸</span>第一章　サラリーとリータの森</button>
+    <button onclick="showChapter(2)"><span class="arrow">▸</span>第二章　ぽにょの依頼</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 第一章 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="chapter active" id="ch1">
+
+  <div class="win">
+    <div class="chapter-title">CHAPTER 1<br>サラリーとリータの森</div>
+    <div class="chapter-meta">─ 2 0 2 6 . 0 5 . 2 1 ／ 99分 ／ なかま 4にん ─</div>
+    <div class="msg">
+      <span class="narration">KIDは、おけもんと共に「Claude in Chrome」の森へ足を踏み入れた。<br>
+      課金したのに迷っている さらり、土台だけ作って感動した りぃた。<br>
+      みな、それぞれの場所で “詰まって” いた。</span>
+    </div>
+  </div>
+
+  <!-- パーティー -->
+  <div class="win">
+    <div class="sec-h">▼ ぼうけんのパーティー</div>
+    <div class="party">
+      <div class="party-member">
+        <div class="nm">▣ おけもん</div>
+        <div class="cls">HOST / SAGE</div>
+        <div class="desc">この森のガイド。育成ゲーム派の伝道師。</div>
+      </div>
+      <div class="party-member">
+        <div class="nm">▣ さらり</div>
+        <div class="cls">課金1ヶ月 / 金ドブ状態</div>
+        <div class="desc">チャット画面しか触れてなかった迷子。</div>
+      </div>
+      <div class="party-member">
+        <div class="nm">▣ りぃた</div>
+        <div class="cls">CHAT-AI USER</div>
+        <div class="desc">PPT土台を作って「ひっかかってたものが消えた」。</div>
+      </div>
+      <div class="party-member">
+        <div class="nm">▣ KID</div>
+        <div class="cls">空手HP制作者 / LV.5→7</div>
+        <div class="desc">空手HPは作れた。が「次の使い道」を探していた。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- イベント -->
+  <div class="win">
+    <div class="sec-h">▼ 99分のイベントログ</div>
+    <ul class="events">
+      <li><span class="ph">PHASE 1</span>現状ヒアリング ─ 全員「今いる場所」を共有</li>
+      <li><span class="ph">PHASE 2</span>転職エージェント比喩 ─ 全員が一瞬で理解する</li>
+      <li><span class="ph">PHASE 3</span>山形3泊4日 旅のしおりライブ生成</li>
+      <li><span class="ph">PHASE 4</span>さらり、アプリDL成功！ ／ KID、コード側操作を学ぶ</li>
+      <li><span class="ph">PHASE 5</span>活用事例デモ連発（成績表・キャラ運用・スキル）</li>
+      <li><span class="ph">PHASE 6</span>クロージング「触ってみて分からない所が出てから」</li>
+    </ul>
+  </div>
+
+  <!-- ボス -->
+  <div class="win">
+    <div class="sec-h">▼ 出現したボスモンスター（つまずき5体）</div>
+
+    <div class="boss">
+      <span class="boss-label">▼ BOSS 01</span>
+      <h4>① 「チャット画面しか触ってなかった」ゴースト</h4>
+      <div class="voice">クロードって言うチャットと3画面になってないんですよ。<span class="who">— さらり</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        会話しながらDL→「3画面のやつになりました！」で撃破。1時間で“なぜ合ってなかったか”が分かる。
+      </div>
+    </div>
+
+    <div class="boss">
+      <span class="boss-label">▼ BOSS 02</span>
+      <h4>② 「Chrome側でAIをオンにしていた」ゴースト</h4>
+      <div class="voice">僕、ずっとチャット側でやってました…！<span class="who">— KID</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        「コード側から呼ぶ」を画面共有で実演。実績あるKIDでも引っかかる罠だった。
+      </div>
+    </div>
+
+    <div class="boss">
+      <span class="boss-label">▼ BOSS 03</span>
+      <h4>③ 「副業ないからゴールが見つからない」スライム</h4>
+      <div class="voice">空手HPって明確な目的があった時はゴールに向かえた。けど大きな山を登った後はあんまり…<span class="who">— KID</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        「ストレングスファインダーを読み込ませて自分の相談相手にする」をKID自身が思いつき、おけもん絶賛。
+      </div>
+    </div>
+
+    <div class="boss">
+      <span class="boss-label">▼ BOSS 04</span>
+      <h4>④ 「ここまで私／ここからAI、の境目が分からない」ドラゴン</h4>
+      <div class="voice">1日1時間200件ずつやれば2ヶ月で終わるって、それができないから言うとんねん！<span class="who">— さらり</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        おけもん「2回以上やることは自動化できへんかなって考えながらやってます」。“がんばる前提”を捨てる呪文。
+      </div>
+    </div>
+
+    <div class="boss">
+      <span class="boss-label">▼ BOSS 05</span>
+      <h4>⑤ 「1人じゃたどり着けない」ラスボス</h4>
+      <div class="voice">1人で紐解いていくのはなかなかに難しい。先生がいないと厳しい。<span class="who">— さらり</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        シェア会という“パーティー戦”そのものが答え。次回参戦の約束で森を抜ける。
+      </div>
+    </div>
+  </div>
+
+  <!-- アイテム取得 -->
+  <div class="win">
+    <div class="sec-h">▼ 入手した ことばの宝箱</div>
+    <div class="treasure-list">
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「2回以上やることは自動化できへんかな」</div>
+        <div class="from-who">― おけもん</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「育成ゲームなんですよ、使えば使うほど察してくれる」</div>
+        <div class="from-who">― おけもん</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「頼るのがうまい人がAIをうまく使える」</div>
+        <div class="from-who">― おけもん</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「申し送りノートがあるから見てきて、みたいなイメージ」</div>
+        <div class="from-who">― おけもん</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「ひっかかってたものがすっと消えた」</div>
+        <div class="from-who">― りぃた</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「ポケモンさんの解説を聞いてから課金すれば良かった」</div>
+        <div class="from-who">― さらり</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- レベルアップ -->
+  <div class="win">
+    <div class="levelup">
+      <div class="lvtitle">★ KID は レベル 7 に なった ！</div>
+      <p>「コード側から動かす」呪文を覚えた。<br>「ストレングスを相談相手にする」装備を発見。</p>
+      <div class="gain">▼ 経験値 +500 ／ 仲間（さらり・りぃた）と再会の約束を入手</div>
+    </div>
+  </div>
+
+  <div class="win save">
+    <span class="ico">★</span> セーブしますか？ <span class="ico">★</span><br>
+    <span style="color:var(--ink); font-size:0.7rem;">［ はい ］　 いいえ</span>
+  </div>
+
+  <div class="win">
+    <div class="nav-bottom">
+      <button disabled>◁ 前の章</button>
+      <button onclick="showChapter(2)">次の章 ▷ ぽにょの依頼</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 第二章 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="chapter" id="ch2">
+
+  <div class="win">
+    <div class="chapter-title">CHAPTER 2<br>ぽにょの依頼</div>
+    <div class="chapter-meta">─ 2 0 2 6 . 0 5 . 2 4 ／ 約86分 ／ なかま 3にん ─</div>
+    <div class="msg">
+      <span class="narration">サラリーとリータの森を抜けた KID と おけもんに、<br>
+      遠い福岡の地から学会発表を終えた “ぽにょ” の依頼が届いた。<br>
+      「魂が抜けそう」と言いながら、それでも会いに来てくれた多忙な仲間。</span>
+    </div>
+  </div>
+
+  <!-- パーティー -->
+  <div class="win">
+    <div class="sec-h">▼ ぼうけんのパーティー</div>
+    <div class="party">
+      <div class="party-member">
+        <div class="nm">▣ おけもん</div>
+        <div class="cls">HOST / SAGE</div>
+        <div class="desc">2章連続出演。X投稿〜旅HTML〜予約まで音声指示でデモ。</div>
+      </div>
+      <div class="party-member">
+        <div class="nm">▣ ぽにょ（SAORI）</div>
+        <div class="cls">GUEST / 学会勇者</div>
+        <div class="desc">登壇＋実行委員＋市民勉強会を抱える多忙な賢者。AIはジェミニで悩み相談派。</div>
+      </div>
+      <div class="party-member">
+        <div class="nm">▣ KID</div>
+        <div class="cls">LV.7 / RIDE-ALONG</div>
+        <div class="desc">前章帰り。今章では後半で「API課金の謎」を持ち込みボス再挑戦。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- イベント -->
+  <div class="win">
+    <div class="sec-h">▼ 86分のイベントログ</div>
+    <ul class="events">
+      <li><span class="ph">PHASE 1</span>前章の余韻シェア／ぽにょ「魂抜けそうでした」登場</li>
+      <li><span class="ph">PHASE 2</span>「クロード？クロードコード？」店員と実行役で再解説</li>
+      <li><span class="ph">PHASE 3</span>X投稿ライブデモ（ADHDトリセツHTML自動引用→投稿）</li>
+      <li><span class="ph">PHASE 4</span>名古屋・東京の旅しおりHTMLライブ生成 ／ ヒルトン28,000円ヒット</li>
+      <li><span class="ph">PHASE 5</span>11人カンパニーの紹介・秘書化の話</li>
+      <li><span class="ph">PHASE 6</span>ぽにょ退出→KIDの個別API課金クエスト</li>
+    </ul>
+  </div>
+
+  <!-- 装備 -->
+  <div class="win">
+    <div class="sec-h">▼ デモで発見した装備</div>
+    <div class="equip">
+      <div class="equip-card">
+        <div class="e-name">⚔ 旅のしおりHTML</div>
+        <div class="e-effect">スマホ最適化込みで一発生成。ウェブデザイナーの剣に匹敵。</div>
+      </div>
+      <div class="equip-card">
+        <div class="e-name">⚔ 予約画面ナビゲーター</div>
+        <div class="e-effect">音声で「3万円で美味しいご飯」→ヒルトン名古屋を出してくる。</div>
+      </div>
+      <div class="equip-card">
+        <div class="e-name">🛡 申し送りノート（パソコン内）</div>
+        <div class="e-effect">チャットが変わっても記憶が引き継がれる、回復魔法。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ボス（初心者編） -->
+  <div class="win">
+    <div class="sec-h">▼ 出現したボス（初心者編 5体）</div>
+
+    <div class="boss">
+      <span class="boss-label">▼ BOSS 06</span>
+      <h4>⑥ 「クラウドコードってコードを書くんですか？」スライム</h4>
+      <div class="voice">クラウドコードってえ、コードを書くんですか？ ちょっとよく分かってなくて。<span class="who">— ぽにょ</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        ふつうのクロード＝店員さん／クロードコード＝実行役、で分けて再説明。
+      </div>
+    </div>
+
+    <div class="boss">
+      <span class="boss-label">▼ BOSS 07</span>
+      <h4>⑦ 「ジェミニで悩み相談しかしてない」ゴースト</h4>
+      <div class="voice">AIはジェミニに悩み相談してます。イラッとした時に送ってクールダウン。<span class="who">— ぽにょ</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        「相談相手」で止まってる人は“次は実行を任せる”の入口にいる。アンガーマネジメント活用は◎。
+      </div>
+    </div>
+
+    <div class="boss">
+      <span class="boss-label">▼ BOSS 08</span>
+      <h4>⑧ 「キャンバAIと何が違うの？」ゴーレム</h4>
+      <div class="voice">キャンバで「やり方分かんないんで」って文字入力して教えてもらってます。<span class="who">— ぽにょ</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        原理は同じ。違いは“画面の中まで操作してくれる”ところ。困ってる画像を見て直す。
+      </div>
+    </div>
+
+    <div class="boss">
+      <span class="boss-label">▼ BOSS 09</span>
+      <h4>⑨ 「データはクラウド？容量どうなる？」マジシャン</h4>
+      <div class="voice">結構いっぱいになりそうだなと思ったりする。<span class="who">— ぽにょ</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        基本パソコンの中。文字データなら知れた量。動画入れた時に考えればOK。
+      </div>
+    </div>
+
+    <div class="boss">
+      <span class="boss-label">▼ BOSS 10</span>
+      <h4>⑩ 「ブログAIに頼んでも性格違って同じ文章にならない」キメラ</h4>
+      <div class="voice">ブラちゃんにお願いしてて、性格が違うんで同じ文章にならなくて困ってる。<span class="who">— ぽにょ</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        過去ブログ全部読ませて、写真と3行入れる（KIDの空手ブログ流）。30分→10分に短縮。
+      </div>
+    </div>
+  </div>
+
+  <!-- ボス（応用編） -->
+  <div class="win">
+    <div class="sec-h">▼ 隠しダンジョン：API課金 ─ KID専用クエスト</div>
+
+    <div class="boss advanced">
+      <span class="boss-label">▼ HIDDEN BOSS 01</span>
+      <h4>⑪ Anthropic API 重量課金、なんで勧められる？</h4>
+      <div class="voice">学長ライブ要約に使ってると、Anthropic APIを契約してくださいって出てくる。プロプラン契約してるのに…<span class="who">— KID</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        Maxプランなら出ない。プロプランは上限あるから“APIキーで逃す”構造。30冊要約しても数十円。
+      </div>
+    </div>
+
+    <div class="boss advanced">
+      <span class="boss-label">▼ HIDDEN BOSS 02</span>
+      <h4>⑫ APIキー、どこに入れるか毎回緊張するワナ</h4>
+      <div class="voice">ここが一番緊張しました。セキュリティのところもあるから。<span class="who">— KID</span></div>
+      <div class="resolve">
+        <span class="label">▼ HOW TO DEFEAT</span>
+        おけもん「みんなここで詰まる」。怖がりすぎず、毎回同じ手順に揃えるのがコツ。
+      </div>
+    </div>
+  </div>
+
+  <!-- 宝箱 -->
+  <div class="win">
+    <div class="sec-h">▼ 入手した ことばの宝箱</div>
+    <div class="treasure-list">
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「ゴールが設定してあると、そこに向かってギュッと進める」</div>
+        <div class="from-who">― KID（ドラクエ呪文）</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「掲示板で“これがいいよ”って紹介してくれて、冒険者の僕らが試す」</div>
+        <div class="from-who">― KID（このゲームの世界観）</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「育ててる感がある」</div>
+        <div class="from-who">― おけもん</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「忙しい人ほど秘書を作れる」</div>
+        <div class="from-who">― おけもん</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「8割作ってもらって、2割は自分の色を出す」</div>
+        <div class="from-who">― KID</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「ドラえもんに“これ作って”って言ってるような感じ」</div>
+        <div class="from-who">― KID</div>
+      </div>
+      <div class="treasure">
+        <div class="got">▼ GET!</div>
+        <div class="item">「ウェブデザイナーいらないじゃないですか」</div>
+        <div class="from-who">― ぽにょ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- レベルアップ -->
+  <div class="win">
+    <div class="levelup">
+      <div class="lvtitle">★ KID は レベル 9 に なった ！</div>
+      <p>「APIキー保管庫を開く呪文」を覚えた。<br>「Max⇔Proプラン構造図」装備を発見。<br>「ぽにょ：9月23日福岡で再会」フラグ獲得。</p>
+      <div class="gain">▼ 経験値 +800 ／ ことばの宝箱 ×7 ／ 仲間（ぽにょ）と次クエストの約束</div>
+    </div>
+  </div>
+
+  <!-- 最終メッセージ -->
+  <div class="win">
+    <div class="sec-h">▼ エンディング</div>
+    <div class="msg">
+      <span class="narration">こうして、KIDとおけもんの第2章は幕を閉じた。<br><br>
+      第3章「ノウハウギルドの設立」が動き出す気配が、画面の片隅に小さく灯っていた。<br><br>
+      ─ to be continued ─</span>
+    </div>
+  </div>
+
+  <div class="win save">
+    <span class="ico">★</span> セーブしますか？ <span class="ico">★</span><br>
+    <span style="color:var(--ink); font-size:0.7rem;">［ はい ］　 いいえ</span>
+  </div>
+
+  <div class="win">
+    <div class="nav-bottom">
+      <button onclick="showChapter(1)">◁ 前の章 サラリーとリータの森</button>
+      <button disabled>次の章 ▷（準備中）</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- フッター -->
+<div class="win" style="margin-top: 30px; text-align: center; font-size: 0.75rem; color: var(--gray); font-family: 'Press Start 2P', monospace; letter-spacing: 0.05em;">
+  © 2026 OKEMON COMPANY ／ KID QUEST<br>
+  <span style="font-family: 'DotGothic16', monospace; font-size: 0.85rem; color: var(--gold); display: inline-block; margin-top: 8px;">
+    powered by Claude in Chrome
+  </span>
+</div>
+
+<script>
+function showChapter(n) {
+  document.querySelectorAll('.chapter').forEach(el => el.classList.remove('active'));
+  document.getElementById('ch' + n).classList.add('active');
+  document.querySelectorAll('.chapter-nav button').forEach((b, i) => {
+    b.classList.toggle('active', i === n - 1);
+  });
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+
+</body>
+</html>
