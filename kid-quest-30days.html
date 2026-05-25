@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ぼうけんしゃギルド ─ 30日でレベル30になる修行</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a1a;
+    --window: #0033aa;
+    --ink: #ffffff;
+    --yellow: #ffe14b;
+    --gold: #f5c542;
+    --hp-green: #6cd64c;
+    --mp-blue: #6cb6ff;
+    --red: #ff6b6b;
+    --purple: #c89bff;
+    --gray: #8b8da6;
+    --paper: #fff0c8;
+    --paper-ink: #3a2a18;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DotGothic16', monospace;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.9;
+    font-size: 16px;
+    min-height: 100vh;
+    padding: 16px;
+    image-rendering: pixelated;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+      radial-gradient(circle at 20% 30%, rgba(108,182,255,.08) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(245,197,66,.08) 0, transparent 40%);
+    background-size: 8px 8px, 8px 8px, 100% 100%, 100% 100%;
+    position: relative;
+    overflow-x: hidden;
+  }
+  svg { image-rendering: pixelated; shape-rendering: crispEdges; }
+
+  /* 星 */
+  .star { position: fixed; width: 3px; height: 3px; background: var(--yellow); z-index: 0; animation: twinkle 2s steps(2) infinite; pointer-events: none; }
+  .star:nth-child(1) { top: 8%; left: 12%; }
+  .star:nth-child(2) { top: 22%; right: 14%; animation-delay: 0.4s; background: var(--mp-blue); }
+  .star:nth-child(3) { top: 56%; left: 6%; animation-delay: 0.8s; }
+  .star:nth-child(4) { top: 73%; right: 8%; animation-delay: 1.2s; background: var(--purple); }
+  .star:nth-child(5) { top: 38%; left: 92%; animation-delay: 0.6s; }
+  .star:nth-child(6) { top: 88%; left: 30%; animation-delay: 1.5s; background: var(--hp-green); }
+  @keyframes twinkle { 50% { opacity: 0; transform: scale(.5); } }
+
+  .win {
+    background: var(--window);
+    border: 4px solid var(--ink);
+    padding: 20px 24px;
+    margin: 0 auto 16px;
+    max-width: 920px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 0 2px #000, inset 0 0 0 2px var(--window), inset 0 0 0 4px var(--ink), 6px 6px 0 rgba(0,0,0,.6);
+  }
+  .win::before {
+    content: ""; position: absolute;
+    top: 3px; left: 3px; right: 3px; bottom: 3px;
+    border: 1px solid rgba(255,255,255,.18);
+    pointer-events: none;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes bob { 50% { transform: translateY(-3px); } }
+  @keyframes bossBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+  /* タイトル */
+  .title-screen { text-align: center; padding: 30px 20px; }
+  .title-screen .logo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(1.2rem, 3.6vw, 2rem);
+    color: var(--yellow);
+    text-shadow: 3px 3px 0 #c89900, 6px 6px 0 #000, 0 0 22px rgba(255,225,75,.6);
+    line-height: 1.6;
+    margin-bottom: 12px;
+    animation: logoBob 2.4s ease-in-out infinite;
+  }
+  @keyframes logoBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  .title-screen .sub { font-size: 1.1rem; color: var(--gold); margin-bottom: 18px; }
+  .title-screen .lead { font-size: 0.95rem; color: var(--ink); max-width: 580px; margin: 12px auto; line-height: 1.9; }
+  .title-screen .press { font-family: 'Press Start 2P', monospace; font-size: 0.6rem; color: var(--ink); animation: blink 1.2s steps(2) infinite; margin-top: 18px; }
+
+  /* ギルドの掲示板キャラ */
+  .guild-master {
+    display: inline-block;
+    animation: bossBob 1s steps(2) infinite;
+    margin: 14px 0;
+    filter: drop-shadow(2px 2px 0 #000);
+  }
+
+  /* ステータス */
+  .status {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    line-height: 1.8;
+  }
+  .status .box {
+    border: 2px solid var(--ink);
+    padding: 10px;
+    background: rgba(0,0,0,.25);
+  }
+  .status .lbl { color: var(--gold); font-size: 0.55rem; display: block; margin-bottom: 4px; }
+  .status .val { color: var(--yellow); font-size: 0.9rem; }
+  .status .val.big { font-size: 1.3rem; }
+
+  /* レベル進行バー */
+  .progress-wrap {
+    margin: 20px 0;
+    padding: 16px;
+    border: 3px solid var(--yellow);
+    background: rgba(255,225,75,.06);
+    box-shadow: 4px 4px 0 #000;
+  }
+  .progress-wrap .head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.65rem;
+    color: var(--yellow);
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+  }
+  .progress-wrap .head .count { color: var(--hp-green); }
+  .progress {
+    height: 18px;
+    background: #222;
+    border: 2px solid #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress .fill {
+    height: 100%;
+    background: var(--hp-green);
+    width: 0%;
+    transition: width .4s steps(8);
+    background-image: linear-gradient(90deg, var(--hp-green) 0 4px, #5ac040 4px 8px);
+    background-size: 8px 8px;
+  }
+  .progress .ticks {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    display: flex; pointer-events: none;
+  }
+  .progress .ticks span { flex: 1; border-right: 1px solid rgba(0,0,0,.4); }
+
+  /* 週ナビ */
+  .week-nav {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  .week-nav button {
+    font-family: 'DotGothic16', monospace;
+    background: var(--window); color: var(--ink);
+    border: 3px solid var(--ink);
+    padding: 10px 18px; cursor: pointer; font-size: 0.95rem;
+    box-shadow: 3px 3px 0 #000;
+    transition: transform .08s;
+  }
+  .week-nav button:hover { background: var(--yellow); color: var(--window); transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #000; }
+  .week-nav button:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 #000; }
+  .week-nav button.active { background: var(--yellow); color: var(--window); }
+
+  /* 週見出し */
+  .week-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(0.85rem, 2.2vw, 1.1rem);
+    color: var(--yellow);
+    text-align: center;
+    padding: 14px;
+    border: 3px solid var(--yellow);
+    margin-bottom: 16px;
+    background: rgba(255,225,75,.08);
+    text-shadow: 2px 2px 0 #000;
+    box-shadow: inset 0 0 0 2px var(--window), 4px 4px 0 #000;
+    position: relative;
+    line-height: 1.5;
+  }
+  .week-title::before, .week-title::after {
+    content: "★"; color: var(--yellow);
+    position: absolute; top: 50%; transform: translateY(-50%);
+    animation: blink 1s steps(2) infinite;
+  }
+  .week-title::before { left: 14px; }
+  .week-title::after { right: 14px; }
+
+  .week-meta {
+    text-align: center; color: var(--gold);
+    font-size: 0.85rem; margin-bottom: 16px; letter-spacing: 0.1em;
+  }
+  .week-meta .theme {
+    color: var(--ink);
+    font-size: 1rem;
+    margin-top: 4px;
+  }
+
+  /* ギルド依頼書（クエストカード） */
+  .quests { display: grid; gap: 14px; }
+  .quest {
+    background: var(--paper);
+    color: var(--paper-ink);
+    border: 3px solid #6a4a28;
+    padding: 18px 20px;
+    position: relative;
+    box-shadow: 5px 5px 0 #000;
+    background-image:
+      linear-gradient(180deg, rgba(106,74,40,.05) 1px, transparent 1px);
+    background-size: 100% 28px;
+    cursor: pointer;
+    transition: transform .1s;
+  }
+  .quest:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 #000; }
+  .quest::before, .quest::after {
+    content: ""; position: absolute;
+    width: 10px; height: 10px; background: #6a4a28;
+  }
+  .quest::before { top: 6px; left: 6px; }
+  .quest::after { top: 6px; right: 6px; }
+  .quest .pin-bl { position: absolute; bottom: 6px; left: 6px; width: 10px; height: 10px; background: #6a4a28; }
+  .quest .pin-br { position: absolute; bottom: 6px; right: 6px; width: 10px; height: 10px; background: #6a4a28; }
+
+  .quest .q-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 8px; gap: 12px; flex-wrap: wrap;
+  }
+  .quest .q-day {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.7rem;
+    color: #6a4a28;
+    background: #ffe14b;
+    border: 2px solid #6a4a28;
+    padding: 4px 10px;
+    letter-spacing: 0.05em;
+    flex: 0 0 auto;
+  }
+  .quest .q-time {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    color: #c0381d;
+    background: rgba(255,255,255,.5);
+    padding: 4px 8px;
+    border: 1px solid #6a4a28;
+  }
+  .quest h3 {
+    font-family: 'DotGothic16', monospace;
+    font-size: 1.15rem;
+    color: var(--paper-ink);
+    line-height: 1.6;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  .quest .q-body {
+    font-size: 0.95rem;
+    color: var(--paper-ink);
+    line-height: 1.9;
+  }
+  .quest .q-tip {
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: rgba(106,74,40,.08);
+    border-left: 4px solid #6a4a28;
+    font-size: 0.85rem;
+  }
+  .quest .q-tip .tip-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    color: #6a4a28;
+    display: block; margin-bottom: 4px;
+    letter-spacing: 0.05em;
+  }
+  .quest .q-source {
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: #6a4a28;
+  }
+  .quest .q-source .src {
+    background: #ffd840;
+    padding: 2px 6px;
+    border-radius: 0;
+    margin-right: 4px;
+    font-weight: bold;
+  }
+  .quest .q-reward {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 2px dashed #6a4a28;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .quest .q-reward .gain {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    color: #6a4a28;
+    letter-spacing: 0.05em;
+  }
+  .quest .q-reward .gain .g-yellow { color: #c89000; }
+  .quest .q-reward .gain .g-green { color: #4a8a30; }
+
+  .quest .complete-btn {
+    font-family: 'DotGothic16', monospace;
+    background: var(--window);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    padding: 6px 14px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    box-shadow: 2px 2px 0 #000;
+  }
+  .quest .complete-btn:hover { background: var(--hp-green); color: #000; }
+
+  .quest.done {
+    background: #d8e8c8;
+    opacity: 0.85;
+  }
+  .quest.done h3 { text-decoration: line-through; opacity: 0.6; }
+  .quest.done .complete-btn { background: var(--hp-green); color: #000; }
+  .quest.done .complete-btn::after { content: " ✓"; }
+  .quest.done::after {
+    content: "クリア！";
+    position: absolute;
+    top: -10px; right: 10px;
+    background: var(--red);
+    color: #fff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    padding: 4px 10px;
+    border: 2px solid #000;
+    transform: rotate(-8deg);
+    box-shadow: 2px 2px 0 #000;
+    width: auto; height: auto;
+  }
+
+  /* 週末ボーナス */
+  .week-bonus {
+    margin: 24px 0;
+    border: 4px solid var(--yellow);
+    padding: 20px;
+    text-align: center;
+    background: rgba(255,225,75,.1);
+    box-shadow: 5px 5px 0 #000;
+    position: relative;
+    overflow: hidden;
+  }
+  .week-bonus h4 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.85rem;
+    color: var(--yellow);
+    text-shadow: 2px 2px 0 #000;
+    margin-bottom: 10px;
+    animation: glow 1.2s ease-in-out infinite;
+  }
+  @keyframes glow {
+    0%,100% { text-shadow: 2px 2px 0 #000, 0 0 14px rgba(255,225,75,.5); }
+    50%     { text-shadow: 2px 2px 0 #000, 0 0 28px rgba(255,225,75,1); }
+  }
+  .week-bonus p { font-size: 0.92rem; color: var(--ink); line-height: 1.8; }
+  .confetti { position: absolute; width: 6px; height: 6px; pointer-events: none; animation: fall 2.4s linear infinite; }
+  @keyframes fall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(180px) rotate(360deg); opacity: 0; } }
+
+  /* セクション見出し */
+  .sec-h {
+    font-family: 'Press Start 2P', monospace;
+    color: var(--yellow);
+    font-size: 0.78rem;
+    padding: 10px 14px;
+    background: rgba(255,255,255,.05);
+    border-left: 5px solid var(--yellow);
+    margin: 0 0 14px;
+    letter-spacing: 0.05em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sec-h svg { animation: bob .5s steps(2) infinite; }
+
+  /* 週が非表示 */
+  .week { display: none; animation: fadeIn .4s steps(4); }
+  .week.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ナビ */
+  .nav-bottom {
+    display: flex; justify-content: space-between; gap: 10px;
+    margin-top: 12px; flex-wrap: wrap;
+  }
+  .nav-bottom button {
+    flex: 1; min-width: 130px;
+    font-family: 'DotGothic16', monospace;
+    background: var(--window); color: var(--ink);
+    border: 3px solid var(--ink);
+    padding: 14px 18px; cursor: pointer; font-size: 1rem;
+    box-shadow: 3px 3px 0 #000;
+  }
+  .nav-bottom button:hover { background: var(--yellow); color: var(--window); transform: translate(-2px,-2px); box-shadow: 5px 5px 0 #000; }
+  .nav-bottom button:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 #000; }
+  .nav-bottom button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .msg { font-size: 1rem; line-height: 2; padding: 4px 0; }
+  .msg::after { content: "▼"; color: var(--yellow); margin-left: 8px; animation: blink 1s steps(2) infinite; display: inline-block; }
+  .msg.no-cursor::after { content: ""; }
+  .msg .narration { color: var(--gold); }
+
+  /* リンクKIDクエストへ戻る */
+  .back-link {
+    text-align: center;
+    margin-top: 20px;
+    font-family: 'DotGothic16', monospace;
+  }
+  .back-link a {
+    color: var(--mp-blue);
+    text-decoration: underline;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 8px; font-size: 14px; }
+    .win { padding: 14px 16px; }
+    .quest { padding: 14px 16px; }
+    .quest h3 { font-size: 1rem; }
+    .week-nav button { font-size: 0.85rem; padding: 8px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="star"></div><div class="star"></div><div class="star"></div>
+<div class="star"></div><div class="star"></div><div class="star"></div>
+
+<!-- ───── タイトル ───── -->
+<div class="win title-screen">
+  <div class="logo">ぼうけんしゃギルド</div>
+  <div class="sub">─ 30日でレベル30になる修行 ─</div>
+
+  <!-- ギルドマスター（おけもん風賢者） -->
+  <svg class="guild-master" width="64" height="64" viewBox="0 0 16 16">
+    <rect x="5" y="2" width="6" height="3" fill="#c89bff"/>
+    <rect x="6" y="5" width="4" height="3" fill="#fce4b8"/>
+    <rect x="7" y="6" width="1" height="1" fill="#000"/>
+    <rect x="8" y="6" width="1" height="1" fill="#000"/>
+    <rect x="7" y="7" width="2" height="1" fill="#000"/>
+    <rect x="4" y="8" width="8" height="5" fill="#5a3e8a"/>
+    <rect x="3" y="9" width="1" height="4" fill="#5a3e8a"/>
+    <rect x="12" y="9" width="1" height="4" fill="#5a3e8a"/>
+    <rect x="5" y="13" width="2" height="2" fill="#000"/>
+    <rect x="9" y="13" width="2" height="2" fill="#000"/>
+    <rect x="13" y="6" width="1" height="9" fill="#a06800"/>
+    <rect x="12" y="5" width="3" height="1" fill="#ffe14b"/>
+  </svg>
+
+  <div class="msg" style="text-align:center; max-width:620px; margin: 12px auto;">
+    <span class="narration">よくぞ来た、勇者よ。<br>
+    われは ギルドマスター おけもん。<br>
+    AIという未踏の大陸で、レベル30まで育つ「30日修行」を授けよう。<br>
+    1日5分でいい。とにかく毎日、1つだけ。それで充分じゃ。</span>
+  </div>
+
+  <div class="press">▼ START QUEST ▼</div>
+</div>
+
+<!-- ───── ステータス（プレイヤー初期） ───── -->
+<div class="win">
+  <div class="status">
+    <div class="box">
+      <span class="lbl">▼ DAY</span>
+      <span class="val big"><span id="dayCount">0</span> / 30</span>
+    </div>
+    <div class="box">
+      <span class="lbl">▼ LV</span>
+      <span class="val big"><span id="lvCount">1</span></span>
+    </div>
+    <div class="box">
+      <span class="lbl">▼ EXP</span>
+      <span class="val"><span id="expCount">0</span> pt</span>
+    </div>
+    <div class="box">
+      <span class="lbl">▼ 称号</span>
+      <span class="val" id="titleLabel" style="font-size:.85rem;">みならい</span>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="head">
+      <span>▶ ぼうけんの進捗</span>
+      <span class="count"><span id="doneCount">0</span> / 30 クリア</span>
+    </div>
+    <div class="progress">
+      <div class="fill" id="progressFill"></div>
+      <div class="ticks">
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───── ルール説明 ───── -->
+<div class="win">
+  <div class="sec-h">
+    <svg width="20" height="20" viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12" fill="#fff0c8" stroke="#000" stroke-width="1"/><rect x="5" y="5" width="6" height="1" fill="#000"/><rect x="5" y="8" width="6" height="1" fill="#000"/><rect x="5" y="11" width="4" height="1" fill="#000"/></svg>
+    ▼ ギルドのおきて
+  </div>
+  <div class="msg no-cursor"><span class="narration">
+    🎯 <b>1日1クエストだけ。</b> 朝でも夜でもいい。スキマでやる。<br>
+    🎯 <b>飛ばしてOK。</b> 気分が乗らない日はパスして次へ進めばよい。<br>
+    🎯 <b>順番通りじゃなくてOK。</b> 「これやりたい」と思った日に手をつけるのが正解。<br>
+    🎯 <b>クリア！ボタンを押すと スタンプが押される。</b>（ブラウザに保存される）<br>
+    🎯 <b>素材は3つ。</b> 📕虎の巻 ／ 📚ノウハウ図書館 ／ 🎙学長ライブ。気になったら覗く程度でいい。
+  </span></div>
+</div>
+
+<!-- ───── 週ナビ ───── -->
+<div class="win">
+  <div class="week-nav">
+    <button class="active" onclick="showWeek(1)">第1週</button>
+    <button onclick="showWeek(2)">第2週</button>
+    <button onclick="showWeek(3)">第3週</button>
+    <button onclick="showWeek(4)">第4週+α</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 第1週 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="week active" id="week1">
+  <div class="win">
+    <div class="week-title">WEEK 1<br>チャットの森を抜ける</div>
+    <div class="week-meta">─ Day 1 〜 Day 7 ─<div class="theme">「クロード」と「クロードコード」の違いを身体で覚える週</div></div>
+  </div>
+
+  <div class="win">
+    <div class="quests">
+
+      <div class="quest" data-id="d1">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head">
+          <span class="q-day">DAY 01</span>
+          <span class="q-time">⏱ 30 min</span>
+        </div>
+        <h3>Claude Code を起動するだけの儀式</h3>
+        <div class="q-body">アプリをダウンロード or 開く。3画面（ブラウザ・コード画面・ターミナル）の "3画面のやつ" が立ち上がればミッション達成。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>さらりさん「3画面のやつになりました！」が今日のゴール。中身は触らなくていい。「開いた」で勝ち。</div>
+        <div class="q-source">📕 <span class="src">虎の巻</span>「インストール編」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +30</span> ／ <span class="g-green">称号：旅立ち</span></span><button class="complete-btn" onclick="toggleDone(this,'d1',30)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d2">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head">
+          <span class="q-day">DAY 02</span>
+          <span class="q-time">⏱ 5 min</span>
+        </div>
+        <h3>「自己紹介して」と話しかける</h3>
+        <div class="q-body">音声入力 or テキストで「自己紹介してください」とだけ。返ってきた言葉を最後まで読む。これでAIの世界観が肌でわかる。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>怖がらず、AIを「店員さん」じゃなく「相棒」だと思って話しかけてみる。</div>
+        <div class="q-source">📕 <span class="src">虎の巻</span>「はじめの一声編」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +20</span></span><button class="complete-btn" onclick="toggleDone(this,'d2',20)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d3">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head">
+          <span class="q-day">DAY 03</span>
+          <span class="q-time">⏱ 10 min</span>
+        </div>
+        <h3>「2回以上やってる作業」を1個書き出す</h3>
+        <div class="q-body">紙でもメモアプリでもいい。「これ毎週やってるな」「月1回必ずやるな」をAIに教える。リストにするだけでOK。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>おけもん「2回以上やることは自動化できへんかな」が呪文。書き出すだけで宝の地図が完成する。</div>
+        <div class="q-source">🎙 <span class="src">学長ライブ</span>「めんどくさいをAIで攻略」回</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +30</span></span><button class="complete-btn" onclick="toggleDone(this,'d3',30)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d4">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head">
+          <span class="q-day">DAY 04</span>
+          <span class="q-time">⏱ 15 min</span>
+        </div>
+        <h3>気になっている悩み事を相談してみる</h3>
+        <div class="q-body">ジェミニで悩み相談してた人はそのままの温度でOK。クロードコードに同じ相談をして、回答を「比べる」。違いを感じるだけで合格。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>ぽにょさん「イラッとした時にクールダウン」発見と同じ。AIは怒らないからアンガーマネジメント装備が手に入る。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「AI相談」タグの記事</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +30</span></span><button class="complete-btn" onclick="toggleDone(this,'d4',30)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d5">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head">
+          <span class="q-day">DAY 05</span>
+          <span class="q-time">⏱ 20 min</span>
+        </div>
+        <h3>過去のメモを1つ読ませる</h3>
+        <div class="q-body">日記・打合せメモ・ブログの下書き、なんでもいい。「これ読んで感想ちょうだい」と渡す。AIに自分のことを少しずつ教える日。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>「育成ゲームなんですよ」の最初の一歩。情報を渡せば渡すほど、AIは自分の雰囲気を覚える。</div>
+        <div class="q-source">📕 <span class="src">虎の巻</span>「ファイル渡し編」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +40</span></span><button class="complete-btn" onclick="toggleDone(this,'d5',40)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d6">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head">
+          <span class="q-day">DAY 06</span>
+          <span class="q-time">⏱ 30 min</span>
+        </div>
+        <h3>「2回以上の作業」を1個だけ任せてみる</h3>
+        <div class="q-body">Day 3で書いた地図から、いちばん簡単な1個を選んで「これやってみて」と頼む。半分しかできなくても、5分縮めば勝利。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>完璧を目指さない。AIに任せた瞬間の「あ、できた」を1回体験することがゴール。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「自動化はじめの一歩」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +50</span></span><button class="complete-btn" onclick="toggleDone(this,'d6',50)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d7">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head">
+          <span class="q-day">DAY 07</span>
+          <span class="q-time">⏱ 10 min</span>
+        </div>
+        <h3>1週間の振り返りをAIにまとめさせる</h3>
+        <div class="q-body">「Day 1〜6で何やった？」を一緒に振り返ってもらう。気付き・困りごとを書き出して終了。1週目クリア🎉</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>振り返り = レベルアップ素材。次の週に何やるか、迷ったらAIに聞いてOK。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「週次振り返り」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +50</span> ／ <span class="g-green">称号：見習い卒業</span></span><button class="complete-btn" onclick="toggleDone(this,'d7',50)">クリア！</button></div>
+      </div>
+
+    </div>
+
+    <div class="week-bonus">
+      <div class="confetti" style="left:15%; background:#ffe14b; animation-delay:0s;"></div>
+      <div class="confetti" style="left:35%; background:#6cb6ff; animation-delay:.3s;"></div>
+      <div class="confetti" style="left:55%; background:#ff6b6b; animation-delay:.6s;"></div>
+      <div class="confetti" style="left:75%; background:#6cd64c; animation-delay:.9s;"></div>
+      <h4>★ WEEK 1 CLEAR ボーナス ★</h4>
+      <p>「自分が日常で何回も繰り返してること」が見えた1週間。<br>これがレベル30への地図の元になる。次は実行系へ。</p>
+    </div>
+
+    <div class="nav-bottom">
+      <button disabled>◁ 前の週</button>
+      <button onclick="showWeek(2)">次の週 ▷ 実行の街</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 第2週 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="week" id="week2">
+  <div class="win">
+    <div class="week-title">WEEK 2<br>実行の街へ降りる</div>
+    <div class="week-meta">─ Day 8 〜 Day 14 ─<div class="theme">"相談相手" から "実行役" に切り替える週</div></div>
+  </div>
+
+  <div class="win">
+    <div class="quests">
+
+      <div class="quest" data-id="d8">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 08</span><span class="q-time">⏱ 15 min</span></div>
+        <h3>Chrome拡張をオンにする</h3>
+        <div class="q-body">Claude in Chrome 拡張を入れて、ブラウザ右上にアイコンを出す。これだけで世界の見え方が変わる。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>KIDさんも当日ここで詰まった。「コード側から呼ぶ」が呪文。チャット側でオンにしてはダメ。</div>
+        <div class="q-source">📕 <span class="src">虎の巻</span>「Chrome拡張編」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +40</span></span><button class="complete-btn" onclick="toggleDone(this,'d8',40)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d9">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 09</span><span class="q-time">⏱ 20 min</span></div>
+        <h3>Xに投稿を1つ作って下書きさせる</h3>
+        <div class="q-body">「今日やったことから1個ピックして、Xの投稿文を作って」と頼む。下書きまで自動で行ってくれる。投稿するかは自分で判断。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>最初は投稿しなくていい。「下書きできた」を見るだけで「AIが手を動かす」感覚が掴める。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「SNS自動投稿」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +40</span></span><button class="complete-btn" onclick="toggleDone(this,'d9',40)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d10">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 10</span><span class="q-time">⏱ 30 min</span></div>
+        <h3>旅のしおりHTMLを作ってもらう</h3>
+        <div class="q-body">「来月行きたい場所」を1個決めて、しおりを作らせる。日程・予算・コンセプトを口頭で伝えるだけ。完成したらブラウザで開いて鑑賞。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>さらりさん「私山形詳しいですけど、本当に王道のツアー」と驚いた装備。実用じゃなくてもOK、感動が大事。</div>
+        <div class="q-source">🎙 <span class="src">学長ライブ</span>「旅しおり実例」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +60</span></span><button class="complete-btn" onclick="toggleDone(this,'d10',60)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d11">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 11</span><span class="q-time">⏱ 30 min</span></div>
+        <h3>飛行機 or ホテルを探させる</h3>
+        <div class="q-body">「来月の○日、××に行きたい。飛行機探して」と頼む。予約画面まで連れて行ってくれる（カード入力は自分で）。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>ぽにょさん「予約まで取ってくれるんですか」と驚いた装備。実行系の威力をいちばん感じる。</div>
+        <div class="q-source">📕 <span class="src">虎の巻</span>「予約系オペレーション」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +60</span></span><button class="complete-btn" onclick="toggleDone(this,'d11',60)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d12">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 12</span><span class="q-time">⏱ 45 min</span></div>
+        <h3>過去ブログ or 文章を1本書かせる</h3>
+        <div class="q-body">自分の過去文章をまとめて読み込ませて、新ネタを1個渡して「これで1本書いて」と頼む。KIDさんの空手ブログ流。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>KID「30分→10分になりました。誰も気づいてない、AIで書いてること」。文章AIは"過去ログ"で化ける。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「ブログ自動化」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +70</span></span><button class="complete-btn" onclick="toggleDone(this,'d12',70)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d13">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 13</span><span class="q-time">⏱ 20 min</span></div>
+        <h3>手書きメモ or 写真から文字起こしさせる</h3>
+        <div class="q-body">紙の手書きメモを写真にして「これ読んで整理して」と渡す。読みにくい字でもAIは解読してくれる。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>シェア会では「手書きの成績表→デジタル化」が場を沸かせた瞬間。紙が一気に資産化する装備。</div>
+        <div class="q-source">📕 <span class="src">虎の巻</span>「OCR・画像読み取り編」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +50</span></span><button class="complete-btn" onclick="toggleDone(this,'d13',50)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d14">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 14</span><span class="q-time">⏱ 30 min</span></div>
+        <h3>2週間ぶんの自分を AI に分析させる</h3>
+        <div class="q-body">Day 1〜13で渡した情報を踏まえて、「私ってこういう傾向あるかな？」と聞いてみる。AIから見た自分が返ってくる。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>ストレングスファインダーや診断系の結果を渡すと精度爆上がり。KIDさんの「筋がいい」アイデア。</div>
+        <div class="q-source">🎙 <span class="src">学長ライブ</span>「自己理解 × AI」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +60</span> ／ <span class="g-green">称号：実行使い</span></span><button class="complete-btn" onclick="toggleDone(this,'d14',60)">クリア！</button></div>
+      </div>
+
+    </div>
+
+    <div class="week-bonus">
+      <div class="confetti" style="left:15%; background:#ffe14b; animation-delay:0s;"></div>
+      <div class="confetti" style="left:35%; background:#6cb6ff; animation-delay:.3s;"></div>
+      <div class="confetti" style="left:55%; background:#ff6b6b; animation-delay:.6s;"></div>
+      <div class="confetti" style="left:75%; background:#6cd64c; animation-delay:.9s;"></div>
+      <h4>★ WEEK 2 CLEAR ボーナス ★</h4>
+      <p>「相談相手」から「実行役」に切り替わった2週間。<br>次は習慣化の村へ。1日5分でも、毎日触る型を作る。</p>
+    </div>
+
+    <div class="nav-bottom">
+      <button onclick="showWeek(1)">◁ 前の週 チャットの森</button>
+      <button onclick="showWeek(3)">次の週 ▷ 習慣化の村</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 第3週 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="week" id="week3">
+  <div class="win">
+    <div class="week-title">WEEK 3<br>習慣化の村に住む</div>
+    <div class="week-meta">─ Day 15 〜 Day 21 ─<div class="theme">"育成ゲーム" を回し始める週</div></div>
+  </div>
+
+  <div class="win">
+    <div class="quests">
+
+      <div class="quest" data-id="d15">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 15</span><span class="q-time">⏱ 20 min</span></div>
+        <h3>朝（or 夜）のルーティンを設計させる</h3>
+        <div class="q-body">「私の朝の理想の30分を一緒に考えて」と相談。AIが叩き台を出してくれる。1個でも採用したら勝利。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>テンプレ通りでなく「自分の体内時計に合わせて」と伝えると、その人専用が返ってくる。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「朝ルーティン設計」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +50</span></span><button class="complete-btn" onclick="toggleDone(this,'d15',50)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d16">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 16</span><span class="q-time">⏱ 15 min</span></div>
+        <h3>スキル or プロンプトを1個保存する</h3>
+        <div class="q-body">「これよく使うな」というやり取りを、AIに「次から /○○ で呼べるようにして」と頼む。これでスキル登録完了。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>1つ保存できれば、その後の30秒短縮が一生続く。複利の入口。</div>
+        <div class="q-source">📕 <span class="src">虎の巻</span>「スキル登録編」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +50</span></span><button class="complete-btn" onclick="toggleDone(this,'d16',50)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d17">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 17</span><span class="q-time">⏱ 30 min</span></div>
+        <h3>学長ライブ（or 好きな動画）を要約させる</h3>
+        <div class="q-body">YouTube URLを渡して「これ要約して」と頼むだけ。30分のライブが5分のメモになる魔法。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>KIDさん談「30冊要約して数十円」。APIキー使うけど怖くない、最初は5ドル分でOK。</div>
+        <div class="q-source">🎙 <span class="src">学長ライブ</span>「自動要約ハック回」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +60</span></span><button class="complete-btn" onclick="toggleDone(this,'d17',60)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d18">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 18</span><span class="q-time">⏱ 30 min</span></div>
+        <h3>ノウハウ図書館から1記事真似する</h3>
+        <div class="q-body">気になる記事を1本選んで、書いてあることをそのまま自分の状況に当てはめてみる。真似は最強の修行。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>オリジナルは後でいい。先に「実績ある型」をコピって体に入れる。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「初心者おすすめ記事」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +50</span></span><button class="complete-btn" onclick="toggleDone(this,'d18',50)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d19">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 19</span><span class="q-time">⏱ 30 min</span></div>
+        <h3>「自分の取扱説明書」を作ってもらう</h3>
+        <div class="q-body">Day 1〜18でAIに渡した情報をもとに、HTMLで自分のトリセツを作らせる。家族や仲間に見せてもいい。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>おけもんも作ってる。「ADHDトリセツHTML」が代表作。可愛さや自虐は自由。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「トリセツ生成」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +70</span></span><button class="complete-btn" onclick="toggleDone(this,'d19',70)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d20">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 20</span><span class="q-time">⏱ 60 min</span></div>
+        <h3>誰かと一緒に AI 話をする（オフ or オンライン）</h3>
+        <div class="q-body">仲間 or リベシティ・コミュニティで、今のAI使い方をシェアしてみる。聞かれてもいいし、自分から話してもいい。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>シェア会の真髄。「1人じゃたどり着けない」（さらり）。話すと一気にレベル上がる。</div>
+        <div class="q-source">🎙 <span class="src">コミュニティ</span>でAIタグのチャットを覗く</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +80</span></span><button class="complete-btn" onclick="toggleDone(this,'d20',80)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d21">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 21</span><span class="q-time">⏱ 15 min</span></div>
+        <h3>3週間の振り返り</h3>
+        <div class="q-body">「Day 1〜20、私どう変わった？」とAIに聞く。本人の言葉で変化が言語化されたら勝ち。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>過去の自分とAIが対話してる感覚。振り返り＝レベルアップの瞬間。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「振り返りプロンプト集」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +60</span> ／ <span class="g-green">称号：習慣使い</span></span><button class="complete-btn" onclick="toggleDone(this,'d21',60)">クリア！</button></div>
+      </div>
+
+    </div>
+
+    <div class="week-bonus">
+      <div class="confetti" style="left:15%; background:#ffe14b; animation-delay:0s;"></div>
+      <div class="confetti" style="left:35%; background:#6cb6ff; animation-delay:.3s;"></div>
+      <div class="confetti" style="left:55%; background:#ff6b6b; animation-delay:.6s;"></div>
+      <div class="confetti" style="left:75%; background:#6cd64c; animation-delay:.9s;"></div>
+      <h4>★ WEEK 3 CLEAR ボーナス ★</h4>
+      <p>"育成ゲーム" が回り始めた3週間。<br>次は最終週。自分の仕事・暮らしに刻む9日間。</p>
+    </div>
+
+    <div class="nav-bottom">
+      <button onclick="showWeek(2)">◁ 前の週 実行の街</button>
+      <button onclick="showWeek(4)">次の週 ▷ 自分のギルド</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- 第4週+α -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="week" id="week4">
+  <div class="win">
+    <div class="week-title">WEEK 4+α<br>自分のギルドを立ち上げる</div>
+    <div class="week-meta">─ Day 22 〜 Day 30 ─<div class="theme">"自分専用の使い方" を確立する9日間</div></div>
+  </div>
+
+  <div class="win">
+    <div class="quests">
+
+      <div class="quest" data-id="d22">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 22</span><span class="q-time">⏱ 15 min</span></div>
+        <h3>「これAI化したい」を3つ書く</h3>
+        <div class="q-body">仕事・暮らしの中から3つ選ぶ。優先順位は後で決めるからとりあえず書き出すだけ。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>3つ並べる時は「楽になりたい順」「楽しそう順」どっちでも。直感優先。</div>
+        <div class="q-source">📕 <span class="src">虎の巻</span>「自分プロジェクト設計」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +40</span></span><button class="complete-btn" onclick="toggleDone(this,'d22',40)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d23">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 23</span><span class="q-time">⏱ 60 min</span></div>
+        <h3>1つ目を実装させる</h3>
+        <div class="q-body">Day 22で書いた1個目を、AIと相談しながら作る。完成しなくていい、半分動けば合格。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>「目的ちゃんと理解してる？」を最初に詰めると、AIは丁寧に動く（おけもん流）。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「実装ヒント集」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +80</span></span><button class="complete-btn" onclick="toggleDone(this,'d23',80)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d24">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 24</span><span class="q-time">⏱ 60 min</span></div>
+        <h3>2つ目を実装させる</h3>
+        <div class="q-body">前日の流れを覚えてるはずなので、今日はもっとスムーズ。「昨日と同じ要領で」が呪文。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>2回目から急に楽になるのが育成ゲームの法則。</div>
+        <div class="q-source">🎙 <span class="src">学長ライブ</span>「複利の話」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +80</span></span><button class="complete-btn" onclick="toggleDone(this,'d24',80)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d25">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 25</span><span class="q-time">⏱ 60 min</span></div>
+        <h3>3つ目を実装させる</h3>
+        <div class="q-body">3つ揃うと「自分の城」が見え始める。難しかったら2.5でOK、止めずに進める。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>完璧主義を捨てる。8割で次へ。残り2割は来週の自分が直す。</div>
+        <div class="q-source">📕 <span class="src">虎の巻</span>「8割主義のコツ」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +80</span></span><button class="complete-btn" onclick="toggleDone(this,'d25',80)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d26">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 26</span><span class="q-time">⏱ 10 min</span></div>
+        <h3>AI に褒めてもらう</h3>
+        <div class="q-body">「Day 1からの私、よく頑張ったよね？褒めて」と頼む。返ってきた言葉をスクショ。今日のお守りになる。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>AIは怒らないし、頑張りを正確に見てる。気が落ちてる日にやると効く呪文。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「AIに褒めてもらう」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +30</span></span><button class="complete-btn" onclick="toggleDone(this,'d26',30)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d27">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 27</span><span class="q-time">⏱ 30 min</span></div>
+        <h3>「1ヶ月のレポート」を自動生成させる</h3>
+        <div class="q-body">Day 1〜26の流れをまとめさせて、HTML or PDFにする。家族・仲間に「私こんなん30日でできるようになった」と送れる。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>これが"成果物"になる。次の誰かに渡せる教科書も同時に完成。</div>
+        <div class="q-source">📕 <span class="src">虎の巻</span>「レポート生成編」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +70</span></span><button class="complete-btn" onclick="toggleDone(this,'d27',70)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d28">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 28</span><span class="q-time">⏱ 30 min</span></div>
+        <h3>次の30日プランをAIに相談する</h3>
+        <div class="q-body">「次の30日、私は何やったらいい？」と聞く。Day 1〜27の自分を見てるAIが、専用の地図を作ってくれる。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>テンプレじゃない、"自分だけの次の30日"が手に入る。</div>
+        <div class="q-source">📚 <span class="src">ノウハウ図書館</span>「ロードマップ作成」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +60</span></span><button class="complete-btn" onclick="toggleDone(this,'d28',60)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d29">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 29</span><span class="q-time">⏱ 30 min</span></div>
+        <h3>自分のギルドを立てる</h3>
+        <div class="q-body">「自分は何のギルドを持ちたい？」と書き出す。営業／クリエイティブ／教える／作る／何でもいい。1個決まれば旗が立つ。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>KIDさん「掲示板みたいに紹介してくれて、冒険者が試す」が次のステージ。受ける側から発信する側に。</div>
+        <div class="q-source">🎙 <span class="src">学長ライブ</span>「コミュニティ主催の意義」</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +80</span></span><button class="complete-btn" onclick="toggleDone(this,'d29',80)">クリア！</button></div>
+      </div>
+
+      <div class="quest" data-id="d30">
+        <div class="pin-bl"></div><div class="pin-br"></div>
+        <div class="q-head"><span class="q-day">DAY 30</span><span class="q-time">⏱ 60 min</span></div>
+        <h3>シェア会で発表 or 仲間にプレゼント</h3>
+        <div class="q-body">この30日で作ったもの・気付きを、誰かに見せる。小さくていい、5分でいい。"見せた瞬間" がLV.30到達のスイッチ。</div>
+        <div class="q-tip"><span class="tip-label">▼ HINT</span>シェア会で初心者だったKIDさんは1ヶ月後にAPI課金まで持ち込んだ。次の主役は自分。</div>
+        <div class="q-source">🎙 <span class="src">シェア会</span>に参加 or 主催</div>
+        <div class="q-reward"><span class="gain"><span class="g-yellow">EXP +120</span> ／ <span class="g-green">称号：ギルドマスター</span></span><button class="complete-btn" onclick="toggleDone(this,'d30',120)">クリア！</button></div>
+      </div>
+
+    </div>
+
+    <div class="week-bonus" id="finalBonus">
+      <div class="confetti" style="left:8%; background:#ffe14b; animation-delay:0s;"></div>
+      <div class="confetti" style="left:22%; background:#6cb6ff; animation-delay:.2s;"></div>
+      <div class="confetti" style="left:36%; background:#ff6b6b; animation-delay:.4s;"></div>
+      <div class="confetti" style="left:50%; background:#6cd64c; animation-delay:.6s;"></div>
+      <div class="confetti" style="left:64%; background:#c89bff; animation-delay:.8s;"></div>
+      <div class="confetti" style="left:78%; background:#ffe14b; animation-delay:1.0s;"></div>
+      <div class="confetti" style="left:92%; background:#6cb6ff; animation-delay:1.2s;"></div>
+
+      <h4>★ THE END ─ レベル 30 達成 ★</h4>
+      <p>30日前と今のあなたは別人。<br>
+      ここまで歩いたあなたが、次のシェア会の "主役" になる。<br>
+      次は誰かを連れていく旅へ。 ─ to be continued ─</p>
+    </div>
+
+    <div class="nav-bottom">
+      <button onclick="showWeek(3)">◁ 前の週 習慣化の村</button>
+      <button onclick="showWeek(1)">▷ 第1週に戻る</button>
+    </div>
+  </div>
+</div>
+
+<!-- 戻るリンク -->
+<div class="win back-link">
+  <a href="kid-quest.html">◁ KIDクエスト本編に戻る</a>
+</div>
+
+<!-- フッター -->
+<div class="win" style="text-align: center; font-size: 0.7rem; color: var(--gray); font-family: 'Press Start 2P', monospace; letter-spacing: 0.05em;">
+  © 2026 OKEMON COMPANY ／ ぼうけんしゃギルド・30日修行<br>
+  <span style="font-family: 'DotGothic16', monospace; font-size: 0.85rem; color: var(--gold); display: inline-block; margin-top: 8px;">
+    KIDさんの 「レベルアップするギルドあったらいい」 から生まれた
+  </span>
+</div>
+
+<script>
+const titles = ['みならい','旅人','見習い卒業','使い手','実行使い','術士','習慣使い','賢者','ギルドマスター'];
+function renderTitle(lv){
+  if (lv >= 30) return 'ギルドマスター';
+  if (lv >= 25) return '賢者';
+  if (lv >= 20) return '習慣使い';
+  if (lv >= 15) return '術士';
+  if (lv >= 10) return '実行使い';
+  if (lv >= 7) return '使い手';
+  if (lv >= 5) return '見習い卒業';
+  if (lv >= 3) return '旅人';
+  return 'みならい';
+}
+function loadState() {
+  try { return JSON.parse(localStorage.getItem('kidQuest30') || '{}'); }
+  catch(e) { return {}; }
+}
+function saveState(s) { localStorage.setItem('kidQuest30', JSON.stringify(s)); }
+function recalcStatus() {
+  const s = loadState();
+  let done = 0, exp = 0;
+  document.querySelectorAll('.quest').forEach(q => {
+    const id = q.dataset.id;
+    if (s[id]) {
+      q.classList.add('done');
+      const btn = q.querySelector('.complete-btn');
+      if (btn) btn.textContent = 'クリア済';
+      done++;
+      exp += s[id].exp;
+    }
+  });
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('dayCount').textContent = done;
+  const lv = Math.max(1, Math.floor(exp / 50) + 1);
+  document.getElementById('lvCount').textContent = Math.min(lv, 30);
+  document.getElementById('expCount').textContent = exp;
+  document.getElementById('titleLabel').textContent = renderTitle(lv);
+  document.getElementById('progressFill').style.width = (done / 30 * 100) + '%';
+}
+function toggleDone(btn, id, exp) {
+  const s = loadState();
+  const q = btn.closest('.quest');
+  if (s[id]) {
+    delete s[id];
+    q.classList.remove('done');
+    btn.textContent = 'クリア！';
+  } else {
+    s[id] = { exp: exp, ts: Date.now() };
+    q.classList.add('done');
+    btn.textContent = 'クリア済';
+  }
+  saveState(s);
+  recalcStatus();
+}
+function showWeek(n) {
+  document.querySelectorAll('.week').forEach(el => el.classList.remove('active'));
+  document.getElementById('week' + n).classList.add('active');
+  document.querySelectorAll('.week-nav button').forEach((b, i) => b.classList.toggle('active', i === n - 1));
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+recalcStatus();
+</script>
+
+</body>
+</html>
