@@ -3,392 +3,717 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>健康管理支援室 御中｜AI業務改善 PJダッシュボード</title>
+<title>私たちがAI活用保健師の未来を作る｜健康管理支援室 御中</title>
+<meta name="robots" content="noindex,nofollow">
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
   :root {
-    --paper: #fdfdfd;
-    --sky: #e7f3fa;
-    --sky-deep: #5fa8d3;
-    --mint: #e8f5e9;
-    --mint-deep: #6bb77a;
-    --warm: #fff7ec;
-    --warm-deep: #e0a96d;
-    --pink: #fde6ec;
-    --pink-deep: #d97a96;
-    --purple: #f0e7f5;
-    --purple-deep: #9c7ab7;
-    --text: #2c3e50;
-    --muted: #6b7c8c;
-    --line: rgba(95,168,211,0.18);
-    --shadow: 0 2px 12px rgba(95,168,211,0.10);
+    --primary: #C8688A;          /* 桜深色 */
+    --primary-soft: #F0D9DE;     /* 桜薄 */
+    --primary-light: #FBE9EC;
+    --accent: #B89878;           /* やわらかゴールド */
+    --accent-light: #E8D9C2;
+    --mint: #A7CDB5;             /* 希望ミント */
+    --mint-soft: #E0EFE3;
+    --cream: #FBF7F2;            /* 生成り */
+    --cream-deep: #F5EFE6;
+    --ink: #3A2E33;
+    --ink-soft: #6B5A60;
+    --muted: #9C8C90;
+    --line: rgba(200, 104, 138, 0.12);
+    --shadow-soft: 0 8px 28px rgba(58, 46, 51, 0.06);
+    --shadow-warm: 0 14px 38px rgba(184, 152, 120, 0.14);
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
-    font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
-    background: linear-gradient(135deg, #fafdff 0%, #f4faf6 100%);
-    color: var(--text);
-    line-height: 1.75;
-    padding: 20px 12px 60px;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.85;
+    font-weight: 400;
+    overflow-x: hidden;
   }
-  .container { max-width: 920px; margin: 0 auto; }
+  h1, h2, h3, h4 { font-family: 'Noto Serif JP', serif; font-weight: 500; letter-spacing: 0.02em; }
+  .label-en { font-family: 'Inter', sans-serif; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; font-size: 11px; color: var(--primary); }
 
-  /* hero */
+  a { color: inherit; text-decoration: none; }
+
+  /* ============== HERO ============== */
   .hero {
-    background: linear-gradient(135deg, var(--mint) 0%, var(--sky) 100%);
-    border-radius: 24px;
-    padding: 44px 32px;
-    text-align: center;
-    margin-bottom: 28px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--line);
-  }
-  .hero .greeting { font-size: 13px; color: var(--muted); margin-bottom: 14px; letter-spacing: 0.12em; }
-  .hero h1 { font-size: 28px; color: var(--text); font-weight: 700; line-height: 1.45; margin-bottom: 14px; }
-  .hero .sub { font-size: 15px; color: var(--muted); }
-  .hero .date { display: inline-block; margin-top: 20px; padding: 8px 22px; background: white; border-radius: 999px; font-size: 13px; color: var(--mint-deep); font-weight: 600; border: 1px solid var(--line); }
-
-  /* 進捗タイムライン */
-  .progress { background: white; border-radius: 18px; padding: 24px 22px; margin-bottom: 22px; box-shadow: var(--shadow); border: 1px solid var(--line); }
-  .progress h2 { font-size: 16px; color: var(--mint-deep); margin-bottom: 16px; }
-  .timeline-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; align-items: stretch; }
-  .ms-item { padding: 12px 8px; border-radius: 10px; text-align: center; font-size: 12px; position: relative; }
-  .ms-item.done { background: var(--mint); border: 1px solid var(--mint-deep); }
-  .ms-item.done .ic { color: var(--mint-deep); font-weight: 700; }
-  .ms-item.current { background: linear-gradient(135deg, var(--pink), var(--warm)); border: 2px solid var(--pink-deep); }
-  .ms-item.current .ic { color: var(--pink-deep); font-weight: 700; }
-  .ms-item.next { background: var(--soft, #f7f7f7); border: 1px dashed var(--muted); opacity: 0.85; }
-  .ms-item .date-s { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-  .ms-item .lbl { font-size: 12px; font-weight: 700; }
-  @media (max-width: 720px) { .timeline-bar { grid-template-columns: 1fr; } }
-
-  /* milestone callout */
-  .milestone {
-    background: linear-gradient(135deg, var(--warm), white);
-    border: 2px solid var(--warm-deep);
-    border-radius: 16px;
-    padding: 20px 24px;
-    margin-bottom: 22px;
-    display: grid;
-    grid-template-columns: 60px 1fr;
-    gap: 16px;
-    align-items: center;
-    box-shadow: var(--shadow);
-  }
-  .milestone .icon { font-size: 36px; text-align: center; }
-  .milestone h3 { font-size: 16px; color: var(--warm-deep); margin-bottom: 4px; }
-  .milestone p { font-size: 14px; color: var(--text); }
-  .milestone .countdown { display: inline-block; margin-left: 8px; padding: 2px 10px; background: var(--warm-deep); color: white; border-radius: 999px; font-size: 11px; font-weight: 700; }
-
-  /* intro */
-  .intro {
-    background: white;
-    border-radius: 18px;
-    padding: 22px 24px;
-    margin-bottom: 28px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--line);
-  }
-  .intro p { font-size: 14px; color: var(--text); margin-bottom: 8px; }
-  .intro p:last-child { margin-bottom: 0; }
-  .intro strong { color: var(--mint-deep); }
-
-  /* section heading */
-  .section-heading {
+    position: relative;
+    min-height: 100vh;
+    background-image:
+      linear-gradient(180deg, rgba(58,46,51,0.42) 0%, rgba(200,104,138,0.28) 60%, rgba(251,247,242,0.92) 100%),
+      url('https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=1800&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 28px 0 14px;
-    padding-left: 4px;
+    justify-content: center;
+    text-align: center;
+    padding: 0 24px;
   }
-  .section-heading .badge { background: var(--sky-deep); color: white; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; }
-  .section-heading h2 { font-size: 18px; color: var(--text); }
+  .hero-inner { max-width: 880px; }
+  .hero .greeting { color: rgba(255,255,255,0.95); font-size: 13px; letter-spacing: 0.3em; margin-bottom: 22px; animation: heroFadeIn 1s 0.2s both; }
+  .hero h1 {
+    color: white;
+    font-size: clamp(28px, 5.5vw, 52px);
+    line-height: 1.45;
+    margin-bottom: 28px;
+    text-shadow: 0 2px 20px rgba(58, 46, 51, 0.3);
+    animation: heroSlideUp 1.1s 0.4s both;
+  }
+  .hero h1 .accent { color: var(--primary-soft); }
+  .hero .lead {
+    color: rgba(255,255,255,0.92);
+    font-size: clamp(14px, 2vw, 17px);
+    line-height: 2.0;
+    max-width: 620px;
+    margin: 0 auto 36px;
+    animation: heroFadeIn 1.2s 0.7s both;
+  }
+  .hero .meta-pills { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; animation: heroFadeIn 1.2s 1s both; }
+  .hero .meta-pills .pill {
+    padding: 8px 18px;
+    background: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 999px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+  }
+  .hero .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.9);
+    animation: heroFadeIn 1.5s 1.4s both, bounce 2s 2s infinite;
+  }
+  .hero .scroll-hint i { font-size: 22px; }
 
-  /* toc cards */
-  .toc-list { display: grid; gap: 16px; }
-  .card {
-    background: white;
-    border-radius: 20px;
-    padding: 24px 26px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--line);
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  @keyframes heroFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes heroSlideUp { from { opacity: 0; transform: translateY(36px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0);} 50%{ transform: translateX(-50%) translateY(8px);} }
+
+  /* ============== SECTION COMMON ============== */
+  section { padding: 110px 24px; position: relative; }
+  .container { max-width: 980px; margin: 0 auto; }
+  .section-head { text-align: center; margin-bottom: 60px; }
+  .section-head h2 { font-size: clamp(24px, 3.5vw, 34px); margin: 12px 0 14px; line-height: 1.5; }
+  .section-head .lead { color: var(--ink-soft); font-size: 15px; max-width: 600px; margin: 0 auto; line-height: 2.0; }
+  .section-title-line { display: inline-block; width: 40px; height: 1px; background: var(--accent); margin: 14px 0 0; }
+
+  /* ============== STORY ============== */
+  .story { background: var(--cream); }
+  .story-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .story p {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(15px, 2vw, 17px);
+    color: var(--ink);
+    line-height: 2.2;
+    margin-bottom: 26px;
+    font-weight: 400;
+  }
+  .story .accent-text { color: var(--primary); font-weight: 600; }
+  .story .signature {
+    margin-top: 36px;
+    color: var(--muted);
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  /* ============== JOURNEY ============== */
+  .journey { background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%); }
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    max-width: 980px;
+    margin: 0 auto;
     position: relative;
   }
-  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(95,168,211,0.16); }
-
-  .card .meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
-  .card .num-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 14px; }
-  .card.c1 .num-circle { background: var(--pink-deep); }
-  .card.c2 .num-circle { background: var(--warm-deep); }
-  .card.c3 .num-circle { background: var(--mint-deep); }
-  .card.c4 .num-circle { background: var(--purple-deep); }
-  .card .date-pill { font-size: 12px; color: var(--muted); background: #f7f7f7; padding: 4px 12px; border-radius: 999px; }
-  .card .status-pill { font-size: 11px; padding: 4px 10px; border-radius: 999px; font-weight: 600; }
-  .card.c1 .status-pill { background: var(--pink); color: var(--pink-deep); }
-  .card.c2 .status-pill { background: var(--warm); color: var(--warm-deep); }
-  .card.c3 .status-pill { background: var(--mint); color: var(--mint-deep); }
-  .card.c4 .status-pill { background: var(--purple); color: var(--purple-deep); }
-
-  .card h3 { font-size: 18px; color: var(--text); margin-bottom: 6px; }
-  .card .summary { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
-  .card .highlights { background: #fafafa; border-radius: 12px; padding: 12px 16px; }
-  .card .highlights ul { list-style: none; padding-left: 0; }
-  .card .highlights li { font-size: 12px; padding: 2px 0; color: var(--text); }
-  .card .highlights li::before { content: "・"; color: var(--muted); }
-
-  .card .open-arrow { position: absolute; right: 22px; top: 22px; font-size: 22px; color: var(--sky-deep); }
-
-  /* Slack channel callout */
-  .slack-box {
-    background: linear-gradient(135deg, #f3eafa 0%, white 100%);
-    border: 1px solid var(--purple-deep);
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 38px;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--mint) 0%, var(--primary) 50%, var(--accent) 100%);
+    z-index: 0;
+  }
+  .ms-step {
+    background: white;
     border-radius: 18px;
-    padding: 22px 24px;
-    margin: 16px 0;
-    box-shadow: var(--shadow);
-  }
-  .slack-box h3 { color: var(--purple-deep); font-size: 16px; margin-bottom: 8px; }
-  .slack-box p { font-size: 13px; color: var(--text); margin-bottom: 8px; }
-  .slack-box .channel-name { font-family: monospace; background: white; padding: 4px 8px; border-radius: 6px; font-size: 13px; }
-
-  /* footer note */
-  .footer-note {
-    background: var(--pink);
-    border: 1px solid var(--pink-deep);
-    border-radius: 16px;
-    padding: 18px 22px;
+    padding: 26px 16px 22px;
     text-align: center;
-    margin: 28px 0 16px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--line);
+    position: relative;
+    z-index: 1;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
   }
-  .footer-note p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
-  .footer-note strong { color: var(--pink-deep); }
+  .ms-step:hover { transform: translateY(-6px); box-shadow: var(--shadow-warm); }
+  .ms-step .dot {
+    width: 22px; height: 22px; border-radius: 50%;
+    margin: 0 auto 16px;
+    background: var(--mint); border: 4px solid white;
+    box-shadow: 0 0 0 2px var(--mint);
+  }
+  .ms-step.done .dot { background: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
+  .ms-step.current .dot { background: var(--accent); box-shadow: 0 0 0 2px var(--accent); animation: pulse 2.4s infinite; }
+  .ms-step.future .dot { background: var(--cream-deep); border-color: white; box-shadow: 0 0 0 2px var(--mint-soft); }
+  .ms-step .date { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.08em; }
+  .ms-step .lbl { font-family: 'Noto Serif JP', serif; font-size: 13px; line-height: 1.6; color: var(--ink); font-weight: 500; }
+  .ms-step.current .lbl { color: var(--accent); font-weight: 600; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+  @media (max-width: 720px) {
+    .timeline { grid-template-columns: 1fr; }
+    .timeline::before { display: none; }
+  }
 
-  footer { text-align: center; padding: 30px 12px 10px; color: var(--muted); font-size: 12px; }
-  footer .heart { color: var(--pink-deep); font-size: 18px; }
-  footer .org { font-size: 13px; color: var(--text); font-weight: 600; margin-top: 8px; }
+  /* ============== MILESTONE CALLOUT ============== */
+  .milestone-callout {
+    max-width: 760px;
+    margin: 64px auto 0;
+    padding: 36px 40px;
+    background: linear-gradient(135deg, white 0%, var(--primary-light) 100%);
+    border-radius: 24px;
+    border: 1px solid var(--primary-soft);
+    box-shadow: var(--shadow-warm);
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  .milestone-callout .icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 30px;
+    box-shadow: 0 8px 20px rgba(200, 104, 138, 0.3);
+  }
+  .milestone-callout .label-en { display: block; margin-bottom: 4px; }
+  .milestone-callout h3 { font-size: 20px; color: var(--ink); margin: 6px 0 8px; }
+  .milestone-callout p { color: var(--ink-soft); font-size: 14px; line-height: 1.9; }
+  .milestone-callout .countdown { display: inline-block; margin-top: 10px; padding: 5px 14px; background: var(--primary); color: white; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; }
+  @media (max-width: 640px) { .milestone-callout { grid-template-columns: 1fr; text-align: center; } .milestone-callout .icon { margin: 0 auto; } }
+
+  /* ============== PHOTO DIVIDER ============== */
+  .photo-divider {
+    height: 280px;
+    background-image:
+      linear-gradient(180deg, rgba(251,247,242,0.4), rgba(58,46,51,0.4)),
+      url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1800&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .photo-divider .quote {
+    max-width: 720px;
+    text-align: center;
+    color: white;
+    padding: 0 24px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(15px, 2vw, 20px);
+    line-height: 1.9;
+    text-shadow: 0 2px 12px rgba(58, 46, 51, 0.5);
+  }
+
+  .photo-divider.team {
+    background-image:
+      linear-gradient(180deg, rgba(58,46,51,0.45), rgba(200,104,138,0.35)),
+      url('https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1800&q=80');
+  }
+
+  /* ============== RESOURCES ============== */
+  .resources { background: var(--cream); }
+  .resource-cards { display: grid; gap: 22px; margin-top: 36px; }
+  .res-card {
+    display: grid;
+    grid-template-columns: 80px 1fr 30px;
+    gap: 22px;
+    align-items: center;
+    background: white;
+    border-radius: 20px;
+    padding: 26px 30px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--line);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  .res-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-warm); }
+  .res-card .icon-circle {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 24px;
+  }
+  .res-card.c1 .icon-circle { background: linear-gradient(135deg, var(--accent), #d4b48f); }
+  .res-card.c2 .icon-circle { background: linear-gradient(135deg, var(--primary), var(--primary-soft)); }
+  .res-card.c3 .icon-circle { background: linear-gradient(135deg, var(--mint), #c8e0d0); }
+  .res-card.c4 .icon-circle { background: linear-gradient(135deg, var(--accent), var(--primary)); }
+  .res-card.c5 .icon-circle { background: linear-gradient(135deg, var(--primary-soft), #f4c4ce); }
+  .res-card .body .meta { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+  .res-card .body .date { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+  .res-card .body .tag { background: var(--primary-light); color: var(--primary); padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .res-card .body h4 { font-size: 17px; color: var(--ink); margin: 4px 0; }
+  .res-card .body p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .res-card .arrow { font-size: 18px; color: var(--accent); }
+  @media (max-width: 640px) {
+    .res-card { grid-template-columns: 56px 1fr; }
+    .res-card .arrow { display: none; }
+    .res-card .icon-circle { width: 56px; height: 56px; font-size: 20px; }
+  }
+
+  /* ============== SLACK ============== */
+  .slack-section {
+    background-image:
+      linear-gradient(135deg, rgba(251,247,242,0.92), rgba(232,217,194,0.85)),
+      url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=80');
+    background-size: cover;
+    background-position: center;
+  }
+  .slack-card {
+    background: white;
+    border-radius: 24px;
+    padding: 44px 48px;
+    box-shadow: var(--shadow-warm);
+    border: 1px solid var(--line);
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .slack-card .slack-icon {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 30px;
+    margin: 0 auto 24px;
+  }
+  .slack-card h3 { font-size: 24px; margin-bottom: 14px; }
+  .slack-card p { color: var(--ink-soft); font-size: 14px; line-height: 2.0; margin-bottom: 14px; }
+  .slack-card .channel-name {
+    display: inline-block;
+    font-family: 'Inter', monospace;
+    background: var(--cream-deep);
+    color: var(--primary);
+    padding: 8px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  /* ============== HOMEWORK ============== */
+  .homework { background: var(--cream); }
+  .hw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; max-width: 880px; margin: 0 auto; }
+  @media (max-width: 720px) { .hw-grid { grid-template-columns: 1fr; } }
+  .hw-col {
+    background: white;
+    border-radius: 22px;
+    padding: 32px 30px;
+    box-shadow: var(--shadow-soft);
+    border-top: 4px solid;
+  }
+  .hw-col.them { border-top-color: var(--mint); }
+  .hw-col.us { border-top-color: var(--primary); }
+  .hw-col h4 { font-size: 16px; margin-bottom: 18px; }
+  .hw-col.them h4 { color: var(--mint); }
+  .hw-col.us h4 { color: var(--primary); }
+  .hw-col ul { list-style: none; }
+  .hw-col li {
+    font-size: 13px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .hw-col li:last-child { border-bottom: none; }
+  .hw-col li i { color: var(--accent); margin-top: 4px; font-size: 12px; }
+
+  /* ============== CLOSING ============== */
+  .closing {
+    background-image:
+      linear-gradient(180deg, rgba(58,46,51,0.55), rgba(200,104,138,0.45)),
+      url('https://images.unsplash.com/photo-1531315396756-905d68d21b56?auto=format&fit=crop&w=1800&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    text-align: center;
+    color: white;
+  }
+  .closing h2 {
+    color: white;
+    font-size: clamp(24px, 4vw, 38px);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    text-shadow: 0 2px 20px rgba(58, 46, 51, 0.4);
+  }
+  .closing p {
+    color: rgba(255,255,255,0.92);
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(14px, 1.8vw, 17px);
+    line-height: 2.2;
+    max-width: 640px;
+    margin: 0 auto 22px;
+  }
+  .closing .signature {
+    margin-top: 32px;
+    font-family: 'Noto Serif JP', serif;
+    color: white;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ============== FOOTER ============== */
+  footer {
+    background: var(--cream-deep);
+    padding: 36px 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  footer .heart { color: var(--primary); margin: 0 6px; }
+  footer .org { color: var(--ink); font-weight: 500; margin-top: 6px; font-size: 13px; }
+
+  /* ============== FADE-IN ANIMATION ============== */
+  .fade-in, .fade-in-left, .fade-in-right, .stagger {
+    opacity: 0;
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .fade-in { transform: translateY(28px); }
+  .fade-in-left { transform: translateX(-32px); }
+  .fade-in-right { transform: translateX(32px); }
+  .stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .is-visible.fade-in, .is-visible.fade-in-left, .is-visible.fade-in-right {
+    opacity: 1; transform: translate(0, 0);
+  }
+  .is-visible.stagger > * { opacity: 1; transform: translateY(0); }
+  .is-visible.stagger > *:nth-child(1) { transition-delay: 0.05s; }
+  .is-visible.stagger > *:nth-child(2) { transition-delay: 0.18s; }
+  .is-visible.stagger > *:nth-child(3) { transition-delay: 0.31s; }
+  .is-visible.stagger > *:nth-child(4) { transition-delay: 0.44s; }
+  .is-visible.stagger > *:nth-child(5) { transition-delay: 0.57s; }
+
+  .section-head h2::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    margin: 18px auto 0;
+    transition: width 0.7s ease 0.3s;
+  }
+  .is-visible .section-head h2::after { width: 40px; }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <div class="hero">
-    <div class="greeting">PJダッシュボード — Project Dashboard</div>
-    <h1>健康管理支援室 御中<br>AI業務改善 PJダッシュボード 🌷</h1>
-    <p class="sub">資料・進捗・次の動きを1ページで俯瞰できる入口です</p>
-    <div class="date">最終更新 2026.05.25</div>
+<!-- ============== HERO ============== -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="greeting">Healthcare AI Project Dashboard</p>
+    <h1>
+      私たちが、<br>
+      <span class="accent">AI活用保健師の未来</span>を作る 🌸
+    </h1>
+    <p class="lead">
+      現場の手仕事を、AIと優しく結び直す。<br>
+      請求書の山も、訪問のリマインドも、意見書の清書も。<br>
+      毎月の「あ〜大変」を、毎月の「楽しい」に変えていく冒険、はじめました。
+    </p>
+    <div class="meta-pills">
+      <span class="pill"><i class="fas fa-stethoscope"></i> &nbsp;健康管理支援室</span>
+      <span class="pill"><i class="fas fa-users"></i> &nbsp;保健師チーム4名 ×AI</span>
+      <span class="pill"><i class="fas fa-cherry-blossom"></i> &nbsp;2026.08 本格スタート</span>
+    </div>
   </div>
+  <div class="scroll-hint"><i class="fas fa-chevron-down"></i></div>
+</section>
 
-  <!-- 進捗タイムライン -->
-  <div class="progress">
-    <h2>🌳 進捗ストーリー</h2>
-    <div class="timeline-bar">
-      <div class="ms-item done">
-        <div class="date-s">5/14 ✓</div>
-        <div class="lbl">初回ヒアリング</div>
+<!-- ============== STORY ============== -->
+<section class="story fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">Our Story</span>
+      <h2>「これって全部、私たちでなくていい仕事だったんだ」</h2>
+    </div>
+    <div class="story-inner">
+      <p>
+        毎月末、長谷川さんが1人で背負う <span class="accent-text">企業ごとバラバラの請求書</span>。<br>
+        毎週、過去メールを遡って書き直す <span class="accent-text">訪問リマインド</span>。<br>
+        紙の出務記録表を1件ずつExcelに手打ちする <span class="accent-text">深夜の作業</span>。
+      </p>
+      <p>
+        どれも大切で、誰かがやらなきゃいけない仕事。<br>
+        でも、もし — <span class="accent-text">それを毎晩静かにAIがやってくれる世界</span> があるとしたら？
+      </p>
+      <p>
+        5月18日（月）の朝9時、それは試運転で本当に動きました。<br>
+        ゆかさんから9分後に届いた「<span class="accent-text">感動🥹</span>」の3文字が、<br>
+        このプロジェクトの北極星になっています。
+      </p>
+      <p class="signature">— 産業保健の現場が、AIネイティブになる日まで、ご一緒します</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== JOURNEY ============== -->
+<section class="journey fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">Our Journey</span>
+      <h2>これまでの歩み、これからの道</h2>
+      <p class="lead">5/14の初回お打ち合わせから、8月の本格スタートへ。<br>1歩ずつ、ご一緒に進めてきました。</p>
+    </div>
+    <div class="timeline stagger">
+      <div class="ms-step done">
+        <div class="dot"></div>
+        <p class="date">2026.05.14</p>
+        <p class="lbl">初回ヒアリング<br>11業務の整理</p>
       </div>
-      <div class="ms-item done">
-        <div class="date-s">5/18 ✓</div>
-        <div class="lbl">本番リマインド稼働</div>
+      <div class="ms-step done">
+        <div class="dot"></div>
+        <p class="date">2026.05.18</p>
+        <p class="lbl">本番リマインド<br>自動稼働開始</p>
       </div>
-      <div class="ms-item done">
-        <div class="date-s">5/22 ✓</div>
-        <div class="lbl">2回目訪問・PDF送付</div>
+      <div class="ms-step done">
+        <div class="dot"></div>
+        <p class="date">2026.05.22</p>
+        <p class="lbl">2回目訪問<br>PDF送付</p>
       </div>
-      <div class="ms-item current">
-        <div class="date-s">〜7/12</div>
-        <div class="lbl">理事長報告 準備中</div>
+      <div class="ms-step current">
+        <div class="dot"></div>
+        <p class="date">〜 2026.07.12</p>
+        <p class="lbl">理事長ご報告<br>準備中</p>
       </div>
-      <div class="ms-item next">
-        <div class="date-s">8/1〜</div>
-        <div class="lbl">本格スタート</div>
+      <div class="ms-step future">
+        <div class="dot"></div>
+        <p class="date">2026.08.01〜</p>
+        <p class="lbl">本格スタート<br>🌷</p>
+      </div>
+    </div>
+
+    <div class="milestone-callout fade-in">
+      <div class="icon"><i class="fas fa-flag"></i></div>
+      <div>
+        <span class="label-en">Next Milestone</span>
+        <h3>7/12 理事長へのご報告</h3>
+        <p>PDF提案書を上長へ共有・修正フィードバック → 補助金申請の準備を進めながら、本格スタートの日程を確定する段階です。<br>
+        いま、まさに <span style="color:var(--primary); font-weight:600;">「やる」が「どう動かす」</span> に変わる瞬間にいます。</p>
+        <span class="countdown">🌸 私たちの夏が、始まる</span>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- マイルストーン -->
-  <div class="milestone">
-    <div class="icon">🎯</div>
-    <div>
-      <h3>次のマイルストーン <span class="countdown">7/12 理事長ご報告</span></h3>
-      <p>PDF提案書を上長へ共有・修正フィードバック → 補助金申請の準備を進めながら、本格スタートの日程を確定する段階です。</p>
-    </div>
-  </div>
-
-  <div class="intro">
-    <p>こちらは、健康管理支援室の皆さまにお渡ししている資料・進捗・次の動きを 1ページで俯瞰できる <strong>PJダッシュボード</strong> です。</p>
-    <p><strong>一番上が最新の資料</strong>です。新しい順に並んでいますので、上から順にご覧いただくと流れが追えます🌱</p>
-    <p>このページをブックマークしておいていただくと、必要な時にすぐ振り返れます。</p>
-  </div>
-
-  <!-- 資料カード -->
-  <div class="section-heading">
-    <span class="badge">📦 資料一覧</span>
-    <h2>新しい順</h2>
-  </div>
-
-  <div class="toc-list">
-
-    <a href="./2026-05-23_yuka-clinic-subsidy-hub.html" class="card c4">
-      <div class="open-arrow">→</div>
-      <div class="meta-row">
-        <div class="num-circle">1</div>
-        <div class="date-pill">2026.05.23</div>
-        <div class="status-pill">🆕 補助金申請ハブ</div>
-      </div>
-      <h3>💴 補助金申請サポート ハブ</h3>
-      <div class="summary">2026年8月1日スタート前提で、いつまでに何を出すか・どの書類を使うか・お金がどう流れるかを1ページに集約した実務ハブ</div>
-      <div class="highlights">
-        <ul>
-          <li>8月1日スタート前提の仮スケジュール（開始前／研修後／入金見込み）</li>
-          <li>申請に必要な確認項目・法人情報・受講者の整理</li>
-          <li>計画届一式の記入手順・提出フロー</li>
-          <li>2026/6月〜2027/3月までのお金の流れ</li>
-          <li>テンプレート実ファイルの参照先</li>
-        </ul>
-      </div>
-    </a>
-
-    <a href="./2026-05-22_yuka-clinic-meeting-minutes.html" class="card c3">
-      <div class="open-arrow">→</div>
-      <div class="meta-row">
-        <div class="num-circle">2</div>
-        <div class="date-pill">2026.05.22</div>
-        <div class="status-pill">議事録</div>
-      </div>
-      <h3>📒 2回目 ご訪問 議事録</h3>
-      <div class="summary">本日のご訪問でお話しした内容・合意事項・アクションアイテムをまとめた議事録。次回までの宿題と8月スタートのタイムラインを記載</div>
-      <div class="highlights">
-        <ul>
-          <li>本日の合意6点（8月スタート・補助金30万円・7/12理事長報告 等）</li>
-          <li>90分タイムライン（導入→デモ→セキュリティ→補助金→スケジュール→クロージング）</li>
-          <li>主な議題と結論（6項目）</li>
-          <li>本日お話しした主な数字（6カード）</li>
-          <li>印象に残ったご発言・アクションアイテム表</li>
-          <li>次回までの宿題（双方）</li>
-        </ul>
-      </div>
-    </a>
-
-    <a href="./2026-05-22_yuka-clinic-2nd-visit-roadmap.html" class="card c3">
-      <div class="open-arrow">→</div>
-      <div class="meta-row">
-        <div class="num-circle">3</div>
-        <div class="date-pill">2026.05.22</div>
-        <div class="status-pill">提案・ロードマップ</div>
-      </div>
-      <h3>📋 2回目 ご訪問まとめ（提案編）</h3>
-      <div class="summary">前回からの進捗報告、3段階ロードマップ、契約とお金のクリアな説明、導入ツールの検討事項、今日決めたいこと／持ち帰り宿題まで</div>
-      <div class="highlights">
-        <ul>
-          <li>進捗タイムライン（5/14→5/16→5/18本番発火→ゆかさん大感動）</li>
-          <li>動いてる仕組み図（スプシ→Googleサーバー→Gmail）</li>
-          <li>3段階ロードマップ（体験→本格化→拡張）</li>
-          <li>補助金シミュレーション＋お支払いの仕組み</li>
-          <li>導入ツール検討事項（ChatGPTプラン比較・Windows対応・研修計画）</li>
-          <li>今日のゴール＋持ち帰り宿題</li>
-        </ul>
-      </div>
-    </a>
-
-    <a href="./2026-05-14_yuka-clinic-grant-10h-plan.html" class="card c2">
-      <div class="open-arrow">→</div>
-      <div class="meta-row">
-        <div class="num-circle">4</div>
-        <div class="date-pill">2026.05.14</div>
-        <div class="status-pill">補助金 詳細</div>
-      </div>
-      <h3>💰 補助金10時間プラン 詳細</h3>
-      <div class="summary">人材開発支援助成金（事業展開等リスキリング支援コース）を使った場合の30万円プラン、実質負担¥51,000の試算と対象範囲の解説</div>
-      <div class="highlights">
-        <ul>
-          <li>受講対象は「雇用保険被保険者」</li>
-          <li>経費助成75%＋賃金助成¥1,000/時間</li>
-          <li>10時間×2名→ 実質負担 約¥51,000</li>
-          <li>申請代行はできない（書類サポート＋研修提供まで）</li>
-          <li>2人以上の対象者確保が0→1のライン</li>
-        </ul>
-      </div>
-    </a>
-
-    <a href="./2026-05-14_yuka-clinic-ai-thanks.html" class="card c1">
-      <div class="open-arrow">→</div>
-      <div class="meta-row">
-        <div class="num-circle">5</div>
-        <div class="date-pill">2026.05.14</div>
-        <div class="status-pill">初回ヒアリング</div>
-      </div>
-      <h3>🌸 1回目 ご訪問まとめ</h3>
-      <div class="summary">初回ヒアリングで伺った11業務の整理と、最優先2つ（請求書／訪問リマインド）の方向性、補助金活用のイメージまでを1枚にまとめた資料</div>
-      <div class="highlights">
-        <ul>
-          <li>11業務の俯瞰マップ＋最優先2つの特定</li>
-          <li>請求書業務「今 vs AI入った後」のbefore/after</li>
-          <li>訪問リマインドの仕組みイメージ</li>
-          <li>セキュリティの基本方針（個人情報の扱い）</li>
-          <li>補助金活用 ざっくり構造（75%補助）</li>
-        </ul>
-      </div>
-    </a>
-
-  </div>
-
-  <!-- Slack 情報共有 -->
-  <div class="section-heading">
-    <span class="badge" style="background:var(--purple-deep);">💬 情報共有</span>
-    <h2>日常のやりとりはこちらで</h2>
-  </div>
-
-  <div class="slack-box">
-    <h3>💬 Slack「山本さん情報交換」ワークスペース</h3>
-    <p>日常の進捗共有・質問・小さな相談は、こちらのSlackワークスペースで集約していく予定です。</p>
-    <p>メインチャンネル：<span class="channel-name">#all-山本さん情報交換</span></p>
-    <p style="font-size:12px;color:var(--muted);margin-top:10px;">※ ワークスペースへのご招待は、リベシティDMにて別途お知らせいたします。</p>
-  </div>
-
-  <!-- 直近のアクション -->
-  <div class="section-heading">
-    <span class="badge" style="background:var(--warm-deep);">📝 直近のアクション</span>
-    <h2>〜7/12までの宿題</h2>
-  </div>
-
-  <div style="background:white;border-radius:16px;padding:22px 24px;box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:22px;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-      <div style="background:var(--mint);border-radius:12px;padding:16px 18px;border:1px solid var(--mint-deep);">
-        <h4 style="font-size:14px;color:var(--mint-deep);margin-bottom:8px;">🌿 健康管理支援室 皆さまから</h4>
-        <ul style="list-style:none;padding-left:0;">
-          <li style="font-size:13px;padding:4px 0;">□ PDF提案書の社内共有・理事長への報告</li>
-          <li style="font-size:13px;padding:4px 0;">□ 修正・追記ご要望のフィードバック</li>
-          <li style="font-size:13px;padding:4px 0;">□ 個人情報なしサンプルデータ＋空Excelテンプレ</li>
-          <li style="font-size:13px;padding:4px 0;">□ 雇用形態の整理（補助金対象者数）</li>
-        </ul>
-      </div>
-      <div style="background:var(--sky);border-radius:12px;padding:16px 18px;border:1px solid var(--sky-deep);">
-        <h4 style="font-size:14px;color:var(--sky-deep);margin-bottom:8px;">🤝 当方（おけもん）から</h4>
-        <ul style="list-style:none;padding-left:0;">
-          <li style="font-size:13px;padding:4px 0;">□ 提案書PDFの修正反映</li>
-          <li style="font-size:13px;padding:4px 0;">□ 契約書ドラフトの準備</li>
-          <li style="font-size:13px;padding:4px 0;">□ 8月開始想定の準備日程ご提案</li>
-          <li style="font-size:13px;padding:4px 0;">□ Slackワークスペース活用ガイドご案内</li>
-        </ul>
-      </div>
-    </div>
-    <p style="font-size:12px;color:var(--muted);margin-top:14px;text-align:center;">詳細は <a href="./2026-05-22_yuka-clinic-meeting-minutes.html" style="color:var(--sky-deep);">📒 5/22 議事録</a> をご参照ください。</p>
-  </div>
-
-  <!-- フッターメッセージ -->
-  <div class="footer-note">
-    <p>📝 資料はすべて<strong>限定URL</strong>でお渡ししています</p>
-    <p style="font-size:13px;color:var(--muted);">検索エンジンに載らない形でお渡ししていますので、安心してご覧ください</p>
-  </div>
-
-  <footer>
-    <p>このページは2026年5月25日に更新されました <span class="heart">♥</span></p>
-    <p class="org">おけもん（三又謙次郎）／ ワタシトリセツ</p>
-  </footer>
-
+<!-- ============== PHOTO DIVIDER ============== -->
+<div class="photo-divider">
+  <p class="quote">
+    "毎日の業務が、少しずつ軽くなって、<br>
+    皆さんの手と心が、もっと "人と向き合う" 時間に戻っていく。<br>
+    そのお手伝いを、誠実にさせてください。"
+  </p>
 </div>
+
+<!-- ============== RESOURCES ============== -->
+<section class="resources fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">Project Resources</span>
+      <h2>これまでお渡しした資料</h2>
+      <p class="lead">新しい順に並んでいます。いつでもブックマーク1つで戻ってきてください。</p>
+    </div>
+    <div class="resource-cards stagger">
+
+      <a href="./2026-05-23_yuka-clinic-subsidy-hub.html" class="res-card c1">
+        <div class="icon-circle"><i class="fas fa-yen-sign"></i></div>
+        <div class="body">
+          <div class="meta">
+            <span class="date">2026.05.23</span>
+            <span class="tag">🆕 補助金申請ハブ</span>
+          </div>
+          <h4>補助金申請サポート ハブ</h4>
+          <p>8月1日スタート前提のスケジュール／必要書類／お金の流れまで、1ページに集約した実務ハブ</p>
+        </div>
+        <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a href="./2026-05-22_yuka-clinic-meeting-minutes.html" class="res-card c2">
+        <div class="icon-circle"><i class="fas fa-clipboard-list"></i></div>
+        <div class="body">
+          <div class="meta">
+            <span class="date">2026.05.22</span>
+            <span class="tag">議事録</span>
+          </div>
+          <h4>2回目 ご訪問 議事録</h4>
+          <p>合意事項6点・90分のタイムライン・印象に残ったご発言・アクションアイテム・次回までの宿題まで</p>
+        </div>
+        <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a href="./2026-05-22_yuka-clinic-2nd-visit-roadmap.html" class="res-card c3">
+        <div class="icon-circle"><i class="fas fa-map"></i></div>
+        <div class="body">
+          <div class="meta">
+            <span class="date">2026.05.22</span>
+            <span class="tag">提案編・ロードマップ</span>
+          </div>
+          <h4>2回目 ご訪問まとめ（提案編）</h4>
+          <p>3段階ロードマップ／契約とお金／導入ツール検討事項／持ち帰り宿題まで</p>
+        </div>
+        <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a href="./2026-05-14_yuka-clinic-grant-10h-plan.html" class="res-card c4">
+        <div class="icon-circle"><i class="fas fa-piggy-bank"></i></div>
+        <div class="body">
+          <div class="meta">
+            <span class="date">2026.05.14</span>
+            <span class="tag">補助金 詳細</span>
+          </div>
+          <h4>補助金10時間プラン 詳細</h4>
+          <p>30万円プランで実質負担¥51,000の試算、対象範囲、申請可否のクリアな線引き</p>
+        </div>
+        <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a href="./2026-05-14_yuka-clinic-ai-thanks.html" class="res-card c5">
+        <div class="icon-circle"><i class="fas fa-seedling"></i></div>
+        <div class="body">
+          <div class="meta">
+            <span class="date">2026.05.14</span>
+            <span class="tag">初回ヒアリング</span>
+          </div>
+          <h4>1回目 ご訪問まとめ</h4>
+          <p>11業務の俯瞰／請求書のbefore-after／訪問リマインドの仕組みイメージ／補助金活用ざっくり構造</p>
+        </div>
+        <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============== PHOTO DIVIDER 2 ============== -->
+<div class="photo-divider team">
+  <p class="quote">
+    "保健師さんが、現場でAIをサクッと使いこなしている。<br>
+    そんな未来の "業界スタンダード" を、<br>
+    皆さんがいま、最前線で作っています。"
+  </p>
+</div>
+
+<!-- ============== SLACK ============== -->
+<section class="slack-section fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">Information Sharing</span>
+      <h2>日常のおしゃべりは、こちらで</h2>
+    </div>
+    <div class="slack-card">
+      <div class="slack-icon"><i class="fab fa-slack"></i></div>
+      <h3>Slack「山本さん情報交換」ワークスペース</h3>
+      <p>進捗の小さなご報告、ちょっとした質問、思いついた「これもAIでできない？」のアイデア — <br>すべてここで気軽にお寄せください。</p>
+      <p>「メールにするほどでもない、けど共有したい」がちょうど良い距離感のチャンネルです🌷</p>
+      <div class="channel-name">#all-山本さん情報交換</div>
+      <p style="font-size:12px; color:var(--muted); margin-top:20px;">※ ワークスペースへのご招待は、リベシティDMにて別途お知らせいたします。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== HOMEWORK ============== -->
+<section class="homework fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">Action Items</span>
+      <h2>〜7/12までの、おたがいの宿題</h2>
+      <p class="lead">どちらかが頑張る、じゃなくて。一緒に、ちょっとずつ進めていきましょう。</p>
+    </div>
+    <div class="hw-grid">
+      <div class="hw-col them fade-in-left">
+        <h4><i class="fas fa-leaf"></i> &nbsp;健康管理支援室 皆さまから</h4>
+        <ul>
+          <li><i class="fas fa-check-circle"></i> PDF提案書の社内共有・理事長への報告</li>
+          <li><i class="fas fa-check-circle"></i> 修正・追記ご要望のフィードバック</li>
+          <li><i class="fas fa-check-circle"></i> 個人情報なしサンプルデータ＋空Excelテンプレ</li>
+          <li><i class="fas fa-check-circle"></i> 雇用形態の整理（補助金対象者数の確認）</li>
+        </ul>
+      </div>
+      <div class="hw-col us fade-in-right">
+        <h4><i class="fas fa-hand-holding-heart"></i> &nbsp;当方（おけもん）から</h4>
+        <ul>
+          <li><i class="fas fa-check-circle"></i> 提案書PDFの修正反映</li>
+          <li><i class="fas fa-check-circle"></i> 契約書ドラフトの準備</li>
+          <li><i class="fas fa-check-circle"></i> 8月開始想定の準備日程ご提案</li>
+          <li><i class="fas fa-check-circle"></i> Slackワークスペース活用ガイドご案内</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CLOSING ============== -->
+<section class="closing fade-in">
+  <div class="container">
+    <h2>
+      これからも、よろしくお願いいたします 🌷
+    </h2>
+    <p>
+      初めての本格的なAI業務改善が、皆さまの現場から始まる。<br>
+      その第一号の伴走者として、私も全力でサポートさせてください。
+    </p>
+    <p>
+      「これってAIでもっと楽にならない？」と思ったら、<br>
+      気軽に話しかけてくださいね。<br>
+      皆さまの「あったらいいな」を、一緒にカタチにしていきます。
+    </p>
+    <p class="signature">
+      — おけもん（三又謙次郎 / ミマタ）<br>
+      ワタシトリセツ
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>このページは2026年5月25日に更新されました <span class="heart">♥</span></p>
+  <p class="org">健康管理支援室 御中 AI業務改善 PJダッシュボード</p>
+  <p style="font-size:11px; margin-top:8px;">※ このページは限定URLでお渡ししています</p>
+</footer>
+
+<script>
+  const animEls = document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .stagger');
+  const animObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('is-visible'); animObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  animEls.forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+    else animObs.observe(el);
+  });
+</script>
+
 </body>
 </html>
