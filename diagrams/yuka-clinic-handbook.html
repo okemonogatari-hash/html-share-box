@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロジェクト ハンドブック｜健康管理支援室 御中</title>
+<meta name="robots" content="noindex,nofollow">
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #C8688A;
+    --primary-soft: #F0D9DE;
+    --primary-light: #FBE9EC;
+    --accent: #B89878;
+    --accent-light: #E8D9C2;
+    --mint: #A7CDB5;
+    --mint-soft: #E0EFE3;
+    --cream: #FBF7F2;
+    --cream-deep: #F5EFE6;
+    --ink: #3A2E33;
+    --ink-soft: #6B5A60;
+    --muted: #9C8C90;
+    --line: rgba(200, 104, 138, 0.12);
+    --shadow-soft: 0 8px 28px rgba(58, 46, 51, 0.06);
+    --shadow-warm: 0 14px 38px rgba(184, 152, 120, 0.14);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.85;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 { font-family: 'Noto Serif JP', serif; font-weight: 500; letter-spacing: 0.02em; }
+  .label-en { font-family: 'Inter', sans-serif; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; font-size: 11px; color: var(--primary); }
+  a { color: inherit; text-decoration: none; }
+
+  /* breadcrumb */
+  .breadcrumb {
+    background: white;
+    padding: 14px 22px;
+    border-radius: 12px;
+    margin: 24px auto 0;
+    max-width: 980px;
+    font-size: 13px;
+    color: var(--muted);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--line);
+  }
+  .breadcrumb a { color: var(--primary); font-weight: 600; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  /* HERO */
+  .hero {
+    background-image:
+      linear-gradient(180deg, rgba(58,46,51,0.5) 0%, rgba(200,104,138,0.3) 60%, rgba(251,247,242,0.92) 100%),
+      url('https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1800&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 24px 110px;
+    text-align: center;
+    position: relative;
+    margin-top: 16px;
+  }
+  .hero h1 {
+    color: white;
+    font-size: clamp(28px, 4.5vw, 42px);
+    line-height: 1.5;
+    margin: 16px 0 18px;
+    text-shadow: 0 2px 16px rgba(58, 46, 51, 0.3);
+  }
+  .hero .greeting { color: rgba(255,255,255,0.95); font-size: 12px; letter-spacing: 0.3em; }
+  .hero .lead { color: rgba(255,255,255,0.92); max-width: 640px; margin: 0 auto; font-size: 15px; }
+  .hero-meta { display: inline-flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; justify-content: center; }
+  .hero-meta .pill { padding: 7px 16px; background: rgba(255,255,255,0.9); border-radius: 999px; color: var(--primary); font-size: 12px; font-weight: 600; }
+
+  /* SECTION */
+  section { padding: 90px 24px; }
+  .container { max-width: 980px; margin: 0 auto; }
+  .section-head { text-align: center; margin-bottom: 50px; }
+  .section-head h2 { font-size: clamp(22px, 3vw, 30px); margin: 12px 0 12px; line-height: 1.5; }
+  .section-head .lead { color: var(--ink-soft); font-size: 14px; max-width: 620px; margin: 0 auto; }
+  .section-head h2::after {
+    content: ''; display: block; width: 0; height: 1px; background: var(--accent);
+    margin: 16px auto 0; transition: width 0.7s ease 0.3s;
+  }
+  .is-visible .section-head h2::after { width: 40px; }
+
+  /* MTG ハイライト */
+  .meeting-section { background: var(--cream); }
+  .agree-grid { display: grid; gap: 14px; margin-top: 20px; }
+  .agree-row {
+    display: grid; grid-template-columns: 32px 1fr; gap: 14px;
+    background: white; padding: 18px 22px; border-radius: 14px;
+    border-left: 4px solid var(--mint);
+    box-shadow: var(--shadow-soft);
+  }
+  .agree-row .check { color: var(--mint); font-size: 18px; }
+  .agree-row .body { font-size: 14px; color: var(--ink); }
+  .agree-row .body strong { color: var(--primary); }
+
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 36px; }
+  @media (max-width: 720px) { .quote-grid { grid-template-columns: 1fr; } }
+  .quote-box {
+    background: linear-gradient(135deg, var(--primary-light), white);
+    border-left: 4px solid var(--primary);
+    padding: 20px 22px; border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+  }
+  .quote-box .who { color: var(--primary); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .quote-box .text { font-family: 'Noto Serif JP', serif; font-size: 14px; color: var(--ink); line-height: 1.9; font-style: italic; }
+
+  /* SCHEDULE */
+  .schedule-section { background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%); }
+  .schedule-list { display: grid; gap: 16px; margin-top: 20px; }
+  .sch-item {
+    display: grid; grid-template-columns: 130px 1fr; gap: 22px;
+    background: white; padding: 22px 26px; border-radius: 16px;
+    box-shadow: var(--shadow-soft); border: 1px solid var(--line);
+    align-items: flex-start;
+  }
+  .sch-item .date {
+    font-family: 'Inter', sans-serif; font-weight: 600;
+    color: var(--primary); font-size: 14px; letter-spacing: 0.05em;
+    padding-top: 4px; text-align: left;
+  }
+  .sch-item.done .date { color: var(--mint); }
+  .sch-item.future .date { color: var(--accent); }
+  .sch-item .body h4 { font-size: 16px; margin-bottom: 6px; color: var(--ink); }
+  .sch-item .body p { font-size: 13px; color: var(--ink-soft); line-height: 1.8; }
+  @media (max-width: 640px) { .sch-item { grid-template-columns: 1fr; } }
+
+  /* 12ステップ */
+  .steps-section { background: var(--cream); }
+  .step-row {
+    display: grid; grid-template-columns: 40px 1fr 100px; gap: 16px;
+    background: white; padding: 18px 22px; border-radius: 14px;
+    margin-bottom: 12px; box-shadow: var(--shadow-soft); border: 1px solid var(--line);
+    align-items: center;
+  }
+  .step-row .num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--primary));
+    color: white; display: flex; align-items: center; justify-content: center;
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px;
+  }
+  .step-row .body h4 { font-size: 14px; color: var(--ink); margin-bottom: 4px; }
+  .step-row .body p { font-size: 12px; color: var(--ink-soft); line-height: 1.7; }
+  .step-row .owner {
+    padding: 6px 12px; background: var(--cream-deep); color: var(--ink-soft);
+    border-radius: 999px; font-size: 11px; font-weight: 600; text-align: center;
+  }
+  .step-row.us .owner { background: var(--primary-light); color: var(--primary); }
+  .step-row.them .owner { background: var(--mint-soft); color: var(--mint); }
+  .step-row.both .owner { background: var(--accent-light); color: var(--accent); }
+  @media (max-width: 720px) { .step-row { grid-template-columns: 40px 1fr; } .step-row .owner { grid-column: 2; margin-top: 8px; } }
+
+  /* 補助金概要 */
+  .subsidy-section { background: linear-gradient(180deg, var(--cream-deep) 0%, var(--cream) 100%); }
+  .subsidy-hero {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white; padding: 36px 40px; border-radius: 24px;
+    box-shadow: var(--shadow-warm); margin-bottom: 30px;
+  }
+  .subsidy-hero h3 { font-size: 22px; color: white; margin-bottom: 14px; }
+  .subsidy-hero p { font-size: 14px; line-height: 2.0; opacity: 0.95; }
+  .subsidy-points { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 20px; }
+  .pt-card { background: white; border-radius: 16px; padding: 22px 24px; box-shadow: var(--shadow-soft); border-top: 4px solid var(--primary); }
+  .pt-card .label-en { display: block; margin-bottom: 6px; }
+  .pt-card h4 { font-size: 15px; color: var(--ink); margin-bottom: 6px; }
+  .pt-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.8; }
+
+  /* SIM CARD */
+  .sim-card {
+    background: white; border-radius: 22px; padding: 36px 40px;
+    box-shadow: var(--shadow-warm); border: 2px solid var(--primary-soft);
+    margin-top: 30px;
+  }
+  .sim-card h3 { text-align: center; font-size: 18px; color: var(--primary); margin-bottom: 24px; }
+  .sim-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--line); font-size: 14px; }
+  .sim-row.minus { color: var(--mint); }
+  .sim-row .label { color: var(--ink); }
+  .sim-row .num { font-family: 'Inter', sans-serif; font-weight: 600; }
+  .sim-row.total {
+    background: var(--primary-light); margin: 12px -10px -10px;
+    padding: 18px 20px; border-radius: 12px; border: none;
+    color: var(--primary); font-weight: 700; font-size: 16px;
+  }
+
+  /* DOCUMENTS */
+  .docs-section { background: var(--cream); }
+  .doc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 28px; }
+  @media (max-width: 720px) { .doc-cols { grid-template-columns: 1fr; } }
+  .doc-col {
+    background: white; border-radius: 18px; padding: 28px 30px;
+    box-shadow: var(--shadow-soft); border-top: 4px solid;
+  }
+  .doc-col.pre { border-top-color: var(--mint); }
+  .doc-col.post { border-top-color: var(--accent); }
+  .doc-col h4 { font-size: 15px; margin-bottom: 4px; }
+  .doc-col.pre h4 { color: var(--mint); }
+  .doc-col.post h4 { color: var(--accent); }
+  .doc-col .when { font-size: 11px; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 16px; }
+  .doc-col ul { list-style: none; }
+  .doc-col li {
+    font-size: 13px; padding: 9px 0; border-bottom: 1px dashed var(--line);
+    color: var(--ink); display: flex; align-items: flex-start; gap: 10px;
+  }
+  .doc-col li:last-child { border-bottom: none; }
+  .doc-col li i { color: var(--accent); margin-top: 4px; font-size: 11px; flex-shrink: 0; }
+
+  /* MONEY FLOW */
+  .money-section { background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%); }
+  .money-flow {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px;
+    position: relative;
+  }
+  @media (max-width: 720px) { .money-flow { grid-template-columns: 1fr; } }
+  .money-step {
+    background: white; padding: 24px 24px; border-radius: 16px;
+    box-shadow: var(--shadow-soft); border: 1px solid var(--line);
+    position: relative;
+  }
+  .money-step .num {
+    position: absolute; top: -14px; left: 20px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--primary));
+    color: white; display: flex; align-items: center; justify-content: center;
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px;
+  }
+  .money-step h4 { font-size: 15px; color: var(--ink); margin: 12px 0 8px; }
+  .money-step p { font-size: 13px; color: var(--ink-soft); line-height: 1.8; }
+  .money-step .amount { display: inline-block; margin-top: 10px; padding: 4px 14px; background: var(--primary-light); color: var(--primary); border-radius: 999px; font-size: 12px; font-weight: 600; }
+
+  /* SLACK CTA */
+  .slack-cta {
+    background-image:
+      linear-gradient(135deg, rgba(251,247,242,0.92), rgba(232,217,194,0.85)),
+      url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=80');
+    background-size: cover;
+  }
+  .slack-card {
+    background: white; border-radius: 22px; padding: 36px 40px;
+    text-align: center; max-width: 720px; margin: 0 auto;
+    box-shadow: var(--shadow-warm); border: 1px solid var(--line);
+  }
+  .slack-card .icon {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 16px; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 26px; margin: 0 auto 18px;
+  }
+  .slack-card h3 { font-size: 20px; margin-bottom: 12px; }
+  .slack-card p { color: var(--ink-soft); font-size: 14px; line-height: 2.0; margin-bottom: 12px; }
+  .slack-card .channel-name { display: inline-block; font-family: 'Inter', monospace; background: var(--cream-deep); color: var(--primary); padding: 8px 18px; border-radius: 12px; font-size: 13px; font-weight: 600; }
+
+  /* nav bottom */
+  .nav-bottom {
+    background: white; border-radius: 14px;
+    padding: 18px 24px; margin-top: 30px;
+    box-shadow: var(--shadow-soft); border: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .nav-bottom a { color: var(--primary); font-weight: 600; font-size: 13px; }
+  .nav-bottom .center { color: var(--mint); background: var(--mint-soft); padding: 6px 16px; border-radius: 999px; }
+
+  /* footer */
+  footer { text-align: center; padding: 30px 12px 14px; color: var(--muted); font-size: 12px; }
+  footer .heart { color: var(--primary); }
+  footer .org { color: var(--ink); font-weight: 500; margin-top: 6px; font-size: 13px; }
+
+  /* fade-in */
+  .fade-in, .stagger { opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease; }
+  .stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .is-visible.fade-in { opacity: 1; transform: translateY(0); }
+  .is-visible.stagger > * { opacity: 1; transform: translateY(0); }
+  .is-visible.stagger > *:nth-child(1) { transition-delay: 0.05s; }
+  .is-visible.stagger > *:nth-child(2) { transition-delay: 0.15s; }
+  .is-visible.stagger > *:nth-child(3) { transition-delay: 0.25s; }
+  .is-visible.stagger > *:nth-child(4) { transition-delay: 0.35s; }
+  .is-visible.stagger > *:nth-child(5) { transition-delay: 0.45s; }
+  .is-visible.stagger > *:nth-child(6) { transition-delay: 0.55s; }
+  .is-visible.stagger > *:nth-child(n+7) { transition-delay: 0.65s; }
+</style>
+</head>
+<body>
+
+<!-- breadcrumb -->
+<div class="breadcrumb">
+  <a href="./yuka-clinic-index.html"><i class="fas fa-arrow-left"></i> &nbsp;PJダッシュボードへ戻る</a>
+  &nbsp;&nbsp;＞&nbsp;&nbsp;
+  <strong style="color:var(--ink);">📘 プロジェクト ハンドブック</strong>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="greeting">Project Handbook</p>
+  <h1>プロジェクト ハンドブック 📘</h1>
+  <p class="lead">5/22のお話し内容・全体スケジュール・補助金の進め方を、1ページに集約しました。<br>「これ、どうだったっけ？」をこのページで全部解決できる、安心の見開き図です。</p>
+  <div class="hero-meta">
+    <span class="pill"><i class="fas fa-calendar-alt"></i> &nbsp;2026.08.01 本格スタート</span>
+    <span class="pill"><i class="fas fa-yen-sign"></i> &nbsp;補助金30万円ミニマム</span>
+    <span class="pill"><i class="fas fa-handshake"></i> &nbsp;チーム4名 ×AI</span>
+  </div>
+</section>
+
+<!-- 5/22 MTG ハイライト -->
+<section class="meeting-section fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">May 22 Meeting</span>
+      <h2>5/22 ご訪問でお話したこと</h2>
+      <p class="lead">90分のお打ち合わせで合意した6点と、印象に残ったご発言をまとめています。</p>
+    </div>
+
+    <div class="agree-grid stagger">
+      <div class="agree-row">
+        <div class="check"><i class="fas fa-check-circle"></i></div>
+        <div class="body"><strong>AI導入支援は2026年8月スタート</strong>で進める方向で合意</div>
+      </div>
+      <div class="agree-row">
+        <div class="check"><i class="fas fa-check-circle"></i></div>
+        <div class="body"><strong>補助金30万円ミニマムプラン</strong>（人材開発支援助成金）を活用する想定で進める</div>
+      </div>
+      <div class="agree-row">
+        <div class="check"><i class="fas fa-check-circle"></i></div>
+        <div class="body"><strong>7月中に最終OK</strong>を取得するスケジュール感（理事長さまへのご報告含む）</div>
+      </div>
+      <div class="agree-row">
+        <div class="check"><i class="fas fa-check-circle"></i></div>
+        <div class="body">使用ツールは <strong>ChatGPT Business（月¥3,800/人）</strong> を軸に検討（学習除外がデフォルトの法人プラン）</div>
+      </div>
+      <div class="agree-row">
+        <div class="check"><i class="fas fa-check-circle"></i></div>
+        <div class="body">業務は <strong>顧客管理・請求書・訪問リマインドの一元自動化</strong> ＋ Googleカレンダー連動の方向</div>
+      </div>
+      <div class="agree-row">
+        <div class="check"><i class="fas fa-check-circle"></i></div>
+        <div class="body"><strong>上長確認用PDF提案書（A4 裏表1枚）</strong>を5/22 17:51にリベシティDMでお送り済み</div>
+      </div>
+    </div>
+
+    <div class="quote-grid">
+      <div class="quote-box">
+        <div class="who">健康管理支援室 様</div>
+        <div class="text">「理事長自体がAIにすごく興味があって進めている。補助金もあるし、想像していたよりずっと少ない金額で実現できるとわかったので、現実的に進めていけそうです」</div>
+      </div>
+      <div class="quote-box">
+        <div class="who">健康管理支援室 様</div>
+        <div class="text">「業務的にはもう、全部AIに読ませたいんですよ。カレンダーも、訪問日を入れるんじゃなく、見に行ってもらってやってほしいんです」</div>
+      </div>
+      <div class="quote-box">
+        <div class="who">健康管理支援室 様</div>
+        <div class="text">「過去の面談の記録を読ませて、まとめておいてもらったら、先生らもそれ見たらわかるもんね」</div>
+      </div>
+      <div class="quote-box">
+        <div class="who">健康管理支援室 様</div>
+        <div class="text">「保健師みんなで、よりスキルアップしていきたいんです。チームで使えるようになりたい」</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- スケジュール -->
+<section class="schedule-section fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">Schedule</span>
+      <h2>これまでの歩み、これからの予定</h2>
+      <p class="lead">プロジェクト全体の流れを、節目ごとに整理しました。</p>
+    </div>
+
+    <div class="schedule-list stagger">
+      <div class="sch-item done">
+        <div class="date"><i class="fas fa-check"></i> &nbsp;2026.05.14</div>
+        <div class="body">
+          <h4>初回ヒアリング・11業務の整理</h4>
+          <p>事務所にてお話を伺い、現場の11業務を俯瞰。最優先2つ（請求書／訪問リマインド）の方向性を共有。</p>
+        </div>
+      </div>
+      <div class="sch-item done">
+        <div class="date"><i class="fas fa-check"></i> &nbsp;2026.05.18</div>
+        <div class="body">
+          <h4>本番リマインドメール 自動稼働開始</h4>
+          <p>架空3社のサンプルデータで、Googleサーバーから自動で朝9時にリマインドメールを送信する試運転を実施。</p>
+        </div>
+      </div>
+      <div class="sch-item done">
+        <div class="date"><i class="fas fa-check"></i> &nbsp;2026.05.22</div>
+        <div class="body">
+          <h4>2回目ご訪問・PDF提案書送付</h4>
+          <p>ダミースプシで業務一元管理の絵を共有。8月スタート・補助金30万円ミニマムプランで合意。上長確認用PDF送付完了。</p>
+        </div>
+      </div>
+      <div class="sch-item future">
+        <div class="date"><i class="fas fa-bullseye"></i> &nbsp;2026.06中</div>
+        <div class="body">
+          <h4>確認事項の整理・社労士事前確認</h4>
+          <p>受講者数の確定、雇用保険適用事業所番号の確認、GビズID、研修内容の事前確認を進める。</p>
+        </div>
+      </div>
+      <div class="sch-item future">
+        <div class="date"><i class="fas fa-flag"></i> &nbsp;〜2026.07.01</div>
+        <div class="body">
+          <h4>職業訓練実施計画届を提出</h4>
+          <p>研修開始前の重要書類を労働局へ提出。提出前に研修を始めると助成対象外になるため、ここが最初の関門。</p>
+        </div>
+      </div>
+      <div class="sch-item future">
+        <div class="date"><i class="fas fa-rocket"></i> &nbsp;2026.08.01〜</div>
+        <div class="body">
+          <h4>研修・本格スタート</h4>
+          <p>半年パックの研修を開始。出席簿、実施記録、受講時間、請求書・支払い記録を残しながら進める。</p>
+        </div>
+      </div>
+      <div class="sch-item future">
+        <div class="date"><i class="fas fa-flag-checkered"></i> &nbsp;2027.02-03</div>
+        <div class="body">
+          <h4>半年パック終了・支給申請</h4>
+          <p>終了日の翌日から2か月以内に、賃金台帳・出勤簿・請求書・振込明細などを添付して支給申請を提出。</p>
+        </div>
+      </div>
+      <div class="sch-item future">
+        <div class="date"><i class="fas fa-coins"></i> &nbsp;2027.04-06</div>
+        <div class="body">
+          <h4>助成金入金見込み</h4>
+          <p>労働局の審査後、法人へ助成金が入金される予定（時期は審査状況により前後）。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12ステップ進行表 -->
+<section class="steps-section fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">12 Steps</span>
+      <h2>補助金申請 12ステップ進行表</h2>
+      <p class="lead">どのステップを誰がやるか、すべて整理しました。</p>
+    </div>
+
+    <div class="stagger">
+      <div class="step-row us">
+        <div class="num">1</div>
+        <div class="body">
+          <h4>申請に必要な確認項目を山本さまへお送りする</h4>
+          <p>法人情報、受講者、雇用保険、GビズID、社労士確認の有無を確認していただく</p>
+        </div>
+        <div class="owner">おけもん</div>
+      </div>
+      <div class="step-row them">
+        <div class="num">2</div>
+        <div class="body">
+          <h4>法人情報と受講者を確認</h4>
+          <p>法人名、所在地、雇用保険適用事業所番号、常時雇用労働者数、受講候補者2名以上</p>
+        </div>
+        <div class="owner">皆さま側</div>
+      </div>
+      <div class="step-row us">
+        <div class="num">3</div>
+        <div class="body">
+          <h4>研修資料を固める</h4>
+          <p>12時間カリキュラム、日程案、見積書、受講案内、講師情報、個人情報を使わない演習題材</p>
+        </div>
+        <div class="owner">おけもん</div>
+      </div>
+      <div class="step-row both">
+        <div class="num">4</div>
+        <div class="body">
+          <h4>社労士または労働局へ事前確認</h4>
+          <p>研修内容が対象になり得るか、必要添付書類、他補助金との重複有無を確認</p>
+        </div>
+        <div class="owner">双方</div>
+      </div>
+      <div class="step-row both">
+        <div class="num">5</div>
+        <div class="body">
+          <h4>計画届一式を記入</h4>
+          <p>職業訓練実施計画届、事業展開等実施計画、対象労働者一覧、事前確認書、添付資料を揃える</p>
+        </div>
+        <div class="owner">双方</div>
+      </div>
+      <div class="step-row them">
+        <div class="num">6</div>
+        <div class="body">
+          <h4>計画届を提出（〜7/1まで）</h4>
+          <p>研修開始前の提出。提出前に研修を始めると助成対象外になり得る。最重要の節目</p>
+        </div>
+        <div class="owner">法人側</div>
+      </div>
+      <div class="step-row both">
+        <div class="num">7</div>
+        <div class="body">
+          <h4>確認・補正依頼に対応</h4>
+          <p>提出後、労働局から記載内容の確認や追加資料の依頼があれば、社労士・おけもんで分担して対応</p>
+        </div>
+        <div class="owner">双方</div>
+      </div>
+      <div class="step-row both">
+        <div class="num">8</div>
+        <div class="body">
+          <h4>研修開始（2026/8/1〜）</h4>
+          <p>出席簿、実施記録、受講時間、請求書・支払い記録を残しながら進行</p>
+        </div>
+        <div class="owner">双方</div>
+      </div>
+      <div class="step-row both">
+        <div class="num">9</div>
+        <div class="body">
+          <h4>半年パック終了</h4>
+          <p>終了日を基準に、翌日から2か月以内に支給申請を出す</p>
+        </div>
+        <div class="owner">双方</div>
+      </div>
+      <div class="step-row them">
+        <div class="num">10</div>
+        <div class="body">
+          <h4>支給申請を提出</h4>
+          <p>研修後の申請。賃金台帳、出勤簿、請求書、領収書、振込明細などを添付</p>
+        </div>
+        <div class="owner">法人側</div>
+      </div>
+      <div class="step-row">
+        <div class="num">11</div>
+        <div class="body">
+          <h4>労働局審査</h4>
+          <p>提出された書類に基づき、対象期間・受講内容の妥当性を審査</p>
+        </div>
+        <div class="owner">労働局</div>
+      </div>
+      <div class="step-row">
+        <div class="num">12</div>
+        <div class="body">
+          <h4>助成金入金</h4>
+          <p>支給決定後に法人へ入金。審査期間は固定ではないため、ここは仮予定として進める</p>
+        </div>
+        <div class="owner">労働局</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 補助金概要 -->
+<section class="subsidy-section fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">Subsidy Overview</span>
+      <h2>使う補助金について</h2>
+      <p class="lead">人材開発支援助成金（事業展開等リスキリング支援コース）の全体像です。</p>
+    </div>
+
+    <div class="subsidy-hero">
+      <span class="label-en" style="color: rgba(255,255,255,0.85);">Ministry of Health, Labour and Welfare</span>
+      <h3>人材開発支援助成金<br>（事業展開等リスキリング支援コース）</h3>
+      <p>新規事業展開や、新たな分野の事業に必要となる知識・技能を労働者が習得するための職業訓練を、事業主が計画的に実施した場合、研修費の <strong>最大75%</strong> ＋受講時間ごとに <strong>賃金助成¥1,000/時間</strong> が支給される厚生労働省の助成金です。</p>
+    </div>
+
+    <div class="subsidy-points stagger">
+      <div class="pt-card">
+        <span class="label-en">Eligibility</span>
+        <h4>受講対象</h4>
+        <p>雇用保険被保険者の方が対象。正社員に限らず、雇用保険加入のパートさんもOK。業務委託の方は対象外。</p>
+      </div>
+      <div class="pt-card">
+        <span class="label-en">Reimbursement</span>
+        <h4>経費助成</h4>
+        <p>研修費用の <strong style="color:var(--primary);">75%</strong> が助成対象。30万円の研修なら22.5万円が法人へ後日支給される構造。</p>
+      </div>
+      <div class="pt-card">
+        <span class="label-en">Wage Support</span>
+        <h4>賃金助成</h4>
+        <p>受講中の勤務時間に対して <strong style="color:var(--primary);">¥1,000/時間</strong>。10時間×2名=¥20,000の助成。</p>
+      </div>
+      <div class="pt-card">
+        <span class="label-en">Minimum Line</span>
+        <h4>0→1ライン</h4>
+        <p>雇用保険被保険者が <strong style="color:var(--primary);">2名以上</strong> 受講で申請成立イメージ。</p>
+      </div>
+    </div>
+
+    <!-- シミュレーション -->
+    <div class="sim-card">
+      <h3>💴 30万円プラン 実質負担シミュレーション</h3>
+      <div class="sim-row">
+        <div class="label">研修費（おけもん提供）</div>
+        <div class="num">¥300,000</div>
+      </div>
+      <div class="sim-row minus">
+        <div class="label">経費助成（75%）</div>
+        <div class="num">− ¥225,000</div>
+      </div>
+      <div class="sim-row minus">
+        <div class="label">賃金助成（2名×12時間×¥1,000）</div>
+        <div class="num">− ¥24,000</div>
+      </div>
+      <div class="sim-row total">
+        <div class="label">法人 実質ご負担額</div>
+        <div class="num">¥51,000</div>
+      </div>
+      <p style="font-size:12px; color:var(--muted); text-align:center; margin-top:14px;">※ 補助金は法人さまが後日受給される構造です。研修費は通常通り当方にお支払いいただきます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 書類リスト -->
+<section class="docs-section fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">Documents</span>
+      <h2>使う書類リスト</h2>
+      <p class="lead">補助金申請に必要な書類を、提出タイミング別に整理しています。</p>
+    </div>
+
+    <div class="doc-cols">
+      <div class="doc-col pre">
+        <h4>📅 開始前に出す書類</h4>
+        <p class="when">2026/7/1頃まで・労働局へ提出</p>
+        <ul>
+          <li><i class="fas fa-file-alt"></i> 職業訓練実施計画届</li>
+          <li><i class="fas fa-file-alt"></i> 事業展開等実施計画</li>
+          <li><i class="fas fa-file-alt"></i> 対象労働者一覧</li>
+          <li><i class="fas fa-file-alt"></i> 事前確認書</li>
+          <li><i class="fas fa-file-alt"></i> 受講案内・カリキュラム</li>
+          <li><i class="fas fa-file-alt"></i> 講師情報・経歴書</li>
+          <li><i class="fas fa-file-alt"></i> 研修見積書（おけもん発行）</li>
+          <li><i class="fas fa-file-alt"></i> 雇用保険適用事業所番号証明</li>
+        </ul>
+      </div>
+      <div class="doc-col post">
+        <h4>📅 研修後に出す書類</h4>
+        <p class="when">2027/2-3月・終了から2か月以内</p>
+        <ul>
+          <li><i class="fas fa-file-alt"></i> 支給申請書</li>
+          <li><i class="fas fa-file-alt"></i> 出席簿（受講者の出席記録）</li>
+          <li><i class="fas fa-file-alt"></i> 実施記録（カリキュラム実施結果）</li>
+          <li><i class="fas fa-file-alt"></i> 賃金台帳（受講者分）</li>
+          <li><i class="fas fa-file-alt"></i> 出勤簿（受講期間分）</li>
+          <li><i class="fas fa-file-alt"></i> 請求書・領収書</li>
+          <li><i class="fas fa-file-alt"></i> 振込明細（研修費支払い証明）</li>
+          <li><i class="fas fa-file-alt"></i> 受講修了書類</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="text-align:center; margin-top:24px; font-size:13px; color:var(--ink-soft);">
+      📘 詳細手順は <a href="./2026-05-23_yuka-clinic-subsidy-hub.html" style="color:var(--primary); font-weight:600;">補助金申請サポートハブ</a> をご参照ください。
+    </p>
+  </div>
+</section>
+
+<!-- お金の流れ -->
+<section class="money-section fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">Money Flow</span>
+      <h2>お金の流れ</h2>
+      <p class="lead">研修費のお支払いから補助金入金までの3ステップ。</p>
+    </div>
+
+    <div class="money-flow stagger">
+      <div class="money-step">
+        <div class="num">1</div>
+        <h4>研修費をお支払い</h4>
+        <p>研修開始時（または分割で）、法人さまから当方へ通常通りお支払いいただきます。</p>
+        <span class="amount">¥300,000</span>
+      </div>
+      <div class="money-step">
+        <div class="num">2</div>
+        <h4>研修後に支給申請</h4>
+        <p>半年パック終了後、賃金台帳・領収書・振込明細などを添付して労働局へ支給申請を提出。</p>
+        <span class="amount">2027/2-3月</span>
+      </div>
+      <div class="money-step">
+        <div class="num">3</div>
+        <h4>助成金が法人へ入金</h4>
+        <p>労働局の審査後、経費助成¥225,000＋賃金助成¥24,000=計¥249,000が法人さまへ入金。</p>
+        <span class="amount">+ ¥249,000</span>
+      </div>
+    </div>
+
+    <p style="text-align:center; margin-top:36px; font-family:'Noto Serif JP', serif; font-size:16px; color:var(--primary); font-weight:500;">
+      → 実質ご負担額：<strong style="font-size:22px;">¥51,000</strong>
+    </p>
+  </div>
+</section>
+
+<!-- Slack CTA -->
+<section class="slack-cta fade-in">
+  <div class="container">
+    <div class="section-head">
+      <span class="label-en">Communication</span>
+      <h2>進捗共有・ご質問はこちらで</h2>
+    </div>
+    <div class="slack-card">
+      <div class="icon"><i class="fab fa-slack"></i></div>
+      <h3>Slack「山本さん情報交換」ワークスペース</h3>
+      <p>「ここってどうだったっけ？」「これってAIでできない？」など、<br>気になることをいつでも気軽にお寄せください。</p>
+      <p>双方向で、温かく、軽やかに進められる距離感を大切にしています🌷</p>
+      <div class="channel-name">#all-山本さん情報交換</div>
+    </div>
+  </div>
+</section>
+
+<!-- nav bottom -->
+<div class="container">
+  <div class="nav-bottom">
+    <a href="./yuka-clinic-index.html"><i class="fas fa-arrow-left"></i> &nbsp;PJダッシュボードへ戻る</a>
+    <a href="./yuka-clinic-index.html" class="center">📑 ハブ</a>
+    <a href="./2026-05-23_yuka-clinic-subsidy-hub.html">補助金申請サポートハブ &nbsp;<i class="fas fa-arrow-right"></i></a>
+  </div>
+</div>
+
+<footer>
+  <p>このページは2026年5月25日に作成されました <span class="heart">♥</span></p>
+  <p class="org">健康管理支援室 御中 AI業務改善 プロジェクト ハンドブック</p>
+  <p style="font-size:11px; margin-top:8px;">※ 限定URLでお渡ししています</p>
+</footer>
+
+<script>
+  const animEls = document.querySelectorAll('.fade-in, .stagger');
+  const animObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); animObs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  animEls.forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+    else animObs.observe(el);
+  });
+</script>
+
+</body>
+</html>
