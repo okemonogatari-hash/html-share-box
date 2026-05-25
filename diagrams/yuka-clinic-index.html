@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>健康管理支援室 御中｜AI業務改善 資料目次</title>
+<title>健康管理支援室 御中｜AI業務改善 PJダッシュボード</title>
 <style>
   :root {
     --paper: #fdfdfd;
@@ -15,6 +15,8 @@
     --warm-deep: #e0a96d;
     --pink: #fde6ec;
     --pink-deep: #d97a96;
+    --purple: #f0e7f5;
+    --purple-deep: #9c7ab7;
     --text: #2c3e50;
     --muted: #6b7c8c;
     --line: rgba(95,168,211,0.18);
@@ -28,14 +30,15 @@
     line-height: 1.75;
     padding: 20px 12px 60px;
   }
-  .container { max-width: 880px; margin: 0 auto; }
+  .container { max-width: 920px; margin: 0 auto; }
 
+  /* hero */
   .hero {
     background: linear-gradient(135deg, var(--mint) 0%, var(--sky) 100%);
     border-radius: 24px;
     padding: 44px 32px;
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
     box-shadow: var(--shadow);
     border: 1px solid var(--line);
   }
@@ -44,10 +47,43 @@
   .hero .sub { font-size: 15px; color: var(--muted); }
   .hero .date { display: inline-block; margin-top: 20px; padding: 8px 22px; background: white; border-radius: 999px; font-size: 13px; color: var(--mint-deep); font-weight: 600; border: 1px solid var(--line); }
 
+  /* 進捗タイムライン */
+  .progress { background: white; border-radius: 18px; padding: 24px 22px; margin-bottom: 22px; box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .progress h2 { font-size: 16px; color: var(--mint-deep); margin-bottom: 16px; }
+  .timeline-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; align-items: stretch; }
+  .ms-item { padding: 12px 8px; border-radius: 10px; text-align: center; font-size: 12px; position: relative; }
+  .ms-item.done { background: var(--mint); border: 1px solid var(--mint-deep); }
+  .ms-item.done .ic { color: var(--mint-deep); font-weight: 700; }
+  .ms-item.current { background: linear-gradient(135deg, var(--pink), var(--warm)); border: 2px solid var(--pink-deep); }
+  .ms-item.current .ic { color: var(--pink-deep); font-weight: 700; }
+  .ms-item.next { background: var(--soft, #f7f7f7); border: 1px dashed var(--muted); opacity: 0.85; }
+  .ms-item .date-s { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .ms-item .lbl { font-size: 12px; font-weight: 700; }
+  @media (max-width: 720px) { .timeline-bar { grid-template-columns: 1fr; } }
+
+  /* milestone callout */
+  .milestone {
+    background: linear-gradient(135deg, var(--warm), white);
+    border: 2px solid var(--warm-deep);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 22px;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 16px;
+    align-items: center;
+    box-shadow: var(--shadow);
+  }
+  .milestone .icon { font-size: 36px; text-align: center; }
+  .milestone h3 { font-size: 16px; color: var(--warm-deep); margin-bottom: 4px; }
+  .milestone p { font-size: 14px; color: var(--text); }
+  .milestone .countdown { display: inline-block; margin-left: 8px; padding: 2px 10px; background: var(--warm-deep); color: white; border-radius: 999px; font-size: 11px; font-weight: 700; }
+
+  /* intro */
   .intro {
     background: white;
     border-radius: 18px;
-    padding: 24px 26px;
+    padding: 22px 24px;
     margin-bottom: 28px;
     box-shadow: var(--shadow);
     border: 1px solid var(--line);
@@ -56,12 +92,23 @@
   .intro p:last-child { margin-bottom: 0; }
   .intro strong { color: var(--mint-deep); }
 
-  .toc-list { display: grid; gap: 18px; margin-bottom: 32px; }
+  /* section heading */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 28px 0 14px;
+    padding-left: 4px;
+  }
+  .section-heading .badge { background: var(--sky-deep); color: white; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+  .section-heading h2 { font-size: 18px; color: var(--text); }
 
+  /* toc cards */
+  .toc-list { display: grid; gap: 16px; }
   .card {
     background: white;
     border-radius: 20px;
-    padding: 26px 28px;
+    padding: 24px 26px;
     box-shadow: var(--shadow);
     border: 1px solid var(--line);
     text-decoration: none;
@@ -73,34 +120,50 @@
   .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(95,168,211,0.16); }
 
   .card .meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
-  .card .num-circle { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 16px; }
+  .card .num-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 14px; }
   .card.c1 .num-circle { background: var(--pink-deep); }
   .card.c2 .num-circle { background: var(--warm-deep); }
   .card.c3 .num-circle { background: var(--mint-deep); }
+  .card.c4 .num-circle { background: var(--purple-deep); }
   .card .date-pill { font-size: 12px; color: var(--muted); background: #f7f7f7; padding: 4px 12px; border-radius: 999px; }
   .card .status-pill { font-size: 11px; padding: 4px 10px; border-radius: 999px; font-weight: 600; }
   .card.c1 .status-pill { background: var(--pink); color: var(--pink-deep); }
   .card.c2 .status-pill { background: var(--warm); color: var(--warm-deep); }
   .card.c3 .status-pill { background: var(--mint); color: var(--mint-deep); }
+  .card.c4 .status-pill { background: var(--purple); color: var(--purple-deep); }
 
-  .card h2 { font-size: 19px; color: var(--text); margin-bottom: 6px; }
-  .card .summary { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
-  .card .highlights { background: #fafafa; border-radius: 12px; padding: 14px 16px; }
+  .card h3 { font-size: 18px; color: var(--text); margin-bottom: 6px; }
+  .card .summary { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .card .highlights { background: #fafafa; border-radius: 12px; padding: 12px 16px; }
   .card .highlights ul { list-style: none; padding-left: 0; }
-  .card .highlights li { font-size: 13px; padding: 3px 0; color: var(--text); }
+  .card .highlights li { font-size: 12px; padding: 2px 0; color: var(--text); }
   .card .highlights li::before { content: "・"; color: var(--muted); }
 
   .card .open-arrow { position: absolute; right: 22px; top: 22px; font-size: 22px; color: var(--sky-deep); }
 
+  /* Slack channel callout */
+  .slack-box {
+    background: linear-gradient(135deg, #f3eafa 0%, white 100%);
+    border: 1px solid var(--purple-deep);
+    border-radius: 18px;
+    padding: 22px 24px;
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+  .slack-box h3 { color: var(--purple-deep); font-size: 16px; margin-bottom: 8px; }
+  .slack-box p { font-size: 13px; color: var(--text); margin-bottom: 8px; }
+  .slack-box .channel-name { font-family: monospace; background: white; padding: 4px 8px; border-radius: 6px; font-size: 13px; }
+
+  /* footer note */
   .footer-note {
     background: var(--pink);
     border: 1px solid var(--pink-deep);
     border-radius: 16px;
-    padding: 20px 24px;
+    padding: 18px 22px;
     text-align: center;
-    margin-bottom: 28px;
+    margin: 28px 0 16px;
   }
-  .footer-note p { font-size: 14px; color: var(--text); margin-bottom: 6px; }
+  .footer-note p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
   .footer-note strong { color: var(--pink-deep); }
 
   footer { text-align: center; padding: 30px 12px 10px; color: var(--muted); font-size: 12px; }
@@ -112,29 +175,90 @@
 <div class="container">
 
   <div class="hero">
-    <div class="greeting">資料目次 — Index</div>
-    <h1>健康管理支援室 御中<br>AI業務改善のご提案 まとめ 🌷</h1>
-    <p class="sub">これまでにお渡しした資料を1ページに整理しました</p>
-    <div class="date">最終更新 2026.05.22</div>
+    <div class="greeting">PJダッシュボード — Project Dashboard</div>
+    <h1>健康管理支援室 御中<br>AI業務改善 PJダッシュボード 🌷</h1>
+    <p class="sub">資料・進捗・次の動きを1ページで俯瞰できる入口です</p>
+    <div class="date">最終更新 2026.05.25</div>
+  </div>
+
+  <!-- 進捗タイムライン -->
+  <div class="progress">
+    <h2>🌳 進捗ストーリー</h2>
+    <div class="timeline-bar">
+      <div class="ms-item done">
+        <div class="date-s">5/14 ✓</div>
+        <div class="lbl">初回ヒアリング</div>
+      </div>
+      <div class="ms-item done">
+        <div class="date-s">5/18 ✓</div>
+        <div class="lbl">本番リマインド稼働</div>
+      </div>
+      <div class="ms-item done">
+        <div class="date-s">5/22 ✓</div>
+        <div class="lbl">2回目訪問・PDF送付</div>
+      </div>
+      <div class="ms-item current">
+        <div class="date-s">〜7/12</div>
+        <div class="lbl">理事長報告 準備中</div>
+      </div>
+      <div class="ms-item next">
+        <div class="date-s">8/1〜</div>
+        <div class="lbl">本格スタート</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- マイルストーン -->
+  <div class="milestone">
+    <div class="icon">🎯</div>
+    <div>
+      <h3>次のマイルストーン <span class="countdown">7/12 理事長ご報告</span></h3>
+      <p>PDF提案書を上長へ共有・修正フィードバック → 補助金申請の準備を進めながら、本格スタートの日程を確定する段階です。</p>
+    </div>
   </div>
 
   <div class="intro">
-    <p>こちらは、健康管理支援室の皆さまにお渡ししている資料の<strong>目次ページ</strong>です。</p>
-    <p><strong>一番上が最新の資料</strong>です。新しい順に並べていますので、上から順にご覧いただくと進捗が追えます🌱</p>
+    <p>こちらは、健康管理支援室の皆さまにお渡ししている資料・進捗・次の動きを 1ページで俯瞰できる <strong>PJダッシュボード</strong> です。</p>
+    <p><strong>一番上が最新の資料</strong>です。新しい順に並んでいますので、上から順にご覧いただくと流れが追えます🌱</p>
     <p>このページをブックマークしておいていただくと、必要な時にすぐ振り返れます。</p>
   </div>
 
-  <!-- 資料一覧（新しい順） -->
+  <!-- 資料カード -->
+  <div class="section-heading">
+    <span class="badge">📦 資料一覧</span>
+    <h2>新しい順</h2>
+  </div>
+
   <div class="toc-list">
+
+    <a href="./2026-05-23_yuka-clinic-subsidy-hub.html" class="card c4">
+      <div class="open-arrow">→</div>
+      <div class="meta-row">
+        <div class="num-circle">1</div>
+        <div class="date-pill">2026.05.23</div>
+        <div class="status-pill">🆕 補助金申請ハブ</div>
+      </div>
+      <h3>💴 補助金申請サポート ハブ</h3>
+      <div class="summary">2026年8月1日スタート前提で、いつまでに何を出すか・どの書類を使うか・お金がどう流れるかを1ページに集約した実務ハブ</div>
+      <div class="highlights">
+        <ul>
+          <li>8月1日スタート前提の仮スケジュール（開始前／研修後／入金見込み）</li>
+          <li>申請に必要な確認項目・法人情報・受講者の整理</li>
+          <li>計画届一式の記入手順・提出フロー</li>
+          <li>2026/6月〜2027/3月までのお金の流れ</li>
+          <li>テンプレート実ファイルの参照先</li>
+        </ul>
+      </div>
+    </a>
 
     <a href="./2026-05-22_yuka-clinic-meeting-minutes.html" class="card c3">
       <div class="open-arrow">→</div>
       <div class="meta-row">
-        <div class="num-circle">1</div>
+        <div class="num-circle">2</div>
         <div class="date-pill">2026.05.22</div>
-        <div class="status-pill">🆕 最新・議事録</div>
+        <div class="status-pill">議事録</div>
       </div>
-      <h2>📒 2回目 ご訪問 議事録</h2>
+      <h3>📒 2回目 ご訪問 議事録</h3>
       <div class="summary">本日のご訪問でお話しした内容・合意事項・アクションアイテムをまとめた議事録。次回までの宿題と8月スタートのタイムラインを記載</div>
       <div class="highlights">
         <ul>
@@ -151,11 +275,11 @@
     <a href="./2026-05-22_yuka-clinic-2nd-visit-roadmap.html" class="card c3">
       <div class="open-arrow">→</div>
       <div class="meta-row">
-        <div class="num-circle">2</div>
+        <div class="num-circle">3</div>
         <div class="date-pill">2026.05.22</div>
         <div class="status-pill">提案・ロードマップ</div>
       </div>
-      <h2>📋 2回目 ご訪問まとめ（提案編）</h2>
+      <h3>📋 2回目 ご訪問まとめ（提案編）</h3>
       <div class="summary">前回からの進捗報告、3段階ロードマップ、契約とお金のクリアな説明、導入ツールの検討事項、今日決めたいこと／持ち帰り宿題まで</div>
       <div class="highlights">
         <ul>
@@ -172,11 +296,11 @@
     <a href="./2026-05-14_yuka-clinic-grant-10h-plan.html" class="card c2">
       <div class="open-arrow">→</div>
       <div class="meta-row">
-        <div class="num-circle">3</div>
+        <div class="num-circle">4</div>
         <div class="date-pill">2026.05.14</div>
         <div class="status-pill">補助金 詳細</div>
       </div>
-      <h2>💰 補助金10時間プラン 詳細</h2>
+      <h3>💰 補助金10時間プラン 詳細</h3>
       <div class="summary">人材開発支援助成金（事業展開等リスキリング支援コース）を使った場合の30万円プラン、実質負担¥51,000の試算と対象範囲の解説</div>
       <div class="highlights">
         <ul>
@@ -192,11 +316,11 @@
     <a href="./2026-05-14_yuka-clinic-ai-thanks.html" class="card c1">
       <div class="open-arrow">→</div>
       <div class="meta-row">
-        <div class="num-circle">4</div>
+        <div class="num-circle">5</div>
         <div class="date-pill">2026.05.14</div>
         <div class="status-pill">初回ヒアリング</div>
       </div>
-      <h2>🌸 1回目 ご訪問まとめ</h2>
+      <h3>🌸 1回目 ご訪問まとめ</h3>
       <div class="summary">初回ヒアリングで伺った11業務の整理と、最優先2つ（請求書／訪問リマインド）の方向性、補助金活用のイメージまでを1枚にまとめた資料</div>
       <div class="highlights">
         <ul>
@@ -211,6 +335,49 @@
 
   </div>
 
+  <!-- Slack 情報共有 -->
+  <div class="section-heading">
+    <span class="badge" style="background:var(--purple-deep);">💬 情報共有</span>
+    <h2>日常のやりとりはこちらで</h2>
+  </div>
+
+  <div class="slack-box">
+    <h3>💬 Slack「山本さん情報交換」ワークスペース</h3>
+    <p>日常の進捗共有・質問・小さな相談は、こちらのSlackワークスペースで集約していく予定です。</p>
+    <p>メインチャンネル：<span class="channel-name">#all-山本さん情報交換</span></p>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px;">※ ワークスペースへのご招待は、リベシティDMにて別途お知らせいたします。</p>
+  </div>
+
+  <!-- 直近のアクション -->
+  <div class="section-heading">
+    <span class="badge" style="background:var(--warm-deep);">📝 直近のアクション</span>
+    <h2>〜7/12までの宿題</h2>
+  </div>
+
+  <div style="background:white;border-radius:16px;padding:22px 24px;box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:22px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:var(--mint);border-radius:12px;padding:16px 18px;border:1px solid var(--mint-deep);">
+        <h4 style="font-size:14px;color:var(--mint-deep);margin-bottom:8px;">🌿 健康管理支援室 皆さまから</h4>
+        <ul style="list-style:none;padding-left:0;">
+          <li style="font-size:13px;padding:4px 0;">□ PDF提案書の社内共有・理事長への報告</li>
+          <li style="font-size:13px;padding:4px 0;">□ 修正・追記ご要望のフィードバック</li>
+          <li style="font-size:13px;padding:4px 0;">□ 個人情報なしサンプルデータ＋空Excelテンプレ</li>
+          <li style="font-size:13px;padding:4px 0;">□ 雇用形態の整理（補助金対象者数）</li>
+        </ul>
+      </div>
+      <div style="background:var(--sky);border-radius:12px;padding:16px 18px;border:1px solid var(--sky-deep);">
+        <h4 style="font-size:14px;color:var(--sky-deep);margin-bottom:8px;">🤝 当方（おけもん）から</h4>
+        <ul style="list-style:none;padding-left:0;">
+          <li style="font-size:13px;padding:4px 0;">□ 提案書PDFの修正反映</li>
+          <li style="font-size:13px;padding:4px 0;">□ 契約書ドラフトの準備</li>
+          <li style="font-size:13px;padding:4px 0;">□ 8月開始想定の準備日程ご提案</li>
+          <li style="font-size:13px;padding:4px 0;">□ Slackワークスペース活用ガイドご案内</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:14px;text-align:center;">詳細は <a href="./2026-05-22_yuka-clinic-meeting-minutes.html" style="color:var(--sky-deep);">📒 5/22 議事録</a> をご参照ください。</p>
+  </div>
+
   <!-- フッターメッセージ -->
   <div class="footer-note">
     <p>📝 資料はすべて<strong>限定URL</strong>でお渡ししています</p>
@@ -218,7 +385,7 @@
   </div>
 
   <footer>
-    <p>このページは2026年5月22日（火）に更新されました <span class="heart">♥</span></p>
+    <p>このページは2026年5月25日に更新されました <span class="heart">♥</span></p>
     <p class="org">おけもん（三又謙次郎）／ ワタシトリセツ</p>
   </footer>
 

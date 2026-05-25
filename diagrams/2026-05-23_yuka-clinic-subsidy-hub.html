@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>補助金申請サポート ハブ｜健康管理支援室 御中</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d2b3a;
+      --muted: #5d6b79;
+      --line: #d8e0e8;
+      --soft: #f6f8fb;
+      --blue: #256f9c;
+      --green: #2f7d58;
+      --amber: #aa6a13;
+      --red: #a33e3e;
+      --paper: #ffffff;
+      --shadow: 0 14px 36px rgba(29, 43, 58, .08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "YuGothic", "Noto Sans JP", sans-serif;
+      color: var(--ink);
+      background: #eef3f7;
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 28px 24px 60px;
+    }
+
+    header {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: 0;
+      line-height: 1.2;
+      margin: 0 0 12px;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      max-width: 980px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(238, 243, 247, .95);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+      margin: 0 -24px 22px;
+      padding: 10px 24px;
+    }
+
+    .nav-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .nav-inner a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    section {
+      margin: 22px 0;
+    }
+
+    h2 {
+      font-size: 24px;
+      line-height: 1.25;
+      margin: 0 0 14px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      font-size: 17px;
+      line-height: 1.35;
+      margin: 0 0 8px;
+      letter-spacing: 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .panel,
+    .item {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .item {
+      box-shadow: none;
+    }
+
+    .decision {
+      border-left: 6px solid var(--green);
+    }
+
+    .warning {
+      border-left: 6px solid var(--amber);
+    }
+
+    .risk {
+      border-left: 6px solid var(--red);
+    }
+
+    .big {
+      font-size: 30px;
+      line-height: 1.1;
+      font-weight: 800;
+      margin: 0 0 4px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .note {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 3px 8px;
+      border-radius: 7px;
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 800;
+      margin: 0 6px 6px 0;
+      color: var(--ink);
+      background: var(--soft);
+    }
+
+    .tag.green {
+      color: var(--green);
+      border-color: #b9dbc7;
+      background: #eef8f1;
+    }
+
+    .tag.amber {
+      color: var(--amber);
+      border-color: #ead4ae;
+      background: #fff7e8;
+    }
+
+    .tag.red {
+      color: var(--red);
+      border-color: #efc0c0;
+      background: #fff0f0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: #e8f0f5;
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 130px 1fr 120px;
+      gap: 14px;
+      align-items: start;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .date {
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .owner {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    ul {
+      margin: 8px 0 0;
+      padding-left: 1.2em;
+    }
+
+    li + li {
+      margin-top: 4px;
+    }
+
+    .path {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+      margin-top: 3px;
+    }
+
+    .link-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .link-row {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 12px;
+      padding: 12px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .link-title {
+      font-weight: 800;
+    }
+
+    .script {
+      background: #172331;
+      color: #f4f8fb;
+      border-radius: 8px;
+      padding: 18px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      font-size: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .compact-table td,
+    .compact-table th {
+      padding: 10px 12px;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 28px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    @media (max-width: 820px) {
+      .page {
+        padding: 18px 14px 48px;
+      }
+
+      nav {
+        margin: 0 -14px 18px;
+        padding: 8px 14px;
+      }
+
+      .grid.two,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .step,
+      .link-row {
+        grid-template-columns: 1fr;
+      }
+
+      .owner {
+        text-align: left;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- breadcrumb -->
+    <div style="background:white;padding:12px 18px;border-radius:8px;margin-bottom:16px;font-size:13px;color:var(--muted);border:1px solid var(--line);box-shadow:var(--shadow);">
+      <a href="./yuka-clinic-index.html" style="color:var(--blue);text-decoration:none;font-weight:600;">📑 PJダッシュボード</a>
+      &nbsp;＞&nbsp;
+      <strong>💴 補助金申請サポート ハブ（このページ）</strong>
+    </div>
+
+    <header>
+      <p class="eyebrow">補助金申請サポート / 健康管理支援室 御中 / 2026-05-23 作成</p>
+      <h1>補助金申請サポート ハブ</h1>
+      <p class="lead">2026年8月1日スタート前提で、いつまでに何を出すか・どの書類を使うか・お金がどう流れるかを1ページに集約。人材開発支援助成金（事業展開等リスキリング支援コース）の申請サポート用。</p>
+    </header>
+
+    <nav aria-label="ページ内リンク">
+      <div class="nav-inner">
+        <a href="#schedule">仮スケジュール</a>
+        <a href="#certainty">通る見込み</a>
+        <a href="#checklist">6月中に揃える</a>
+        <a href="#documents">必要書類</a>
+        <a href="#money">お金の流れ</a>
+        <a href="#templates">実ファイル</a>
+        <a href="#filled-drafts">記入たたき台</a>
+        <a href="#links">関連リンク</a>
+        <a href="#message">依頼文案</a>
+      </div>
+    </nav>
+
+    <section id="schedule">
+      <h2>8月1日スタート前提の仮スケジュール</h2>
+      <div class="grid three">
+        <div class="panel decision">
+          <h3>開始前に出す</h3>
+          <p class="big">2026/7/1頃まで</p>
+          <p class="note">職業訓練実施計画届を提出。ここで制度の土俵に乗る。支給確定ではない。</p>
+        </div>
+        <div class="panel warning">
+          <h3>研修後に出す</h3>
+          <p class="big">2027/2-3月</p>
+          <p class="note">支給申請書と証拠書類を提出。ここが最終審査。</p>
+        </div>
+        <div class="panel risk">
+          <h3>入金見込み</h3>
+          <p class="big">2027/4-6月以降</p>
+          <p class="note">支給決定後に法人へ入金。時期は仮置きで、審査状況により前後する。</p>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="step">
+          <div class="date">5月末</div>
+          <div>
+            <h3>申請に必要な確認項目を山本さまへ送る</h3>
+            <p class="note">法人情報、受講者、雇用保険、GビズID、社労士確認の有無を確認してもらう。</p>
+          </div>
+          <div class="owner">おけもん</div>
+        </div>
+        <div class="step">
+          <div class="date">6/10まで</div>
+          <div>
+            <h3>法人情報と受講者を確認する</h3>
+            <p class="note">法人名、所在地、雇用保険適用事業所番号、企業全体の常時雇用労働者数、受講候補者2名以上。</p>
+          </div>
+          <div class="owner">山本さま側</div>
+        </div>
+        <div class="step">
+          <div class="date">6/17まで</div>
+          <div>
+            <h3>研修資料を固める</h3>
+            <p class="note">12時間カリキュラム、日程案、見積書、受講案内、講師情報、個人情報を使わない演習題材。</p>
+          </div>
+          <div class="owner">おけもん</div>
+        </div>
+        <div class="step">
+          <div class="date">6/21まで</div>
+          <div>
+            <h3>社労士または労働局へ事前確認する</h3>
+            <p class="note">この研修内容で対象になり得るか、必要添付書類、他業者の補助金利用との重複有無を確認。</p>
+          </div>
+          <div class="owner">双方</div>
+        </div>
+        <div class="step">
+          <div class="date">6/25まで</div>
+          <div>
+            <h3>計画届一式を記入する</h3>
+            <p class="note">職業訓練実施計画届、事業展開等実施計画、対象労働者一覧、事前確認書、添付資料を揃える。</p>
+          </div>
+          <div class="owner">双方</div>
+        </div>
+        <div class="step">
+          <div class="date">7/1頃まで</div>
+          <div>
+            <h3>計画届を提出する</h3>
+            <p class="note">研修開始前の提出。提出前に研修を始めると助成対象外になり得る。</p>
+          </div>
+          <div class="owner">法人側</div>
+        </div>
+        <div class="step">
+          <div class="date">7月中</div>
+          <div>
+            <h3>確認・補正依頼に対応する</h3>
+            <p class="note">提出後、労働局から記載内容の確認や追加資料の依頼があれば、法人側担当者・社労士・おけもんで分担して対応する。</p>
+          </div>
+          <div class="owner">双方</div>
+        </div>
+        <div class="step">
+          <div class="date">8/1</div>
+          <div>
+            <h3>研修開始</h3>
+            <p class="note">出席簿、実施記録、受講時間、請求書・支払い記録を残す。</p>
+          </div>
+          <div class="owner">双方</div>
+        </div>
+        <div class="step">
+          <div class="date">2027/1/31</div>
+          <div>
+            <h3>半年パック終了</h3>
+            <p class="note">終了日を基準に、翌日から2か月以内に支給申請を出す。</p>
+          </div>
+          <div class="owner">双方</div>
+        </div>
+        <div class="step">
+          <div class="date">2027/3/31まで</div>
+          <div>
+            <h3>支給申請を提出する</h3>
+            <p class="note">研修後の申請。賃金台帳、出勤簿、請求書、領収書、振込明細などを添付。</p>
+          </div>
+          <div class="owner">法人側</div>
+        </div>
+        <div class="step">
+          <div class="date">2027/4-6月以降</div>
+          <div>
+            <h3>助成金の入金見込み</h3>
+            <p class="note">労働局の審査後に法人へ支給。審査期間は固定ではないため、ここは仮予定として説明する。</p>
+          </div>
+          <div class="owner">労働局</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="certainty">
+      <h2>補助金はいつ「通りそう」と見える？</h2>
+      <div class="grid three">
+        <div class="panel decision">
+          <h3>6月中</h3>
+          <p class="big">見込み確認</p>
+          <p class="note">法人情報、受講者、研修内容をもとに、社労士または労働局へ事前確認する。ここでNG要因を早めに潰す。</p>
+        </div>
+        <div class="panel warning">
+          <h3>7/1頃まで</h3>
+          <p class="big">計画届提出</p>
+          <p class="note">計画届を提出。不備や不足があれば、労働局から確認・補正依頼が来る想定。ただし支給決定ではない。</p>
+        </div>
+        <div class="panel risk">
+          <h3>2027/2-3月</h3>
+          <p class="big">最終審査</p>
+          <p class="note">研修実施後、支給申請書と証拠書類を出して審査。ここで支給決定後に入金される。</p>
+        </div>
+      </div>
+      <table class="compact-table" aria-label="補助金の確度の見方" style="margin-top:14px;">
+        <thead>
+          <tr>
+            <th>段階</th>
+            <th>その時点で言えること</th>
+            <th>まだ残るリスク</th>
+            <th>外向きの言い方</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>6月の事前確認</td>
+            <td>制度要件に合いそうか、明らかなNGがないかを確認できる。</td>
+            <td>法人情報、受講者、他補助金との重複、研修内容の最終確認が残る。</td>
+            <td>助成金の対象になり得る設計で進めます。</td>
+          </tr>
+          <tr>
+            <td>7/1頃の計画届</td>
+            <td>開始前の届出を出し、労働局との確認に入る。必要に応じて補正対応する。</td>
+            <td>提出時点では支給確定ではない。補正依頼、追加資料、研修実施・記録・支払い・受講者条件の管理が残る。</td>
+            <td>計画届を出し、労働局からの確認に対応しながら進めます。</td>
+          </tr>
+          <tr>
+            <td>研修後の支給申請</td>
+            <td>実施記録、出勤簿、賃金台帳、請求書、支払い証跡を出して最終審査に入る。</td>
+            <td>審査で不備や要件不足があれば、減額・不支給の可能性がある。</td>
+            <td>支給決定後に法人へ助成金が入金されます。</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">上長向けには「補助金が必ず出る案件」ではなく、「助成金の対象になり得る設計で、事前確認と記録管理をしながら進める案件」と説明するのが安全。</p>
+    </section>
+
+    <section id="checklist">
+      <h2>6月中に揃える確認事項</h2>
+      <div class="panel" style="margin-top:14px;">
+        <h3>法人情報で見るポイント</h3>
+        <table class="compact-table" aria-label="法人情報で確認すること">
+          <thead>
+            <tr>
+              <th>確認項目</th>
+              <th>見るもの</th>
+              <th>今回の聞き方</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>申請主体</td>
+              <td>法人名、所在地、代表者、事業所名</td>
+              <td>医療法人福命会として申請するのか、別法人名義なのかを確認。</td>
+            </tr>
+            <tr>
+              <td>雇用保険</td>
+              <td>雇用保険適用事業所番号</td>
+              <td>給与・労務を見ている人、社労士、総務に確認してもらう。</td>
+            </tr>
+            <tr>
+              <td>中小企業扱い</td>
+              <td>企業全体の常時雇用労働者数</td>
+              <td>医療法人は資本金で見づらいため、企業全体の人数で確認。医療・福祉等は100人以下が目安。</td>
+            </tr>
+            <tr>
+              <td>電子申請</td>
+              <td>GビズIDの有無</td>
+              <td>法人でGビズIDを持っているか、誰がログインできるかを確認。</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">中小企業の判定は、事業所単位ではなく企業全体で見る。資本金等を持たない医療法人などは、企業全体の常時雇用労働者数で判断する。最終確認は労働局または社労士へ。</p>
+      </div>
+    </section>
+
+    <section id="documents">
+      <h2>書類はこれ</h2>
+      <div class="grid two">
+        <div class="panel">
+          <h3>開始前に出す書類（2026/7/1頃まで）</h3>
+          <span class="tag amber">計画届</span>
+          <ul>
+            <li>職業訓練実施計画届（様式第1-1号）</li>
+            <li>事業展開等実施計画（様式第1-3号）</li>
+            <li>対象労働者一覧（様式第3-1号）</li>
+            <li>事前確認書（様式第11号）</li>
+            <li>研修カリキュラム、日程表、受講案内、見積書</li>
+            <li>事業内職業能力開発計画、職業能力開発推進者の選任資料</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>終了後に出す書類（2027/3/31まで）</h3>
+          <span class="tag green">支給申請</span>
+          <ul>
+            <li>支給申請書（様式第4-2号）</li>
+            <li>賃金助成の内訳（様式第5号）</li>
+            <li>経費助成の内訳（様式第6-2号）</li>
+            <li>OFF-JT実施状況報告書（様式第8-1号）</li>
+            <li>受講料等の価格設定に関する疎明書（様式第28号）</li>
+            <li>賃金台帳、出勤簿、請求書、領収書、振込明細</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="money">
+      <h2>お金の流れ</h2>
+      <div class="grid three">
+        <div class="panel">
+          <h3>1. 研修費を支払う</h3>
+          <p class="big">300,000円</p>
+          <p class="note">法人からおけもんへ支払い。補助金は先払いではない。</p>
+        </div>
+        <div class="panel">
+          <h3>2. 研修後に請求する</h3>
+          <p class="big">2027/3/31まで</p>
+          <p class="note">法人が労働局へ支給申請。終了翌日から2か月以内。</p>
+        </div>
+        <div class="panel">
+          <h3>3. 法人へ戻る</h3>
+          <p class="big">2027/4-6月以降</p>
+          <p class="note">支給決定後に法人へ入金。計画届の時点では入金確定ではない。</p>
+        </div>
+      </div>
+      <table class="compact-table" aria-label="お金の仮スケジュール" style="margin-top:14px;">
+        <thead>
+          <tr>
+            <th>時期</th>
+            <th>動き</th>
+            <th>お金の向き</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2026/8/1以降</td>
+            <td>研修開始、請求・支払い。支払い時期は契約条件で確定。</td>
+            <td>法人 → おけもん</td>
+          </tr>
+          <tr>
+            <td>2027/2/1-3/31</td>
+            <td>支給申請書と証拠書類を提出。</td>
+            <td>法人 → 労働局</td>
+          </tr>
+          <tr>
+            <td>2027/4-6月以降</td>
+            <td>支給決定後、助成金が支給される見込み。</td>
+            <td>労働局 → 法人</td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="compact-table" aria-label="補助金試算" style="margin-top:14px;">
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>金額</th>
+            <th>前提</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>研修費</td>
+            <td>300,000円</td>
+            <td>研修費30万円で計算。</td>
+          </tr>
+          <tr>
+            <td>経費助成</td>
+            <td>-225,000円</td>
+            <td>75%で試算。</td>
+          </tr>
+          <tr>
+            <td>賃金助成</td>
+            <td>-24,000円</td>
+            <td>2名 x 12時間 x 1,000円で試算。</td>
+          </tr>
+          <tr>
+            <td>法人実質負担の概算</td>
+            <td>51,000円</td>
+            <td>確定額ではなく、労働局または社労士確認前提。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="templates">
+      <h2>テンプレート実ファイル</h2>
+      <p class="note">リンクはこのHTMLから見た相対パス。xlsx、docx、pdfは実ファイルをそのまま開ける。</p>
+
+      <h3>計画届前に使うもの</h3>
+      <table class="compact-table" aria-label="計画届テンプレート">
+        <thead>
+          <tr>
+            <th>用途</th>
+            <th>実ファイル</th>
+            <th>メモ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>職業訓練実施計画届</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/02_計画届/様式第1-1号_職業訓練実施計画届.xlsx">様式第1-1号 xlsx</a><span class="path">02_計画届/様式第1-1号_職業訓練実施計画届.xlsx</span></td>
+            <td>訓練開始日の6か月前から1か月前まで。</td>
+          </tr>
+          <tr>
+            <td>記載例</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/02_計画届/記載例_様式第1-1号.pdf">様式第1-1号 記載例 pdf</a><span class="path">02_計画届/記載例_様式第1-1号.pdf</span></td>
+            <td>まずここを見ながら入力欄を把握。</td>
+          </tr>
+          <tr>
+            <td>事業展開等実施計画</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/02_計画届/様式第1-3号_事業展開等実施計画.xlsx">様式第1-3号 xlsx</a><span class="path">02_計画届/様式第1-3号_事業展開等実施計画.xlsx</span></td>
+            <td>産業保健業務のデジタル化、AI活用として整理。</td>
+          </tr>
+          <tr>
+            <td>対象労働者一覧</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/02_計画届/様式第3-1号_対象労働者一覧.xlsx">様式第3-1号 xlsx</a><span class="path">02_計画届/様式第3-1号_対象労働者一覧.xlsx</span></td>
+            <td>受講者が雇用保険被保険者か確認。</td>
+          </tr>
+          <tr>
+            <td>講師要件確認</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/02_計画届/様式第10号_OFF-JT講師要件確認書.xlsx">様式第10号 xlsx</a><span class="path">02_計画届/様式第10号_OFF-JT講師要件確認書.xlsx</span></td>
+            <td>必要時に確認。</td>
+          </tr>
+          <tr>
+            <td>事前確認書</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/02_計画届/様式第11号_事前確認書.xlsx">様式第11号 xlsx</a><span class="path">02_計画届/様式第11号_事前確認書.xlsx</span></td>
+            <td>計画届の必須側で確認。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top:20px;">支給申請で使うもの</h3>
+      <table class="compact-table" aria-label="支給申請テンプレート">
+        <thead>
+          <tr>
+            <th>用途</th>
+            <th>実ファイル</th>
+            <th>メモ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>支給申請書</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/03_支給申請/様式第4-2号_支給申請書.xlsx">様式第4-2号 xlsx</a><span class="path">03_支給申請/様式第4-2号_支給申請書.xlsx</span></td>
+            <td>訓練終了日の翌日から2か月以内。</td>
+          </tr>
+          <tr>
+            <td>賃金助成</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/03_支給申請/様式第5号_賃金助成の内訳.xlsx">様式第5号 xlsx</a><span class="path">03_支給申請/様式第5号_賃金助成の内訳.xlsx</span></td>
+            <td>2名 x 12時間 x 1,000円の根拠側。</td>
+          </tr>
+          <tr>
+            <td>経費助成</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/03_支給申請/様式第6-2号_経費助成の内訳.xlsx">様式第6-2号 xlsx</a><span class="path">03_支給申請/様式第6-2号_経費助成の内訳.xlsx</span></td>
+            <td>研修費30万円の経費助成側。</td>
+          </tr>
+          <tr>
+            <td>実施状況報告</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/03_支給申請/様式第8-1号_OFF-JT実施状況報告書.xlsx">様式第8-1号 xlsx</a><span class="path">03_支給申請/様式第8-1号_OFF-JT実施状況報告書.xlsx</span></td>
+            <td>研修日ごとの実施内容、出席、受講時間。</td>
+          </tr>
+          <tr>
+            <td>価格設定の疎明</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/03_支給申請/様式第28号_受講料等の価格設定に関する疎明書.docx">様式第28号 docx</a><span class="path">03_支給申請/様式第28号_受講料等の価格設定に関する疎明書.docx</span></td>
+            <td>令和8年5月14日以降の支給申請で注意。</td>
+          </tr>
+          <tr>
+            <td>共通申立書</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/04_共通様式/共通要領様式第1号_支給要件確認申立書.docx">共通要領様式第1号 docx</a><span class="path">04_共通様式/共通要領様式第1号_支給要件確認申立書.docx</span></td>
+            <td>支給申請時に確認。</td>
+          </tr>
+          <tr>
+            <td>振込先</td>
+            <td><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/04_共通様式/共通要領様式第1号別添_支払方法受取人住所届.xls">支払方法・受取人住所届 xls</a><span class="path">04_共通様式/共通要領様式第1号別添_支払方法受取人住所届.xls</span></td>
+            <td>法人側の口座情報。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="filled-drafts">
+      <h2>記入たたき台</h2>
+      <p class="note">こちらで分かる範囲を仮記入した作業用ファイル。先方確認が必要な項目は「要確認」のまま残している。</p>
+
+      <table class="compact-table" aria-label="記入たたき台">
+        <thead>
+          <tr>
+            <th>用途</th>
+            <th>リンク</th>
+            <th>状態</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>引き継ぎメモ</td>
+            <td><a href="補助金計画届_記入たたき台_引き継ぎ_2026-05-23.md">補助金計画届_記入たたき台_引き継ぎ_2026-05-23.md</a></td>
+            <td>次のAIが最初に読む圧縮メモ。</td>
+          </tr>
+          <tr>
+            <td>管理シート</td>
+            <td>
+              <a href="https://docs.google.com/spreadsheets/d/1DHPT6NWcUX2otcsAzQwEoptyn1kAivq1JL6BigNA9Vg" target="_blank" rel="noopener">Googleスプレッドシート</a><br>
+              <a href="記入たたき台/2026-05-23_補助金計画届/補助金計画届_記入たたき台_管理シート_2026-05-23.xlsx">xlsx</a>
+            </td>
+            <td>前提、入力済み、要確認、作成ファイルを一覧化。</td>
+          </tr>
+          <tr>
+            <td>様式第1-1号</td>
+            <td>
+              <a href="https://docs.google.com/spreadsheets/d/1f8SmY-1bTpK4cDvU6gTqqhxv6HBDSJ7QVmZbpKAEPCQ" target="_blank" rel="noopener">Googleスプレッドシート</a><br>
+              <a href="記入たたき台/2026-05-23_補助金計画届/様式第1-1号_職業訓練実施計画届_記入たたき台_2026-05-23.xlsx">xlsx</a>
+            </td>
+            <td>法人名、所在地、研修名、8/1開始、12時間、2名などを仮記入済み。</td>
+          </tr>
+          <tr>
+            <td>様式第1-3号</td>
+            <td>
+              <a href="https://docs.google.com/spreadsheets/d/11S570gDXt8BWA8Ce5YcLUrrdoLh9xrcoksmuaDq-ys4" target="_blank" rel="noopener">Googleスプレッドシート</a><br>
+              <a href="記入たたき台/2026-05-23_補助金計画届/様式第1-3号_事業展開等実施計画_記入たたき台_2026-05-23.xlsx">xlsx</a>
+            </td>
+            <td>事業展開等の説明を、産業保健業務のデジタル化・AI活用として仮記入済み。</td>
+          </tr>
+          <tr>
+            <td>様式第3-1号</td>
+            <td><a href="記入たたき台/2026-05-23_補助金計画届/様式第3-1号_対象労働者一覧_記入たたき台_2026-05-23.xlsx">xlsx</a></td>
+            <td>受講者2名分の枠のみ作成。氏名・雇用保険番号などは先方確認。</td>
+          </tr>
+          <tr>
+            <td>様式第11号</td>
+            <td><a href="記入たたき台/2026-05-23_補助金計画届/様式第11号_事前確認書_記入たたき台_2026-05-23.xlsx">xlsx</a></td>
+            <td>提出日、法人名、所在地、大阪労働局向けを仮記入済み。</td>
+          </tr>
+          <tr>
+            <td>様式第10号</td>
+            <td><a href="記入たたき台/2026-05-23_補助金計画届/様式第10号_OFF-JT講師要件確認書_記入たたき台_2026-05-23.xlsx">xlsx</a></td>
+            <td>講師要件の正式情報待ち。ファイルだけ作業フォルダに配置済み。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="links">
+      <h2>関連ページリンク</h2>
+      <div class="link-list">
+        <div class="link-row">
+          <div class="link-title">案件STATE</div>
+          <div><a href="STATE.md">STATE.md</a><span class="path">最新状態、注意点、ファイルナビの正本</span></div>
+        </div>
+        <div class="link-row">
+          <div class="link-title">案件README</div>
+          <div><a href="README.md">README.md</a><span class="path">案件全体の入口</span></div>
+        </div>
+        <div class="link-row">
+          <div class="link-title">2回目訪問要約</div>
+          <div><a href="2026-05-22_2回目訪問_要約.md">2026-05-22_2回目訪問_要約.md</a><span class="path">2回目訪問の要約</span></div>
+        </div>
+        <div class="link-row">
+          <div class="link-title">補助金の流れ</div>
+          <div><a href="補助金申請サポート_流れ_2026-05-23.md">補助金申請サポート_流れ_2026-05-23.md</a><span class="path">このHTMLの根拠メモ</span></div>
+        </div>
+        <div class="link-row">
+          <div class="link-title">記入イメージ</div>
+          <div><a href="補助金_記入イメージ_2026-05-22.md">補助金_記入イメージ_2026-05-22.md</a><span class="path">30万円試算、カリキュラム、口頭説明メモ</span></div>
+        </div>
+        <div class="link-row">
+          <div class="link-title">公式資料束</div>
+          <div><a href="公式資料/人材開発支援助成金_事業展開等リスキリング_2026-05-23/README.md">公式資料README</a><span class="path">厚労省からDL済みの資料と様式</span></div>
+        </div>
+        <div class="link-row">
+          <div class="link-title">記入たたき台</div>
+          <div><a href="補助金計画届_記入たたき台_引き継ぎ_2026-05-23.md">引き継ぎメモ</a><span class="path">Google Sheetsリンク、xlsx一覧、要確認項目</span></div>
+        </div>
+        <div class="link-row">
+          <div class="link-title">上長確認PDF</div>
+          <div><a href="共有用/山本さま_AI補助金提案_2026-05-22/山本さま_AI業務サポート研修_実施報告書兼概算見積書_2026-05-22.pdf">実施報告書兼概算見積書 PDF</a><span class="path">5/22にDM送付済み</span></div>
+        </div>
+        <div class="link-row">
+          <div class="link-title">上長確認HTML</div>
+          <div><a href="共有用/山本さま_AI補助金提案_2026-05-22/index.html">共有用HTML</a><span class="path">PDF化前の元HTML</span></div>
+        </div>
+        <div class="link-row">
+          <div class="link-title">公式HP</div>
+          <div>
+            <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/d01-1.html" target="_blank" rel="noopener">厚労省 人材開発支援助成金</a><br>
+            <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/38819_00010.html" target="_blank" rel="noopener">申請書類 令和8年5月14日から</a><br>
+            <a href="https://www.mhlw.go.jp/content/11800000/001310925.pdf" target="_blank" rel="noopener">人材開発支援助成金の概要リーフレット</a><br>
+            <a href="https://www.mhlw.go.jp/content/11800000/001701940.pdf" target="_blank" rel="noopener">詳細版パンフレットPDF</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="message">
+      <h2>山本さまへの確認依頼文案</h2>
+      <div class="script">山本さま
+
+8月1日開始で進める前提では、開始前の手続きとして、7月1日頃までに職業訓練実施計画届を出す必要があります。
+そのため、6月中に法人情報、受講者、研修内容、添付資料を固めておきたいです。
+
+流れとしては、7月1日頃までに計画届を提出し、8月1日から研修開始、2027年1月31日頃に半年パック終了、2027年3月31日までに支給申請を出す形です。
+助成金の入金は労働局の審査後になるため、仮予定としては2027年4月から6月以降の見込みで見ておくのが安全です。
+
+なお、計画届の提出・受理は「支給決定」ではありません。
+ただし、事前に法人情報、受講者、研修内容、他補助金との重複有無を確認しておくことで、対象になりそうかどうかは研修開始前にかなり見通しを立てられます。
+そのため、こちらでは「助成金の対象になり得る設計で、事前確認と記録管理をしながら進める」という前提で資料を整えます。
+
+申請可否の確認に向けて、次の項目だけ先に分かる範囲で教えていただけると助かります。
+
+1. 申請主体の法人名
+2. 雇用保険適用事業所番号の有無
+3. 受講候補者2名以上が雇用保険被保険者か
+4. 研修を勤務時間内に実施できるか
+5. GビズIDの有無
+6. 社労士さんに確認できるか
+7. 他業者さんでも補助金利用予定があれば、その制度名と対象内容
+
+こちらでは、研修カリキュラム、見積書、受講案内、実施記録のひな形を準備しておきます。
+申請そのものは法人さま側で行う形になりますが、必要資料の整理と記入たたき台まではサポートします。</div>
+    </section>
+
+    <footer>
+      <p>作成: 2026-05-23 / 内部把握用。実申請前には必ず厚労省公式ページ、管轄労働局、社労士確認で最新版と適用可否を確認する。</p>
+    </footer>
+  </div>
+</body>
+</html>
