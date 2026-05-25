@@ -80,9 +80,9 @@
   .hero-meta .pill { padding: 7px 16px; background: rgba(255,255,255,0.9); border-radius: 999px; color: var(--primary); font-size: 12px; font-weight: 600; }
 
   /* SECTION */
-  section { padding: 90px 24px; }
+  section { padding: 56px 24px; }
   .container { max-width: 980px; margin: 0 auto; }
-  .section-head { text-align: center; margin-bottom: 50px; }
+  .section-head { text-align: center; margin-bottom: 28px; }
   .section-head h2 { font-size: clamp(22px, 3vw, 30px); margin: 12px 0 12px; line-height: 1.5; }
   .section-head .lead { color: var(--ink-soft); font-size: 14px; max-width: 620px; margin: 0 auto; }
   .section-head h2::after {
@@ -104,7 +104,7 @@
   .agree-row .body { font-size: 14px; color: var(--ink); }
   .agree-row .body strong { color: var(--primary); }
 
-  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 36px; }
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 24px; }
   @media (max-width: 720px) { .quote-grid { grid-template-columns: 1fr; } }
   .quote-box {
     background: linear-gradient(135deg, var(--primary-light), white);
@@ -276,17 +276,19 @@
   footer .org { color: var(--ink); font-weight: 500; margin-top: 6px; font-size: 13px; }
 
   /* fade-in */
-  .fade-in, .stagger { opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease; }
-  .stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in, .stagger { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .stagger > * { opacity: 0; transform: translateY(12px); transition: opacity 0.4s ease, transform 0.4s ease; }
   .is-visible.fade-in { opacity: 1; transform: translateY(0); }
   .is-visible.stagger > * { opacity: 1; transform: translateY(0); }
-  .is-visible.stagger > *:nth-child(1) { transition-delay: 0.05s; }
-  .is-visible.stagger > *:nth-child(2) { transition-delay: 0.15s; }
-  .is-visible.stagger > *:nth-child(3) { transition-delay: 0.25s; }
-  .is-visible.stagger > *:nth-child(4) { transition-delay: 0.35s; }
-  .is-visible.stagger > *:nth-child(5) { transition-delay: 0.45s; }
-  .is-visible.stagger > *:nth-child(6) { transition-delay: 0.55s; }
-  .is-visible.stagger > *:nth-child(n+7) { transition-delay: 0.65s; }
+  .is-visible.stagger > *:nth-child(1) { transition-delay: 0.02s; }
+  .is-visible.stagger > *:nth-child(2) { transition-delay: 0.06s; }
+  .is-visible.stagger > *:nth-child(3) { transition-delay: 0.10s; }
+  .is-visible.stagger > *:nth-child(4) { transition-delay: 0.14s; }
+  .is-visible.stagger > *:nth-child(5) { transition-delay: 0.18s; }
+  .is-visible.stagger > *:nth-child(6) { transition-delay: 0.22s; }
+  .is-visible.stagger > *:nth-child(n+7) { transition-delay: 0.26s; }
+  /* fallback: prevent perpetual hiding if observer fails */
+  noscript ~ .fade-in, noscript ~ .stagger { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
@@ -727,12 +729,19 @@
   const animEls = document.querySelectorAll('.fade-in, .stagger');
   const animObs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); animObs.unobserve(e.target); } });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.05, rootMargin: '0px 0px -10% 0px' });
   animEls.forEach(el => {
     const r = el.getBoundingClientRect();
-    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+    if (r.top < window.innerHeight * 1.2 && r.bottom > -100) el.classList.add('is-visible');
     else animObs.observe(el);
   });
+  // safety net: after 2s, force-show anything still hidden
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in:not(.is-visible), .stagger:not(.is-visible)').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 2.5) el.classList.add('is-visible');
+    });
+  }, 2000);
 </script>
 
 </body>
