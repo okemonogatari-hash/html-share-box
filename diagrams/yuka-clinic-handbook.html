@@ -275,20 +275,28 @@
   footer .heart { color: var(--primary); }
   footer .org { color: var(--ink); font-weight: 500; margin-top: 6px; font-size: 13px; }
 
-  /* fade-in */
-  .fade-in, .stagger { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
-  .stagger > * { opacity: 0; transform: translateY(12px); transition: opacity 0.4s ease, transform 0.4s ease; }
-  .is-visible.fade-in { opacity: 1; transform: translateY(0); }
-  .is-visible.stagger > * { opacity: 1; transform: translateY(0); }
-  .is-visible.stagger > *:nth-child(1) { transition-delay: 0.02s; }
-  .is-visible.stagger > *:nth-child(2) { transition-delay: 0.06s; }
-  .is-visible.stagger > *:nth-child(3) { transition-delay: 0.10s; }
-  .is-visible.stagger > *:nth-child(4) { transition-delay: 0.14s; }
-  .is-visible.stagger > *:nth-child(5) { transition-delay: 0.18s; }
-  .is-visible.stagger > *:nth-child(6) { transition-delay: 0.22s; }
-  .is-visible.stagger > *:nth-child(n+7) { transition-delay: 0.26s; }
-  /* fallback: prevent perpetual hiding if observer fails */
-  noscript ~ .fade-in, noscript ~ .stagger { opacity: 1; transform: none; }
+  /* fade-in : 情報重視ページにつきアニメ無効・即表示 */
+  .fade-in, .stagger { opacity: 1; transform: none; }
+  .stagger > * { opacity: 1; transform: none; }
+  /* 関連資料ナビ */
+  .related-nav {
+    background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+    padding: 40px 24px 60px;
+  }
+  .related-nav .label-en { display: block; text-align: center; margin-bottom: 8px; }
+  .related-nav h2 { text-align: center; font-size: 20px; margin-bottom: 22px; }
+  .related-nav .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; max-width: 980px; margin: 0 auto; }
+  .related-nav .nav-card {
+    background: white; padding: 16px 14px; border-radius: 12px;
+    box-shadow: var(--shadow-soft); border: 1px solid var(--line);
+    text-align: center; font-size: 13px; color: var(--ink);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .related-nav .nav-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-warm); }
+  .related-nav .nav-card .ic { font-size: 22px; display: block; margin-bottom: 6px; color: var(--primary); }
+  .related-nav .nav-card.current { background: var(--primary-light); border-color: var(--primary); pointer-events: none; opacity: 0.7; }
+  .related-nav .nav-card .lbl { font-weight: 600; }
+  .related-nav .nav-card .meta { display: block; font-size: 10px; color: var(--muted); margin-top: 3px; }
 </style>
 </head>
 <body>
@@ -710,14 +718,48 @@
   </div>
 </section>
 
-<!-- nav bottom -->
-<div class="container">
-  <div class="nav-bottom">
-    <a href="./yuka-clinic-index.html"><i class="fas fa-arrow-left"></i> &nbsp;PJダッシュボードへ戻る</a>
-    <a href="./yuka-clinic-index.html" class="center">📑 ハブ</a>
-    <a href="./2026-05-23_yuka-clinic-subsidy-hub.html">補助金申請サポートハブ &nbsp;<i class="fas fa-arrow-right"></i></a>
+<!-- 関連資料ナビ（全ページへの行き来） -->
+<section class="related-nav">
+  <span class="label-en">All Documents</span>
+  <h2>📚 ご一緒した資料すべて</h2>
+  <div class="nav-grid">
+    <a href="./yuka-clinic-index.html" class="nav-card">
+      <span class="ic"><i class="fas fa-home"></i></span>
+      <span class="lbl">PJダッシュボード</span>
+      <span class="meta">トップページ</span>
+    </a>
+    <a href="./yuka-clinic-handbook.html" class="nav-card current">
+      <span class="ic"><i class="fas fa-book"></i></span>
+      <span class="lbl">📘 ハンドブック</span>
+      <span class="meta">いまここ</span>
+    </a>
+    <a href="./2026-05-23_yuka-clinic-subsidy-hub.html" class="nav-card">
+      <span class="ic"><i class="fas fa-yen-sign"></i></span>
+      <span class="lbl">補助金申請ハブ</span>
+      <span class="meta">2026.05.23</span>
+    </a>
+    <a href="./2026-05-22_yuka-clinic-meeting-minutes.html" class="nav-card">
+      <span class="ic"><i class="fas fa-clipboard-list"></i></span>
+      <span class="lbl">2回目 議事録</span>
+      <span class="meta">2026.05.22</span>
+    </a>
+    <a href="./2026-05-22_yuka-clinic-2nd-visit-roadmap.html" class="nav-card">
+      <span class="ic"><i class="fas fa-map"></i></span>
+      <span class="lbl">提案編</span>
+      <span class="meta">2026.05.22</span>
+    </a>
+    <a href="./2026-05-14_yuka-clinic-grant-10h-plan.html" class="nav-card">
+      <span class="ic"><i class="fas fa-piggy-bank"></i></span>
+      <span class="lbl">補助金10hプラン</span>
+      <span class="meta">2026.05.14</span>
+    </a>
+    <a href="./2026-05-14_yuka-clinic-ai-thanks.html" class="nav-card">
+      <span class="ic"><i class="fas fa-seedling"></i></span>
+      <span class="lbl">1回目 訪問まとめ</span>
+      <span class="meta">2026.05.14</span>
+    </a>
   </div>
-</div>
+</section>
 
 <footer>
   <p>このページは2026年5月25日に作成されました <span class="heart">♥</span></p>
