@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>ふうさん 資質図解ブランチ | StrengthsFinder TOP10</title>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #342c27;
+    --muted: #72655c;
+    --paper: #fffdf7;
+    --wash: #f7efe3;
+    --line: rgba(132,103,78,.18);
+    --peach: #c08470;
+    --peach-deep: #a06251;
+    --gold: #b8872b;
+    --rel: #0b74d1;
+    --exec: #7d2f8f;
+    --infl: #ef7d00;
+    --strat: #0f8a60;
+    --rose: #b45b5f;
+    --green-soft: #edf6e8;
+    --blue-soft: #eef7fb;
+    --rose-soft: #fff1ec;
+    --gold-soft: #fff7df;
+    --purple-soft: #f3eefb;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background:
+      linear-gradient(90deg, rgba(192,132,112,.035) 1px, transparent 1px) 0 0 / 36px 36px,
+      linear-gradient(180deg, #fbf4e8 0%, #f4eadc 100%);
+    font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    line-height: 1.75;
+  }
+  a { color: inherit; }
+
+  .hero {
+    position: relative;
+    min-height: 86vh;
+    display: grid;
+    place-items: center;
+    padding: 72px 20px 54px;
+    color: #fffdf7;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.42), transparent 22%),
+      radial-gradient(circle at 78% 18%, rgba(245,223,184,.75), transparent 24%),
+      linear-gradient(135deg, rgba(192,132,112,.92), rgba(224,188,168,.72) 48%, rgba(168,196,173,.78));
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero::before {
+    content: "THEME BRANCH";
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(42px, 8vw, 110px);
+    letter-spacing: .16em;
+    color: rgba(255,255,255,.13);
+    transform: rotate(7deg);
+    white-space: nowrap;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 120px;
+    background: linear-gradient(to top, #fbf4e8, transparent);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    width: min(1160px, 100%);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, .68fr);
+    gap: 32px;
+    align-items: center;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: .16em;
+    font-weight: 800;
+    color: rgba(255,253,247,.78);
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(34px, 5vw, 64px);
+    line-height: 1.16;
+    letter-spacing: 0;
+    margin: 0 0 18px;
+  }
+  .lead {
+    max-width: 760px;
+    margin: 0 0 24px;
+    color: rgba(255,253,247,.9);
+    font-size: clamp(16px, 2vw, 19px);
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: rgba(255,253,247,.94);
+    color: var(--peach-deep);
+    text-decoration: none;
+    font-weight: 800;
+    border: 1px solid rgba(255,255,255,.55);
+    box-shadow: 0 8px 24px rgba(53,45,39,.12);
+  }
+  .btn.subtle {
+    color: #fffdf7;
+    background: rgba(255,255,255,.16);
+    border-color: rgba(255,255,255,.32);
+  }
+  .result-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 18px 44px rgba(53,45,39,.20);
+    color: var(--ink);
+  }
+  .result-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+  .result-card figcaption {
+    margin: 10px 2px 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .toc {
+    position: fixed;
+    top: 22px;
+    left: 18px;
+    z-index: 20;
+    width: 222px;
+    max-height: calc(100vh - 44px);
+    overflow: auto;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255,253,247,.9);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 34px rgba(53,45,39,.12);
+  }
+  .toc-title {
+    font-family: "Noto Serif JP", serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .toc ol { list-style: none; margin: 0; padding: 0; }
+  .toc a,
+  .toc-mobile a {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 8px;
+    align-items: center;
+    padding: 7px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  .toc a.active,
+  .toc a:hover,
+  .toc-mobile a.active {
+    color: var(--peach-deep);
+    background: rgba(245,223,184,.65);
+    font-weight: 800;
+  }
+  .num {
+    color: var(--peach);
+    font-weight: 800;
+    font-size: 11px;
+  }
+  .toc-top {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+  .toc-mobile {
+    display: none;
+    position: sticky;
+    top: 10px;
+    z-index: 30;
+    width: min(720px, calc(100% - 24px));
+    margin: -26px auto 18px;
+    background: rgba(255,253,247,.96);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(53,45,39,.12);
+    overflow: hidden;
+  }
+  .toc-mobile summary {
+    cursor: pointer;
+    padding: 13px 16px;
+    font-weight: 800;
+    color: var(--peach-deep);
+  }
+  .toc-mobile summary::-webkit-details-marker { display: none; }
+  .toc-mobile ol { list-style: none; margin: 0; padding: 0 10px 12px; }
+
+  .back-to-top {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 40;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--peach-deep);
+    color: #fffdf7;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(53,45,39,.20);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s, transform .2s;
+  }
+  .back-to-top.visible { opacity: 1; pointer-events: auto; }
+  .back-to-top:hover { transform: translateY(-3px); }
+
+  main {
+    width: min(1160px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+  section {
+    scroll-margin-top: 80px;
+    padding: 68px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-head {
+    display: grid;
+    grid-template-columns: minmax(0, .72fr) minmax(280px, .28fr);
+    gap: 26px;
+    align-items: end;
+    margin-bottom: 24px;
+  }
+  .chapter {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--peach);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .18em;
+  }
+  h2 {
+    margin: 0 0 8px;
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(26px, 3vw, 38px);
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+  .section-lead {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15px;
+  }
+  .note {
+    border-left: 4px solid var(--gold);
+    background: #fffaf0;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+    color: #56432a;
+    font-size: 14px;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .card,
+  .theme-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 6px 22px rgba(53,45,39,.06);
+  }
+  .card { padding: 18px; }
+  .card h3 { margin: 0 0 8px; font-size: 18px; }
+  .card p, .card li { color: var(--muted); font-size: 14px; }
+  .card ul { margin: 10px 0 0; padding-left: 1.2em; }
+  .domain-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 30px;
+    border-radius: 999px;
+    padding: 5px 10px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .rel { background: var(--rel); }
+  .exec { background: var(--exec); }
+  .infl { background: var(--infl); }
+  .strat { background: var(--strat); }
+  .map {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(78px, 1fr));
+    gap: 8px;
+  }
+  .map a {
+    min-height: 96px;
+    padding: 10px;
+    border-radius: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    box-shadow: 0 6px 18px rgba(53,45,39,.05);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .map a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(53,45,39,.12);
+  }
+  .map b { font-size: 12px; line-height: 1.35; }
+  .map small { color: var(--muted); line-height: 1.35; }
+
+  .theme-card {
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .theme-head {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: center;
+    padding: 22px;
+    background:
+      linear-gradient(135deg, rgba(255,250,240,.95), rgba(245,223,184,.62)),
+      var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .rank-no {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: var(--peach-deep);
+    color: #fffdf7;
+    font-family: "Noto Serif JP", serif;
+    font-size: 26px;
+    font-weight: 700;
+  }
+  .theme-head h3 {
+    margin: 0 0 4px;
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(24px, 3vw, 36px);
+    line-height: 1.25;
+  }
+  .theme-head p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .metaphor {
+    min-width: 110px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,253,247,.86);
+    border: 2px dashed var(--peach);
+    text-align: center;
+    color: var(--peach-deep);
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .theme-body {
+    padding: 22px;
+    display: grid;
+    gap: 16px;
+  }
+  .branch-grid {
+    display: grid;
+    grid-template-columns: minmax(0, .98fr) minmax(300px, .72fr);
+    gap: 16px;
+  }
+  .subbox {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    background: #fffefb;
+  }
+  .subbox h4 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: var(--peach-deep);
+  }
+  .subbox p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .subbox ul {
+    margin: 8px 0 0;
+    padding-left: 1.15em;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .fuu {
+    background: var(--green-soft);
+  }
+  .question {
+    background: var(--rose-soft);
+  }
+  .compare {
+    background: var(--blue-soft);
+  }
+  .source {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  .route {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .route-step {
+    position: relative;
+    min-height: 150px;
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 6px 20px rgba(53,45,39,.06);
+  }
+  .route-step b {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--peach-deep);
+  }
+  .route-step p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  @media (max-width: 1180px) {
+    .toc { display: none; }
+    .toc-mobile { display: block; }
+  }
+  @media (min-width: 1181px) {
+    .hero-inner,
+    main {
+      width: min(1160px, calc(100vw - 340px));
+      margin-left: max(300px, calc((100vw - 1160px) / 2));
+      margin-right: auto;
+    }
+  }
+  @media (max-width: 860px) {
+    .hero { min-height: auto; }
+    .hero-inner,
+    .section-head,
+    .grid-2,
+    .grid-3,
+    .branch-grid,
+    .route {
+      grid-template-columns: 1fr;
+    }
+    .map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .theme-head {
+      grid-template-columns: 70px minmax(0, 1fr);
+    }
+    .metaphor { grid-column: 1 / -1; text-align: left; }
+    section { padding: 44px 0; }
+  }
+  @media (max-width: 520px) {
+    .map { grid-template-columns: 1fr; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">FUU / TOP10 THEME BRANCH / 2026-05-26</div>
+      <h1>ふうさんの<br>資質図解ブランチ</h1>
+      <p class="lead">ユーザー作成PDF「001ストレングス資質図解ガイド」を、ふうさんの上位10資質に合わせてHTML化した補足ページです。取扱説明書の本文で気になった資質を、ここで深掘りできます。10資質ぜんぶに「ふうさん接続」と「セッションで聞くこと」を1問ずつ添えてあります。</p>
+      <div class="hero-actions">
+        <a class="btn" href="fuu-strengths-guide-2026-05-26.html">取扱説明書へ戻る</a>
+        <a class="btn subtle" href="#theme-map">TOP10から選ぶ</a>
+      </div>
+    </div>
+    <figure class="result-card">
+      <img src="fuu-strengths-result-2026-05-26.png" alt="ふうさんのStrengthsFinder 34資質順位画像">
+      <figcaption>TOP10: 共感性 / 収集心 / 成長促進 / 親密性 / 運命思考 / ポジティブ / 包含 / 学習欲 / 調和性 / 個別化</figcaption>
+    </figure>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目次">
+  <div class="toc-title">Branch 目次</div>
+  <ol>
+    <li><a href="#howto" data-target="howto"><span class="num">00</span>使い方</a></li>
+    <li><a href="#theme-map" data-target="theme-map"><span class="num">01</span>TOP10地図</a></li>
+    <li><a href="#domains" data-target="domains"><span class="num">02</span>4領域</a></li>
+    <li><a href="#empathy" data-target="empathy"><span class="num">1</span>共感性</a></li>
+    <li><a href="#input" data-target="input"><span class="num">2</span>収集心</a></li>
+    <li><a href="#developer" data-target="developer"><span class="num">3</span>成長促進</a></li>
+    <li><a href="#relator" data-target="relator"><span class="num">4</span>親密性</a></li>
+    <li><a href="#connectedness" data-target="connectedness"><span class="num">5</span>運命思考</a></li>
+    <li><a href="#positivity" data-target="positivity"><span class="num">6</span>ポジティブ</a></li>
+    <li><a href="#includer" data-target="includer"><span class="num">7</span>包含</a></li>
+    <li><a href="#learner" data-target="learner"><span class="num">8</span>学習欲</a></li>
+    <li><a href="#harmony" data-target="harmony"><span class="num">9</span>調和性</a></li>
+    <li><a href="#individualization" data-target="individualization"><span class="num">10</span>個別化</a></li>
+    <li><a href="#route" data-target="route"><span class="num">03</span>育てる伴走への順番</a></li>
+    <li><a href="#sources" data-target="sources"><span class="num">04</span>出典</a></li>
+  </ol>
+  <div class="toc-top"><a href="#top">最初に戻る</a></div>
+</nav>
+
+<details class="toc-mobile" aria-label="目次">
+  <summary>Branch 目次</summary>
+  <ol>
+    <li><a href="#howto" data-target="howto"><span class="num">00</span>使い方</a></li>
+    <li><a href="#theme-map" data-target="theme-map"><span class="num">01</span>TOP10地図</a></li>
+    <li><a href="#domains" data-target="domains"><span class="num">02</span>4領域</a></li>
+    <li><a href="#empathy" data-target="empathy"><span class="num">1</span>共感性</a></li>
+    <li><a href="#input" data-target="input"><span class="num">2</span>収集心</a></li>
+    <li><a href="#developer" data-target="developer"><span class="num">3</span>成長促進</a></li>
+    <li><a href="#relator" data-target="relator"><span class="num">4</span>親密性</a></li>
+    <li><a href="#connectedness" data-target="connectedness"><span class="num">5</span>運命思考</a></li>
+    <li><a href="#positivity" data-target="positivity"><span class="num">6</span>ポジティブ</a></li>
+    <li><a href="#includer" data-target="includer"><span class="num">7</span>包含</a></li>
+    <li><a href="#learner" data-target="learner"><span class="num">8</span>学習欲</a></li>
+    <li><a href="#harmony" data-target="harmony"><span class="num">9</span>調和性</a></li>
+    <li><a href="#individualization" data-target="individualization"><span class="num">10</span>個別化</a></li>
+    <li><a href="#route" data-target="route"><span class="num">03</span>育てる伴走への順番</a></li>
+    <li><a href="#sources" data-target="sources"><span class="num">04</span>出典</a></li>
+  </ol>
+</details>
+
+<button class="back-to-top" aria-label="最初に戻る" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main>
+  <section id="howto">
+    <div class="section-head">
+      <div>
+        <span class="chapter">00 / HOW TO USE</span>
+        <h2>このページは、資質の辞書ではなく「話を深める枝」です</h2>
+        <p class="section-lead">取扱説明書の本文で気になった資質だけを開き、ふうさん本人の実感と照らし合わせるためのページです。</p>
+      </div>
+      <div class="note">セッションでは、資質説明を全部読むより「どの言葉が当たっていて、どの言葉が違うか」を確認するのがおすすめです。</div>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <h3>基本説明を見る</h3>
+        <p>PDF内の「どういう人？」「自然な行動・貢献」を、HTMLで読みやすく整理しています。</p>
+      </div>
+      <div class="card">
+        <h3>喜ぶこと・苦手を見る</h3>
+        <p>本人の力が出る条件と、疲れやすい条件を見つけるためのメモとして使います。お仕事の場づくりや、ご家族との時間のヒントにも。</p>
+      </div>
+      <div class="card">
+        <h3>ふうさん接続を見る</h3>
+        <p>主婦＋経理パート事務＋コピーライター講座修了＋経理代行で初依頼「ほっとした」＋中国語/英語学習中＋家族3人暮らしの文脈に、それぞれの資質をつなげて仮説化しています。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="theme-map">
+    <div class="section-head">
+      <div>
+        <span class="chapter">01 / TOP10 MAP</span>
+        <h2>ふうさんの上位10資質だけを、すぐ開けるようにする</h2>
+        <p class="section-lead">気になる資質をクリックすると、その説明へ移動します。</p>
+      </div>
+      <div class="note">1位から順に読む必要はありません。セッションで話題に出た資質から開くと使いやすいです。</div>
+    </div>
+    <div class="map">
+      <a href="#empathy"><span class="num">01</span><b>共感性</b><small>心の温度計 / 感情察知</small></a>
+      <a href="#input"><span class="num">02</span><b>収集心</b><small>図書館 / 集めて蓄える</small></a>
+      <a href="#developer"><span class="num">03</span><b>成長促進</b><small>庭師 / 育てる</small></a>
+      <a href="#relator"><span class="num">04</span><b>親密性</b><small>深く長い友達 / 信頼を時間で</small></a>
+      <a href="#connectedness"><span class="num">05</span><b>運命思考</b><small>つながりの旅人 / 意味を見つける</small></a>
+      <a href="#positivity"><span class="num">06</span><b>ポジティブ</b><small>陽だまり / 場を温める</small></a>
+      <a href="#includer"><span class="num">07</span><b>包含</b><small>輪を広げる人 / 誰も置いていかない</small></a>
+      <a href="#learner"><span class="num">08</span><b>学習欲</b><small>学びの旅人 / 学びそのものが喜び</small></a>
+      <a href="#harmony"><span class="num">09</span><b>調和性</b><small>平和の使者 / 場をやさしく整える</small></a>
+      <a href="#individualization"><span class="num">10</span><b>個別化</b><small>ひとり一人を見る目 / 違いを大切に</small></a>
+    </div>
+  </section>
+
+  <section id="domains">
+    <div class="section-head">
+      <div>
+        <span class="chapter">02 / FOUR DOMAINS</span>
+        <h2>4領域で見ると「人と一緒に育つ × 学び続ける」が圧倒的に強い人</h2>
+        <p class="section-lead">PDFの分類を、ふうさんのTOP10に合わせて読み替えます。</p>
+      </div>
+      <div class="note">上位10の内訳は、人間関係構築力 <strong>8</strong>・戦略的思考力 <strong>2</strong>・影響力 <strong>0</strong>・実行力 <strong>0</strong>。34資質中とても珍しい組み合わせで、「人と一緒に過ごす場・育てる場・学び続ける場」が、ふうさんが最も自然に呼吸ができる景色というサインです。</div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <span class="domain-chip rel">人間関係構築力 ✕ 8資質</span>
+        <h3>共感性・成長促進・親密性・運命思考・ポジティブ・包含・調和性・個別化</h3>
+        <p>人の気持ちに寄り添い、深く長く信頼を育て、誰も置いていかず、出会いに意味を見つけ、場を温めて整え、ひとり一人の違いを大切にする領域。ふうさんの中核装備。経理代行の初依頼者から「ほっとした」と言われて嬉しかったのは、この8資質が同時に動いた瞬間です。</p>
+      </div>
+      <div class="card">
+        <span class="domain-chip strat">戦略的思考力 ✕ 2資質</span>
+        <h3>収集心・学習欲</h3>
+        <p>気になったことを集めて、学び続ける領域。中国語・英語・コピーライター講座・NISA・「The Art of Spending Money」── ふうさんの「自分の世界を広げたい」を支えている根っこです。</p>
+      </div>
+      <div class="card" style="background:#f7f3ef;">
+        <span class="domain-chip infl" style="opacity:.65;">影響力 ✕ 0資質</span>
+        <h3>上位10内に無し</h3>
+        <p>「自分が前に出てぐいぐい引っ張る」「人を熱量で動かす」は本来の動き方ではない、というサイン。ふうさんは <strong>前に立つリーダーじゃなく、後ろからやさしく背中を押す伴走者</strong> として、自然に力が出る人です。</p>
+      </div>
+      <div class="card" style="background:#f7f3ef;">
+        <span class="domain-chip exec" style="opacity:.65;">実行力 ✕ 0資質</span>
+        <h3>上位10内に無し</h3>
+        <p>「短納期で量をこなす」「がむしゃらに走り続ける」より、<strong>「学んで・寄り添って・じっくり育てる」</strong> ペースで進める方が自然。経理代行の「数字の裏のストーリーを見る」スタイルが、まさにこのペースの結晶です。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="themes">
+    <div class="section-head">
+      <div>
+        <span class="chapter">TOP10 / THEME DETAIL</span>
+        <h2>資質別の図解メモ</h2>
+        <p class="section-lead">PDFの説明をベースに、ふうさんの文脈へつなぎます。</p>
+      </div>
+      <div class="note">各カードの最後に「セッションで聞くこと」を置いています。ここから本人語を引き出します。</div>
+    </div>
+
+    <!-- 01 共感性 -->
+    <article class="theme-card" id="empathy">
+      <div class="theme-head">
+        <div class="rank-no">1</div>
+        <div>
+          <span class="domain-chip rel">人間関係構築力</span>
+          <h3>共感性</h3>
+          <p>他人の感情を察し柔軟に対応できる力</p>
+        </div>
+        <div class="metaphor">🌡 心の温度計</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox">
+            <h4>PDFではこういう資質</h4>
+            <p>場の空気や人の気持ちに敏感で、感情豊か。他者の感情や状況を察知するアンテナを持ち、周りの感情の変化に自然と反応できる人。相手の感情をよく察して対応を変える。言葉にされていない気持ちを汲み取り、寄り添うことで他者との信頼関係を構築できる。</p>
+          </div>
+          <div class="subbox fuu">
+            <h4>ふうさんに接続すると</h4>
+            <p>経理代行の初依頼者から <strong>「ほっとした」</strong> と言ってもらえた瞬間に <strong>「とっても嬉しかった」</strong>と感じられたのが、共感性1位の核。プロフィールの「経理の仕事は数字を合わせるプレッシャーはあるけど <strong>数字の裏にあるストーリー</strong>」も、相手の状況・想い・背景を感じ取るアンテナがいつも開いている表れです。家族3人暮らしの日々でも、夫・娘さんの言葉にならない気持ちを汲み取る場面が、毎日たくさんあるはずです。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox">
+            <h4>喜ぶこと</h4>
+            <ul>
+              <li>素直な感情表現ができる環境</li>
+              <li>感情や心情を大切にする場</li>
+              <li>人の気持ちを考慮した丁寧なコミュニケーション</li>
+              <li>感情的なつながりを感じられる関係性</li>
+            </ul>
+          </div>
+          <div class="subbox">
+            <h4>苦手なこと</h4>
+            <ul>
+              <li>感情を抑制・制限される環境</li>
+              <li>冷たい態度や無関心な反応</li>
+              <li>データや論理だけで人を判断すること</li>
+              <li>感情を無視した効率優先の場</li>
+            </ul>
+          </div>
+          <div class="subbox compare">
+            <h4>他資質との比較</h4>
+            <ul>
+              <li>共感性: 感情を重視、直感的に反応</li>
+              <li>個別化: 違いに着目（ふうさん10位）</li>
+              <li>調和性: 場の合意を整える（ふうさん9位）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subbox question">
+          <h4>セッションで聞くこと</h4>
+          <p>「ほっとした」と言ってもらえたあの瞬間、ふうさんはどんな景色が見えていましたか？ 経理代行で「この人、いま少し肩の力が抜けたな」と感じる手応えはどんなときに出ますか？</p>
+          <div class="source">PDF参照: 26ページ</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 02 収集心 -->
+    <article class="theme-card" id="input">
+      <div class="theme-head">
+        <div class="rank-no">2</div>
+        <div>
+          <span class="domain-chip strat">戦略的思考力</span>
+          <h3>収集心</h3>
+          <p>気になった情報やモノをとにかく集める力</p>
+        </div>
+        <div class="metaphor">📚 図書館</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox">
+            <h4>PDFではこういう資質</h4>
+            <p>実用本位のリソースコレクター。情報や資料、モノなどが増えていくと幸せを感じる人。集めたものが誰かの役に立つと喜びを感じる。データや資料が日々増えていき、必要に応じて活用する。情報・ツール提供役として、チームに価値ある知識やリソースを共有できる。</p>
+          </div>
+          <div class="subbox fuu">
+            <h4>ふうさんに接続すると</h4>
+            <p>中国語・英語・コピーライター講座・NISA・お金の使い方の本「The Art of Spending Money」 ── 集めているものを並べると、ふうさんの <strong>「自分の世界を広げたい」</strong> がすでに行動で形になっているのが見えてきます。学長ライブを継続して見ているのも、<strong>「ライブでおすすめされていた書籍を読んでみたら衝撃の連続」</strong> も、収集心2位の自然な動き。経理事務21年（仮）で培った数字・税務・実務知識も、立派なコレクションです。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox">
+            <h4>喜ぶこと</h4>
+            <ul>
+              <li>新しい情報やモノを集めること</li>
+              <li>ストックしたものが役立った時</li>
+              <li>自分のコレクションを整理・分類すること</li>
+              <li>誰かが知りたいことに答えられること</li>
+            </ul>
+          </div>
+          <div class="subbox">
+            <h4>苦手なこと</h4>
+            <ul>
+              <li>集めたまま活かせないこと</li>
+              <li>大切な情報を捨てることを強制される</li>
+              <li>整理や共有の時間がないこと</li>
+              <li>役立たない情報だと思われること</li>
+            </ul>
+          </div>
+          <div class="subbox compare">
+            <h4>他資質との比較</h4>
+            <ul>
+              <li>収集心: 集めたい・蓄える重視</li>
+              <li>学習欲: 学ぶプロセス自体が喜び（ふうさん8位）</li>
+              <li>分析思考: 集めた情報の検証重視（ふうさん上位10外）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subbox question">
+          <h4>セッションで聞くこと</h4>
+          <p>これまで集めてきたもの（資格・本・経理ノウハウ・コピーライティング・語学）の中で「これは絶対に他の人にも伝えたい」と感じるものは何ですか？</p>
+          <div class="source">PDF参照: 42ページ</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 03 成長促進 -->
+    <article class="theme-card" id="developer">
+      <div class="theme-head">
+        <div class="rank-no">3</div>
+        <div>
+          <span class="domain-chip rel">人間関係構築力</span>
+          <h3>成長促進</h3>
+          <p>人の成長や変化を見守りサポートする力</p>
+        </div>
+        <div class="metaphor">🌱 庭師</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox">
+            <h4>PDFではこういう資質</h4>
+            <p>未経験者にも忍耐強く、人の可能性を信じる人。小さな進歩や成長を見逃さず、相手の成長を自分のことのように喜べる。人が力を発揮する瞬間に立ち会うことが好き。人の潜在能力を見つけて引き出す。学びや挑戦を応援し、相手が主役で自分は裏方に徹し、成長のプロセスを大切にしながら支援する。</p>
+          </div>
+          <div class="subbox fuu">
+            <h4>ふうさんに接続すると</h4>
+            <p>経理代行で <strong>「自分にできることで、誰かの心を軽くすることができたんだ」</strong> と感じられたのは、成長促進3位が動いている瞬間。<strong>「自分の世界を広げたい」</strong> という言葉も、<strong>自分自身の成長</strong> に向けて庭師の目を向けている表れです。そして高校生の娘さんを育てている時間、コピーライター講座で出会った仲間 ── ふうさんの周りには、すでに「育てる景色」が自然に広がっています。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox">
+            <h4>喜ぶこと</h4>
+            <ul>
+              <li>誰かの成長や変化に立ち会うこと</li>
+              <li>人の「できた！」という瞬間を見ること</li>
+              <li>教える・育てる・サポートする役割</li>
+              <li>赤ちゃんの成長を見守るような忍耐</li>
+            </ul>
+          </div>
+          <div class="subbox">
+            <h4>苦手なこと</h4>
+            <ul>
+              <li>可能性を潰すような環境や言動</li>
+              <li>成長の機会を奪うこと</li>
+              <li>人の失敗を否定的に評価すること</li>
+              <li>すぐに結果だけを求める風潮</li>
+            </ul>
+          </div>
+          <div class="subbox compare">
+            <h4>他資質との比較</h4>
+            <ul>
+              <li>成長促進: 成長のプロセスを重視</li>
+              <li>個別化: ひとり一人の違いを見る（ふうさん10位）</li>
+              <li>包含: 誰も置いていかない（ふうさん7位）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subbox question">
+          <h4>セッションで聞くこと</h4>
+          <p>誰かの成長や「できた！」に立ち会ったとき、ふうさんが一番嬉しい瞬間はどんなときですか？ ご自身の「広げたい」と、誰かを「育てたい」── どちらが先に動いていますか？</p>
+          <div class="source">PDF参照: 32ページ</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 04 親密性 -->
+    <article class="theme-card" id="relator">
+      <div class="theme-head">
+        <div class="rank-no">4</div>
+        <div>
+          <span class="domain-chip rel">人間関係構築力</span>
+          <h3>親密性</h3>
+          <p>深く狭く、時間をかけて信頼を育てる力</p>
+        </div>
+        <div class="metaphor">🤝 深く長い友達</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox">
+            <h4>PDFではこういう資質</h4>
+            <p>少数の人と深く長い関係を築くことを大切にする人。広く浅くではなく、心を許せる相手と本音で話せる関係を育てる。一度信頼した相手には深いコミットメントを持ち、長期的な関係性を大切にする。</p>
+          </div>
+          <div class="subbox fuu">
+            <h4>ふうさんに接続すると</h4>
+            <p>リベ内で <strong>「初めてご依頼をいただいた」</strong> 経理代行で、依頼者の方と <strong>深く向き合えた</strong> から「ほっとした」という言葉が返ってきたのではないでしょうか。<strong>夫と高校生の娘さんとの3人暮らし</strong> も、親密性4位が日々を支えている景色。たくさんの人に薄く広げるより、<strong>目の前の一人にじっくり関わる</strong> のがふうさんの自然です。コピーライター講座での仲間とも、おそらく深く長くつながっていきそうです。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox">
+            <h4>喜ぶこと</h4>
+            <ul>
+              <li>少人数でじっくり関係を深めること</li>
+              <li>本音で話せる信頼関係</li>
+              <li>長く続く友情・パートナーシップ</li>
+              <li>相手のことを深く知れる時間</li>
+            </ul>
+          </div>
+          <div class="subbox">
+            <h4>苦手なこと</h4>
+            <ul>
+              <li>初対面でいきなり深い話</li>
+              <li>大人数の薄い付き合い</li>
+              <li>表面的なコミュニケーション</li>
+              <li>関係が浅いままで「もう次」と切り替える場</li>
+            </ul>
+          </div>
+          <div class="subbox compare">
+            <h4>他資質との比較</h4>
+            <ul>
+              <li>親密性: 少人数と深く・時間で育てる</li>
+              <li>包含: 誰も置いていかない・輪を広げる（ふうさん7位）</li>
+              <li>社交性: 初対面でも気軽（ふうさん上位10外）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subbox question">
+          <h4>セッションで聞くこと</h4>
+          <p>ふうさんが「この人とは長く付き合いたい」と感じる瞬間は、相手のどこに惹かれている時ですか？ 経理代行で続けて関わりたい依頼者像はどんな方ですか？</p>
+          <div class="source">PDF参照: 29ページ</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 05 運命思考 -->
+    <article class="theme-card" id="connectedness">
+      <div class="theme-head">
+        <div class="rank-no">5</div>
+        <div>
+          <span class="domain-chip rel">人間関係構築力</span>
+          <h3>運命思考</h3>
+          <p>出会いや出来事に必然・意味を見つける力</p>
+        </div>
+        <div class="metaphor">✨ つながりの旅人</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox">
+            <h4>PDFではこういう資質</h4>
+            <p>すべての出来事に意味があり、すべての人や物事が繋がっていると信じる人。偶然に見える出来事の中にも必然を見出し、人生を一本の物語として受け取れる。深い精神性と人を結びつける力を持つ。</p>
+          </div>
+          <div class="subbox fuu">
+            <h4>ふうさんに接続すると</h4>
+            <p><strong>NISAを調べる → 学長動画に出会う → コピーライター講座 → 経理代行 → リベ内で初依頼で「ほっとした」</strong> ── この流れを、ふうさんは <strong>「たまたま」</strong> ではなく <strong>「つながっている」</strong> と感じられているはずです。<strong>「The Art of Spending Money」を読んで衝撃</strong> も、その本との出会いに「これは今の私のため」を感じ取れた瞬間。出会いを大切に意味づける力が、運命思考5位として動いています。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox">
+            <h4>喜ぶこと</h4>
+            <ul>
+              <li>偶然の出会いや必然を感じる瞬間</li>
+              <li>人生を物語として振り返る時間</li>
+              <li>過去の経験が今に繋がる発見</li>
+              <li>意味を語り合える深い対話</li>
+            </ul>
+          </div>
+          <div class="subbox">
+            <h4>苦手なこと</h4>
+            <ul>
+              <li>「すべては偶然」と切り捨てる場</li>
+              <li>意味を持たないドライな割り切り</li>
+              <li>過去や流れを無視した判断</li>
+              <li>精神性を軽視する空気</li>
+            </ul>
+          </div>
+          <div class="subbox compare">
+            <h4>他資質との比較</h4>
+            <ul>
+              <li>運命思考: 出会いや経験に意味・必然を見る</li>
+              <li>原点思考: 過去の経緯を理解したい（ふうさん上位10外）</li>
+              <li>未来志向: ビジョンを描く（ふうさん上位10外）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subbox question">
+          <h4>セッションで聞くこと</h4>
+          <p>ふうさんがここまで歩んできた中で「これは偶然じゃない」と一番感じる出会いや出来事は何ですか？ 「The Art of Spending Money」のどんなところに衝撃を受けましたか？</p>
+          <div class="source">PDF参照: 34ページ</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 06 ポジティブ -->
+    <article class="theme-card" id="positivity">
+      <div class="theme-head">
+        <div class="rank-no">6</div>
+        <div>
+          <span class="domain-chip rel">人間関係構築力</span>
+          <h3>ポジティブ</h3>
+          <p>周囲を明るく元気にする前向きな力</p>
+        </div>
+        <div class="metaphor">☀️ 陽だまり</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox">
+            <h4>PDFではこういう資質</h4>
+            <p>楽観的で周囲を明るくする人。熱意と明るさを持ち、その前向きさが人に伝染する。どんな状況でも良い面を見つけ出し、ポジティブなエネルギーを発散する。場を盛り上げ、能動的に周囲を元気づける。</p>
+          </div>
+          <div class="subbox fuu">
+            <h4>ふうさんに接続すると</h4>
+            <p><strong>「いろんな人と話して、私は『誰かと一緒に喜べること』が好きなんだなと分かりました」</strong> ── これはポジティブ6位 × 共感性1位の自然な結びつき。<strong>一緒に喜んでくれる人</strong>がそばにいるだけで、相手は安心して話せます。これは <strong>特別な才能</strong>。「グイグイ盛り上げる」タイプではなく、<strong>「ふっとそばで温める」陽だまり型</strong> のポジティブが、ふうさんの自然です。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox">
+            <h4>喜ぶこと</h4>
+            <ul>
+              <li>楽しく精一杯生きること</li>
+              <li>笑顔や前向きな雰囲気</li>
+              <li>人々の気持ちを高める活動</li>
+              <li>明るいイベントや集まり</li>
+            </ul>
+          </div>
+          <div class="subbox">
+            <h4>苦手なこと</h4>
+            <ul>
+              <li>ネガティブな人や愚痴</li>
+              <li>暗い雰囲気や重苦しい環境</li>
+              <li>批判的な会話や議論</li>
+              <li>問題点ばかりに集中すること</li>
+            </ul>
+          </div>
+          <div class="subbox compare">
+            <h4>他資質との比較</h4>
+            <ul>
+              <li>ポジティブ: 明るい面を見る・意味づける</li>
+              <li>調和性: 場の合意を整える（ふうさん9位）</li>
+              <li>包含: 誰も置いていかない（ふうさん7位）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subbox question">
+          <h4>セッションで聞くこと</h4>
+          <p>「誰かと一緒に喜べる」瞬間が一番ワクワクするのは、どんな場面ですか？ 逆に、ポジティブを保てない・出したくない場面はありますか？</p>
+          <div class="source">PDF参照: 27ページ</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 07 包含 -->
+    <article class="theme-card" id="includer">
+      <div class="theme-head">
+        <div class="rank-no">7</div>
+        <div>
+          <span class="domain-chip rel">人間関係構築力</span>
+          <h3>包含</h3>
+          <p>誰も置いていかず、みんなを輪に巻き込む力</p>
+        </div>
+        <div class="metaphor">🫂 輪を広げる人</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox">
+            <h4>PDFではこういう資質</h4>
+            <p>「みんな一緒に」が自然な人。一人だけ取り残されている人に気づける優しさを持ち、輪を広げて誰も置いていかない場を作れる。多様な人を受け入れ、包み込むような関わり方ができる。</p>
+          </div>
+          <div class="subbox fuu">
+            <h4>ふうさんに接続すると</h4>
+            <p><strong>「自分の世界を広げたい」</strong> という言葉の中には、閉じこもるんじゃなく <strong>もっとたくさんの人と出会いたい</strong> という包含7位の願いが入っています。主婦業・経理パート事務・コピーライター・経理代行と、<strong>複数の輪</strong> を持ち続けているのも、この資質の自然な現れ。リベシティに入会した理由「リベの皆さんはクリエイティブな仕事をしていたり、フリーランスや法人化へ進んでいたり…」も、<strong>違う立場の人を受け入れたい・知りたい</strong> という包含センサーが動いた瞬間です。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox">
+            <h4>喜ぶこと</h4>
+            <ul>
+              <li>多様な人が混ざる場</li>
+              <li>誰も取り残されない雰囲気</li>
+              <li>新しい仲間を輪に迎える瞬間</li>
+              <li>立場の違う人と話せる時間</li>
+            </ul>
+          </div>
+          <div class="subbox">
+            <h4>苦手なこと</h4>
+            <ul>
+              <li>選別・排除のある場</li>
+              <li>「内輪だけ」「身内だけ」の閉じた空気</li>
+              <li>違いを理由に人を区別すること</li>
+              <li>一人だけ取り残されている人を見過ごす場</li>
+            </ul>
+          </div>
+          <div class="subbox compare">
+            <h4>他資質との比較</h4>
+            <ul>
+              <li>包含: 誰も置いていかず輪を広げる</li>
+              <li>親密性: 少人数と深く育てる（ふうさん4位）</li>
+              <li>個別化: 違いそのものを大切に（ふうさん10位）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subbox question">
+          <h4>セッションで聞くこと</h4>
+          <p>ふうさんが「広げたい世界」は、どんな人たちと一緒の世界ですか？ どんな人を「輪に迎えたい」と感じますか？</p>
+          <div class="source">PDF参照: 33ページ</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 08 学習欲 -->
+    <article class="theme-card" id="learner">
+      <div class="theme-head">
+        <div class="rank-no">8</div>
+        <div>
+          <span class="domain-chip strat">戦略的思考力</span>
+          <h3>学習欲</h3>
+          <p>知らないことにワクワクし新しいことに挑戦</p>
+        </div>
+        <div class="metaphor">💧 スポンジ</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox">
+            <h4>PDFではこういう資質</h4>
+            <p>興味のある分野を深く探求し、常に新しい知識や発見を求め続ける人。学ぶプロセス自体に喜びを感じ、好奇心が旺盛。好奇心の赴くまま情報収集し、新しい領域に挑戦。学んだことを共有することでチームや周囲の人の成長にも貢献する。</p>
+          </div>
+          <div class="subbox fuu">
+            <h4>ふうさんに接続すると</h4>
+            <p>趣味が <strong>中国語と英語</strong>、好きなテレビが <strong>「中国から夜更かし」</strong>、<strong>コピーライター講座</strong> ── すべて学習欲8位が日々を彩っている景色。<strong>リベ大ライブ</strong> を続けて見ているのも、学び続けることそのものが <strong>ふうさんのエネルギー源</strong> だから。<strong>「自分の世界を広げたい」</strong> という言葉の半分は、この学習欲が言わせているはずです。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox">
+            <h4>喜ぶこと</h4>
+            <ul>
+              <li>新しい知識や発見に出会うこと</li>
+              <li>学びのプロセスそのもの</li>
+              <li>未知の分野に足を踏み入れる冒険</li>
+              <li>学んだことを活かせる機会</li>
+            </ul>
+          </div>
+          <div class="subbox">
+            <h4>苦手なこと</h4>
+            <ul>
+              <li>同じことばかりの繰り返し</li>
+              <li>知ったかぶりをする人や環境</li>
+              <li>学びが止まる状況</li>
+              <li>学んだことを活かせない環境</li>
+            </ul>
+          </div>
+          <div class="subbox compare">
+            <h4>他資質との比較</h4>
+            <ul>
+              <li>学習欲: 学ぶプロセスを大切にする</li>
+              <li>収集心: 情報やモノを集めることが重要（ふうさん2位）</li>
+              <li>運命思考: 学んだことに意味を見つける（ふうさん5位）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subbox question">
+          <h4>セッションで聞くこと</h4>
+          <p>最近「学び始めて止まらなくなった」テーマは何ですか？ コピーライティングと中国語、それぞれふうさんに何を返してくれていますか？</p>
+          <div class="source">PDF参照: 41ページ</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 09 調和性 -->
+    <article class="theme-card" id="harmony">
+      <div class="theme-head">
+        <div class="rank-no">9</div>
+        <div>
+          <span class="domain-chip rel">人間関係構築力</span>
+          <h3>調和性</h3>
+          <p>対立より合意、場をやさしく整える力</p>
+        </div>
+        <div class="metaphor">🕊 平和の使者</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox">
+            <h4>PDFではこういう資質</h4>
+            <p>穏やかな人。対立よりも合意点を探そうとする。全員が納得できる道を見つけることに満足感を覚える。争いごとを避け、調和のとれた環境を好む。逆立った羽を滑らかにするように、異なる意見を調整して平和的な解決をもたらす。</p>
+          </div>
+          <div class="subbox fuu">
+            <h4>ふうさんに接続すると</h4>
+            <p><strong>経理事務</strong>という「数字を合わせる」「場を整える」仕事を自然に選び続けているところに、調和性9位が静かに動いています。<strong>家族3人の暮らし</strong> も、ふうさんの調和センサーが日々を整えている景色。摩擦より <strong>「みんなが気持ちよく」</strong> を大切にできるのは、立派な才能。経理代行で <strong>「ほっとした」</strong> と言われたのも、この場を整える力が静かに効いた結果かもしれません。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox">
+            <h4>喜ぶこと</h4>
+            <ul>
+              <li>平和で穏やかな環境</li>
+              <li>全員が納得できる合意形成</li>
+              <li>みんなが気持ちよくいられる場</li>
+              <li>摩擦が静かに整っていく時間</li>
+            </ul>
+          </div>
+          <div class="subbox">
+            <h4>苦手なこと</h4>
+            <ul>
+              <li>激しい対立・口論</li>
+              <li>誰かが我慢を強いられる場</li>
+              <li>結論より勝ち負けが優先される議論</li>
+              <li>平気でぶつかり合う雰囲気</li>
+            </ul>
+          </div>
+          <div class="subbox compare">
+            <h4>他資質との比較</h4>
+            <ul>
+              <li>調和性: 合意点を探して場を整える</li>
+              <li>包含: 誰も置いていかない（ふうさん7位）</li>
+              <li>共感性: 感情を察知する（ふうさん1位）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subbox question">
+          <h4>セッションで聞くこと</h4>
+          <p>「場が荒れている」「みんなが気持ちよくない」と感じる瞬間、ふうさんはどう動いていますか？ それを整え終わったときの自分の気持ちは？</p>
+          <div class="source">PDF参照: 28ページ</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 10 個別化 -->
+    <article class="theme-card" id="individualization">
+      <div class="theme-head">
+        <div class="rank-no">10</div>
+        <div>
+          <span class="domain-chip rel">人間関係構築力</span>
+          <h3>個別化</h3>
+          <p>「みんな同じ」と見ない・違いを大切にする力</p>
+        </div>
+        <div class="metaphor">🎨 ひとり一人を見る目</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox">
+            <h4>PDFではこういう資質</h4>
+            <p>一人ひとりの個性や特徴に興味を持ち、それぞれに合わせたアプローチをする。「カスタマイズ」が好きで、画一的な方法より個別対応の方が自然。適材適所を考え、一人ひとりに丁寧に接する。その人の強みを見つけ、活かせる場所に配置できる。</p>
+          </div>
+          <div class="subbox fuu">
+            <h4>ふうさんに接続すると</h4>
+            <p><strong>「数字の裏にあるストーリー」</strong> を見られるのは、個別化10位の目があるから。経理代行で <strong>「依頼者ごとに違う事情・想い・歩み」</strong> を感じ取って、その人のための整え方ができる ── これは <strong>テンプレ仕事では味わえない、ふうさんならではの仕事の作り方</strong>。コピーライターとしても「相手ごとに合う言葉」を選ぶ感覚は、この資質と完全に同じレールに乗っています。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox">
+            <h4>喜ぶこと</h4>
+            <ul>
+              <li>一人ひとりの違いを大切にされる場</li>
+              <li>「あなただから」と名指しで頼られる瞬間</li>
+              <li>カスタマイズや個別対応ができる仕事</li>
+              <li>ひとり一人の物語を聞ける時間</li>
+            </ul>
+          </div>
+          <div class="subbox">
+            <h4>苦手なこと</h4>
+            <ul>
+              <li>「みんな同じ」扱い・画一的なルール</li>
+              <li>大量生産・大量対応の場</li>
+              <li>個性を無視した平等主義</li>
+              <li>違いをノイズとして扱う空気</li>
+            </ul>
+          </div>
+          <div class="subbox compare">
+            <h4>他資質との比較</h4>
+            <ul>
+              <li>個別化: 違いそのものを大切にする</li>
+              <li>共感性: 感情を察する（ふうさん1位）</li>
+              <li>包含: 誰も置いていかない（ふうさん7位）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="subbox question">
+          <h4>セッションで聞くこと</h4>
+          <p>経理代行で「この依頼者さんの場合は、ここがポイント」と感じ取った瞬間はありますか？ どんなところに「その人らしさ」が見えますか？</p>
+          <div class="source">PDF参照: 30ページ</div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <section id="route">
+    <div class="section-head">
+      <div>
+        <span class="chapter">03 / GENTLE PARTNER ROUTE</span>
+        <h2>ふうさんが「育てる伴走」のかたちに変える順番</h2>
+        <p class="section-lead">資質の流れを、ふうさんのこれからの仕事のかたちに変換する順番として置きます。</p>
+      </div>
+      <div class="note">どこから入っても良いですが、ふうさんの場合は「学びの旅人として集める → 陽だまりで場を温める → 心の温度計で察知する → 庭師としてゆっくり育てる → 深く長い友達として続く」が自然そうです。</div>
+    </div>
+    <div class="route">
+      <div class="route-step">
+        <b>① 入口：学びの旅人 💧</b>
+        <p>収集心 × 学習欲で、ふうさん自身が学び続けることが、共通の話題と信頼の入口を作る。中国語・コピー・経理 ── どれも武器。</p>
+      </div>
+      <div class="route-step">
+        <b>② 出会い：陽だまり ☀️</b>
+        <p>ポジティブで場をふっと温める。「ぐいぐい引っ張らない」のがふうさんの自然な強み。誰かが「話してみようかな」と思える温度を作る。</p>
+      </div>
+      <div class="route-step">
+        <b>③ 中身：心の温度計 🌡 × 庭師 🌱</b>
+        <p>共感性 × 成長促進で「数字の裏のストーリー」を見て、相手のペースに合わせて伴走。「ほっとした」を引き出すコアエンジン。</p>
+      </div>
+      <div class="route-step">
+        <b>④ 深まり：深く長い友達 🤝 × ひとり一人を見る目 🎨</b>
+        <p>親密性 × 個別化 × 運命思考で、長く深く一人ひとりと続く関係に育てる。広げるより、深める。ふうさんの仕事は時間で価値が育つタイプ。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources">
+    <div class="section-head">
+      <div>
+        <span class="chapter">04 / SOURCES</span>
+        <h2>このページの出典</h2>
+        <p class="section-lead">PDFの言葉はベースとして、ふうさん文脈の接続は仮説です。</p>
+      </div>
+      <div class="note">セッション中に違和感が出たら、本人語で上書きしていきます。</div>
+    </div>
+    <ul class="grid-2" style="list-style:none;padding:0;margin:0;">
+      <li class="card"><b>ユーザー作成PDF:</b><br>001ストレングス資質図解ガイド（全42ページ）<br>該当ページ：26 / 27 / 28 / 29 / 30 / 32 / 33 / 34 / 41 / 42</li>
+      <li class="card"><b>本人情報:</b><br>リベシティプロフィール（ふう ＠コピーライティング・イルカ会員）／リベシティDM（2026-05-22 取引依頼）／StrengthsFinder 34資質順位画像（2026-05-22発行）</li>
+      <li class="card"><b>関連ファイル:</b><br>ゆいCPO/コーチング事業/クライアント管理/ふう.md（プロフィールMD）／fuu-strengths-guide-2026-05-26.html（取扱説明書本体）</li>
+      <li class="card"><b>参照フォーマット:</b><br>ゆかさん_資質図解ブランチ_2026-05-23.html（テンプレート）／なぎさん_資質図解ブランチ_2026-05-20.html／診断シート生成仕様書</li>
+    </ul>
+    <div class="footer-links">
+      <a class="btn" href="fuu-strengths-guide-2026-05-26.html">取扱説明書へ戻る</a>
+      <a class="btn subtle" href="#top">先頭に戻る</a>
+    </div>
+  </section>
+</main>
+
+<script>
+const tocLinks = document.querySelectorAll('.toc a[data-target], .toc-mobile a[data-target]');
+const tocSections = Array.from(tocLinks)
+  .map(link => document.getElementById(link.dataset.target))
+  .filter(Boolean);
+
+function updateActiveToc() {
+  const offset = window.innerHeight * 0.32;
+  let currentId = tocSections[0]?.id;
+  for (const section of tocSections) {
+    if (section.getBoundingClientRect().top - offset <= 0) currentId = section.id;
+  }
+  tocLinks.forEach(link => {
+    link.classList.toggle('active', link.dataset.target === currentId);
+  });
+}
+
+let tocTicking = false;
+window.addEventListener('scroll', () => {
+  if (!tocTicking) {
+    requestAnimationFrame(() => {
+      updateActiveToc();
+      document.querySelector('.back-to-top')?.classList.toggle('visible', window.scrollY > 520);
+      tocTicking = false;
+    });
+    tocTicking = true;
+  }
+}, { passive: true });
+
+document.querySelectorAll('.toc-mobile a').forEach(link => {
+  link.addEventListener('click', () => {
+    const mobileToc = document.querySelector('.toc-mobile');
+    if (mobileToc) mobileToc.open = false;
+  });
+});
+
+updateActiveToc();
+</script>
+</body>
+</html>

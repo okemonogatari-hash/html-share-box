@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>ふうさんのトリセツ｜観察して、構造を見つけて、そっと気づきを置いていく</title>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  /* ─────────────────────────────────────────────
+     ふうさんカラー：朝の風×若葉×やわらかな金。
+     「観察して、構造を見つけて、そっと気づきを置いていく人」のパレット。
+     ───────────────────────────────────────────── */
+  --peach-deep:  #C0826E;   /* 朝のピーチ */
+  --peach-mid:   #E0B69E;   /* コーラルピンク */
+  --peach-light: #F5DBC5;   /* 朝霧の桃 */
+  --peach-glow:  #FBEEDF;   /* 桜霞 */
+  --leaf-deep:   #6B8E74;   /* 若葉の深緑 */
+  --leaf-mid:    #A8C4AD;   /* 新緑 */
+  --leaf-light:  #D5E6D8;   /* 若芽 */
+  --gold-deep:   #C9A86A;   /* 古金 */
+  --gold-mid:    #DDC08D;   /* 麦穂 */
+  --sky-mid:     #B9D0CF;   /* 凪の水 */
+  --warm-bg:     #FCF8F0;   /* 生成り */
+  --warm-white:  #FFFDF6;   /* 卵殻 */
+  --text:        #38302A;   /* 焙じ茶 */
+  --text-muted:  #6C5F54;   /* 薄墨 */
+  --text-light:  #A8998C;   /* 古紙 */
+  --line:        rgba(192,130,110,0.13);
+  --shadow-sm:   0 2px 12px rgba(192,130,110,0.08);
+  --shadow-md:   0 8px 30px rgba(192,130,110,0.11);
+  --shadow-lg:   0 16px 48px rgba(192,130,110,0.16);
+  --radius:      12px;
+  --radius-lg:   20px;
+
+  /* SF 4領域カラー */
+  --d-rel:  #5B95C7;   /* 人間関係構築力 */
+  --d-exec: #9B7BB8;   /* 実行力 */
+  --d-infl: #E8A85C;   /* 影響力 */
+  --d-str:  #6FAA88;   /* 戦略的思考力 */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text);
+  background: var(--warm-bg);
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+/* ─── HERO（実写×風のグラデオーバーレイ） ─── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    linear-gradient(135deg, rgba(56,48,42,0.58), rgba(56,48,42,0.30) 50%, rgba(56,48,42,0.62)),
+    linear-gradient(170deg, rgba(192,130,110,0.42) 0%, rgba(224,182,158,0.28) 50%, rgba(168,196,173,0.45) 100%),
+    url('https://images.unsplash.com/photo-1642543492691-ddf04d74a507?w=2400&q=85&auto=format&fit=crop') center/cover no-repeat;
+  background-attachment: scroll;
+  color: #fff;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 22%, rgba(255,238,210,0.18) 0%, transparent 55%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 160px;
+  background: linear-gradient(to top, var(--warm-bg) 0%, rgba(252,248,240,0.65) 45%, transparent 100%);
+}
+.hero-inner { position: relative; z-index: 2; padding: 60px 24px; max-width: 760px; }
+
+/* ヒーロー写真クレジット（控えめに右下） */
+.hero-credit {
+  position: absolute;
+  right: 14px;
+  bottom: 156px;
+  z-index: 2;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.62);
+  text-decoration: none;
+  background: rgba(0,0,0,0.18);
+  padding: 4px 10px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+.hero-credit:hover { color: rgba(255,255,255,0.95); background: rgba(0,0,0,0.32); }
+
+/* HEROウィンドキッカー（小さなアクセントの円） */
+.hero-windmark {
+  width: 56px; height: 56px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255,238,200,0.92) 0%, rgba(255,212,168,0.78) 55%, rgba(232,165,122,0.55) 100%);
+  box-shadow:
+    0 0 0 10px rgba(255,237,199,0.12),
+    0 0 0 22px rgba(255,237,199,0.06),
+    0 8px 28px rgba(56,48,42,0.30);
+  animation: heroFadeIn 1s 0.1s both, windPulse 5s 1s ease-in-out infinite;
+}
+@keyframes windPulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255,237,199,0.12), 0 0 0 22px rgba(255,237,199,0.06), 0 8px 28px rgba(56,48,42,0.30); }
+  50%     { transform: scale(1.06); box-shadow: 0 0 0 14px rgba(255,237,199,0.16), 0 0 0 28px rgba(255,237,199,0.08), 0 12px 36px rgba(56,48,42,0.36); }
+}
+
+.hero-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.92;
+  margin-bottom: 18px;
+  animation: heroFadeIn 0.8s 0.2s both;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+.hero-name {
+  font-size: clamp(28px, 6vw, 54px);
+  font-weight: 700;
+  margin-bottom: 18px;
+  animation: heroSlideUp 0.9s 0.3s both;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.55);
+}
+.hero-name span { color: #FFEDC7; }
+.hero-tagline {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: clamp(15px, 3vw, 22px);
+  font-weight: 400;
+  opacity: 1;
+  margin-bottom: 12px;
+  line-height: 1.85;
+  animation: heroSlideUp 0.9s 0.5s both;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.5);
+}
+.hero-tagline strong { color: #FFEDC7; font-weight: 600; }
+.hero-sub {
+  font-size: 14px;
+  opacity: 0.86;
+  margin-top: 18px;
+  animation: heroFadeIn 0.8s 0.7s both;
+  line-height: 1.95;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  animation: heroFadeIn 0.8s 1s both, bounce 2s 1.5s infinite;
+  opacity: 0.55;
+  color: #fff;
+  font-size: 20px;
+}
+@keyframes heroFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes heroSlideUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+/* ─── 浮遊TOC ─── */
+.float-toc {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 60;
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+}
+.float-toc summary {
+  cursor: pointer;
+  list-style: none;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--peach-deep), var(--leaf-deep));
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  box-shadow: var(--shadow-md);
+  transition: transform .2s;
+}
+.float-toc summary:hover { transform: translateY(-3px); }
+.float-toc summary::-webkit-details-marker { display: none; }
+.float-toc[open] summary { box-shadow: var(--shadow-lg); }
+.float-toc .toc-body {
+  position: absolute;
+  right: 0;
+  bottom: 64px;
+  width: 268px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: rgba(255,253,246,0.97);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  padding: 16px 14px;
+  backdrop-filter: blur(10px);
+}
+.float-toc h5 {
+  font-family: 'Noto Serif JP', serif;
+  color: var(--peach-deep);
+  font-size: 13px;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px dashed rgba(192,130,110,0.28);
+}
+.float-toc ol { list-style: none; display: grid; gap: 2px; }
+.float-toc a {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+.float-toc a:hover { background: rgba(224,182,158,0.20); color: var(--peach-deep); }
+.float-toc a .num { color: var(--peach-mid); font-weight: 700; font-size: 11px; }
+.float-toc .toc-divider {
+  margin: 8px 0;
+  border-top: 1px dashed rgba(192,130,110,0.22);
+}
+
+/* ─── SECTIONS ─── */
+section { padding: 80px 0; }
+section:nth-of-type(even) { background: var(--warm-white); }
+
+.section-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--peach-mid);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.section-title {
+  font-size: clamp(22px, 4vw, 32px);
+  color: var(--peach-deep);
+  margin-bottom: 16px;
+  position: relative;
+  display: inline-block;
+}
+.section-title::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: var(--leaf-mid);
+  margin-top: 8px;
+  transition: width 0.6s ease 0.2s;
+}
+.fade-in.is-visible .section-title::after { width: 48px; }
+.section-lead {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 680px;
+  margin-bottom: 48px;
+}
+
+/* ─── ABOUT YOU ─── */
+.what-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.what-text p { margin-bottom: 16px; font-size: 15px; color: var(--text-muted); }
+.what-text p:first-child::first-letter {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 38px;
+  float: left;
+  line-height: 1;
+  margin-right: 8px;
+  color: var(--peach-deep);
+}
+.what-text strong { color: var(--text); font-weight: 700; }
+.what-text em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(245,219,197,0.85) 65%);
+  padding: 0 2px;
+}
+.what-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+.what-card .big-icon { font-size: 44px; color: var(--peach-mid); margin-bottom: 18px; }
+.what-card h3 { font-size: 18px; color: var(--peach-deep); margin-bottom: 4px; }
+.what-card .role { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+.what-card .meta {
+  display: flex; flex-direction: column; gap: 6px;
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-size: 12.5px; color: var(--text-light);
+  text-align: left;
+  line-height: 1.65;
+}
+.what-card .meta i { color: var(--peach-mid); margin-right: 6px; width: 16px; text-align: center; }
+
+/* ─── DOMAIN ─── */
+.domain-summary {
+  margin-top: 56px;
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+}
+.domain-summary h3 {
+  font-size: 16px;
+  color: var(--peach-deep);
+  margin-bottom: 20px;
+  text-align: center;
+}
+.domain-bar {
+  display: flex;
+  height: 36px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+}
+.domain-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.domain-seg.rel  { background: var(--d-rel);  flex: 8; }
+.domain-seg.str  { background: var(--d-str);  flex: 2; }
+.domain-seg.zero { background: #d9d4cb; flex: 0.001; }
+.domain-legend {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  justify-content: center; font-size: 12px;
+  color: var(--text-muted);
+}
+.domain-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.domain-legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.domain-legend .dot.rel  { background: var(--d-rel); }
+.domain-legend .dot.exec { background: var(--d-exec); }
+.domain-legend .dot.infl { background: var(--d-infl); }
+.domain-legend .dot.str  { background: var(--d-str); }
+.domain-note {
+  margin-top: 18px;
+  padding: 14px 18px;
+  background: rgba(168,196,173,0.10);
+  border-left: 3px solid var(--leaf-mid);
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.9;
+}
+.domain-note strong { color: var(--leaf-deep); }
+
+/* ─── DIVIDER ─── */
+.sun-divider {
+  height: 180px;
+  background:
+    linear-gradient(135deg, rgba(192,130,110,0.45), rgba(224,182,158,0.35), rgba(168,196,173,0.45)),
+    radial-gradient(ellipse at 50% 30%, rgba(255,238,210,0.55), transparent 55%),
+    linear-gradient(160deg, #C0826E 0%, #E0B69E 50%, #A8C4AD 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.92);
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: clamp(14px, 2vw, 18px);
+  letter-spacing: 0.14em;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.22);
+}
+.sun-divider .quote { padding: 0 24px; max-width: 720px; text-align: center; line-height: 1.85; }
+
+/* ─── 資質ブロック ─── */
+.shitsu-block {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+.shitsu-block.is-top3 { box-shadow: var(--shadow-md); border-color: rgba(192,130,110,0.25); }
+.shitsu-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.shitsu-rank {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+.shitsu-rank.exec { background: linear-gradient(135deg, var(--d-exec), #BCA3D2); }
+.shitsu-rank.infl { background: linear-gradient(135deg, var(--d-infl), #F3C68A); }
+.shitsu-rank.rel  { background: linear-gradient(135deg, var(--d-rel),  #95BCDD); }
+.shitsu-rank.str  { background: linear-gradient(135deg, var(--d-str),  #9DC2A8); }
+.shitsu-name { flex: 1; }
+.shitsu-name h3 {
+  font-size: 22px;
+  color: var(--peach-deep);
+  margin-bottom: 4px;
+}
+.shitsu-name .meta {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+.shitsu-name .metaphor-tag {
+  display: inline-block;
+  font-family: 'Klee One', 'Noto Serif JP', sans-serif;
+  font-size: 13px;
+  margin-left: 8px;
+  padding: 2px 9px;
+  background: rgba(224,182,158,0.18);
+  border-radius: 999px;
+  color: var(--peach-deep);
+  letter-spacing: 0.06em;
+}
+.shitsu-domain {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  color: #fff;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+.shitsu-domain.exec { background: var(--d-exec); }
+.shitsu-domain.infl { background: var(--d-infl); }
+.shitsu-domain.rel  { background: var(--d-rel); }
+.shitsu-domain.str  { background: var(--d-str); }
+
+.shitsu-tokucho {
+  font-size: 14.5px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+  line-height: 2;
+}
+.shitsu-tokucho strong { color: var(--text); font-weight: 700; }
+.shitsu-tokucho em { font-style: normal; background: linear-gradient(transparent 65%, rgba(245,219,197,0.65) 65%); padding: 0 2px; }
+
+.shitsu-episode {
+  background: linear-gradient(135deg, rgba(245,219,197,0.50), rgba(213,230,216,0.30));
+  border-left: 3px solid var(--peach-mid);
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+.shitsu-episode .ep-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--peach-deep);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.shitsu-episode .ep-text {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.95;
+}
+.shitsu-episode .ep-text em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.85) 65%);
+  padding: 0 2px;
+  font-weight: 500;
+}
+
+/* ─── 6-10位 ─── */
+.shitsu-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.shitsu-mini {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.shitsu-mini:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.shitsu-mini-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px;
+}
+.shitsu-mini-rank {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.shitsu-mini-rank.exec { background: var(--d-exec); }
+.shitsu-mini-rank.infl { background: var(--d-infl); }
+.shitsu-mini-rank.rel  { background: var(--d-rel); }
+.shitsu-mini-rank.str  { background: var(--d-str); }
+.shitsu-mini h4 { font-size: 15px; color: var(--text); margin: 0; flex: 1; }
+.shitsu-mini .meta-mini {
+  font-family: 'Klee One', 'Noto Serif JP', sans-serif;
+  font-size: 12px;
+  color: var(--peach-deep);
+  margin-bottom: 6px;
+}
+.shitsu-mini p { font-size: 12.5px; color: var(--text-muted); line-height: 1.78; }
+.shitsu-mini .ep-mini {
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  font-size: 12px; color: var(--text-light);
+  line-height: 1.78;
+}
+.shitsu-mini .ep-mini em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.78) 65%);
+  padding: 0 2px;
+  color: var(--text);
+}
+
+/* ─── ARUARU ─── */
+.aruaru-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.aruaru-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.aruaru-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.aruaru-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--peach-mid), var(--leaf-mid));
+}
+.aruaru-card .aruaru-icon { font-size: 22px; color: var(--peach-mid); margin-bottom: 8px; }
+.aruaru-card h4 { font-size: 15px; color: var(--text); margin-bottom: 4px; }
+.aruaru-card p { font-size: 13px; color: var(--text-muted); line-height: 1.8; }
+.aruaru-card p em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.7) 65%);
+  padding: 0 2px;
+  color: var(--text);
+}
+
+/* ─── DISCOVERY ─── */
+.discovery-box {
+  background: linear-gradient(135deg, var(--warm-white), rgba(245,219,197,0.45));
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  border: 1px solid rgba(192,130,110,0.20);
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+.discovery-box .lbl {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--peach-deep);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.discovery-box h3 {
+  font-size: clamp(20px, 3vw, 26px);
+  color: var(--peach-deep);
+  margin-bottom: 14px;
+  line-height: 1.55;
+}
+.discovery-box p {
+  font-size: 14.5px;
+  color: var(--text-muted);
+  line-height: 2;
+  margin-bottom: 12px;
+}
+.discovery-box p:last-child { margin-bottom: 0; }
+.discovery-box .pull {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 17px;
+  color: var(--text);
+  background: rgba(255,253,246,0.78);
+  padding: 16px 20px;
+  border-left: 3px solid var(--peach-deep);
+  border-radius: 6px;
+  margin: 16px 0;
+  line-height: 1.95;
+}
+.discovery-box strong { color: var(--peach-deep); }
+
+/* ─── KASEGU PROOF ─── */
+.kasegu-headline {
+  background: linear-gradient(135deg, rgba(255,229,191,0.40), rgba(213,230,216,0.30));
+  border-radius: var(--radius-lg);
+  padding: 30px 34px;
+  margin-bottom: 36px;
+  font-size: clamp(15px, 2.3vw, 18px);
+  line-height: 2.05;
+  color: var(--text);
+  text-align: center;
+  border: 1px solid rgba(192,130,110,0.22);
+}
+.kasegu-headline .strike {
+  color: var(--text-light);
+  text-decoration: line-through;
+  text-decoration-color: rgba(192,130,110,0.45);
+  text-decoration-thickness: 2px;
+  font-size: 0.93em;
+}
+.kasegu-headline .arrow {
+  font-family: 'Inter', sans-serif;
+  color: var(--peach-mid);
+  font-size: 1.1em;
+  margin: 4px 0;
+  display: block;
+  font-weight: 700;
+}
+.kasegu-headline strong { color: var(--peach-deep); font-weight: 700; }
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 32px;
+}
+.proof-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px 24px;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-top: 4px solid var(--peach-mid);
+}
+.proof-card:nth-child(2n) { border-top-color: var(--leaf-mid); }
+.proof-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.proof-coin {
+  position: absolute;
+  top: -16px;
+  right: 18px;
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--peach-deep), var(--leaf-deep));
+  color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+.proof-card h4 {
+  font-size: 15.5px;
+  color: var(--peach-deep);
+  margin-bottom: 10px;
+  line-height: 1.55;
+  padding-right: 36px;
+}
+.proof-card p {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.9;
+  margin-bottom: 12px;
+}
+.proof-card p strong { color: var(--text); font-weight: 700; }
+.proof-card p em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.78) 65%);
+  padding: 0 2px;
+}
+.proof-words {
+  background: rgba(255,229,191,0.18);
+  border-left: 3px solid var(--peach-mid);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.85;
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+}
+.kasegu-clincher {
+  background: linear-gradient(135deg, var(--warm-white), rgba(245,219,197,0.40));
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  border: 1px solid rgba(192,130,110,0.20);
+  box-shadow: var(--shadow-sm);
+}
+.kasegu-clincher p {
+  font-size: 14.5px;
+  color: var(--text-muted);
+  line-height: 2.1;
+  margin-bottom: 14px;
+}
+.kasegu-clincher p:last-child { margin-bottom: 0; }
+.kasegu-clincher strong { color: var(--peach-deep); font-weight: 700; }
+.kasegu-clincher em {
+  font-style: normal;
+  color: var(--text);
+  font-weight: 500;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.30) 65%);
+  padding: 0 2px;
+}
+.kasegu-light {
+  display: block;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px dashed rgba(192,130,110,0.25);
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: clamp(16px, 2.5vw, 19px);
+  color: var(--peach-deep);
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.85;
+}
+
+/* ─── MANUAL ─── */
+.manual-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 32px;
+}
+.manual-box {
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+.manual-box.joy {
+  background: rgba(255,229,191,0.20);
+  border: 1px solid rgba(224,182,158,0.30);
+}
+.manual-box.pain {
+  background: rgba(213,230,216,0.20);
+  border: 1px solid rgba(168,196,173,0.28);
+}
+.manual-box h3 { font-size: 16px; margin-bottom: 16px; }
+.manual-box.joy h3 { color: var(--peach-deep); }
+.manual-box.pain h3 { color: var(--leaf-deep); }
+.manual-box ul { list-style: none; }
+.manual-box li {
+  font-size: 14px;
+  color: var(--text-muted);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  padding-left: 28px;
+  position: relative;
+  line-height: 1.85;
+}
+.manual-box li:last-child { border-bottom: none; }
+.manual-box.joy li::before  { content: '\f185'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--peach-mid); font-size: 12px; top: 12px; }
+.manual-box.pain li::before { content: '\f773'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--leaf-mid); font-size: 12px; top: 12px; }
+
+/* ─── COMBOS ─── */
+.combo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.combo-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.combo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.combo-pair {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--peach-mid);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.combo-card h4 { font-size: 15px; color: var(--text); margin-bottom: 8px; }
+.combo-card p { font-size: 13px; color: var(--text-muted); line-height: 1.9; }
+.combo-card p strong { color: var(--peach-deep); }
+
+/* ─── QUOTES ─── */
+.quote-list { display: flex; flex-direction: column; gap: 16px; }
+.quote-card {
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px 28px 26px 64px;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s;
+}
+.quote-card:hover { transform: translateX(3px); }
+.quote-card::before {
+  content: '\201C';
+  font-family: 'Noto Serif JP', serif;
+  position: absolute;
+  left: 20px; top: 14px;
+  font-size: 56px;
+  color: var(--peach-light);
+  line-height: 1;
+}
+.quote-card p {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--text);
+  font-weight: 400;
+  margin: 0;
+}
+.quote-card .from {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-light);
+  text-align: right;
+}
+.quote-card.pin {
+  background: linear-gradient(135deg, rgba(255,229,191,0.30), rgba(213,230,216,0.18));
+  border-color: rgba(192,130,110,0.25);
+}
+.quote-card.pin::before { color: var(--peach-deep); }
+.quote-card em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.85) 65%);
+  padding: 0 2px;
+  font-weight: 500;
+}
+
+/* ─── STATE MAP ─── */
+.state-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin: 24px 0;
+}
+.state-cell {
+  background: var(--warm-white);
+  border: 2px dashed rgba(192,130,110,0.30);
+  border-radius: var(--radius);
+  padding: 20px 14px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.state-cell:hover { border-style: solid; transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.state-cell .em { font-size: 26px; color: var(--peach-mid); display: block; margin-bottom: 8px; }
+.state-cell .lbl { font-size: 14px; font-weight: 700; color: var(--text); }
+.state-cell .sub { font-size: 11px; color: var(--text-light); margin-top: 4px; line-height: 1.65; }
+.state-conclusion {
+  background: linear-gradient(135deg, rgba(255,238,210,0.55), rgba(213,230,216,0.45));
+  border-radius: var(--radius-lg);
+  padding: 26px 30px;
+  text-align: center;
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 500;
+  line-height: 2;
+}
+.state-conclusion strong { color: var(--peach-deep); }
+
+/* ─── MOYA ─── */
+.moya-box {
+  background: linear-gradient(135deg, rgba(213,230,216,0.18), rgba(192,130,110,0.06));
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  border: 1px dashed rgba(168,196,173,0.32);
+}
+.moya-box .head {
+  font-size: 14px;
+  color: var(--leaf-deep);
+  font-weight: 700;
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+.moya-list { display: flex; flex-direction: column; gap: 10px; }
+.moya-item {
+  background: rgba(255,253,246,0.78);
+  padding: 14px 18px 14px 44px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.9;
+  position: relative;
+}
+.moya-item::before {
+  content: '\f0c2';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  left: 16px; top: 14px;
+  font-size: 14px;
+  color: var(--leaf-mid);
+  opacity: 0.85;
+}
+.moya-foot {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(168,196,173,0.28);
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.9;
+}
+.moya-foot strong { color: var(--leaf-deep); }
+
+/* ─── STEPS ─── */
+.step-list { display: flex; flex-direction: column; gap: 14px; }
+.step-item {
+  display: flex;
+  gap: 18px;
+  padding: 22px 24px;
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: transform 0.3s, box-shadow 0.3s;
+  align-items: flex-start;
+}
+.step-item:hover { transform: translateX(4px); box-shadow: var(--shadow-sm); }
+.step-num {
+  flex-shrink: 0;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--peach-mid), var(--peach-deep));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+.step-text h4 {
+  font-size: 15.5px;
+  color: var(--text);
+  margin-bottom: 4px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 700;
+}
+.step-text p { font-size: 13px; color: var(--text-muted); line-height: 1.85; }
+.step-text p em { font-style: normal; background: linear-gradient(transparent 65%, rgba(255,229,191,0.65) 65%); padding: 0 2px; }
+
+/* ─── BRANCH BUTTON ─── */
+.branch-card {
+  background: linear-gradient(135deg, rgba(192,130,110,0.12), rgba(168,196,173,0.10));
+  border: 1px solid rgba(192,130,110,0.25);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin-top: 30px;
+  text-align: center;
+}
+.branch-card h3 { font-size: 18px; color: var(--peach-deep); margin-bottom: 10px; }
+.branch-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.9; margin-bottom: 18px; }
+.branch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--peach-deep), var(--leaf-deep));
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: var(--shadow-md);
+  transition: transform .2s, box-shadow .2s;
+}
+.branch-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+/* ─── MESSAGE ─── */
+.message-box {
+  background: linear-gradient(135deg, var(--peach-deep), var(--leaf-deep));
+  border-radius: var(--radius-lg);
+  padding: 52px 40px;
+  color: #fff;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.message-box::before {
+  content: '\f004';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--warm-bg);
+  padding: 0 14px;
+  font-size: 22px;
+  color: var(--peach-deep);
+}
+.message-box h3 { font-size: 20px; margin-bottom: 22px; color: #FFEDC7; }
+.message-box p { font-size: 15px; line-height: 2.15; opacity: 0.95; }
+.message-box .sign { margin-top: 24px; font-size: 13px; opacity: 0.75; font-family: 'Klee One', serif; }
+.message-box strong { background: rgba(255,237,199,0.30); padding: 0 4px; border-radius: 3px; }
+.message-box em { font-style: normal; color: #FFEDC7; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--peach-deep);
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  padding: 40px 24px;
+  font-size: 13px;
+}
+footer .brand {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+/* ─── ANIMATIONS ─── */
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-in.is-visible { opacity: 1; transform: translateY(0); }
+.stagger > * { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.stagger.is-visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(2) { transition-delay: 0.12s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(3) { transition-delay: 0.19s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(4) { transition-delay: 0.26s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(5) { transition-delay: 0.33s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(7) { transition-delay: 0.47s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(8) { transition-delay: 0.54s; opacity: 1; transform: none; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .what-grid, .manual-two, .aruaru-grid, .combo-grid, .proof-grid { grid-template-columns: 1fr; }
+  .sun-divider { height: 140px; }
+  section { padding: 60px 0; }
+  .message-box { padding: 36px 24px; }
+  .shitsu-block { padding: 26px 22px; }
+  .shitsu-head { gap: 12px; flex-wrap: wrap; }
+  .shitsu-rank { width: 48px; height: 48px; font-size: 18px; }
+  .shitsu-name h3 { font-size: 18px; }
+  .quote-card { padding: 22px 20px 22px 54px; font-size: 14px; }
+  .quote-card::before { font-size: 44px; left: 16px; top: 10px; }
+  .discovery-box { padding: 28px 22px; }
+  .discovery-box .pull { font-size: 15px; padding: 14px 16px; }
+  .float-toc .toc-body { width: calc(100vw - 60px); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-windmark"></div>
+    <div class="hero-label">STRENGTHSFINDER 34 REVIEW · 2026.05.26</div>
+    <h1 class="hero-name"><span>ふうさん</span>のトリセツ</h1>
+    <p class="hero-tagline">観察して、構造を見つけて、<br><strong>そっと気づきを置いていく人</strong>。</p>
+    <p class="hero-sub">「自分をがっかりさせたくない」から動かなかった日々と、<br>「楽しさを出すと、楽しい人が寄ってくる」を見つけた今の入り口で。</p>
+  </div>
+  <a class="hero-credit" href="https://unsplash.com/photos/a-person-holding-a-pen-and-writing-on-a-notebook-xl_x_rUZImQ" target="_blank" rel="noopener noreferrer">Photo: Kelly Sikkema / Unsplash</a>
+  <div class="hero-scroll"><i class="fas fa-chevron-down"></i></div>
+</section>
+
+<!-- ═══ FLOATING TOC ═══ -->
+<details class="float-toc">
+  <summary><i class="fas fa-list-ul"></i></summary>
+  <div class="toc-body">
+    <h5><i class="fas fa-book-open"></i> 目次 — Contents</h5>
+    <ol>
+      <li><a href="#about"><span class="num">01</span>ふうさんって、どんな人？</a></li>
+      <li><a href="#discovery"><span class="num">02</span>セッションで立ち上がった発見</a></li>
+      <li><a href="#top5"><span class="num">03</span>上位5資質、ひとつずつ</a></li>
+      <li><a href="#sub5"><span class="num">04</span>6〜10位も、ちゃんと働いてる</a></li>
+      <li><a href="#aruaru"><span class="num">05</span>ふうさんあるある</a></li>
+      <li><a href="#kasegu"><span class="num">06</span>稼ぐ力は、もう動いている</a></li>
+      <li><a href="#manual"><span class="num">07</span>ふうさんの取扱説明書</a></li>
+      <li><a href="#combo"><span class="num">08</span>資質コンボ</a></li>
+      <li><a href="#voice"><span class="num">09</span>ふうさんの言葉</a></li>
+      <li><a href="#state"><span class="num">10</span>いま、いる場所</a></li>
+      <li><a href="#moya"><span class="num">11</span>そっと置く雲</a></li>
+      <li><a href="#steps"><span class="num">12</span>次の一歩</a></li>
+      <li class="toc-divider"></li>
+      <li><a href="#branch"><span class="num"><i class="fas fa-seedling"></i></span>資質図解ブランチへ</a></li>
+      <li><a href="#message"><span class="num"><i class="fas fa-heart"></i></span>ふうさんへの手紙</a></li>
+    </ol>
+  </div>
+</details>
+
+<!-- ═══ 01 ABOUT YOU ═══ -->
+<section id="about">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">ABOUT YOU</div>
+      <h2 class="section-title">ふうさんって、どんな人？</h2>
+      <p class="section-lead">2026年5月26日のセッションで、ふうさん自身が97分間話してくれた言葉と、ストレングスファインダー34の結果から見えてきた、ふうさんの輪郭です。</p>
+    </div>
+
+    <div class="what-grid fade-in">
+      <div class="what-text">
+        <p>ふうさんは、<strong>「観察して、構造を見つけて、そっと気づきを置いていく人」</strong>。子どもの頃にビルから家の中をのぞいて、人の暮らしを見るのが嬉しかった頃から、根っこはずっと同じ場所で動いてきた人です。</p>
+
+        <p>上位10資質を並べると、<strong>人間関係構築力 8つ × 戦略的思考力 2つ</strong>。実行力ゼロ・影響力ゼロ。これは34資質中、<em>かなり珍しい配線</em>です。前に立って引っ張るより、<em>横に並んで一緒に育つ</em> ことが、ふうさんがいちばん呼吸しやすい形。</p>
+
+        <p>長く経理事務をしてきて、コピーライター講座を修了して、リベ内で経理代行の初依頼者から <strong>「ほっとした」</strong> と言ってもらえた春。そして97分のセッションで、ふうさんは <em>自分の本当の "好き" は「コピーを書くこと」じゃなく「観察して構造を見つけて気づきを言葉にすること」だ</em> と、自分の言葉で見つけ直しました。</p>
+
+        <p>そしてもうひとつ。<strong>「失敗が怖い」の正体は、相手じゃなくて自分自身に失望することの恐怖だった</strong>──ふうさんが「心がわーって動いた」と返した、今日いちばん大きな自己発見です。これからは、<em>「自分と仲良くなる」</em> 練習が、ふうさんの新しい入口になります。</p>
+      </div>
+      <div class="what-card">
+        <div class="big-icon"><i class="fas fa-wind"></i></div>
+        <h3>ふうさん</h3>
+        <p class="role">コピーライティング × 経理代行<br>リベシティ・イルカ会員</p>
+        <div class="meta">
+          <span><i class="fas fa-pen-nib"></i> コピーライター講座 修了</span>
+          <span><i class="fas fa-calculator"></i> 経理事務（パート）</span>
+          <span><i class="fas fa-heart"></i> 経理代行で初依頼「ほっとした」</span>
+          <span><i class="fas fa-globe-asia"></i> 中国語・英語 学習中</span>
+          <span><i class="fas fa-home"></i> 夫と娘（高校生）の3人暮らし</span>
+          <span><i class="fas fa-robot"></i> AI壁打ち6時間連続経験者</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="domain-summary fade-in">
+      <h3>4つの灯（上位10資質ベース）</h3>
+      <div class="domain-bar">
+        <div class="domain-seg rel">人間関係構築力 × 8</div>
+        <div class="domain-seg str">戦略的思考力 × 2</div>
+      </div>
+      <div class="domain-legend">
+        <span><i class="dot rel"></i> 人間関係構築力（共感性・成長促進・親密性・運命思考・ポジティブ・包含・調和性・個別化）</span>
+        <span><i class="dot str"></i> 戦略的思考力（収集心・学習欲）</span>
+        <span style="opacity:0.5;"><i class="dot infl"></i> 影響力 0</span>
+        <span style="opacity:0.5;"><i class="dot exec"></i> 実行力 0</span>
+      </div>
+      <div class="domain-note">
+        <strong>人間関係構築力 8つ × 戦略的思考力 2つ × 実行力 0 × 影響力 0</strong>。これは34資質中、<strong>とても珍しい組み合わせ</strong>です。<br><br>
+        意味を翻訳すると ──「人を引っ張る」「ゴリゴリ実行する」のは省エネで、<strong>「学んで、観察して、人の中で気づきを置いていく」</strong>のがふうさんの本来の動き方。コピーライターとしても、経理代行としても、これからの活動全部に効く配線です。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">「観察して、構造を見つけて、そっと気づきを置いていく」<br>— ふうさんが子どもの頃から、ずっと同じ場所で動かしてきた灯</div>
+</div>
+
+<!-- ═══ 02 DISCOVERY ═══ -->
+<section id="discovery">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">CORE DISCOVERY</div>
+      <h2 class="section-title">セッションで立ち上がった、3つの発見</h2>
+      <p class="section-lead">97分のあいだ、ふうさん自身の言葉から立ち上がった「これ、自分のことかも」の瞬間。</p>
+    </div>
+
+    <div class="discovery-box fade-in">
+      <div class="lbl">CORE 01 — 今日いちばんの自己発見</div>
+      <h3>「失敗が怖い」の正体は、自分自身に失望することの恐怖だった</h3>
+      <p>セッションのちょうど真ん中、おけもんが「自分自身に失望みたいな感じですか？」と問い直した瞬間、ふうさんがふっと返した言葉。</p>
+      <div class="pull">「もしかしたら相手じゃなくて、<em>自分をがっかりさせたくない</em>、相手と言いつつも自分の方かもしれない」<br>「<em>なんかちょっとしっくりきたな、今。心がわーって動いた今。なんか自分じゃないか</em>っていう」</div>
+      <p>これまでふうさんが「失敗が怖い」「相談を受けても恐怖が勝つ」「褒めを受け取れない」と感じてきたものの正体は、ぜんぶ <strong>自分自身への失望恐怖</strong> が出どころでした。</p>
+      <p>言い換えれば ── ふうさんは <strong>自分のことを大切にしすぎて、自分に痛みを感じさせたくない</strong> から、最初から動かないことで自分を守ってきた。それは弱さじゃなく、<em>自分への深い優しさ</em>でもあります。<br>セッション後半に本人が自然に「自分の悪口やめよう」「自分と仲良くしたい」と言葉にできたのは、この発見が次の景色を連れてきてくれた証拠。</p>
+    </div>
+
+    <div class="discovery-box fade-in" style="margin-top:24px;">
+      <div class="lbl">CORE 02 — コピーの "好き" の正体</div>
+      <h3>コピーライティングは「書くこと」じゃない。「構造を見つけて気づきを置く」が原液だった</h3>
+      <p>セッション後半、ふうさんが自分から語ってくれた「コピーの何が一番楽しいか」── これは仮取説では見えていなかった、本人語による完全言語化でした。</p>
+      <div class="pull">「私コピーを作るというよりは、調べる。<em>その人の心の価値、こういう事実があるんだっていう発見が一番楽しくて</em>。コピーを書きますっていうよりは、コピーの考え方を生かして、<em>あなた本当はこういうものをお客さんに売ってるんですよ</em>っていうのが楽しい。<em>構造を見たり</em>」</div>
+      <p>そして、経理について、ふうさんはハッキリ線を引きました：「経理代行で、別に経理好きじゃないし、正直経理だと <strong>絶対お金欲しい</strong>んですよ、仕事なのに。<em>経理で絶対無料なんて絶対嫌だ</em>。でも <strong>コピーライティングになると無料でもいいと思っちゃう</strong>んですよ」</p>
+      <p>「無料でもいい」と思えるほうが、<strong>本当の "好き"</strong>。これ以上わかりやすい指標はありません。<br>子どもの頃の <em>「ビルから家の中をのぞいて生活を見るのが嬉しかった」「教室で男子のプロレスにナレーションをつけて笑わせていた」</em> も、根っこは全部同じ ── <strong>観察 → 構造化 → 言語化 → 気づきを置く</strong>、一本軸です。</p>
+    </div>
+
+    <div class="discovery-box fade-in" style="margin-top:24px;">
+      <div class="lbl">CORE 03 — リベで自分で見つけた法則</div>
+      <h3>「楽しさを出すと、楽しい人が集まる」</h3>
+      <p>長く会社という「楽しさを出してはいけない場」で過ごしてきたふうさんが、リベという「自分を出していい場」に出会って、自分で言葉化した法則。</p>
+      <div class="pull">「会社でリレーでこうやって <em>楽しいこと出してるから声かけてくれたり、寄ってきてくれたり</em>」<br>「私リベで自分を持ったり嘘とかつかなくていいんだと思って、どうしなくていいんだっていうふうに思って、<em>やっぱりいい場所だな</em>」</div>
+      <p>アウトプットパーティーで <strong>8人</strong> 集まったのも、ぶみおさんが <strong>絶賛してくれた</strong>のも、みっちゃんと <strong>友達になれた</strong>のも、おけもんと <strong>このセッションができた</strong>のも ── 全部、ふうさんが楽しさを出したから起きたこと。<br>これは <em>これからのふうさんの活動全部に効く法則</em>です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">「自分と仲良くしたい」「自分の悪口やめよう」<br>— 97分の終わりに、ふうさん自身が見つけた次の入り口</div>
+</div>
+
+<!-- ═══ 03 TOP 5 ═══ -->
+<section id="top5">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">TOP 5 STRENGTHS</div>
+      <h2 class="section-title">ふうさんの上位5資質、ひとつずつ。</h2>
+      <p class="section-lead">それぞれの資質がどんな手ざわりで、ふうさんの中でどう動いているか。セッションで出てきた本人の言葉と一緒に並べました。</p>
+    </div>
+
+    <!-- 1. 共感性 -->
+    <div class="shitsu-block is-top3 fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">1</div>
+        <div class="shitsu-name">
+          <h3>共感性<span class="metaphor-tag"><i class="fas fa-temperature-half"></i> 心の温度計</span></h3>
+          <div class="meta">EMPATHY ／ 人間関係構築力</div>
+        </div>
+        <div class="shitsu-domain rel">人間関係</div>
+      </div>
+      <div class="shitsu-tokucho">
+        言葉にされていない気持ちを察知するアンテナ。ふうさんの場合、<strong>「数字の裏にあるストーリーが見える」</strong>という形で、経理事務のなかでも静かに動いてきた資質です。経理代行の初依頼者から「ほっとした」と言われた瞬間に「とっても嬉しかった」と感じられたのも、この資質の自然な働き。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">FUU'S EPISODE</div>
+        <div class="ep-text">
+          「<em>数字を見て物語を描く。会社の状態が見えたときがすごい楽しい</em>」── 経理の中で唯一楽しいと語ったこの瞬間が、ふうさんの共感性1位そのもの。<br><br>
+          ただし共感性は両刃の剣でもあって、本人もしっかり自覚していました：「<em>自分から見とって、自分が勝手に苦しくなって、この人重いなとか勝手に思っちゃう</em>」「最近それを思って線を引いて、<em>自分の意思を言うっていうのも大事</em>なんだなって思うようになってきた」。<strong>セルフケアの練習はもう始まっています。</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 収集心 -->
+    <div class="shitsu-block is-top3 fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank str">2</div>
+        <div class="shitsu-name">
+          <h3>収集心<span class="metaphor-tag"><i class="fas fa-book-open"></i> 図書館</span></h3>
+          <div class="meta">INPUT ／ 戦略的思考力</div>
+        </div>
+        <div class="shitsu-domain str">戦略思考</div>
+      </div>
+      <div class="shitsu-tokucho">
+        情報・経験・知識を集めて、<strong>必要な誰かに渡すために</strong>蓄えておく資質。ふうさんは「学ぶことを集める」と「人の心の中の事実を集める」の<em>両方</em>で発動しているのが特徴。「自分の世界を広げたい」という入会動機そのものが、収集心2位の声。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">FUU'S EPISODE</div>
+        <div class="ep-text">
+          ふうさんの収集している景色：中国語、英語、コピーライター講座、NISA、リベ大ライブ、書籍「The Art of Spending Money」── 「<em>ライブでおすすめされていた書籍を読んでみたら、衝撃の連続でした</em>」と本人の言葉に出てきた通り、<strong>「集めたものが必要な瞬間にスッと届く」</strong> のがふうさんの収集心の動き方。<br><br>
+          そして、コピーライティングについて：「<em>調べる。その人の心の価値、こういう事実があるんだっていう発見が一番楽しい</em>」── 収集心は <strong>人の心の中の事実を集める</strong> 方向にも、自然に伸びていく。
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 成長促進 -->
+    <div class="shitsu-block is-top3 fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">3</div>
+        <div class="shitsu-name">
+          <h3>成長促進<span class="metaphor-tag"><i class="fas fa-seedling"></i> 庭師</span></h3>
+          <div class="meta">DEVELOPER ／ 人間関係構築力</div>
+        </div>
+        <div class="shitsu-domain rel">人間関係</div>
+      </div>
+      <div class="shitsu-tokucho">
+        他者の「まだ表に出ていない可能性」を感じ取り、応援したくなる資質。ふうさんの場合、<strong>「相手の中にすでにある価値を、相手の代わりに言葉にして渡す」</strong> のが自然な形。コピーライティングの仕事の本体です。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">FUU'S EPISODE</div>
+        <div class="ep-text">
+          「<em>あなた本当はこういうものをお客さんに売ってるんですよ</em>」── これがふうさんの成長促進の核。相手の中にすでにあるけど本人には見えていない価値を、ふうさんが言葉にして渡す。<br><br>
+          そしてセッションのあと、本人が自然に出した宣言：「<em>これから色んな人のコピーを書くというか、こうやってコミュニケーションするにあたって、自分と違うからって攻撃的になったりとか、怖くてっていうそういうのじゃなくて、こういう人がいるんだ、この特性が違うんだからってふうに思えば、特性が違うだけで別にその人が悪いっていうわけじゃない</em>」── <strong>成長促進3位は、これから自分自身にも向けていける才能</strong>です。
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 親密性 -->
+    <div class="shitsu-block fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">4</div>
+        <div class="shitsu-name">
+          <h3>親密性<span class="metaphor-tag"><i class="fas fa-hands-holding"></i> 深く長い友達</span></h3>
+          <div class="meta">RELATOR ／ 人間関係構築力</div>
+        </div>
+        <div class="shitsu-domain rel">人間関係</div>
+      </div>
+      <div class="shitsu-tokucho">
+        少数の人と深く長い関係を育てる資質。広く浅くより、<strong>「この人なら大丈夫」と感じた相手に、時間をかけて本音で関わる</strong> のが自然。リベで深まった関係性は、これからのふうさんの土台になります。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">FUU'S EPISODE</div>
+        <div class="ep-text">
+          ぶみおさんが <strong>「言葉を整理してくれて助かった」</strong> と評価してくれた瞬間。みっちゃんがふうさんを「お友達」と呼んでくれたこと。リベの仲間と話せる場。<br><br>
+          そして7月のぶみおさんオフ会。本人の言葉：「<em>ぶみおさんが絶賛してくれたのに、なんか受け取れなかったんですよね</em>。自分のブランドの転換期になったっていうのがあった時に、なんか不運みたいになっちゃって、受け取らないようにしてる自分がいて。<em>受け取るようにします</em>」── 親密性4位の人ほど、<strong>大切に思っている相手の言葉ほど、受け取り上手になることが大事</strong>。
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 運命思考 -->
+    <div class="shitsu-block fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">5</div>
+        <div class="shitsu-name">
+          <h3>運命思考<span class="metaphor-tag"><i class="fas fa-link"></i> つながりの旅人</span></h3>
+          <div class="meta">CONNECTEDNESS ／ 人間関係構築力</div>
+        </div>
+        <div class="shitsu-domain rel">人間関係</div>
+      </div>
+      <div class="shitsu-tokucho">
+        すべての出来事に意味があり、繋がっていると感じる資質。ふうさんは <strong>歩んできた道を「たまたま」と思っていない</strong>。だから本のフレーズや出会った人の言葉が「今の私のため」として届く。これが「衝撃の連続でした」の正体です。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">FUU'S EPISODE</div>
+        <div class="ep-text">
+          ふうさんの歩んできた流れ：<em>NISAを調べた → 学長動画に出会った → コピーライター講座を修了した → リベシティに入会した → 経理代行で初めての依頼で「ほっとした」と言われた → 今日のセッション</em>。<br><br>
+          全部、ふうさんの中では <strong>つながっている1本の物語</strong>。「The Art of Spending Money」を読んで <em>「衝撃の連続でした」</em> と感じたのも、その本との出会いに「これは今の私のため」を感じ取れた瞬間。<strong>運命思考5位は、ふうさんが自分の人生を物語として受け取れる力</strong>です。
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">「コピーを書くんじゃなくて、構造を見つけて、気づきを置いていきたい」<br>— ふうさんがセッションで自分で見つけた、コピーライティングの本当の意味</div>
+</div>
+
+<!-- ═══ 04 SUB 5 ═══ -->
+<section id="sub5">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">6 - 10</div>
+      <h2 class="section-title">続く5資質も、ちゃんと働いてる</h2>
+      <p class="section-lead">トップ5の影に見えるけど、6〜10位がふうさんの「明るさ」「巻き込み」「学び」「合意」「ひとり一人を見る目」を裏で支えています。</p>
+    </div>
+
+    <div class="shitsu-mini-grid stagger">
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank rel">6</div>
+          <h4>ポジティブ / POSITIVITY</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-sun"></i> 陽だまり</div>
+        <p>「大丈夫」「いいね」を自然に渡せる資質。グイグイ盛り上げる型じゃなく、<em>そばで温める陽だまり型</em>。</p>
+        <div class="ep-mini">→ 「<em>いろんな人と話して、私は『誰かと一緒に喜べること』が好きなんだなと分かりました</em>」</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank rel">7</div>
+          <h4>包含 / INCLUDER</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-people-group"></i> 輪を広げる人</div>
+        <p>誰も置いていかず、輪を広げる資質。「自分の世界を広げたい」の声の半分は、この包含7位から来ている。</p>
+        <div class="ep-mini">→ アウトプットパーティーで <em>「30人無料を真似て8人来た」</em> ── 包含が動いた瞬間</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank str">8</div>
+          <h4>学習欲 / LEARNER</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-graduation-cap"></i> 学びの旅人</div>
+        <p>学ぶプロセス自体が好物。<em>「楽しいって思っちゃう」</em>が続けられる理由。コピー塾で唯一無防備にワクワクできた場。</p>
+        <div class="ep-mini">→ 「<em>競争して、先生に褒められたり、キーの指図もらった時がすっごい嬉しくて、先生は私の言ってることが分かったんだ</em>」</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank rel">9</div>
+          <h4>調和性 / HARMONY</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-dove"></i> 平和の使者</div>
+        <p>対立より合意点を探し、場を整える資質。経理事務という「数字を合わせる仕事」を続けてこられた根っこ。</p>
+        <div class="ep-mini">→ 経理は <em>「正直合ってないなって思ってて、数字合わせるので緊張してる」</em> でも続けられた理由がここ</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank rel">10</div>
+          <h4>個別化 / INDIVIDUALIZATION</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-palette"></i> ひとり一人を見る目</div>
+        <p>「みんな同じ」と見ない、違いを大切にする資質。セッション最後の発見がこの資質の働きそのもの。</p>
+        <div class="ep-mini">→ 「<em>自分と違うからって攻撃的じゃなく、特性が違うだけと思えば、恐怖心がちょっと下がりました</em>」</div>
+      </div>
+    </div>
+
+    <!-- ブランチページ誘導 -->
+    <div class="branch-card fade-in" id="branch">
+      <h3><i class="fas fa-seedling"></i> もっと資質を深掘りするブランチページ</h3>
+      <p>セッション前にお渡しした <strong>「資質図解ブランチ」</strong> に、ふうさんのTOP10それぞれ「メタファー＋PDF解説＋ふうさん接続＋セッションで聞きたいこと」を1枚ずつ詰めてあります。気になる資質をふっと開きたいときにどうぞ。</p>
+      <a class="branch-btn" href="fuu-strengths-branch-2026-05-26.html">
+        <i class="fas fa-seedling"></i> ふうさん 資質図解ブランチへ進む
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 05 ARUARU ═══ -->
+<section id="aruaru">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">FUU ARUARU</div>
+      <h2 class="section-title">ふうさんあるある</h2>
+      <p class="section-lead">セッション中、「<em>これ私や</em>」って何回か出てきたパターン。ぜんぶ、上位資質の自然な合わせ技です。</p>
+    </div>
+
+    <div class="aruaru-grid stagger">
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-eye"></i></div>
+        <h4>子どもの頃、ビルから家の中の生活を見るのが嬉しかった</h4>
+        <p>「<em>家の中でおばあちゃんとか部屋を掃除してた姿を見て、想像して、それを見るのが嬉しくて、人が動いてるな、生活してるなっていう姿がすごく嬉しい</em>」。共感性 × 個別化 × 学習欲。<strong>観察が好きだった子が、そのまま大人になった</strong>。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-microphone-lines"></i></div>
+        <h4>教室で男子のプロレスにナレーションをつけて笑わせていた</h4>
+        <p>「<em>男子が暴れてたりとかプロレスしたりとかそうじゃないですか。あの動きに対して私ナレーションとかつけて周りを笑わせてた</em>」。観察 × 構造化 × 言語化 × ポジティブ。<strong>"コピー思考" は子どもの頃から動いていた</strong>。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-comment-dollar"></i></div>
+        <h4>経理代行は「お金欲しい」、コピーは「無料でもいい」</h4>
+        <p>「<em>経理で絶対無料なんて絶対嫌だ。でもコピーライティングになると無料でもいいと思っちゃうんですよ</em>」。これ以上わかりやすい "本当の好き" の指標はない。<strong>無料でもやりたいほうが、本職になる。</strong></p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-comments"></i></div>
+        <h4>1日6時間、AIと喋り続けたことがある</h4>
+        <p>「<em>私一回6時間ずっとAIと喋ってたことがあって</em>」「<em>老後大丈夫な気がしてきて。なんか、いろんな課題を自分で見つけてAIと組み打ちするっていうのが楽しくて</em>」。学習欲 × 収集心 × 個別化が <strong>AI壁打ちと完璧に相性が良い</strong>。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-face-smile-beam"></i></div>
+        <h4>会社では出せなかった「楽しさ」が、リベだと出せた</h4>
+        <p>「<em>会社でリレーでこうやって楽しいこと出してるから声かけてくれたり、寄ってきてくれたり</em>」。ポジティブ × 包含。<strong>「出していい場所」さえあれば、人は寄ってくる</strong>って、自分で証明できた。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-hand-holding-heart"></i></div>
+        <h4>褒められても「不運扱い」して受け取れない</h4>
+        <p>「<em>ぶみおさんが絶賛してくれたのに、なんか受け取れなかったんですよね。なんか不運みたいになっちゃって、受け取らないようにしてる自分がいて</em>」「<em>拒否する自分は『そんなんじゃない』って拒否しちゃう</em>」。自分への失望恐怖の表れ。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-comment-dots"></i></div>
+        <h4>自分の悪口、結構たくさん言っている</h4>
+        <p>「<em>自分のコピーで『自分の悪口言うのやめよう』っていうコピー書いて。悪口すごい言うんですよ、自分の</em>」「<em>私も自分と仲良くしたいんです</em>」。<strong>気づいているから、もうここから変わっていける</strong>。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-shield-heart"></i></div>
+        <h4>共感性が暴走すると、感情を勝手に持ち帰ってしんどくなる</h4>
+        <p>「<em>自分から見とって、自分が勝手に苦しくなって、この人重いなとか勝手に思っちゃう</em>」。共感性1位の人の典型あるある。<strong>最近は「線を引く」「自分の意思を言う」練習が始まっている</strong>。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">「楽しさを出してるから声かけてくれたり、寄ってきてくれたり」<br>— リベでふうさん自身が見つけた、これからの法則</div>
+</div>
+
+<!-- ═══ 06 KASEGU PROOF ═══ -->
+<section id="kasegu">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">YOUR EARNING POWER</div>
+      <h2 class="section-title">「稼ぐ力」は、もう動いている</h2>
+      <p class="section-lead">「コピーライティングは無料でもいい」と語ったふうさん。でも、<strong>"無料でもやりたいほど好きなもの"</strong> こそが、これからの本職の入口です。すでにふうさんの中で動いている "稼ぐ力" の素材を並べてみます。</p>
+    </div>
+
+    <div class="kasegu-headline fade-in">
+      <span class="strike">稼ぐ力 ＝ 経理代行で固いお金を稼ぐ × コピーライティングは趣味で続ける</span>
+      <span class="arrow">↓ 書き換えてみる</span>
+      <strong>稼ぐ力 ＝ 観察・構造化・言語化・気づきを置く力を、必要な人に届ける形に並べ直すこと。</strong>
+    </div>
+
+    <div class="proof-grid stagger">
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-pen-nib"></i></div>
+        <h4>コピーライター講座を最後までやり切った事実</h4>
+        <p>「<em>20代の若者と競争して、先生に褒められたり、キーの指図もらった時がすっごい嬉しくて、先生は私の言ってることが分かったんだ</em>」。<strong>大人になってから、競争のある場で評価される経験を積めた</strong>のは、立派なキャリア資産です。</p>
+        <div class="proof-words">「コピーライティングクラスを取った時に、初めて『私好きだったんだ』っていうことに気づいた」</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-heart"></i></div>
+        <h4>経理代行 初依頼者から「ほっとした」をもらった</h4>
+        <p>リベ内で初めての依頼で、結果として依頼者を <strong>「ほっとさせた」</strong>。これは<em>「自分にできることで、誰かの心を軽くする」</em>を、すでに自分で実証できているということ。AI業務代行・コピーライターどちらに行っても、この感覚が稼ぎの中心になる。</p>
+        <div class="proof-words">「自分にできることで、誰かの心を軽くすることができたんだ、と喜びを実感」</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-users-line"></i></div>
+        <h4>アウトプットパーティーで8人集まった</h4>
+        <p>「<em>30人無料を真似て8人来た</em>」── 募集して、人が集まって、ふうさんから話を聞いてくれた。<strong>「告知 → 集客 → 価値提供」のサイクルを、もう自分で回せている</strong>。あとは「無料」→「有料」へ少しずつ翻訳していくだけ。</p>
+        <div class="proof-words">「8人来たとき、嬉しいよりは恐怖が勝ってて、ちゃんとできるかなとか、結果にコミットできるかなとか」</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-comments"></i></div>
+        <h4>ぶみおさんに「言葉を整理してくれた」と評価された</h4>
+        <p>「<em>Vionさんが一番評価してくれた、言葉を整理してあげた手伝った感じ</em>」。<strong>「相手の中にある価値を、相手の代わりに言葉にする」</strong>── ふうさんの成長促進3位がそのまま価値として認められた瞬間。これがコピーライティング思考の伝道師としての種。</p>
+        <div class="proof-words">「ぶみおさんが絶賛してくれた」← 受け取り上手になる練習で、これがそのまま実績になる</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-magnifying-glass-chart"></i></div>
+        <h4>「数字の裏のストーリー」を読み解く目を持っている</h4>
+        <p>「<em>唯一楽しいのは、数字を見て物語を描く。会社の状態が見えたときがすごい楽しい</em>」。これは普通の経理事務スキルじゃなく、<strong>「事実から物語を立ち上げる力」</strong>。コピーライターとしてのコア能力そのもの。</p>
+        <div class="proof-words">「数字の裏にあるストーリーが…」← 経理パート事務の中で密かに育ってきた、ふうさんの本職スキル</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-robot"></i></div>
+        <h4>AI壁打ち6時間連続 = 業界最速学習者の素地</h4>
+        <p>「<em>私一回6時間ずっとAIと喋ってたことがあって</em>」── これは多くの人がまだできていない領域。<strong>AIと組んで自分のサービスを設計できる人は、これからの市場で圧倒的に強い</strong>。ふうさんはすでにそのスタートラインにいる。</p>
+        <div class="proof-words">「老後大丈夫な気がしてきて。AIと組み打ちするっていうのが楽しくて」</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-people-arrows"></i></div>
+        <h4>みっちゃんと「お友達」になれた = 深く長い信頼の作り方を知っている</h4>
+        <p>親密性4位の人が、リベ内で深く繋がれる仲間と出会えた。<strong>これは「広く浅く」じゃない、ふうさんに合ったコミュニティの作り方</strong>。これからの仕事も、たくさんの人より、深く長く付き合える数人と進めるのが自然です。</p>
+        <div class="proof-words">7月のぶみおさんオフ会 = 深く長い関係を実地で育てる場</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-language"></i></div>
+        <h4>中国語・英語の継続学習が、視野を立体にしている</h4>
+        <p>「<em>趣味は中国語と英語</em>」「<em>好きなテレビは中国から夜更かし</em>」── 学習欲8位 × 収集心2位の継続発動。<strong>多言語視点は、コピーライティングや観察の解像度を上げる "見えない武器"</strong> として効いてくる。</p>
+        <div class="proof-words">語学を諦めず続けられる人は、人の心を観察するのも、続けられる</div>
+      </div>
+    </div>
+
+    <div class="kasegu-clincher fade-in">
+      <p>ふうさんはまだ <em>「自分はすごくない」「評価されると怖い」</em> と感じているけど、こうして並べてみると、<strong>もう手の中に、稼ぐ力の素材がぜんぶ揃っている</strong>。あとは、自分自身への失望恐怖をちょっとずつなだめて、<em>「ありがとう」を素直に受け取る</em>練習を重ねていくだけ。</p>
+      <p>事業を作るんじゃない。<em>すでに自分の中にある「観察 → 構造化 → 言語化 → 気づきを置く」力に、名前をつけて、必要な誰かに届ける形にする</em>。それが、共感性1位 × 成長促進3位 × 学習欲8位 × 個別化10位の、いちばん自然な「稼ぐ動き」です。</p>
+      <span class="kasegu-light"><i class="fas fa-wind"></i> 「楽しさを出すと、楽しい人が集まる」<br>これがふうさんが見つけた、稼ぐ力の入口の呪文。</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 07 MANUAL ═══ -->
+<section id="manual">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">YOUR MANUAL</div>
+      <h2 class="section-title">ふうさんの取扱説明書</h2>
+      <p class="section-lead">エンジンが気持ちよく回る環境と、消耗してしまう環境。<strong>共感性1位の人だから、この線引きが特に大事</strong>。両方を知っておくと、自分を扱いやすくなります。</p>
+    </div>
+
+    <div class="manual-two fade-in">
+      <div class="manual-box joy">
+        <h3><i class="fas fa-sun"></i> こうするとふうさんは満たされる</h3>
+        <ul>
+          <li>「楽しい」「ワクワク」「気づきがある」を判断軸にして動ける時</li>
+          <li>相手の話をじっくり聞いて、構造を見つけて、言葉にして渡せる場</li>
+          <li>少人数で深く話せる場（オフ会・コーチング・1on1）</li>
+          <li>新しいことを学べる余白がある時（コピー塾・中国語・AI壁打ち）</li>
+          <li>「ほっとした」「気づかなかった、ありがとう」と言ってもらえた時</li>
+          <li>嘘をつかなくていい、自分を出していい場所（リベのような）</li>
+          <li>誰かと一緒に喜べる瞬間（=ふうさんが自分で見つけた核）</li>
+          <li>AIと壁打ちして、考えを立体化していく時間</li>
+        </ul>
+      </div>
+      <div class="manual-box pain">
+        <h3><i class="fas fa-cloud"></i> こうなるとふうさんが消耗する</h3>
+        <ul>
+          <li>「自分が前に出てぐいぐい引っ張る」役を取らされた時（実行力・影響力ゼロのサイン）</li>
+          <li>「数字合わせるプレッシャー」だけが続く時（経理事務の本音）</li>
+          <li>大人数で薄い付き合い、初対面でいきなり深い話を求められる場</li>
+          <li>競争・速さ・成果主義の場（最上志向・競争性 上位10外）</li>
+          <li>共感性が暴走して、感情を勝手に持ち帰り続ける時</li>
+          <li>「楽しさを出してはいけない」とされる職場・コミュニティ</li>
+          <li>褒められた時に「不運扱い」してしまう時 = 受け取れていない</li>
+          <li>「自分の悪口」が止まらなくなって、自分への失望が膨らむ時</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 08 COMBOS ═══ -->
+<section id="combo">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">YOUR COMBINATIONS</div>
+      <h2 class="section-title">ふうさんの「資質コンボ」</h2>
+      <p class="section-lead">資質は単体じゃなく、組み合わせで化学反応を起こします。ふうさんの上位資質が掛け算されると、こんな動き方になります。</p>
+    </div>
+
+    <div class="combo-grid stagger">
+      <div class="combo-card">
+        <div class="combo-pair">共感性 × 個別化 × 成長促進</div>
+        <h4>「構造を見つけて、相手に気づきを置く人」</h4>
+        <p>言葉にならない気持ちを察知して、その人固有の文脈で読み解いて、相手の中にある価値を相手の代わりに言葉にする。<strong>ふうさんのコピーライティング思考の本体。</strong>「あなた本当はこういうものを売ってるんですよ」が動く場所。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">収集心 × 学習欲 × 運命思考</div>
+        <h4>「学びに必然を感じる人」</h4>
+        <p>NISA → 学長動画 → コピー講座 → リベ → 経理代行 → セッション。<strong>歩んできた道全部を1本の物語として受け取れる</strong>から、本のフレーズや出会いが「今の私のため」として届く。学び続けることが資産になる人。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">親密性 × 包含 × ポジティブ</div>
+        <h4>「楽しさを出すと寄ってきてくれる人」</h4>
+        <p>広く浅くは苦手、でも一度信頼すれば深く長く。そして「出していい場」では明るさが自然と出る。<strong>リベで自分で見つけた法則 = この3つの掛け算が機能している証拠。</strong></p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">調和性 × 共感性 × 個別化</div>
+        <h4>「数字の裏のストーリーを読める経理の人」</h4>
+        <p>経理事務という「数字を合わせる場」を続けてこられた根っこと、その中で <em>「会社の状態が見えた時が楽しい」</em> と感じる目。<strong>普通の経理にはない、ふうさんの密かなスキル。</strong></p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">運命思考 × 学習欲 × 共感性</div>
+        <h4>「AI壁打ちが老後インフラになる人」</h4>
+        <p>1日6時間AIと喋った経験。<strong>AIに対しても「相棒」として接して、意味を見出せる</strong>のは、まだ多くの人ができていない関係性。これからの市場で圧倒的に強い。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">共感性 × 親密性 × ポジティブ × 包含</div>
+        <h4>「誰かと一緒に喜べることが好き」な人</h4>
+        <p>ふうさんが自分で言葉にした核そのもの。<strong>4つの人間関係構築力資質が同時に動く瞬間 = 「誰かと一緒に喜べる」</strong>。これからの仕事はぜんぶ、ここから設計していい。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 09 QUOTES ═══ -->
+<section id="voice">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">YOUR VOICE</div>
+      <h2 class="section-title">ふうさんが、自分で言ってた言葉</h2>
+      <p class="section-lead">97分のセッションのなかで、ふっと出てきた本音たち。あとで読み返したい一節を残しておきます。</p>
+    </div>
+
+    <div class="quote-list fade-in">
+      <div class="quote-card pin">
+        <p>もしかしたら相手じゃなくて、<em>自分をがっかりさせたくない</em>、相手と言いつつも自分の方かもしれない。<br>なんかちょっとしっくりきたな、今。<em>心がわーって動いた</em>今。</p>
+        <div class="from">— セッション中盤、今日いちばんの自己発見の瞬間</div>
+      </div>
+      <div class="quote-card pin">
+        <p>私コピーを作るというよりは、調べる。<em>その人の心の価値、こういう事実があるんだっていう発見が一番楽しくて</em>。<br>コピーを書きますっていうよりは、<em>あなた本当はこういうものをお客さんに売ってるんですよ</em>っていうのが楽しい。構造を見たり。</p>
+        <div class="from">— コピーの "好き" の正体が言葉になった瞬間</div>
+      </div>
+      <div class="quote-card pin">
+        <p>経理で絶対無料なんて絶対嫌だ。<br>でも<em>コピーライティングになると無料でもいいと思っちゃう</em>んですよ。</p>
+        <div class="from">— "本当の好き" の最強の指標</div>
+      </div>
+      <div class="quote-card pin">
+        <p>会社でリレーでこうやって <em>楽しいこと出してるから声かけてくれたり、寄ってきてくれたり</em>。<br>私リベで自分を持ったり嘘とかつかなくていいんだと思って、<em>やっぱりいい場所だな</em>。</p>
+        <div class="from">— リベで自分で見つけた、これからの法則</div>
+      </div>
+      <div class="quote-card">
+        <p>自分のコピーで<em>『自分の悪口言うのやめよう』</em>っていうコピー書いて。悪口すごい言うんですよ、自分の。<br><em>私も自分と仲良くしたいんです</em>。</p>
+        <div class="from">— セッション後半、純度100%の本音</div>
+      </div>
+      <div class="quote-card">
+        <p>ぶみおさんが絶賛してくれたのに、なんか受け取れなかったんですよね。<br>なんか不運みたいになっちゃって、受け取らないようにしてる自分がいて。<em>受け取るようにします</em>。</p>
+        <div class="from">— 宿題が言葉になった瞬間</div>
+      </div>
+      <div class="quote-card">
+        <p>事実見つけましたって言って、相手がいや知らなかった、気づかなかった、ありがとうって言って、高いお金はいらないんですけど、<em>報酬もらえたら一番達成感がある</em>かな。</p>
+        <div class="from">— ふうさんの "達成感" の定義</div>
+      </div>
+      <div class="quote-card">
+        <p>家の中でおばあちゃんとか部屋を掃除してた姿を見て、想像して、それを見るのが嬉しくて、<em>人が動いてるな、生活してるなっていう姿がすごく嬉しい</em>。</p>
+        <div class="from">— ふうさんの観察癖の原点（子ども時代）</div>
+      </div>
+      <div class="quote-card">
+        <p>男子が暴れてたりとかプロレスしたりとかそうじゃないですか。あの動きに対して <em>私ナレーションとかつけて周りを笑わせてた</em>。</p>
+        <div class="from">— "コピー思考" は教室で動いていた</div>
+      </div>
+      <div class="quote-card">
+        <p>老後大丈夫な気がしてきて。<em>いろんな課題を自分で見つけてAIと組み打ちするっていうのが楽しくて</em>。</p>
+        <div class="from">— AI壁打ちが人生インフラ化した瞬間</div>
+      </div>
+      <div class="quote-card">
+        <p>自分と違うからって攻撃的になったりとか、怖くてっていうそういうのじゃなくて、こういう人がいるんだ、この特性が違うんだからって思えば、<em>特性が違うだけで別にその人が悪いっていうわけじゃないんだなって。そういうふうに捉えると、恐怖心がちょっと下がりました</em>。</p>
+        <div class="from">— 個別化10位が自分を救った瞬間（セッション総括）</div>
+      </div>
+      <div class="quote-card">
+        <p>ちょっと話てよかったなー。色々急にバーッと変わったんで、超恐怖というかの方が強かったんですけど、<em>人って違うんだし、なんかちょっと怖がることなくまず話をしてみればいいんじゃないかな</em>っていう、そういう気持ちになりました。</p>
+        <div class="from">— セッションの最後、ふうさんが帰る時に持ち帰った温度</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 10 STATE MAP ═══ -->
+<section id="state">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">WHERE YOU ARE</div>
+      <h2 class="section-title">いま、ふうさんがいる場所</h2>
+      <p class="section-lead">経理事務・コピーライティング・経理代行・リベ活動・AI壁打ち・家族との暮らし。一見ばらばらに見える活動が、ひとつの灯から出ています。</p>
+    </div>
+
+    <div class="state-grid fade-in">
+      <div class="state-cell">
+        <span class="em"><i class="fas fa-calculator"></i></span>
+        <div class="lbl">経理事務</div>
+        <div class="sub">パート<br>「合ってない」と<br>本音は出した</div>
+      </div>
+      <div class="state-cell">
+        <span class="em"><i class="fas fa-pen-fancy"></i></span>
+        <div class="lbl">コピーライティング</div>
+        <div class="sub">講座修了<br>"無料でもいい" 領域<br>本職候補</div>
+      </div>
+      <div class="state-cell">
+        <span class="em"><i class="fas fa-handshake"></i></span>
+        <div class="lbl">経理代行</div>
+        <div class="sub">リベ内初依頼<br>「ほっとした」<br>を引き出せた</div>
+      </div>
+      <div class="state-cell">
+        <span class="em"><i class="fas fa-people-group"></i></span>
+        <div class="lbl">リベの仲間</div>
+        <div class="sub">ぶみおさん<br>みっちゃん<br>7月オフ会予定</div>
+      </div>
+      <div class="state-cell">
+        <span class="em"><i class="fas fa-robot"></i></span>
+        <div class="lbl">AI壁打ち</div>
+        <div class="sub">1日6時間連続<br>"老後大丈夫"<br>感覚あり</div>
+      </div>
+      <div class="state-cell">
+        <span class="em"><i class="fas fa-home-heart"></i></span>
+        <div class="lbl">家族との暮らし</div>
+        <div class="sub">夫と<br>高校生の娘と<br>3人</div>
+      </div>
+    </div>
+
+    <div class="state-conclusion fade-in">
+      ばらばらに見えるけど、ぜんぶ <strong>「観察して、構造を見つけて、そっと気づきを置いていく」</strong> の入口。<br>
+      <strong>「自分の世界を広げたい」は、もう動き始めている</strong>。<br>
+      「楽しい」「ワクワク」「気づきがある」の3語を判断軸にして、ふうさんのペースで進んでいい時期です。
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 11 MOYA ═══ -->
+<section id="moya">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">SOFT CLOUDS</div>
+      <h2 class="section-title">そっと、置いておく雲</h2>
+      <p class="section-lead">セッション中に出てきた「不安・ブロック」たち。消そうとしなくて大丈夫。気づいておくだけで、振り回されにくくなります。</p>
+    </div>
+
+    <div class="moya-box fade-in">
+      <div class="head"><i class="fas fa-cloud"></i> 今、こういう気持ちが浮かんでる</div>
+      <div class="moya-list">
+        <div class="moya-item">自分自身に失望することへの恐怖。「相手をがっかりさせたくない」と思いつつ、実は自分への失望のほうが大きい。</div>
+        <div class="moya-item">褒められても「不運扱い」「拒否」「大したことない」と受け取れない。ぶみおさんの絶賛も受け取れなかった経験。</div>
+        <div class="moya-item">自分の悪口がたくさん出てくる。「自分の悪口言うのやめよう」とコピーに書いたほど。</div>
+        <div class="moya-item">経理代行を決意した割に、相談を受けると「嬉しいよりは恐怖が勝つ」。8人来た時もしんどかった。</div>
+        <div class="moya-item">「自分はすごくないと思っている」ので評価されると怖い。ドキドキする。ストレス。</div>
+        <div class="moya-item">経理代行は本音は「合ってない・好きじゃない・正直緊張してる」のに、収入のためにやらないといけない葛藤。</div>
+        <div class="moya-item">共感性が暴走して、相手の感情を勝手に持ち帰ってしんどくなる時間がある。</div>
+      </div>
+      <div class="moya-foot">
+        <strong>これは「治すもの」じゃなくて「気づいておくもの」。</strong><br>
+        浮かんできたら「お、また来たな〜」って眺めるだけでOK。<br>
+        雲は流れていくし、流れていかなくてもそこにあっていい<br><br>
+        <em>セッションで「自分と仲良くなりたい」と言えた今、<br>
+        ふうさんは雲との付き合い方を、もう知り始めています。</em>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 12 STEPS ═══ -->
+<section id="steps">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">TINY STEPS</div>
+      <h2 class="section-title">ふうさんの、楽しんで踏める小さな一歩</h2>
+      <p class="section-lead">全部やる必要なし。「これならできるかも」「楽しそう」を1個だけ選んでみて。<strong>ふうさんは、楽しさを軸にしたら集まってくる人。</strong>1ヶ月後にやってみた感想を、また聞かせてくださいね。</p>
+    </div>
+
+    <div class="step-list fade-in">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-text">
+          <h4>このセッションの録画／文字起こしをAIに渡して、自分で仮説を立ててみる</h4>
+          <p>「録画聞き直してAIと壁打ちする」と本人が宣言してくれた一歩。<em>ふうさんが本人語で「あ、これが私かも」と感じるところ</em>を、AIと一緒に深掘り。「自分が一番自分のことを知ってる人」になる入口。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-text">
+          <h4>受け取り練習：人から褒められたら「ありがとうございます」だけ返す</h4>
+          <p>「いえいえ」「そんなことない」を一旦封印。<em>「ぶみおさんに受け取るようにします」とふうさん自身が宣言してくれた</em>練習。違和感があってもOK、まずは形から。これが循環の起点になります。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-text">
+          <h4>「自分の悪口、今日は何回言ったかな？」を寝る前に思い出す</h4>
+          <p>数えるだけでOK。ジャッジしない。<em>気づくだけで悪口は減っていきます</em>。「自分と仲良くなる」最初の一歩は、悪口に気づくこと。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-text">
+          <h4>7月のぶみおさんオフ会に参加する</h4>
+          <p>ぶみおさんに会って、<em>「あの時の言葉、嬉しかったです」を直接伝える</em>機会に。親密性4位の "深く長く" を実地で育てる場。受け取り上手練習の本番でもある。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">05</div>
+        <div class="step-text">
+          <h4>ノウハウ図書館で「観察→構造→気づき」のテーマで1本書いてみる</h4>
+          <p>「経理の数字の裏にストーリーがある」でも「コピーは書くより先に観察」でもOK。<em>「無料でも書きたいテーマ」</em>から始めると、ふうさんの軸がさらに見えてきます。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">06</div>
+        <div class="step-text">
+          <h4>「コピーライティング思考の伝道師」として、誰かの言葉を整理してあげる</h4>
+          <p>ぶみおさんに対してすでに自然にやれたこと。リベ内で「言葉を整理したい人」を1人見つけて、<em>「あなた本当はこういうことを売ってるんですよ」</em>を1人に届ける実験。無料でいい、まず1人。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">07</div>
+        <div class="step-text">
+          <h4>「楽しさを出してOK」と自分に許可を出す</h4>
+          <p>会社では出せなかった "楽しさ"。リベでは出せた。これからは <em>もっと色んな場で楽しさを出してOK</em>。出すと寄ってくる、もう自分で証明済み。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">08</div>
+        <div class="step-text">
+          <h4>1〜2ヶ月後にフォローセッションをスケジュールする</h4>
+          <p>「自分と仲良くなる」進度を、定期的に <em>外側からも一緒に見直す</em>場を作る。1人で抱え込まず、おけもんと一緒に景色を更新していきましょう。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">「人って違うんだし、ちょっと怖がることなく、まず話をしてみればいい」<br>— 97分の終わりに、ふうさんが自分の中から見つけた次の景色</div>
+</div>
+
+<!-- ═══ MESSAGE ═══ -->
+<section id="message" style="background:var(--warm-bg);">
+  <div class="container">
+    <div class="message-box fade-in">
+      <h3>ふうさんへ</h3>
+      <p>
+        ふうさん。今日は97分、本当にありがとうございました。<br><br>
+
+        セッションが始まる時、ふうさんは<em>「超恐怖」</em>って言ってくれた。<br>
+        それを正直に言葉にできた時点で、もう半分は越えてたんだと思います。<br><br>
+
+        ふうさんの中の <strong>「観察する目」</strong>って、<br>
+        子どもの頃にビルから家の中を見ていた頃から、<br>
+        教室で男子のプロレスにナレーションをつけて周りを笑わせていた頃から、<br>
+        ずーっと同じ場所で動いている才能なんですよ。<br><br>
+
+        大人になって、それが<em>「数字の裏のストーリーを読む目」</em>になり、<br>
+        コピーライター講座で <em>「コピーの構造を見つける目」</em>になり、<br>
+        今は <em>「人の心の中の価値を見つけて、言葉にして渡す目」</em> として、<br>
+        ふうさんの本職の場所に育ってきています。<br><br>
+
+        「自分はすごくない」「評価されると怖い」<br>
+        そして97分目の真ん中で出てきた<br>
+        <strong>「ちょっとしっくりきた、心がわーって動いた、自分をがっかりさせたくないかも」</strong>。<br>
+        ぜんぶ、ふうさんが <em>自分のことを大切にしている</em> から出てくる言葉でした。<br>
+        だから、その大切な自分を、これからは <strong>「悪口じゃなく、いい言葉で扱う」</strong>ことを<br>
+        ゆっくり始めてみてください。<br><br>
+
+        ぶみおさんが「言葉を整理してくれて助かった」と言ってくれた瞬間、<br>
+        それは <strong>ふうさんがふうさんとして生まれてきた理由</strong>が、<br>
+        小さく形になった瞬間です。<br>
+        受け取って大丈夫。ふうさんは、ちゃんと与えています。<br><br>
+
+        そして ── <strong>「楽しさを出すと、楽しい人が集まる」</strong> という法則を、<br>
+        ふうさんは自分の人生で見つけてくれました。<br>
+        これからもどんどん楽しさを出して、<br>
+        その先で出会う方たちと、深く長く繋がっていってください。<br><br>
+
+        「無料でもいいと思っちゃう」コピーの世界で、<br>
+        これからふうさんが書いていく言葉が、<br>
+        たくさんの方の<em>「ほっとした」「あ、そうか」</em>を生み出していくこと、<br>
+        心からワクワクしています。<br><br>
+
+        <strong>ふうさん、生まれてきてくれて、ありがとう。</strong><br>
+        また、いつでも、会いに来てくださいね。
+      </p>
+      <div class="sign">— 2026年5月26日 セッションのあとで / おけもんより</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="brand">寄り添い型 個性診断師 おけもん</div>
+  <p>ふうさん / ストレングスファインダー34 個別レビュー / 2026.05.26</p>
+</footer>
+
+<script>
+const animEls = document.querySelectorAll('.fade-in, .stagger');
+const animObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('is-visible');
+      animObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+animEls.forEach(el => {
+  const r = el.getBoundingClientRect();
+  if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+  else animObs.observe(el);
+});
+
+// 浮遊TOCを外クリックで閉じる
+document.addEventListener('click', (e) => {
+  const toc = document.querySelector('.float-toc');
+  if (!toc.contains(e.target) && toc.open) {
+    toc.open = false;
+  }
+});
+// TOCリンククリック後、自動で閉じる
+document.querySelectorAll('.float-toc a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.querySelector('.float-toc').open = false;
+  });
+});
+</script>
+</body>
+</html>
