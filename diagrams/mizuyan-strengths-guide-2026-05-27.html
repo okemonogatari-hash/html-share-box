@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>みずやんのトリセツ｜年中夢中でやってます、寄り添い型Webデザイナー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  /* みずやんパレット：ネイビー × オレンジ × クリーム × ベージュ
+     プロフィール画像のブランドカラーをそのまま昇格 */
+  --navy-deep:    #0E1A30;
+  --navy:         #16243F;
+  --navy-mid:     #243A5C;
+  --navy-light:   #E8EDF5;
+  --orange-deep:  #C4733A;
+  --orange:       #E68A4A;
+  --orange-mid:   #F1A067;
+  --orange-soft:  #F4C6A0;
+  --orange-mist:  #FCEEDF;
+  --cream:        #FBFAF7;
+  --paper:        #F8F5EF;
+  --paper-warm:   #F3EDE2;
+  --gold-deep:    #B89360;
+  --gold:         #D4AA73;
+  --sky:          #5BA3CC;
+  --leaf:         #6FAA88;
+  --text:         #1C1917;
+  --text-mute:    #5A544E;
+  --text-light:   #918B82;
+  --line:         rgba(22,36,63,0.12);
+  --shadow-sm:    0 2px 14px rgba(22,36,63,0.06);
+  --shadow-md:    0 10px 32px rgba(22,36,63,0.10);
+  --shadow-lg:    0 18px 50px rgba(196,115,58,0.18);
+  --radius:       12px;
+  --radius-lg:    20px;
+
+  /* 4領域カラー */
+  --d-exec: #E68A4A;   /* 実行力 */
+  --d-infl: #D4AA73;   /* 影響力 */
+  --d-rel:  #5BA3CC;   /* 人間関係構築力 */
+  --d-str:  #243A5C;   /* 戦略的思考力 */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text);
+  background: var(--paper);
+  line-height: 1.95;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.02em;
+}
+h1, h2, h3, h4 { font-family: 'Noto Serif JP', serif; font-weight: 500; line-height: 1.5; letter-spacing: 0.04em; }
+.container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+/* ====== Scroll Progress ====== */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--orange-soft));
+  z-index: 999; width: 0%; transition: width 0.1s linear;
+}
+
+/* ====== Animations ====== */
+@keyframes heroFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes heroSlideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes kenBurns { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
+@keyframes pulseStar {
+  0%, 100% { opacity: 0.85; transform: scale(1); filter: drop-shadow(0 4px 16px rgba(230,138,74,0.40)); }
+  50%      { opacity: 1;    transform: scale(1.05); filter: drop-shadow(0 6px 22px rgba(230,138,74,0.60)); }
+}
+.fade-in { opacity: 0; transform: translateY(28px); transition: opacity 1s cubic-bezier(0.22,1,0.36,1), transform 1s cubic-bezier(0.22,1,0.36,1); }
+.fade-in.is-visible { opacity: 1; transform: none; }
+.stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.stagger.is-visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(3) { transition-delay: 0.25s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(4) { transition-delay: 0.35s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(5) { transition-delay: 0.45s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(6) { transition-delay: 0.55s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(7) { transition-delay: 0.65s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(8) { transition-delay: 0.75s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(9) { transition-delay: 0.85s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(10) { transition-delay: 0.95s; opacity: 1; transform: none; }
+
+/* ====== HERO ====== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(14,26,48,0.55) 0%, rgba(14,26,48,0.78) 60%, rgba(14,26,48,0.92) 100%),
+    url('mizuyan-strengths-doodle-2026-05-27.png') center/cover no-repeat;
+  color: #fff;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(135deg, transparent 0, transparent 32px, rgba(255,255,255,0.025) 32px, rgba(255,255,255,0.025) 64px);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 220px;
+  background: linear-gradient(to top, var(--paper) 0%, rgba(248,245,239,0.72) 40%, transparent 100%);
+}
+.hero-inner { position: relative; z-index: 2; padding: 60px 24px; max-width: 760px; }
+
+.hero-star {
+  width: 80px; height: 80px; margin: 0 auto 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--orange) 0%, var(--orange-deep) 100%);
+  font-size: 38px; color: #fff;
+  font-family: 'Noto Serif JP', serif;
+  animation: heroFadeIn 1s 0.1s both, pulseStar 4.5s 0.8s ease-in-out infinite;
+  border: 2px solid rgba(255,255,255,0.35);
+}
+
+.hero-label {
+  font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 4px;
+  text-transform: uppercase; opacity: 0.92; margin-bottom: 18px;
+  animation: heroFadeIn 0.8s 0.2s both;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+  color: var(--orange-soft);
+}
+.hero-name {
+  font-size: clamp(32px, 6vw, 56px); font-weight: 700; margin-bottom: 18px;
+  animation: heroSlideUp 0.9s 0.3s both;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.6);
+}
+.hero-name span { color: var(--orange-soft); }
+.hero-tagline {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: clamp(15px, 3vw, 22px); font-weight: 400;
+  opacity: 1; margin-bottom: 14px; line-height: 1.95;
+  animation: heroSlideUp 0.9s 0.5s both;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+}
+.hero-tagline strong { color: var(--orange-soft); font-weight: 600; }
+.hero-sub {
+  font-size: 14px; opacity: 0.88; max-width: 580px; margin: 24px auto 38px;
+  animation: heroSlideUp 0.9s 0.7s both;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+.hero-meta {
+  display: flex; gap: 32px; justify-content: center; flex-wrap: wrap;
+  animation: heroFadeIn 1.2s 0.9s both;
+  margin-top: 28px;
+}
+.hero-meta-item {
+  font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
+  padding: 0 4px;
+}
+.hero-meta-item strong {
+  display: block;
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  color: var(--orange-soft);
+  margin-bottom: 4px;
+  text-transform: none;
+}
+.hero-scroll {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  z-index: 3;
+  font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.3em;
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+  animation: heroFadeIn 1.5s 1.5s both;
+}
+.hero-scroll::after {
+  content: ''; display: block; width: 1px; height: 40px;
+  background: rgba(255,255,255,0.4); margin: 10px auto 0;
+}
+
+/* ====== Floating TOC ====== */
+.floating-toc {
+  position: fixed; right: 24px; top: 50%; transform: translateY(-50%);
+  z-index: 100;
+  display: flex; flex-direction: column; gap: 10px;
+  background: rgba(251,250,247,0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 14px;
+  box-shadow: var(--shadow-md);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.4s, visibility 0.4s;
+}
+.floating-toc.is-shown { opacity: 1; visibility: visible; }
+.floating-toc a {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text-light);
+  text-decoration: none;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+.floating-toc a:hover { color: var(--orange); background: var(--orange-mist); }
+.floating-toc a i { width: 14px; font-size: 11px; }
+
+/* ====== Section Base ====== */
+section { padding: 92px 0; position: relative; }
+.section-label {
+  font-family: 'Inter', sans-serif; font-size: 11px;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--orange); font-weight: 600; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label::before { content: ''; width: 28px; height: 1px; background: var(--orange); }
+.section-title {
+  font-size: clamp(24px, 4vw, 34px); color: var(--navy);
+  margin-bottom: 18px; font-weight: 700;
+}
+.section-title em { font-style: normal; color: var(--orange); }
+.section-lead {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 16px; line-height: 2.0; color: var(--text-mute);
+  margin-bottom: 50px; max-width: 720px;
+}
+
+/* ====== Dividers ====== */
+.sun-divider {
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 50%, var(--paper) 100%);
+  padding: 40px 24px;
+  text-align: center;
+}
+.sun-divider .quote {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 16px; line-height: 2.0; color: var(--orange-deep);
+  font-style: italic;
+  max-width: 660px; margin: 0 auto;
+}
+.sun-divider .quote::before { content: '"'; font-size: 28px; color: var(--orange); margin-right: 6px; vertical-align: -10px; }
+.sun-divider .quote::after  { content: '"'; font-size: 28px; color: var(--orange); margin-left: 6px;  vertical-align: -10px; }
+
+/* ====== ABOUT YOU ====== */
+.about-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  margin-top: 14px;
+}
+.about-doodle {
+  position: relative;
+  overflow: hidden;
+}
+.about-doodle img {
+  width: 100%; display: block;
+  transition: transform 1.4s ease;
+}
+.about-card:hover .about-doodle img { transform: scale(1.02); }
+.about-doodle-label {
+  position: absolute; top: 14px; left: 14px;
+  font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: #fff;
+  background: rgba(22,36,63,0.78);
+  padding: 6px 12px; border-radius: 100px;
+  backdrop-filter: blur(6px);
+}
+.about-body {
+  padding: 40px 36px 44px;
+}
+.about-body h3 {
+  font-size: 22px; color: var(--navy); margin-bottom: 16px;
+}
+.about-body p {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 16px; line-height: 2.1; color: var(--text);
+  margin-bottom: 16px;
+}
+.about-body p:last-child { margin-bottom: 0; }
+.about-body p em { font-style: normal; color: var(--orange-deep); font-weight: 600; }
+.about-body p strong { color: var(--navy); font-weight: 700; background: linear-gradient(transparent 60%, var(--orange-mist) 60%); padding: 0 2px; }
+
+.profile-card-img {
+  margin-top: 36px; border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+  border: 1px solid var(--line);
+}
+.profile-card-img img { width: 100%; display: block; }
+
+/* ====== STRENGTHS RESULT IMAGE ====== */
+.image-frame {
+  background: #fff; padding: 18px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  margin-top: 8px;
+  border: 1px solid var(--line);
+}
+.image-frame-label {
+  font-family: 'Inter', sans-serif; font-size: 11px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--text-light); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.image-frame-label i { color: var(--orange); }
+.image-frame img { width: 100%; display: block; border-radius: 8px; background: white; }
+
+/* ====== Shitsu Block (TOP5) ====== */
+.shitsu-block {
+  background: #fff; border-radius: var(--radius-lg);
+  padding: 36px 36px 30px; margin-bottom: 26px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+.shitsu-block.is-top3 {
+  background: linear-gradient(135deg, #ffffff 0%, var(--orange-mist) 100%);
+  border-color: rgba(230,138,74,0.22);
+}
+.shitsu-block.is-top3::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--orange) 0%, var(--orange-soft) 100%);
+}
+.shitsu-head {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 22px; flex-wrap: wrap;
+}
+.shitsu-rank {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: 'Inter', sans-serif;
+  font-weight: 700; font-size: 20px;
+  flex-shrink: 0;
+}
+.shitsu-rank.exec { background: var(--d-exec); }
+.shitsu-rank.infl { background: var(--d-infl); }
+.shitsu-rank.rel  { background: var(--d-rel); }
+.shitsu-rank.str  { background: var(--d-str); }
+.shitsu-name { flex: 1; min-width: 240px; }
+.shitsu-name h3 {
+  font-size: 22px; color: var(--navy);
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.metaphor-tag {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 13px; color: var(--orange-deep);
+  background: var(--orange-mist);
+  padding: 3px 10px; border-radius: 100px;
+  font-weight: 500; display: inline-flex; align-items: center; gap: 6px;
+}
+.shitsu-name .meta {
+  font-family: 'Inter', sans-serif; font-size: 10px;
+  letter-spacing: 0.18em; color: var(--text-light);
+  text-transform: uppercase; margin-top: 4px;
+}
+.shitsu-domain {
+  font-family: 'Inter', sans-serif; font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 100px;
+  color: #fff; font-weight: 600;
+  flex-shrink: 0;
+}
+.shitsu-domain.exec { background: var(--d-exec); }
+.shitsu-domain.infl { background: var(--d-infl); }
+.shitsu-domain.rel  { background: var(--d-rel); }
+.shitsu-domain.str  { background: var(--d-str); }
+
+.shitsu-tokucho {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 15px; line-height: 2.05; color: var(--text);
+  margin-bottom: 18px;
+}
+.shitsu-tokucho strong { background: linear-gradient(transparent 60%, var(--orange-mist) 60%); padding: 0 2px; font-weight: 700; color: var(--navy); }
+.shitsu-tokucho em { font-style: normal; color: var(--orange-deep); font-weight: 500; }
+
+.shitsu-episode {
+  background: var(--paper-warm); padding: 22px 24px;
+  border-radius: 10px; border-left: 3px solid var(--orange);
+  margin-top: 14px;
+}
+.ep-label {
+  font-family: 'Inter', sans-serif; font-size: 10px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--orange-deep); margin-bottom: 10px; font-weight: 700;
+}
+.ep-text {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 14px; line-height: 2.05; color: var(--text);
+}
+.ep-text em { font-style: normal; color: var(--orange-deep); font-weight: 500; }
+.ep-text strong { color: var(--navy); font-weight: 700; }
+
+/* ====== Sub Mini Grid (6-10) ====== */
+.shitsu-mini-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+.shitsu-mini {
+  background: #fff; padding: 24px 22px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+.shitsu-mini-head {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+}
+.shitsu-mini-rank {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: 'Inter', sans-serif;
+  font-weight: 700; font-size: 13px;
+}
+.shitsu-mini-rank.exec { background: var(--d-exec); }
+.shitsu-mini-rank.infl { background: var(--d-infl); }
+.shitsu-mini-rank.rel  { background: var(--d-rel); }
+.shitsu-mini-rank.str  { background: var(--d-str); }
+.shitsu-mini h4 {
+  font-size: 15px; color: var(--navy);
+  font-family: 'Noto Serif JP', serif;
+}
+.meta-mini {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 12px; color: var(--orange-deep);
+  margin-bottom: 8px;
+}
+.shitsu-mini p {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 13px; line-height: 1.9; color: var(--text);
+  margin-bottom: 10px;
+}
+.shitsu-mini p em { color: var(--orange-deep); font-style: normal; font-weight: 600; }
+.ep-mini {
+  font-size: 12px; color: var(--text-mute); line-height: 1.8;
+  padding-top: 10px; border-top: 1px dashed var(--line);
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+}
+.ep-mini em { color: var(--orange-deep); font-style: normal; font-weight: 600; }
+
+/* ====== Branch誘導 ====== */
+.branch-card {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+  color: #fff; padding: 36px 32px; border-radius: var(--radius-lg);
+  margin-top: 36px; box-shadow: var(--shadow-lg);
+  position: relative; overflow: hidden;
+}
+.branch-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 80% 30%, rgba(230,138,74,0.18) 0%, transparent 50%);
+  pointer-events: none;
+}
+.branch-card h3 {
+  font-size: 19px; margin-bottom: 14px; position: relative;
+  color: #fff; display: flex; align-items: center; gap: 10px;
+}
+.branch-card h3 i { color: var(--orange-soft); }
+.branch-card p {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 14px; line-height: 1.95;
+  color: rgba(255,255,255,0.85); margin-bottom: 22px;
+  position: relative;
+}
+.branch-card p strong { color: var(--orange-soft); font-weight: 600; }
+.branch-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--orange); color: var(--navy);
+  padding: 14px 28px; border-radius: 100px;
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  text-decoration: none; transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  box-shadow: 0 10px 28px rgba(230,138,74,0.4);
+}
+.branch-btn:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 16px 36px rgba(0,0,0,0.3); }
+
+/* ====== ARUARU ====== */
+.aruaru-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+.aruaru-item {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 22px 22px 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--line);
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.aruaru-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.aruaru-num {
+  position: absolute; top: -10px; left: 18px;
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 13px; color: var(--orange-deep);
+  background: var(--orange-mist);
+  padding: 3px 12px; border-radius: 100px;
+  font-weight: 600;
+}
+.aruaru-item p {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 14px; line-height: 1.95;
+  color: var(--text); margin-top: 8px;
+}
+.aruaru-item p strong { color: var(--orange-deep); }
+
+/* ====== PROOF ====== */
+.proof-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+.proof-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 28px 22px;
+  text-align: center;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  position: relative; overflow: hidden;
+}
+.proof-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--orange);
+}
+.proof-num {
+  font-family: 'Inter', sans-serif; font-size: 36px; font-weight: 800;
+  color: var(--navy); letter-spacing: -0.02em; line-height: 1;
+}
+.proof-num span { font-size: 16px; margin-left: 2px; color: var(--orange-deep); font-weight: 600; }
+.proof-label {
+  font-family: 'Noto Serif JP', serif; font-size: 13px;
+  color: var(--text); margin-top: 10px; font-weight: 500;
+}
+.proof-note {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 11px; color: var(--text-light); margin-top: 8px; line-height: 1.6;
+}
+
+/* ====== MANUAL ====== */
+.manual-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+}
+.manual-card {
+  background: #fff; padding: 28px 28px 26px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--line);
+}
+.manual-card.happy {
+  background: linear-gradient(135deg, #fff 0%, var(--orange-mist) 100%);
+  border-color: rgba(230,138,74,0.22);
+}
+.manual-card.tired {
+  background: linear-gradient(135deg, #fff 0%, var(--navy-light) 100%);
+  border-color: rgba(22,36,63,0.12);
+}
+.manual-card h3 {
+  font-size: 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.manual-card.happy h3 { color: var(--orange-deep); }
+.manual-card.happy h3 i { color: var(--orange); }
+.manual-card.tired h3 { color: var(--navy); }
+.manual-card.tired h3 i { color: var(--navy-mid); }
+.manual-card ul {
+  list-style: none;
+}
+.manual-card li {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 14px; line-height: 1.85;
+  padding: 8px 0 8px 22px; position: relative;
+  border-bottom: 1px dashed var(--line);
+}
+.manual-card li:last-child { border-bottom: none; }
+.manual-card.happy li::before {
+  content: '✦'; position: absolute; left: 4px; top: 8px;
+  color: var(--orange); font-size: 13px;
+}
+.manual-card.tired li::before {
+  content: '◌'; position: absolute; left: 4px; top: 8px;
+  color: var(--navy-mid); font-size: 13px;
+}
+
+/* ====== COMBOS ====== */
+.combo-list { display: flex; flex-direction: column; gap: 22px; }
+.combo-item {
+  background: #fff;
+  padding: 28px 30px;
+  border-radius: var(--radius);
+  border-left: 4px solid var(--orange);
+  box-shadow: var(--shadow-sm);
+}
+.combo-mix {
+  font-family: 'Inter', sans-serif; font-size: 11px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--orange-deep); margin-bottom: 8px; font-weight: 700;
+}
+.combo-item h3 {
+  font-size: 19px; color: var(--navy); margin-bottom: 12px;
+}
+.combo-item p {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 14px; line-height: 2.0; color: var(--text);
+}
+.combo-item p strong { color: var(--orange-deep); font-weight: 600; background: linear-gradient(transparent 60%, var(--orange-mist) 60%); padding: 0 2px; }
+
+/* ====== VOICE ====== */
+.voice-card {
+  background: linear-gradient(135deg, var(--paper-warm) 0%, var(--orange-mist) 100%);
+  padding: 36px 36px 32px;
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.voice-card::before {
+  content: '"';
+  position: absolute; top: -10px; left: 18px;
+  font-family: 'Noto Serif JP', serif; font-size: 120px;
+  color: rgba(230,138,74,0.18); line-height: 1;
+}
+.voice-quote {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 15px; line-height: 2.1; color: var(--text);
+  position: relative; padding-left: 32px;
+}
+.voice-quote strong { color: var(--orange-deep); font-weight: 700; background: linear-gradient(transparent 60%, #fff 60%); padding: 0 4px; }
+.voice-source {
+  font-family: 'Inter', sans-serif; font-size: 11px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--orange-deep); margin-top: 16px; padding-left: 32px;
+  font-weight: 600;
+}
+
+/* ====== STATE MAP ====== */
+.state-card {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+  color: #fff;
+  padding: 38px 36px;
+  border-radius: var(--radius-lg);
+  position: relative; overflow: hidden;
+}
+.state-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 90% 10%, rgba(230,138,74,0.18) 0%, transparent 50%);
+}
+.state-card h3 {
+  font-size: 22px; margin-bottom: 16px; color: #fff;
+  position: relative;
+}
+.state-card h3 em { color: var(--orange-soft); font-style: normal; }
+.state-card p {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 15px; line-height: 2.05;
+  color: rgba(255,255,255,0.86); margin-bottom: 14px;
+  position: relative;
+}
+.state-card p strong { color: var(--orange-soft); font-weight: 600; }
+
+.state-axis {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px; margin-top: 26px; position: relative;
+}
+.state-axis-item {
+  background: rgba(255,255,255,0.06); padding: 18px 18px 16px;
+  border-radius: 10px; border-left: 3px solid var(--orange);
+}
+.state-axis-item .ax {
+  font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--orange-soft); margin-bottom: 6px; font-weight: 600;
+}
+.state-axis-item .val {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 14px; line-height: 1.85; color: rgba(255,255,255,0.92);
+}
+
+/* ====== PARTNERSHIP ====== */
+.partnership-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+.ps-card {
+  background: #fff;
+  padding: 26px 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.ps-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.ps-step {
+  font-family: 'Inter', sans-serif; font-size: 11px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--orange); font-weight: 700; margin-bottom: 8px;
+}
+.ps-card h3 {
+  font-size: 17px; color: var(--navy); margin-bottom: 10px;
+}
+.ps-card p {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 13.5px; line-height: 1.95; color: var(--text-mute);
+}
+
+/* ====== INVITE ====== */
+.invite-card {
+  background: linear-gradient(135deg, var(--orange-mist) 0%, var(--paper-warm) 100%);
+  padding: 40px 36px;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  border: 1px solid rgba(230,138,74,0.22);
+}
+.invite-card h3 {
+  font-size: 22px; color: var(--navy); margin-bottom: 16px;
+}
+.invite-card h3 em { color: var(--orange-deep); font-style: normal; }
+.invite-card p {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 15px; line-height: 2.0; color: var(--text);
+  margin-bottom: 22px;
+}
+.invite-buttons {
+  display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+  margin-top: 22px;
+}
+.invite-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--navy); color: #fff;
+  padding: 14px 26px; border-radius: 100px;
+  font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  text-decoration: none; transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.invite-btn:hover { background: var(--navy-mid); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.invite-btn.primary { background: var(--orange); color: var(--navy); }
+.invite-btn.primary:hover { background: var(--orange-deep); color: #fff; }
+
+/* ====== MESSAGE ====== */
+.message-section {
+  background: linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+  color: #fff;
+  padding: 96px 24px 84px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.message-section::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 20%, rgba(230,138,74,0.18) 0%, transparent 60%);
+}
+.message-inner { max-width: 700px; margin: 0 auto; position: relative; }
+.message-label {
+  font-family: 'Inter', sans-serif; font-size: 11px;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--orange-soft); margin-bottom: 22px;
+}
+.message-section h2 {
+  font-size: clamp(24px, 4vw, 32px); margin-bottom: 24px;
+  color: #fff;
+}
+.message-section h2 em { color: var(--orange-soft); font-style: normal; }
+.message-section p {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 15px; line-height: 2.1;
+  color: rgba(255,255,255,0.86); margin-bottom: 14px;
+}
+.message-section p:last-child { margin-bottom: 0; }
+.message-sign {
+  margin-top: 36px;
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: 14px; color: var(--orange-soft);
+  letter-spacing: 0.08em;
+}
+
+/* ====== FOOTER ====== */
+.footer {
+  background: var(--navy-deep);
+  color: rgba(255,255,255,0.55);
+  padding: 40px 24px 30px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+}
+.footer .heart { color: var(--orange); }
+
+/* ====== Mobile ====== */
+@media (max-width: 768px) {
+  .container { padding: 0 18px; }
+  section { padding: 70px 0; }
+  .floating-toc { display: none; }
+  .hero-meta { gap: 18px; }
+  .about-body { padding: 28px 22px 32px; }
+  .shitsu-block { padding: 26px 22px 22px; }
+  .shitsu-head { gap: 12px; }
+  .shitsu-rank { width: 42px; height: 42px; font-size: 17px; }
+  .shitsu-name h3 { font-size: 19px; }
+  .manual-grid { grid-template-columns: 1fr; }
+  .state-axis { grid-template-columns: 1fr; }
+  .invite-buttons { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-star">⭐</div>
+    <div class="hero-label">CLIFTONSTRENGTHS® 取扱説明書 ／ 2026.05.27</div>
+    <h1 class="hero-name">みずやん の <span>トリセツ</span></h1>
+    <p class="hero-tagline">
+      <strong>「年中夢中で、やってます。」</strong><br>
+      コツコツが勝つコツ ── スキルなしから単月200万円までを<br>
+      <em style="color:#FFEEC9;">寄り添いながら積み上げた</em> Webデザイナー。
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><strong>10</strong>TOP10 資質</div>
+      <div class="hero-meta-item"><strong>4</strong>4領域バランス</div>
+      <div class="hero-meta-item"><strong>2 年+</strong>副業歴</div>
+    </div>
+  </div>
+  <div class="hero-scroll">SCROLL</div>
+</section>
+
+<!-- ═══ FLOATING TOC ═══ -->
+<nav class="floating-toc" id="floatingToc">
+  <a href="#about"><i class="fas fa-user"></i> ABOUT</a>
+  <a href="#result"><i class="fas fa-image"></i> RESULT</a>
+  <a href="#top5"><i class="fas fa-star"></i> TOP 5</a>
+  <a href="#sub5"><i class="fas fa-seedling"></i> SUB 5</a>
+  <a href="#aruaru"><i class="fas fa-comment-dots"></i> あるある</a>
+  <a href="#proof"><i class="fas fa-check"></i> PROOF</a>
+  <a href="#manual"><i class="fas fa-book"></i> 取説</a>
+  <a href="#combo"><i class="fas fa-link"></i> COMBO</a>
+  <a href="#voice"><i class="fas fa-quote-right"></i> VOICE</a>
+  <a href="#state"><i class="fas fa-map"></i> 現在地</a>
+  <a href="#partnership"><i class="fas fa-handshake"></i> 一緒に</a>
+  <a href="#invite"><i class="fas fa-envelope"></i> 入口</a>
+</nav>
+
+<!-- ═══ 01 ABOUT YOU ═══ -->
+<section id="about">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">01 ABOUT</div>
+      <h2 class="section-title">みずやんって、<em>どんな人？</em></h2>
+      <p class="section-lead">最初のページは「みずやん自身が、自分のことを描いた1枚」から。ホワイトボードに走り書きしたみたいな手描きの自己紹介に、人柄ぜんぶ載ってます。</p>
+    </div>
+
+    <div class="about-card fade-in">
+      <div class="about-doodle">
+        <div class="about-doodle-label"><i class="fas fa-pencil"></i> Self Doodle</div>
+        <img src="mizuyan-strengths-doodle-2026-05-27.png" alt="みずやんの手描き自己紹介グラフィック">
+      </div>
+      <div class="about-body">
+        <h3>みずやん（みずの）／ Webデザイナー・マーケター・ディレクター</h3>
+        <p>
+          ニックネームは <em>みずやん</em>、屋号は <strong>Miuzno lab.</strong>。
+          リベシティでは <strong>「寄り添い型Webデザイナー」</strong>として、中小企業のWeb制作・医療系特化のサイト・マーケティング運用支援を本業にしている人です。
+        </p>
+        <p>
+          口癖は <strong>「年中夢中でやってます」</strong>。
+          毎日デザインを作って発信していた時に、自分でつぶやいたら気に入って、座右の銘に昇格させた言葉。
+        </p>
+        <p>
+          副業を始めた頃にりこぴんさんに付けてもらったキャッチコピーは <strong>「コツコツが、勝つコツ」</strong>。
+          スキルなしのサラリーマンから、<em>単月200万円</em>を積み上げるまで、ずっとコツコツ。<br>
+          スタエフを毎朝、Twitterを500日連続、毎日デザイン制作と発信を100日連続×2回。<em>派手な飛び道具じゃなく、続けて結果に出している人</em>です。
+        </p>
+        <p>
+          家には妻と、パピヨンの <strong>シロハライソコ</strong>。
+          中学駅伝で全国大会、フィリピンで1ヶ月語学留学、ヒッチハイクで名古屋〜静岡、ダイビングでサメと泳ぐ。<br>
+          仕事の合間に、テニス・筋トレ・サウナ・燻製・キャンプ・たまごサンド・じゃがりこ・お昼寝・笑顔が素敵な人 ── <em>"好き"を支えに、年中夢中</em> のリズムで動いています。
+        </p>
+      </div>
+    </div>
+
+    <div class="profile-card-img fade-in">
+      <img src="mizuyan-profile-card-2026-05-27.jpg" alt="みずやんプロフィールカード Miuzno lab.">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">同じ志を持つ仲間と一緒に、楽しく稼ぐ力を上げていきたい。<br>頑張る人を、応援したい。</div>
+</div>
+
+<!-- ═══ STRENGTHS RESULT IMAGE ═══ -->
+<section id="result" style="padding-top: 60px; padding-bottom: 24px;">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">RESULT</div>
+      <h2 class="section-title">ストレングスファインダー <em>TOP 10</em>、すべての結果。</h2>
+      <p class="section-lead">この取扱説明書のベース。Gallup CliftonStrengths® 34 のうち、上位10資質と、参考までに個性診断（CQ）のレーダー、各種リンク・好きなものまで、みずやんがプロフィール画像に1枚でまとめてくれた版です。</p>
+    </div>
+
+    <div class="image-frame fade-in">
+      <div class="image-frame-label"><i class="fas fa-image"></i> CliftonStrengths® 上位10 ／ CQ Personality Map ／ Links ／ Favorites</div>
+      <img src="mizuyan-strengths-result-2026-05-27.jpg" alt="みずやんのストレングスファインダーTOP10と各種データ">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 02 TOP 5 ═══ -->
+<section id="top5">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">TOP 5 STRENGTHS</div>
+      <h2 class="section-title">みずやんの<em>上位5資質</em>、ひとつずつ。</h2>
+      <p class="section-lead">それぞれの資質が、みずやんの中でどう動いてきたか。副業ゼロ→単月200万円までの歩みと並べて、ひとつずつ紐解きました。</p>
+    </div>
+
+    <!-- 1. 最上志向 -->
+    <div class="shitsu-block is-top3 fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank str">1</div>
+        <div class="shitsu-name">
+          <h3>最上志向<span class="metaphor-tag"><i class="fas fa-gem"></i> 良いを最高にする職人</span></h3>
+          <div class="meta">MAXIMIZER ／ 戦略的思考力</div>
+        </div>
+        <div class="shitsu-domain str">戦略</div>
+      </div>
+      <div class="shitsu-tokucho">
+        平均を引き上げるより、<strong>すでに強いものをさらに磨き上げる</strong>力。みずやんの場合、<em>「表面だけ取り繕った"キレイな"ホームページ」では満足しない</em> ── 売上が上がるか、問い合わせが増えるか、本当に "結果を出す" レベルまで仕上げないと気が済まない人です。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">MIZUYAN'S EPISODE</div>
+        <div class="ep-text">
+          手描き自己紹介の右側に、わざわざ <em>「表面だけ取り繕ったキレイなホームページ ✗」</em> と書いて、その上にバツ印を載せてる。<br><br>
+          そして矢印で <strong>「売上UP・問い合わせ獲得 → 結果を出すための戦略的なホームページ」</strong> を描いている。これが最上志向1位の手ざわり。<br><br>
+          200万円を売り上げたLP、サムネ再生30万回 ── 数字が出る制作物を作ってきたのは、「<em>良い</em>」を <strong>「最高」</strong>まで持っていく癖が、20年近くずっと体に染みているからです。
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. ポジティブ -->
+    <div class="shitsu-block is-top3 fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank infl">2</div>
+        <div class="shitsu-name">
+          <h3>ポジティブ<span class="metaphor-tag"><i class="fas fa-sun"></i> 年中夢中の太陽</span></h3>
+          <div class="meta">POSITIVITY ／ 影響力</div>
+        </div>
+        <div class="shitsu-domain infl">影響</div>
+      </div>
+      <div class="shitsu-tokucho">
+        場を明るくする力、自分の熱量で人を巻き込む力。<strong>「年中夢中でやってます」</strong>を口癖にできる人は、世の中にそんなにいません。みずやんは <em>毎日デザインを作って発信しているとき、ふと思いついた</em> このフレーズを、自分の生き方の真ん中に置いている人です。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">MIZUYAN'S EPISODE</div>
+        <div class="ep-text">
+          せどりを月5万円達成して方向転換、動画編集を7,000円稼いで方向転換 ── <em>うまくいかなかったジャンル</em>を語るときも、不思議と凹んだ気配がない。<br><br>
+          「コレ違うかも」→ <strong>「じゃあこっち！」</strong> のテンポで切り替えて、また年中夢中で取り組み始める。<br>
+          毎朝スタエフで「自然にWeb集客が身につく」を <em>楽しく</em> 話し続け、Twitterを500日続け、デザインを100日連続×2回続ける。<em>明るさを継続できる強度</em>こそ、ポジティブ2位の凄みです。
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 達成欲 -->
+    <div class="shitsu-block is-top3 fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank exec">3</div>
+        <div class="shitsu-name">
+          <h3>達成欲<span class="metaphor-tag"><i class="fas fa-fire"></i> コツコツ完走エンジン</span></h3>
+          <div class="meta">ACHIEVER ／ 実行力</div>
+        </div>
+        <div class="shitsu-domain exec">実行</div>
+      </div>
+      <div class="shitsu-tokucho">
+        <strong>毎日、何かを終わらせないと気持ち悪い</strong>人。みずやんの場合、それが「コツコツが勝つコツ」というキャッチコピーになって、副業ゼロから単月200万円までの階段になりました。<em>派手な一発逆転じゃなく、毎日のチェックマーク</em>で生きている人です。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">MIZUYAN'S EPISODE</div>
+        <div class="ep-text">
+          手描き自己紹介に <em>"Step by Step"</em> の階段イラスト。<br>
+          <strong>Twitter 500日達成</strong>、<strong>毎日画像制作&SNS発信 100日連続を2回</strong>、<em>中学駅伝で全国大会出場</em>。<br><br>
+          「コツコツ走り続けたら、毎日何かが進む」── これが達成欲3位の手ざわり。ジムやサウナや筋トレが続くのも、同じエンジンが回っているからです。
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. アレンジ -->
+    <div class="shitsu-block fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank exec">4</div>
+        <div class="shitsu-name">
+          <h3>アレンジ<span class="metaphor-tag"><i class="fas fa-puzzle-piece"></i> 多軸オーケストレーター</span></h3>
+          <div class="meta">ARRANGER ／ 実行力</div>
+        </div>
+        <div class="shitsu-domain exec">実行</div>
+      </div>
+      <div class="shitsu-tokucho">
+        <strong>複数の要素を同時にハンドリングして、最適な配置に組み替える</strong>力。みずやんの仕事は <em>「デザイナー × マーケター × ディレクター」</em> という多面体。Webデザインだけ・コーディングだけ・運用だけ、では収まらない人です。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">MIZUYAN'S EPISODE</div>
+        <div class="ep-text">
+          自由記入欄にわざわざ <strong>「Webデザイナー、マーケター、ディレクター」</strong>と3つ並べる。<br><br>
+          そして実装するのは：<em>中小企業向けのWeb制作（補助金 + 集客導線）</em>／<em>医療系特化のサイト（医学・薬学 + 医療広告）</em>／<em>アクセス解析・SEO・MEO・広告運用</em>／<em>生成AI を活用したSNS運用</em>。<br><br>
+          単純な4本立てじゃなく、<strong>「相手の状況に合わせて、複数のレイヤーを組み替えて差し出す」</strong>。これがアレンジ4位の正体です。
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 包含 -->
+    <div class="shitsu-block fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">5</div>
+        <div class="shitsu-name">
+          <h3>包含<span class="metaphor-tag"><i class="fas fa-tree"></i> 駆け出しを置いていかない人</span></h3>
+          <div class="meta">INCLUDER ／ 人間関係構築力</div>
+        </div>
+        <div class="shitsu-domain rel">人間</div>
+      </div>
+      <div class="shitsu-tokucho">
+        <strong>「誰も外さない」優しさ</strong>。みずやんの場合、これが <em>「駆け出しデザイナーの応援」</em> という形で、いつも仕事の左隣に置かれている。自分が稼げるようになっても、後から来る人を呼び込みたい人です。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">MIZUYAN'S EPISODE</div>
+        <div class="ep-text">
+          手描き自己紹介の右下に <em>「② 駆け出しデザイナーの応援」</em> がでっかく描いてある。<br>
+          副業で <strong>「うまく進められない」</strong>人の <strong>「悩みを聞いて、復活させて、アドバイスする」</strong> 流れが、絵で言語化されてる。<br><br>
+          リベ内で <strong>Webデザイン部</strong> を主催し、勉強会・LT会のアーカイブが多数。<em>100人オフ会の幹事</em>もやってる。<br>
+          「<em>みんなで稼ぐ力をアップして楽しい人生を送りたい</em>」── これがプロフィールに本人の言葉で書いてある。包含5位の人の自然な発言です。
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">頑張る人を応援したい。<br>みんなで稼ぐ力をアップさせて、楽しい人生を送りたい。<br>── リベシティ プロフィールに、自分から書いた言葉</div>
+</div>
+
+<!-- ═══ 03 SUB 5 ═══ -->
+<section id="sub5">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">6 - 10</div>
+      <h2 class="section-title">続く5資質も、<em>ちゃんと働いてる</em>。</h2>
+      <p class="section-lead">TOP5の影に見えるけど、6〜10位がみずやんの「現場対応の柔らかさ」「相手を伸ばす目」「初対面でも温度が上がる軽さ」「学び続ける足腰」「目標までブレない芯」を支えています。</p>
+    </div>
+
+    <div class="shitsu-mini-grid stagger">
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank rel">6</div>
+          <h4>適応性 / ADAPTABILITY</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-water"></i> 川の流れ</div>
+        <p>「今ここ」に乗っていく力。<em>クライアントの業種・要件・予算が変わっても、その都度ちゃんと馴染んで動ける</em>。</p>
+        <div class="ep-mini">→ <em>中小企業 → 医療系 → SNS運用 → 生成AI、と現場が変わっても全部に適応してきた</em>のは適応性6位の支え</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank rel">7</div>
+          <h4>成長促進 / DEVELOPER</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-seedling"></i> 庭師</div>
+        <p>相手の <em>伸びそうな芽</em> を見つけて声をかける力。<em>結果が出る前の段階で「いいですね、やってみてください」が言える</em>人。</p>
+        <div class="ep-mini">→ <em>Webデザイン部 勉強会／駆け出しの相談に乗る／LT会アーカイブ作成</em>ぜんぶこの資質の働き</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank infl">8</div>
+          <h4>社交性 / WOO</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-handshake-angle"></i> はじめましてが好き</div>
+        <p>初対面の人と <em>仲良くなるまでの速度</em> が早い人。100人オフ会の幹事、ヒッチハイク、フィリピン留学 ── <em>知らない場所に出ていく時のハードルが低い</em>。</p>
+        <div class="ep-mini">→ <em>「同じ志を持つ皆さまとお話できるのを楽しみにしています」</em> がプロフィールに自然と書ける</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank str">9</div>
+          <h4>学習欲 / LEARNER</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-book-open"></i> スキルA・B・Cを集める人</div>
+        <p>新しいスキル・知識を <em>取りに行く</em> 力。手描き自己紹介に <strong>「スキルA、スキルB、スキルC」</strong> と書いて、学習癖がそのまま絵になっている。</p>
+        <div class="ep-mini">→ <em>デザイン → コピー → 広告 → 解析 → 医療広告 → 生成AI、と毎年スキルを増やしてきた軌跡</em></div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank exec">10</div>
+          <h4>目標志向 / FOCUS</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-bullseye"></i> 単月200万を狙い続ける人</div>
+        <p>「<em>達成したらそれで終わり</em>」じゃなく、<strong>次の目標を即セットしてまた走り出せる</strong>人。「単月、さらに頑張ります！」が口癖。</p>
+        <div class="ep-mini">→ <em>月10万 → 月200万 → 単月200万、と毎フェーズで次のラインを置いて走り続けている</em></div>
+      </div>
+    </div>
+
+    <!-- ブランチページ誘導 -->
+    <div class="branch-card fade-in" id="branch">
+      <h3><i class="fas fa-seedling"></i> もっと資質を深掘りするブランチページ</h3>
+      <p>このページとセットで <strong>「みずやん 資質図解ブランチ」</strong> を別ページに用意しました。<br>TOP10それぞれに「メタファー＋深掘り解説＋みずやん接続＋頼みたい時のコツ」を1枚ずつ詰めてあります。気になる資質をふっと開きたいときにどうぞ。</p>
+      <a class="branch-btn" href="mizuyan-strengths-branch-2026-05-27.html">
+        <i class="fas fa-seedling"></i> みずやん 資質図解ブランチへ
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 04 ARUARU ═══ -->
+<section id="aruaru">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">04 ARUARU</div>
+      <h2 class="section-title">みずやん<em>あるある</em>。</h2>
+      <p class="section-lead">10資質の組み合わせから推測した、たぶん本人が「うん、わかる」って頷くやつ。</p>
+    </div>
+
+    <div class="aruaru-grid stagger">
+      <div class="aruaru-item">
+        <div class="aruaru-num">01</div>
+        <p>朝起きて、まず <strong>スタエフを録る</strong>。話のオチは <em>「自然にWeb集客」</em> に着地。</p>
+      </div>
+      <div class="aruaru-item">
+        <div class="aruaru-num">02</div>
+        <p>クライアントから「とりあえずキレイなページが欲しいんで」と言われると、<strong>0.3秒で違和感センサー</strong>が起動する。</p>
+      </div>
+      <div class="aruaru-item">
+        <div class="aruaru-num">03</div>
+        <p>カフェで作業中に <em>知らない人と話し始めて</em>、気付いたら名刺渡してる。</p>
+      </div>
+      <div class="aruaru-item">
+        <div class="aruaru-num">04</div>
+        <p>うまくいかない副業は <em>「これは方向転換」</em> と言って、<strong>3日後にはケロッ</strong>と次を始めている。</p>
+      </div>
+      <div class="aruaru-item">
+        <div class="aruaru-num">05</div>
+        <p>気付いたら <em>「いいですね、それやってみてください」</em> を1日5回くらい言ってる。</p>
+      </div>
+      <div class="aruaru-item">
+        <div class="aruaru-num">06</div>
+        <p>新しいデザインツールやAIが出ると <em>「ちょっと触ってみよう」</em> でその日のうちに試している。</p>
+      </div>
+      <div class="aruaru-item">
+        <div class="aruaru-num">07</div>
+        <p>サウナに入りながら <em>次の案件の構成を考えていて</em>、ととのって出てきた瞬間にメモる。</p>
+      </div>
+      <div class="aruaru-item">
+        <div class="aruaru-num">08</div>
+        <p>パピヨンの <strong>シロハライソコ</strong> と話している時間が、人生で一番ゆるい。</p>
+      </div>
+      <div class="aruaru-item">
+        <div class="aruaru-num">09</div>
+        <p>たまごサンドが目に入ると <em>つい買ってしまう</em>。じゃがりこは家に常備。</p>
+      </div>
+      <div class="aruaru-item">
+        <div class="aruaru-num">10</div>
+        <p>勉強会の運営で <em>場が温まっていく瞬間</em> に、こっそりニヤッとしている。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">失敗は財産。<br>うまくいかないときにもがいた経験が、後から振り返ると財産になる。</div>
+</div>
+
+<!-- ═══ 05 PROOF ═══ -->
+<section id="proof">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">05 PROOF</div>
+      <h2 class="section-title">「もう動いている力」、<em>5つの証拠</em>。</h2>
+      <p class="section-lead">資質の話は抽象に流れがちだから、みずやんが「もう実際にそれを使って結果を出している」ところを置いておきます。</p>
+    </div>
+
+    <div class="proof-grid stagger">
+      <div class="proof-card">
+        <div class="proof-num">200<span>万円</span></div>
+        <div class="proof-label">単月最高売上</div>
+        <div class="proof-note">「単月、さらに頑張ります！」と口癖まで添えて。</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-num">200<span>万円</span></div>
+        <div class="proof-label">売上に貢献したLP</div>
+        <div class="proof-note">1本のLPがクライアントの売上に直結した実績。</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-num">30<span>万回+</span></div>
+        <div class="proof-label">サムネ最高再生</div>
+        <div class="proof-note">サムネだけで人を引き寄せる設計力。</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-num">100<span>日×2</span></div>
+        <div class="proof-label">毎日デザイン発信</div>
+        <div class="proof-note">100日連続を2回。コツコツの強度。</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-num">500<span>日</span></div>
+        <div class="proof-label">Twitter継続発信</div>
+        <div class="proof-note">手描き自己紹介に「500日達成」のメダル。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 06 MANUAL ═══ -->
+<section id="manual">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">06 OPERATING MANUAL</div>
+      <h2 class="section-title">みずやんの<em>取扱説明書</em>。</h2>
+      <p class="section-lead">満たされ方と消耗の仕方。10資質を踏まえた "扱い方ガイド"。</p>
+    </div>
+
+    <div class="manual-grid">
+      <div class="manual-card happy fade-in">
+        <h3><i class="fas fa-sun"></i> こうするとみずやんは満たされる</h3>
+        <ul>
+          <li>「結果を出すための戦略的なHP」を求められる時（最上志向が起動）</li>
+          <li>毎日何かを作って、何かを発信できる流れ（達成欲）</li>
+          <li>「いいですね、面白いですね」と前向きに会話できる現場（ポジティブ）</li>
+          <li>複数のレイヤー（デザイン + マーケ + 運用）をまとめて任される依頼（アレンジ）</li>
+          <li>駆け出しの人を応援できる場、勉強会・LT会の運営（包含・成長促進）</li>
+          <li>新しいツール・AI・知識を学んで実装する余白がある時（学習欲・適応性）</li>
+          <li>明確な目標数字が置かれていて、走り続けられる環境（目標志向）</li>
+          <li>初対面の人に会える機会、オフ会・コラボ・新規案件（社交性）</li>
+        </ul>
+      </div>
+      <div class="manual-card tired fade-in">
+        <h3><i class="fas fa-cloud"></i> こうなるとみずやんが消耗する</h3>
+        <ul>
+          <li>「とりあえずキレイで」と言われるだけで、結果指標が曖昧な案件（最上志向の燃料切れ）</li>
+          <li>1日中、何も完了しない・進捗ゼロの時間が続く（達成欲のストレス）</li>
+          <li>場の空気が暗いまま、長時間動かない会議（ポジティブの摩耗）</li>
+          <li>「これだけやってください」と一面だけ切り取られて、全体が見えない仕事（アレンジが余る）</li>
+          <li>新しい人とゼロから関係を作るチャンスが極端に少ない時期（社交性が枯れる）</li>
+          <li>学べる材料・触れる新ツールが何もない停滞期（学習欲の渇き）</li>
+          <li>「結果は気にしないで」と数字目標を取り上げられた時（目標志向の迷子）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 07 COMBOS ═══ -->
+<section id="combo">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">07 COMBO</div>
+      <h2 class="section-title">みずやんの<em>資質コンボ</em>。</h2>
+      <p class="section-lead">単独じゃなく、組み合わさって初めて見えてくる「みずやんの動き方」。</p>
+    </div>
+
+    <div class="combo-list stagger">
+      <div class="combo-item">
+        <div class="combo-mix">最上志向 × アレンジ × 学習欲</div>
+        <h3>「ただ作るだけ」じゃ気が済まない、Web制作のコックピット</h3>
+        <p>1位 最上志向 が「結果を出すレベルまで上げよう」と方向を決め、4位 アレンジ が「デザイン × マーケ × 運用」をまとめて差し出し、9位 学習欲 が「新しいツール・AIも持ってこよう」と素材を増やす。<strong>クライアントから見ると "Webサイト1本のはずが、横断的な事業のパートナーが来た" 体験になる</strong>のはこのコンボのせい。</p>
+      </div>
+      <div class="combo-item">
+        <div class="combo-mix">ポジティブ × 達成欲 × 目標志向</div>
+        <h3>「コツコツが、勝つコツ」を、年中夢中で走り続ける階段</h3>
+        <p>2位 ポジティブ が「楽しい！」を燃料にして、3位 達成欲 が「今日も1段、明日も1段」と毎日チェックを積み、10位 目標志向 が「次は単月200万、その次は…」と先のラインを置く。<strong>500日連続Twitter／100日連続デザイン×2回／単月200万円達成 ── すべてこの3資質が同時起動した結果</strong>です。</p>
+      </div>
+      <div class="combo-item">
+        <div class="combo-mix">包含 × 成長促進 × 社交性</div>
+        <h3>「駆け出しの応援」が、自然と発信になる三位一体</h3>
+        <p>5位 包含 が「誰も外したくない」と気を配り、7位 成長促進 が「いいですね、やってみてください」と背中を押し、8位 社交性 が「はじめまして！」を躊躇しない。<strong>Webデザイン部の勉強会・LT会・100人オフ会の幹事 ── ぜんぶこの三位一体の自然な発露</strong>です。</p>
+      </div>
+      <div class="combo-item">
+        <div class="combo-mix">適応性 × 学習欲</div>
+        <h3>「今のお客さまの業界」を、その日のうちに学ぶ柔らかさ</h3>
+        <p>6位 適応性 が「今ここの現場」に合わせて型を変え、9位 学習欲 が「その業界の言葉と数字」を即吸収する。<strong>医療系の薬機法、生成AIの最新動向、補助金の制度</strong> ── 知らないジャンルにスッと入って、クライアントに渡せる温度まで持っていける根拠です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 08 VOICE ═══ -->
+<section id="voice">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">08 VOICE</div>
+      <h2 class="section-title">みずやん自身が、<em>自分のプロフィールに書いてくれていた言葉</em>。</h2>
+      <p class="section-lead">取説の側から見立てるだけじゃなく、本人が自分について書いた言葉を、3つだけそのまま並べます。</p>
+    </div>
+
+    <div class="voice-card fade-in">
+      <div class="voice-quote">
+        <strong>「年中夢中でやってます」</strong> ── 毎日デザインを作って発信しているときに、ふと思いついた言葉。<br>
+        ゴロがいいし、楽しくデザインをしていることが伝わって好き。
+      </div>
+      <div class="voice-source">— SELF</div>
+    </div>
+
+    <div class="voice-card fade-in">
+      <div class="voice-quote">
+        <strong>「コツコツが、勝つコツ」</strong> ── 副業で成果が出始めた時に、インタビューしてくれたりこぴんさんがつけてくれたキャッチコピー。<br>
+        これからもコツコツ頑張ります。
+      </div>
+      <div class="voice-source">— COINED BY RICOPIN</div>
+    </div>
+
+    <div class="voice-card fade-in">
+      <div class="voice-quote">
+        <strong>「失敗は財産」</strong> ── FI（経済的自立）している経営者さんの言葉。<br>
+        うまくいかないときにもがいた経験が財産になるし、後から振り返ると良い思い出になる。挑戦しやすくなるし、失敗しても次の策を考えられるようになりました。
+      </div>
+      <div class="voice-source">— A MENTOR'S WORDS</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 09 STATE MAP ═══ -->
+<section id="state">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">09 STATE MAP</div>
+      <h2 class="section-title">みずやんは今、<em>人生のこのへんにいる</em>。</h2>
+      <p class="section-lead">この取扱説明書を作っている2026年5月時点での、ざっくりした現在地。</p>
+    </div>
+
+    <div class="state-card fade-in">
+      <h3>"作って終わり"じゃなく、<em>"育てる伴走"</em>を本業にしているフェーズ。</h3>
+      <p>
+        スキルなしの会社員から副業を始めて、<strong>月10万 → 月200万 → 単月200万円</strong> を積み上げてきた人。
+        いまは "1案件LP納品" の段階を超えて、<strong>中小企業のWeb集客全体・医療系の特化型サイト・生成AIを混ぜたSNS運用</strong> へと、伴走できる領域を広げている真っ最中。
+      </p>
+      <p>
+        並走して、<em>駆け出しデザイナーの応援</em> も大きな比重。Webデザイン部の勉強会・LT会・100人オフ会の幹事。
+        本人の言葉で言うなら <strong>「みんなで稼ぐ力をアップさせて、楽しい人生を送りたい」</strong>。
+      </p>
+
+      <div class="state-axis stagger">
+        <div class="state-axis-item">
+          <div class="ax">本業の伸び方向</div>
+          <div class="val">単発LP → 集客導線設計＋運用伴走 へ拡張</div>
+        </div>
+        <div class="state-axis-item">
+          <div class="ax">特化軸</div>
+          <div class="val">医療系 × 医療広告 × 中小企業 × 生成AI</div>
+        </div>
+        <div class="state-axis-item">
+          <div class="ax">外向きの活動</div>
+          <div class="val">Webデザイン部・勉強会・LT会・100人オフ会</div>
+        </div>
+        <div class="state-axis-item">
+          <div class="ax">発信</div>
+          <div class="val">スタエフ毎朝・Twitter 500日達成・デザイン100日×2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">頑張る人を応援したい。<br>みんなで稼ぐ力をアップさせて、楽しい人生を送りたい。</div>
+</div>
+
+<!-- ═══ 10 PARTNERSHIP ═══ -->
+<section id="partnership">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">10 PARTNERSHIP</div>
+      <h2 class="section-title">みずやんと、<em>仕事を一緒に進めるなら</em>。</h2>
+      <p class="section-lead">この取扱説明書を読んだ上で、「実際にお仕事を頼みたい・組みたい」となった時の進め方をかいつまんで。</p>
+    </div>
+
+    <div class="partnership-grid stagger">
+      <div class="ps-card">
+        <div class="ps-step">STEP 01</div>
+        <h3>「とりあえずキレイなHP」じゃなく、結果を渡す</h3>
+        <p>最上志向1位が起動する条件は <em>「結果が見える依頼」</em>。<br>売上目標・問い合わせ件数・LTV・解像度の高い顧客像 ── 数字や顔が見える依頼のほうが、みずやんの本領が出ます。</p>
+      </div>
+      <div class="ps-card">
+        <div class="ps-step">STEP 02</div>
+        <h3>「全部見てもらう」と最大化する</h3>
+        <p>デザインだけ・コピーだけ・運用だけ、と切り出すよりも、<em>戦略 → 制作 → 公開 → 運用 → 改善</em> を任せた方が、アレンジ4位 × 最上志向 × 学習欲のコンボでクオリティが跳ねます。</p>
+      </div>
+      <div class="ps-card">
+        <div class="ps-step">STEP 03</div>
+        <h3>分からないことは、遠慮なく聞いていい</h3>
+        <p>みずやんのキャッチコピーは <em>「初心者にもわかりやすい説明」</em>。<br>包含5位＋成長促進7位の人なので、「こんなこと聞いていいですか？」を <strong>「いいですね、聞いてください！」</strong> で受け止めてくれます。</p>
+      </div>
+      <div class="ps-card">
+        <div class="ps-step">STEP 04</div>
+        <h3>進捗を見える化すると、走り続けられる</h3>
+        <p>達成欲3位＋目標志向10位の人なので、<em>毎週／毎月の進捗チェック</em>が好物。<br>放置案件より、ペースが見えている伴走案件の方が、結果が早く出ます。</p>
+      </div>
+      <div class="ps-card">
+        <div class="ps-step">STEP 05</div>
+        <h3>「楽しく話せる関係」で進める</h3>
+        <p>ポジティブ2位＋社交性8位の人。<em>真面目すぎないフラットな空気</em>のほうが、アイデアが出るタイプ。<br>サウナや散歩、雑談から仕様が決まる打ち合わせも全然アリ。</p>
+      </div>
+      <div class="ps-card">
+        <div class="ps-step">STEP 06</div>
+        <h3>新しいツール・AIの話は歓迎</h3>
+        <p>学習欲9位＋適応性6位なので、<em>「最近こんなツールが出てて」</em> の話題はそのまま会話の燃料になる。<br>クライアントの方が AI に詳しいケースでも、まったく問題なく合わせてくれます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 11 INVITE ═══ -->
+<section id="invite">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">11 INVITE</div>
+      <h2 class="section-title">この取説を、<em>みずやん本人へ</em>。</h2>
+      <p class="section-lead">取扱説明書ってだいたいクライアント向けに書くものだけど、これは "プレゼント版"。<br>みずやんが自分のことをもう一度、おけもんの目線で見られるように。</p>
+    </div>
+
+    <div class="invite-card fade-in">
+      <h3>「年中夢中で<em>やってます</em>」の人へ、<em>外側から</em>1枚渡します。</h3>
+      <p>
+        手描きの自己紹介、プロフィール画像、リベシティの全文 ── ぜんぶ読ませてもらった上で、<br>
+        <strong>10資質 × みずやんのエピソード × これからの伴走方向</strong> を、1枚にまとめてみました。<br><br>
+        「自分のこと、こう見えてるんだな」と、ちょっと俯瞰で覗くつもりで使ってもらえたら嬉しいです🌷
+      </p>
+      <div class="invite-buttons">
+        <a class="invite-btn primary" href="mizuyan-strengths-branch-2026-05-27.html">
+          <i class="fas fa-seedling"></i> 資質ブランチページへ
+        </a>
+        <a class="invite-btn" href="https://twitter.com/mizuno_design" target="_blank" rel="noopener">
+          <i class="fa-brands fa-x-twitter"></i> X で繋がる
+        </a>
+        <a class="invite-btn" href="https://mizuno.mizunolab.site/home-2/" target="_blank" rel="noopener">
+          <i class="fas fa-globe"></i> Miuzno lab. を見る
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MESSAGE ═══ -->
+<section class="message-section">
+  <div class="message-inner fade-in">
+    <div class="message-label">message from okemon company</div>
+    <h2>みずやん、<br><em>ありがとう</em>。</h2>
+    <p>
+      「コツコツが、勝つコツ」を、<br>
+      毎日 続けてくれてる人がいるから、<br>
+      あとから歩く人たちも、まあなんとかなるかって思える。
+    </p>
+    <p>
+      この取説は、おけもんカンパニーが、<br>
+      みずやんに対して書いた "ファンレター" でもあります。<br>
+      <strong style="color:#FFEEC9;font-weight:600;">年中夢中、これからも一緒に。</strong>
+    </p>
+    <div class="message-sign">— おけもんカンパニー / 2026.05.27</div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  Made with <span class="heart">♥</span> · おけもんカンパニー · 2026.05.27
+</footer>
+
+<script>
+  const progress = document.getElementById('scrollProgress');
+  const toc = document.getElementById('floatingToc');
+  function onScroll() {
+    const h = document.documentElement;
+    const sc = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    progress.style.width = sc + '%';
+    if (h.scrollTop > window.innerHeight * 0.4) toc.classList.add('is-shown');
+    else toc.classList.remove('is-shown');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const animEls = document.querySelectorAll('.fade-in, .stagger');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  animEls.forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+    else obs.observe(el);
+  });
+</script>
+
+</body>
+</html>
