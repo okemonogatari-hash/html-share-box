@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>みりさんのトリセツ｜ひとりひとりに、静かに寄り添う管理栄養士</title>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  /* みりさん パレット：セージグリーン×ピーチ×ラベンダー×アイボリー
+     管理栄養士の白衣の清潔感／神戸・生田の森／福祉ケアのあたたかさ／聖堂の静けさ */
+  --sage-deep:    #6E8E73;
+  --sage-mid:     #A6C0AC;
+  --sage-light:   #D6E5D9;
+  --sage-mist:    #EBF2EB;
+  --peach-deep:   #C97C6A;
+  --peach-mid:    #E2A78F;
+  --peach-light:  #F5D9C6;
+  --peach-mist:   #FCEEE6;
+  --lavender:     #9A8FB5;
+  --lavender-soft:#EAE5F0;
+  --ivory:        #FBF6EC;
+  --warm-bg:      #FBF5E9;
+  --warm-white:   #FFFDF6;
+  --gold-deep:    #C9A86A;
+  --gold-mid:     #DDC08D;
+  --sky-mid:      #B9D0CF;
+  --text:         #3B342E;
+  --text-muted:   #6C5F54;
+  --text-light:   #A89889;
+  --line:         rgba(110,142,115,0.16);
+  --shadow-sm:    0 2px 12px rgba(110,142,115,0.08);
+  --shadow-md:    0 8px 30px rgba(110,142,115,0.11);
+  --shadow-lg:    0 16px 48px rgba(201,124,106,0.16);
+  --radius:       12px;
+  --radius-lg:    20px;
+
+  --d-rel:  #5B95C7;
+  --d-exec: #9B7BB8;
+  --d-infl: #E8A85C;
+  --d-str:  #6FAA88;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text);
+  background: var(--warm-bg);
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { font-family: 'Noto Serif JP', serif; font-weight: 500; line-height: 1.4; }
+.container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+/* ─── HERO（神社の森・祈りの場所） ─── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(20,30,25,0.30) 0%, rgba(35,28,22,0.50) 60%, rgba(35,28,22,0.72) 100%),
+    radial-gradient(ellipse at 50% 25%, rgba(255,225,165,0.22) 0%, transparent 50%),
+    linear-gradient(170deg, rgba(60,90,68,0.55) 0%, rgba(110,142,115,0.40) 45%, rgba(201,124,106,0.30) 100%),
+    url('https://images.unsplash.com/photo-1545241047-6083a3684587?w=2400&q=85&auto=format&fit=crop') center/cover no-repeat;
+  background-attachment: scroll;
+  color: #fff;
+  overflow: hidden;
+}
+/* 木漏れ日（縦の光線） */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 280px 720px at 22% -10%, rgba(255,230,170,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 220px 640px at 70% -5%, rgba(255,238,195,0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 180px 520px at 88% -8%, rgba(255,235,180,0.10) 0%, transparent 70%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+/* 下部のフェードアウト */
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+  background: linear-gradient(to top, var(--warm-bg) 0%, rgba(251,245,233,0.70) 40%, transparent 100%);
+}
+.hero-inner { position: relative; z-index: 2; padding: 60px 24px; max-width: 760px; }
+
+.hero-credit {
+  position: absolute; right: 14px; bottom: 196px; z-index: 2;
+  font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 1px;
+  color: rgba(255,255,255,0.62); text-decoration: none;
+  background: rgba(0,0,0,0.22); padding: 4px 10px; border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+.hero-credit:hover { color: rgba(255,255,255,0.95); background: rgba(0,0,0,0.38); }
+
+/* ─── 鳥居（windmark置換・SVGなしCSSのみ） ─── */
+.hero-windmark {
+  width: 96px; height: 88px; margin: 0 auto 28px;
+  position: relative;
+  filter: drop-shadow(0 4px 16px rgba(255,150,100,0.35)) drop-shadow(0 0 32px rgba(255,200,150,0.20));
+  animation: heroFadeIn 1.2s 0.1s both, toriiGlow 5s 1s ease-in-out infinite;
+}
+/* 上の笠木（横一本・反り） */
+.hero-windmark::before {
+  content: '';
+  position: absolute; top: 0; left: -6%; width: 112%; height: 11px;
+  background: linear-gradient(180deg, #d8654e 0%, #b04733 100%);
+  border-radius: 22px / 8px;
+  box-shadow:
+    inset 0 -2px 0 rgba(0,0,0,0.20),
+    inset 0 1px 0 rgba(255,225,200,0.35),
+    0 1px 0 rgba(0,0,0,0.18);
+}
+/* 島木（笠木の下の横一本） */
+.hero-windmark::after {
+  content: '';
+  position: absolute; top: 14px; left: 4%; width: 92%; height: 7px;
+  background: linear-gradient(180deg, #c95b46 0%, #a44030 100%);
+  border-radius: 4px;
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.20);
+}
+/* 柱と貫を内側に作るための子要素 */
+.hero-windmark .torii-pillar-l,
+.hero-windmark .torii-pillar-r {
+  position: absolute;
+  top: 18px; bottom: 0;
+  width: 11px;
+  background: linear-gradient(180deg, #c95b46 0%, #9a3b2c 100%);
+  border-radius: 2px;
+  box-shadow:
+    inset -2px 0 0 rgba(0,0,0,0.18),
+    inset 2px 0 0 rgba(255,225,200,0.20);
+}
+.hero-windmark .torii-pillar-l { left: 16%; transform: rotate(-2deg); transform-origin: top center; }
+.hero-windmark .torii-pillar-r { right: 16%; transform: rotate(2deg); transform-origin: top center; }
+/* 貫（柱を貫く横棒） */
+.hero-windmark .torii-nuki {
+  position: absolute; left: 8%; right: 8%;
+  top: 36px; height: 5px;
+  background: linear-gradient(180deg, #c95b46 0%, #a44030 100%);
+  border-radius: 2px;
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);
+}
+@keyframes toriiGlow {
+  0%,100% {
+    filter: drop-shadow(0 4px 16px rgba(255,150,100,0.30)) drop-shadow(0 0 28px rgba(255,200,150,0.18));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 6px 22px rgba(255,170,110,0.45)) drop-shadow(0 0 38px rgba(255,210,160,0.28));
+    transform: scale(1.03);
+  }
+}
+/* 鳥居下の小さな光（パワースポット感） */
+.hero-flame {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  bottom: 220px; z-index: 2;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,238,201,1) 0%, rgba(255,200,150,0.5) 60%, transparent 100%);
+  box-shadow:
+    0 0 18px 8px rgba(255,220,170,0.35),
+    0 0 36px 14px rgba(255,210,150,0.15);
+  animation: flameFlicker 2.6s ease-in-out infinite;
+}
+@keyframes flameFlicker {
+  0%,100% { opacity: 0.85; transform: translateX(-50%) scale(1); }
+  50%     { opacity: 1;    transform: translateX(-50%) scale(1.15); }
+}
+
+.hero-label {
+  font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 4px;
+  text-transform: uppercase; opacity: 0.92; margin-bottom: 18px;
+  animation: heroFadeIn 0.8s 0.2s both;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+.hero-name {
+  font-size: clamp(28px, 6vw, 54px); font-weight: 700; margin-bottom: 18px;
+  animation: heroSlideUp 0.9s 0.3s both;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.55);
+}
+.hero-name span { color: #FFEEC9; }
+.hero-tagline {
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: clamp(15px, 3vw, 22px); font-weight: 400;
+  opacity: 1; margin-bottom: 12px; line-height: 1.85;
+  animation: heroSlideUp 0.9s 0.5s both;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.5);
+}
+.hero-tagline strong { color: #FFEEC9; font-weight: 600; }
+.hero-sub {
+  font-size: 14px; opacity: 0.86; margin-top: 18px;
+  animation: heroFadeIn 0.8s 0.7s both;
+  line-height: 1.95;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+.hero-scroll {
+  position: absolute; bottom: 140px; left: 50%; transform: translateX(-50%); z-index: 2;
+  animation: heroFadeIn 0.8s 1s both, bounce 2s 1.5s infinite;
+  opacity: 0.55; color: #fff; font-size: 20px;
+}
+@keyframes heroFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes heroSlideUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+/* ─── 浮遊TOC ─── */
+.float-toc { position: fixed; right: 22px; bottom: 22px; z-index: 60; font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+.float-toc summary {
+  cursor: pointer; list-style: none;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--sage-deep), var(--peach-deep));
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; box-shadow: var(--shadow-md);
+  transition: transform .2s;
+}
+.float-toc summary:hover { transform: translateY(-3px); }
+.float-toc summary::-webkit-details-marker { display: none; }
+.float-toc[open] summary { box-shadow: var(--shadow-lg); }
+.float-toc .toc-body {
+  position: absolute; right: 0; bottom: 64px;
+  width: 274px; max-height: 72vh; overflow-y: auto;
+  background: rgba(255,253,246,0.97);
+  border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: var(--shadow-lg); padding: 16px 14px;
+  backdrop-filter: blur(10px);
+}
+.float-toc h5 {
+  font-family: 'Noto Serif JP', serif;
+  color: var(--peach-deep); font-size: 13px;
+  padding-bottom: 10px; margin-bottom: 8px;
+  border-bottom: 1px dashed rgba(201,124,106,0.28);
+}
+.float-toc ol { list-style: none; display: grid; gap: 2px; }
+.float-toc a {
+  display: grid; grid-template-columns: 28px 1fr; gap: 8px;
+  padding: 7px 8px; border-radius: 8px; text-decoration: none;
+  color: var(--text-muted); font-size: 12.5px; line-height: 1.4;
+}
+.float-toc a:hover { background: rgba(245,217,198,0.20); color: var(--peach-deep); }
+.float-toc a .num { color: var(--peach-mid); font-weight: 700; font-size: 11px; }
+.float-toc .toc-divider { margin: 8px 0; border-top: 1px dashed rgba(201,124,106,0.22); }
+
+/* ─── SECTIONS ─── */
+section { padding: 80px 0; scroll-margin-top: 40px; }
+section:nth-of-type(even) { background: var(--warm-white); }
+
+.section-label {
+  font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--peach-mid);
+  margin-bottom: 8px; font-weight: 600;
+}
+.section-title {
+  font-size: clamp(22px, 4vw, 32px); color: var(--peach-deep);
+  margin-bottom: 16px; position: relative; display: inline-block;
+}
+.section-title::after {
+  content: ''; display: block; width: 0; height: 2px;
+  background: var(--sage-mid); margin-top: 8px;
+  transition: width 0.6s ease 0.2s;
+}
+.fade-in.is-visible .section-title::after { width: 48px; }
+.section-lead {
+  font-size: 15px; color: var(--text-muted); max-width: 680px; margin-bottom: 48px;
+}
+
+/* ─── ABOUT YOU ─── */
+.what-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;
+}
+.what-text p { margin-bottom: 16px; font-size: 15px; color: var(--text-muted); }
+.what-text p:first-child::first-letter {
+  font-family: 'Noto Serif JP', serif; font-size: 38px;
+  float: left; line-height: 1; margin-right: 8px; color: var(--peach-deep);
+}
+.what-text strong { color: var(--text); font-weight: 700; }
+.what-text em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(245,217,198,0.85) 65%);
+  padding: 0 2px;
+}
+.what-card {
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); padding: 32px;
+  box-shadow: var(--shadow-sm); text-align: center;
+}
+.what-card .big-icon { font-size: 44px; color: var(--peach-mid); margin-bottom: 18px; }
+.what-card h3 { font-size: 18px; color: var(--peach-deep); margin-bottom: 4px; }
+.what-card .role { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+.what-card .meta {
+  display: flex; flex-direction: column; gap: 6px;
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-size: 12.5px; color: var(--text-light);
+  text-align: left; line-height: 1.65;
+}
+.what-card .meta i { color: var(--peach-mid); margin-right: 6px; width: 16px; text-align: center; }
+
+/* ─── DOMAIN ─── */
+.domain-summary {
+  margin-top: 56px;
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); padding: 32px;
+  box-shadow: var(--shadow-sm);
+}
+.domain-summary h3 {
+  font-size: 16px; color: var(--peach-deep);
+  margin-bottom: 20px; text-align: center;
+}
+.domain-bar {
+  display: flex; height: 36px;
+  border-radius: 18px; overflow: hidden;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+}
+.domain-seg {
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+}
+.domain-seg.rel  { background: var(--d-rel);  flex: 5; }
+.domain-seg.exec { background: var(--d-exec); flex: 4; }
+.domain-seg.zero { background: #d9d4cb; flex: 0.001; }
+.domain-legend {
+  display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+  font-size: 12px; color: var(--text-muted);
+}
+.domain-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.domain-legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.domain-legend .dot.rel  { background: var(--d-rel); }
+.domain-legend .dot.exec { background: var(--d-exec); }
+.domain-legend .dot.infl { background: var(--d-infl); }
+.domain-legend .dot.str  { background: var(--d-str); }
+.domain-note {
+  margin-top: 18px; padding: 14px 18px;
+  background: rgba(166,192,172,0.10);
+  border-left: 3px solid var(--sage-mid);
+  border-radius: 8px;
+  font-size: 13.5px; color: var(--text-muted); line-height: 1.9;
+}
+.domain-note strong { color: var(--sage-deep); }
+
+/* ─── SUN DIVIDER ─── */
+.sun-divider {
+  height: 180px;
+  background:
+    linear-gradient(135deg, rgba(110,142,115,0.45), rgba(166,192,172,0.35), rgba(245,217,198,0.45)),
+    radial-gradient(ellipse at 50% 30%, rgba(255,240,210,0.55), transparent 55%),
+    linear-gradient(160deg, #6E8E73 0%, #A6C0AC 50%, #E2A78F 100%);
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.95);
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: clamp(14px, 2vw, 18px);
+  letter-spacing: 0.14em;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.22);
+}
+.sun-divider .quote { padding: 0 24px; max-width: 720px; text-align: center; line-height: 1.85; }
+
+/* ─── ストレングス画像枠 ─── */
+.image-frame {
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: 14px; padding: 20px; margin: 16px 0 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+.image-frame-label {
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  font-size: 12px; color: var(--sage-deep);
+  font-weight: 600; letter-spacing: 0.12em;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.image-frame img { width: 100%; height: auto; display: block; border-radius: 8px; background: white; }
+
+/* ─── 資質ブロック（TOP5） ─── */
+.shitsu-block {
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); padding: 36px;
+  margin-bottom: 24px; box-shadow: var(--shadow-sm); position: relative;
+}
+.shitsu-block.is-top3 { box-shadow: var(--shadow-md); border-color: rgba(201,124,106,0.25); }
+.shitsu-head {
+  display: flex; align-items: center; gap: 18px;
+  margin-bottom: 20px; padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.shitsu-rank {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif; font-size: 22px;
+  font-weight: 700; color: #fff; flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+.shitsu-rank.exec { background: linear-gradient(135deg, var(--d-exec), #BCA3D2); }
+.shitsu-rank.infl { background: linear-gradient(135deg, var(--d-infl), #F3C68A); }
+.shitsu-rank.rel  { background: linear-gradient(135deg, var(--d-rel),  #95BCDD); }
+.shitsu-rank.str  { background: linear-gradient(135deg, var(--d-str),  #9DC2A8); }
+.shitsu-name { flex: 1; }
+.shitsu-name h3 { font-size: 22px; color: var(--peach-deep); margin-bottom: 4px; }
+.shitsu-name .meta {
+  font-family: 'Inter', sans-serif; font-size: 11px;
+  letter-spacing: 1.5px; color: var(--text-light); text-transform: uppercase;
+}
+.shitsu-name .metaphor-tag {
+  display: inline-block;
+  font-family: 'Klee One', 'Noto Serif JP', sans-serif;
+  font-size: 13px; margin-left: 8px; padding: 2px 9px;
+  background: rgba(245,217,198,0.40);
+  border-radius: 999px; color: var(--peach-deep); letter-spacing: 0.06em;
+}
+.shitsu-domain {
+  font-size: 11px; font-weight: 600;
+  padding: 4px 12px; border-radius: 999px;
+  color: #fff; letter-spacing: 1px; flex-shrink: 0;
+}
+.shitsu-domain.exec { background: var(--d-exec); }
+.shitsu-domain.infl { background: var(--d-infl); }
+.shitsu-domain.rel  { background: var(--d-rel); }
+.shitsu-domain.str  { background: var(--d-str); }
+
+.shitsu-tokucho {
+  font-size: 14.5px; color: var(--text-muted);
+  margin-bottom: 18px; line-height: 2;
+}
+.shitsu-tokucho strong { color: var(--text); font-weight: 700; }
+.shitsu-tokucho em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(245,217,198,0.65) 65%);
+  padding: 0 2px;
+}
+.shitsu-episode {
+  background: linear-gradient(135deg, rgba(245,217,198,0.50), rgba(214,229,217,0.30));
+  border-left: 3px solid var(--peach-mid);
+  border-radius: 8px; padding: 16px 20px;
+}
+.shitsu-episode .ep-label {
+  font-family: 'Inter', sans-serif; font-size: 10px;
+  letter-spacing: 2px; color: var(--peach-deep);
+  font-weight: 700; margin-bottom: 6px;
+}
+.shitsu-episode .ep-text { font-size: 14px; color: var(--text); line-height: 1.95; }
+.shitsu-episode .ep-text em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.85) 65%);
+  padding: 0 2px; font-weight: 500;
+}
+
+/* ─── 6-10位 ─── */
+.shitsu-mini-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px; margin-top: 24px;
+}
+.shitsu-mini {
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 22px;
+  position: relative; transition: transform 0.3s, box-shadow 0.3s;
+}
+.shitsu-mini:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.shitsu-mini-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.shitsu-mini-rank {
+  font-family: 'Inter', sans-serif; font-size: 12px;
+  font-weight: 700; color: #fff;
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.shitsu-mini-rank.exec { background: var(--d-exec); }
+.shitsu-mini-rank.infl { background: var(--d-infl); }
+.shitsu-mini-rank.rel  { background: var(--d-rel); }
+.shitsu-mini-rank.str  { background: var(--d-str); }
+.shitsu-mini h4 { font-size: 15px; color: var(--text); margin: 0; flex: 1; }
+.shitsu-mini .meta-mini {
+  font-family: 'Klee One', 'Noto Serif JP', sans-serif;
+  font-size: 12px; color: var(--peach-deep); margin-bottom: 6px;
+}
+.shitsu-mini p { font-size: 12.5px; color: var(--text-muted); line-height: 1.78; }
+.shitsu-mini .ep-mini {
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  font-size: 12px; color: var(--text-light); line-height: 1.78;
+}
+.shitsu-mini .ep-mini em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.78) 65%);
+  padding: 0 2px; color: var(--text);
+}
+
+/* ─── ARUARU ─── */
+.aruaru-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.aruaru-card {
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 24px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative; overflow: hidden;
+}
+.aruaru-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.aruaru-card::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: linear-gradient(to bottom, var(--peach-mid), var(--sage-mid));
+}
+.aruaru-card .aruaru-icon { font-size: 22px; color: var(--peach-mid); margin-bottom: 8px; }
+.aruaru-card h4 { font-size: 15px; color: var(--text); margin-bottom: 4px; }
+.aruaru-card p { font-size: 13px; color: var(--text-muted); line-height: 1.8; }
+.aruaru-card p em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.7) 65%);
+  padding: 0 2px; color: var(--text);
+}
+
+/* ─── PROOF（既に動いている力） ─── */
+.kasegu-headline {
+  background: linear-gradient(135deg, rgba(255,229,191,0.40), rgba(214,229,217,0.30));
+  border-radius: var(--radius-lg);
+  padding: 30px 34px; margin-bottom: 36px;
+  font-size: clamp(15px, 2.3vw, 18px); line-height: 2.05; color: var(--text);
+  text-align: center;
+  border: 1px solid rgba(201,124,106,0.22);
+}
+.kasegu-headline .strike {
+  color: var(--text-light); text-decoration: line-through;
+  text-decoration-color: rgba(201,124,106,0.45);
+  text-decoration-thickness: 2px; font-size: 0.93em;
+}
+.kasegu-headline .arrow {
+  font-family: 'Inter', sans-serif;
+  color: var(--peach-mid); font-size: 1.1em;
+  margin: 4px 0; display: block; font-weight: 700;
+}
+.kasegu-headline strong { color: var(--peach-deep); font-weight: 700; }
+.proof-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 32px; }
+.proof-card {
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 26px 24px;
+  position: relative; transition: transform 0.3s, box-shadow 0.3s;
+  border-top: 4px solid var(--peach-mid);
+}
+.proof-card:nth-child(2n) { border-top-color: var(--sage-mid); }
+.proof-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.proof-coin {
+  position: absolute; top: -16px; right: 18px;
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--peach-deep), var(--sage-deep));
+  color: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+.proof-card h4 {
+  font-size: 15.5px; color: var(--peach-deep);
+  margin-bottom: 10px; line-height: 1.55; padding-right: 36px;
+}
+.proof-card p {
+  font-size: 13.5px; color: var(--text-muted);
+  line-height: 1.9; margin-bottom: 12px;
+}
+.proof-card p strong { color: var(--text); font-weight: 700; }
+.proof-card p em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.78) 65%);
+  padding: 0 2px;
+}
+.proof-words {
+  background: rgba(255,229,191,0.18);
+  border-left: 3px solid var(--peach-mid);
+  padding: 10px 14px; border-radius: 6px;
+  font-size: 12.5px; color: var(--text); line-height: 1.85;
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+}
+.kasegu-clincher {
+  background: linear-gradient(135deg, var(--warm-white), rgba(245,217,198,0.40));
+  border-radius: var(--radius-lg); padding: 36px 32px;
+  border: 1px solid rgba(201,124,106,0.20);
+  box-shadow: var(--shadow-sm);
+}
+.kasegu-clincher p {
+  font-size: 14.5px; color: var(--text-muted);
+  line-height: 2.1; margin-bottom: 14px;
+}
+.kasegu-clincher p:last-child { margin-bottom: 0; }
+.kasegu-clincher strong { color: var(--peach-deep); font-weight: 700; }
+.kasegu-clincher em {
+  font-style: normal; color: var(--text); font-weight: 500;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.30) 65%);
+  padding: 0 2px;
+}
+.kasegu-light {
+  display: block; margin-top: 22px; padding-top: 18px;
+  border-top: 1px dashed rgba(201,124,106,0.25);
+  font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: clamp(16px, 2.5vw, 19px);
+  color: var(--peach-deep); text-align: center;
+  font-weight: 700; letter-spacing: 0.03em; line-height: 1.85;
+}
+
+/* ─── MANUAL ─── */
+.manual-two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+.manual-box { border-radius: var(--radius-lg); padding: 32px; }
+.manual-box.joy { background: rgba(255,229,191,0.20); border: 1px solid rgba(245,217,198,0.40); }
+.manual-box.pain { background: rgba(214,229,217,0.30); border: 1px solid rgba(166,192,172,0.32); }
+.manual-box h3 { font-size: 16px; margin-bottom: 16px; }
+.manual-box.joy h3 { color: var(--peach-deep); }
+.manual-box.pain h3 { color: var(--sage-deep); }
+.manual-box ul { list-style: none; }
+.manual-box li {
+  font-size: 14px; color: var(--text-muted);
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+  padding-left: 28px; position: relative; line-height: 1.85;
+}
+.manual-box li:last-child { border-bottom: none; }
+.manual-box.joy li::before  { content: '\f185'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--peach-mid); font-size: 12px; top: 12px; }
+.manual-box.pain li::before { content: '\f773'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--sage-mid); font-size: 12px; top: 12px; }
+
+/* ─── COMBOS ─── */
+.combo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.combo-card {
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 24px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.combo-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.combo-pair {
+  font-family: 'Inter', sans-serif; font-size: 11px;
+  font-weight: 600; color: var(--peach-mid);
+  letter-spacing: 1px; margin-bottom: 4px;
+}
+.combo-card h4 { font-size: 15px; color: var(--text); margin-bottom: 8px; }
+.combo-card p { font-size: 13px; color: var(--text-muted); line-height: 1.9; }
+.combo-card p strong { color: var(--peach-deep); }
+
+/* ─── QUOTES ─── */
+.quote-list { display: flex; flex-direction: column; gap: 16px; }
+.quote-card {
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 26px 28px 26px 64px;
+  position: relative; box-shadow: var(--shadow-sm);
+  transition: transform 0.3s;
+}
+.quote-card:hover { transform: translateX(3px); }
+.quote-card::before {
+  content: '\201C'; font-family: 'Noto Serif JP', serif;
+  position: absolute; left: 20px; top: 14px;
+  font-size: 56px; color: var(--peach-light); line-height: 1;
+}
+.quote-card p { font-size: 15px; line-height: 2; color: var(--text); font-weight: 400; margin: 0; }
+.quote-card .from {
+  margin-top: 10px; font-size: 12px;
+  color: var(--text-light); text-align: right;
+}
+.quote-card.pin {
+  background: linear-gradient(135deg, rgba(255,229,191,0.30), rgba(214,229,217,0.18));
+  border-color: rgba(201,124,106,0.25);
+}
+.quote-card.pin::before { color: var(--peach-deep); }
+.quote-card em {
+  font-style: normal;
+  background: linear-gradient(transparent 65%, rgba(255,229,191,0.85) 65%);
+  padding: 0 2px; font-weight: 500;
+}
+
+/* ─── STATE MAP ─── */
+.state-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px; margin: 24px 0;
+}
+.state-cell {
+  background: var(--warm-white);
+  border: 2px dashed rgba(201,124,106,0.30);
+  border-radius: var(--radius); padding: 20px 14px;
+  text-align: center; transition: all 0.3s;
+}
+.state-cell:hover { border-style: solid; transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.state-cell .em { font-size: 26px; color: var(--peach-mid); display: block; margin-bottom: 8px; }
+.state-cell .lbl { font-size: 14px; font-weight: 700; color: var(--text); }
+.state-cell .sub { font-size: 11px; color: var(--text-light); margin-top: 4px; line-height: 1.65; }
+.state-conclusion {
+  background: linear-gradient(135deg, rgba(255,240,210,0.55), rgba(214,229,217,0.45));
+  border-radius: var(--radius-lg); padding: 26px 30px;
+  text-align: center; font-size: 15px; color: var(--text);
+  font-weight: 500; line-height: 2;
+}
+.state-conclusion strong { color: var(--peach-deep); }
+
+/* ─── SESSION HYPOTHESIS ─── */
+.hypo-grid { display: grid; gap: 16px; margin-top: 16px; }
+.hypo-card {
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 26px 28px;
+  display: grid; grid-template-columns: 48px 1fr; gap: 18px;
+  align-items: start; transition: transform 0.3s, box-shadow 0.3s;
+}
+.hypo-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.hypo-card.star {
+  background: linear-gradient(135deg, rgba(255,229,191,0.30), rgba(245,217,198,0.20));
+  border-color: rgba(201,124,106,0.30);
+}
+.hypo-num {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--sage-deep); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 600;
+  grid-row: span 2;
+}
+.hypo-card.star .hypo-num { background: var(--peach-deep); }
+.hypo-title {
+  font-size: 16px; font-weight: 700; color: var(--text);
+  grid-column: 2; line-height: 1.6; letter-spacing: 0.02em;
+}
+.hypo-body {
+  grid-column: 2; font-size: 13.5px; color: var(--text-muted);
+  line-height: 1.95;
+}
+.hypo-body strong { color: var(--sage-deep); }
+.hypo-card.star .hypo-body strong { color: var(--peach-deep); }
+.hypo-body u {
+  text-decoration: none;
+  background: linear-gradient(transparent 60%, rgba(201,168,106,0.30) 60%);
+  padding: 0 2px;
+}
+.hypo-body em { font-style: normal; color: var(--sage-deep); font-weight: 600; }
+
+/* ─── STEPS ─── */
+.step-list { display: flex; flex-direction: column; gap: 14px; }
+.step-item {
+  display: flex; gap: 18px; padding: 22px 24px;
+  background: var(--warm-white); border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: transform 0.3s, box-shadow 0.3s;
+  align-items: flex-start;
+}
+.step-item:hover { transform: translateX(4px); box-shadow: var(--shadow-sm); }
+.step-num {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--peach-mid), var(--peach-deep));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: 'Inter', sans-serif;
+  font-size: 14px; font-weight: 700;
+}
+.step-text h4 {
+  font-size: 15.5px; color: var(--text); margin-bottom: 4px;
+  font-family: 'Noto Sans JP', sans-serif; font-weight: 700;
+}
+.step-text p { font-size: 13px; color: var(--text-muted); line-height: 1.85; }
+.step-text p em { font-style: normal; background: linear-gradient(transparent 65%, rgba(255,229,191,0.65) 65%); padding: 0 2px; }
+
+/* ─── BRANCH BUTTON ─── */
+.branch-card {
+  background: linear-gradient(135deg, rgba(110,142,115,0.12), rgba(245,217,198,0.16));
+  border: 1px solid rgba(201,124,106,0.25);
+  border-radius: var(--radius-lg); padding: 32px;
+  margin-top: 30px; text-align: center;
+}
+.branch-card h3 { font-size: 18px; color: var(--peach-deep); margin-bottom: 10px; }
+.branch-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.9; margin-bottom: 18px; }
+.branch-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--peach-deep), var(--sage-deep));
+  color: #fff; text-decoration: none;
+  padding: 12px 24px; border-radius: 10px;
+  font-weight: 700; font-size: 14px;
+  box-shadow: var(--shadow-md);
+  transition: transform .2s, box-shadow .2s;
+}
+.branch-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+/* ─── MESSAGE ─── */
+.message-box {
+  background: linear-gradient(135deg, var(--peach-deep), var(--sage-deep));
+  border-radius: var(--radius-lg); padding: 52px 40px;
+  color: #fff; max-width: 720px; margin: 0 auto;
+  text-align: center; box-shadow: var(--shadow-lg); position: relative;
+}
+.message-box::before {
+  content: '\f004'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+  position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+  background: var(--warm-bg); padding: 0 14px;
+  font-size: 22px; color: var(--peach-deep);
+}
+.message-box h3 { font-size: 20px; margin-bottom: 22px; color: #FFEEC9; }
+.message-box p { font-size: 15px; line-height: 2.15; opacity: 0.95; }
+.message-box .sign { margin-top: 24px; font-size: 13px; opacity: 0.75; font-family: 'Klee One', serif; }
+.message-box strong { background: rgba(255,238,201,0.30); padding: 0 4px; border-radius: 3px; }
+.message-box em { font-style: normal; color: #FFEEC9; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--sage-deep); color: rgba(255,255,255,0.7);
+  text-align: center; padding: 40px 24px; font-size: 13px;
+}
+footer .brand {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 16px; color: #fff; margin-bottom: 8px;
+}
+footer .draft-tag {
+  display: inline-block; margin-top: 8px;
+  padding: 4px 14px; border-radius: 999px;
+  border: 1px dashed rgba(255,238,201,0.6);
+  color: #FFEEC9; font-size: 11px; letter-spacing: 2px;
+}
+
+/* ─── ANIMATIONS ─── */
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-in.is-visible { opacity: 1; transform: translateY(0); }
+.stagger > * { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.stagger.is-visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(2) { transition-delay: 0.12s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(3) { transition-delay: 0.19s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(4) { transition-delay: 0.26s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(5) { transition-delay: 0.33s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(7) { transition-delay: 0.47s; opacity: 1; transform: none; }
+.stagger.is-visible > *:nth-child(8) { transition-delay: 0.54s; opacity: 1; transform: none; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .what-grid, .manual-two, .aruaru-grid, .combo-grid, .proof-grid { grid-template-columns: 1fr; }
+  .sun-divider { height: 140px; }
+  section { padding: 60px 0; }
+  .message-box { padding: 36px 24px; }
+  .shitsu-block { padding: 26px 22px; }
+  .shitsu-head { gap: 12px; flex-wrap: wrap; }
+  .shitsu-rank { width: 48px; height: 48px; font-size: 18px; }
+  .shitsu-name h3 { font-size: 18px; }
+  .quote-card { padding: 22px 20px 22px 54px; font-size: 14px; }
+  .quote-card::before { font-size: 44px; left: 16px; top: 10px; }
+  .float-toc .toc-body { width: calc(100vw - 60px); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO（神社の森・パワースポット） ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-windmark" aria-label="鳥居">
+      <span class="torii-pillar-l"></span>
+      <span class="torii-pillar-r"></span>
+      <span class="torii-nuki"></span>
+    </div>
+    <div class="hero-label">STRENGTHSFINDER 34 · DRAFT 2026.05.27</div>
+    <h1 class="hero-name"><span>みりさん</span>のトリセツ</h1>
+    <p class="hero-tagline">神社の森に立つような<strong>静けさ</strong>で、<br>ひとりひとりに <strong>寄り添う</strong> 管理栄養士。</p>
+    <p class="hero-sub">⛩️ &nbsp;生田の森・吉方位の旅・祈りの場所 ── <br>「あなたが居てくれて、今日もだいじょうぶ」と言われ続けてきた人の物語と、<br>これから「自分にも、それを言ってあげる」ための取扱説明書です。</p>
+  </div>
+  <div class="hero-flame" aria-hidden="true"></div>
+  <a class="hero-credit" href="https://unsplash.com/" target="_blank" rel="noopener noreferrer">Photo: Unsplash · Forest / Shrine inspired</a>
+  <div class="hero-scroll"><i class="fas fa-chevron-down"></i></div>
+</section>
+
+<!-- ═══ FLOATING TOC ═══ -->
+<details class="float-toc">
+  <summary><i class="fas fa-leaf"></i></summary>
+  <div class="toc-body">
+    <h5><i class="fas fa-book-open"></i> もくじ — Contents</h5>
+    <ol>
+      <li><a href="#about"><span class="num">01</span>みりさんって、どんな人？</a></li>
+      <li><a href="#top5"><span class="num">02</span>上位5資質、ひとつずつ</a></li>
+      <li><a href="#sub5"><span class="num">03</span>6〜10位もちゃんと働いてる</a></li>
+      <li><a href="#aruaru"><span class="num">04</span>みりさんあるある</a></li>
+      <li><a href="#proof"><span class="num">05</span>もう動いている力の証拠</a></li>
+      <li><a href="#manual"><span class="num">06</span>取扱説明書（喜ぶ／省エネ）</a></li>
+      <li><a href="#combo"><span class="num">07</span>資質コンボ</a></li>
+      <li><a href="#voice"><span class="num">08</span>みりさんの言葉</a></li>
+      <li><a href="#state"><span class="num">09</span>今いる場所</a></li>
+      <li><a href="#hypo"><span class="num">10</span>セッション仮説</a></li>
+      <li><a href="#steps"><span class="num">11</span>次の一歩</a></li>
+      <li class="toc-divider"></li>
+      <li><a href="miri-strengths-branch-2026-05-27.html"><span class="num"><i class="fas fa-seedling"></i></span>資質図解ブランチへ</a></li>
+      <li><a href="#message"><span class="num"><i class="fas fa-heart"></i></span>みりさんへの手紙</a></li>
+    </ol>
+  </div>
+</details>
+
+<!-- ═══ 01 ABOUT YOU ═══ -->
+<section id="about">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">ABOUT YOU</div>
+      <h2 class="section-title">みりさんって、どんな人？</h2>
+      <p class="section-lead">リベシティのプロフィールに書かれていた言葉と、ストレングスファインダー34の結果から見えてきた、みりさんの輪郭です。コーチングセッションの前に、ふたりで一緒に眺めるための仮版。</p>
+    </div>
+
+    <div class="what-grid fade-in">
+      <div class="what-text">
+        <p>みりさんは、<strong>「ひとりひとりに、静かに寄り添う管理栄養士」</strong>。委託給食 → 食品工場 → 保育園 → 介護老健 → 病院（外来・透析・外科・療養・回復期リハビリ）と、<em>食を必要とする人のライフサイクル全域</em>を渡り歩いてきた、20年以上のベテラン。</p>
+
+        <p>息子さんが生後2ヶ月の時に、夫さまを急に亡くされた春。「数年間どうやって生きてたかわからない」絶望から立ち上がって、仕事に恵まれて自立し、今は <strong>「自立して経済的にも豊かになって人生を楽しみたい💕」</strong> と書ける場所まで戻ってこられました。</p>
+
+        <p>上位10資質を並べると、<strong>人間関係構築力 5つ × 実行力 4つ × 慎重さ</strong>。影響力ゼロ・戦略的思考力ゼロ。これは34資質中、<em>「人を見る目」と「最後までやり遂げる手」</em> が、二本柱で組み合わさっている並びです。前に立ってグイグイ引っ張るより、<em>横に並んで一人ひとりに丁寧に届ける</em> ことが、みりさんが一番呼吸しやすい場所。</p>
+
+        <p>そして、リベ大に出会って2年半。<strong>保険・証券・口座・通信の30項目以上を、ひとつひとつチェックマークで仕留めて</strong>こられました。2025/12/23には <em>単独で栄養オフ会</em> も主催されています。今、人生のいちばん視界が開けてきたところに立っていらっしゃる ── そんな感じがしています。</p>
+      </div>
+      <div class="what-card">
+        <div class="big-icon"><i class="fas fa-leaf"></i></div>
+        <h3>みり管理栄養士🌷さん</h3>
+        <p class="role">管理栄養士＋第1種衛生管理者<br>リベシティ・イルカ会員</p>
+        <div class="meta">
+          <span><i class="fas fa-user-nurse"></i> 53歳 / 神戸市</span>
+          <span><i class="fas fa-house-chimney"></i> 息子さん（高校生）と2人暮らし</span>
+          <span><i class="fas fa-hospital"></i> 病院・透析室・回復期リハ専任 経験</span>
+          <span><i class="fas fa-utensils"></i> 保育園・介護老健・食品工場 経験</span>
+          <span><i class="fas fa-piggy-bank"></i> 家計改善 30項目以上 完了</span>
+          <span><i class="fas fa-cake-candles"></i> 2025/12/23 栄養オフ会 単独主催</span>
+          <span><i class="fas fa-shrine"></i> 神社仏閣巡り・吉方位旅行・生田の森</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="domain-summary fade-in">
+      <h3>4つの灯（上位10資質ベース）</h3>
+      <div class="domain-bar">
+        <div class="domain-seg rel">人間関係構築力 × 5</div>
+        <div class="domain-seg exec">実行力 × 5</div>
+      </div>
+      <div class="domain-legend">
+        <span><i class="dot rel"></i> 人間関係構築力（調和性・共感性・親密性・適応性・ポジティブ・包含）</span>
+        <span><i class="dot exec"></i> 実行力（慎重さ・公平性・信念・責任感）</span>
+        <span style="opacity:0.5;"><i class="dot infl"></i> 影響力 0</span>
+        <span style="opacity:0.5;"><i class="dot str"></i> 戦略的思考力 0</span>
+      </div>
+      <div class="domain-note">
+        <strong>人間関係構築力（包含含めて6つ）× 実行力 4つ × 影響力 0 × 戦略的思考力 0</strong>。<br><br>
+        意味を翻訳すると ── 「<strong>あたたかく人を見る目</strong>」と「<strong>丁寧に最後までやり遂げる手</strong>」が、二本柱で組み合わさっている配線。<br>
+        逆に、「派手にプレゼンして人を動かす」「戦略的に選択肢を広げて意思決定する」は本来の動き方じゃない、というサインでもあります。<strong>静かに、目の前のひとりを、確実に支える</strong> 仕事で、みりさんは一番光るタイプです。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">「自立して経済的にも豊かになって、人生を楽しみたい💕」<br>— リベシティのプロフィールに、みりさん自身が書いてくれていた言葉</div>
+</div>
+
+<!-- ═══ STRENGTHS RESULT IMAGE ═══ -->
+<section id="result" style="padding-top: 60px; padding-bottom: 20px;">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">YOUR 34 RESULT</div>
+      <h2 class="section-title">ストレングスファインダー34、すべての結果。</h2>
+      <p class="section-lead">2025/07/31に受検された、Gallup CliftonStrengths® 34資質の順位です。これからじっくり、ひとつずつ見ていきますね。</p>
+    </div>
+    <div class="image-frame fade-in">
+      <div class="image-frame-label"><i class="fas fa-image"></i> Gallup CliftonStrengths® 34 Result · 2025.07.31</div>
+      <img src="miri-strengths-result-2026-05-27.png" alt="みりさんのストレングスファインダー34の結果">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 02 TOP 5 ═══ -->
+<section id="top5">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">TOP 5 STRENGTHS</div>
+      <h2 class="section-title">みりさんの上位5資質、ひとつずつ。</h2>
+      <p class="section-lead">それぞれの資質がどんな手ざわりで、みりさんの中でどう動いてきたか。20年以上のキャリアと、リベでの2年半の歩みと一緒に並べました。</p>
+    </div>
+
+    <!-- 1. 調和性 -->
+    <div class="shitsu-block is-top3 fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">1</div>
+        <div class="shitsu-name">
+          <h3>調和性<span class="metaphor-tag"><i class="fas fa-dove"></i> 平和の使者</span></h3>
+          <div class="meta">HARMONY ／ 人間関係構築力</div>
+        </div>
+        <div class="shitsu-domain rel">人間関係</div>
+      </div>
+      <div class="shitsu-tokucho">
+        対立よりも合意点を探そうとする力。みりさんの場合、<strong>「立場や年齢が違う人たちが集まる場で、いつの間にか全員が少しずつ納得する着地点を作っている」</strong> ── これが20年以上、自然に動いてきた1番目の資質です。<em>逆立った羽をそっと滑らかにするように</em>、異なる意見を整える人。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">MIRI'S EPISODE</div>
+        <div class="ep-text">
+          病院の透析室・回復期リハビリ病棟・保育園・介護老健 ── どの現場も、<em>患者さん／ご家族／医師／看護師／ケアマネさん／保護者</em>と、利害も感情もバラバラな人たちが集まる場所。<br><br>
+          みりさんは、その真ん中で「<em>みんなが少しずつ納得する栄養のかたち</em>」を、20年以上ずっと探し続けてきました。<strong>声を荒げて主張する仕事じゃない</strong>。<em>静かに、合意点を見つける</em> 仕事 ── それが調和性1位の手ざわりです。
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 共感性 -->
+    <div class="shitsu-block is-top3 fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">2</div>
+        <div class="shitsu-name">
+          <h3>共感性<span class="metaphor-tag"><i class="fas fa-temperature-half"></i> 心の温度計</span></h3>
+          <div class="meta">EMPATHY ／ 人間関係構築力</div>
+        </div>
+        <div class="shitsu-domain rel">人間関係</div>
+      </div>
+      <div class="shitsu-tokucho">
+        言葉にされていない気持ちを察知するアンテナ。みりさんの場合、<strong>「食べたいのに食べられない人」「お母さんの『もしも』の不安」「長く通うほどに辛さを言葉にできなくなる透析患者」</strong> ── そういう <em>言葉にならない感情</em> を、20年以上、当たり前のように読み取り続けてきた人です。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">MIRI'S EPISODE</div>
+        <div class="ep-text">
+          外来栄養指導の <strong>糖尿病・腎不全・脂質異常症</strong> ── これは「数値を伝える仕事」じゃなくて、本当は「食べたいのに食べられない人の痛みを聞く」仕事ですよね。<br><br>
+          保育園の <em>アレルギー対応</em> は、お母さんの「もしも」の不安と毎日向き合う仕事。<em>透析室専属</em>は、長く通うほどに患者さんがしんどさを言葉にできなくなっていく場所。<br><br>
+          みりさんが選んで歩いてきた現場は、ぜんぶ <strong>「言葉にならない感情を読む感度」</strong> が求められる場所でした。それは偶然じゃなく、共感性2位の自然な選択だったんだと思います。
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 親密性 -->
+    <div class="shitsu-block is-top3 fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">3</div>
+        <div class="shitsu-name">
+          <h3>親密性<span class="metaphor-tag"><i class="fas fa-hands-holding"></i> 親友</span></h3>
+          <div class="meta">RELATOR ／ 人間関係構築力</div>
+        </div>
+        <div class="shitsu-domain rel">人間関係</div>
+      </div>
+      <div class="shitsu-tokucho">
+        少数の人と <strong>深く長く</strong> 関係を育てる資質。広く浅くより、<em>「この人なら大丈夫」と感じた相手に、時間をかけて本音で関わる</em> のが自然。<strong>一度信頼した相手とは、長く続く絆を持つ</strong>人。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">MIRI'S EPISODE</div>
+        <div class="ep-text">
+          みりさんが選んできた仕事を並べてみると、見事に「<strong>少人数と、深く、長く</strong>」のかたちばかりです。<br><br>
+          <em>透析室専属</em>＝同じ患者さんと週3回、何年も会い続ける仕事。<em>回復期リハビリ専任</em>＝入院から退院までの数ヶ月、同じ方に伴走する仕事。<em>外来栄養指導</em>＝同じ患者さんに何度も繰り返し向き合う仕事。<br><br>
+          広く浅く声をかける営業職にも、毎回違う人と会う接客にも行かなかった。<strong>「ご縁を結んだ人とは、ずっと」</strong> が、みりさんの自然な距離感です。
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 慎重さ -->
+    <div class="shitsu-block fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank exec">4</div>
+        <div class="shitsu-name">
+          <h3>慎重さ<span class="metaphor-tag"><i class="fas fa-shield-halved"></i> 石橋を叩く探検家</span></h3>
+          <div class="meta">DELIBERATIVE ／ 実行力</div>
+        </div>
+        <div class="shitsu-domain exec">実行力</div>
+      </div>
+      <div class="shitsu-tokucho">
+        リスクを丁寧に見極め、決定する前に細心の注意を払う力。みりさんの仕事は、すべて <strong>「うっかり」が命に直結する</strong> 領域。第1種衛生管理者・透析の食事管理・アレルギー食育 ── これを20年以上、当たり前にやってきた人だからこその慎重さです。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">MIRI'S EPISODE</div>
+        <div class="ep-text">
+          <strong>食品工場衛生管理者・第1種衛生管理者・アレルギー対応の食育・透析の食事管理</strong> ── どれも一つの判断ミスが事故に直結する仕事です。<br><br>
+          そして、リベ大に入ってからの2年半 ── ファンドラップ解約・NISA移管・ユニットリンク解約（-20万）・医療保険解約・終身保険解約・個人年金解約・ドル建て終身解約・変額保険解約・SIM変更・不要クレカ解約・銀行口座整理…<br>
+          <em>勢いで全部捨てる</em>のではなく、<strong>ひとつひとつ順番に、確認しながら、丁寧に</strong>。これも紛れもなく、慎重さの仕事です。
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 適応性 -->
+    <div class="shitsu-block fade-in">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">5</div>
+        <div class="shitsu-name">
+          <h3>適応性<span class="metaphor-tag"><i class="fas fa-water"></i> 川の流れ</span></h3>
+          <div class="meta">ADAPTABILITY ／ 人間関係構築力</div>
+        </div>
+        <div class="shitsu-domain rel">人間関係</div>
+      </div>
+      <div class="shitsu-tokucho">
+        「今ここ」を大切にする力。変化や予測不可能にも柔軟に対応でき、緊急事態にもすぐ対処できる。<strong>状況に合わせて素早く動くことで、周囲に安心感を与える</strong> 人。
+      </div>
+      <div class="shitsu-episode">
+        <div class="ep-label">MIRI'S EPISODE</div>
+        <div class="ep-text">
+          みりさんのキャリアって、書き出してみるとすごいんです：<br>
+          <em>委託給食 → 食品工場 → 保育園 → 介護老健 → 病院（外来・透析・外科・療養・回復期リハビリ）</em>。<br><br>
+          毎回まったく違う現場、毎回まったく違う対象者、毎回まったく違うルール。<br>
+          でもみりさんは、その都度ちゃんと馴染んで、その場の「<strong>今日の現場の空気</strong>」に合わせて動けてきた。<br>
+          <strong>慎重さ4位で準備しつつ、適応性5位で「今」に乗っていく</strong>。この2つがセットで動いているから、どの現場でもみりさんは「居てくれてよかった」人になれてきました。
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">「同じ志を持つ皆さまとお話できるのを楽しみにしています！」<br>— リベシティのプロフィール「その他」欄に、自分から書かれていた言葉</div>
+</div>
+
+<!-- ═══ 03 SUB 5 ═══ -->
+<section id="sub5">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">6 - 10</div>
+      <h2 class="section-title">続く5資質も、ちゃんと働いてる</h2>
+      <p class="section-lead">トップ5の影に見えるけど、6〜10位がみりさんの「明るさ」「ルールを守る安心」「誰も外さない優しさ」「価値観の芯」「最後までやり抜く力」を支えています。</p>
+    </div>
+
+    <div class="shitsu-mini-grid stagger">
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank rel">6</div>
+          <h4>ポジティブ / POSITIVITY</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-sun"></i> 太陽</div>
+        <p>絶望からも「<em>人生を楽しみたい💕</em>」と書ける明るさ。グイグイ盛り上げる型じゃなく、<em>しんどさを通り抜けても前を向ける</em> 重みのある明るさ。</p>
+        <div class="ep-mini">→ <em>ユニットリンク解約で-20万円「凹む💧」で済ませて次に進める</em>、それがみりさんのポジティブの強度</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank exec">7</div>
+          <h4>公平性 / CONSISTENCY</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-scale-balanced"></i> 天秤</div>
+        <p>みんなに同じ基準で接する力。<em>給食の献立作成・アレルギー対応</em>──「全員に、同じ栄養を、同じタイミングで」が体に染みている人。</p>
+        <div class="ep-mini">→ <em>「食べていいものが厳しく決まっている人」に寄り添い続けてこられた</em> のは、公平性7位の支えがあったから</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank rel">8</div>
+          <h4>包含 / INCLUDER</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-tree"></i> 大きな木</div>
+        <p>誰も置いていかない優しさ。<em>新参の人を温かく迎える</em> 役回りが自然。</p>
+        <div class="ep-mini">→ <em>2025/12/23に単独で栄養オフ会を主催</em>。神戸オフィスで迎えてもらった温かさを、自分が渡す側に回った瞬間</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank exec">9</div>
+          <h4>信念 / BELIEF</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-tower-observation"></i> 灯台</div>
+        <p>大切な価値観を絶対に守り抜く強さ。みりさんが好きな場所はぜんぶ <em>祈りの場所</em>──そこに通うのは、信念9位の人の生き方。</p>
+        <div class="ep-mini">→ <em>生田の森・神社仏閣巡り・吉方位旅行・システィーナ礼拝堂</em>──自分の芯と定期的に対話している</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head">
+          <div class="shitsu-mini-rank exec">10</div>
+          <h4>責任感 / RESPONSIBILITY</h4>
+        </div>
+        <div class="meta-mini"><i class="fas fa-handshake"></i> 約束を守る武士</div>
+        <p>引き受けたことは必ずやり抜く力。<em>「自分との約束」も「お客様との約束」も、同じ重さで守る</em> 人。</p>
+        <div class="ep-mini">→ <em>2年半で30項目以上の家計改善を、ひとつひとつチェックマークで仕留めた</em> ── これは責任感の人にしかできない歩き方</div>
+      </div>
+    </div>
+
+    <!-- ブランチページ誘導 -->
+    <div class="branch-card fade-in" id="branch">
+      <h3><i class="fas fa-seedling"></i> もっと資質を深掘りするブランチページ</h3>
+      <p>このページとセットで <strong>「みりさん 資質図解ブランチ」</strong> を別ページでご用意しました。みりさんのTOP10それぞれに「メタファー＋PDF解説＋みりさん接続＋セッションで聞きたいこと」を1枚ずつ詰めてあります。気になる資質をふっと開きたいときにどうぞ。</p>
+      <a class="branch-btn" href="miri-strengths-branch-2026-05-27.html">
+        <i class="fas fa-seedling"></i> みりさん 資質図解ブランチへ進む
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 04 ARUARU ═══ -->
+<section id="aruaru">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">MIRI ARUARU</div>
+      <h2 class="section-title">みりさんあるある</h2>
+      <p class="section-lead">プロフィールやキャリアを並べると、自然と浮かび上がってくるパターン。ぜんぶ、上位資質の自然な合わせ技です。</p>
+    </div>
+
+    <div class="aruaru-grid stagger">
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-bowl-rice"></i></div>
+        <h4>働いてきた現場が、全部ライフサイクル別</h4>
+        <p>給食 → 工場 → <em>保育園（離乳食〜食育）</em> → 介護老健 → 病院（外科〜透析〜回復期）。<strong>生まれてから人生の最後まで、食を必要とする人</strong>を全部見てきた。これだけの幅を歩いた管理栄養士、なかなかいない。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-list-check"></i></div>
+        <h4>家計改善を、2年半で30項目以上、リストで仕留めた</h4>
+        <p>ファンドラップ・NISA移管・ユニットリンク・各種保険・ドル建て・変額・SIM・クレカ・銀行口座…。<em>勢いじゃなく、ひとつずつチェックマーク</em>で。慎重さ × 責任感 × 公平性 の合わせ技。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-cake-candles"></i></div>
+        <h4>迎えてもらった嬉しさを、自分が迎える側に回した</h4>
+        <p>2024年1/7に神戸オフィスに飛び込んで <em>オフ会に飛び入り参加させてもらった</em>。それから約2年後の <strong>2025/12/23に単独で栄養オフ会を主催</strong>。包含 × 親密性 × ポジティブ がきれいに3つ揃って働いた。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-shrine"></i></div>
+        <h4>好きな場所が、ぜんぶ「祈りの場所」</h4>
+        <p>生田の森🌳、神社仏閣巡り⛩️、吉方位旅行🚄、システィーナ礼拝堂🇮🇹──ぜんぶ <em>静かに自分の芯と対話する場所</em>。信念9位の人ほど、こういう時間が必要。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-train"></i></div>
+        <h4>旅先のスーパーと駅舎を見るのが楽しい</h4>
+        <p>「<em>旅先のスーパーに行ってその土地の食材を見ること</em>」「<em>旅先の駅舎を見ること</em>」── 観光地より、<strong>その土地の人の生活が見える場所</strong>に惹かれる。共感性 × 適応性 × 学習欲（11位以下だけど）。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-cookie"></i></div>
+        <h4>好きなお菓子は、ぜんぶ "焼き菓子"</h4>
+        <p>クッキー、パイ、サブレ、チーズケーキ。<em>「派手なケーキ」じゃなくて「静かでバターのきいた焼き菓子」</em>。これも調和性 × 慎重さの世界観そのもの。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-circle-nodes"></i></div>
+        <h4>"絶望から自立まで" を、自分の足で歩き切った</h4>
+        <p>「<em>産まれたばかりの息子をかかえて絶望のあまり数年間どうやって生きてたかわからない</em>」「<em>幸い仕事に恵まれたので自立して経済的にも豊かになって人生を楽しみたい</em>」── 信念 × ポジティブ × 責任感の生き方。</p>
+      </div>
+      <div class="aruaru-card">
+        <div class="aruaru-icon"><i class="fas fa-comments"></i></div>
+        <h4>「同じ志の人とお話したい」がプロフィールに明記してある</h4>
+        <p>プロフィールの「その他」欄、<em>「同じ志を持つ皆さまとお話できるのを楽しみにしています！」</em>。これは <strong>親密性 × 包含 × 信念</strong> の人が、自分から書ける言葉。広く浅くじゃなく、<em>同じ方向を向ける人と、深く</em>。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">「絶望のあまり数年間どうやって生きてたかわからない」<br>──そこから、「人生を楽しみたい💕」まで戻ってきた人の物語</div>
+</div>
+
+<!-- ═══ 05 PROOF（既に動いている力） ═══ -->
+<section id="proof">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">YOUR STRENGTHS, ALREADY MOVING</div>
+      <h2 class="section-title">みりさんの「もう動いている力」、4つの証拠</h2>
+      <p class="section-lead">セッション前の今でも、すでに <strong>みりさんの中で動いている "稼ぐ力／届ける力" の素材</strong>。プロフィールに書かれた事実から、根拠を並べてみます。</p>
+    </div>
+
+    <div class="kasegu-headline fade-in">
+      <span class="strike">私はまだ何も持っていない、これから始めなきゃ</span>
+      <span class="arrow">↓ 書き換えてみる</span>
+      <strong>みりさんの中には、すでに「20年以上の専門性」と「2年半の家計改善実績」と「単独オフ会の主催経験」が、ぜんぶ揃っている。</strong>
+    </div>
+
+    <div class="proof-grid stagger">
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-hospital"></i></div>
+        <h4>20年以上、ライフサイクル全域の管理栄養士</h4>
+        <p><strong>給食 → 工場衛生 → 保育園（離乳食〜食育） → 介護老健 → 病院（外来栄養指導〜透析〜外科〜療養〜回復期リハ）</strong>。これだけの幅を歩いた管理栄養士はかなり稀少。<em>「持病があって食べていいものが厳しい人」</em> の相談に、ほぼ全領域で答えられる人です。</p>
+        <div class="proof-words">「<em>糖尿病、腎不全、脂質異常症</em> の外来栄養指導」「<em>透析室専属</em>」「<em>回復期リハビリテーション病棟専任</em>」</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-list-check"></i></div>
+        <h4>家計改善 30項目以上を、2年半でチェックマーク</h4>
+        <p>ファンドラップ解約・NISA移管・ユニットリンク解約・医療保険解約・終身保険解約・個人年金解約・ドル建て終身解約・変額保険解約・SIM変更・不要クレカ解約・銀行口座整理…。<strong>「決めたことを最後までやり切る」立派なキャリア資産</strong>です。これは <em>同じ悩みを持つ人</em> にとって、ものすごく価値のある経験。</p>
+        <div class="proof-words">「<em>ユニットリンク解約（-20万円に凹む💧）</em>」を抜けてもなお続けた強さ</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-cake-candles"></i></div>
+        <h4>2025/12/23、単独で「栄養オフ会」を主催</h4>
+        <p>これ、すごく大事な実績。<strong>「迎えてもらう側」から「迎える側」に、自分の足で立った日</strong>です。包含・親密性・ポジティブ・公平性・専門性 ── みりさんの上位資質が全部、一気に動いた瞬間。<em>もう一度、形を変えて続けられる</em> 経験です。</p>
+        <div class="proof-words">「<em>単独での栄養オフ会主催（12/23）</em>」── プロフィール実績欄に、自分でチェックマークを付けた言葉</div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-coin"><i class="fas fa-heart-circle-check"></i></div>
+        <h4>「絶望から自立」を、自分の足で歩き切った当事者</h4>
+        <p>みりさんが今もっている <strong>「自立して経済的にも豊かになって人生を楽しみたい💕」</strong> という言葉は、<em>頭で考えた目標</em>じゃなくて <em>自分が歩いてきた道</em> から出てきた言葉。同じような場所にいる人にとっては、これ以上ない説得力のあるメッセンジャーになれる人です。</p>
+        <div class="proof-words">「<em>幸い仕事に恵まれたので自立して経済的にも豊かになって人生を楽しみたい💕</em>」</div>
+      </div>
+    </div>
+
+    <div class="kasegu-clincher fade-in">
+      <p>みりさんの場合、「<em>これから何かを身につけて</em>」じゃなくて、<strong>「すでにある20年の専門性と2年半の家計改善経験を、どんな形で、誰に届けるか</strong>」── そこが次のテーマになりそうです。</p>
+      <p>たとえば、 ── <strong>「持病があっても安心して食べられて、家計にも優しい献立」</strong>、<strong>「シングルマザーが、絶望期から自立期に進むための栄養と家計の両方サポート」</strong>、<strong>「働きながら療養している人の、無理のない食事と生活の整え方」</strong> ── みりさんにしか書けないテーマが、もう手の中にあるんじゃないかと思います。</p>
+      <span class="kasegu-light">「すでに持っているものを、これからも誰かに届け続けられる人」🌷</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 06 MANUAL ═══ -->
+<section id="manual">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">USER MANUAL</div>
+      <h2 class="section-title">みりさんの取扱説明書</h2>
+      <p class="section-lead">スイッチが入りやすい場所、充電が要りやすい場所。本人にも、周りの人にも知っておいてもらえると、お互いがラクになります。</p>
+    </div>
+
+    <div class="manual-two stagger">
+      <div class="manual-box joy">
+        <h3><i class="fas fa-sun"></i> スイッチが入る場所</h3>
+        <ul>
+          <li>少人数で深く関われる場（透析室・回復期リハ・1対1の栄養指導）</li>
+          <li>みんなの違いを丁寧に汲んで、合意点を作る場面</li>
+          <li>準備と確認の時間がちゃんと取れる仕事</li>
+          <li>同じ人と長く、ゆっくり関係を育てていける環境</li>
+          <li>「あなたが居てくれて良かった」と言ってもらえる場面</li>
+          <li>静かに自分の芯と対話できる時間（祈りの場所・旅・自然）</li>
+          <li>ルールが明確で、誰もが安心して食べられる環境設計</li>
+        </ul>
+      </div>
+      <div class="manual-box pain">
+        <h3><i class="fas fa-cloud-rain"></i> 充電が要る場所</h3>
+        <ul>
+          <li>大勢の前でグイグイ自己アピールする場（影響力が下位）</li>
+          <li>急かされてその場で即決を求められる状況（慎重さがゆっくり考えたい）</li>
+          <li>えこひいきや例外、ルールが人によって変わる場面（公平性が苦しい）</li>
+          <li>批判ばかり続く議論、暗くて重い空気（ポジティブが消耗）</li>
+          <li>合意なしで誰かが不満を抱えたまま進む会議（調和性が痛い）</li>
+          <li>未来の戦略を一人で組み立てる仕事（戦略的思考が下位）</li>
+          <li>「短納期で量をこなす」スタイル（実行力でも慎重さ寄り）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 07 COMBOS ═══ -->
+<section id="combo">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">STRENGTHS COMBOS</div>
+      <h2 class="section-title">みりさんの「資質コンボ」</h2>
+      <p class="section-lead">単体の資質より、組み合わせで読むほうが、その人の本当の動き方が見えてくる。みりさんの中で、よく一緒に動いている4つの組み合わせ。</p>
+    </div>
+
+    <div class="combo-grid stagger">
+      <div class="combo-card">
+        <div class="combo-pair">調和性 × 共感性 × 親密性</div>
+        <h4>"最後の砦"のような寄り添い</h4>
+        <p>透析患者さん、糖尿病の方、回復期リハの方 ── <strong>「他で言えなかったしんどさ」</strong>を、みりさんになら話せる。それは、合意点を探し、感情を汲み取り、長く関わる ── この3つが同時に動くからこそ生まれる空気です。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">慎重さ × 公平性 × 責任感</div>
+        <h4>"うっかりが命に直結する仕事"を、20年</h4>
+        <p>食品工場衛生・アレルギー対応・透析の食事管理 ── ぜんぶ「事故が許されない」領域。<strong>静かに、ルール通りに、最後までやり抜く</strong>。みりさんがいるから、その現場は安心して回ってきました。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">適応性 × 包含 × ポジティブ</div>
+        <h4>新しい場でも、温かく馴染んで、迎える側に回る</h4>
+        <p>神戸オフィスに飛び込んだ翌々年、自分が単独で栄養オフ会を主催。<strong>変化を恐れず・誰も外さず・明るく場を作る</strong>──このコンボで、リベでの居場所をひとつずつ広げてこられました。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">信念 × ポジティブ × 責任感</div>
+        <h4>"絶望から自立"を歩き切る生命線</h4>
+        <p>夫さま急逝 → 数年憔悴 → 仕事で立つ → 家計を整える → 人生を楽しみたい。これは、<strong>芯がブレない × 前を向ける × 決めたことをやり抜く</strong> の3つが、ずっと支えてきた20数年の歩み。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 08 VOICE ═══ -->
+<section id="voice">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">MIRI'S OWN WORDS</div>
+      <h2 class="section-title">みりさん自身が、自分のプロフィールに書いてくれていた言葉</h2>
+      <p class="section-lead">セッションの前、まだみりさんと直接お話ししていない段階で、リベシティのプロフィールから拾わせてもらった言葉たち。これだけで、もうたくさんのことが伝わってきます。</p>
+    </div>
+
+    <div class="quote-list stagger">
+      <div class="quote-card pin">
+        <p>みなさま初めまして。みりと申します。どうぞよろしくお願いします！<br>息子が生後2ヶ月の時に夫が倒れてその日のうちに天国にお引越ししてしまいました⭐︎<br><em>産まれたばかりの息子をかかえて絶望のあまり、数年間はどうやって生きてたかわからないくらい憔悴してましたが、幸い仕事に恵まれたので自立して経済的にも豊かになって人生を楽しみたいと思っています💕</em></p>
+        <div class="from">— プロフィール「自己紹介」</div>
+      </div>
+      <div class="quote-card">
+        <p>2023年12月、新NISAについてのYouTubeを検索している時に両学長の動画に出会いました！<br>朝の学長ライブでの「<em>ゴミットリンク</em>」に衝撃を受けて真剣に家計管理を開始しようと思い、年末ライブの日にリベシティに入会しました😆<br>そして年明けの1/7に初めて神戸オフィスを訪問し、その時に開催されていたオフ会に <em>飛び入り参加</em> させていただきました。</p>
+        <div class="from">— プロフィール「リベ大との出会い」</div>
+      </div>
+      <div class="quote-card">
+        <p>⭐︎趣味⭐︎<br>吉方位旅行🚄、神社仏閣巡り⛩️<br><em>旅先のスーパーに行ってその土地の食材を見ること</em>🍊<br><em>旅先の駅舎を見ること</em></p>
+        <div class="from">— プロフィール「趣味・特技」</div>
+      </div>
+      <div class="quote-card">
+        <p>好きな食べ物：<em>クッキー、パイ、サブレ、チーズケーキ</em><br>好きな場所：<em>生田の森🌳</em><br>好きな国：<em>日本とイタリア🇮🇹特にシスティーナ礼拝堂</em></p>
+        <div class="from">— プロフィール「好きな○○」</div>
+      </div>
+      <div class="quote-card pin">
+        <p><em>同じ志を持つ皆さまとお話できるのを楽しみにしています！</em><br>オフィスやチャットでご縁がありましたらよろしくお願いします💕</p>
+        <div class="from">— プロフィール「その他」</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 09 STATE MAP ═══ -->
+<section id="state">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">WHERE YOU ARE NOW</div>
+      <h2 class="section-title">みりさんは今、人生のこのへんにいる</h2>
+      <p class="section-lead">53歳、息子さんは高校生、管理栄養士20年、家計改善2年半。「絶望期 → 自立期 → 整える期 → 楽しむ期」の、いちばん視界が開けてきた場所。</p>
+    </div>
+
+    <div class="state-grid stagger">
+      <div class="state-cell">
+        <span class="em"><i class="fas fa-cloud-rain"></i></span>
+        <div class="lbl">絶望期</div>
+        <div class="sub">夫急逝・憔悴・数年</div>
+      </div>
+      <div class="state-cell">
+        <span class="em"><i class="fas fa-shoe-prints"></i></span>
+        <div class="lbl">自立期</div>
+        <div class="sub">仕事で立つ・育児</div>
+      </div>
+      <div class="state-cell">
+        <span class="em"><i class="fas fa-list-check"></i></span>
+        <div class="lbl">整える期</div>
+        <div class="sub">家計改善2年半・30項目</div>
+      </div>
+      <div class="state-cell" style="border-color: var(--peach-deep); background: linear-gradient(135deg, rgba(255,229,191,0.45), rgba(245,217,198,0.30)); border-style: solid;">
+        <span class="em" style="color: var(--peach-deep);"><i class="fas fa-sun"></i></span>
+        <div class="lbl" style="color: var(--peach-deep);">楽しむ期 ← 今ここ</div>
+        <div class="sub">人生を楽しむ・届ける側に</div>
+      </div>
+    </div>
+
+    <div class="state-conclusion fade-in">
+      <strong>「外に強く出る」じゃなくて、「自分が積み上げてきた知恵を、もう少し広く、少し別のかたちで、誰かに届ける」</strong>──<br>そんな <em>静かなフェーズ</em> に、みりさんは今、入っていくところに見えます。
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="sun-divider">
+  <div class="quote">"絶望のあまり数年間どうやって生きてたかわからない" から、<br>"人生を楽しみたい💕" まで戻ってこられた。次は「楽しむ」を具体化していく時間。</div>
+</div>
+
+<!-- ═══ 10 SESSION HYPOTHESIS ═══ -->
+<section id="hypo">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">SESSION HYPOTHESIS</div>
+      <h2 class="section-title">セッションで、一緒に話したいこと</h2>
+      <p class="section-lead">セッション前の今、みりさんのプロフィールと34資質から、わたし（おけもん）が立てている「ここを一緒に話したいかも」の仮説5つ。<strong>当たってるかどうかは、当日みりさんと答え合わせ</strong>です。</p>
+    </div>
+
+    <div class="hypo-grid stagger">
+      <div class="hypo-card">
+        <div class="hypo-num">1</div>
+        <div class="hypo-title">「栄養オフ会」を、もう一段、自分らしいかたちで続けるなら？</div>
+        <div class="hypo-body">2025/12/23の単独主催は、<em>包含 × 親密性 × ポジティブ × 専門性</em>の合わせ技で、<u>みりさんに向いている形</u>のように見えます。次に開くなら、何人で／どんなテーマで／どんな人を呼びたいですか？　<strong>1対1で深く話せるかたち</strong>・<strong>少人数で長く続けられるかたち</strong>、いろいろあると思うので、一緒に輪郭を描いてみたいです。</div>
+      </div>
+
+      <div class="hypo-card star">
+        <div class="hypo-num">2</div>
+        <div class="hypo-title">★ 「管理栄養士20年＋家計改善2年半」を、誰のために、どう届けたい？</div>
+        <div class="hypo-body">透析・糖尿病・回復期リハ・保育園アレルギー ── <strong>ライフサイクル全部の栄養を見てきたみりさん</strong>。さらに <strong>家計改善で30項目以上を整理してきた経験</strong> もある。この2つを掛け合わせると、たとえば <u>「<em>持病があっても安心して食べられて、家計にも優しい献立</em>」</u> みたいな、<strong>みりさんにしか書けないテーマ</strong>が、ふっと現れる気がしています。── どんな人に届けたいか、まず1人の顔から考えてみませんか？</div>
+      </div>
+
+      <div class="hypo-card">
+        <div class="hypo-num">3</div>
+        <div class="hypo-title">「人生を楽しむ」── 旅・神社仏閣・食を、もう少し堂々と置いていい？</div>
+        <div class="hypo-body">吉方位旅行、神社仏閣巡り、旅先のスーパー、生田の森、システィーナ礼拝堂。── みりさんが楽しみにされている時間って、ぜんぶ <em>祈りと感性の時間</em> ですよね。これって <u>「仕事の合間にちょっと」</u> じゃなくて、<strong>これからの人生の主役のひとつとして置いていい</strong> もののはず。これをご自分の暮らしの真ん中に置いたら、どう生きていきたいですか？</div>
+      </div>
+
+      <div class="hypo-card">
+        <div class="hypo-num">4</div>
+        <div class="hypo-title">「自立して経済的に豊かに」── 数字で言うと、どれくらい？</div>
+        <div class="hypo-body">2年半でここまで整理されたので、次は <strong>「ゴールの数字をひとつ置く」</strong> フェーズかもしれません。老後の生活費／息子さんが手を離れたあとのご自分一人の暮らし／楽しみのための予算 ──<em>慎重さ × 責任感</em> のみりさんは、<u>数字が見えると一気にラクになる</u> タイプだと思います。怖くない範囲で、一緒にひとつ置いてみませんか。</div>
+      </div>
+
+      <div class="hypo-card">
+        <div class="hypo-num">5</div>
+        <div class="hypo-title">息子さんが羽ばたいた後の、自分のための「次の輪」</div>
+        <div class="hypo-body">親密性・包含が高いみりさんにとって、<strong>「自分が深く関わる小さな輪」</strong> があることは、すごく大事な栄養になりそうです。お仕事仲間、リベの仲間、旅仲間、栄養オフ会の仲間 ── <em>これから10年、深く関わっていきたい少人数の輪</em> を、いくつぐらい、どんな顔ぶれで持っていたいですか？</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 11 STEPS ═══ -->
+<section id="steps">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">NEXT STEPS</div>
+      <h2 class="section-title">セッションの当日、こんな問いを置いてみたいです</h2>
+      <p class="section-lead">どの順番でもいいし、ぜんぶ通らなくてもOK。みりさんの心がふっと動いた問いから、ゆっくり開いていけたらいいなと思っています。</p>
+    </div>
+
+    <div class="step-list stagger">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <h4>これまで一番「あなたが居てくれて良かった」と言われた瞬間は？</h4>
+          <p>20年以上の管理栄養士のキャリアの中で、いちばん <em>これが自分らしい仕事だった</em> と感じる現場はどこでしたか？</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <h4>「人生を楽しみたい💕」── ここに書かれた「楽しむ」って、具体的にはどんな時間？</h4>
+          <p>1日のうち、何時間ぐらい、それに使えたら理想ですか？　いま実際に取れている時間は、どれくらい？</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <h4>12/23の栄養オフ会、開いてみて、どんな手応えがありましたか？</h4>
+          <p>次にやるとしたら、何を変えたい・何を残したいですか？　今度は <em>誰に来てほしい</em> ですか？</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-text">
+          <h4>息子さんが手を離れた後の、みりさんの「次の10年」を絵に描くとしたら？</h4>
+          <p>仕事のかたち、暮らす場所、関わりたい人、行きたい場所、書きたいもの ── どれから話したい？</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div class="step-text">
+          <h4>「祈りの場所」（神社仏閣・生田の森・システィーナ礼拝堂）に行くとき、みりさんは何と対話していますか？</h4>
+          <p>言葉にならなくても大丈夫です。<em>そこに行きたくなる時の気持ち</em> から話せたら嬉しいです。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">6</div>
+        <div class="step-text">
+          <h4>このセッションが終わったあと、どんな気持ちで帰れたら「来てよかった」って思えそうですか？</h4>
+          <p>ゴール設定じゃなくて <em>"気持ちのイメージ"</em> で大丈夫です。これがあると、わたしも安心して伴走できます🌷</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MESSAGE ═══ -->
+<section id="message">
+  <div class="container">
+    <div class="message-box fade-in">
+      <h3>みりさんへの手紙</h3>
+      <p>
+        セッション前、まずはこの仮の取扱説明書を、ふたりで一緒に眺めるところから始めさせてください。<br><br>
+        ストレングスファインダー34、そしてリベシティのプロフィールから見えてきたみりさんは、<strong>「ひとりひとりに、最後の砦のように寄り添ってきた人」</strong> ── <em>それを20年以上、当たり前のようにやってきた人</em>でした。<br><br>
+        そしてこれからは、その同じ優しさを、<strong>自分自身にも向けていける時間</strong> に入っていく頃のような気がしています。<br><br>
+        「<em>あなたが居てくれて良かった</em>」をたくさん言われてきたみりさんが、これからは <strong>「自分が居てくれて良かった」</strong> を、自分にも言ってあげられますように。<br><br>
+        当日、お会いできるのを、楽しみにしています🌷
+      </p>
+      <div class="sign">── 寄り添い型 個性診断師 おけもん より</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="brand">❀ &nbsp; みりさんの取扱説明書（仮版） &nbsp; ❀</div>
+  これは <strong>セッションで一緒に育てていく仮版</strong> です。<br>
+  本物のみりさんを表しきれてはいないので、当日いっしょに直して、本物に近づけていきましょう。
+  <br>
+  <span class="draft-tag">DRAFT &nbsp; · &nbsp; 2026.05.27</span>
+</footer>
+
+<script>
+// IntersectionObserver でフェードイン
+const animEls = document.querySelectorAll('.fade-in, .stagger');
+const animObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('is-visible'); animObs.unobserve(e.target); }
+  });
+}, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+
+animEls.forEach(el => {
+  const r = el.getBoundingClientRect();
+  if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+  else animObs.observe(el);
+});
+</script>
+
+</body>
+</html>

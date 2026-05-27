@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>みりさん 資質図解ブランチ | StrengthsFinder TOP10</title>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #342c27;
+  --muted: #72655c;
+  --paper: #fffdf7;
+  --wash: #f7efe3;
+  --line: rgba(132,103,78,.18);
+  --peach: #c97c6a;
+  --peach-deep: #a85a4a;
+  --sage: #6e8e73;
+  --sage-deep: #4f6e54;
+  --gold: #b8872b;
+  --rel: #0b74d1;
+  --exec: #7d2f8f;
+  --infl: #ef7d00;
+  --strat: #0f8a60;
+  --rose: #b45b5f;
+  --green-soft: #edf6e8;
+  --blue-soft: #eef7fb;
+  --rose-soft: #fff1ec;
+  --gold-soft: #fff7df;
+  --purple-soft: #f3eefb;
+  --sage-soft: #ecf4ec;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(90deg, rgba(110,142,115,.04) 1px, transparent 1px) 0 0 / 36px 36px,
+    linear-gradient(180deg, #fbf4e8 0%, #f4eadc 100%);
+  font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  line-height: 1.75;
+}
+a { color: inherit; }
+
+.hero {
+  position: relative;
+  min-height: 86vh;
+  display: grid;
+  place-items: center;
+  padding: 72px 20px 54px;
+  color: #fffdf7;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.42), transparent 22%),
+    radial-gradient(circle at 78% 18%, rgba(245,223,184,.75), transparent 24%),
+    linear-gradient(135deg, rgba(110,142,115,.90), rgba(166,192,172,.72) 48%, rgba(245,217,198,.78));
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.hero::before {
+  content: "THEME BRANCH";
+  position: absolute; top: 10%; right: 5%;
+  font-family: "Noto Serif JP", serif;
+  font-size: clamp(42px, 8vw, 110px);
+  letter-spacing: .16em;
+  color: rgba(255,255,255,.13);
+  transform: rotate(7deg); white-space: nowrap;
+}
+.hero::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0; height: 120px;
+  background: linear-gradient(to top, #fbf4e8, transparent);
+}
+.hero-inner {
+  position: relative; z-index: 2;
+  width: min(1160px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, .68fr);
+  gap: 32px; align-items: center;
+}
+.eyebrow {
+  font-size: 12px; letter-spacing: .16em;
+  font-weight: 800; color: rgba(255,253,247,.78);
+  margin-bottom: 12px;
+}
+h1 {
+  font-family: "Noto Serif JP", serif;
+  font-size: clamp(34px, 5vw, 64px);
+  line-height: 1.16; letter-spacing: 0; margin: 0 0 18px;
+}
+.lead {
+  max-width: 760px; margin: 0 0 24px;
+  color: rgba(255,253,247,.92); font-size: clamp(16px, 2vw, 19px);
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 10px 16px;
+  border-radius: 8px;
+  background: rgba(255,253,247,.94);
+  color: var(--peach-deep); text-decoration: none;
+  font-weight: 800;
+  border: 1px solid rgba(255,255,255,.55);
+  box-shadow: 0 8px 24px rgba(53,45,39,.12);
+}
+.btn.subtle {
+  color: #fffdf7;
+  background: rgba(255,255,255,.16);
+  border-color: rgba(255,255,255,.32);
+}
+.result-card {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 8px; padding: 12px;
+  box-shadow: 0 18px 44px rgba(53,45,39,.20);
+  color: var(--ink);
+}
+.result-card img { display: block; width: 100%; height: auto; border-radius: 6px; }
+.result-card figcaption { margin: 10px 2px 0; font-size: 12px; color: var(--muted); }
+
+.toc {
+  position: fixed; top: 22px; left: 18px; z-index: 20;
+  width: 222px; max-height: calc(100vh - 44px); overflow: auto;
+  padding: 14px;
+  border: 1px solid var(--line); border-radius: 8px;
+  background: rgba(255,253,247,.9);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 34px rgba(53,45,39,.12);
+}
+.toc-title {
+  font-family: "Noto Serif JP", serif;
+  font-weight: 700; font-size: 14px; margin-bottom: 8px;
+}
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc a, .toc-mobile a {
+  display: grid; grid-template-columns: 30px minmax(0, 1fr);
+  gap: 8px; align-items: center;
+  padding: 7px 8px; border-radius: 8px;
+  text-decoration: none; color: var(--muted);
+  font-size: 12px; line-height: 1.35;
+}
+.toc a.active, .toc a:hover, .toc-mobile a.active {
+  color: var(--peach-deep);
+  background: rgba(245,223,184,.65);
+  font-weight: 800;
+}
+.num { color: var(--peach); font-weight: 800; font-size: 11px; }
+.toc-top { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+.toc-mobile {
+  display: none; position: sticky; top: 10px; z-index: 30;
+  width: min(720px, calc(100% - 24px));
+  margin: -26px auto 18px;
+  background: rgba(255,253,247,.96);
+  border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(53,45,39,.12);
+  overflow: hidden;
+}
+.toc-mobile summary {
+  cursor: pointer; padding: 13px 16px;
+  font-weight: 800; color: var(--peach-deep);
+}
+.toc-mobile summary::-webkit-details-marker { display: none; }
+.toc-mobile ol { list-style: none; margin: 0; padding: 0 10px 12px; }
+
+.back-to-top {
+  position: fixed; right: 18px; bottom: 18px; z-index: 40;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--peach-deep); color: #fffdf7;
+  font-size: 18px; cursor: pointer;
+  box-shadow: 0 10px 26px rgba(53,45,39,.20);
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s, transform .2s;
+}
+.back-to-top.visible { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { transform: translateY(-3px); }
+
+main { width: min(1160px, calc(100% - 32px)); margin: 0 auto; }
+section { scroll-margin-top: 80px; padding: 68px 0; border-bottom: 1px solid var(--line); }
+.section-head {
+  display: grid; grid-template-columns: minmax(0, .72fr) minmax(280px, .28fr);
+  gap: 26px; align-items: end; margin-bottom: 24px;
+}
+.chapter {
+  display: inline-block; margin-bottom: 8px;
+  color: var(--peach); font-size: 11px; font-weight: 800; letter-spacing: .18em;
+}
+h2 {
+  margin: 0 0 8px;
+  font-family: "Noto Serif JP", serif;
+  font-size: clamp(26px, 3vw, 38px);
+  line-height: 1.35; letter-spacing: 0;
+}
+.section-lead { margin: 0; color: var(--muted); font-size: 15px; }
+.note {
+  border-left: 4px solid var(--gold);
+  background: #fffaf0; border-radius: 0 8px 8px 0;
+  padding: 14px 16px; color: #56432a; font-size: 14px;
+}
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.card, .theme-card {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 8px; box-shadow: 0 6px 22px rgba(53,45,39,.06);
+}
+.card { padding: 18px; }
+.card h3 { margin: 0 0 8px; font-size: 18px; }
+.card p, .card li { color: var(--muted); font-size: 14px; }
+.card ul { margin: 10px 0 0; padding-left: 1.2em; }
+.domain-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 30px; border-radius: 999px; padding: 5px 10px;
+  color: #fff; font-size: 12px; font-weight: 800;
+}
+.rel { background: var(--rel); }
+.exec { background: var(--exec); }
+.infl { background: var(--infl); }
+.strat { background: var(--strat); }
+
+.map {
+  display: grid; grid-template-columns: repeat(10, minmax(78px, 1fr));
+  gap: 8px;
+}
+.map a {
+  min-height: 96px; padding: 10px;
+  border-radius: 8px;
+  background: var(--paper); border: 1px solid var(--line);
+  text-decoration: none;
+  display: flex; flex-direction: column; gap: 5px;
+  box-shadow: 0 6px 18px rgba(53,45,39,.05);
+  transition: transform .15s, box-shadow .15s;
+}
+.map a:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(53,45,39,.12); }
+.map b { font-size: 12px; line-height: 1.35; }
+.map small { color: var(--muted); line-height: 1.35; }
+
+.theme-card { overflow: hidden; margin-bottom: 28px; }
+.theme-head {
+  display: grid; grid-template-columns: 82px minmax(0, 1fr) auto;
+  gap: 18px; align-items: center; padding: 22px;
+  background:
+    linear-gradient(135deg, rgba(255,250,240,.95), rgba(245,223,184,.62)),
+    var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.rank-no {
+  display: grid; place-items: center;
+  width: 68px; height: 68px; border-radius: 50%;
+  background: var(--peach-deep); color: #fffdf7;
+  font-family: "Noto Serif JP", serif;
+  font-size: 26px; font-weight: 700;
+}
+.theme-head h3 {
+  margin: 0 0 4px;
+  font-family: "Noto Serif JP", serif;
+  font-size: clamp(24px, 3vw, 36px); line-height: 1.25;
+}
+.theme-head p { margin: 0; color: var(--muted); }
+.metaphor {
+  min-width: 110px; padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255,253,247,.86);
+  border: 2px dashed var(--peach);
+  text-align: center;
+  color: var(--peach-deep); font-weight: 800; font-size: 14px;
+}
+.theme-body { padding: 22px; display: grid; gap: 16px; }
+.branch-grid {
+  display: grid; grid-template-columns: minmax(0, .98fr) minmax(300px, .72fr);
+  gap: 16px;
+}
+.subbox {
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 16px; background: #fffefb;
+}
+.subbox h4 { margin: 0 0 8px; font-size: 15px; color: var(--peach-deep); }
+.subbox p { margin: 0; color: var(--muted); font-size: 14px; }
+.subbox ul { margin: 8px 0 0; padding-left: 1.15em; color: var(--muted); font-size: 14px; }
+.miri { background: var(--sage-soft); }
+.miri h4 { color: var(--sage-deep); }
+.question { background: var(--rose-soft); }
+.compare { background: var(--blue-soft); }
+.source { font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+.route {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.route-step {
+  position: relative; min-height: 150px;
+  padding: 16px; border-radius: 8px;
+  background: var(--paper); border: 1px solid var(--line);
+  box-shadow: 0 6px 20px rgba(53,45,39,.06);
+}
+.route-step b { display: block; margin-bottom: 6px; color: var(--peach-deep); }
+.route-step p { margin: 0; color: var(--muted); font-size: 14px; }
+
+.footer-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+
+@media (max-width: 1180px) {
+  .toc { display: none; }
+  .toc-mobile { display: block; }
+}
+@media (min-width: 1181px) {
+  .hero-inner, main {
+    width: min(1160px, calc(100vw - 340px));
+    margin-left: max(300px, calc((100vw - 1160px) / 2));
+    margin-right: auto;
+  }
+}
+@media (max-width: 860px) {
+  .hero { min-height: auto; }
+  .hero-inner, .section-head, .grid-2, .grid-3, .branch-grid, .route { grid-template-columns: 1fr; }
+  .map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .theme-head { grid-template-columns: 70px minmax(0, 1fr); }
+  .metaphor { grid-column: 1 / -1; text-align: left; }
+  section { padding: 44px 0; }
+}
+@media (max-width: 520px) {
+  .map { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">MIRI / TOP10 THEME BRANCH / 2026-05-27</div>
+      <h1>みりさんの<br>資質図解ブランチ</h1>
+      <p class="lead">ユーザー作成PDF「001ストレングス資質図解ガイド」を、みりさんの上位10資質に合わせてHTML化した補足ページです。取扱説明書の本文で気になった資質を、ここで深掘りできます。10資質ぜんぶに「みりさん接続」と「セッションで聞くこと」を1問ずつ添えてあります。</p>
+      <div class="hero-actions">
+        <a class="btn" href="miri-strengths-guide-2026-05-27.html">取扱説明書へ戻る</a>
+        <a class="btn subtle" href="#theme-map">TOP10から選ぶ</a>
+      </div>
+    </div>
+    <figure class="result-card">
+      <img src="miri-strengths-result-2026-05-27.png" alt="みりさんのStrengthsFinder 34資質順位画像">
+      <figcaption>TOP10: 調和性 / 共感性 / 親密性 / 慎重さ / 適応性 / ポジティブ / 公平性 / 包含 / 信念 / 責任感</figcaption>
+    </figure>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目次">
+  <div class="toc-title">Branch 目次</div>
+  <ol>
+    <li><a href="#howto"><span class="num">00</span>使い方</a></li>
+    <li><a href="#theme-map"><span class="num">01</span>TOP10地図</a></li>
+    <li><a href="#domains"><span class="num">02</span>4領域</a></li>
+    <li><a href="#harmony"><span class="num">1</span>調和性</a></li>
+    <li><a href="#empathy"><span class="num">2</span>共感性</a></li>
+    <li><a href="#relator"><span class="num">3</span>親密性</a></li>
+    <li><a href="#deliberative"><span class="num">4</span>慎重さ</a></li>
+    <li><a href="#adaptability"><span class="num">5</span>適応性</a></li>
+    <li><a href="#positivity"><span class="num">6</span>ポジティブ</a></li>
+    <li><a href="#consistency"><span class="num">7</span>公平性</a></li>
+    <li><a href="#includer"><span class="num">8</span>包含</a></li>
+    <li><a href="#belief"><span class="num">9</span>信念</a></li>
+    <li><a href="#responsibility"><span class="num">10</span>責任感</a></li>
+    <li><a href="#route"><span class="num">03</span>育てる伴走への順番</a></li>
+    <li><a href="#sources"><span class="num">04</span>出典</a></li>
+  </ol>
+  <div class="toc-top"><a href="#top">最初に戻る</a></div>
+</nav>
+
+<details class="toc-mobile" aria-label="目次">
+  <summary>Branch 目次</summary>
+  <ol>
+    <li><a href="#howto"><span class="num">00</span>使い方</a></li>
+    <li><a href="#theme-map"><span class="num">01</span>TOP10地図</a></li>
+    <li><a href="#domains"><span class="num">02</span>4領域</a></li>
+    <li><a href="#harmony"><span class="num">1</span>調和性</a></li>
+    <li><a href="#empathy"><span class="num">2</span>共感性</a></li>
+    <li><a href="#relator"><span class="num">3</span>親密性</a></li>
+    <li><a href="#deliberative"><span class="num">4</span>慎重さ</a></li>
+    <li><a href="#adaptability"><span class="num">5</span>適応性</a></li>
+    <li><a href="#positivity"><span class="num">6</span>ポジティブ</a></li>
+    <li><a href="#consistency"><span class="num">7</span>公平性</a></li>
+    <li><a href="#includer"><span class="num">8</span>包含</a></li>
+    <li><a href="#belief"><span class="num">9</span>信念</a></li>
+    <li><a href="#responsibility"><span class="num">10</span>責任感</a></li>
+    <li><a href="#route"><span class="num">03</span>育てる伴走への順番</a></li>
+    <li><a href="#sources"><span class="num">04</span>出典</a></li>
+  </ol>
+</details>
+
+<button class="back-to-top" aria-label="最初に戻る" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main>
+
+<section id="howto">
+  <div class="section-head">
+    <div>
+      <span class="chapter">00 / HOW TO USE</span>
+      <h2>このページは、資質の辞書ではなく「話を深める枝」です</h2>
+      <p class="section-lead">取扱説明書の本文で気になった資質だけを開き、みりさん本人の実感と照らし合わせるためのページです。</p>
+    </div>
+    <div class="note">セッションでは、資質説明を全部読むより「どの言葉が当たっていて、どの言葉が違うか」を確認するのがおすすめです。</div>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <h3>基本説明を見る</h3>
+      <p>PDF内の「どういう人？」「自然な行動・貢献」を、HTMLで読みやすく整理しています。</p>
+    </div>
+    <div class="card">
+      <h3>喜ぶこと・苦手を見る</h3>
+      <p>本人の力が出る条件と、疲れやすい条件を見つけるためのメモとして使います。お仕事の場づくりや、ご家族との時間のヒントにも。</p>
+    </div>
+    <div class="card">
+      <h3>みりさん接続を見る</h3>
+      <p>管理栄養士20年（保育園・介護老健・透析・回復期リハ）＋第1種衛生管理者＋家計改善2年半＋シングルマザー＋息子さん高校生＋神戸＋祈りの場所好きの文脈に、それぞれの資質をつなげて仮説化しています。</p>
+    </div>
+  </div>
+</section>
+
+<section id="theme-map">
+  <div class="section-head">
+    <div>
+      <span class="chapter">01 / TOP10 MAP</span>
+      <h2>みりさんの上位10資質だけを、すぐ開けるようにする</h2>
+      <p class="section-lead">気になる資質をクリックすると、その説明へ移動します。</p>
+    </div>
+    <div class="note">1位から順に読む必要はありません。セッションで話題に出た資質から開くと使いやすいです。</div>
+  </div>
+  <div class="map">
+    <a href="#harmony"><span class="num">01</span><b>調和性</b><small>平和の使者 / 合意点を探す</small></a>
+    <a href="#empathy"><span class="num">02</span><b>共感性</b><small>心の温度計 / 感情を察知</small></a>
+    <a href="#relator"><span class="num">03</span><b>親密性</b><small>親友 / 深く長い絆</small></a>
+    <a href="#deliberative"><span class="num">04</span><b>慎重さ</b><small>石橋を叩く / リスク見極め</small></a>
+    <a href="#adaptability"><span class="num">05</span><b>適応性</b><small>川の流れ / 今ここに柔軟</small></a>
+    <a href="#positivity"><span class="num">06</span><b>ポジティブ</b><small>太陽 / 前向きさが伝染</small></a>
+    <a href="#consistency"><span class="num">07</span><b>公平性</b><small>天秤 / みんなに同じ基準</small></a>
+    <a href="#includer"><span class="num">08</span><b>包含</b><small>大きな木 / 誰も外さない</small></a>
+    <a href="#belief"><span class="num">09</span><b>信念</b><small>灯台 / 価値観を守り抜く</small></a>
+    <a href="#responsibility"><span class="num">10</span><b>責任感</b><small>約束を守る武士 / 最後までやる</small></a>
+  </div>
+</section>
+
+<section id="domains">
+  <div class="section-head">
+    <div>
+      <span class="chapter">02 / FOUR DOMAINS</span>
+      <h2>4領域で見ると「人と寄り添う × 丁寧にやり遂げる」が二本柱の人</h2>
+      <p class="section-lead">PDFの分類を、みりさんのTOP10に合わせて読み替えます。</p>
+    </div>
+    <div class="note">上位10の内訳は、人間関係構築力 <strong>6</strong>・実行力 <strong>4</strong>・影響力 <strong>0</strong>・戦略的思考力 <strong>0</strong>。<br>「人を見るあたたかさ × 丁寧にやり遂げる手」が、二本柱で組み合わさっている、すごく純度の高い並びです。</div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <span class="domain-chip rel">人間関係構築力 ✕ 6資質</span>
+      <h3>調和性・共感性・親密性・適応性・ポジティブ・包含</h3>
+      <p>合意点を探し、感情を汲み取り、深く長く関わり、変化に柔軟に対応し、明るく場を温め、誰も外さない領域。みりさんの中核装備。<strong>透析室・回復期リハ・保育園・介護老健で、患者さん／ご家族／同僚と20年以上向き合ってこられた</strong> のは、この6資質が同時に動いていたからです。</p>
+    </div>
+    <div class="card">
+      <span class="domain-chip exec">実行力 ✕ 4資質</span>
+      <h3>慎重さ・公平性・信念・責任感</h3>
+      <p>リスクを見極め、ルールを守り、価値観を貫き、最後までやり抜く領域。<strong>食品衛生管理者・アレルギー対応・透析の食事管理・第1種衛生管理者</strong> ──「うっかりが命に直結する仕事」を20年以上やり遂げてこられたのは、この4資質の連携の結晶です。</p>
+    </div>
+    <div class="card" style="background:#f7f3ef;">
+      <span class="domain-chip infl" style="opacity:.65;">影響力 ✕ 0資質</span>
+      <h3>上位10内に無し</h3>
+      <p>「自分が前に出てぐいぐい引っ張る」「人を熱量で動かす」は本来の動き方ではない、というサイン。みりさんは <strong>前に立つリーダーじゃなく、後ろからやさしく背中を押す伴走者</strong> として、自然に力が出る人です。</p>
+    </div>
+    <div class="card" style="background:#f7f3ef;">
+      <span class="domain-chip strat" style="opacity:.65;">戦略的思考力 ✕ 0資質</span>
+      <h3>上位10内に無し</h3>
+      <p>「ゼロから戦略を組み立てる」「多くの選択肢を比較検討する」より、<strong>「目の前の現場で、今いる人のために最適解を探す」</strong> ペースで進める方が自然。栄養指導の <em>「目の前の患者さんの食事を整える」</em> スタイルが、まさにこのペースの結晶です。</p>
+    </div>
+  </div>
+</section>
+
+<section id="themes">
+  <div class="section-head">
+    <div>
+      <span class="chapter">TOP10 / THEME DETAIL</span>
+      <h2>資質別の図解メモ</h2>
+      <p class="section-lead">PDFの説明をベースに、みりさんの文脈へつなぎます。</p>
+    </div>
+    <div class="note">各カードの最後に「セッションで聞くこと」を置いています。ここから本人語を引き出します。</div>
+  </div>
+
+  <!-- 01 調和性 -->
+  <article class="theme-card" id="harmony">
+    <div class="theme-head">
+      <div class="rank-no">1</div>
+      <div>
+        <span class="domain-chip rel">人間関係構築力</span>
+        <h3>調和性</h3>
+        <p>衝突や争いを静かにまとめる・合意点を探す力</p>
+      </div>
+      <div class="metaphor">🕊 平和の使者</div>
+    </div>
+    <div class="theme-body">
+      <div class="branch-grid">
+        <div class="subbox">
+          <h4>PDFではこういう資質</h4>
+          <p>穏やかな人。対立よりも合意点を探そうとする。全員が納得できる道を見つけることに満足感を覚える。争いごとを避け、調和のとれた環境を好む。逆立った羽を滑らかにするように、異なる意見を調整し平和的な問題解決をもたらす。共通点を見出すことで協力関係を強化する。</p>
+        </div>
+        <div class="subbox miri">
+          <h4>みりさんに接続すると</h4>
+          <p>透析室・回復期リハ・保育園・介護老健 ── どれも <strong>「立場や年齢や利害が違う人たち」</strong> が集まる場所。患者さん／ご家族／医師／看護師／ケアマネ／保護者…<em>みんなが少しずつ納得する栄養のかたち</em> を、20年以上探し続けてこられました。<strong>声を荒げて主張する仕事じゃなく、静かに合意点を見つける仕事</strong>。それが調和性1位の自然な動き方です。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="subbox">
+          <h4>喜ぶこと</h4>
+          <ul>
+            <li>合意点が見つかる場面・全員の同意</li>
+            <li>穏やかな雰囲気・調和のとれた環境</li>
+            <li>みんなが協力し合える場</li>
+            <li>対立を回避できる解決策</li>
+          </ul>
+        </div>
+        <div class="subbox">
+          <h4>苦手なこと</h4>
+          <ul>
+            <li>対立・ケンカ・言い争い</li>
+            <li>不和・分裂した状態</li>
+            <li>意見が割れて収拾がつかない場面</li>
+            <li>誰かが不満を抱えたまま物事が進むこと</li>
+          </ul>
+        </div>
+        <div class="subbox compare">
+          <h4>他資質との比較</h4>
+          <ul>
+            <li>調和性: 対立を避け、一致点を探す</li>
+            <li>指令性: 対立も恐れず、主導権を握る（上位10外）</li>
+            <li>包含: 全員を受け入れ、誰も排除しない（みりさん8位）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="subbox question">
+        <h4>セッションで聞くこと</h4>
+        <p>これまでで「みんなが少しずつ納得する着地点」を、自分が真ん中で作れた瞬間って、いつどの現場が一番印象に残っていますか？ 逆に「合意なしで進んじゃった会議」で、ぐったり消耗した経験はありますか？</p>
+        <div class="source">PDF参照: 28ページ</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 02 共感性 -->
+  <article class="theme-card" id="empathy">
+    <div class="theme-head">
+      <div class="rank-no">2</div>
+      <div>
+        <span class="domain-chip rel">人間関係構築力</span>
+        <h3>共感性</h3>
+        <p>他人の感情を察し柔軟に対応できる力</p>
+      </div>
+      <div class="metaphor">🌡 心の温度計</div>
+    </div>
+    <div class="theme-body">
+      <div class="branch-grid">
+        <div class="subbox">
+          <h4>PDFではこういう資質</h4>
+          <p>場の空気や人の気持ちに敏感で、感情豊か。他者の感情や状況を察知するアンテナを持ち、周りの感情の変化に自然と反応できる人。相手の感情をよく察して対応を変える。言葉にされていない気持ちを汲み取り、寄り添うことで他者との信頼関係を構築する。</p>
+        </div>
+        <div class="subbox miri">
+          <h4>みりさんに接続すると</h4>
+          <p>外来栄養指導の <strong>糖尿病・腎不全・脂質異常症</strong> は、本当は「<em>食べたいのに食べられない人の痛み</em>」を聞く仕事。保育園の <em>アレルギー対応</em> はお母さんの「もしも」の不安と向き合う仕事。<em>透析室専属</em>は、長く通うほどに患者さんがしんどさを言葉にできなくなっていく場所。── これらを20年以上やり続けてこられたのは、<strong>言葉にならない感情を読むアンテナ</strong> が当たり前のように開いているからです。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="subbox">
+          <h4>喜ぶこと</h4>
+          <ul>
+            <li>素直な感情表現ができる環境</li>
+            <li>感情や心情を大切にする場</li>
+            <li>人の気持ちを考慮した丁寧なコミュニケーション</li>
+            <li>感情的なつながりを感じられる関係性</li>
+          </ul>
+        </div>
+        <div class="subbox">
+          <h4>苦手なこと</h4>
+          <ul>
+            <li>感情を抑制・制限される環境</li>
+            <li>冷たい態度や無関心な反応</li>
+            <li>データや論理だけで人を判断すること</li>
+            <li>感情を無視した効率優先の場</li>
+          </ul>
+        </div>
+        <div class="subbox compare">
+          <h4>他資質との比較</h4>
+          <ul>
+            <li>共感性: 感情を重視、直感的に反応</li>
+            <li>個別化: 違いを大切にする（上位10外）</li>
+            <li>調和性: 場の合意を整える（みりさん1位）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="subbox question">
+        <h4>セッションで聞くこと</h4>
+        <p>「<em>あ、この人いま少し肩の力が抜けたな</em>」と感じる手応えは、どんな患者さんとの、どんな瞬間にいちばん起きやすいですか？ 逆に <em>感情を持ち帰ってしんどくなる</em> ことはありますか？ どんな時に？</p>
+        <div class="source">PDF参照: 26ページ</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 03 親密性 -->
+  <article class="theme-card" id="relator">
+    <div class="theme-head">
+      <div class="rank-no">3</div>
+      <div>
+        <span class="domain-chip rel">人間関係構築力</span>
+        <h3>親密性</h3>
+        <p>深い信頼関係や身近な絆を大切にする</p>
+      </div>
+      <div class="metaphor">🤝 親友</div>
+    </div>
+    <div class="theme-body">
+      <div class="branch-grid">
+        <div class="subbox">
+          <h4>PDFではこういう資質</h4>
+          <p>誠実で信頼される人柄。限られた人との深いつながりを大切にし、お互いの本音や価値観を共有することで満足感を得る。一度信頼関係を築いたら長く続く絆を持つ。1対1の関係を大切にし、相手の内面まで深く理解しようとする。</p>
+        </div>
+        <div class="subbox miri">
+          <h4>みりさんに接続すると</h4>
+          <p>みりさんが選んできたお仕事を並べると、見事に「<strong>少人数と、深く、長く</strong>」ばかりです。<em>透析室専属</em>＝同じ患者さんと週3回、何年も。<em>回復期リハ専任</em>＝入院から退院までの数ヶ月、同じ方に伴走。<em>外来栄養指導</em>＝同じ方に何度も繰り返し。── 広く浅く声をかける営業職にも、毎回違う人と会う接客にも行かなかった。「<strong>ご縁を結んだ人とは、ずっと</strong>」が、みりさんの自然な距離感です。プロフィールの <em>「同じ志を持つ皆さまとお話できるのを楽しみに」</em> も、親密性3位の声。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="subbox">
+          <h4>喜ぶこと</h4>
+          <ul>
+            <li>家族のような親しい関係</li>
+            <li>本音で話せる仲間と過ごす時間</li>
+            <li>長期的な関係の中で互いに成長すること</li>
+            <li>信頼を深める1対1の対話</li>
+          </ul>
+        </div>
+        <div class="subbox">
+          <h4>苦手なこと</h4>
+          <ul>
+            <li>浅い関係や流れ作業の付き合い</li>
+            <li>新しい人との出会いに伴う不安感</li>
+            <li>大勢の中での自己アピール</li>
+            <li>表面的なネットワーキング</li>
+          </ul>
+        </div>
+        <div class="subbox compare">
+          <h4>他資質との比較</h4>
+          <ul>
+            <li>親密性: 深い社交的ネットワーク・少数精鋭</li>
+            <li>社交性: 広い社交ネットワーク（上位10外）</li>
+            <li>包含: 全員を受け入れ広く迎える（みりさん8位）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="subbox question">
+        <h4>セッションで聞くこと</h4>
+        <p>みりさんが「<em>この人とは長く付き合いたい</em>」と感じる瞬間は、相手のどんなところに惹かれている時ですか？ <em>これから10年、深く関わっていきたい少人数の輪</em> って、いくつぐらい持っていたいですか？</p>
+        <div class="source">PDF参照: 29ページ</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 04 慎重さ -->
+  <article class="theme-card" id="deliberative">
+    <div class="theme-head">
+      <div class="rank-no">4</div>
+      <div>
+        <span class="domain-chip exec">実行力</span>
+        <h3>慎重さ</h3>
+        <p>リスクを丁寧に見極め、細心の注意を払う力</p>
+      </div>
+      <div class="metaphor">🛡 石橋を叩く探検家</div>
+    </div>
+    <div class="theme-body">
+      <div class="branch-grid">
+        <div class="subbox">
+          <h4>PDFではこういう資質</h4>
+          <p>潜在的なリスクに常に警戒し、決定する前に細心の注意を払う。安全を確保するために十分な準備と確認を行い、慎重に判断を下す。真っ先に危険や課題を考え、リスク評価と事前準備を徹底する。深い配慮と計画性で周囲に安全な環境と安心感を提供する。</p>
+        </div>
+        <div class="subbox miri">
+          <h4>みりさんに接続すると</h4>
+          <p><strong>第1種衛生管理者・食品工場衛生管理者・透析室の食事管理・保育園のアレルギー対応</strong> ── どれも一つの判断ミスが事故に直結する仕事です。<em>20年以上、それを当たり前にやってきた</em> 人。<br>そしてリベ大入会後の2年半 ── 保険・証券・口座・通信を、<strong>勢いで全部捨てるんじゃなく、ひとつひとつ順番に、確認しながら、丁寧に</strong> 整理してきました（30項目以上）。これも紛れもなく慎重さの仕事です。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="subbox">
+          <h4>喜ぶこと</h4>
+          <ul>
+            <li>安全が確保された状態で行動すること</li>
+            <li>計画通りに物事が進むこと</li>
+            <li>リスクを事前に防ぐこと</li>
+            <li>十分な情報と準備の時間があること</li>
+          </ul>
+        </div>
+        <div class="subbox">
+          <h4>苦手なこと</h4>
+          <ul>
+            <li>突発的な変更や計画外の出来事</li>
+            <li>性急な判断を求められる状況</li>
+            <li>十分な検討なしで行動する人々</li>
+            <li>不確実性の高い環境や混沌とした状況</li>
+          </ul>
+        </div>
+        <div class="subbox compare">
+          <h4>他資質との比較</h4>
+          <ul>
+            <li>慎重さ: リスクを十分に検討し、じっくり準備してから行動</li>
+            <li>活発性: 考える前にまず行動（上位10外）</li>
+            <li>規律性: 決まったルールやプロセスに従う（上位10外）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="subbox question">
+        <h4>セッションで聞くこと</h4>
+        <p>家計改善の30項目を、2年半でひとつずつチェックマークで仕留めてきた中で「ここはひと呼吸置いて良かった」って思える判断はどれですか？ 逆に「いまもう少し、自分にゴーサインを出してもいい」と感じるテーマはありますか？</p>
+        <div class="source">PDF参照: 24ページ</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 05 適応性 -->
+  <article class="theme-card" id="adaptability">
+    <div class="theme-head">
+      <div class="rank-no">5</div>
+      <div>
+        <span class="domain-chip rel">人間関係構築力</span>
+        <h3>適応性</h3>
+        <p>変化や予測不可能にも柔軟に対応する力</p>
+      </div>
+      <div class="metaphor">🌊 川の流れ</div>
+    </div>
+    <div class="theme-body">
+      <div class="branch-grid">
+        <div class="subbox">
+          <h4>PDFではこういう資質</h4>
+          <p>「今ここ」を大切にする人。変化や予測不可能な状況に柔軟に対応でき、緊急事態にもすぐ対応できる。流れに身を任せながら状況に合わせて動くことが得意。状況に合わせて素早く動き、変化を受け入れ迅速に対処することで周囲に安心感を与える。</p>
+        </div>
+        <div class="subbox miri">
+          <h4>みりさんに接続すると</h4>
+          <p>みりさんのキャリア：<em>委託給食 → 食品工場 → 保育園 → 介護老健 → 病院（外来・透析・外科・療養・回復期リハ）</em>。<br>毎回まったく違う現場、毎回まったく違う対象者、毎回まったく違うルール。でも、その都度ちゃんと馴染んで「<strong>今日の現場の空気</strong>」に合わせて動けてきた。<br><strong>慎重さ4位で準備しつつ、適応性5位で「今」に乗っていく</strong>。この2つがセットで動いているから、どの現場でもみりさんは <em>「居てくれてよかった人」</em> になれてきました。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="subbox">
+          <h4>喜ぶこと</h4>
+          <ul>
+            <li>自由・自分で選べる裁量がある環境</li>
+            <li>「今」に集中できること</li>
+            <li>変化のある環境や多様な状況</li>
+            <li>自発的に取り組める課題</li>
+          </ul>
+        </div>
+        <div class="subbox">
+          <h4>苦手なこと</h4>
+          <ul>
+            <li>決めつけや型にはめられること</li>
+            <li>予測済みのことばかり</li>
+            <li>厳格なスケジュールや変更できないルール</li>
+            <li>長期的な計画に縛られること</li>
+          </ul>
+        </div>
+        <div class="subbox compare">
+          <h4>他資質との比較</h4>
+          <ul>
+            <li>適応性: 柔軟に状況に合わせて変化する</li>
+            <li>規律性: 秩序や予測可能性を好む（上位10外）</li>
+            <li>目標志向: 明確な方向性を持ち続ける（上位10外）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="subbox question">
+        <h4>セッションで聞くこと</h4>
+        <p>これまで歩いてきた現場で「<em>切り替えるのが楽しかった</em>」場面と「<em>切り替えがしんどかった</em>」場面、それぞれ思い出せますか？ <em>今の自分</em> は、もっと変化を取り入れたい？ それとも安定させたい？</p>
+        <div class="source">PDF参照: 31ページ</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 06 ポジティブ -->
+  <article class="theme-card" id="positivity">
+    <div class="theme-head">
+      <div class="rank-no">6</div>
+      <div>
+        <span class="domain-chip rel">人間関係構築力</span>
+        <h3>ポジティブ</h3>
+        <p>周囲を明るく元気にする前向きな力</p>
+      </div>
+      <div class="metaphor">☀️ 太陽</div>
+    </div>
+    <div class="theme-body">
+      <div class="branch-grid">
+        <div class="subbox">
+          <h4>PDFではこういう資質</h4>
+          <p>楽観的で周囲を明るくする人。熱意と明るさを持ち、その前向きさが人に伝染する。どんな状況でも良い面を見つけ出し、ポジティブなエネルギーを発散する。場を盛り上げ、能動的に周囲を元気づける。</p>
+        </div>
+        <div class="subbox miri">
+          <h4>みりさんに接続すると</h4>
+          <p>絶望の数年から立ち上がって、「<em>自立して経済的にも豊かになって人生を楽しみたい💕</em>」と書ける人。<strong>ユニットリンク解約でマイナス20万になっても「凹む💧」で済ませて次の手に進める</strong> 人。── これ、ポジティブが上位にないと、なかなか書けない文章なんです。<br>明るさが <em>軽さ</em> なんじゃなくて、「<strong>ちゃんとしんどさを通り抜けて、それでもなお前を向ける</strong>」明るさ。それがみりさんのポジティブ6位の手ざわりです。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="subbox">
+          <h4>喜ぶこと</h4>
+          <ul>
+            <li>楽しく精一杯生きること</li>
+            <li>笑顔や前向きな雰囲気</li>
+            <li>人々の気持ちを高める活動</li>
+            <li>明るいイベントや集まり</li>
+          </ul>
+        </div>
+        <div class="subbox">
+          <h4>苦手なこと</h4>
+          <ul>
+            <li>ネガティブな人や愚痴</li>
+            <li>暗い雰囲気や重苦しい環境</li>
+            <li>批判的な会話や議論</li>
+            <li>問題点ばかりに集中すること</li>
+          </ul>
+        </div>
+        <div class="subbox compare">
+          <h4>他資質との比較</h4>
+          <ul>
+            <li>ポジティブ: 明るい面を見る・意味づけする</li>
+            <li>回復志向: 問題点を見つけ解決する（上位10外）</li>
+            <li>コミュニケーション: 言葉で表現・伝える（上位10外）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="subbox question">
+        <h4>セッションで聞くこと</h4>
+        <p>絶望期から自立期に進めたのは、何（あるいは誰）が支えになっていましたか？ <em>「人生を楽しみたい💕」</em> の「楽しむ」って、具体的にはどんな時間ですか？</p>
+        <div class="source">PDF参照: 27ページ</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 07 公平性 -->
+  <article class="theme-card" id="consistency">
+    <div class="theme-head">
+      <div class="rank-no">7</div>
+      <div>
+        <span class="domain-chip exec">実行力</span>
+        <h3>公平性</h3>
+        <p>すべての人を平等に扱う・明確なルールで安心を作る</p>
+      </div>
+      <div class="metaphor">⚖️ 天秤</div>
+    </div>
+    <div class="theme-body">
+      <div class="branch-grid">
+        <div class="subbox">
+          <h4>PDFではこういう資質</h4>
+          <p>個人の要望よりも、グループ全体のニーズに関心がある。公平性を重視し、誰に対しても同じ基準で接する人。明確なルールや手順があると安心する。違いをなくしてみんな同じ状況を作り出すことに努める。規則や方針を決めて予測しやすい職場や環境を作るのが得意。</p>
+        </div>
+        <div class="subbox miri">
+          <h4>みりさんに接続すると</h4>
+          <p><strong>給食の献立作成</strong> は、まさに「全員に同じ栄養を、同じタイミングで」届ける仕事。<strong>アレルギー対応</strong> は「えこひいきしない／例外を作らない」を厳密に守らないと事故になる仕事。── みりさんのお仕事の根っこには、ずっと <em>「みんなに、同じだけ、安心して食べてもらう」</em> という公平性が流れています。透析・糖尿病・腎不全のような「<em>食べていいものが厳しく決まっている人</em>」たちに寄り添い続けてこられたのも、この資質が下支えしていたんですね。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="subbox">
+          <h4>喜ぶこと</h4>
+          <ul>
+            <li>仕事の手順がしっかりと定まっていること</li>
+            <li>同じ方法で物事を繰り返すこと</li>
+            <li>誰もが従える明確なルールがあること</li>
+            <li>みんなが平等に扱われる環境</li>
+          </ul>
+        </div>
+        <div class="subbox">
+          <h4>苦手なこと</h4>
+          <ul>
+            <li>不必要な変更やカスタマイズ</li>
+            <li>特別扱いや例外を作ること</li>
+            <li>ルールが人によって変わる状況</li>
+            <li>不公平・不透明な評価や待遇</li>
+          </ul>
+        </div>
+        <div class="subbox compare">
+          <h4>他資質との比較</h4>
+          <ul>
+            <li>公平性: 全員に同じルール・同じ基準を適用</li>
+            <li>個別化: 一人ひとりの特性に合わせた対応（上位10外）</li>
+            <li>適応性: 状況に応じて柔軟に変化させる（みりさん5位）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="subbox question">
+        <h4>セッションで聞くこと</h4>
+        <p>みりさんが「<em>これだけは譲れないルール</em>」として、お仕事でも暮らしでも守っているものってありますか？ それは、どこから来たルールですか？</p>
+        <div class="source">PDF参照: 19ページ</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 08 包含 -->
+  <article class="theme-card" id="includer">
+    <div class="theme-head">
+      <div class="rank-no">8</div>
+      <div>
+        <span class="domain-chip rel">人間関係構築力</span>
+        <h3>包含</h3>
+        <p>みんなを仲間に迎え入れる・誰も取り残さない</p>
+      </div>
+      <div class="metaphor">🌳 大きな木</div>
+    </div>
+    <div class="theme-body">
+      <div class="branch-grid">
+        <div class="subbox">
+          <h4>PDFではこういう資質</h4>
+          <p>除外への感度が高く、誰かが仲間はずれになっていないか常に気にする。多様な人を受け入れ、誰も取り残されないよう気を配る。孤立した人を見つけて輪に入れる。誰もが参加できる環境を整え、新しいメンバーを温かく迎え入れる。</p>
+        </div>
+        <div class="subbox miri">
+          <h4>みりさんに接続すると</h4>
+          <p>リベシティ入会の翌週、神戸オフィスに飛び込んでオフ会に <em>飛び入り参加</em> させてもらった、<strong>その温かさを覚えている人</strong>。── そして <strong>2025/12/23に、単独で「栄養オフ会」を主催</strong> されています。<em>誰かに迎えてもらった嬉しさを、今度は自分が誰かを迎える側になって渡している</em>。これは包含 × 親密性 × ポジティブが、きれいに3つ揃って働いた仕事です。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="subbox">
+          <h4>喜ぶこと</h4>
+          <ul>
+            <li>皆を受け入れる開かれた環境</li>
+            <li>誰とでも打ち解けられる場</li>
+            <li>多様な人との交流の機会</li>
+            <li>新しい人を迎え入れる役割</li>
+          </ul>
+        </div>
+        <div class="subbox">
+          <h4>苦手なこと</h4>
+          <ul>
+            <li>仲間はずれや排除</li>
+            <li>閉鎖的なグループや排他的な雰囲気</li>
+            <li>「私たち対あの人たち」式の考え</li>
+            <li>特定の人だけが優遇される状況</li>
+          </ul>
+        </div>
+        <div class="subbox compare">
+          <h4>他資質との比較</h4>
+          <ul>
+            <li>包含: 全員を受け入れ、広く迎え入れる</li>
+            <li>親密性: 少数との深い関係を大切に（みりさん3位）</li>
+            <li>公平性: みんな平等に同じルールで扱う（みりさん7位）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="subbox question">
+        <h4>セッションで聞くこと</h4>
+        <p>12/23の栄養オフ会、どんな方々が来てくれましたか？ 「<em>来てよかった</em>」と言ってもらえた瞬間で、いちばん嬉しかったのはどんな場面ですか？　次に開くなら、誰に来てほしいですか？</p>
+        <div class="source">PDF参照: 33ページ</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 09 信念 -->
+  <article class="theme-card" id="belief">
+    <div class="theme-head">
+      <div class="rank-no">9</div>
+      <div>
+        <span class="domain-chip exec">実行力</span>
+        <h3>信念</h3>
+        <p>大切な価値観を絶対に守り抜く強さ</p>
+      </div>
+      <div class="metaphor">🗼 灯台</div>
+    </div>
+    <div class="theme-body">
+      <div class="branch-grid">
+        <div class="subbox">
+          <h4>PDFではこういう資質</h4>
+          <p>大切な価値観には強いこだわりがあり、絶対に妥協しない。人生の意味や目的を見つけることに重きを置き、その信念に基づいて行動する。大切なことのためなら、多少の犠牲もいとわない姿勢を持つ。安定感や明確な方向性、確かな信念を周囲にもたらす。</p>
+        </div>
+        <div class="subbox miri">
+          <h4>みりさんに接続すると</h4>
+          <p>夫さまを急に亡くされた後、「<em>絶望のあまり数年間どうやって生きてたかわからない</em>」というところから、それでも <strong>「自立して、息子を育てて、自分の足で立つ」</strong> ところに戻ってこられました。<br><em>神社仏閣巡り・吉方位旅行・生田の森・システィーナ礼拝堂</em> ── みりさんが好きな場所はぜんぶ、<strong>「祈りの場所」</strong> ですね。自分の中の芯と、定期的に静かに対話している人。それが信念9位の使い方として、すごく成熟したかたちです。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="subbox">
+          <h4>喜ぶこと</h4>
+          <ul>
+            <li>他者のために尽くすこと</li>
+            <li>自分の信念に沿った行動ができること</li>
+            <li>人生の意味や目的を感じられること</li>
+            <li>自分の価値観と合った環境で働くこと</li>
+          </ul>
+        </div>
+        <div class="subbox">
+          <h4>苦手なこと</h4>
+          <ul>
+            <li>自分の信念とズレていること</li>
+            <li>価値観が合わない環境での仕事</li>
+            <li>目先の利益のために妥協を迫られること</li>
+            <li>重要な価値観について曖昧な態度をとる人</li>
+          </ul>
+        </div>
+        <div class="subbox compare">
+          <h4>他資質との比較</h4>
+          <ul>
+            <li>信念: 価値観を信じて行動する</li>
+            <li>自己確信: 自分の選択を信じて行動する（上位10外）</li>
+            <li>責任感: 約束を守り信頼を築きたい（みりさん10位）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="subbox question">
+        <h4>セッションで聞くこと</h4>
+        <p>「祈りの場所」に行くとき、みりさんは何と対話していますか？ 言葉にならなくても大丈夫です。<em>そこに行きたくなる時の気持ち</em> から教えてもらえますか？　そして、<em>絶対譲れない価値観</em> って何でしょう？</p>
+        <div class="source">PDF参照: 18ページ</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 10 責任感 -->
+  <article class="theme-card" id="responsibility">
+    <div class="theme-head">
+      <div class="rank-no">10</div>
+      <div>
+        <span class="domain-chip exec">実行力</span>
+        <h3>責任感</h3>
+        <p>頼られたことを最後までやり抜く・約束を守る</p>
+      </div>
+      <div class="metaphor">🥋 約束を守る武士</div>
+    </div>
+    <div class="theme-body">
+      <div class="branch-grid">
+        <div class="subbox">
+          <h4>PDFではこういう資質</h4>
+          <p>他者から信頼される人。決めたことに強い責任感を持ち、誠実さや正直さを大切にする。「頼まれたことは必ずやる」という心構えの持ち主。約束を守りやり抜く姿勢で周囲に安心感を与える。信頼と行動の倫理観でチームに貢献。「自分が引き受けた」という自覚が強く、最後までやり切る。</p>
+        </div>
+        <div class="subbox miri">
+          <h4>みりさんに接続すると</h4>
+          <p>リベ大入会後の家計改善リストを見てください ── ファンドラップ解約・NISA移管・ユニットリンク解約・医療保険解約・終身保険解約・個人年金解約・ドル建て終身解約・変額保険解約・SIM変更・不要クレカ解約… <strong>2年半で30項目以上の「決めたこと」を、ひとつひとつチェックマークで仕留めて</strong> こられました。<br>これは責任感の人にしかできない歩き方です。「<strong>自分との約束</strong>」も「<strong>お客様との約束</strong>」も、同じ重さで守る人。</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="subbox">
+          <h4>喜ぶこと</h4>
+          <ul>
+            <li>他者から尊重され、信頼されること</li>
+            <li>約束どおりに物事が進むこと</li>
+            <li>明確な期待値や役割があること</li>
+            <li>自分の言葉に責任を持てること</li>
+          </ul>
+        </div>
+        <div class="subbox">
+          <h4>苦手なこと</h4>
+          <ul>
+            <li>約束を破る人や無責任な人</li>
+            <li>他者への失望や裏切り</li>
+            <li>あいまいな役割や期待値</li>
+            <li>自分の約束を守れない状況に追い込まれること</li>
+          </ul>
+        </div>
+        <div class="subbox compare">
+          <h4>他資質との比較</h4>
+          <ul>
+            <li>責任感: 義務感から・約束を守りたい</li>
+            <li>達成欲: 達成したい・成し遂げたい気持ちから（上位10外）</li>
+            <li>信念: 価値観を貫きたい（みりさん9位）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="subbox question">
+        <h4>セッションで聞くこと</h4>
+        <p>20年以上の管理栄養士の中で「<em>これは絶対にやり遂げた</em>」と誇れるお仕事はどれですか？ そして今、<em>自分との約束</em>で「もう一歩進めたい」と思っているテーマは何ですか？</p>
+        <div class="source">PDF参照: 20ページ</div>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<section id="route">
+  <div class="section-head">
+    <div>
+      <span class="chapter">03 / SESSION ROUTE</span>
+      <h2>「育てる伴走」へ向かう、おすすめの順番</h2>
+      <p class="section-lead">セッション当日、ここを順に通れたらスムーズかも、という4ステップ案。あくまで道案内です。</p>
+    </div>
+    <div class="note">この通りじゃなくてOKです。みりさんの心が動いた順から開いていきましょう。</div>
+  </div>
+  <div class="route">
+    <div class="route-step">
+      <b>STEP 1</b>
+      <p><strong>「あなたが居てくれて良かった」</strong> と言われた20年のキャリアを、本人の口から具体的に聞く。一番印象的な現場・場面・患者さん／園児／利用者さんから。</p>
+    </div>
+    <div class="route-step">
+      <b>STEP 2</b>
+      <p>家計改善2年半30項目を <strong>「自分との約束を守った歴史」</strong> として並べ直す。本人の中で「これは大きかった」を3つ拾う。</p>
+    </div>
+    <div class="route-step">
+      <b>STEP 3</b>
+      <p>2025/12/23の栄養オフ会の <strong>手応えと次の形</strong> を語ってもらう。次に開くなら、何人で、誰に、どんなテーマで？</p>
+    </div>
+    <div class="route-step">
+      <b>STEP 4</b>
+      <p><strong>「人生を楽しみたい💕」</strong> の「楽しむ」を、絵で描けるくらい具体化する。旅、祈り、食、輪、暮らし、数字 ── どの順番でもOK。</p>
+    </div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="section-head">
+    <div>
+      <span class="chapter">04 / SOURCES</span>
+      <h2>出典・参照したもの</h2>
+      <p class="section-lead">この資質図解ブランチで使った素材の一覧です。</p>
+    </div>
+    <div class="note">資質の説明は、ユーザー作成PDFの解釈をベースにしています。Gallup®公式の表現とは異なる場合があります。</div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>ストレングスファインダー結果</h3>
+      <p>Gallup CliftonStrengths® 34</p>
+      <ul>
+        <li>受検日：2025/07/31</li>
+        <li>TOP10：調和性／共感性／親密性／慎重さ／適応性／ポジティブ／公平性／包含／信念／責任感</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>資質説明PDF</h3>
+      <p>「001ストレングス資質図解ガイド」（ユーザー作成）</p>
+      <ul>
+        <li>各資質の「どういう人？／自然な行動・貢献／喜ぶこと／苦手／他資質比較／より生かすために」を参照</li>
+        <li>該当ページ：18（信念）/19（公平性）/20（責任感）/24（慎重さ）/26（共感性）/27（ポジティブ）/28（調和性）/29（親密性）/31（適応性）/33（包含）</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>みりさんプロフィール（参照箇所）</h3>
+      <p>リベシティ公開プロフィール（2026-04-26更新版）</p>
+      <ul>
+        <li>自己紹介（夫急逝・自立への歩み）</li>
+        <li>職種・職業・家族構成・出身地</li>
+        <li>リベ大との出会い・実践してきたこと</li>
+        <li>趣味・好きな○○・その他メッセージ</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>制作</h3>
+      <p>寄り添い型 個性診断師 おけもん</p>
+      <ul>
+        <li>制作日：2026-05-27</li>
+        <li>本ページは個人情報を含むため <strong>noindex / nofollow</strong></li>
+        <li>セッション前の仮版です。当日いっしょに更新していきましょう。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-links">
+    <a class="btn" href="miri-strengths-guide-2026-05-27.html">← 取扱説明書へ戻る</a>
+    <a class="btn subtle" href="#top">ページのトップへ</a>
+  </div>
+</section>
+
+</main>
+
+<script>
+// アクティブ追従TOC
+const tocLinks = document.querySelectorAll('.toc a, .toc-mobile a');
+const sections = Array.from(document.querySelectorAll('section[id], article[id]'));
+let raf = null;
+function updateTOC() {
+  if (raf) cancelAnimationFrame(raf);
+  raf = requestAnimationFrame(() => {
+    const y = window.scrollY + 120;
+    let activeId = sections[0]?.id;
+    for (const sec of sections) {
+      if (sec.offsetTop <= y) activeId = sec.id; else break;
+    }
+    tocLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + activeId);
+    });
+  });
+}
+window.addEventListener('scroll', updateTOC, { passive: true });
+updateTOC();
+
+// Back to top 表示
+const backBtn = document.querySelector('.back-to-top');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 400) backBtn.classList.add('visible');
+  else backBtn.classList.remove('visible');
+}, { passive: true });
+</script>
+
+</body>
+</html>
