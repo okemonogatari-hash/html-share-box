@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>あいさん 資質図解ブランチ | StrengthsFinder TOP10</title>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2E3A3D;
+    --muted: #5E6B6D;
+    --paper: #FFFDF7;
+    --wash: #F2E6CE;
+    --line: rgba(44,110,127,.16);
+    --sea: #2C6E7F;
+    --sea-deep: #1F5563;
+    --coral: #D9785C;
+    --coral-deep: #BC5C42;
+    --gold: #C7A06C;
+    --rel: #5B95C7;
+    --exec: #9B7BB8;
+    --infl: #E8A85C;
+    --strat: #6FAA88;
+    --sea-soft: #E7F1F2;
+    --coral-soft: #FBEDE6;
+    --gold-soft: #FBF3E0;
+    --sand-soft: #F5ECDA;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; color: var(--ink);
+    background:
+      linear-gradient(90deg, rgba(44,110,127,.03) 1px, transparent 1px) 0 0 / 36px 36px,
+      linear-gradient(180deg, #FBF7EF 0%, #F3EADD 100%);
+    font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    line-height: 1.75;
+  }
+  a { color: inherit; }
+  .hero {
+    position: relative; min-height: 84vh; display: grid; place-items: center;
+    padding: 72px 20px 54px; color: #fffdf7;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.36), transparent 22%),
+      radial-gradient(circle at 80% 16%, rgba(244,195,174,.7), transparent 26%),
+      linear-gradient(135deg, rgba(44,110,127,.94), rgba(92,156,168,.72) 48%, rgba(217,120,92,.82));
+    overflow: hidden; border-bottom: 1px solid var(--line);
+  }
+  .hero::before {
+    content: "THEME BRANCH"; position: absolute; top: 9%; right: 4%;
+    font-family: "Noto Serif JP", serif; font-size: clamp(42px, 8vw, 110px); letter-spacing: .16em;
+    color: rgba(255,255,255,.12); transform: rotate(7deg); white-space: nowrap;
+  }
+  .hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(to top, #FBF7EF, transparent); }
+  .hero-inner { position: relative; z-index: 2; width: min(1160px, 100%); display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .68fr); gap: 32px; align-items: center; }
+  .eyebrow { font-size: 12px; letter-spacing: .16em; font-weight: 800; color: rgba(255,253,247,.78); margin-bottom: 12px; }
+  h1 { font-family: "Noto Serif JP", serif; font-size: clamp(34px, 5vw, 60px); line-height: 1.16; margin: 0 0 18px; }
+  .lead { max-width: 760px; margin: 0 0 24px; color: rgba(255,253,247,.92); font-size: clamp(16px, 2vw, 19px); }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 16px;
+    border-radius: 8px; background: rgba(255,253,247,.94); color: var(--sea-deep); text-decoration: none; font-weight: 800;
+    border: 1px solid rgba(255,255,255,.55); box-shadow: 0 8px 24px rgba(31,85,99,.16);
+  }
+  .btn.subtle { color: #fffdf7; background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.32); }
+  .result-card { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 16px; box-shadow: 0 18px 44px rgba(31,85,99,.22); color: var(--ink); text-align: center; }
+  .result-card .rc-icon { font-size: 40px; }
+  .result-card h4 { font-family: "Noto Serif JP", serif; margin: 8px 0 6px; color: var(--sea-deep); }
+  .result-card p { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .result-card .rc-tags { margin-top: 12px; font-size: 11.5px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 10px; line-height: 1.7; }
+
+  .toc {
+    position: fixed; top: 22px; left: 18px; z-index: 20; width: 224px; max-height: calc(100vh - 44px); overflow: auto;
+    padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,253,247,.92);
+    backdrop-filter: blur(12px); box-shadow: 0 10px 34px rgba(31,85,99,.12);
+  }
+  .toc-title { font-family: "Noto Serif JP", serif; font-weight: 700; font-size: 14px; margin-bottom: 8px; color: var(--sea-deep); }
+  .toc ol { list-style: none; margin: 0; padding: 0; }
+  .toc a, .toc-mobile a {
+    display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; align-items: center; padding: 7px 8px;
+    border-radius: 8px; text-decoration: none; color: var(--muted); font-size: 12px; line-height: 1.35;
+  }
+  .toc a.active, .toc a:hover, .toc-mobile a.active { color: var(--sea-deep); background: rgba(169,205,212,.5); font-weight: 800; }
+  .num { color: var(--coral); font-weight: 800; font-size: 11px; }
+  .toc-top { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+  .toc-mobile {
+    display: none; position: sticky; top: 10px; z-index: 30; width: min(720px, calc(100% - 24px)); margin: -26px auto 18px;
+    background: rgba(255,253,247,.96); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 10px 30px rgba(31,85,99,.12); overflow: hidden;
+  }
+  .toc-mobile summary { cursor: pointer; padding: 13px 16px; font-weight: 800; color: var(--sea-deep); }
+  .toc-mobile summary::-webkit-details-marker { display: none; }
+  .toc-mobile ol { list-style: none; margin: 0; padding: 0 10px 12px; }
+
+  .back-to-top {
+    position: fixed; right: 18px; bottom: 18px; z-index: 40; width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--sea-deep); color: #fffdf7; font-size: 18px; cursor: pointer;
+    box-shadow: 0 10px 26px rgba(31,85,99,.22); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+  }
+  .back-to-top.visible { opacity: 1; pointer-events: auto; }
+  .back-to-top:hover { transform: translateY(-3px); }
+
+  main { width: min(1160px, calc(100% - 32px)); margin: 0 auto; }
+  section { scroll-margin-top: 80px; padding: 68px 0; border-bottom: 1px solid var(--line); }
+  .section-head { display: grid; grid-template-columns: minmax(0, .72fr) minmax(280px, .28fr); gap: 26px; align-items: end; margin-bottom: 24px; }
+  .chapter { display: inline-block; margin-bottom: 8px; color: var(--coral); font-size: 11px; font-weight: 800; letter-spacing: .18em; }
+  h2 { margin: 0 0 8px; font-family: "Noto Serif JP", serif; font-size: clamp(26px, 3vw, 36px); line-height: 1.35; color: var(--sea-deep); }
+  .section-lead { margin: 0; color: var(--muted); font-size: 15px; }
+  .note { border-left: 4px solid var(--gold); background: var(--gold-soft); border-radius: 0 8px 8px 0; padding: 14px 16px; color: #5b4a2c; font-size: 14px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .card, .theme-card { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 6px 22px rgba(31,85,99,.06); }
+  .card { padding: 18px; }
+  .card h3 { margin: 0 0 8px; font-size: 18px; color: var(--sea-deep); }
+  .card p, .card li { color: var(--muted); font-size: 14px; }
+  .card ul { margin: 10px 0 0; padding-left: 1.2em; }
+  .domain-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; border-radius: 999px; padding: 5px 12px; color: #fff; font-size: 12px; font-weight: 800; }
+  .rel { background: var(--rel); }
+  .exec { background: var(--exec); }
+  .infl { background: var(--infl); }
+  .strat { background: var(--strat); }
+  .map { display: grid; grid-template-columns: repeat(10, minmax(78px, 1fr)); gap: 8px; }
+  .map a {
+    min-height: 104px; padding: 12px 10px; border-radius: 8px; background: var(--paper); border: 1px solid var(--line);
+    text-decoration: none; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 6px 18px rgba(31,85,99,.05);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .map a:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(31,85,99,.14); }
+  .map .m-ico { font-size: 22px; line-height: 1; }
+  .map b { font-size: 12px; line-height: 1.35; }
+  .map small { color: var(--muted); line-height: 1.3; font-size: 10.5px; }
+
+  .theme-card { overflow: hidden; margin-bottom: 28px; }
+  .theme-head {
+    display: grid; grid-template-columns: 82px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 22px;
+    background: linear-gradient(135deg, rgba(255,250,240,.95), rgba(169,205,212,.42)), var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .rank-no {
+    position: relative; display: grid; place-items: center; width: 68px; height: 68px; border-radius: 50%;
+    background: var(--sea-deep); color: #fffdf7; font-family: "Noto Serif JP", serif; font-size: 26px; font-weight: 700;
+  }
+  .rank-no .rn-ico { position: absolute; bottom: -6px; right: -6px; font-size: 22px; background: #fff; border-radius: 50%; width: 32px; height: 32px; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(31,85,99,.2); }
+  .theme-head h3 { margin: 0 0 4px; font-family: "Noto Serif JP", serif; font-size: clamp(24px, 3vw, 34px); line-height: 1.25; color: var(--sea-deep); }
+  .theme-head p { margin: 0; color: var(--muted); }
+  .metaphor { min-width: 120px; padding: 10px 14px; border-radius: 999px; background: rgba(255,253,247,.86); border: 2px dashed var(--coral); text-align: center; color: var(--coral-deep); font-weight: 800; font-size: 14px; }
+  .theme-body { padding: 22px; display: grid; gap: 16px; }
+  .branch-grid { display: grid; grid-template-columns: minmax(0, .98fr) minmax(300px, .72fr); gap: 16px; }
+  .subbox { border: 1px solid var(--line); border-radius: 8px; padding: 16px; background: #fffefb; }
+  .subbox h4 { margin: 0 0 8px; font-size: 15px; color: var(--sea-deep); }
+  .subbox p { margin: 0; color: var(--muted); font-size: 14px; }
+  .subbox ul { margin: 8px 0 0; padding-left: 1.15em; color: var(--muted); font-size: 14px; }
+  .ai { background: var(--sea-soft); }
+  .question { background: var(--coral-soft); }
+  .compare { background: var(--sand-soft); }
+  .source { font-size: 12px; color: var(--muted); margin-top: 10px; }
+  .route { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .route-step { position: relative; min-height: 150px; padding: 16px; border-radius: 8px; background: var(--paper); border: 1px solid var(--line); box-shadow: 0 6px 20px rgba(31,85,99,.06); }
+  .route-step b { display: block; margin-bottom: 6px; color: var(--sea-deep); }
+  .route-step p { margin: 0; color: var(--muted); font-size: 14px; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+
+  @media (max-width: 1180px) { .toc { display: none; } .toc-mobile { display: block; } }
+  @media (min-width: 1181px) {
+    .hero-inner, main { width: min(1160px, calc(100vw - 340px)); margin-left: max(300px, calc((100vw - 1160px) / 2)); margin-right: auto; }
+  }
+  @media (max-width: 860px) {
+    .hero { min-height: auto; }
+    .hero-inner, .section-head, .grid-2, .grid-3, .branch-grid, .route { grid-template-columns: 1fr; }
+    .map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .theme-head { grid-template-columns: 70px minmax(0, 1fr); }
+    .metaphor { grid-column: 1 / -1; text-align: left; }
+    section { padding: 44px 0; }
+  }
+  @media (max-width: 520px) {
+    .map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">AI / TOP10 THEME BRANCH / 2026-05-30</div>
+      <h1>あいさんの<br>資質図解ブランチ</h1>
+      <p class="lead">取扱説明書の「もっと詳しく知りたい資質」を、ここで枝分かれして深掘りできる補足ページです。あいさんの上位10資質ぜんぶに「基本の説明」「あいさん接続（セッションで見えたこと）」を添えてあります。気になった資質から、ゆっくり開いてみてください。</p>
+      <div class="hero-actions">
+        <a class="btn" href="g-_6utqdz0gCAMxVi7.html">取扱説明書へ戻る</a>
+        <a class="btn subtle" href="#theme-map">TOP10から選ぶ</a>
+      </div>
+    </div>
+    <figure class="result-card">
+      <div class="rc-icon">🌊</div>
+      <h4>あいさんのTOP10</h4>
+      <p>人間関係構築力を土台に、実行力の堅実さが重なるタイプ</p>
+      <div class="rc-tags">🤝 親密性 / 🕊 調和性 / 🔍 慎重さ / ⚖ 公平性 / 🛡 責任感 / 🌡 共感性 / 📚 収集心 / 🕐 規律性 / 🌱 成長促進 / ☀ ポジティブ</div>
+    </figure>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目次">
+  <div class="toc-title">Branch 目次</div>
+  <ol>
+    <li><a href="#howto" data-target="howto"><span class="num">00</span>使い方</a></li>
+    <li><a href="#theme-map" data-target="theme-map"><span class="num">01</span>TOP10地図</a></li>
+    <li><a href="#domains" data-target="domains"><span class="num">02</span>4領域</a></li>
+    <li><a href="#shinmitsu" data-target="shinmitsu"><span class="num">1</span>🤝 親密性</a></li>
+    <li><a href="#chowa" data-target="chowa"><span class="num">2</span>🕊 調和性</a></li>
+    <li><a href="#shincho" data-target="shincho"><span class="num">3</span>🔍 慎重さ</a></li>
+    <li><a href="#kohei" data-target="kohei"><span class="num">4</span>⚖ 公平性</a></li>
+    <li><a href="#sekinin" data-target="sekinin"><span class="num">5</span>🛡 責任感</a></li>
+    <li><a href="#kyokan" data-target="kyokan"><span class="num">6</span>🌡 共感性</a></li>
+    <li><a href="#shushu" data-target="shushu"><span class="num">7</span>📚 収集心</a></li>
+    <li><a href="#kiritsu" data-target="kiritsu"><span class="num">8</span>🕐 規律性</a></li>
+    <li><a href="#seicho" data-target="seicho"><span class="num">9</span>🌱 成長促進</a></li>
+    <li><a href="#positive" data-target="positive"><span class="num">10</span>☀ ポジティブ</a></li>
+    <li><a href="#route" data-target="route"><span class="num">03</span>あいさんの自然な流れ</a></li>
+    <li><a href="#sources" data-target="sources"><span class="num">04</span>出典</a></li>
+  </ol>
+  <div class="toc-top"><a href="#top">最初に戻る</a></div>
+</nav>
+
+<details class="toc-mobile" aria-label="目次">
+  <summary>Branch 目次</summary>
+  <ol>
+    <li><a href="#howto" data-target="howto"><span class="num">00</span>使い方</a></li>
+    <li><a href="#theme-map" data-target="theme-map"><span class="num">01</span>TOP10地図</a></li>
+    <li><a href="#domains" data-target="domains"><span class="num">02</span>4領域</a></li>
+    <li><a href="#shinmitsu" data-target="shinmitsu"><span class="num">1</span>🤝 親密性</a></li>
+    <li><a href="#chowa" data-target="chowa"><span class="num">2</span>🕊 調和性</a></li>
+    <li><a href="#shincho" data-target="shincho"><span class="num">3</span>🔍 慎重さ</a></li>
+    <li><a href="#kohei" data-target="kohei"><span class="num">4</span>⚖ 公平性</a></li>
+    <li><a href="#sekinin" data-target="sekinin"><span class="num">5</span>🛡 責任感</a></li>
+    <li><a href="#kyokan" data-target="kyokan"><span class="num">6</span>🌡 共感性</a></li>
+    <li><a href="#shushu" data-target="shushu"><span class="num">7</span>📚 収集心</a></li>
+    <li><a href="#kiritsu" data-target="kiritsu"><span class="num">8</span>🕐 規律性</a></li>
+    <li><a href="#seicho" data-target="seicho"><span class="num">9</span>🌱 成長促進</a></li>
+    <li><a href="#positive" data-target="positive"><span class="num">10</span>☀ ポジティブ</a></li>
+    <li><a href="#route" data-target="route"><span class="num">03</span>あいさんの自然な流れ</a></li>
+    <li><a href="#sources" data-target="sources"><span class="num">04</span>出典</a></li>
+  </ol>
+</details>
+
+<button class="back-to-top" aria-label="最初に戻る" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main>
+  <section id="howto">
+    <div class="section-head">
+      <div>
+        <span class="chapter">00 / HOW TO USE</span>
+        <h2>このページは、資質の辞書ではなく「話を深める枝」です</h2>
+        <p class="section-lead">取扱説明書で気になった資質だけを開いて、あいさんの実感と照らし合わせるためのページです。</p>
+      </div>
+      <div class="note">全部読まなくて大丈夫。「この言葉、当たってるな」「これはちょっと違うかも」を見つける感覚で眺めてみてください。</div>
+    </div>
+    <div class="grid-3">
+      <div class="card"><h3>📖 基本の説明を見る</h3><p>資質ガイドの「どういう人？」「自然な行動」を、読みやすく整理しています。</p></div>
+      <div class="card"><h3>💛 喜ぶこと・省エネを見る</h3><p>力がのびのび出る条件と、エネルギーを使う条件のメモ。お仕事の選び方や、人との関わりのヒントに。</p></div>
+      <div class="card"><h3>🌊 あいさん接続を見る</h3><p>和太鼓・SUP・バンジー・派遣事務・「人間関係で仕事してる」── セッションで出てきた実話に、それぞれの資質をつなげています。</p></div>
+    </div>
+  </section>
+
+  <section id="theme-map">
+    <div class="section-head">
+      <div>
+        <span class="chapter">01 / TOP10 MAP</span>
+        <h2>あいさんの上位10資質を、すぐ開けるように</h2>
+        <p class="section-lead">気になる資質をタップ／クリックすると、その説明へ移動します。</p>
+      </div>
+      <div class="note">1位から順に読む必要はありません。「あ、これ私かも」と思ったところから。</div>
+    </div>
+    <div class="map">
+      <a href="#shinmitsu"><span class="m-ico">🤝</span><span class="num">01</span><b>親密性</b><small>親友 / 深い絆</small></a>
+      <a href="#chowa"><span class="m-ico">🕊</span><span class="num">02</span><b>調和性</b><small>平和の使者 / 合意点</small></a>
+      <a href="#shincho"><span class="m-ico">🔍</span><span class="num">03</span><b>慎重さ</b><small>石橋を叩く / 備える</small></a>
+      <a href="#kohei"><span class="m-ico">⚖</span><span class="num">04</span><b>公平性</b><small>天秤 / みんな平等</small></a>
+      <a href="#sekinin"><span class="m-ico">🛡</span><span class="num">05</span><b>責任感</b><small>約束を守る / やり抜く</small></a>
+      <a href="#kyokan"><span class="m-ico">🌡</span><span class="num">06</span><b>共感性</b><small>心の温度計 / 直感</small></a>
+      <a href="#shushu"><span class="m-ico">📚</span><span class="num">07</span><b>収集心</b><small>知の収集家 / 好奇心</small></a>
+      <a href="#kiritsu"><span class="m-ico">🕐</span><span class="num">08</span><b>規律性</b><small>時計 / 同じリズム</small></a>
+      <a href="#seicho"><span class="m-ico">🌱</span><span class="num">09</span><b>成長促進</b><small>才能の発見者 / 育てる</small></a>
+      <a href="#positive"><span class="m-ico">☀</span><span class="num">10</span><b>ポジティブ</b><small>太陽 / 前向き</small></a>
+    </div>
+  </section>
+
+  <section id="domains">
+    <div class="section-head">
+      <div>
+        <span class="chapter">02 / FOUR DOMAINS</span>
+        <h2>4領域で見ると「人とのつながり × 堅実な備え」が土台の人</h2>
+        <p class="section-lead">34資質は4つの色に分かれます。あいさんのTOP10がどこに集まっているか。</p>
+      </div>
+      <div class="note">上位10の内訳は、人間関係構築力 <strong>5</strong>・実行力 <strong>4</strong>・戦略的思考力 <strong>1</strong>・影響力 <strong>0</strong>。「信頼できる人と、ちゃんと備えて、丁寧に積み上げる」のが、あいさんが一番自然に呼吸できる景色です。</div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <span class="domain-chip rel">🤝 人間関係構築力 ✕ 5資質</span>
+        <h3>親密性・調和性・共感性・成長促進・ポジティブ</h3>
+        <p>深く長く信頼を育て、場を和やかに整え、人の気持ちにそっと気づき、前向きな面を見つける領域。あいさんの中核装備です。「一緒に働く人がいるから続けてる」も、この5資質が同時に動いた言葉。</p>
+      </div>
+      <div class="card">
+        <span class="domain-chip exec">🛡 実行力 ✕ 4資質</span>
+        <h3>慎重さ・公平性・責任感・規律性</h3>
+        <p>リスクを調べ、フェアを大切にし、引き受けたことをやり抜き、リズムを整える領域。「旅行はめっちゃ調べる」「急な変更はテンション下がる」── 堅実で安心感のある動き方を支える根っこです。</p>
+      </div>
+      <div class="card">
+        <span class="domain-chip strat">📚 戦略的思考力 ✕ 1資質</span>
+        <h3>収集心</h3>
+        <p>「知らないこと・面白そうなもの」を集めたくなる好奇心のエンジン。和太鼓・SUP・バンジー・新しいオフ会── あいさんを"飛び込ませる"のは、この収集心です。</p>
+      </div>
+      <div class="card" style="background:#f6f2ec;">
+        <span class="domain-chip infl" style="opacity:.6;">📣 影響力 ✕ 0資質</span>
+        <h3>上位10内に無し</h3>
+        <p>「自分が前に出てぐいぐい引っ張る」は本来の動き方ではない、というサイン。あいさんは<strong>前に立つリーダーじゃなく、聞き役・支え役・そばで温める人</strong>として、自然に力が出ます。これは弱点ではなく"設計"です。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="themes">
+    <div class="section-head">
+      <div>
+        <span class="chapter">TOP10 / THEME DETAIL</span>
+        <h2>資質別の図解メモ</h2>
+        <p class="section-lead">資質ガイドの説明をベースに、あいさんのセッションでの実話につなげます。</p>
+      </div>
+      <div class="note">各カードの最後に「セッションで見えたこと」を置いています。あいさんの言葉から拾ったものです。</div>
+    </div>
+
+    <!-- 01 親密性 -->
+    <article class="theme-card" id="shinmitsu">
+      <div class="theme-head">
+        <div class="rank-no">1<span class="rn-ico">🤝</span></div>
+        <div><span class="domain-chip rel">人間関係構築力</span><h3>親密性</h3><p>深い信頼関係や身近な絆を大切にする</p></div>
+        <div class="metaphor">🤝 親友</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>誠実で信頼される人柄。限られた人との深いつながりを大切にし、お互いの本音や価値観を共有することで満足感を得る。一度信頼関係を築いたら長く続く絆を持つ。1対1の関係を大切にし、相手の内面まで深く理解しようとする。</p></div>
+          <div class="subbox ai"><h4>あいさんに接続すると</h4><p>今のお仕事に戻った理由が <strong>「知ってる人がいるから」</strong>。そして <strong>「その人がいなくなったら、もう辞めようと思ってる」</strong>。仕事の内容そのものより、一緒にいる人との空気感が合えば続けられる ── これが親密性1位の核です。<strong>「本当に人間関係で仕事してる」</strong>という言葉そのままに、あいさんは「誰とするか」で世界が決まる人です。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>家族のような親しい関係</li><li>本音で話せる仲間と過ごす時間</li><li>長期的な関係の中で互いに成長</li><li>信頼を深める1対1の対話</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>浅い関係や流れ作業の付き合い</li><li>新しい人との出会いに伴う不安感</li><li>大勢の中での自己アピール</li><li>表面的なネットワーキング</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>親密性：深く狭く・少数精鋭</li><li>社交性：広く多くの人と（あいさん15位）</li><li>包含：全員を受け入れる（あいさん34位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>セッションで見えたこと</h4><p>「空気感が同じような人がいい」と語ったあいさん。好きな人がそこにいる場所が、あいさんの一番の力になります。新しい挑戦も「知ってる人がいるところ」から入っていく。<strong>親密性が、行動の入口と継続の両方を支えています。</strong></p><div class="source">資質ガイド参照: 29ページ</div></div>
+      </div>
+    </article>
+
+    <!-- 02 調和性 -->
+    <article class="theme-card" id="chowa">
+      <div class="theme-head">
+        <div class="rank-no">2<span class="rn-ico">🕊</span></div>
+        <div><span class="domain-chip rel">人間関係構築力</span><h3>調和性</h3><p>衝突や争いを静かにまとめる・合意点を探す</p></div>
+        <div class="metaphor">🕊 平和の使者</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>穏やかな人。対立よりも合意点を探そうとする。全員が納得できる道を見つけることに満足感を覚える。争いごとを避け、調和のとれた環境を好む。逆立った羽を滑らかにするように、異なる意見を調整して平和的な解決をもたらす。</p></div>
+          <div class="subbox ai"><h4>あいさんに接続すると</h4><p>一緒にいたいのは <strong>「スローテンポで、和やかな感じの人」</strong>。頭の回転が速すぎる人にはついていけない、と感じるのは、あいさんが「速さ」より「穏やかさ」で力が出るから。場が凍りつくのが苦手で、自然と和やかさを選んでいます。あいさんがそこにいるだけで、場の空気がやわらかくなる ── それが調和性2位です。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>合意点が見つかる場面・全員の同意</li><li>穏やかな雰囲気・調和のとれた環境</li><li>みんなが協力し合える場</li><li>対立を回避できる解決策</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>対立・ケンカ・言い争い</li><li>不和・分裂した状態</li><li>意見が割れて収拾がつかない場面</li><li>誰かが不満を抱えたまま進むこと</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>調和性：対立を避け一致点を探す</li><li>指令性：対立も恐れず主導権を握る（あいさん31位）</li><li>共感性：感情を察知する（あいさん6位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>セッションで見えたこと</h4><p>「ガツガツしてない人がいい」という言葉に、調和性がそのまま出ています。あいさんの穏やかさは、まわりにとっての"安心できる場"。<strong>波風を立てずに、みんなが気持ちよくいられる空気を、自然につくれる人</strong>です。</p><div class="source">資質ガイド参照: 28ページ</div></div>
+      </div>
+    </article>
+
+    <!-- 03 慎重さ -->
+    <article class="theme-card" id="shincho">
+      <div class="theme-head">
+        <div class="rank-no">3<span class="rn-ico">🔍</span></div>
+        <div><span class="domain-chip exec">実行力</span><h3>慎重さ</h3><p>リスクを丁寧に見極め、細心の注意を払う力</p></div>
+        <div class="metaphor">🔍 石橋を叩く探検家</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>潜在的なリスクに常に警戒し、決定する前に細心の注意を払う。安全を確保するために十分な準備と確認を行い、慎重に判断を下す人。真っ先に危険や課題を考え、リスク評価と事前準備を徹底し、周囲に安全な環境と安心感を提供する。</p></div>
+          <div class="subbox ai"><h4>あいさんに接続すると</h4><p>旅行に行く時は <strong>「めっちゃ調べる。持っていくものも行くとこも、ぎっちりきっちり詰める」</strong>。だから当日、抜け漏れなく楽しめる。これは「臆病」ではなく、<strong>ワクワクを安心して、最後まで味わいきるための力</strong>。「面白そう」で飛び込む好奇心と、この「ちゃんと備える」慎重さが、あいさんの中に同時にいます。飛ぶ前に、ちゃんと下を見てから飛ぶ。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>安全が確保された状態で行動すること</li><li>計画通りに物事が進むこと</li><li>リスクを事前に防ぐこと</li><li>十分な情報と準備の時間があること</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>突発的な変更や計画外の出来事</li><li>性急な判断を求められる状況</li><li>十分な検討なしで行動する人々</li><li>不確実性の高い・混沌とした状況</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>慎重さ：リスクを十分に検討、じっくり準備</li><li>活発性：考える前にまず行動（あいさん23位）</li><li>規律性：決まったリズムに従う（あいさん8位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>セッションで見えたこと</h4><p>慎重さと収集心（好奇心）が手をつなぐと、<strong>「面白そう→でもしっかり下調べ→安心して飛び込む」</strong>という、あいさん独自の動き方になります。バンジーもSUPも、ワクワク＋下調べのセット。だから後悔が少なく、ちゃんと楽しみきれます。</p><div class="source">資質ガイド参照: 24ページ</div></div>
+      </div>
+    </article>
+
+    <!-- 04 公平性 -->
+    <article class="theme-card" id="kohei">
+      <div class="theme-head">
+        <div class="rank-no">4<span class="rn-ico">⚖</span></div>
+        <div><span class="domain-chip exec">実行力</span><h3>公平性</h3><p>すべての人を平等に扱う・明確なルールで安心を作る</p></div>
+        <div class="metaphor">⚖ 天秤</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>個人の要望よりも、グループ全体のニーズに関心がある。公平性を重視し、誰に対しても同じ基準で接する人。明確なルールや手順があると安心する。違いをなくして、みんな同じ状況を作り出すことに努め、予測しやすい環境を作るのが得意。</p></div>
+          <div class="subbox ai"><h4>あいさんに接続すると</h4><p>「ガチガチのルールはしんどい」と感じる一方で、<strong>みんなが同じように扱われる状況</strong>には安心する。厳格なルールが好きなわけじゃなく、「平等であってほしい」という感覚値。これが、あいさんの<strong>人を分け隔てしない優しさ</strong>として出ています。自分の中の"これはフェアかな?"というものさしが、静かに判断を支えています。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>仕事の手順がしっかり定まっていること</li><li>同じ方法で物事を繰り返すこと</li><li>誰もが従える明確なルール</li><li>みんなが平等に扱われる環境</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>不必要な変更やカスタマイズ</li><li>特別扱いや例外を作ること</li><li>ルールが人によって変わる状況</li><li>不公平・不透明な評価や待遇</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>公平性：全員に同じルール・同じ基準</li><li>個別化：一人ひとりに合わせた対応（あいさん19位）</li><li>適応性：状況に応じて柔軟に変化（あいさん13位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>セッションで見えたこと</h4><p>あいさんの公平性は「成人君主のように全員に尽くす」タイプではなく、<strong>自分の中の"マイルール"で、自分と周りを公平に保つ</strong>感じ。手順がはっきりしていて、みんなが同じように扱われる場で、あいさんは落ち着いて力を出せます。</p><div class="source">資質ガイド参照: 19ページ</div></div>
+      </div>
+    </article>
+
+    <!-- 05 責任感 -->
+    <article class="theme-card" id="sekinin">
+      <div class="theme-head">
+        <div class="rank-no">5<span class="rn-ico">🛡</span></div>
+        <div><span class="domain-chip exec">実行力</span><h3>責任感</h3><p>頼られたことを最後までやり抜く・約束を守る</p></div>
+        <div class="metaphor">🛡 約束を守る人</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>他者から信頼される人。決めたことに強い責任感を持ち、誠実さや正直さを大切にする。「頼まれたことは必ずやる」という心構えの持ち主。約束を守りやり抜く姿勢で周囲に安心感を与える。「自分が引き受けた」という自覚が強く、最後までやり切る。</p></div>
+          <div class="subbox ai"><h4>あいさんに接続すると</h4><p>お仕事について <strong>「仕事なんだと思えば、そうかってやる」</strong>という言葉。乗り気じゃないことでも、引き受けたことは淡々とこなす。これは「自分がない」のではなく、<strong>「やると決めたことはやる」という責任感</strong>が静かに効いているということ。派手じゃないけれど、「あの人に頼めば大丈夫」という安心を、まわりにそっと与えています。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>他者から尊重され、信頼されること</li><li>約束どおりに物事が進むこと</li><li>明確な期待値や役割があること</li><li>自分の言葉に責任を持てること</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>約束を破る人や無責任な人</li><li>他者への失望や裏切り</li><li>あいまいな役割や期待値</li><li>約束を守れない状況に追い込まれること</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>責任感：義務感から・約束を守りたい</li><li>達成欲：成し遂げたい気持ちから（あいさん33位）</li><li>自我：認められたい・影響を残したい（あいさん25位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>セッションで見えたこと</h4><p>達成欲や自我が低いあいさんの責任感は、「目立ちたい」「評価されたい」からではなく、<strong>「引き受けたからやる」という、静かで誠実なタイプ</strong>。明確な役割と期待値がある場で、いちばん安心して動けます。</p><div class="source">資質ガイド参照: 20ページ</div></div>
+      </div>
+    </article>
+
+    <!-- 06 共感性 -->
+    <article class="theme-card" id="kyokan">
+      <div class="theme-head">
+        <div class="rank-no">6<span class="rn-ico">🌡</span></div>
+        <div><span class="domain-chip rel">人間関係構築力</span><h3>共感性</h3><p>他人の感情を察し柔軟に対応できる力</p></div>
+        <div class="metaphor">🌡 心の温度計</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>場の空気や人の気持ちに敏感で、感情豊か。他者の感情や状況を察知するアンテナを持ち、周りの感情の変化に自然と反応できる人。言葉にされていない気持ちを汲み取り、寄り添うことで他者との信頼関係を構築できる。</p></div>
+          <div class="subbox ai"><h4>あいさんに接続すると</h4><p>共感性は「人の気持ちを読む」だけでなく、<strong>自分の"面白そう"という直感を素直に受け取るアンテナ</strong>でもあります。あいさんは <strong>リベの人のつぶやきやプロフィールを読んで「行ってみよう」</strong>と思う。理屈じゃなく、心が動いたら動く。そして誰かがマイナスなことを言っていると「励ましてあげたいな」と思う ── これが共感性6位の温度です。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>素直な感情表現ができる環境</li><li>感情や心情を大切にする場</li><li>気持ちを考慮した丁寧なやりとり</li><li>感情的なつながりを感じられる関係性</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>感情を抑制・制限される環境</li><li>冷たい態度や無関心な反応</li><li>データや論理だけで人を判断すること</li><li>感情を無視した効率優先の場</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>共感性：感情を重視、直感的に反応</li><li>分析思考：データを重視、論理的に判断（あいさん12位）</li><li>調和性：場の合意を整える（あいさん2位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>セッションで見えたこと</h4><p>あいさんの「直感を信じて動く」は、共感性のいちばん素敵な使い方です。<strong>心が"面白そう"と動いたものに、素直に飛び込む</strong>。その結果、自分も相手もいい気持ちになる関係が広がっていきます。直感は、あいさんの一番信頼できる羅針盤です。</p><div class="source">資質ガイド参照: 26ページ</div></div>
+      </div>
+    </article>
+
+    <!-- 07 収集心 -->
+    <article class="theme-card" id="shushu">
+      <div class="theme-head">
+        <div class="rank-no">7<span class="rn-ico">📚</span></div>
+        <div><span class="domain-chip strat">戦略的思考力</span><h3>収集心</h3><p>知らないこと・面白そうなものを集めたくなる力</p></div>
+        <div class="metaphor">📚 知の収集家</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>情報や経験、モノなどが増えていくことに幸せを感じる人。「知らないこと」「面白そうなこと」に好奇心が向き、集めること・蓄えることそのものを楽しむ。集めたものが誰かの役に立つと、さらに喜びを感じる。</p></div>
+          <div class="subbox ai"><h4>あいさんに接続すると</h4><p>和太鼓・SUP・バンジージャンプ・神戸の朝活・新しいオフ会 ── <strong>「面白そう、で一回やってみる」</strong>。続かなくても「とりあえずやってみよう」。あいさんを"飛び込ませる"のは、この収集心です。しかも <strong>新しい体験の先で、新しい人とのつながりが増えるのがまた面白い</strong>。好奇心と親密性が、手をつないで世界を広げています。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>新しい情報・体験・モノに出会うこと</li><li>集めたものが役に立った時</li><li>「面白そう」を一回やってみること</li><li>知らない世界に触れること</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>新しい刺激がまったくない環境</li><li>同じことだけの繰り返し</li><li>好奇心を否定される空気</li><li>「やってみる」を止められること</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>収集心：集めたい・新しい体験そのものが喜び</li><li>学習欲：学ぶプロセス自体が喜び（あいさん17位）</li><li>分析思考：集めた情報を検証する（あいさん12位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>セッションで見えたこと</h4><p>「決められない私」というテーマで始まったセッションでしたが、ワクワクすること＝収集心が動いたことは、あいさんはちゃんと自分で決めて飛び込んでいました。<strong>収集心は、あいさんの"自分で決める力"そのもの</strong>です。</p><div class="source">資質ガイド参照: 42ページ</div></div>
+      </div>
+    </article>
+
+    <!-- 08 規律性 -->
+    <article class="theme-card" id="kiritsu">
+      <div class="theme-head">
+        <div class="rank-no">8<span class="rn-ico">🕐</span></div>
+        <div><span class="domain-chip exec">実行力</span><h3>規律性</h3><p>計画的・いつも同じリズムで整える</p></div>
+        <div class="metaphor">🕐 時計</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>計画的で秩序を大切にする人。スケジュールを遵守し、整理整頓が得意。安定した日常や、誰もが従える明確なルールや手順を求める。計画を立てて効率よく管理し、周囲に一貫性と安定感を提供する。</p></div>
+          <div class="subbox ai"><h4>あいさんに接続すると</h4><p><strong>「急なスケジュールの変更は、ほんまにテンション下がる」</strong>。あたふたして失敗する確率が上がるのが嫌 ── これは規律性8位がはっきり出ているところ。慎重さ（備える）と規律性（整える）の合わせ技で、あいさんは <strong>「ちゃんとしてる人」</strong>として頼られます。予定が読めて、リズムが守られると、いちばん落ち着きます。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>毎日同じリズムで安定していること</li><li>整理整頓された環境</li><li>明確な手順やマニュアルがあること</li><li>混乱のない状態で進められること</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>予期せぬ変更やアドリブ</li><li>カオスな状況や環境</li><li>計画性のない進め方</li><li>即興でのパフォーマンスや対応</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>規律性：毎日同じリズムを好む・安定志向</li><li>適応性：臨機応変・毎日違うことを楽しむ（あいさん13位）</li><li>アレンジ：柔軟に調整・変化を求める（あいさん14位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>セッションで見えたこと</h4><p>「面白そう」で飛び込むあいさんと、「整っていたい」あいさん。一見逆だけど、どちらも本物です。<strong>ワクワクの中身は、ちゃんと段取りを組んで、リズムよく味わいたい</strong>── それがあいさんの楽しみ方。だから旅行も、きっちり詰めるのが心地いいんです。</p><div class="source">資質ガイド参照: 22ページ</div></div>
+      </div>
+    </article>
+
+    <!-- 09 成長促進 -->
+    <article class="theme-card" id="seicho">
+      <div class="theme-head">
+        <div class="rank-no">9<span class="rn-ico">🌱</span></div>
+        <div><span class="domain-chip rel">人間関係構築力</span><h3>成長促進</h3><p>人の可能性を見つけて伸ばす</p></div>
+        <div class="metaphor">🌱 才能の発見者</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>人の可能性を信じ、小さな進歩や成長を見逃さない人。相手の成長を自分のことのように喜べる。人が力を発揮する瞬間に立ち会うことが好きで、学びや挑戦を応援し、相手が主役で自分は裏方に徹しながら、成長のプロセスを大切に支援する。</p></div>
+          <div class="subbox ai"><h4>あいさんに接続すると</h4><p>セッションの中で、<strong>「人に貢献できると嬉しい」</strong>という要素が確かにあると見えてきました。まだ「人を育てた」という自覚はなくても、<strong>誰かの役に立てたときに、幸福度が上がる</strong>あいさん。成長促進・共感性・ポジティブが重なって、「人のためになる」ことが、これから芽を出していく資質かもしれません。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>誰かの成長や変化に立ち会うこと</li><li>人の「できた！」という瞬間</li><li>誰かの役に立てた・貢献できた実感</li><li>相手のペースを尊重できる関わり</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>可能性を潰すような言動</li><li>成長の機会を奪うこと</li><li>人の失敗を否定的に評価すること</li><li>結果だけをすぐに求める風潮</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>成長促進：成長のプロセスを大切にする</li><li>個別化：一人ひとりの違いを見る（あいさん19位）</li><li>包含：誰も置いていかない（あいさん34位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>セッションで見えたこと</h4><p>「これがなかったら、そもそも上位に来てないはず」── 成長促進は、あいさんの中でこれから育っていく芽です。<strong>大きく構えなくていい。「ちょっと人の役に立てた」という小さな貢献感</strong>を集めていくと、あいさんらしい喜びの形が見えてきます。</p><div class="source">資質ガイド参照: 32ページ</div></div>
+      </div>
+    </article>
+
+    <!-- 10 ポジティブ -->
+    <article class="theme-card" id="positive">
+      <div class="theme-head">
+        <div class="rank-no">10<span class="rn-ico">☀</span></div>
+        <div><span class="domain-chip rel">人間関係構築力</span><h3>ポジティブ</h3><p>周囲を明るく元気にする前向きな力</p></div>
+        <div class="metaphor">☀ 太陽</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>物事の良い面・前向きな面を見つける人。どんな状況でも明るい側面を見つけ出し、まわりを笑顔に・明るくする。声高に盛り上げるタイプもいれば、じんわり湯たんぽのように温めるタイプも。落ち込んだ場でも、そっとエネルギーを灯します。</p></div>
+          <div class="subbox ai"><h4>あいさんに接続すると</h4><p><strong>「ネガティブなことをずっと言う人が苦手」</strong>。誰かがマイナスな発言をすると「励ましてあげたいな」と思う ── これがポジティブ10位の温度です。あいさんは、ウェイっと盛り上げるタイプではなく、<strong>そばで、じんわり、湯たんぽのように温める</strong>ポジティブ。穏やかな調和性と重なって、まわりの空気をやわらかく明るくします。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>楽しく精一杯生きること</li><li>笑顔や前向きな雰囲気</li><li>人々の気持ちを高める活動</li><li>明るいイベントや集まり</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>ネガティブな人や愚痴</li><li>暗い雰囲気や重苦しい環境</li><li>批判的な会話や議論</li><li>問題点ばかりに集中すること</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>ポジティブ：明るい面を見る・意味づける</li><li>回復志向：問題点を見つけ解決する（あいさん24位）</li><li>調和性：場をやさしく整える（あいさん2位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>セッションで見えたこと</h4><p>「自分を持ち上げられるかは疑問」と話したあいさん。でも、人のマイナスには敏感に気づいて、励ましたくなる。<strong>あいさんのポジティブは、自分にじゃなく、まわりに向かって自然に灯る</strong>タイプ。だからこそ、そばにいる人がほっとできるんです。</p><div class="source">資質ガイド参照: 27ページ</div></div>
+      </div>
+    </article>
+
+  </section>
+
+  <section id="route">
+    <div class="section-head">
+      <div>
+        <span class="chapter">03 / NATURAL FLOW</span>
+        <h2>あいさんが、いちばん心地よく動ける流れ</h2>
+        <p class="section-lead">資質の重なりを、あいさんの自然な動き方の順番として置きます。</p>
+      </div>
+      <div class="note">どこから入っても大丈夫。あいさんの場合は「信頼できる人がいる場 → ちゃんと備える → 面白そうで飛び込む → 和やかに場を温める」が自然そうです。</div>
+    </div>
+    <div class="route">
+      <div class="route-step"><b>① 土台：信頼できる人がいる場 🤝</b><p>親密性。気心の知れた人がそこにいると、あいさんは安心して力を出せる。「誰とするか」が、すべての入口。</p></div>
+      <div class="route-step"><b>② 備え：石橋を叩いて整える 🔍🕐</b><p>慎重さ × 規律性。しっかり調べて、段取りを組む。不安をつぶすためじゃなく、安心して飛び込むための準備。</p></div>
+      <div class="route-step"><b>③ 飛び込み：面白そうで動く 📚🌡</b><p>収集心 × 共感性。直感が「面白そう」と動いたら、一回やってみる。和太鼓もSUPもバンジーも、ここから生まれた。</p></div>
+      <div class="route-step"><b>④ 場づくり：和やかに温める 🕊☀</b><p>調和性 × ポジティブ。争いを避け、明るい面を見つけ、まわりをじんわり温める。あいさんがいるだけで空気がやわらぐ。</p></div>
+    </div>
+  </section>
+
+  <section id="sources">
+    <div class="section-head">
+      <div>
+        <span class="chapter">04 / SOURCES</span>
+        <h2>このページの出典</h2>
+        <p class="section-lead">資質ガイドの言葉はベースとして、あいさん接続はセッションの実話に基づいています。</p>
+      </div>
+      <div class="note">セッションで違和感が出たところは、あいさん本人の言葉で上書きしていけます。</div>
+    </div>
+    <ul class="grid-2" style="list-style:none;padding:0;margin:0;">
+      <li class="card"><b>資質ガイド:</b><br>001ストレングス資質図解ガイド（全42ページ）<br>該当ページ：19 / 20 / 22 / 24 / 26 / 27 / 28 / 29 / 32 / 42</li>
+      <li class="card"><b>本人情報:</b><br>あいさん StrengthsFinder 34資質順位／個性診断セッション（2025-10-09・約1時間半）</li>
+      <li class="card"><b>関連ファイル:</b><br>g-_6utqdz0gCAMxVi7.html（取扱説明書本体）／あいさんストレングスファインダーセッション.md（文字起こし）</li>
+      <li class="card"><b>参照フォーマット:</b><br>ふうさん_資質図解ブランチ_2026-05-26.html（テンプレート）／なぎさん_資質図解ブランチ_2026-05-20.html</li>
+    </ul>
+    <div class="footer-links">
+      <a class="btn" href="g-_6utqdz0gCAMxVi7.html">取扱説明書へ戻る</a>
+      <a class="btn subtle" href="#top">先頭に戻る</a>
+    </div>
+  </section>
+</main>
+
+<script>
+const tocLinks = document.querySelectorAll('.toc a[data-target], .toc-mobile a[data-target]');
+const tocSections = Array.from(tocLinks).map(link => document.getElementById(link.dataset.target)).filter(Boolean);
+function updateActiveToc() {
+  const offset = window.innerHeight * 0.32;
+  let currentId = tocSections[0]?.id;
+  for (const section of tocSections) { if (section.getBoundingClientRect().top - offset <= 0) currentId = section.id; }
+  tocLinks.forEach(link => link.classList.toggle('active', link.dataset.target === currentId));
+}
+let tocTicking = false;
+window.addEventListener('scroll', () => {
+  if (!tocTicking) {
+    requestAnimationFrame(() => {
+      updateActiveToc();
+      document.querySelector('.back-to-top')?.classList.toggle('visible', window.scrollY > 520);
+      tocTicking = false;
+    });
+    tocTicking = true;
+  }
+}, { passive: true });
+document.querySelectorAll('.toc-mobile a').forEach(link => {
+  link.addEventListener('click', () => { const m = document.querySelector('.toc-mobile'); if (m) m.open = false; });
+});
+updateActiveToc();
+</script>
+</body>
+</html>

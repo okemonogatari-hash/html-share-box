@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>あいさんのトリセツ｜調べて、備えて、それでも"面白そう"に飛び込んでいく</title>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  /* ─────────────────────────────────────────────
+     あいさんカラー：海の藍×砂浜のベージュ×夕日のサンゴ。
+     「気心の知れた人と、石橋を叩いて、ワクワクには全力で飛び込む人」のパレット。
+     ───────────────────────────────────────────── */
+  --sea-deep:   #2C6E7F;   /* 深い海の藍緑 */
+  --sea-mid:    #5C9CA8;   /* 凪の水 */
+  --sea-light:  #A9CDD4;   /* 朝の浅瀬 */
+  --sea-glow:   #DCEDEF;   /* 水面のきらめき */
+  --coral-deep: #D9785C;   /* 夕日のサンゴ */
+  --coral-mid:  #E8967A;   /* 朝焼け */
+  --coral-light:#F4C3AE;   /* 桜貝 */
+  --sand-deep:  #C7A06C;   /* 古金の砂 */
+  --sand-mid:   #E0C9A0;   /* 砂浜 */
+  --sand-light: #F2E6CE;   /* 白砂 */
+  --leaf:       #7A9A6B;   /* 和太鼓の木・若葉 */
+  --warm-bg:    #FBF7EF;   /* 生成り */
+  --warm-white: #FFFDF7;   /* 卵殻 */
+  --text:       #2E3A3D;   /* 深い藍墨 */
+  --text-muted: #5E6B6D;   /* 薄藍墨 */
+  --text-light: #9AA3A2;   /* 古紙 */
+  --line:       rgba(44,110,127,0.13);
+  --shadow-sm:  0 2px 12px rgba(44,110,127,0.08);
+  --shadow-md:  0 8px 30px rgba(44,110,127,0.11);
+  --shadow-lg:  0 16px 48px rgba(44,110,127,0.16);
+  --radius:     12px;
+  --radius-lg:  20px;
+
+  /* SF 4領域カラー（固定） */
+  --d-rel:  #5B95C7;   /* 人間関係構築力 */
+  --d-exec: #9B7BB8;   /* 実行力 */
+  --d-infl: #E8A85C;   /* 影響力 */
+  --d-str:  #6FAA88;   /* 戦略的思考力 */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text);
+  background: var(--warm-bg);
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { font-family: 'Noto Serif JP', serif; font-weight: 500; line-height: 1.4; }
+.container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  background:
+    linear-gradient(135deg, rgba(26,52,58,0.55), rgba(26,52,58,0.28) 50%, rgba(26,52,58,0.60)),
+    linear-gradient(170deg, rgba(44,110,127,0.40) 0%, rgba(92,156,168,0.24) 50%, rgba(217,120,92,0.38) 100%),
+    url('https://images.unsplash.com/photo-1505159940484-eb2b9f2588e2?w=2400&q=85&auto=format&fit=crop') center/cover no-repeat;
+  color: #fff; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 22%, rgba(255,238,210,0.16) 0%, transparent 55%);
+  pointer-events: none;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 160px;
+  background: linear-gradient(to top, var(--warm-bg) 0%, rgba(251,247,239,0.65) 45%, transparent 100%);
+}
+.hero-inner { position: relative; z-index: 2; padding: 60px 24px; max-width: 760px; }
+.hero-credit {
+  position: absolute; right: 14px; bottom: 156px; z-index: 2;
+  font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 1px;
+  color: rgba(255,255,255,0.62); text-decoration: none;
+  background: rgba(0,0,0,0.18); padding: 4px 10px; border-radius: 12px; backdrop-filter: blur(4px);
+}
+.hero-credit:hover { color: rgba(255,255,255,0.95); background: rgba(0,0,0,0.32); }
+.hero-windmark {
+  width: 56px; height: 56px; margin: 0 auto 24px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255,238,200,0.92) 0%, rgba(244,195,174,0.78) 55%, rgba(217,120,92,0.55) 100%);
+  box-shadow: 0 0 0 10px rgba(255,237,199,0.12), 0 0 0 22px rgba(255,237,199,0.06), 0 8px 28px rgba(26,52,58,0.30);
+  animation: heroFadeIn 1s 0.1s both, windPulse 5s 1s ease-in-out infinite;
+}
+@keyframes windPulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255,237,199,0.12), 0 0 0 22px rgba(255,237,199,0.06), 0 8px 28px rgba(26,52,58,0.30); }
+  50%     { transform: scale(1.06); box-shadow: 0 0 0 14px rgba(255,237,199,0.16), 0 0 0 28px rgba(255,237,199,0.08), 0 12px 36px rgba(26,52,58,0.36); }
+}
+.hero-label {
+  font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase;
+  opacity: 0.92; margin-bottom: 18px; animation: heroFadeIn 0.8s 0.2s both; text-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+.hero-name {
+  font-size: clamp(28px, 6vw, 54px); font-weight: 700; margin-bottom: 18px;
+  animation: heroSlideUp 0.9s 0.3s both; letter-spacing: 0.04em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.55);
+}
+.hero-name span { color: #FFE3C7; }
+.hero-tagline {
+  font-family: 'Klee One', 'Noto Serif JP', serif; font-size: clamp(15px, 3vw, 22px); font-weight: 400;
+  opacity: 1; margin-bottom: 12px; line-height: 1.85; animation: heroSlideUp 0.9s 0.5s both;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.5);
+}
+.hero-tagline strong { color: #FFE3C7; font-weight: 600; }
+.hero-sub {
+  font-size: 14px; opacity: 0.86; margin-top: 18px; animation: heroFadeIn 0.8s 0.7s both;
+  line-height: 1.95; text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+.hero-scroll {
+  position: absolute; bottom: 140px; left: 50%; transform: translateX(-50%); z-index: 2;
+  animation: heroFadeIn 0.8s 1s both, bounce 2s 1.5s infinite; opacity: 0.55; color: #fff; font-size: 20px;
+}
+@keyframes heroFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes heroSlideUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+/* ─── 浮遊TOC ─── */
+.float-toc { position: fixed; right: 22px; bottom: 22px; z-index: 60; font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+.float-toc summary {
+  cursor: pointer; list-style: none; width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--sea-deep), var(--coral-deep)); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: var(--shadow-md); transition: transform .2s;
+}
+.float-toc summary:hover { transform: translateY(-3px); }
+.float-toc summary::-webkit-details-marker { display: none; }
+.float-toc[open] summary { box-shadow: var(--shadow-lg); }
+.float-toc .toc-body {
+  position: absolute; right: 0; bottom: 64px; width: 268px; max-height: 70vh; overflow-y: auto;
+  background: rgba(255,253,247,0.97); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: var(--shadow-lg); padding: 16px 14px; backdrop-filter: blur(10px);
+}
+.float-toc h5 {
+  font-family: 'Noto Serif JP', serif; color: var(--sea-deep); font-size: 13px;
+  padding-bottom: 10px; margin-bottom: 8px; border-bottom: 1px dashed rgba(44,110,127,0.28);
+}
+.float-toc ol { list-style: none; display: grid; gap: 2px; }
+.float-toc a {
+  display: grid; grid-template-columns: 28px 1fr; gap: 8px; padding: 7px 8px; border-radius: 8px;
+  text-decoration: none; color: var(--text-muted); font-size: 12.5px; line-height: 1.4;
+}
+.float-toc a:hover, .float-toc a.active { background: rgba(92,156,168,0.18); color: var(--sea-deep); }
+.float-toc a .num { color: var(--coral-mid); font-weight: 700; font-size: 11px; }
+
+/* ─── SECTIONS ─── */
+section { padding: 80px 0; }
+section:nth-of-type(even) { background: var(--warm-white); }
+.section-label {
+  font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--coral-mid); margin-bottom: 8px; font-weight: 600;
+}
+.section-title {
+  font-size: clamp(22px, 4vw, 32px); color: var(--sea-deep); margin-bottom: 16px;
+  position: relative; display: inline-block;
+}
+.section-title::after {
+  content: ''; display: block; width: 0; height: 2px; background: var(--coral-mid); margin-top: 8px; transition: width 0.6s ease 0.2s;
+}
+.fade-in.is-visible .section-title::after { width: 48px; }
+.section-lead { font-size: 15px; color: var(--text-muted); max-width: 680px; margin-bottom: 48px; }
+
+/* ─── ABOUT YOU ─── */
+.what-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.what-text p { margin-bottom: 16px; font-size: 15px; color: var(--text-muted); }
+.what-text p:first-child::first-letter {
+  font-family: 'Noto Serif JP', serif; font-size: 38px; float: left; line-height: 1; margin-right: 8px; color: var(--sea-deep);
+}
+.what-text strong { color: var(--text); font-weight: 700; }
+.what-text em { font-style: normal; background: linear-gradient(transparent 65%, rgba(244,195,174,0.75) 65%); padding: 0 2px; }
+.what-card {
+  background: var(--warm-white); border: 1px solid var(--line); border-radius: var(--radius-lg);
+  padding: 32px; box-shadow: var(--shadow-sm); text-align: center;
+}
+.what-card .big-icon { font-size: 44px; color: var(--sea-mid); margin-bottom: 18px; }
+.what-card h3 { font-size: 18px; color: var(--sea-deep); margin-bottom: 4px; }
+.what-card .role { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+.what-card .meta {
+  display: flex; flex-direction: column; gap: 6px; margin-top: 14px; padding-top: 14px;
+  border-top: 1px dashed var(--line); font-size: 12.5px; color: var(--text-light); text-align: left; line-height: 1.65;
+}
+.what-card .meta i { color: var(--coral-mid); margin-right: 6px; width: 16px; text-align: center; }
+
+/* ─── DOMAIN ─── */
+.domain-summary { margin-top: 56px; background: var(--warm-white); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm); }
+.domain-summary h3 { font-size: 16px; color: var(--sea-deep); margin-bottom: 20px; text-align: center; }
+.domain-bar { display: flex; height: 36px; border-radius: 18px; overflow: hidden; box-shadow: inset 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.domain-seg { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+.domain-seg.rel  { background: var(--d-rel);  flex: 5; }
+.domain-seg.exec { background: var(--d-exec); flex: 4; }
+.domain-seg.str  { background: var(--d-str);  flex: 1; }
+.domain-legend { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; font-size: 12px; color: var(--text-muted); }
+.domain-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.domain-legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.domain-legend .dot.rel  { background: var(--d-rel); }
+.domain-legend .dot.exec { background: var(--d-exec); }
+.domain-legend .dot.infl { background: var(--d-infl); }
+.domain-legend .dot.str  { background: var(--d-str); }
+.domain-note {
+  margin-top: 18px; padding: 14px 18px; background: rgba(92,156,168,0.10);
+  border-left: 3px solid var(--sea-mid); border-radius: 8px; font-size: 13.5px; color: var(--text-muted); line-height: 1.9;
+}
+.domain-note strong { color: var(--sea-deep); }
+
+/* ─── 34リスト ─── */
+.rank-toggle {
+  margin-top: 32px; background: var(--warm-white); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden;
+}
+.rank-toggle summary {
+  cursor: pointer; list-style: none; padding: 18px 24px; font-family: 'Noto Serif JP', serif;
+  font-size: 14px; color: var(--sea-deep); display: flex; align-items: center; gap: 10px;
+}
+.rank-toggle summary::-webkit-details-marker { display: none; }
+.rank-toggle summary i { color: var(--coral-mid); transition: transform .3s; }
+.rank-toggle[open] summary i { transform: rotate(90deg); }
+.rank-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); gap: 6px; padding: 0 24px 24px; }
+.rank-item { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--text-muted); padding: 4px 0; }
+.rank-item .rn { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 11px; color: #fff; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rank-item.top10 .rn { background: var(--coral-deep); }
+.rank-item .rn.dim { background: var(--text-light); }
+.rank-item.top10 { color: var(--text); font-weight: 500; }
+
+/* ─── DIVIDER ─── */
+.sun-divider {
+  height: 180px;
+  background:
+    linear-gradient(135deg, rgba(44,110,127,0.42), rgba(92,156,168,0.32), rgba(217,120,92,0.42)),
+    radial-gradient(ellipse at 50% 30%, rgba(255,238,210,0.50), transparent 55%),
+    linear-gradient(160deg, #2C6E7F 0%, #5C9CA8 50%, #D9785C 100%);
+  position: relative; display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.94); font-family: 'Klee One', 'Noto Serif JP', serif;
+  font-size: clamp(14px, 2vw, 18px); letter-spacing: 0.14em; text-shadow: 0 1px 3px rgba(0,0,0,0.22);
+}
+.sun-divider .quote { padding: 0 24px; max-width: 720px; text-align: center; line-height: 1.85; }
+
+/* ─── 資質ブロック ─── */
+.shitsu-block { background: var(--warm-white); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 36px; margin-bottom: 24px; box-shadow: var(--shadow-sm); position: relative; }
+.shitsu-block.is-top3 { box-shadow: var(--shadow-md); border-color: rgba(44,110,127,0.25); }
+.shitsu-head { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.shitsu-rank { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 700; color: #fff; flex-shrink: 0; box-shadow: var(--shadow-sm); }
+.shitsu-rank.exec { background: linear-gradient(135deg, var(--d-exec), #BCA3D2); }
+.shitsu-rank.rel  { background: linear-gradient(135deg, var(--d-rel),  #95BCDD); }
+.shitsu-rank.str  { background: linear-gradient(135deg, var(--d-str),  #9DC2A8); }
+.shitsu-name { flex: 1; }
+.shitsu-name h3 { font-size: 22px; color: var(--sea-deep); margin-bottom: 4px; }
+.shitsu-name .metaphor-tag {
+  display: inline-block; font-family: 'Klee One', 'Noto Serif JP', sans-serif; font-size: 13px; margin-left: 8px;
+  padding: 2px 9px; background: rgba(92,156,168,0.16); border-radius: 999px; color: var(--sea-deep); letter-spacing: 0.06em;
+}
+.shitsu-name .meta { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 1.5px; color: var(--text-light); text-transform: uppercase; }
+.shitsu-domain { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 999px; color: #fff; letter-spacing: 1px; flex-shrink: 0; }
+.shitsu-domain.exec { background: var(--d-exec); }
+.shitsu-domain.rel  { background: var(--d-rel); }
+.shitsu-domain.str  { background: var(--d-str); }
+.shitsu-tokucho { font-size: 14.5px; color: var(--text-muted); margin-bottom: 18px; line-height: 2; }
+.shitsu-tokucho strong { color: var(--text); font-weight: 700; }
+.shitsu-tokucho em { font-style: normal; background: linear-gradient(transparent 65%, rgba(244,195,174,0.6) 65%); padding: 0 2px; }
+.shitsu-episode { background: linear-gradient(135deg, rgba(244,195,174,0.42), rgba(169,205,212,0.28)); border-left: 3px solid var(--coral-mid); border-radius: 8px; padding: 16px 20px; }
+.shitsu-episode .ep-label { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--coral-deep); font-weight: 700; margin-bottom: 6px; }
+.shitsu-episode .ep-text { font-size: 14px; color: var(--text); line-height: 1.95; }
+.shitsu-episode .ep-text em { font-style: normal; background: linear-gradient(transparent 65%, rgba(255,224,191,0.85) 65%); padding: 0 2px; font-weight: 500; }
+
+/* ─── 6-10位 ─── */
+.shitsu-mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 24px; }
+.shitsu-mini { background: var(--warm-white); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; position: relative; transition: transform 0.3s, box-shadow 0.3s; }
+.shitsu-mini:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.shitsu-mini-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.shitsu-mini-rank { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.shitsu-mini-rank.exec { background: var(--d-exec); }
+.shitsu-mini-rank.rel  { background: var(--d-rel); }
+.shitsu-mini-rank.str  { background: var(--d-str); }
+.shitsu-mini h4 { font-size: 15px; color: var(--text); margin: 0; flex: 1; }
+.shitsu-mini .meta-mini { font-family: 'Klee One', 'Noto Serif JP', sans-serif; font-size: 12px; color: var(--sea-deep); margin-bottom: 6px; }
+.shitsu-mini p { font-size: 12.5px; color: var(--text-muted); line-height: 1.78; }
+.shitsu-mini .ep-mini { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--text-light); line-height: 1.78; }
+.shitsu-mini .ep-mini em { font-style: normal; background: linear-gradient(transparent 65%, rgba(255,224,191,0.78) 65%); padding: 0 2px; color: var(--text); }
+
+/* ─── MANUAL（強み・省エネ） ─── */
+.manual-two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+.manual-box { border-radius: var(--radius-lg); padding: 32px; }
+.manual-box.joy { background: rgba(244,195,174,0.18); border: 1px solid rgba(232,150,122,0.28); }
+.manual-box.pain { background: rgba(169,205,212,0.18); border: 1px solid rgba(92,156,168,0.26); }
+.manual-box h3 { font-size: 16px; margin-bottom: 16px; }
+.manual-box.joy h3 { color: var(--coral-deep); }
+.manual-box.pain h3 { color: var(--sea-deep); }
+.manual-box ul { list-style: none; }
+.manual-box li { font-size: 14px; color: var(--text-muted); padding: 10px 0; border-bottom: 1px solid var(--line); padding-left: 28px; position: relative; line-height: 1.85; }
+.manual-box li:last-child { border-bottom: none; }
+.manual-box.joy li::before  { content: '\f185'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--coral-mid); font-size: 12px; top: 12px; }
+.manual-box.pain li::before { content: '\f043'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--sea-mid); font-size: 12px; top: 12px; }
+.reframe { margin-top: 28px; background: linear-gradient(135deg, rgba(255,238,210,0.55), rgba(169,205,212,0.30)); border-radius: var(--radius-lg); padding: 28px 30px; border: 1px solid rgba(44,110,127,0.16); }
+.reframe .lbl { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--coral-deep); font-weight: 700; margin-bottom: 10px; }
+.reframe p { font-size: 14.5px; color: var(--text-muted); line-height: 2; }
+.reframe p strong { color: var(--sea-deep); }
+
+/* ─── COMBOS ─── */
+.combo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.combo-card { background: var(--warm-white); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; transition: transform 0.3s, box-shadow 0.3s; }
+.combo-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.combo-pair { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: var(--coral-mid); letter-spacing: 1px; margin-bottom: 4px; }
+.combo-card h4 { font-size: 15px; color: var(--text); margin-bottom: 8px; }
+.combo-card p { font-size: 13px; color: var(--text-muted); line-height: 1.9; }
+.combo-card p strong { color: var(--sea-deep); }
+
+/* ─── STATE / PHASE ─── */
+.phase-box { background: linear-gradient(135deg, var(--warm-white), rgba(244,195,174,0.30)); border-radius: var(--radius-lg); padding: 36px 32px; border: 1px solid rgba(44,110,127,0.18); box-shadow: var(--shadow-md); }
+.phase-box .lbl { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--coral-deep); font-weight: 700; margin-bottom: 10px; }
+.phase-box h3 { font-size: clamp(19px, 3vw, 25px); color: var(--sea-deep); margin-bottom: 14px; line-height: 1.55; }
+.phase-box p { font-size: 14.5px; color: var(--text-muted); line-height: 2; margin-bottom: 12px; }
+.phase-box p:last-child { margin-bottom: 0; }
+.phase-box .pull { font-family: 'Klee One', 'Noto Serif JP', serif; font-size: 17px; color: var(--text); background: rgba(255,253,247,0.8); padding: 16px 20px; border-left: 3px solid var(--coral-deep); border-radius: 6px; margin: 16px 0; line-height: 1.95; }
+.phase-box strong { color: var(--sea-deep); }
+
+/* ─── QUOTES ─── */
+.quote-list { display: flex; flex-direction: column; gap: 16px; }
+.quote-card { background: var(--warm-white); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 28px 26px 64px; position: relative; box-shadow: var(--shadow-sm); transition: transform 0.3s; }
+.quote-card:hover { transform: translateX(3px); }
+.quote-card::before { content: '\201C'; font-family: 'Noto Serif JP', serif; position: absolute; left: 20px; top: 14px; font-size: 56px; color: var(--sea-light); line-height: 1; }
+.quote-card p { font-size: 15px; line-height: 2; color: var(--text); font-weight: 400; margin: 0; }
+.quote-card .from { margin-top: 10px; font-size: 12px; color: var(--text-light); text-align: right; }
+.quote-card.pin { background: linear-gradient(135deg, rgba(244,195,174,0.28), rgba(169,205,212,0.18)); border-color: rgba(44,110,127,0.22); }
+.quote-card.pin::before { color: var(--coral-deep); }
+.quote-card em { font-style: normal; background: linear-gradient(transparent 65%, rgba(255,224,191,0.85) 65%); padding: 0 2px; font-weight: 500; }
+
+/* ─── CATCH ─── */
+.catch-wrap { text-align: center; }
+.catch-card {
+  display: inline-block; background: linear-gradient(135deg, var(--sea-deep), var(--coral-deep)); color: #fff;
+  padding: 44px 48px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); max-width: 760px;
+}
+.catch-card .lbl { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 4px; opacity: 0.85; margin-bottom: 18px; }
+.catch-card .copy { font-family: 'Klee One', 'Noto Serif JP', serif; font-size: clamp(19px, 3.6vw, 28px); line-height: 1.7; font-weight: 600; }
+.catch-card .copy span { color: #FFE3C7; }
+.catch-card .note { margin-top: 20px; font-size: 13px; opacity: 0.85; line-height: 1.85; }
+
+/* ─── STEPS ─── */
+.step-list { display: flex; flex-direction: column; gap: 14px; }
+.step-item { display: flex; gap: 18px; padding: 22px 24px; background: var(--warm-white); border: 1px solid var(--line); border-radius: var(--radius); transition: transform 0.3s, box-shadow 0.3s; align-items: flex-start; }
+.step-item:hover { transform: translateX(4px); box-shadow: var(--shadow-sm); }
+.step-num { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--sea-mid), var(--coral-mid)); color: #fff; font-family: 'Inter', sans-serif; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-item h4 { font-size: 15px; color: var(--sea-deep); margin-bottom: 4px; }
+.step-item p { font-size: 13.5px; color: var(--text-muted); line-height: 1.85; }
+
+/* ─── 問い ─── */
+.ask-list { display: flex; flex-direction: column; gap: 12px; }
+.ask-item { background: var(--warm-white); border: 1px solid var(--line); border-left: 3px solid var(--coral-mid); border-radius: 10px; padding: 18px 22px; font-size: 14.5px; color: var(--text); line-height: 1.85; font-family: 'Klee One', 'Noto Serif JP', serif; }
+
+/* ─── FOOTER ─── */
+.site-footer { background: linear-gradient(160deg, #2C6E7F 0%, #3A7A88 60%, #D9785C 130%); color: rgba(255,255,255,0.92); text-align: center; padding: 64px 24px 52px; }
+.site-footer .f-mark { font-size: 32px; margin-bottom: 16px; }
+.site-footer h3 { font-family: 'Noto Serif JP', serif; font-size: 20px; margin-bottom: 12px; color: #fff; }
+.site-footer p { font-size: 13.5px; line-height: 1.95; opacity: 0.9; max-width: 560px; margin: 0 auto 8px; }
+.site-footer .sig { margin-top: 24px; font-family: 'Klee One', 'Noto Serif JP', serif; font-size: 15px; color: #FFE3C7; }
+.site-footer .draft-note { margin-top: 18px; font-size: 11.5px; opacity: 0.7; }
+
+/* ─── FADE ─── */
+.fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-in.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 760px) {
+  .what-grid { grid-template-columns: 1fr; gap: 24px; }
+  .manual-two { grid-template-columns: 1fr; }
+  .combo-grid { grid-template-columns: 1fr; }
+  .shitsu-block { padding: 26px 22px; }
+  section { padding: 60px 0; }
+  .catch-card { padding: 34px 26px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ HERO ════════ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-windmark"></div>
+    <div class="hero-label">YOUR STRENGTHS GUIDE</div>
+    <h1 class="hero-name">あいさんの<span>トリセツ</span></h1>
+    <p class="hero-tagline">調べて、備えて、<strong>それでも"面白そう"に飛び込んでいく</strong></p>
+    <p class="hero-sub">— 気心の知れた人と、石橋を叩いて、ワクワクには全力で。<br>あなたの中の34人の"小さな自分"を、ゆっくり見にいきましょう。</p>
+  </div>
+  <a class="hero-credit" href="https://unsplash.com/" target="_blank" rel="noopener">Photo: Unsplash</a>
+  <div class="hero-scroll"><i class="fas fa-chevron-down"></i></div>
+</header>
+
+<!-- ════════ TOC ════════ -->
+<details class="float-toc">
+  <summary><i class="fas fa-compass"></i></summary>
+  <div class="toc-body">
+    <h5>もくじ</h5>
+    <ol>
+      <li><a href="#about"><span class="num">1</span><span>まず、ひとことで言うと</span></a></li>
+      <li><a href="#domain"><span class="num">2</span><span>あいさんの強みの地図</span></a></li>
+      <li><a href="#shitsu"><span class="num">3</span><span>資質を、ひとつひとつ</span></a></li>
+      <li><a href="#manual"><span class="num">4</span><span>のびのびの輪郭／省エネの輪郭</span></a></li>
+      <li><a href="#combo"><span class="num">5</span><span>資質の合わせ技（あるある）</span></a></li>
+      <li><a href="#phase"><span class="num">6</span><span>いま、あいさんがいる場所</span></a></li>
+      <li><a href="#voice"><span class="num">7</span><span>セッションで聞こえた、あなたの声</span></a></li>
+      <li><a href="#catch"><span class="num">8</span><span>あなたを、ひとことで</span></a></li>
+      <li><a href="#steps"><span class="num">9</span><span>これからの、小さな一歩</span></a></li>
+    </ol>
+  </div>
+</details>
+
+<!-- ════════ §1 ABOUT ════════ -->
+<section id="about" class="fade-in">
+  <div class="container">
+    <div class="section-label">SECTION 01</div>
+    <h2 class="section-title">まず、ひとことで言うと</h2>
+    <p class="section-lead">ストレングスファインダーは、あいさんの中にいる「ついやっちゃう小さな自分」たち34人を、強い順に並べたものです。いい・悪いではなく、「どんな時に心地よくて、どんな時にエネルギーを使うか」の地図。まずは、ぜんたいの空気から。</p>
+    <div class="what-grid">
+      <div class="what-text">
+        <p>あいさんは、<strong>「何をするか」より「誰とするか」</strong>で世界が決まる人です。気心の知れた人がそこにいるかどうか。その安心が土台にあって、はじめて力がのびのびと出ます。今のお仕事を続けている理由も、<em>「あの人がいるから」</em>。それは流されているんじゃなくて、あいさんの一番大事な羅針盤が、ちゃんと働いている証拠です。</p>
+        <p>一方で、新しいことには<strong>「とりあえず一回やってみよう」</strong>と、ふわっと飛び込んでいける人でもあります。和太鼓も、SUPも、バンジージャンプも。「面白そう」という直感が動いたら、石橋はしっかり叩くけれど、最後はちゃんと渡っていく。<em>慎重さと好奇心が、同時にいる</em>のがあいさんの面白さです。</p>
+        <p>穏やかで、争いごとが苦手で、人の気持ちにそっと気づける。派手な主人公タイプではないけれど、そばにいると場がやわらかくなる——そういう温度を持った人です。</p>
+      </div>
+      <div class="what-card">
+        <div class="big-icon"><i class="fas fa-water"></i></div>
+        <h3>あいさん</h3>
+        <p class="role">人間関係構築力 × 実行力タイプ</p>
+        <div class="meta">
+          <span><i class="fas fa-heart"></i>気心の知れた人と、深くゆっくり</span>
+          <span><i class="fas fa-shield-halved"></i>調べて備えてから、安心して動く</span>
+          <span><i class="fas fa-compass"></i>「面白そう」の直感で飛び込む</span>
+          <span><i class="fas fa-leaf"></i>和太鼓・海・SUP・新しい出会い</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ §2 DOMAIN ════════ -->
+<section id="domain" class="fade-in">
+  <div class="container">
+    <div class="section-label">SECTION 02</div>
+    <h2 class="section-title">あいさんの強みの地図</h2>
+    <p class="section-lead">34の資質は、4つの色（領域）に分かれています。あいさんのTOP10がどの色に集まっているかを見ると、「どんな力で世界と関わる人か」がわかります。</p>
+    <div class="domain-summary">
+      <h3>あなたのTOP10の重心</h3>
+      <div class="domain-bar">
+        <div class="domain-seg rel">人間関係構築力 ×5</div>
+        <div class="domain-seg exec">実行力 ×4</div>
+        <div class="domain-seg str">戦略 ×1</div>
+      </div>
+      <div class="domain-legend">
+        <span><span class="dot rel"></span>人間関係構築力（5つ）</span>
+        <span><span class="dot exec"></span>実行力（4つ）</span>
+        <span><span class="dot str"></span>戦略的思考力（1つ）</span>
+        <span><span class="dot infl"></span>影響力（0）</span>
+      </div>
+      <div class="domain-note">
+        <strong>人間関係構築力</strong>が、あいさんの土台です。親密性・調和性・共感性・成長促進・ポジティブ——「人とのつながり」と「場の温かさ」で力が湧くタイプ。そこに<strong>実行力</strong>の堅実さ（慎重さ・公平性・責任感・規律性）が重なって、<em>「ちゃんと備えて、信頼できる人と、丁寧に積み上げる」</em>という、安心感のある動き方になります。影響力（自分から前に出て引っぱる力）が低いのは、弱点ではなく、<strong>「聞き役・支え役で輝く人」</strong>という設計です。
+      </div>
+    </div>
+
+    <!-- ▼ 34位フル（おけちゃんへ：ストレングス結果画像があれば、ここの直前に image-frame で差し込み可） -->
+    <details class="rank-toggle">
+      <summary><i class="fas fa-chevron-right"></i>34位までの全結果を見る</summary>
+      <div class="rank-grid">
+        <div class="rank-item top10"><span class="rn">1</span>親密性</div>
+        <div class="rank-item top10"><span class="rn">2</span>調和性</div>
+        <div class="rank-item top10"><span class="rn">3</span>慎重さ</div>
+        <div class="rank-item top10"><span class="rn">4</span>公平性</div>
+        <div class="rank-item top10"><span class="rn">5</span>責任感</div>
+        <div class="rank-item top10"><span class="rn">6</span>共感性</div>
+        <div class="rank-item top10"><span class="rn">7</span>収集心</div>
+        <div class="rank-item top10"><span class="rn">8</span>規律性</div>
+        <div class="rank-item top10"><span class="rn">9</span>成長促進</div>
+        <div class="rank-item top10"><span class="rn">10</span>ポジティブ</div>
+        <div class="rank-item"><span class="rn dim">11</span>未来志向</div>
+        <div class="rank-item"><span class="rn dim">12</span>分析思考</div>
+        <div class="rank-item"><span class="rn dim">13</span>適応性</div>
+        <div class="rank-item"><span class="rn dim">14</span>アレンジ</div>
+        <div class="rank-item"><span class="rn dim">15</span>社交性</div>
+        <div class="rank-item"><span class="rn dim">16</span>最上志向</div>
+        <div class="rank-item"><span class="rn dim">17</span>学習欲</div>
+        <div class="rank-item"><span class="rn dim">18</span>目標志向</div>
+        <div class="rank-item"><span class="rn dim">19</span>個別化</div>
+        <div class="rank-item"><span class="rn dim">20</span>コミュニケーション</div>
+        <div class="rank-item"><span class="rn dim">21</span>運命思考</div>
+        <div class="rank-item"><span class="rn dim">22</span>原点思考</div>
+        <div class="rank-item"><span class="rn dim">23</span>活発性</div>
+        <div class="rank-item"><span class="rn dim">24</span>回復志向</div>
+        <div class="rank-item"><span class="rn dim">25</span>自我</div>
+        <div class="rank-item"><span class="rn dim">26</span>信念</div>
+        <div class="rank-item"><span class="rn dim">27</span>自己確信</div>
+        <div class="rank-item"><span class="rn dim">28</span>競争性</div>
+        <div class="rank-item"><span class="rn dim">29</span>着想</div>
+        <div class="rank-item"><span class="rn dim">30</span>内省</div>
+        <div class="rank-item"><span class="rn dim">31</span>指令性</div>
+        <div class="rank-item"><span class="rn dim">32</span>戦略性</div>
+        <div class="rank-item"><span class="rn dim">33</span>達成欲</div>
+        <div class="rank-item"><span class="rn dim">34</span>包含</div>
+      </div>
+    </details>
+
+    <a href="g-tpPNEZ0S48b5ujFj.html" style="display:flex;align-items:center;gap:16px;margin-top:24px;background:linear-gradient(135deg,var(--sea-deep),var(--coral-deep));color:#fff;text-decoration:none;padding:20px 26px;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);">
+      <span style="font-size:30px;line-height:1;">🌿</span>
+      <span style="flex:1;"><strong style="font-size:16px;display:block;margin-bottom:2px;">資質ブランチ図で、もっと深く</strong><span style="font-size:13px;opacity:.92;">TOP10ぜんぶの「資質ガイドの説明 × あいさんの実話」を、枝分かれで見られます →</span></span>
+    </a>
+  </div>
+</section>
+
+<div class="sun-divider"><p class="quote">「誰とするか」で世界が決まる人。<br>だから、好きな人と一緒にいられる場所が、あいさんの一番の力になる。</p></div>
+
+<!-- ════════ §3 資質ひとつひとつ ════════ -->
+<section id="shitsu" class="fade-in">
+  <div class="container">
+    <div class="section-label">SECTION 03</div>
+    <h2 class="section-title">資質を、ひとつひとつ</h2>
+    <p class="section-lead">あいさんの上位10人の"小さな自分"を、ひとりずつ紹介します。それぞれの説明の最後にある「💗 あいさんの場合」は、セッションで実際に出てきたあなたのエピソードです。「あ、これ私だ」を探しながら読んでみてください。</p>
+
+    <!-- 1 親密性 -->
+    <div class="shitsu-block is-top3">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">1</div>
+        <div class="shitsu-name"><h3>親密性<span class="metaphor-tag">🤝 親友</span></h3><div class="meta">人間関係構築力 ・ 深い信頼と身近な絆</div></div>
+        <div class="shitsu-domain rel">人間関係</div>
+      </div>
+      <p class="shitsu-tokucho">大勢と広く浅くより、<strong>限られた人との深いつながり</strong>を大切にする人。一度信頼関係を結ぶと、長く続く絆になります。<em>「何をするか」より「誰とするか」</em>が行動の動機になりやすく、好きな人のために動けていることが、何よりの喜びになります。</p>
+      <div class="shitsu-episode">
+        <div class="ep-label">💗 あいさんの場合</div>
+        <p class="ep-text">今のお仕事に戻ったのは、<em>「知ってる人がいるから」</em>。そして「その人がいなくなったら、もう辞めようと思ってる」。仕事の内容そのものより、<em>一緒にいる人の空気感</em>が合えば、多少大変でも続けていける——これは、あいさんの親密性がいちばん素直に出ているところです。</p>
+      </div>
+    </div>
+
+    <!-- 2 調和性 -->
+    <div class="shitsu-block is-top3">
+      <div class="shitsu-head">
+        <div class="shitsu-rank rel">2</div>
+        <div class="shitsu-name"><h3>調和性<span class="metaphor-tag">🕊 平和の使者</span></h3><div class="meta">人間関係構築力 ・ 合意点を探す</div></div>
+        <div class="shitsu-domain rel">人間関係</div>
+      </div>
+      <p class="shitsu-tokucho">対立よりも<strong>合意点を探そうとする</strong>人。みんなが納得できる道を見つけることに、静かな満足を覚えます。逆立った羽をそっと滑らかにするように、場の波風をおさめていく力です。<em>穏やかな空気そのものが、あいさんにとって心地よい</em>のです。</p>
+      <div class="shitsu-episode">
+        <div class="ep-label">💗 あいさんの場合</div>
+        <p class="ep-text">一緒にいたいのは<em>「空気感が同じような人」「スローテンポで和やかな人」</em>。頭の回転が速すぎる人にはついていけない、と感じるのも、あいさんが「速さ」より「穏やかさ」で力が出るタイプだから。場が凍りつくのが苦手で、自然と和やかさを選んでいます。</p>
+      </div>
+    </div>
+
+    <!-- 3 慎重さ -->
+    <div class="shitsu-block is-top3">
+      <div class="shitsu-head">
+        <div class="shitsu-rank exec">3</div>
+        <div class="shitsu-name"><h3>慎重さ<span class="metaphor-tag">🔍 石橋を叩く探検家</span></h3><div class="meta">実行力 ・ リスクを見極める</div></div>
+        <div class="shitsu-domain exec">実行力</div>
+      </div>
+      <p class="shitsu-tokucho">動く前に<strong>「大丈夫かな?」をちゃんと確かめる</strong>人。十分に調べて、準備して、リスクがないとわかってから安心して進みます。これは「臆病」ではなく、<em>抜け漏れなく、最後まで楽しみきるための力</em>。周りからすると「この人に任せれば安心」という信頼につながります。</p>
+      <div class="shitsu-episode">
+        <div class="ep-label">💗 あいさんの場合</div>
+        <p class="ep-text">旅行に行く時は<em>めっちゃ調べて、持ち物も行き先もぎっちりきっちり詰める</em>。だから当日、抜け漏れなく楽しめる。「面白そう」で飛び込むワクワクと、この「ちゃんと備える」慎重さが両方あるのが、あいさんの強さです。飛ぶ前に、ちゃんと下を見てから飛ぶ。</p>
+      </div>
+    </div>
+
+    <!-- 4 公平性 -->
+    <div class="shitsu-block is-top3">
+      <div class="shitsu-head">
+        <div class="shitsu-rank exec">4</div>
+        <div class="shitsu-name"><h3>公平性<span class="metaphor-tag">⚖ 天秤</span></h3><div class="meta">実行力 ・ みんなが平等であること</div></div>
+        <div class="shitsu-domain exec">実行力</div>
+      </div>
+      <p class="shitsu-tokucho">誰に対しても<strong>同じ基準で接したい</strong>人。みんなが同じように扱われている状況に安心を覚えます。「えらい人だけ特別」みたいな不公平が、なんとなく落ち着かない。自分の中にある<em>「これはフェアかな?」というものさし</em>が、判断の支えになっています。</p>
+      <div class="shitsu-episode">
+        <div class="ep-label">💗 あいさんの場合</div>
+        <p class="ep-text">「ガチガチのルールはしんどい」と感じる一方で、<em>みんなが同じように扱われる状況</em>には安心する。厳格なルールが好きなわけじゃなく、「平等であってほしい」という感覚値。これが、あいさんの優しさや、人を分け隔てしない態度として出ています。</p>
+      </div>
+    </div>
+
+    <!-- 5 責任感 -->
+    <div class="shitsu-block is-top3">
+      <div class="shitsu-head">
+        <div class="shitsu-rank exec">5</div>
+        <div class="shitsu-name"><h3>責任感<span class="metaphor-tag">🛡 約束を守る人</span></h3><div class="meta">実行力 ・ 最後までやり抜く</div></div>
+        <div class="shitsu-domain exec">実行力</div>
+      </div>
+      <p class="shitsu-tokucho">引き受けたことを<strong>最後までやり抜く</strong>人。誠実さや「自分の言葉に責任を持つ」ことを大切にします。派手ではないけれど、<em>「あの人に頼んだら、ちゃんとやってくれる」</em>という安心感を、まわりに静かに与える資質です。</p>
+      <div class="shitsu-episode">
+        <div class="ep-label">💗 あいさんの場合</div>
+        <p class="ep-text">お仕事について「<em>仕事なんだと思えば、そうかってやる</em>」という言葉。乗り気じゃないことでも、引き受けたことは淡々とこなす。これは「自分がない」のではなく、<em>「やると決めたことはやる」という責任感</em>が、静かに効いているということです。</p>
+      </div>
+    </div>
+
+    <!-- 6-10 mini -->
+    <div class="shitsu-mini-grid">
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head"><div class="shitsu-mini-rank rel">6</div><h4>共感性</h4></div>
+        <div class="meta-mini">🌡 心の温度計</div>
+        <p>人の気持ちや場の空気にそっと気づける力。そして実は、<strong>自分の「面白そう」という直感</strong>を素直に受け取るアンテナでもあります。</p>
+        <div class="ep-mini">💗 リベの人の<em>つぶやきやプロフィールを読んで「行ってみよう」</em>と思う。マイナスなことを言ってる人がいると、励ましたくなる——これが共感性です。</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head"><div class="shitsu-mini-rank str">7</div><h4>収集心</h4></div>
+        <div class="meta-mini">📚 知の収集家</div>
+        <p>「知らないこと・面白そうなこと」を集めたくなる、<strong>好奇心のエンジン</strong>。新しい体験そのものが、あいさんを動かします。</p>
+        <div class="ep-mini">💗 <em>和太鼓・SUP・バンジージャンプ</em>…「面白そう」で一回やってみる。新しい人とのつながりが増えるのが、また面白い。</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head"><div class="shitsu-mini-rank exec">8</div><h4>規律性</h4></div>
+        <div class="meta-mini">🕐 時計</div>
+        <p>計画的で、<strong>いつも同じリズムで整えたい</strong>人。予定が読めて、段取りどおりに進むと心地よい。慎重さと合わせ技で、安心の土台をつくります。</p>
+        <div class="ep-mini">💗 <em>急なスケジュール変更はほんまにテンション下がる</em>。あたふたして失敗する確率が上がるのが嫌——それくらい「整っている」が大事。</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head"><div class="shitsu-mini-rank rel">9</div><h4>成長促進</h4></div>
+        <div class="meta-mini">🌱 才能の発見者</div>
+        <p>人の中にある<strong>可能性や伸びしろ</strong>に気づき、そっと応援したくなる力。誰かの役に立てた実感が、あいさんの幸福度を上げていきます。</p>
+        <div class="ep-mini">💗 まだ「人を育てた」自覚はなくても、<em>人に貢献できると嬉しい</em>という要素は確かにある。これから、芽を出していく資質かもしれません。</div>
+      </div>
+      <div class="shitsu-mini">
+        <div class="shitsu-mini-head"><div class="shitsu-mini-rank rel">10</div><h4>ポジティブ</h4></div>
+        <div class="meta-mini">☀ 太陽</div>
+        <p>物事の<strong>明るい面・前向きな面を見つける</strong>力。声高に盛り上げるより、湯たんぽのようにじんわり、まわりを温めるタイプです。</p>
+        <div class="ep-mini">💗 <em>ネガティブをずっと言う人が苦手</em>。誰かが落ち込んでいると「励ましてあげたいな」と思う——その温度が、ポジティブです。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ §4 MANUAL ════════ -->
+<section id="manual" class="fade-in">
+  <div class="container">
+    <div class="section-label">SECTION 04</div>
+    <h2 class="section-title">のびのびの輪郭／省エネの輪郭</h2>
+    <p class="section-lead">同じあいさんでも、力がのびのび出る場面と、こっそりエネルギーを使う場面があります。これは「得意・苦手」というより、<strong>「どこに自分を置くと楽か」</strong>の地図。責めるためじゃなく、選ぶために使ってください。</p>
+    <div class="manual-two">
+      <div class="manual-box joy">
+        <h3><i class="fas fa-sun"></i> のびのび出る場面</h3>
+        <ul>
+          <li>気心の知れた人・空気感の合う人と一緒にいる時</li>
+          <li>「面白そう」と直感が動いた時（和太鼓・SUP・新しいオフ会）</li>
+          <li>ちゃんと調べて、備えて、安心して飛び込める時</li>
+          <li>予定や段取りが読めて、穏やかなリズムで進める時</li>
+          <li>みんなが平等で、和やかな雰囲気の場</li>
+          <li>誰かの役に立てた、貢献できたと感じられた時</li>
+        </ul>
+      </div>
+      <div class="manual-box pain">
+        <h3><i class="fas fa-battery-quarter"></i> エネルギーを使う場面</h3>
+        <ul>
+          <li>浅く広い付き合い・表面的なネットワーキング</li>
+          <li>急な予定変更や、段取りが崩れる状況</li>
+          <li>自分から大勢の前で前に出て、引っぱること</li>
+          <li>場が凍りつく・言い争いが起きている空気</li>
+          <li>頭の回転が速すぎる人に合わせ続ける時</li>
+          <li>ネガティブな発言や愚痴が続く環境</li>
+        </ul>
+      </div>
+    </div>
+    <div class="reframe">
+      <div class="lbl">REFRAME ・ 見方を変えると</div>
+      <p>「優柔不断かも」「自分がないのかも」と感じることがあるかもしれません。でも、あいさんの資質を並べてみると、それは<strong>"乗り気じゃないこと"を省エネモードで受け流しているだけ</strong>だとわかります。<br>本当にワクワクすること——和太鼓も、SUPも、バンジーも、この診断を受けることも——あいさんは<strong>ちゃんと自分で決めて、飛び込んできました</strong>。決められないんじゃない。<em>「面白そう」が動いた時のあなたは、いつだって即決</em>なんです。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ §5 COMBO ════════ -->
+<section id="combo" class="fade-in">
+  <div class="container">
+    <div class="section-label">SECTION 05</div>
+    <h2 class="section-title">資質の合わせ技（あるある）</h2>
+    <p class="section-lead">資質はひとつずつより、組み合わさった時に「あいさんらしさ」になります。上位の資質が手をつないだ時に起きる、あるあるを集めました。</p>
+    <div class="combo-grid">
+      <div class="combo-card">
+        <div class="combo-pair">慎重さ × 収集心</div>
+        <h4>飛ぶ前に、ちゃんと下を見て飛ぶ</h4>
+        <p>「面白そう」で飛び込むけど、その前に<strong>めちゃくちゃ調べる</strong>。バンジーもSUPも、ワクワク＋下調べのセット。だから後悔が少なく、ちゃんと楽しみきれる。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">親密性 × 共感性</div>
+        <h4>「この人」と決めたら、深く寄り添う</h4>
+        <p>気心の知れた人の気持ちに、そっと気づける。だから一緒にいると安心される。<strong>少人数の中でこそ</strong>、あいさんの温かさが本領を発揮します。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">慎重さ × 規律性</div>
+        <h4>備えて、整えて、安心をつくる</h4>
+        <p>リスクを調べる慎重さと、段取りを整える規律性のダブル。<strong>「ちゃんとしてる人」</strong>として頼られる。急な変更が苦手なのは、この丁寧さの裏返し。</p>
+      </div>
+      <div class="combo-card">
+        <div class="combo-pair">調和性 × ポジティブ</div>
+        <h4>場を、そっとあたためる</h4>
+        <p>争いを避け、明るい面を見つける。声高じゃなく<strong>じんわり湯たんぽ型</strong>。あいさんがいるだけで、その場の空気がやわらかくなります。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sun-divider"><p class="quote">決められないんじゃない。<br>"面白そう"が動いた時のあなたは、いつだって即決。</p></div>
+
+<!-- ════════ §6 PHASE ════════ -->
+<section id="phase" class="fade-in">
+  <div class="container">
+    <div class="section-label">SECTION 06</div>
+    <h2 class="section-title">いま、あいさんがいる場所</h2>
+    <p class="section-lead">セッションの始まりに、あいさんはこんなテーマを持ってきてくれました。「もう少し決断力がついたらいいな」「なんとなく生きてきた感じがする」「自分なりの納得が欲しい」。1時間半かけて見えてきたのは——。</p>
+    <div class="phase-box">
+      <div class="lbl">NOW</div>
+      <h3>「決められない私」じゃなくて、<br>「ワクワクで決める私」を見つけた</h3>
+      <p>振り返ってみると、あいさんは<strong>ワクワクすること・楽しいこと</strong>は、ちゃんと自分で決めて飛び込んでいました。和太鼓を続けるのも、SUPもバンジーも、神戸の朝活も、この診断を受けたことも。全部、あいさんの<strong>「面白そう」という直感</strong>が選んできたものです。</p>
+      <div class="pull">「ワクワクしたい、楽しいことかな」<br>——自分で決める時の基準を聞かれて、あいさんが出した答え。これがもう、立派な"自分の軸"です。</div>
+      <p>だから、これからの北極星はシンプルでいい。<strong>大きな目標を立てなくても、「今日はどんなワクワクをやってみようかな」</strong>を増やしていくだけ。目標思考で燃えるタイプではないあいさんには、そっちの方がずっと自然で、続きます。納得感は、ワクワクを重ねた先に、後からついてきます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ §7 VOICE ════════ -->
+<section id="voice" class="fade-in">
+  <div class="container">
+    <div class="section-label">SECTION 07</div>
+    <h2 class="section-title">セッションで聞こえた、あなたの声</h2>
+    <p class="section-lead">あいさんが実際に話してくれた言葉です。どれも、あいさんの資質がそのまま声になったもの。読み返すと、自分の輪郭が少し見えてきます。</p>
+    <div class="quote-list">
+      <div class="quote-card pin"><p><em>「ワクワクしたい、楽しいことかな」</em></p><div class="from">— 自分で決める時の基準について</div></div>
+      <div class="quote-card"><p>「一緒に働く人がいなくなったら、もう辞めようと思ってる。<em>本当に人間関係で仕事してる</em>みたいなところがある」</p><div class="from">— 親密性が、いちばん素直に出た言葉</div></div>
+      <div class="quote-card"><p>「やりたいことも、<em>誰かやってる人がいるところに行って</em>教えてもらう。新しい関係性ができるのが面白い」</p><div class="from">— 親密性 × 収集心</div></div>
+      <div class="quote-card"><p>「旅行とか、<em>めっちゃ調べる</em>。持っていくものも行くとこも、ぎっちりきっちり詰める」</p><div class="from">— 慎重さ × 規律性</div></div>
+      <div class="quote-card"><p>「空気感が同じような人がいい。<em>スローテンポで、和やかな感じ</em>の人」</p><div class="from">— 調和性が選ぶ、心地よい場所</div></div>
+      <div class="quote-card"><p>「続かなかったとしても、<em>とりあえず一回やってみよう</em>。やることは多いですね」</p><div class="from">— 収集心の好奇心エンジン</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ §8 CATCH ════════ -->
+<section id="catch" class="fade-in">
+  <div class="container catch-wrap">
+    <div class="section-label">SECTION 08</div>
+    <h2 class="section-title">あなたを、ひとことで</h2>
+    <p class="section-lead" style="margin:0 auto 40px;">これはまだ"仮置き"のキャッチコピーです。しっくりこなければ、一緒に育てていきましょう。</p>
+    <div class="catch-card">
+      <div class="lbl">YOUR CATCHPHRASE（仮）</div>
+      <p class="copy">『<span>気心の知れた仲間</span>』と『<span>まだ見ぬワクワク</span>』を、<br>石橋を叩いてから全力で楽しむ人</p>
+      <p class="note">慎重に備える堅実さ（慎重さ・規律性）と、面白そうに飛び込む好奇心（収集心・共感性）。<br>その全部を、信頼できる人との時間（親密性）の上でやっている——それが、あいさんです。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ §9 STEPS ════════ -->
+<section id="steps" class="fade-in">
+  <div class="container">
+    <div class="section-label">SECTION 09</div>
+    <h2 class="section-title">これからの、小さな一歩</h2>
+    <p class="section-lead">大きな目標はいりません。あいさんの資質に合った、ゆるくて続けやすい一歩を置いておきます。気が向いたものから、ひとつだけでも。</p>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div><h4>「面白そう」を、判断基準にしてみる</h4><p>迷ったら「これ、ワクワクする?」と自分に聞く。Yesなら一回やってみる。あいさんは、その直感に従っている時がいちばん心地よく動けます。</p></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div><h4>まわりに「私のどんなところがいい?」と聞いてみる</h4><p>自分のことは、自分が一番わかりにくい。気心の知れた人に聞いてみると、意外な"いいところ"が返ってきます。たくさん褒めてもらいましょう（笑）何よりのエネルギーになりますよ。</p></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div><h4>ストレングスのオフ会に行ってみる</h4><p>同じ資質を持つ人が、どう使っているか。全然違う資質の人が、どんな世界を見ているか。聞いているだけで「自分」がクリアになります。新しい人とのつながりも増えて、あいさんの収集心も喜びます。</p></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div><h4>「調べて備える力」を、ワクワクの実現に使う</h4><p>慎重さと規律性は、不安を増やす力じゃなく、<strong>ワクワクを安心して叶えるための力</strong>。行きたい場所、やってみたいこと——あいさんの下調べ力なら、ちゃんと最後まで楽しみきれます。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer class="site-footer">
+  <div class="f-mark"><i class="fas fa-water"></i></div>
+  <h3>あいさんへ</h3>
+  <p>1回で、自分の全部がわかるわけじゃありません。これは"はじめの地図"。やってみて、また話して、何度も繰り返すうちに、あいさんの解像度はどんどん上がっていきます。</p>
+  <p>自分のことは、最終的には自分にしかわからない。この取説が、その「知っていく」きっかけになれたら嬉しいです。まずは、直感を信じて、ワクワクを楽しんでみてください。</p>
+  <div class="sig">寄り添い型 個性診断師 おけもん</div>
+  <div class="draft-note">2025年10月のセッションをもとに作成 ／ アフターフォロー1回つき・一緒に育てていく取説です</div>
+</footer>
+
+<script>
+// フェードイン
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => {
+  const r = el.getBoundingClientRect();
+  if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+  else io.observe(el);
+});
+
+// TOC 現在地ハイライト
+const tocLinks = Array.from(document.querySelectorAll('.float-toc a'));
+const sections = tocLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+let ticking = false;
+function updateToc() {
+  const y = window.scrollY + window.innerHeight * 0.32;
+  let current = sections[0];
+  for (const s of sections) { if (s.offsetTop <= y) current = s; }
+  tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + (current && current.id)));
+  ticking = false;
+}
+window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(updateToc); ticking = true; } });
+updateToc();
+// TOCクリックで閉じる
+document.querySelectorAll('.float-toc a').forEach(a => a.addEventListener('click', () => {
+  document.querySelector('.float-toc').removeAttribute('open');
+}));
+</script>
+</body>
+</html>
