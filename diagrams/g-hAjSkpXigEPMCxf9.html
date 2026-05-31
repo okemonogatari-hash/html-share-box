@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>はぴこさん 資質図解ブランチ | StrengthsFinder TOP5</title>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@400;500;700;800&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2E3340;
+    --muted: #5C6172;
+    --paper: #FFFDF8;
+    --wash: #F3E2BD;
+    --line: rgba(61,74,110,.16);
+    --sea: #3D4A6E;
+    --sea-deep: #2E3A5C;
+    --coral: #E29A82;
+    --coral-deep: #C77A60;
+    --gold: #D29F52;
+    --rel: #5B95C7;
+    --exec: #9B7BB8;
+    --infl: #E8A85C;
+    --strat: #6FAA88;
+    --sea-soft: #E9EBF4;
+    --coral-soft: #FBEDE7;
+    --gold-soft: #FBF3E0;
+    --sand-soft: #F2EFE6;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; color: var(--ink);
+    background:
+      linear-gradient(90deg, rgba(61,74,110,.03) 1px, transparent 1px) 0 0 / 36px 36px,
+      linear-gradient(180deg, #FAF7F0 0%, #EFEAE0 100%);
+    font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    line-height: 1.75;
+  }
+  a { color: inherit; }
+  .hero {
+    position: relative; min-height: 84vh; display: grid; place-items: center;
+    padding: 72px 20px 54px; color: #fffdf8;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.34), transparent 22%),
+      radial-gradient(circle at 80% 16%, rgba(243,226,189,.7), transparent 28%),
+      linear-gradient(135deg, rgba(61,74,110,.94), rgba(123,123,166,.74) 48%, rgba(226,154,130,.82));
+    overflow: hidden; border-bottom: 1px solid var(--line);
+  }
+  .hero::before {
+    content: "THEME BRANCH"; position: absolute; top: 9%; right: 4%;
+    font-family: "Noto Serif JP", serif; font-size: clamp(42px, 8vw, 110px); letter-spacing: .16em;
+    color: rgba(255,255,255,.12); transform: rotate(7deg); white-space: nowrap;
+  }
+  .hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(to top, #FAF7F0, transparent); }
+  .hero-inner { position: relative; z-index: 2; width: min(1160px, 100%); display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .68fr); gap: 32px; align-items: center; }
+  .eyebrow { font-size: 12px; letter-spacing: .16em; font-weight: 800; color: rgba(255,253,248,.78); margin-bottom: 12px; }
+  h1 { font-family: "Noto Serif JP", serif; font-size: clamp(34px, 5vw, 60px); line-height: 1.16; margin: 0 0 18px; }
+  .lead { max-width: 760px; margin: 0 0 24px; color: rgba(255,253,248,.92); font-size: clamp(16px, 2vw, 19px); }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 16px;
+    border-radius: 8px; background: rgba(255,253,248,.94); color: var(--sea-deep); text-decoration: none; font-weight: 800;
+    border: 1px solid rgba(255,255,255,.55); box-shadow: 0 8px 24px rgba(46,58,92,.16);
+  }
+  .btn.subtle { color: #fffdf8; background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.32); }
+  .result-card { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 16px; box-shadow: 0 18px 44px rgba(46,58,92,.22); color: var(--ink); text-align: center; }
+  .result-card .rc-icon { font-size: 40px; }
+  .result-card h4 { font-family: "Noto Serif JP", serif; margin: 8px 0 6px; color: var(--sea-deep); }
+  .result-card p { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .result-card .rc-tags { margin-top: 12px; font-size: 11.5px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 10px; line-height: 1.7; }
+
+  .toc {
+    position: fixed; top: 22px; left: 18px; z-index: 20; width: 224px; max-height: calc(100vh - 44px); overflow: auto;
+    padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,253,248,.92);
+    backdrop-filter: blur(12px); box-shadow: 0 10px 34px rgba(46,58,92,.12);
+  }
+  .toc-title { font-family: "Noto Serif JP", serif; font-weight: 700; font-size: 14px; margin-bottom: 8px; color: var(--sea-deep); }
+  .toc ol { list-style: none; margin: 0; padding: 0; }
+  .toc a, .toc-mobile a {
+    display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 8px; align-items: center; padding: 7px 8px;
+    border-radius: 8px; text-decoration: none; color: var(--muted); font-size: 12px; line-height: 1.35;
+  }
+  .toc a.active, .toc a:hover, .toc-mobile a.active { color: var(--sea-deep); background: rgba(174,182,214,.5); font-weight: 800; }
+  .num { color: var(--coral); font-weight: 800; font-size: 11px; }
+  .toc-top { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+  .toc-mobile {
+    display: none; position: sticky; top: 10px; z-index: 30; width: min(720px, calc(100% - 24px)); margin: -26px auto 18px;
+    background: rgba(255,253,248,.96); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 10px 30px rgba(46,58,92,.12); overflow: hidden;
+  }
+  .toc-mobile summary { cursor: pointer; padding: 13px 16px; font-weight: 800; color: var(--sea-deep); }
+  .toc-mobile summary::-webkit-details-marker { display: none; }
+  .toc-mobile ol { list-style: none; margin: 0; padding: 0 10px 12px; }
+
+  .back-to-top {
+    position: fixed; right: 18px; bottom: 18px; z-index: 40; width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--sea-deep); color: #fffdf8; font-size: 18px; cursor: pointer;
+    box-shadow: 0 10px 26px rgba(46,58,92,.22); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+  }
+  .back-to-top.visible { opacity: 1; pointer-events: auto; }
+  .back-to-top:hover { transform: translateY(-3px); }
+
+  main { width: min(1160px, calc(100% - 32px)); margin: 0 auto; }
+  section { scroll-margin-top: 80px; padding: 68px 0; border-bottom: 1px solid var(--line); }
+  .section-head { display: grid; grid-template-columns: minmax(0, .72fr) minmax(280px, .28fr); gap: 26px; align-items: end; margin-bottom: 24px; }
+  .chapter { display: inline-block; margin-bottom: 8px; color: var(--coral); font-size: 11px; font-weight: 800; letter-spacing: .18em; }
+  h2 { margin: 0 0 8px; font-family: "Noto Serif JP", serif; font-size: clamp(26px, 3vw, 36px); line-height: 1.35; color: var(--sea-deep); }
+  .section-lead { margin: 0; color: var(--muted); font-size: 15px; }
+  .note { border-left: 4px solid var(--gold); background: var(--gold-soft); border-radius: 0 8px 8px 0; padding: 14px 16px; color: #5b4a2c; font-size: 14px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .card, .theme-card { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 6px 22px rgba(46,58,92,.06); }
+  .card { padding: 18px; }
+  .card h3 { margin: 0 0 8px; font-size: 18px; color: var(--sea-deep); }
+  .card p, .card li { color: var(--muted); font-size: 14px; }
+  .card ul { margin: 10px 0 0; padding-left: 1.2em; }
+  .domain-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; border-radius: 999px; padding: 5px 12px; color: #fff; font-size: 12px; font-weight: 800; }
+  .rel { background: var(--rel); }
+  .exec { background: var(--exec); }
+  .infl { background: var(--infl); }
+  .strat { background: var(--strat); }
+  .map { display: grid; grid-template-columns: repeat(5, minmax(78px, 1fr)); gap: 8px; }
+  .map a {
+    min-height: 104px; padding: 12px 10px; border-radius: 8px; background: var(--paper); border: 1px solid var(--line);
+    text-decoration: none; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 6px 18px rgba(46,58,92,.05);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .map a:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(46,58,92,.14); }
+  .map .m-ico { font-size: 22px; line-height: 1; }
+  .map b { font-size: 12px; line-height: 1.35; }
+  .map small { color: var(--muted); line-height: 1.3; font-size: 10.5px; }
+
+  .theme-card { overflow: hidden; margin-bottom: 28px; }
+  .theme-head {
+    display: grid; grid-template-columns: 82px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 22px;
+    background: linear-gradient(135deg, rgba(255,250,240,.95), rgba(174,182,214,.42)), var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .rank-no {
+    position: relative; display: grid; place-items: center; width: 68px; height: 68px; border-radius: 50%;
+    background: var(--sea-deep); color: #fffdf8; font-family: "Noto Serif JP", serif; font-size: 26px; font-weight: 700;
+  }
+  .rank-no .rn-ico { position: absolute; bottom: -6px; right: -6px; font-size: 22px; background: #fff; border-radius: 50%; width: 32px; height: 32px; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(46,58,92,.2); }
+  .theme-head h3 { margin: 0 0 4px; font-family: "Noto Serif JP", serif; font-size: clamp(24px, 3vw, 34px); line-height: 1.25; color: var(--sea-deep); }
+  .theme-head p { margin: 0; color: var(--muted); }
+  .metaphor { min-width: 120px; padding: 10px 14px; border-radius: 999px; background: rgba(255,253,248,.86); border: 2px dashed var(--coral); text-align: center; color: var(--coral-deep); font-weight: 800; font-size: 14px; }
+  .theme-body { padding: 22px; display: grid; gap: 16px; }
+  .branch-grid { display: grid; grid-template-columns: minmax(0, .98fr) minmax(300px, .72fr); gap: 16px; }
+  .subbox { border: 1px solid var(--line); border-radius: 8px; padding: 16px; background: #fffefb; }
+  .subbox h4 { margin: 0 0 8px; font-size: 15px; color: var(--sea-deep); }
+  .subbox p { margin: 0; color: var(--muted); font-size: 14px; }
+  .subbox ul { margin: 8px 0 0; padding-left: 1.15em; color: var(--muted); font-size: 14px; }
+  .ai { background: var(--sea-soft); }
+  .question { background: var(--coral-soft); }
+  .compare { background: var(--sand-soft); }
+  .source { font-size: 12px; color: var(--muted); margin-top: 10px; }
+  .route { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .route-step { position: relative; min-height: 150px; padding: 16px; border-radius: 8px; background: var(--paper); border: 1px solid var(--line); box-shadow: 0 6px 20px rgba(46,58,92,.06); }
+  .route-step b { display: block; margin-bottom: 6px; color: var(--sea-deep); }
+  .route-step p { margin: 0; color: var(--muted); font-size: 14px; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+
+  @media (max-width: 1180px) { .toc { display: none; } .toc-mobile { display: block; } }
+  @media (min-width: 1181px) {
+    .hero-inner, main { width: min(1160px, calc(100vw - 340px)); margin-left: max(300px, calc((100vw - 1160px) / 2)); margin-right: auto; }
+  }
+  @media (max-width: 860px) {
+    .hero { min-height: auto; }
+    .hero-inner, .section-head, .grid-2, .grid-3, .branch-grid, .route { grid-template-columns: 1fr; }
+    .map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .theme-head { grid-template-columns: 70px minmax(0, 1fr); }
+    .metaphor { grid-column: 1 / -1; text-align: left; }
+    section { padding: 44px 0; }
+  }
+  @media (max-width: 520px) {
+    .map { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">AI / TOP5 THEME BRANCH / 2026-05-31</div>
+      <h1>はぴこさんの<br>資質図解ブランチ</h1>
+      <p class="lead">取扱説明書の「もっと詳しく知りたい資質」を、ここで枝分かれして深掘りできる補足ページです。はぴこさんの上位5資質ぜんぶに「基本の説明」「はぴこさん接続（プロファイリングで見えたこと）」を添えてあります。気になった資質から、ゆっくり開いてみてください。</p>
+      <div class="hero-actions">
+        <a class="btn" href="g-NHVioQGkuhcwkSB5.html">取扱説明書へ戻る</a>
+        <a class="btn subtle" href="#theme-map">TOP5から選ぶ</a>
+      </div>
+    </div>
+    <figure class="result-card">
+      <div class="rc-icon">🌅</div>
+      <h4>はぴこさんのTOP5</h4>
+      <p>戦略的思考力を軸に、人間関係構築力の優しさが重なるタイプ</p>
+      <div class="rc-tags">🌡 共感性 / 🧵 運命思考 / 🔭 個別化 / 🌊 内省 / 🌅 未来志向</div>
+    </figure>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目次">
+  <div class="toc-title">Branch 目次</div>
+  <ol>
+    <li><a href="#howto" data-target="howto"><span class="num">00</span>使い方</a></li>
+    <li><a href="#theme-map" data-target="theme-map"><span class="num">01</span>TOP5地図</a></li>
+    <li><a href="#domains" data-target="domains"><span class="num">02</span>4領域</a></li>
+    <li><a href="#kyokan" data-target="kyokan"><span class="num">1</span>🌡 共感性</a></li>
+    <li><a href="#unmei" data-target="unmei"><span class="num">2</span>🧵 運命思考</a></li>
+    <li><a href="#kobetsu" data-target="kobetsu"><span class="num">3</span>🔭 個別化</a></li>
+    <li><a href="#naisei" data-target="naisei"><span class="num">4</span>🌊 内省</a></li>
+    <li><a href="#mirai" data-target="mirai"><span class="num">5</span>🌅 未来志向</a></li>
+    <li><a href="#route" data-target="route"><span class="num">03</span>はぴこさんの自然な流れ</a></li>
+    <li><a href="#sources" data-target="sources"><span class="num">04</span>出典</a></li>
+  </ol>
+  <div class="toc-top"><a href="#top">最初に戻る</a></div>
+</nav>
+
+<details class="toc-mobile" aria-label="目次">
+  <summary>Branch 目次</summary>
+  <ol>
+    <li><a href="#howto" data-target="howto"><span class="num">00</span>使い方</a></li>
+    <li><a href="#theme-map" data-target="theme-map"><span class="num">01</span>TOP5地図</a></li>
+    <li><a href="#domains" data-target="domains"><span class="num">02</span>4領域</a></li>
+    <li><a href="#kyokan" data-target="kyokan"><span class="num">1</span>🌡 共感性</a></li>
+    <li><a href="#unmei" data-target="unmei"><span class="num">2</span>🧵 運命思考</a></li>
+    <li><a href="#kobetsu" data-target="kobetsu"><span class="num">3</span>🔭 個別化</a></li>
+    <li><a href="#naisei" data-target="naisei"><span class="num">4</span>🌊 内省</a></li>
+    <li><a href="#mirai" data-target="mirai"><span class="num">5</span>🌅 未来志向</a></li>
+    <li><a href="#route" data-target="route"><span class="num">03</span>はぴこさんの自然な流れ</a></li>
+    <li><a href="#sources" data-target="sources"><span class="num">04</span>出典</a></li>
+  </ol>
+</details>
+
+<button class="back-to-top" aria-label="最初に戻る" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main>
+  <section id="howto">
+    <div class="section-head">
+      <div>
+        <span class="chapter">00 / HOW TO USE</span>
+        <h2>このページは、資質の辞書ではなく「話を深める枝」です</h2>
+        <p class="section-lead">取扱説明書で気になった資質だけを開いて、はぴこさんの実感と照らし合わせるためのページです。</p>
+      </div>
+      <div class="note">全部読まなくて大丈夫。「この言葉、当たってるな」「これはちょっと違うかも」を見つける感覚で眺めてみてください。</div>
+    </div>
+    <div class="grid-3">
+      <div class="card"><h3>📖 基本の説明を見る</h3><p>資質ガイドの「どういう人？」「自然な行動」を、読みやすく整理しています。</p></div>
+      <div class="card"><h3>💛 喜ぶこと・省エネを見る</h3><p>力がのびのび出る条件と、エネルギーを使う条件のメモ。人との関わりや、自分の置き場所を選ぶヒントに。</p></div>
+      <div class="card"><h3>🌅 はぴこさん接続を見る</h3><p>7つの習慣・縁・深い言語化・見えている景色 ── プロファイリングで見えてきた、はぴこさんらしさに、それぞれの資質をつなげています。</p></div>
+    </div>
+  </section>
+
+  <section id="theme-map">
+    <div class="section-head">
+      <div>
+        <span class="chapter">01 / TOP5 MAP</span>
+        <h2>はぴこさんの上位5資質を、すぐ開けるように</h2>
+        <p class="section-lead">気になる資質をタップ／クリックすると、その説明へ移動します。</p>
+      </div>
+      <div class="note">1位から順に読む必要はありません。「あ、これ私かも」と思ったところから。</div>
+    </div>
+    <div class="map">
+      <a href="#kyokan"><span class="m-ico">🌡</span><span class="num">01</span><b>共感性</b><small>心の温度計 / 寄り添う</small></a>
+      <a href="#unmei"><span class="m-ico">🧵</span><span class="num">02</span><b>運命思考</b><small>縁を結ぶ / 意味を見出す</small></a>
+      <a href="#kobetsu"><span class="m-ico">🔭</span><span class="num">03</span><b>個別化</b><small>個性の発見者 / その人らしさ</small></a>
+      <a href="#naisei"><span class="m-ico">🌊</span><span class="num">04</span><b>内省</b><small>思考の深海 / 深く掘る</small></a>
+      <a href="#mirai"><span class="m-ico">🌅</span><span class="num">05</span><b>未来志向</b><small>夜明けを描く / ビジョン</small></a>
+    </div>
+  </section>
+
+  <section id="domains">
+    <div class="section-head">
+      <div>
+        <span class="chapter">02 / FOUR DOMAINS</span>
+        <h2>4領域で見ると「深い思考 × 人への寄り添い」が両輪の人</h2>
+        <p class="section-lead">34資質は4つの色に分かれます。はぴこさんのTOP5がどこに集まっているか。</p>
+      </div>
+      <div class="note">上位5の内訳は、戦略的思考力 <strong>3</strong>・人間関係構築力 <strong>2</strong>・実行力 <strong>0</strong>・影響力 <strong>0</strong>。「深く考え、つながりと未来を見通しながら、人にそっと寄り添う」のが、はぴこさんが一番自然に呼吸できる景色です。</div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <span class="domain-chip strat">🧭 戦略的思考力 ✕ 3資質</span>
+        <h3>運命思考・内省・未来志向</h3>
+        <p>物事のつながりと意味を見出し、深く深く考えを掘り下げ、まだ見ぬ未来を描く領域。はぴこさんの中核装備です。「見えないものを感じ取り、見える化して現実に生かす」のは、この3資質が同時に動いた姿。とくに運命思考は、TOP5に入る人が多くない芯のある資質です。</p>
+      </div>
+      <div class="card">
+        <span class="domain-chip rel">🤝 人間関係構築力 ✕ 2資質</span>
+        <h3>共感性・個別化</h3>
+        <p>人の気持ちにそっと気づき、一人ひとりの個性を見抜く領域。「相手が何を求めているかを感じる」「この人はこんな強みを生かせそう」── 人によりそう優しさと、その人らしさを見つける目を支える根っこです。</p>
+      </div>
+      <div class="card" style="background:#f6f4ef;">
+        <span class="domain-chip exec" style="opacity:.6;">🛡 実行力 ✕ 0資質</span>
+        <h3>上位5内に無し</h3>
+        <p>「今ここを、淡々と回す・きっちり管理する」が前面に出る動き方ではない、というサイン。はぴこさんは、目の前のタスクをこなすより、<strong>意味を感じ、未来を描き、人に寄り添う</strong>ところで自然に力が出ます。これは弱点ではなく"設計"です。</p>
+      </div>
+      <div class="card" style="background:#f6f4ef;">
+        <span class="domain-chip infl" style="opacity:.6;">📣 影響力 ✕ 0資質</span>
+        <h3>上位5内に無し</h3>
+        <p>「自分が前に出てぐいぐい引っ張る」タイプではない、ということ。はぴこさんは旗を振るより、<strong>そばで深く感じ取り、そっと勇気づける</strong>形で人を動かします。柔らかいのに芯がある関わり方は、ここから来ています。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="themes">
+    <div class="section-head">
+      <div>
+        <span class="chapter">TOP5 / THEME DETAIL</span>
+        <h2>資質別の図解メモ</h2>
+        <p class="section-lead">資質ガイドの説明をベースに、はぴこさんのプロファイリングで見えたことにつなげます。</p>
+      </div>
+      <div class="note">各カードの最後に「プロファイリングで見えたこと」を置いています。資質から読み解いた"仮説"です。しっくりこなければ、本人の言葉で上書きしていけます。</div>
+    </div>
+
+    <!-- 01 共感性 -->
+    <article class="theme-card" id="kyokan">
+      <div class="theme-head">
+        <div class="rank-no">1<span class="rn-ico">🌡</span></div>
+        <div><span class="domain-chip rel">人間関係構築力</span><h3>共感性</h3><p>他人の感情を察し、そっと寄り添える力</p></div>
+        <div class="metaphor">🌡 心の温度計</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>場の空気や人の気持ちに敏感で、感情豊か。他者の感情や状況を察知するアンテナを持ち、言葉にされていない気持ちを汲み取って寄り添える人。「どうすればこの人は喜ぶかな」を自然に感じている。感じ取るだけでなく、自分の気持ちを素直に表現することも、この資質の大切な一面。</p></div>
+          <div class="subbox ai"><h4>はぴこさんに接続すると</h4><p>発信していた言葉 ── <strong>「自分が嬉しかったことを人にすればいいと言うけれど、必ずしも全部が当てはまるわけじゃない。相手が何を求めているかを感じることが大事」</strong>。これは共感性の本質そのもの。表面的な"よかれ"ではなく、相手の内側まで感じ取っている。マイナスなことを言っている人がいると、励ましたくなる ── その温度が、いつも周りをやわらかくしています。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>感情や心情を大切にする場</li><li>気持ちを汲んだ丁寧なやりとり</li><li>自分の気持ちを素直に表現できる時</li><li>感情的なつながりを感じられる関係</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>感情を抑制・無視される環境</li><li>論理や効率だけで人を扱う場</li><li>人の感情を受け止めすぎて抱え込む時</li><li>冷たい・無関心な態度</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>共感性：感情を感じ取り、寄り添う</li><li>個別化：一人ひとりの個性を見抜く（3位）</li><li>運命思考：出来事のつながりを感じる（2位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>プロファイリングで見えたこと</h4><p>はぴこさんの共感性は、内省と手をつなぐことで、<strong>「ただ感じる」を超えて「奥深く噛み砕いて言葉にする」</strong>力になっています。だから発する言葉に、表面的じゃない深みと優しさが宿る。共感性が高い人は感情を受け取りすぎて疲れることもあるので、自分の心の声を素直に表現する時間も、同じくらい大切に。</p><div class="source">資質ガイド：共感性／人間関係構築力</div></div>
+      </div>
+    </article>
+
+    <!-- 02 運命思考 -->
+    <article class="theme-card" id="unmei">
+      <div class="theme-head">
+        <div class="rank-no">2<span class="rn-ico">🧵</span></div>
+        <div><span class="domain-chip strat">戦略的思考力</span><h3>運命思考</h3><p>あらゆる物事のつながりと意味を見出す力</p></div>
+        <div class="metaphor">🧵 縁を結ぶ人</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>あらゆる物事には意味があり、つながっていると感じる人。偶然の出会いにも「縁」を感じ、目に見えないつながりを大切にする。出来事に意味づけをして、しんどいことさえ「これは必要な経験だった」と前向きに捉え直せる。理念や使命を大切にする、芯のある人に多い資質。</p></div>
+          <div class="subbox ai"><h4>はぴこさんに接続すると</h4><p>『7つの習慣』を心から大切にして、それを軸に行動していること ── これは運命思考と深くつながっています。<strong>「自分にはこういう役割があるんだ」「今のこの出来事にも意味があるんだ」</strong>と感じ取る力が、ミッション（使命）への思いを支えている。世の中の理念ある経営者や成功者にも、この捉え方をする人が多い。この取説と出会えたことも、きっと何かの縁ですね。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>出来事に意味やつながりを見出せる時</li><li>縁・ご縁を感じられる出会い</li><li>理念・使命・思いを語り合える場</li><li>目に見えないものを大切にできる関係</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>意味を感じられない作業の繰り返し</li><li>つながりを断ち切るようなドライな関係</li><li>理念や思いを共有できない場</li><li>「意味なんてない」と切り捨てられること</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>運命思考：すべてに意味とつながりを感じる</li><li>未来志向：先の景色を描く（5位）</li><li>内省：意味を深く掘り下げる（4位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>プロファイリングで見えたこと</h4><p>運命思考がTOP5に来る人は、実はそう多くありません。これは<strong>はぴこさんの大きな個性</strong>。どんな出来事も自分の中でプラスに意味づけし直せるので、コーチングのような「解釈を変えて前に進む」関わりが、ごく自然にできるはず。今感じている"迷い"さえ、「なぜ今これを感じているんだろう」と意味に変えられます。</p><div class="source">資質ガイド：運命思考／戦略的思考力</div></div>
+      </div>
+    </article>
+
+    <!-- 03 個別化 -->
+    <article class="theme-card" id="kobetsu">
+      <div class="theme-head">
+        <div class="rank-no">3<span class="rn-ico">🔭</span></div>
+        <div><span class="domain-chip rel">人間関係構築力</span><h3>個別化</h3><p>一人ひとりの個性や特性を見抜く力</p></div>
+        <div class="metaphor">🔭 個性の発見者</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>一人ひとりの個性や違いを、自然と見抜く人。みんなを同じカテゴリーでくくらず、「この人はこういう特徴があって、こんな強みを生かせたら面白い」と、その人だけの持ち味を見つける。多様な人がそれぞれの良さを発揮できるように関わるのが得意。</p></div>
+          <div class="subbox ai"><h4>はぴこさんに接続すると</h4><p>共感性で気持ちに寄り添い、個別化でその人の個性を見抜き、運命思考と未来志向で<strong>「この人はこんな未来を描けるんじゃないかな」</strong>とまで見通せる ── これはほぼ、コーチングそのものの関わり方です。一人ひとりの可能性を見つけて、その人らしい生かし方を一緒に考えられる。はぴこさんはきっと、自然と人を元気づけ、勇気づけ、楽しませているはずです。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>一人ひとりの個性をじっくり見られる時</li><li>その人らしさを生かせる関わり</li><li>多様な人と深く接すること</li><li>個別に合わせた丁寧なやりとり</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>みんなを一律・画一的に扱うこと</li><li>個性を無視したマニュアル対応</li><li>ステレオタイプで人を決めつける場</li><li>一人ひとりを見る時間が取れない時</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>個別化：一人ひとりの違いを見る</li><li>共感性：感情を感じ取る（1位）</li><li>運命思考：その人の役割・縁を感じる（2位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>プロファイリングで見えたこと</h4><p>個別化・共感性・運命思考・未来志向が重なると、<strong>「その人だけの可能性を見抜いて、未来まで描いてあげられる」</strong>という、はぴこさんならではの関わり方になります。これは多くの人が憧れる才能。見抜いたその人の良いところを、ぜひ言葉にして本人に伝えてあげてください。救われる人がたくさんいます。</p><div class="source">資質ガイド：個別化／人間関係構築力</div></div>
+      </div>
+    </article>
+
+    <!-- 04 内省 -->
+    <article class="theme-card" id="naisei">
+      <div class="theme-head">
+        <div class="rank-no">4<span class="rn-ico">🌊</span></div>
+        <div><span class="domain-chip strat">戦略的思考力</span><h3>内省</h3><p>深く考え、本質を掘り下げる力</p></div>
+        <div class="metaphor">🌊 思考の深海</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>頭の中で静かに自己対話をしながら、思考をどんどん深めていく人。考えること自体がエネルギーの源になる。一人で物事をじっくり考える時間を大切にする。自分の中で言葉を繰り返し噛み砕いているので、言語化する力が高く、出てくる言葉に深みがある人が多い。</p></div>
+          <div class="subbox ai"><h4>はぴこさんに接続すると</h4><p>居酒屋でお話ししたとき感じたのは、人当たりの柔らかさに<strong>思いの強さ・芯の強さ</strong>が同居していること。そして、ハマったらガッとはまり込む奥深さ。これは内省がもたらしているもの。表面的な言葉尻ではなく、奥まで掘り下げて考えられるから、発する言葉に独特の重みと優しさが宿る ── 「相手が求めているものを感じる」という気づきも、内省で深く噛み砕いたからこそ出てきた言葉です。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>一人で静かに深く考えられる時間</li><li>本質を掘り下げて考えること</li><li>思考をじっくり言語化する時間</li><li>深い話・考えさせられるテーマ</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>考える時間がなく即断を急かされる時</li><li>浅く表面的な議論</li><li>騒がしくて思考に集中できない環境</li><li>深く考えることを「考えすぎ」とされる場</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>内省：一人で深く掘り下げて考える</li><li>運命思考：意味とつながりを見出す（2位）</li><li>未来志向：先の景色を思い描く（5位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>プロファイリングで見えたこと</h4><p>内省があるので、一人で考えを深める時間はとても大切。でも、<strong>その思考を人と共有して確かめる時間も、同じくらい大事</strong>です。一人で掘る時間と、語り合って膨らませる時間。このバランスが、はぴこさんの深い思考を孤立させず、もっと豊かに育ててくれます。</p><div class="source">資質ガイド：内省／戦略的思考力</div></div>
+      </div>
+    </article>
+
+    <!-- 05 未来志向 -->
+    <article class="theme-card" id="mirai">
+      <div class="theme-head">
+        <div class="rank-no">5<span class="rn-ico">🌅</span></div>
+        <div><span class="domain-chip strat">戦略的思考力</span><h3>未来志向</h3><p>未来のビジョンと可能性を描く力</p></div>
+        <div class="metaphor">🌅 夜明けを描く人</div>
+      </div>
+      <div class="theme-body">
+        <div class="branch-grid">
+          <div class="subbox"><h4>資質ガイドではこういう人</h4><p>「こうなったら面白そうだな」という未来のビジョンを、鮮やかに思い描ける人。まだ来ていない先のことにワクワクできる。その未来像は、自分だけでなくまわりの人をも希望で満たす。霧の向こうの景色を、誰よりも早く、あざやかに見られる目を持っている。</p></div>
+          <div class="subbox ai"><h4>はぴこさんに接続すると</h4><p>個別化で人の個性を見抜き、共感性で気持ちに寄り添ったうえで、未来志向で<strong>その人の可能性ある未来を描いてあげられる</strong>。これは、はぴこさんがごく自然にやっていること。あなたが見ている景色は、ほかの人にはなかなか到達できない、大きくて広いもの。だからこそ、現実とのあいだにギャップを感じることもあるけれど、それは"遠くが見えている"証拠です。</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="subbox"><h4>喜ぶこと</h4><ul><li>未来やビジョンを思い描ける時</li><li>理想や可能性を語り合える場</li><li>「こうなったら面白い」を考える時間</li><li>希望を持って先を見られる関係</li></ul></div>
+          <div class="subbox"><h4>省エネになること</h4><ul><li>目の前の作業だけに縛られる時</li><li>未来や理想を語れない環境</li><li>見えている理想と現実のギャップ</li><li>ビジョンを「夢物語」と否定される場</li></ul></div>
+          <div class="subbox compare"><h4>他資質との比較</h4><ul><li>未来志向：先の景色・ビジョンを描く</li><li>運命思考：つながりと意味を感じる（2位）</li><li>内省：深く掘り下げて考える（4位）</li></ul></div>
+        </div>
+        <div class="subbox question"><h4>プロファイリングで見えたこと</h4><p>運命思考も未来志向も、とても抽象度の高い資質。だから「今ここ」より、ずっと先の大きな景色が見えてしまう。<strong>そのギャップは欠点ではなく、はぴこさんにしか見えていない景色がある証拠</strong>です。その景色を言語化して人に伝えることが、はぴこさんの一番の貢献になります。抽象度の高い話を語り合える仲間がいると、もっと生きやすくなります。</p><div class="source">資質ガイド：未来志向／戦略的思考力</div></div>
+      </div>
+    </article>
+
+  </section>
+
+  <section id="route">
+    <div class="section-head">
+      <div>
+        <span class="chapter">03 / NATURAL FLOW</span>
+        <h2>はぴこさんが、いちばん心地よく動ける流れ</h2>
+        <p class="section-lead">資質の重なりを、はぴこさんの自然な動き方の順番として置きます。</p>
+      </div>
+      <div class="note">どこから入っても大丈夫。はぴこさんの場合は「縁と意味を感じる → 気持ちと個性に寄り添う → 深く掘り下げる → 未来を描く」が自然そうです。</div>
+    </div>
+    <div class="route">
+      <div class="route-step"><b>① 感じる：縁と意味を受け取る 🧵</b><p>運命思考。出会いや出来事に「これには意味がある」とつながりを感じ取る。すべての入口は、ここから。</p></div>
+      <div class="route-step"><b>② 寄り添う：気持ちと個性を見る 🌡🔭</b><p>共感性 × 個別化。相手の感情を感じ取り、その人だけの個性を見抜く。「わかってもらえてる」安心を渡す。</p></div>
+      <div class="route-step"><b>③ 深める：奥まで掘り下げる 🌊</b><p>内省。感じ取ったことを自分の中で噛み砕き、本質まで掘り下げて言語化する。深みのある言葉が生まれる。</p></div>
+      <div class="route-step"><b>④ 描く：未来を希望で照らす 🌅</b><p>未来志向。その人の、自分の、まだ見ぬ未来を鮮やかに描く。霧の向こうの景色を、希望に変えていく。</p></div>
+    </div>
+  </section>
+
+  <section id="sources">
+    <div class="section-head">
+      <div>
+        <span class="chapter">04 / SOURCES</span>
+        <h2>このページの出典</h2>
+        <p class="section-lead">資質ガイドの言葉をベースに、はぴこさん接続は資質から読み解いたプロファイリング（仮説）に基づいています。</p>
+      </div>
+      <div class="note">体験からではなく資質から可能性を読み解いた"仮説"です。違和感が出たところは、はぴこさん本人の言葉で上書きしていけます。</div>
+    </div>
+    <ul class="grid-2" style="list-style:none;padding:0;margin:0;">
+      <li class="card"><b>資質ガイド:</b><br>ストレングス資質図解ガイド<br>該当資質：共感性 / 運命思考 / 個別化 / 内省 / 未来志向</li>
+      <li class="card"><b>本人情報:</b><br>はぴこさん StrengthsFinder TOP5順位／資質プロファイリング（資質から可能性を読み解いた仮説）</li>
+      <li class="card"><b>関連ファイル:</b><br>g-NHVioQGkuhcwkSB5.html（取扱説明書本体）／はぴちゃん資質解説プロファイル（読み解き音声の書き起こし）</li>
+      <li class="card"><b>参照フォーマット:</b><br>あいさん 資質図解ブランチ（テンプレート）</li>
+    </ul>
+    <div class="footer-links">
+      <a class="btn" href="g-NHVioQGkuhcwkSB5.html">取扱説明書へ戻る</a>
+      <a class="btn subtle" href="#top">先頭に戻る</a>
+    </div>
+  </section>
+</main>
+
+<script>
+const tocLinks = document.querySelectorAll('.toc a[data-target], .toc-mobile a[data-target]');
+const tocSections = Array.from(tocLinks).map(link => document.getElementById(link.dataset.target)).filter(Boolean);
+function updateActiveToc() {
+  const offset = window.innerHeight * 0.32;
+  let currentId = tocSections[0]?.id;
+  for (const section of tocSections) { if (section.getBoundingClientRect().top - offset <= 0) currentId = section.id; }
+  tocLinks.forEach(link => link.classList.toggle('active', link.dataset.target === currentId));
+}
+let tocTicking = false;
+window.addEventListener('scroll', () => {
+  if (!tocTicking) {
+    requestAnimationFrame(() => {
+      updateActiveToc();
+      document.querySelector('.back-to-top')?.classList.toggle('visible', window.scrollY > 520);
+      tocTicking = false;
+    });
+    tocTicking = true;
+  }
+}, { passive: true });
+document.querySelectorAll('.toc-mobile a').forEach(link => {
+  link.addEventListener('click', () => { const m = document.querySelector('.toc-mobile'); if (m) m.open = false; });
+});
+updateActiveToc();
+</script>
+</body>
+</html>
