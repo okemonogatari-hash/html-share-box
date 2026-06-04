@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「コード書けない私でも？」Claude Codeで"自分専用の道具"を作る5つのコツ｜ことり×おけもん</title>
+<!--
+======================================================================
+おけもん図解ブログ（彩り／オフ会シェア用）
+形式：フェルミ漫画ふうの対話図解
+登場：🐤 ことり（AI気になるけど踏み出せてない・架空）／ 🍑 おけもん（Claude Code使ってる人）
+ソース：YouTube「全人類クロードコードを使うべき」（マジAIマスター） https://www.youtube.com/watch?v=ahzwOeo01hE
+公開度：noindex／オフ会・彩りメンバーへのシェア用
+※ 社員キャラは出していません。すべて架空の対話です。
+======================================================================
+-->
+<style>
+:root{
+  --bg:#faf8f5;
+  --paper:#ffffff;
+  --ink:#2d2a26;
+  --sub:#7a756d;
+  --line:#efe6da;
+  /* おけもん＝あたたかいピーチ */
+  --oke:#e8896b;
+  --oke-deep:#c95c45;
+  --oke-light:#fff3ee;
+  /* ことり＝やわらかいスカイ */
+  --kotori:#5b9bd5;
+  --kotori-deep:#3a7bbf;
+  --kotori-light:#eef6fd;
+  --accent:#6c5ce7;
+  --accent-soft:rgba(108,92,231,0.08);
+  --honey:#e0a52e;
+  --honey-light:#fff8e6;
+  --mint:#13a880;
+  --mint-light:#eafaf4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Maru Gothic ProN","M PLUS Rounded 1c","Hiragino Kaku Gothic ProN",sans-serif;
+  font-size:15.5px;line-height:1.95;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(circle at 18% 4%,rgba(232,137,107,0.06),transparent 40%),radial-gradient(circle at 82% 12%,rgba(91,155,213,0.06),transparent 38%);}
+a{color:var(--oke-deep);text-decoration:none;font-weight:700}
+a:hover{text-decoration:underline}
+
+header.hero{
+  background:linear-gradient(135deg,#5b9bd5 0%,#7c8ce0 38%,#e8896b 78%,#c95c45 100%);
+  color:#fff;text-align:center;padding:52px 22px 44px;border-bottom:4px solid #fff;position:relative;overflow:hidden;
+}
+.category-badge{display:inline-block;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.34);border-radius:999px;padding:6px 16px;font-size:12px;font-weight:800;margin-bottom:12px}
+.date{font-size:13px;color:#fff4ee;font-weight:700}
+h1{margin:14px auto 10px;max-width:840px;font-size:26px;line-height:1.55}
+h1 em{font-style:normal;color:#fff2a8}
+.lead{max-width:760px;margin:16px auto 0;color:#fff6f0;font-size:15px}
+.author{display:inline-block;margin-top:20px;padding:9px 20px;border-radius:999px;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.3);font-size:13px;font-weight:800}
+
+.container{max-width:860px;margin:0 auto;padding:30px 22px 56px}
+.nav{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:14px 18px;margin:20px 0;font-size:14px}
+.nav a{background:var(--accent-soft);color:var(--accent);padding:6px 14px;border-radius:999px}
+.edit-hint{background:var(--honey-light);border:1.5px solid var(--honey);border-radius:12px;padding:11px 14px;margin:22px 0;color:#7a5a16;font-size:13px;text-align:center}
+
+.box{background:var(--paper);border-radius:14px;padding:22px 24px;margin:24px 0;border:1.5px solid var(--line)}
+.know{border:2px solid var(--kotori);background:linear-gradient(135deg,#fff 0%,var(--kotori-light) 100%)}
+.know h2{margin:0 0 12px;font-size:18px;color:var(--kotori-deep)}
+.know ul{margin:0;padding-left:20px}
+.know li{margin:7px 0}
+.toc h2{margin:0 0 10px;font-size:18px;color:#3a302a}
+.toc ol{margin:0;padding-left:22px}
+.toc li{margin:8px 0}
+.tldr{border:2px solid var(--oke);background:linear-gradient(135deg,#fff 0%,var(--oke-light) 100%)}
+.tldr h2{margin:0 0 10px;font-size:18px;color:var(--oke-deep)}
+.tldr ol{margin:0;padding-left:22px}
+.tldr li{margin:9px 0}
+
+.scene{background:linear-gradient(135deg,#fff 0%,#fbf9ff 55%,#fff5f1 100%);border:2px solid #ece2d6;border-radius:14px;padding:22px 24px;margin:24px 0}
+.scene-label{display:inline-block;background:var(--accent);color:#fff;border-radius:8px;padding:3px 12px;font-size:12px;font-weight:900;margin-bottom:12px}
+.stage{display:block;margin:0 0 12px;font-size:12.5px;color:#9a8a7c;font-style:italic}
+.dialogue{display:grid;gap:13px}
+.voice{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:15px 17px}
+.voice p{margin:0}
+.voice.oke{border-left:5px solid var(--oke-deep);background:linear-gradient(90deg,var(--oke-light),#fff 50%)}
+.voice.kotori{border-left:5px solid var(--kotori-deep);background:linear-gradient(90deg,var(--kotori-light),#fff 50%)}
+.speaker{font-weight:900;margin-bottom:5px;font-size:13px}
+.voice.oke .speaker{color:var(--oke-deep)}
+.voice.kotori .speaker{color:var(--kotori-deep)}
+
+.chapter{margin:46px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--line);font-size:21px;line-height:1.5}
+.chapter .num{display:inline-block;background:var(--oke-deep);color:#fff;width:30px;height:30px;border-radius:50%;text-align:center;line-height:30px;margin-right:8px;font-size:14px}
+
+.q{border:2px solid var(--kotori-deep);background:var(--kotori-light);border-radius:14px;padding:18px 22px;margin:22px 0}
+.q .q-label{display:inline-block;background:var(--kotori-deep);color:#fff;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:900;margin-bottom:8px}
+.q p{margin:6px 0}
+
+.explain{border-left:5px solid var(--oke);background:var(--paper);border-radius:0 14px 14px 0;padding:18px 22px;margin:22px 0;border-top:1.5px solid var(--line);border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line)}
+.explain h3{margin:0 0 8px;font-size:16.5px;color:var(--oke-deep)}
+.mine{background:var(--mint-light);border:1.5px solid var(--mint);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:14.5px}
+.mine b{color:#0c7a5c}
+
+.tip{background:linear-gradient(135deg,#fff 0%,#f4f1ff 100%);border:2px solid var(--accent);border-radius:16px;padding:22px 24px;margin:26px 0;position:relative}
+.tip .tip-no{display:inline-block;background:var(--accent);color:#fff;border-radius:999px;padding:4px 14px;font-size:12.5px;font-weight:900;margin-bottom:10px}
+.tip h3{margin:0 0 8px;font-size:18px;color:#3d2f8f}
+.tip .one{font-size:14px;color:var(--accent);font-weight:800;margin:0 0 10px}
+.tip p{margin:6px 0}
+
+.example{background:#2c2620;color:#fff;border-radius:14px;padding:22px 24px;margin:26px 0}
+.example h3{margin:0 0 10px;font-size:16px;color:#ffd9a0}
+.example .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
+.example .step{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:8px 13px;font-size:13.5px;font-weight:700}
+.example .arrow{color:#ffd9a0;font-weight:900}
+
+.warn{background:linear-gradient(135deg,#fff6ec 0%,#fff0ec 100%);border:2px solid var(--oke-deep);border-radius:14px;padding:20px 24px;margin:26px 0}
+.warn h3{margin:0 0 8px;font-size:16.5px;color:var(--oke-deep)}
+.warn ul{margin:8px 0 0;padding-left:20px}
+.warn li{margin:6px 0}
+
+.term-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+.term-card{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:15px 16px}
+.term-card h3{margin:0 0 8px;font-size:15.5px;color:#3d342a}
+.term-card p{margin:4px 0;font-size:13.6px;line-height:1.78;color:#5d544c}
+.term-card .t-mini{color:var(--kotori-deep);font-weight:800}
+
+.wrap-up{background:linear-gradient(135deg,#1f2a38 0%,#2c2620 100%);color:#fff;border-radius:14px;padding:26px 24px;margin:34px 0}
+.wrap-up h2{margin:0 0 12px;font-size:19px;color:#ffe3a1}
+.wrap-up ul{margin:0;padding-left:20px}
+.wrap-up li{margin:9px 0;color:#f3e9dd}
+.next{background:var(--oke-light);border:2px solid var(--oke);border-radius:14px;padding:22px 24px;margin:26px 0}
+.next h2{margin:0 0 12px;font-size:18px;color:var(--oke-deep)}
+.next ol{margin:0;padding-left:22px}
+.next li{margin:9px 0}
+.source{font-size:13.5px;color:var(--sub);background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:18px 22px;margin:24px 0}
+.source code{background:#f4ece1;padding:2px 6px;border-radius:5px;font-size:12.5px;color:#6a5a48}
+
+footer{background:#241f1a;color:#e9ddd0;text-align:center;padding:34px 22px 40px;font-size:13.5px;line-height:1.9}
+footer .ttl{font-weight:900;color:#fff;font-size:15px;margin-bottom:8px}
+footer a{color:#ffd9a0}
+@media(max-width:560px){.term-grid{grid-template-columns:1fr}h1{font-size:21px}.example .flow{flex-direction:column;align-items:stretch}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <span class="category-badge">🍑 おけもん図解ブログ ／ オフ会シェア用</span>
+  <div class="date">2026 · 06 · 04（木）</div>
+  <h1>「コード書けない私でも…？」<br>Claude Codeで<em>"自分専用の道具"</em>を<br>作る5つのコツ</h1>
+  <p class="lead">「クロードコード」って、エンジニアだけの世界に見えるけど——<br>ほんとは<strong>「やってほしいことを日本語でお願いするだけ」で、自分の仕事にピッタリの道具が作れる</strong>ツールでした。<br>AIに二の足踏んでる子と、おけもんのゆるい会話で読んでいってね☕</p>
+  <div class="author">🐤 ことり（コード書けない・AI気になる人）×　🍑 おけもん（Claude Code使ってる人）</div>
+</header>
+
+<div class="container">
+
+  <div class="nav">
+    <a href="../index.html">📚 おけもんの図解ギャラリーに戻る</a>
+  </div>
+
+  <div class="edit-hint">☕ オフ会・彩りのみんなへのシェア用です。専門用語はぜんぶ「ふだんの言葉」に直してあります。気になるとこだけ拾い読みでOK！</div>
+
+  <!-- この記事でわかること -->
+  <div class="box know">
+    <h2>🐤 この記事でわかること</h2>
+    <ul>
+      <li>そもそも「クロードコード」って、コード書けない人でも使えるの？</li>
+      <li>何を作ればいいの？（実は"作っちゃダメなもの"もある）</li>
+      <li>うまく作るための「5つのコツ」って？</li>
+      <li>難しい用語が出てきたら、どうすればいい？</li>
+      <li>で、私は今日から何をすればいい？</li>
+    </ul>
+  </div>
+
+  <!-- 目次 -->
+  <div class="box toc">
+    <h2>📑 目次</h2>
+    <ol>
+      <li><a href="#c1">そもそもクロードコードって、何者？</a></li>
+      <li><a href="#c2">作るべきは"自分専用の武器"（作れないものもある）</a></li>
+      <li><a href="#c3">5つのコツ① ぼんやりを言葉にする「グリルミー」</a></li>
+      <li><a href="#c4">5つのコツ② まず"見た目"から作る</a></li>
+      <li><a href="#c5">5つのコツ③ いきなり作らせず"計画"から</a></li>
+      <li><a href="#c6">5つのコツ④ 別のAIに"チェック"させる</a></li>
+      <li><a href="#c7">5つのコツ⑤ 区切りで"記憶をリセット"する</a></li>
+      <li><a href="#tips">困った時に効く"魔法のひとこと"</a></li>
+      <li><a href="#term">難しい言葉を、やさしく言うと</a></li>
+      <li><a href="#wrap">今回のまとめ</a> / <a href="#next">で、私は何すればいい？</a></li>
+    </ol>
+  </div>
+
+  <!-- TL;DR -->
+  <div class="box tldr">
+    <h2>🍑 さきに結論（3つだけ）</h2>
+    <ol>
+      <li><strong>クロードコードは「日本語でお願いするだけ」で道具が作れるAI。</strong>コードを1行も書かなくていい。</li>
+      <li><strong>作るべきは"自分専用の武器"。</strong>自分の仕事にピッタリ最適化した道具は、市販のアプリでは手に入らない。</li>
+      <li><strong>うまく作るコツは"作る前の準備"が9割。</strong>欲しいものを言葉にする → 計画する → チェックさせる。実際に作るのはおまけ。</li>
+    </ol>
+  </div>
+
+  <!-- 掛け合い導入 -->
+  <div class="scene">
+    <span class="scene-label">☕ はじまり</span>
+    <span class="stage">カフェで。ことりが、おけもんの画面をのぞき込みながら。</span>
+    <div class="dialogue">
+      <div class="voice kotori">
+        <div class="speaker">🐤 ことり</div>
+        <p>ねえおけもん、「クロードコード」ってよく聞くけど…それって結局エンジニアの道具でしょ？ 私、コードとか1ミリも書けないし、名前に"コード"入ってる時点でもう無理そう…🥲</p>
+      </div>
+      <div class="voice oke">
+        <div class="speaker">🍑 おけもん</div>
+        <p>その気持ちめっちゃわかる。名前が強いもんね。笑<br>でもね、私が言いたいのはこれ。<strong>「クロードコードは、コードを書く道具じゃなくて、"自分専用の道具"を作ってもらう道具」</strong>なんだよ。しかも作り方は日本語でお願いするだけ。</p>
+      </div>
+      <div class="voice kotori">
+        <div class="speaker">🐤 ことり</div>
+        <p>"自分専用の道具"…？ ちょっと、何それ気になる。</p>
+      </div>
+      <div class="voice oke">
+        <div class="speaker">🍑 おけもん</div>
+        <p>うまく作るには"コツ"があってね。今日はそれを5つ、順番に話すね。これ知ってるだけで、AIの動きが別物になるよ☕</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 章1 -->
+  <h2 class="chapter" id="c1"><span class="num">1</span>そもそもクロードコードって、何者？</h2>
+
+  <div class="explain">
+    <h3>中身は"いつものクロード"。違いは2つだけ</h3>
+    <p>実は、クロードコードに乗ってるAIの頭脳は、ふつうのクロード（チャットのAI）と<strong>まったく同じ</strong>もの。違うのは周りの仕組みだけで、ポイントは2つ。</p>
+    <p>①<strong>コード作業用の"指示書"が最初から入ってる</strong>（裏で勝手に読まれる、上手に作業するためのカンペ）。<br>②<strong>パソコンの中のファイルを直接読み書きできる</strong>（作った道具をその場で動かして確認までしてくれる）。</p>
+    <div class="mine">💡 <b>自分ごとにすると</b>：ふつうのクロード＝「相談に乗ってくれる人」。クロードコード＝「相談しながら、実際に手を動かして物を作ってくれる人」。</div>
+  </div>
+
+  <div class="q">
+    <span class="q-label">🐤 ことりの ？？？</span>
+    <p>でも、結局コードが書けないと無理なんじゃ…？</p>
+  </div>
+
+  <div class="explain">
+    <h3>いちばん大事なのは「欲しいものを言葉にする力」</h3>
+    <p>動画で実演してたのは、喫茶店の売上グラフ・在庫管理・仕入れリストが1画面に揃った"運営ダッシュボード"。これを<strong>コードを1行も書かずに、チャットで指示を重ねるだけ</strong>で作ってた。<br>必要なのはプログラミングの知識じゃなくて、「私はこういうのが欲しい」を言葉にすること。それは、AIがどれだけ賢くなっても<strong>人間にしかできないこと</strong>なんだよ🍑</p>
+  </div>
+
+  <!-- 章2 -->
+  <h2 class="chapter" id="c2"><span class="num">2</span>作るべきは"自分専用の武器"</h2>
+
+  <div class="explain">
+    <h3>先に言っとくと、"作れないもの"もある</h3>
+    <p>正直に言うね。クロードコードがあっても、1人・コード書けない人には<strong>難しいもの</strong>もある。動画が挙げてたのはこの3つ。</p>
+  </div>
+
+  <div class="warn">
+    <h3>⚠️ 1人で作るのは難しいもの（無理しない）</h3>
+    <ul>
+      <li><strong>本格的でリッチなゲーム</strong>（世界的ゲームみたいなやつ）</li>
+      <li><strong>Instagram・TikTok・YouTubeみたいな大規模サービス</strong></li>
+      <li><strong>お金を取る、月額課金のアプリ</strong></li>
+    </ul>
+    <p style="margin:10px 0 0;font-size:13.5px;color:#8a4a38">理由は一言で「考えることが増えすぎるから」。規模が大きくなったり、お金を取ったりすると、セキュリティ・サーバー・決済・法律…と一気に難しくなる。</p>
+  </div>
+
+  <div class="explain">
+    <h3>じゃあ何を作る？ → "自分専用の武器"</h3>
+    <p>作るべきは、<strong>自分のやりたいこと・いつもの仕事にピッタリ最適化された道具</strong>。喫茶店ダッシュボードがまさにそれ。<br>「Excelでも作れそうじゃない？」って思うけど、Excelみたいな市販品は"世界中の多くの人に売るための汎用品"。あなた1人の仕事にピッタリ合ってるわけじゃない。<strong>自分が一番使いやすい道具は、市販品では手に入らない</strong>の。</p>
+    <div class="mine">💡 <b>はじめの一歩のおすすめ</b>：今あなたが「面倒だな〜」と思いながら毎日やってる作業を自動化する道具。失敗しにくいし、できたら毎日"効いてる"のを実感できる。</div>
+  </div>
+
+  <div class="scene">
+    <span class="stage">ことりが、ちょっと前のめりに。</span>
+    <div class="dialogue">
+      <div class="voice kotori">
+        <div class="speaker">🐤 ことり</div>
+        <p>面倒な作業…あ、あるある！ 私、毎朝チームのタスク状況を1個ずつ確認して、遅れてる人に声かけて、進捗まとめて上司に報告…で1時間溶けてるの。</p>
+      </div>
+      <div class="voice oke">
+        <div class="speaker">🍑 おけもん</div>
+        <p>それ、まさに"自分専用の武器"の出番！ その毎朝の確認と報告を自動でやってくれる道具、作れるよ。<br>じゃあ実際に、どう作っていくか——ここからが本題の<strong>「5つのコツ」</strong>ね☕</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 章3：コツ1 -->
+  <h2 class="chapter" id="c3"><span class="num">3</span>コツ① ぼんやりを言葉にする「グリルミー」</h2>
+
+  <div class="tip">
+    <span class="tip-no">コツ 1 / 5</span>
+    <h3>🔥 グリルミー（私を質問攻めにして）</h3>
+    <p class="one">一言で：AIに「私を質問攻めにして」とお願いして、欲しいものをハッキリさせる</p>
+    <p>「グリル」はお肉を焼くあれ。<strong>"私（me）を焼いて（grill）"＝質問攻めにして、という意味。</strong>「こういう道具が欲しい」とだけ伝えると、AIが「データはどこから取る？」「何を"遅れ"とみなす？」と次々に質問してくれる。それに答えていくだけで、欲しいものがくっきりする。</p>
+  </div>
+
+  <div class="explain">
+    <h3>なんで最初に質問攻めにされるのがいいの？</h3>
+    <p>ぼんやりしたまま作り始めると、あとで「やっぱ違った」「この機能いらなかった」と大きなやり直しが出る。<strong>最初に詰め切るのが、結局いちばん早い</strong>（"急がば回れ"ってやつ）。<br>これは道具作りだけじゃなく、企画書のたたき台・旅行の計画みたいな「なんとなくやりたい」を形にしたい時、ぜんぶに使えるよ。</p>
+    <div class="mine">💡 <b>豆知識</b>：このグリルミー、もとは海外の開発者マット・ポコックさんが無料公開した英語の"手順セット"で、開発者の間でバズったもの。日本語版もあって、誰でも自分のクロードコードに取り込んで使える。</div>
+  </div>
+
+  <!-- 章4：コツ2 -->
+  <h2 class="chapter" id="c4"><span class="num">4</span>コツ② まず"見た目"から作る</h2>
+
+  <div class="tip">
+    <span class="tip-no">コツ 2 / 5</span>
+    <h3>🎨 先に"見た目"だけ作る</h3>
+    <p class="one">一言で：裏側（データ処理）より先に、画面の見た目だけを作る</p>
+    <p>道具は「画面に映る"表"」と「裏でデータを動かす"裏側"」に分かれる。先に<strong>表（見た目）だけ</strong>作っちゃうのがコツ。見た目が決まると、「じゃあ裏側で何を作ればいいか」が逆算で見えてくる。</p>
+  </div>
+
+  <div class="explain">
+    <h3>裏側も一緒に作った方が早そうだけど…？</h3>
+    <p>それが落とし穴。見た目が決まらないまま裏側も作ると、いらない機能まで作っちゃったり、「やっぱ別の形にしたい」でやり直しになる。<strong>見た目さえ決まれば、何を作るかがブレない。</strong><br>（※見た目だけの段階だと、入力してもページを更新すると消えちゃう。あくまで"形を固める"段階だと思ってね）</p>
+  </div>
+
+  <!-- 章5：コツ3 -->
+  <h2 class="chapter" id="c5"><span class="num">5</span>コツ③ いきなり作らせず"計画"から</h2>
+
+  <div class="tip">
+    <span class="tip-no">コツ 3 / 5</span>
+    <h3>📝 プランモード（計画だけ立てさせる）</h3>
+    <p class="one">一言で：いきなり実装させず、まず"計画"を立ててもらうモードに切り替える</p>
+    <p>クロードコードには動作モードがあって、よく使うのは2つ。<strong>「プランモード」＝計画を立てることだけに集中（ファイルは変更しない）</strong>と、<strong>「自動モード」＝自動でどんどん作る</strong>。<br>先にプランモードで計画を立てて、内容に納得してから自動モードに切り替えて実装。これが結果的にいちばん早い。</p>
+  </div>
+
+  <div class="explain">
+    <h3>いきなり作らせると、なんでダメなの？</h3>
+    <p>いきなり自動モードで作らせると、自分のイメージとズレたものが大量にできて、後で大きなやり直しになりがち。<strong>「計画 → 納得 → 実装」</strong>の順なら、ズレる前に軌道修正できる。</p>
+    <div class="mine">💡 <b>見た目の計画を頼むとき</b>：「プロの"見やすい画面を作る専門家"として、見た目の計画を立てて」とお願いすると、使いやすい画面を設計してくれる。</div>
+  </div>
+
+  <!-- 章6：コツ4 -->
+  <h2 class="chapter" id="c6"><span class="num">6</span>コツ④ 別のAIに"チェック"させる</h2>
+
+  <div class="tip">
+    <span class="tip-no">コツ 4 / 5</span>
+    <h3>👀 サブエージェント・レビュー</h3>
+    <p class="one">一言で：別の役割のAIを呼んで、立てた計画を客観的にチェックしてもらう</p>
+    <p>「サブエージェント」は、クロードコードの中に<strong>別の役割を持ったAIをもう1人立ち上げる機能</strong>。出てきた計画を自分で読む前に、たとえば「デザインの専門家」と「ベテランのエンジニア」の2人を呼んで、計画をチェックしてもらう。</p>
+  </div>
+
+  <div class="explain">
+    <h3>自分でチェックすればよくない？</h3>
+    <p>自分で作ったものを自分で見直すと、どうしても見落とす（「これでいい」と思っちゃう）。サブエージェントの強みは、<strong>これまでの会話の流れを"知らない"状態で起動できる</strong>こと。<br>知らないからこそ、思い込みなしで客観的に見てくれる。"何も知らない外の人が見たらおかしいと気づく"のと同じ理屈。</p>
+    <div class="mine">💡 <b>実際の指摘の例</b>：動画では「遅れてるタスクは上位5件に絞って目立たせよう（デザイナー役）」「エラーが出た時の表示が計画に抜けてる（エンジニア役）」など、自分じゃ気づけない指摘が出てた。役割は法律の専門家・マーケター…と自由に立てられる。</div>
+  </div>
+
+  <!-- 章7：コツ5 -->
+  <h2 class="chapter" id="c7"><span class="num">7</span>コツ⑤ 区切りで"記憶をリセット"する</h2>
+
+  <div class="tip">
+    <span class="tip-no">コツ 5 / 5</span>
+    <h3>🧹 節目で記憶をリセット（/clear）</h3>
+    <p class="one">一言で：会話が長くなったら、引き継ぎを残してから記憶をまっさらに戻す</p>
+    <p>クロードコードは、やり取りが増えるほど"頭の中の容量"が埋まって、だんだん判断がにぶくなる。だから<strong>節目で記憶をリセットして、新鮮な状態に戻す</strong>のがコツ。リセットのコマンドが <code style="background:#f0e9f8;padding:1px 6px;border-radius:5px">/clear</code>。</p>
+  </div>
+
+  <div class="explain">
+    <h3>でもリセットしたら、今までの頑張り消えちゃわない？</h3>
+    <p>大丈夫。<strong>リセットする前に「次への引き継ぎメモを作って」とお願いして、それをコピーしておく</strong>だけ。リセット後にそれを貼れば、続きからちゃんと進められる。夜勤明けの"申し送り"みたいなものだね。</p>
+    <div class="mine">💡 <b>どれくらいで区切る？</b>：動画では、容量が25〜40%くらい埋まったら早めにリセットするのがおすすめ、と紹介してた。「もったいない」と思うくらい早めでちょうどいい。</div>
+  </div>
+
+  <!-- 困った時のひとこと -->
+  <h2 class="chapter" id="tips"><span class="num">+</span>困った時に効く"魔法のひとこと"</h2>
+
+  <div class="example">
+    <h3>🪄 コピペで使える、便利なひとこと集</h3>
+    <div class="flow" style="flex-direction:column;align-items:stretch;gap:10px">
+      <span class="step">💬「<strong>新卒1年目でも分かるように、専門用語は解説しながら説明して</strong>」→ 難しい言葉が出てきた時。噛み砕いてくれる</span>
+      <span class="step">💬「<strong>モダンな開発で</strong>」→ 作り方を指定しなくても、今どきのいい感じの作り方を選んでくれる</span>
+      <span class="step">💬「<strong>構造はアスキーアートで説明して</strong>」→ 文字だけの図にしてくれて、流れが頭に入りやすい</span>
+      <span class="step">💬「<strong>次のセッションへの引き継ぎを簡潔にまとめて</strong>」→ 記憶リセット前の"申し送り"作り</span>
+    </div>
+    <p style="margin-top:14px;font-size:14px;color:#e9ddd0">※「アスキーアート」＝文字や記号だけで作る簡単な図のこと。データがどこから来てどこへ行くか、みたいな流れを図で見せてくれる。</p>
+  </div>
+
+  <div class="explain">
+    <h3>毎回言うのが面倒なら "CLAUDE.md" に書いておける</h3>
+    <p>「毎回これは守ってね」を1つのメモ（<code style="background:#f4ece1;padding:1px 6px;border-radius:5px">CLAUDE.md</code>というファイル）に書いておくと、<strong>いちいち指示しなくても毎回その通りに動いてくれる</strong>。たとえば「説明にはアスキーアートを使って」と書いておけば、毎回図で説明してくれる。これもクロードコードに「作って」と頼むだけで簡単に作れるよ。</p>
+  </div>
+
+  <div class="scene">
+    <span class="scene-label">☕ できあがり</span>
+    <span class="stage">ことりの毎朝の作業を自動化する道具が、完成して。</span>
+    <div class="dialogue">
+      <div class="voice oke">
+        <div class="speaker">🍑 おけもん</div>
+        <p>はい、できた。毎朝決まった時間に、タスクの状況を自動で集めて、遅れてる人に印をつけて、進捗をまとめて報告してくれる道具。色も信号みたいに「赤・黄・青」で一目でわかる。</p>
+      </div>
+      <div class="voice kotori">
+        <div class="speaker">🐤 ことり</div>
+        <p>えっ…私が毎朝1時間かけてたやつが、完全に自動で終わってる…！ しかも私、コード1行も書いてない…</p>
+      </div>
+      <div class="voice oke">
+        <div class="speaker">🍑 おけもん</div>
+        <p>でしょ？ 実は"実装"はおまけなんだよ。大事だったのは、グリルミーで欲しいものを言葉にして、計画して、チェックさせた——その"作る前の準備"。そこを丁寧にやると、AIは驚くほどスムーズに動いてくれる☕</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 用語解説 -->
+  <div class="box" id="term" style="border:2px solid var(--kotori)">
+    <h2 style="margin:0 0 6px;font-size:19px;color:var(--kotori-deep)">📖 難しい言葉を、やさしく言うと</h2>
+    <div class="term-grid">
+      <div class="term-card">
+        <h3>グリルミー</h3>
+        <p class="t-mini">一言で：「私を質問攻めにして」とお願いする手順。</p>
+        <p>欲しいものがぼんやりしてる時に、AIに質問してもらって輪郭をハッキリさせる。たたき台作りの最強の入り口。</p>
+      </div>
+      <div class="term-card">
+        <h3>プランモード／自動モード</h3>
+        <p class="t-mini">一言で：「計画だけ」モードと「実際に作る」モード。</p>
+        <p>先に計画モードで段取りを固めて、納得してから作るモードへ。順番を守るとやり直しが激減する。</p>
+      </div>
+      <div class="term-card">
+        <h3>サブエージェント</h3>
+        <p class="t-mini">一言で：もう1人、別の役割のAIを呼ぶこと。</p>
+        <p>会話の流れを知らない"外の目"でチェックさせる。デザイナー役・エンジニア役など自由に立てられる。</p>
+      </div>
+      <div class="term-card">
+        <h3>コンテキスト／リセット</h3>
+        <p class="t-mini">一言で：AIの"頭の中の容量"と、その掃除。</p>
+        <p>やり取りが増えると容量が埋まって判断がにぶる。引き継ぎを残してから <code>/clear</code> で新鮮な状態に戻す。</p>
+      </div>
+      <div class="term-card">
+        <h3>CLAUDE.md（クロード・エムディー）</h3>
+        <p class="t-mini">一言で：「毎回守ってね」を書いておくメモ。</p>
+        <p>毎回指示しなくても、ここに書いたことを自動で守ってくれる。自分専用のルールブック。</p>
+      </div>
+      <div class="term-card">
+        <h3>アスキーアート</h3>
+        <p class="t-mini">一言で：文字・記号だけで作る簡単な図。</p>
+        <p>「構造はアスキーアートで説明して」と言うと、流れや仕組みを図にしてくれて理解しやすい。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="wrap-up" id="wrap">
+    <h2>🍑 今回のまとめ（5つのコツ）</h2>
+    <ul>
+      <li><strong>① グリルミー</strong>：「私を質問攻めにして」で、欲しいものを言葉にする。</li>
+      <li><strong>② 見た目から作る</strong>：裏側より先に画面を固める。何を作るかがブレない。</li>
+      <li><strong>③ プランモード</strong>：いきなり作らせず、まず計画 → 納得 → 実装。</li>
+      <li><strong>④ サブエージェント・レビュー</strong>：別の役割のAIに、客観的にチェックさせる。</li>
+      <li><strong>⑤ 記憶をリセット</strong>：区切りで引き継ぎを残して <code style="background:rgba(255,255,255,.15);padding:1px 6px;border-radius:5px;color:#ffe3a1">/clear</code>。新鮮な状態を保つ。</li>
+    </ul>
+    <p style="margin:14px 0 0;color:#ffe3a1;font-weight:800">★ いちばんの学び：実装（コードを書く）はおまけ。本当に大事なのは「自分が欲しいものを言葉にする力」。それはAIが賢くなっても、人間にしかできないこと。</p>
+  </div>
+
+  <!-- 次の一手 -->
+  <div class="next" id="next">
+    <h2>👉 で、私は何すればいい？（はじめの3歩）</h2>
+    <ol>
+      <li><strong>面倒な作業を1つ思い浮かべる。</strong>毎日・毎週やってる「地味に時間かかるやつ」がベスト。</li>
+      <li><strong>その作業を「グリルミー」で言葉にしてみる。</strong>「私を質問攻めにして」とお願いして、欲しい道具の形をハッキリさせる。</li>
+      <li><strong>計画 → チェック → 実装の順で作る。</strong>いきなり作らせない。準備が9割。</li>
+    </ol>
+    <p style="margin:14px 0 0;font-size:14px;color:var(--oke-deep)">☕ 迷ったら、おけもんに「一緒にやろ」って声かけてね。最初の1個、隣で一緒にお願いしてみよう。</p>
+  </div>
+
+  <!-- ソース -->
+  <div class="source">
+    <strong>📺 元ネタ（この記事のソース）</strong><br>
+    YouTube：「全人類クロードコードを使うべき」（マジAIマスター）<br>
+    <code>https://www.youtube.com/watch?v=ahzwOeo01hE</code><br>
+    <span style="font-size:12.5px">※ 機能名・手順・おすすめの数字（リセットの目安25〜40%など）は、動画内での紹介にもとづいています。実際に使う際は最新の公式情報もあわせて確認してね。<br>※ この記事の登場人物（ことり・おけもん）の会話は、内容をやさしく伝えるための構成です。</span>
+  </div>
+
+</div>
+
+<footer>
+  <div class="ttl">🍑 おけもん図解ブログ</div>
+  AIって、難しそうに見えて、ほんとは「お願いするだけ」。<br>
+  あなたの面倒な作業も、"自分専用の道具"にできるかも。まず1個、一緒にお願いしてみよ☕<br>
+  <a href="../index.html">← 図解ギャラリーに戻る</a>
+</footer>
+
+</body>
+</html>
