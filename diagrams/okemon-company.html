@@ -265,6 +265,35 @@ section{max-width:860px;margin:0 auto;padding:110px 26px 30px;position:relative}
 .letter .ps{margin-top:38px;text-align:right;font-size:13.5px;color:#b08b4f}
 @media(max-width:560px){.letter{padding:38px 24px}}
 
+/* ===== 日記の扉（カンパニー日記連携）===== */
+#diary .door{display:grid;grid-template-columns:150px 1fr;gap:34px;align-items:center;
+  background:#fffdf7;border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 10px 30px rgba(120,100,70,.10);padding:40px 42px;position:relative}
+@media(max-width:560px){#diary .door{grid-template-columns:1fr;text-align:center;padding:34px 24px}}
+.book{width:128px;height:168px;margin:0 auto;position:relative;transform:rotate(-3deg);
+  background:linear-gradient(135deg,#f6e7c8,#f0d9a8);border:2px solid var(--ink);border-radius:6px 12px 12px 6px;
+  box-shadow:4px 5px 0 rgba(74,64,57,.15);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;transition:.3s}
+#diary .door:hover .book{transform:rotate(-1deg) translateY(-4px)}
+.book::before{content:"";position:absolute;left:10px;top:0;bottom:0;width:2px;background:rgba(74,64,57,.35)}
+.book::after{content:"";position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(-4deg);
+  width:64px;height:20px;background:rgba(245,184,196,.6);box-shadow:0 1px 3px rgba(120,100,70,.18);
+  -webkit-mask:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%)}
+.book .b-emoji{font-size:34px}
+.book .b-title{font-size:13px;font-weight:700;letter-spacing:.14em;color:#6b5a3e;line-height:1.7;text-align:center}
+.book .b-sub{font-size:9.5px;letter-spacing:.22em;color:#a08e6c}
+#diary .door p{font-size:14px;line-height:2.2;color:var(--ink-soft)}
+#diary .door p b{color:var(--ink)}
+.diary-btn{margin-top:20px;display:inline-block;text-decoration:none;cursor:pointer;color:var(--ink);
+  background:#fff;border:1.5px solid var(--ink);
+  border-radius:255px 16px 225px 16px/16px 225px 16px 255px;
+  padding:12px 32px;font-size:14px;font-weight:700;letter-spacing:.14em;
+  box-shadow:3px 4px 0 rgba(74,64,57,.14);transition:.25s}
+.diary-btn:hover{transform:translateY(-3px) rotate(-.6deg);box-shadow:4px 7px 0 rgba(74,64,57,.16);background:#fff8ee}
+.diary-btn.locked{opacity:.55;cursor:default;box-shadow:none}
+.diary-btn.locked:hover{transform:none;background:#fff}
+.diary-note{margin-top:14px;font-size:12px;color:#b08b4f}
+
 /* ===== エンディング ===== */
 #owari{text-align:center;padding-bottom:90px}
 #owari .big{font-size:clamp(18px,3.8vw,26px);line-height:2.6;letter-spacing:.16em;font-weight:700}
@@ -554,6 +583,29 @@ footer .stamp{display:inline-block;margin-top:20px;padding:10px 22px;font-size:1
   </div>
 </section>
 
+<!-- ===== 第五章 日々の記録（カンパニー日記）===== -->
+<section id="diary">
+  <div class="chap-head reveal">
+    <div class="num">― 第五章 ―</div>
+    <h2 class="kaisei">日々の記録</h2>
+  </div>
+  <div class="door reveal">
+    <div class="book">
+      <span class="b-emoji">📔</span>
+      <span class="b-title">おけ森<br>ダイアリー</span>
+      <span class="b-sub">SINCE 2026</span>
+    </div>
+    <div>
+      <p>この物語の続きは、<b>日記</b>に綴られています。<br>
+      やらかした日の「てへぺろ供養」も、深夜の研究ラボも、<br>
+      うまくいった日のささやかな祝勝会も——ぜんぶ。<br>
+      11人が交代で、ほとんど毎日書いています。</p>
+      <a class="diary-btn" id="diary-link">日記帳をひらく →</a>
+      <p class="diary-note tegaki" id="diary-note" hidden>🔒 日記は森の内部限定です。おけちゃんの机（Mac）から開けます。</p>
+    </div>
+  </div>
+</section>
+
 <!-- ===== おわりに ===== -->
 <section id="owari">
   <div class="big kaisei reveal">
@@ -619,6 +671,19 @@ function typeLine(){
   else{setTimeout(()=>{ci=0;li=(li+1)%LINES.length;typeLine()},4000)}
 }
 typeLine();
+
+/* ===== 日記の扉（内部限定リンク）===== */
+(()=>{
+  const DIARY_PATH='/Users/monoke/Library/CloudStorage/GoogleDrive-okemonogatari@gmail.com/マイドライブ/000 おけ森/はるかCEO/PJ_カンパニー日記/index.html';
+  const a=$('diary-link'),note=$('diary-note');
+  if(location.protocol==='file:'){
+    a.href='file://'+encodeURI(DIARY_PATH);
+  }else{
+    a.classList.add('locked');
+    a.addEventListener('click',e=>e.preventDefault());
+    note.hidden=false;
+  }
+})();
 
 /* ===== マスコットのおまけ ===== */
 const PIKO=['ぴこ「ワクワク シテル？」','つむぎ「……にゃーん（撫でてもいい、という顔）」','ぴこ「キョウモ イイヒヨリ！」','つむぎ「（膝の上、空いてるけど？）」','ぴこ「オカネ♡ オカネ♡ ……ミッチャンノ マネ」'];
