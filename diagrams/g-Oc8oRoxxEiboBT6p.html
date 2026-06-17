@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>弾丸0泊・宮崎バイクフェリー旅 ── PCX125で7体のモアイに会いにいく</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#3BA9E0; --sky-light:#8FD6F0;
+    --sea:#0A7EA4; --sea-mid:#19A6C9; --sea-deep:#073B54;
+    --sun:#FF914A; --sun-soft:#FFC15E;
+    --palm:#4FA86B; --sand:#F5E6C8; --moai:#8A8275;
+    --paper:#FBFAF6; --white:#FFFFFF; --ink:#23353E; --muted:#6E7B82;
+    --line:rgba(35,53,62,.10);
+    --serif:'Noto Serif JP',serif; --sans:'Noto Sans JP',sans-serif; --round:'Zen Maru Gothic',sans-serif;
+    --shadow-s:0 2px 10px rgba(7,59,84,.07);
+    --shadow:0 10px 34px rgba(7,59,84,.13);
+    --shadow-l:0 22px 60px rgba(7,59,84,.20);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.85;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:100%}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;height:100svh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;color:#fff}
+  .hero-slides{position:absolute;inset:0;z-index:1}
+  .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.08);transition:opacity 1.8s ease,transform 7s ease}
+  .slide.on{opacity:1;transform:scale(1)}
+  .hero-veil{position:absolute;inset:0;z-index:2;background:
+     linear-gradient(180deg,rgba(7,59,84,.30) 0%,rgba(7,59,84,.12) 38%,rgba(7,59,84,.55) 100%),
+     radial-gradient(120% 80% at 50% 18%,transparent 40%,rgba(7,59,84,.35) 100%)}
+  .hero-inner{position:relative;z-index:3;padding:0 22px;max-width:760px;opacity:0;transform:translateY(22px);animation:rise 1.3s .25s cubic-bezier(.22,1,.36,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .eyebrow{display:inline-block;font-family:var(--round);font-size:.74rem;letter-spacing:.32em;padding:7px 16px;border:1px solid rgba(255,255,255,.55);border-radius:30px;margin-bottom:24px;backdrop-filter:blur(3px);text-indent:.32em}
+  .hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(1.9rem,6.4vw,3.5rem);line-height:1.42;letter-spacing:.01em;text-shadow:0 6px 34px rgba(0,0,0,.32)}
+  .hero h1 .accent{color:var(--sun-soft)}
+  .hero p.lead{margin-top:22px;font-size:clamp(.95rem,2.4vw,1.1rem);line-height:1.95;color:rgba(255,255,255,.94);text-shadow:0 2px 16px rgba(0,0,0,.4);font-weight:500}
+  .hero-stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:38px}
+  .hstat{background:rgba(255,255,255,.13);backdrop-filter:blur(7px);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:14px 20px;min-width:104px}
+  .hstat .n{font-family:var(--serif);font-weight:700;font-size:1.5rem;line-height:1.1;color:#fff}
+  .hstat .l{font-size:.7rem;letter-spacing:.12em;color:rgba(255,255,255,.85);margin-top:4px;font-family:var(--round)}
+  .dots{position:absolute;z-index:3;bottom:96px;left:0;right:0;display:flex;gap:9px;justify-content:center}
+  .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);transition:.4s}
+  .dot.on{background:#fff;width:26px;border-radius:5px}
+  .scroll-cue{position:absolute;z-index:3;bottom:34px;left:0;right:0;text-align:center;color:rgba(255,255,255,.8);font-size:.66rem;letter-spacing:.34em;font-family:var(--round)}
+  .scroll-cue::after{content:"";display:block;width:1px;height:30px;margin:10px auto 0;background:linear-gradient(rgba(255,255,255,.9),transparent);animation:cue 1.9s ease-in-out infinite}
+  @keyframes cue{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* ===== SECTION base ===== */
+  section{padding:84px 0}
+  .label{font-family:var(--round);font-size:.72rem;letter-spacing:.26em;color:var(--sea);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .label::before{content:"";width:26px;height:2px;background:var(--sun);border-radius:2px}
+  .title{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,4.6vw,2.2rem);line-height:1.5;letter-spacing:.01em}
+  .title .accent{color:var(--sea)}
+  .lead{color:var(--muted);font-size:1.02rem;margin-top:18px;line-height:1.95}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ===== WHY (夢) ===== */
+  .why{background:
+     radial-gradient(130% 70% at 85% 0%,rgba(143,214,240,.30),transparent 60%),
+     radial-gradient(120% 60% at 0% 100%,rgba(255,193,94,.20),transparent 55%),
+     var(--paper)}
+  .dreamcard{margin-top:30px;background:var(--white);border-radius:22px;padding:34px 30px;box-shadow:var(--shadow);border:1px solid var(--line);position:relative;overflow:hidden}
+  .dreamcard::before{content:"🗿";position:absolute;right:-6px;bottom:-22px;font-size:7rem;opacity:.08;transform:rotate(-8deg)}
+  .dreamcard .q{font-family:var(--serif);font-size:1.12rem;line-height:1.95;color:var(--ink);font-weight:600}
+  .dreamcard .meta{margin-top:18px;font-size:.84rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:16px}
+  .dreamcard .meta b{color:var(--sun);font-family:var(--round)}
+
+  /* ===== MOAI gallery ===== */
+  .moai{background:linear-gradient(180deg,#073B54,#0A7EA4 70%,#0E6E8C);color:#fff}
+  .moai .label{color:var(--sun-soft)}
+  .moai .label::before{background:var(--sun-soft)}
+  .moai .title{color:#fff}
+  .moai .lead{color:rgba(255,255,255,.85)}
+  .strip{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:172px;gap:12px;margin-top:30px}
+  .ph{position:relative;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-l)}
+  .ph .bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .9s ease}
+  .ph:hover .bg{transform:scale(1.07)}
+  .ph .cap{position:absolute;left:0;right:0;bottom:0;padding:30px 14px 12px;background:linear-gradient(transparent,rgba(7,30,42,.82));font-size:.82rem;font-weight:700;font-family:var(--round)}
+  .ph.tall{grid-row:span 2}
+  .ph.wide{grid-column:span 2}
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  .fact{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:18px 16px;backdrop-filter:blur(4px)}
+  .fact .fn{font-family:var(--serif);font-weight:700;font-size:1.25rem;color:var(--sun-soft)}
+  .fact .ft{font-size:.82rem;color:rgba(255,255,255,.85);margin-top:6px;line-height:1.7}
+
+  /* ===== FERRY route ===== */
+  .routebox{margin-top:30px;background:linear-gradient(135deg,#0A7EA4,#073B54);border-radius:22px;padding:34px 26px;color:#fff;box-shadow:var(--shadow-l);position:relative;overflow:hidden}
+  .routebox::after{content:"";position:absolute;inset:0;background:url('https://images.pexels.com/photos/9139274/pexels-photo-9139274.jpeg?auto=compress&cs=tinysrgb&w=1200') center/cover;opacity:.18;mix-blend-mode:screen}
+  .flow{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+  .stop{text-align:center}
+  .stop .city{font-family:var(--serif);font-weight:700;font-size:1.5rem}
+  .stop .sub{font-size:.72rem;color:rgba(255,255,255,.8);font-family:var(--round);letter-spacing:.08em}
+  .arrow{display:flex;flex-direction:column;align-items:center;color:var(--sun-soft);font-size:.66rem;font-family:var(--round);letter-spacing:.1em;gap:3px}
+  .arrow .line{font-size:1.5rem;line-height:1}
+  .rmeta{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px;border-top:1px solid rgba(255,255,255,.2);padding-top:22px}
+  .rmeta div{text-align:center}
+  .rmeta .v{font-family:var(--serif);font-weight:700;font-size:1.15rem;color:#fff}
+  .rmeta .k{font-size:.72rem;color:rgba(255,255,255,.78);margin-top:3px;font-family:var(--round)}
+  .shipnote{margin-top:22px;background:var(--white);border-radius:16px;padding:20px 22px;box-shadow:var(--shadow-s);border:1px solid var(--line);font-size:.94rem;color:var(--ink)}
+  .shipnote b{color:var(--sea)}
+
+  /* ===== PLAN timeline ===== */
+  .plan{background:
+     radial-gradient(110% 50% at 100% 0,rgba(143,214,240,.28),transparent 55%),var(--paper)}
+  .day{margin-top:34px}
+  .day-h{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .day-tag{background:var(--sea);color:#fff;border-radius:10px;padding:6px 15px;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:var(--round);box-shadow:var(--shadow-s)}
+  .day-tag.night{background:var(--sea-deep)}
+  .day-t{font-family:var(--serif);font-weight:700;font-size:1.06rem}
+  .tl{position:relative;padding-left:22px;border-left:3px solid var(--sky-light)}
+  .slot{background:var(--white);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;gap:13px;align-items:flex-start;box-shadow:var(--shadow-s);border:1px solid var(--line);position:relative}
+  .slot::before{content:"";position:absolute;left:-29px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--sun);border:3px solid var(--paper);box-shadow:0 0 0 2px var(--sky-light)}
+  .slot .time{font-size:.74rem;color:var(--muted);min-width:40px;padding-top:3px;font-weight:700;font-family:var(--round)}
+  .slot .ico{font-size:1.35rem;min-width:30px;text-align:center}
+  .slot .nm{font-weight:700;font-size:.98rem;color:var(--ink)}
+  .slot .ds{font-size:.85rem;color:var(--muted);margin-top:2px;line-height:1.7}
+  .tg{display:inline-block;border-radius:7px;padding:2px 9px;font-size:.7rem;margin-top:6px;font-weight:700;font-family:var(--round)}
+  .tg.ferry{background:#e3f3fa;color:#0a6588}
+  .tg.moai{background:#f3ecdf;color:#8a6a25}
+  .tg.food{background:#ffeede;color:#b25a18}
+  .tg.view{background:#e6f6ec;color:#2a7a48}
+  .tg.stay{background:#eae8fb;color:#5546a8}
+  .tg.ride{background:#e7f5ee;color:#2c7d56}
+
+  /* ===== SPOTS ===== */
+  .spots{background:linear-gradient(180deg,#0A7EA4,#073B54);color:#fff}
+  .spots .label{color:var(--sun-soft)}.spots .label::before{background:var(--sun-soft)}
+  .spots .title{color:#fff}.spots .lead{color:rgba(255,255,255,.85)}
+  .scards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:30px}
+  .scard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-l);transition:transform .3s}
+  .scard:hover{transform:translateY(-6px)}
+  .scard .pic{height:158px;background-size:cover;background-position:center}
+  .scard .body{padding:16px 18px 20px}
+  .scard .cn{font-family:var(--serif);font-weight:700;font-size:1.1rem}
+  .scard .cd{font-size:.85rem;color:rgba(255,255,255,.82);margin-top:7px;line-height:1.75}
+  .scard .badge{display:inline-block;font-size:.68rem;letter-spacing:.08em;font-family:var(--round);color:var(--sun-soft);border:1px solid rgba(255,193,94,.5);border-radius:20px;padding:2px 10px;margin-top:10px}
+
+  /* ===== CHECK ===== */
+  .check .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+  .ccol{background:var(--white);border-radius:18px;padding:22px 22px 24px;box-shadow:var(--shadow-s);border:1px solid var(--line)}
+  .ccol h3{font-family:var(--serif);font-size:1.04rem;margin-bottom:12px;color:var(--sea);display:flex;align-items:center;gap:8px}
+  .ccol ul{list-style:none}
+  .ccol li{position:relative;padding-left:26px;font-size:.92rem;margin-bottom:9px;line-height:1.6}
+  .ccol li::before{content:"";position:absolute;left:0;top:7px;width:15px;height:15px;border:2px solid var(--sky);border-radius:5px}
+
+  /* ===== FOOTER ===== */
+  .foot{background:var(--sea-deep);color:rgba(255,255,255,.9);text-align:center;padding:64px 22px 54px}
+  .foot .big{font-family:var(--serif);font-weight:700;font-size:clamp(1.3rem,4vw,1.8rem);line-height:1.6;color:#fff}
+  .foot .born{margin-top:18px;font-size:.84rem;color:rgba(255,255,255,.7);font-family:var(--round);letter-spacing:.06em}
+  .foot .born b{color:var(--sun-soft)}
+  .foot .note{margin-top:28px;font-size:.74rem;color:rgba(255,255,255,.45);line-height:1.9}
+
+  @media(max-width:680px){
+    section{padding:62px 0}
+    .strip{grid-auto-rows:130px;gap:9px}
+    .facts{grid-template-columns:1fr}
+    .scards{grid-template-columns:1fr}
+    .check .grid{grid-template-columns:1fr}
+    .flow{gap:8px}
+    .stop .city{font-size:1.2rem}
+    .arrow .line{transform:rotate(90deg)}
+    .dots{bottom:80px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-slides" id="slides">
+    <div class="slide on" style="background-image:url('https://images.pexels.com/photos/19701497/pexels-photo-19701497.jpeg?auto=compress&cs=tinysrgb&w=1600')"></div>
+    <div class="slide" style="background-image:url('https://images.pexels.com/photos/36706573/pexels-photo-36706573.jpeg?auto=compress&cs=tinysrgb&w=1600')"></div>
+    <div class="slide" style="background-image:url('https://images.pexels.com/photos/30750101/pexels-photo-30750101.jpeg?auto=compress&cs=tinysrgb&w=1600')"></div>
+    <div class="slide" style="background-image:url('https://images.pexels.com/photos/37930639/pexels-photo-37930639.jpeg?auto=compress&cs=tinysrgb&w=1600')"></div>
+    <div class="slide" style="background-image:url('https://images.pexels.com/photos/9139274/pexels-photo-9139274.jpeg?auto=compress&cs=tinysrgb&w=1600')"></div>
+  </div>
+  <div class="hero-veil"></div>
+  <div class="hero-inner">
+    <span class="eyebrow">KOBE ⇄ MIYAZAKI &nbsp;PCX125 FERRY TRIP</span>
+    <h1>弾丸0泊、<span class="accent">波動かるく</span>。<br>PCXで、モアイに会いにいく。</h1>
+    <p class="lead">宿は取らない。あるのは夜のフェリーと、相棒のPCX125だけ。<br>船で海をこえて、日南の海沿いを爆走して、その日のうちにまた船で帰る。</p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="n">0泊</div><div class="l">宿泊ゼロ・船中泊だけ</div></div>
+      <div class="hstat"><div class="n">PCX125</div><div class="l">相棒も乗船</div></div>
+      <div class="hstat"><div class="n">7体</div><div class="l">完全復刻モアイ</div></div>
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="scroll-cue">SCROLL</div>
+</header>
+
+<!-- ============ WHY ============ -->
+<section class="why">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">なぜ、会いに行きたい？</div>
+      <h2 class="title">この旅は、<span class="accent">ある朝の思いつき</span>から始まった。</h2>
+      <p class="lead">きれいな観光地だから、じゃない。「行ったことないところ、行ってみたかったところ」へ飛び込む——あのワクワクが、ぜんぶの理由。荷物も予定も最小限。身ひとつとPCX125で、ひょいと海をこえる。それくらい<b style="color:var(--sun)">波動かるく</b>行くのがちょうどいい。</p>
+    </div>
+    <div class="dreamcard reveal">
+      <p class="q">「宮崎・サンメッセ日南のモアイ像を見に行く。<br>イースター島公認の、世界で唯一の完全復刻7体。<br>日向灘ブルーをバックに立つ、あれ。」</p>
+      <p class="meta">— <b>2026.06.16</b> の朝、ふと出てきた夢。神戸からならフェリーにバイクごと乗って行ける。宿も取らず弾丸で。それなら、もう旅は半分始まってる。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MOAI ============ -->
+<section class="moai">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">主役 / SANMESSE NICHINAN</div>
+      <h2 class="title">日向灘ブルーに立つ、<br>7体のモアイ。</h2>
+      <p class="lead">イースター島の長老会から「世界で初めて」正式に複製を許された、完全復刻のモアイ「アフ・アキビ」。日南海岸を見下ろす丘の上に、7体がまっすぐ海を向いて並んでいる。</p>
+    </div>
+    <div class="strip reveal">
+      <div class="ph tall"><div class="bg" style="background-image:url('https://images.pexels.com/photos/19701446/pexels-photo-19701446.jpeg?auto=compress&cs=tinysrgb&w=900')"></div><div class="cap">海を向いて並ぶ7体</div></div>
+      <div class="ph"><div class="bg" style="background-image:url('https://images.pexels.com/photos/7223308/pexels-photo-7223308.jpeg?auto=compress&cs=tinysrgb&w=700')"></div></div>
+      <div class="ph"><div class="bg" style="background-image:url('https://images.pexels.com/photos/19701469/pexels-photo-19701469.jpeg?auto=compress&cs=tinysrgb&w=700')"></div></div>
+      <div class="ph"><div class="bg" style="background-image:url('https://images.pexels.com/photos/14635524/pexels-photo-14635524.jpeg?auto=compress&cs=tinysrgb&w=700')"></div><div class="cap">石の表情</div></div>
+      <div class="ph wide"><div class="bg" style="background-image:url('https://images.pexels.com/photos/5819322/pexels-photo-5819322.jpeg?auto=compress&cs=tinysrgb&w=1100')"></div><div class="cap">空と海と、モアイ</div></div>
+    </div>
+    <div class="facts reveal">
+      <div class="fact"><div class="fn">世界で唯一</div><div class="ft">イースター島長老会が正式許可した完全復刻。本物の島でも今は触れられないモアイに、ここでは近づける。</div></div>
+      <div class="fact"><div class="fn">7体それぞれ</div><div class="ft">仕事・健康・恋愛・結婚・金運…7体に願いごとのご利益があると言われている。触れて願える。</div></div>
+      <div class="fact"><div class="fn">9:30–17:00</div><div class="ft">入園16:30まで／水曜定休（祝日・GW・お盆・年末年始は営業）。大人1,000円・駐車場無料。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FERRY ============ -->
+<section class="ferry">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">船旅 / THE VOYAGE</div>
+      <h2 class="title">バイクごと、<span class="accent">海をこえる</span>。</h2>
+      <p class="lead">PCX125は二輪航送でそのまま乗船。自分は大浴場で海を眺めて、デッキで風を浴びて、ドミトリーでごろ寝。眠ったら朝は宮崎、目の前に相棒のバイク。これぞ弾丸ライダーの移動スタイル。</p>
+    </div>
+    <div class="routebox reveal">
+      <div class="flow">
+        <div class="stop"><div class="city">神戸</div><div class="sub">三宮フェリーターミナル</div></div>
+        <div class="arrow"><span class="line">⇄</span><span>夜行・船中泊</span></div>
+        <div class="stop"><div class="city">宮崎</div><div class="sub">宮崎港</div></div>
+      </div>
+      <div class="rmeta">
+        <div><div class="v">19:10発</div><div class="k">神戸を出港（日曜18:00）</div></div>
+        <div><div class="v">約13.5時間</div><div class="k">夜の航海でひと眠り</div></div>
+        <div><div class="v">8:40着</div><div class="k">翌朝・宮崎へ上陸</div></div>
+      </div>
+    </div>
+    <div class="shipnote reveal">🛵 <b>バイクは二輪航送でOK</b>（料金は排気量区分＝125cc未満／750cc未満／750cc以上で変わる）。船は2022年デビューの新造船 <b>「フェリーたかちほ」「フェリーろっこう」</b>で、<b>大浴場・展望デッキ・レストラン</b>つき。いちばん安いドミトリーなら旅客運賃は片道<b>1万3千円台〜</b>が目安。<b>バイク航送料・最新ダイヤ・運賃は必ず宮崎カーフェリー公式で確認</b>してね（数字は変わることがある）。<br>🔁 帰りは <b>宮崎港 19:10発 → 神戸 翌7:30着</b>。</div>
+  </div>
+</section>
+
+<!-- ============ PLAN ============ -->
+<section class="plan">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">旅程プラン / 0-NIGHT ITINERARY</div>
+      <h2 class="title">宿泊ゼロ。<span class="accent">船中2泊だけ</span>の弾丸プラン。</h2>
+      <p class="lead">行きの船で寝て、宮崎を1日まるごとバイクで爆走して、帰りの船でまた寝る。現地に泊まらないから、お金も荷物も軽い。これが波動かるい弾丸0泊の組み方（仮）。</p>
+    </div>
+
+    <div class="day reveal">
+      <div class="day-h"><span class="day-tag night">DAY1・夜</span><span class="day-t">相棒ごと、神戸を出港</span></div>
+      <div class="tl">
+        <div class="slot"><div class="time">18:30</div><div class="ico">🛵</div><div><div class="nm">神戸三宮フェリーターミナル 集合・PCXごと乗船手続き</div><div class="ds">バイクは二輪航送でそのまま船へ。固定はスタッフがやってくれる。身ひとつで客室へ。</div><span class="tg ride">バイク乗船</span></div></div>
+        <div class="slot"><div class="time">19:10</div><div class="ico">🌇</div><div><div class="nm">出港 → デッキで瀬戸内の夜景</div><div class="ds">明石海峡大橋をくぐる頃がハイライト。海風を浴びて、弾丸旅のスイッチオン。</div><span class="tg view">絶景</span></div></div>
+        <div class="slot"><div class="time">20:30</div><div class="ico">♨️</div><div><div class="nm">大浴場 → ドミトリーで就寝</div><div class="ds">海を見ながらのお風呂が船旅の特権。宿代0円の船中泊で、明日に備えてぐっすり。</div><span class="tg stay">船中泊①</span></div></div>
+      </div>
+    </div>
+
+    <div class="day reveal">
+      <div class="day-h"><span class="day-tag">DAY2・弾丸本番</span><span class="day-t">宮崎を、1日で爆走</span></div>
+      <div class="tl">
+        <div class="slot"><div class="time">8:40</div><div class="ico">⚓</div><div><div class="nm">宮崎港 上陸 → 相棒PCXと再会</div><div class="ds">朝の宮崎に到着。バイクを受け取って、いざ日南海岸へ。給油＆ストレッチも忘れずに。</div><span class="tg ride">ツーリング</span></div></div>
+        <div class="slot"><div class="time">9:00</div><div class="ico">🛣️</div><div><div class="nm">国道220号を南下、日向灘ブルーを右手に</div><div class="ds">右はずっと海。バイクだから信号待ちも風が気持ちいい。弾丸旅いちばんの爽快ゾーン。</div><span class="tg ride">ツーリング</span></div></div>
+        <div class="slot"><div class="time">10:00</div><div class="ico">⛩️</div><div><div class="nm">鵜戸神宮 ── 断崖の洞窟へ</div><div class="ds">海に面した岩窟の中に本殿。運玉を投げて願掛け。おけちゃんお気に入りの世界観。</div><span class="tg view">絶景</span></div></div>
+        <div class="slot"><div class="time">11:30</div><div class="ico">🗿</div><div><div class="nm">サンメッセ日南 ── 7体のモアイと対面【本命】</div><div class="ds">この旅の主役。海を背にしたモアイの前で、願いごとをひとつ。ここまで来た甲斐がある。</div><span class="tg moai">モアイ</span></div></div>
+        <div class="slot"><div class="time">13:30</div><div class="ico">🍙</div><div><div class="nm">日南でランチ（チキン南蛮 or 海鮮）</div><div class="ds">走って拝んでお腹ぺこぺこ。地のものでガッツリ補給して午後へ。</div><span class="tg food">グルメ</span></div></div>
+        <div class="slot"><div class="time">15:00</div><div class="ico">🌊</div><div><div class="nm">青島・鬼の洗濯板</div><div class="ds">波が削った岩畳と、椰子の島。南国宮崎を全身で浴びる夕方のクライマックス。</div><span class="tg view">絶景</span></div></div>
+        <div class="slot"><div class="time">18:00</div><div class="ico">🛵</div><div><div class="nm">宮崎港へ帰着 → 乗船手続き</div><div class="ds">自分のバイクだから返却なし。給油して港へ。1日でこれだけ詰めた達成感がすごい。</div><span class="tg ride">バイク乗船</span></div></div>
+        <div class="slot"><div class="time">19:10</div><div class="ico">🌙</div><div><div class="nm">宮崎港 出港 → 大浴場 → 就寝</div><div class="ds">夕陽の出港をもう一度。今日の興奮を肴に、ふたたび船中泊。</div><span class="tg stay">船中泊②</span></div></div>
+      </div>
+    </div>
+
+    <div class="day reveal">
+      <div class="day-h"><span class="day-tag">DAY3・朝</span><span class="day-t">そのまま、いつもの神戸へ</span></div>
+      <div class="tl">
+        <div class="slot"><div class="time">7:30</div><div class="ico">🌅</div><div><div class="nm">神戸 帰着 → PCXで日常へ「ただいま」</div><div class="ds">ひと晩ゆられて、朝の神戸。宿には一度も泊まってないのに、モアイにはちゃんと会えた。波動かるい弾丸旅、完成。</div><span class="tg ride">帰還</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SPOTS ============ -->
+<section class="spots">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">寄り道 / MORE MIYAZAKI</div>
+      <h2 class="title">モアイのついでに、<br>宮崎をまるごと。</h2>
+      <p class="lead">弾丸で回るなら、行きたい順に。全部は欲張らず、「また来る理由」を少し残しておくのも旅のコツ。</p>
+    </div>
+    <div class="scards reveal">
+      <div class="scard"><div class="pic" style="background-image:url('https://images.pexels.com/photos/18168767/pexels-photo-18168767.jpeg?auto=compress&cs=tinysrgb&w=900')"></div><div class="body"><div class="cn">青島・鬼の洗濯板</div><div class="cd">波が刻んだ岩の畳と、椰子に囲まれた神社の島。宮崎いちの南国フォトスポット。</div><span class="badge">日南エリア</span></div></div>
+      <div class="scard"><div class="pic" style="background-image:url('https://images.pexels.com/photos/30179850/pexels-photo-30179850.jpeg?auto=compress&cs=tinysrgb&w=900')"></div><div class="body"><div class="cn">鵜戸神宮</div><div class="cd">海に向かう断崖の洞窟に本殿。背景動画が好きだった、あの静かな聖地感。</div><span class="badge">日南エリア</span></div></div>
+      <div class="scard"><div class="pic" style="background-image:url('https://images.pexels.com/photos/27075483/pexels-photo-27075483.jpeg?auto=compress&cs=tinysrgb&w=900')"></div><div class="body"><div class="cn">高千穂峡</div><div class="cd">エメラルドの渓谷をボートで進む、神話の里。市内から少し遠いので延泊向き。</div><span class="badge">延泊で</span></div></div>
+      <div class="scard"><div class="pic" style="background-image:url('https://images.pexels.com/photos/13065185/pexels-photo-13065185.jpeg?auto=compress&cs=tinysrgb&w=900')"></div><div class="body"><div class="cn">宮崎グルメ</div><div class="cd">チキン南蛮、地鶏の炭火焼き、宮崎牛、マンゴー。食だけで一日遊べる。</div><span class="badge">ぜんぶ食べたい</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHECK ============ -->
+<section class="check">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">準備 / CHECKLIST</div>
+      <h2 class="title">忘れもの、<span class="accent">なし</span>で出発。</h2>
+      <p class="lead">夜行フェリーならではの持ち物も。出発前にサクッと確認。</p>
+    </div>
+    <div class="grid reveal">
+      <div class="ccol">
+        <h3>🚢 フェリー・船中泊</h3>
+        <ul>
+          <li>乗船券＋<b>バイク二輪航送の予約</b>（早めが安心）</li>
+          <li>運転免許証・自賠責／任意保険証のコピー</li>
+          <li>大浴場用のタオル・洗面セット</li>
+          <li>船内で羽織れる上着（冷房・夜風対策）</li>
+          <li>モバイルバッテリー・充電器</li>
+          <li>耳栓・アイマスク（ドミトリーでぐっすり）</li>
+        </ul>
+      </div>
+      <div class="ccol">
+        <h3>🛵 バイク・ツーリング</h3>
+        <ul>
+          <li>ヘルメット・グローブ・防風の上着</li>
+          <li>雨具（カッパ）※海沿いは天気変わりやすい</li>
+          <li>スマホホルダー・充電ケーブル（ナビ用）</li>
+          <li>チェーンロック・予備のグローブ</li>
+          <li>入園料の現金（モアイ大人1,000円）・水曜定休に注意</li>
+          <li>日焼け止め・サングラス・願いごとをひとつ✨</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <p class="big">海をこえた先に、<br>会いたかったモアイが立っている。</p>
+  <p class="born">この夢が生まれた日 — <b>2026.06.16</b></p>
+  <p class="note">※ フェリーのダイヤ・運賃、各施設の営業時間・定休日は変わることがあります。実際の予約前に各公式サイトでご確認ください。<br>写真はイメージ（Pexels）。実際に旅した後は、自分で撮った写真に差し替えていく予定🗿<br>made with 🌊 by おけ森</p>
+</footer>
+
+<script>
+  // ===== Hero slideshow (crossfade) =====
+  (function(){
+    var slides=[].slice.call(document.querySelectorAll('#slides .slide'));
+    var dotsWrap=document.getElementById('dots');
+    var i=0;
+    slides.forEach(function(_,idx){
+      var d=document.createElement('span');
+      d.className='dot'+(idx===0?' on':'');
+      dotsWrap.appendChild(d);
+    });
+    var dots=[].slice.call(dotsWrap.children);
+    setInterval(function(){
+      slides[i].classList.remove('on'); dots[i].classList.remove('on');
+      i=(i+1)%slides.length;
+      slides[i].classList.add('on'); dots[i].classList.add('on');
+    },5000);
+  })();
+
+  // ===== Reveal on scroll =====
+  (function(){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:.14});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  })();
+</script>
+</body>
+</html>
