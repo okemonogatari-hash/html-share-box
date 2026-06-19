@@ -80,6 +80,16 @@ input:focus,textarea:focus{outline:none;border-color:var(--sakura);
 .chip.on{background:linear-gradient(120deg,#fde3e9,#fdeecd);border-color:var(--sakura);
   color:#9a5360;font-weight:700;box-shadow:0 3px 10px -5px rgba(236,154,171,.7)}
 
+/* preset chips：自由記述の「選択＋書き足し」ハイブリッド候補 */
+.presets{margin:2px 0 12px}
+.presets-lead{display:block;font-size:12.5px;color:var(--leaf);font-weight:700;margin-bottom:8px}
+.preset-chips{display:flex;flex-wrap:wrap;gap:8px}
+.pchip{font-family:inherit;font-size:13.5px;cursor:pointer;border:1.5px dashed var(--line);
+  background:#fffefb;border-radius:999px;padding:8px 14px;color:var(--ink-soft);transition:.18s}
+.pchip:hover{border-color:var(--sakura);color:#9a5360}
+.pchip.used{background:linear-gradient(120deg,#fde3e9,#fdeecd);border-style:solid;border-color:var(--sakura);
+  color:#9a5360;font-weight:700;box-shadow:0 3px 10px -5px rgba(236,154,171,.7)}
+
 /* scale */
 .scale{margin:6px 0 4px}
 .scale-row{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:6px}
@@ -205,16 +215,16 @@ const SHEET_COMPACT = [
     "🙆 順調","😌 ふつう","😣 少し重い","🥵 かなりしんどい","🌊 波がある"]},
   {id:"workload", type:"choices", q:"いまの作業量は？", multi:true, opts:[
     "多い","ちょうどいい","少ない","波がある","判断しづらい"]},
-  {id:"recent_more", type:"textarea", q:"ひとことあれば（任意）", hint:"気になること・順調なこと、なんでも", optional:true},
+  {id:"recent_more", type:"textarea", q:"ひとことあれば（任意）", hint:"気になること・順調なこと、なんでも", optional:true, presets:["順調で楽しい","慣れてきた","ちょっと疲れ気味","相談したいことがある"]},
 
   {grp:"話したいこと", icon:"💭", brk:"言いにくいことほど、ここで大丈夫🤍\nここはりえさんが面談で確認します。本人に直接は伝えてほしくないことは、その旨ひとこと添えてね"},
   {id:"topics", type:"choices", q:"面談で話したいテーマは？（複数OK）", multi:true, opts:[
     "業務の進め方","作業量・忙しさ","人間関係・コミュニケーション","スキル・成長","家庭との両立","将来・キャリア","特にない"]},
-  {id:"topic_detail", type:"textarea", q:"そのことについて、もう少し聞かせて", hint:"困ってること・モヤッとすること・相談したいこと、自由に。難しければ空欄でもOK", optional:true},
+  {id:"topic_detail", type:"textarea", q:"そのことについて、もう少し聞かせて", hint:"困ってること・モヤッとすること・相談したいこと、自由に。難しければ空欄でもOK", optional:true, presets:["うまく言えないけどモヤモヤがある","作業量のバランスを相談したい","進め方に迷っている","誰かとの連携で気になることがある","今後のこと・キャリアを相談したい"]},
 
   {grp:"この3ヶ月", icon:"🎯", brk:"つぎは、ちょっと先のこと。\n大きな夢より「この3ヶ月でできそうなこと」を🌿"},
-  {id:"goal3m", type:"textarea", q:"この3ヶ月でやってみたい・伸ばしたいことは？", hint:"自分の言葉で、肩の力を抜いて。小さな一歩でOK"},
-  {id:"value", type:"textarea", q:"自分の仕事が「役に立てた」と感じるのは、どんな時？", hint:"難しければ空欄でOK。面談で一緒に考えよう", optional:true},
+  {id:"goal3m", type:"textarea", q:"この3ヶ月でやってみたい・伸ばしたいことは？", hint:"自分の言葉で、肩の力を抜いて。小さな一歩でOK", presets:["新しいスキルを覚えたい","今の業務をもっと効率化したい","任される範囲を少し広げたい","苦手なことを克服したい","丁寧さ・正確さを上げたい","コミュニケーションを増やしたい"]},
+  {id:"value", type:"textarea", q:"自分の仕事が「役に立てた」と感じるのは、どんな時？", hint:"難しければ空欄でOK。面談で一緒に考えよう", optional:true, presets:["「ありがとう」と言われた時","頼られた・任せてもらえた時","自分の工夫がうまくハマった時","締切や約束を守れた時","誰かの手間を減らせた時","チームがスムーズに回った時"]},
   {id:"commit", type:"choices", q:"これからのirodoriとの関わり方、いまの気持ちに近いのは？", multi:true, opts:[
     "今のペースを保ちたい","少し広げたい","時間を絞りたい","相談したい","まだわからない"]},
 
@@ -275,7 +285,8 @@ function render(){
   if(cur.type==='text'||cur.type==='url'){
     field=`<input type="${cur.type==='url'?'url':'text'}" id="f" value="${esc(v||'')}" placeholder="ここに入力…" oninput="autosave()">`;
   }else if(cur.type==='textarea'){
-    field=`<textarea id="f" placeholder="ここに入力…" oninput="autosave()">${esc(v||'')}</textarea>`;
+    const pre=cur.presets?`<div class="presets"><span class="presets-lead">💡 タップで入れられます（そのまま自由に書き足せます）</span><div class="preset-chips">`+cur.presets.map(o=>`<button type="button" class="pchip${(v||'').includes(o)?' used':''}" data-o="${esc(o)}" onclick="addPreset(this)">＋ ${o}</button>`).join('')+`</div></div>`:'';
+    field=pre+`<textarea id="f" placeholder="ここに入力…" oninput="autosave()">${esc(v||'')}</textarea>`;
   }else if(cur.type==='choices'){
     const sel=Array.isArray(v)?v:[];
     field=`<div class="chips" id="f">`+cur.opts.map(o=>
@@ -322,6 +333,18 @@ function grab(){
 }
 function autosave(){grab();save();}
 function toggleChip(el){el.classList.toggle('on');autosave();}
+function addPreset(el){
+  const f=document.getElementById('f'); if(!f)return;
+  const t=el.dataset.o;
+  if(el.classList.contains('used')){
+    f.value=f.value.split('\n').filter(l=>l.trim()!==t).join('\n').replace(/^\n+/,'');
+    el.classList.remove('used');
+  }else{
+    const cur=f.value;const sep=cur.trim()===''?'':(cur.endsWith('\n')?'':'\n');
+    f.value=cur+sep+t;el.classList.add('used');
+  }
+  autosave();f.focus();
+}
 function next(){grab();idx++;save();if(idx>=items.length){renderResult();return;}render();}
 function prev(){grab();do{idx--;}while(idx>0&&items[idx].type==='break');if(idx<0)idx=0;save();render();}
 function skip(){const cur=items[idx];if(cur){answers[cur.id]=(cur.type==='choices')?[]:'';}idx++;save();if(idx>=items.length){renderResult();return;}render();}
