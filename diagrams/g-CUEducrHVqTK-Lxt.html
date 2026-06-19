@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>IRODORI じぶんシート 🕊️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* === IRODORI トンマナ（理念スライド準拠：コーラル→オレンジ＋ピンク／白カード／ゴシック）=== */
+:root{
+  --ink:#3f3a39; --ink-soft:#8a807c; --cream:#fdf7f4; --peach:#fdeae2;
+  --skyblue:#e6f5f3; --sakura:#f47b6a; --sakura-deep:#e8607e; --sun:#f6a14f;
+  --leaf:#56b8ad; --line:#f0e2dc; --card:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Zen Maru Gothic',sans-serif; color:var(--ink);
+  background:
+    radial-gradient(1200px 600px at 8% -5%, #fdece4 0%, transparent 60%),
+    radial-gradient(1000px 600px at 112% 8%, #e6f5f3 0%, transparent 55%),
+    radial-gradient(700px 500px at 50% 120%, #fdeef0 0%, transparent 60%),
+    var(--cream);
+  min-height:100vh; display:flex; flex-direction:column; line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+.kaisei{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900}
+.tegaki{font-family:'Zen Maru Gothic',sans-serif}
+
+/* ===== progress bar ===== */
+.topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(6px);
+  background:rgba(253,249,240,.82);border-bottom:1px solid var(--line)}
+.bar-track{height:6px;background:var(--peach)}
+.bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--sakura),var(--sun));
+  transition:width .45s cubic-bezier(.4,0,.2,1);border-radius:0 4px 4px 0}
+.bar-meta{max-width:680px;margin:0 auto;padding:8px 20px;display:flex;
+  align-items:center;justify-content:space-between;gap:10px;font-size:13px}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;
+  padding:3px 12px;color:var(--ink-soft);font-weight:500;white-space:nowrap}
+.count{color:var(--ink-soft);font-size:12px}
+
+/* ===== stage ===== */
+.wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 18px 60px}
+.card{width:100%;max-width:620px;background:var(--card);border:1px solid var(--line);
+  border-radius:24px;padding:40px 38px;box-shadow:0 18px 50px -26px rgba(240,120,95,.38);
+  position:relative;animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.qmark{font-size:34px;line-height:1;margin-bottom:14px}
+.section-tag{display:inline-block;font-size:12px;color:var(--sakura-deep);
+  font-weight:700;letter-spacing:.04em;margin-bottom:10px}
+h1.q{font-family:'Zen Kaku Gothic New',sans-serif;font-size:24px;font-weight:700;
+  line-height:1.55;margin-bottom:6px}
+h1.q::after{content:"";display:block;width:34px;height:3px;border-radius:3px;
+  background:linear-gradient(90deg,var(--sakura),var(--sun));margin-top:11px}
+.iro-mark{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;letter-spacing:.14em;
+  font-size:19px;color:var(--ink);display:inline-flex;align-items:center;gap:7px;margin-bottom:4px}
+.iro-mark .bird{font-size:22px}
+.uline{width:62px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--sakura),var(--sun));margin:12px auto 2px}
+.hint{font-size:14px;color:var(--ink-soft);margin:10px 0 22px;white-space:pre-wrap}
+.hint a{color:var(--sakura-deep)}
+.optional{font-size:12px;color:var(--leaf);font-weight:700;margin-left:6px}
+
+input[type=text],textarea,input[type=url]{
+  width:100%;font-family:inherit;font-size:16px;color:var(--ink);
+  background:#fffefb;border:1.5px solid var(--line);border-radius:14px;
+  padding:14px 16px;transition:.2s;resize:vertical}
+textarea{min-height:120px;line-height:1.7}
+input:focus,textarea:focus{outline:none;border-color:var(--sakura);
+  box-shadow:0 0 0 4px rgba(245,184,196,.22)}
+::placeholder{color:#c9bba9}
+
+/* choice chips */
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{font-family:inherit;font-size:14px;cursor:pointer;border:1.5px solid var(--line);
+  background:#fffefb;border-radius:999px;padding:9px 15px;color:var(--ink);transition:.18s}
+.chip:hover{border-color:var(--sakura)}
+.chip.on{background:linear-gradient(120deg,#fde3e9,#fdeecd);border-color:var(--sakura);
+  color:#9a5360;font-weight:700;box-shadow:0 3px 10px -5px rgba(236,154,171,.7)}
+
+/* scale */
+.scale{margin:6px 0 4px}
+.scale-row{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:6px}
+input[type=range]{width:100%;-webkit-appearance:none;height:8px;border-radius:99px;
+  background:linear-gradient(90deg,var(--sakura),var(--sun));outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;
+  border-radius:50%;background:#fff;border:3px solid var(--sakura-deep);cursor:pointer;
+  box-shadow:0 3px 8px -2px rgba(0,0,0,.25)}
+.scale-val{text-align:center;font-family:'Zen Kaku Gothic New',sans-serif;font-size:32px;margin-top:10px;color:var(--sakura-deep)}
+.scale-face{font-size:24px}
+
+/* nav */
+.nav{display:flex;gap:12px;margin-top:30px;align-items:center}
+.btn{font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;border:none;
+  border-radius:14px;padding:14px 26px;transition:.18s}
+.btn-primary{background:linear-gradient(120deg,var(--sakura),var(--sun));color:#fff;
+  flex:1;box-shadow:0 8px 20px -10px rgba(236,154,171,.9)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 24px -10px rgba(236,154,171,1)}
+.btn-ghost{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line)}
+.btn-ghost:hover{background:var(--peach)}
+.btn-skip{background:none;border:none;color:var(--ink-soft);text-decoration:underline;
+  cursor:pointer;font-family:inherit;font-size:13px}
+
+/* intro */
+.center{text-align:center}
+.logo{font-size:54px;margin-bottom:8px}
+
+/* break screen */
+.break-card{text-align:center;border-left:6px solid var(--sakura)}
+.break-card .big{font-size:46px;margin-bottom:10px}
+
+/* result */
+.result h1{font-family:'Zen Kaku Gothic New',sans-serif;font-size:26px;margin-bottom:6px}
+.res-actions{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}
+.res-actions .btn{flex:1;min-width:140px;font-size:15px;padding:13px 18px}
+.sheet{margin-top:8px;border-top:1px dashed var(--line);padding-top:16px}
+.sheet .grp{font-family:'Zen Kaku Gothic New',sans-serif;color:var(--sakura-deep);font-weight:700;
+  margin:18px 0 6px;font-size:15px}
+.sheet .qa{padding:10px 0;border-bottom:1px solid #f1e9da}
+.sheet .qa .qt{font-size:13px;color:var(--ink-soft)}
+.sheet .qa .at{font-size:15px;white-space:pre-wrap}
+.sheet .qa .empty{color:#c9bba9;font-style:italic}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#fff;padding:12px 22px;border-radius:99px;font-size:14px;
+  opacity:0;pointer-events:none;transition:.3s;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.saved-note{font-size:12px;color:var(--leaf);text-align:center;margin-top:14px}
+@media(max-width:520px){.card{padding:30px 22px}h1.q{font-size:21px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="bar-track"><div class="bar-fill" id="bar"></div></div>
+  <div class="bar-meta">
+    <span class="pill" id="secTag">はじめに</span>
+    <span class="count" id="count"></span>
+  </div>
+</div>
+
+<div class="wrap"><div id="stage"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   IRODORI じぶんシート — 全メンバー共通 面談ヒアリングシート（叩き台 v0.2）
+   用途: メンバー面談（1on1）用。事前にメンバーが記入→面談で深掘り。
+   ※人事評価システム(Notion統計表)とは別物。「評価」ではなく現状把握・悩み相談がメイン。
+   ========================================================= */
+
+// type: text | textarea | url | choices | scale | break
+// ===== じっくり版（記述多め・全22問）=====
+const SHEET_FULL = [
+  {grp:"あなたのこと", icon:"🌱"},
+  {id:"name", type:"text", q:"お名前（ニックネーム）を教えてください", hint:"呼んでほしい名前でOK😊"},
+  {id:"role", type:"choices", q:"いまの主な担当・得意は？（複数OK）", multi:true, opts:[
+    "🎨 デザイナー","✒️ ライター","🧾 事務・経理","💁‍♀️ オンライン秘書・メール確認",
+    "📋 PM・ディレクション","📣 広報・SNS","その他"]},
+  {id:"mbti", type:"text", q:"MBTI（16personalities）のタイプは？", hint:"分かれば教えてね。例）INFP・仲介者／ENFJ・主人公 など。\nまだの人は空欄でOK🙆", optional:true},
+  {id:"tenure", type:"text", q:"irodori歴はどれくらい？", hint:"例）今年4月から／半年くらい など", optional:true},
+  {id:"hours", type:"textarea", q:"いま、無理なく動ける時間帯は？", hint:"例）平日10〜15時、子どもが寝たあと21時〜など。\nご家庭との兼ね合いもあるので、現実的な範囲で大丈夫🌙", optional:true},
+
+  {grp:"最近どう？", icon:"☕", brk:"ここからは「最近のあなた」のこと。\n評価じゃないよ。ありのまま教えてね😊"},
+  {id:"recent", type:"textarea", q:"最近、業務まわりはどうですか？", hint:"全体的にざっくりでOK。順調なこと・気になることなんでも🍵"},
+  {id:"workload", type:"text", q:"いまの作業量、どんな感じ？", hint:"多い／ちょうどいい／少ない＋ひとこと（例：ちょっと多め、でも回ってる）"},
+  {id:"sustain", type:"scale", q:"いま、無理なく続けられてる？", hint:"1=ちょっとしんどい … 10=とても快適。スライドで教えてね（任意）", min:1, max:10, optional:true},
+  {id:"sustain_why", type:"textarea", q:"その感覚の理由・補足があれば", optional:true},
+
+  {grp:"悩み・モヤモヤ", icon:"💭", brk:"言いにくいことほど、ここで大丈夫🤍\nなっつんに直接は言いづらいことも、安心して書いてね。\n（ここはりえさんが面談で確認します。本人に直接は伝えてほしくないことは、その旨ひとこと添えてね）"},
+  {id:"stuck", type:"textarea", q:"いま困っていること・詰まっていることは？", hint:"小さなことでも大丈夫。「ここがいつも引っかかる」とか"},
+  {id:"moya", type:"textarea", q:"モヤッとすること、ありますか？", hint:"業務でも、チーム内のことでも。正直に書いてOK", optional:true},
+  {id:"help", type:"textarea", q:"助けてほしい場面ってある？", hint:"子どもの体調不良など、急に動けない時の助け合いも含めて。遠慮なく🤝", optional:true},
+  {id:"consult", type:"textarea", q:"誰かに相談したいことがあれば", optional:true},
+
+  {grp:"この3ヶ月、どうしたい？", icon:"🎯", brk:"つぎは、ちょっと先のこと。\n大きな夢より「この3ヶ月でできそうなこと」を一緒に🌿"},
+  {id:"goal3m", type:"textarea", q:"この3ヶ月でやってみたい・伸ばしたいことは？", hint:"自分の言葉で、肩の力を抜いて。小さな一歩でOK"},
+  {id:"value", type:"textarea", q:"「周りに価値を出せてる」って、あなたにとってどんな状態？", hint:"自分なりの言葉で言語化してみてね。難しければ空欄でもOK、面談で一緒に考えよう", optional:true},
+  {id:"support", type:"textarea", q:"そのために、あると嬉しいサポートは？", optional:true},
+  {id:"commit", type:"text", q:"これからのirodoriとの関わり方、いまの気持ちに近いのは？", hint:"例）単価や役割を上げていきたい／いまのペースが心地よい／まだ迷ってる など、正直で大丈夫", optional:true},
+
+  {grp:"irodoriのこと", icon:"🕊️"},
+  {id:"philosophy", type:"choices", q:"いま、しっくりくるPhilosophyは？（複数OK）", optional:true, multi:true, opts:[
+    "❤️ 愛","💎 誠実（真心）","📈 向上心","🔥 本気（情熱・エネルギー）","🤝 気遣い・心配り","😊 ご機嫌（笑顔）","🙏 感謝"]},
+  {id:"happy", type:"textarea", q:"最近うれしかったこと・言われて嬉しかった言葉は？", optional:true},
+  {id:"team", type:"textarea", q:"理想のチームと、その中でのあなたの役割は？", optional:true},
+
+  {grp:"さいごに", icon:"🍀"},
+  {id:"area", type:"text", q:"お住まいの地域を教えてください", hint:"都道府県だけでもOK。差し支えない範囲で🚃（今後リアル作業会を開くときの参考に）", optional:true},
+  {id:"free", type:"textarea", q:"最後に、自由に書きたいことがあれば✍️", hint:"質問になかったこと・伝えたいこと・ひとりごと、なんでもOK。空欄でも大丈夫だよ😊", optional:true},
+];
+
+// ===== さくっと版（コンパクト・選択式中心・全13問）=====
+const SHEET_COMPACT = [
+  {grp:"あなたのこと", icon:"🌱"},
+  {id:"name", type:"text", q:"お名前（ニックネーム）を教えてください", hint:"呼んでほしい名前でOK😊"},
+  {id:"role", type:"choices", q:"いまの主な担当・得意は？（複数OK）", multi:true, opts:[
+    "🎨 デザイナー","✒️ ライター","🧾 事務・経理","💁‍♀️ オンライン秘書・メール確認",
+    "📋 PM・ディレクション","📣 広報・SNS","その他"]},
+  {id:"tenure", type:"text", q:"irodori歴はどれくらい？", hint:"例）今年4月から／半年くらい など", optional:true},
+
+  {grp:"最近どう？", icon:"☕", brk:"ここからは「最近のあなた」のこと。\n評価じゃないよ。直感でポンッと選んでね😊"},
+  {id:"recent", type:"choices", q:"最近、業務まわりはどんな感じ？", hint:"近いものを選んでね（複数OK）", multi:true, opts:[
+    "🙆 順調","😌 ふつう","😣 少し重い","🥵 かなりしんどい","🌊 波がある"]},
+  {id:"workload", type:"choices", q:"いまの作業量は？", multi:true, opts:[
+    "多い","ちょうどいい","少ない","波がある","判断しづらい"]},
+  {id:"recent_more", type:"textarea", q:"ひとことあれば（任意）", hint:"気になること・順調なこと、なんでも", optional:true},
+
+  {grp:"話したいこと", icon:"💭", brk:"言いにくいことほど、ここで大丈夫🤍\nここはりえさんが面談で確認します。本人に直接は伝えてほしくないことは、その旨ひとこと添えてね"},
+  {id:"topics", type:"choices", q:"面談で話したいテーマは？（複数OK）", multi:true, opts:[
+    "業務の進め方","作業量・忙しさ","人間関係・コミュニケーション","スキル・成長","家庭との両立","将来・キャリア","特にない"]},
+  {id:"topic_detail", type:"textarea", q:"そのことについて、もう少し聞かせて", hint:"困ってること・モヤッとすること・相談したいこと、自由に。難しければ空欄でもOK", optional:true},
+
+  {grp:"この3ヶ月", icon:"🎯", brk:"つぎは、ちょっと先のこと。\n大きな夢より「この3ヶ月でできそうなこと」を🌿"},
+  {id:"goal3m", type:"textarea", q:"この3ヶ月でやってみたい・伸ばしたいことは？", hint:"自分の言葉で、肩の力を抜いて。小さな一歩でOK"},
+  {id:"value", type:"textarea", q:"自分の仕事が「役に立てた」と感じるのは、どんな時？", hint:"難しければ空欄でOK。面談で一緒に考えよう", optional:true},
+  {id:"commit", type:"choices", q:"これからのirodoriとの関わり方、いまの気持ちに近いのは？", multi:true, opts:[
+    "今のペースを保ちたい","少し広げたい","時間を絞りたい","相談したい","まだわからない"]},
+
+  {grp:"irodoriのこと", icon:"🕊️"},
+  {id:"philosophy", type:"choices", q:"いま、しっくりくるPhilosophyは？（複数OK）", optional:true, multi:true, opts:[
+    "❤️ 愛","💎 誠実（真心）","📈 向上心","🔥 本気（情熱・エネルギー）","🤝 気遣い・心配り","😊 ご機嫌（笑顔）","🙏 感謝"]},
+  {id:"mbti", type:"text", q:"MBTI（16personalities）のタイプは？", hint:"分かる人だけでOK。面談の話題に使う程度です😊", optional:true},
+
+  {grp:"さいごに", icon:"🍀"},
+  {id:"free", type:"textarea", q:"最後に、自由に書きたいことがあれば✍️", hint:"なんでもOK。空欄でも大丈夫だよ😊", optional:true},
+];
+
+// ---- state ----
+let mode='full', items=[], idx=0, answers={};
+const KEY="irodori_jibun_sheet_v2";
+function sheetFor(m){return m==='compact'?SHEET_COMPACT:SHEET_FULL;}
+
+const stage=document.getElementById('stage');
+const bar=document.getElementById('bar');
+const secTag=document.getElementById('secTag');
+const count=document.getElementById('count');
+
+function buildItems(m){
+  let curGrp="", curIcon="", out=[];
+  sheetFor(m).forEach(r=>{
+    if(r.grp){curGrp=r.grp;curIcon=r.icon||"";
+      if(r.brk){out.push({type:"break",grp:curGrp,icon:curIcon,brk:r.brk});}
+      return;}
+    out.push({...r,grp:curGrp,icon:curIcon});
+  });
+  return out;
+}
+
+function save(){localStorage.setItem(KEY,JSON.stringify({mode,answers,idx}));}
+function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
+
+// ---- render ----
+function render(){
+  const qItems=items.filter(i=>i.type!=='break');
+  const done=items.slice(0,idx).filter(i=>i.type!=='break').length;
+  const total=qItems.length;
+  const cur=items[idx];
+  const pct = total? Math.round(done/total*100):0;
+  bar.style.width=(!cur?100:pct)+"%";
+  if(cur&&cur.grp){secTag.textContent=(cur.icon||"")+" "+cur.grp;}
+  count.textContent = cur? `Q ${Math.min(done+1,total)} / ${total}`:"完成🎉";
+
+  if(!cur){renderResult();return;}
+  if(cur.type==='break'){
+    stage.innerHTML=`<div class="card break-card">
+      <div class="big">${cur.icon||"☕"}</div>
+      <p class="tegaki" style="font-size:18px;white-space:pre-wrap;color:var(--ink)">${cur.brk}</p>
+      <div class="nav"><button class="btn btn-primary" onclick="next()">つづける →</button></div>
+    </div>`;return;
+  }
+  const v=answers[cur.id];
+  let field="";
+  if(cur.type==='text'||cur.type==='url'){
+    field=`<input type="${cur.type==='url'?'url':'text'}" id="f" value="${esc(v||'')}" placeholder="ここに入力…" oninput="autosave()">`;
+  }else if(cur.type==='textarea'){
+    field=`<textarea id="f" placeholder="ここに入力…" oninput="autosave()">${esc(v||'')}</textarea>`;
+  }else if(cur.type==='choices'){
+    const sel=Array.isArray(v)?v:[];
+    field=`<div class="chips" id="f">`+cur.opts.map(o=>
+      `<button type="button" class="chip ${sel.includes(o)?'on':''}" data-o="${esc(o)}" onclick="toggleChip(this)">${o}</button>`).join('')+`</div>`;
+  }else if(cur.type==='scale'){
+    const touched=(v!==undefined&&v!==null&&v!=='');
+    const val=touched?v:Math.round((cur.min+cur.max)/2);
+    field=`<div class="scale">
+      <div class="scale-row"><span>${cur.min} 😟</span><span>😆 ${cur.max}</span></div>
+      <input type="range" id="f" min="${cur.min}" max="${cur.max}" value="${val}" data-touched="${touched?'1':'0'}" oninput="this.dataset.touched='1';document.getElementById('sval').textContent=this.value;document.getElementById('sface').textContent=face(this.value,${cur.min},${cur.max});autosave()">
+      <div class="scale-val">${touched
+        ?`<span class="scale-face" id="sface">${face(val,cur.min,cur.max)}</span> <span id="sval">${val}</span>`
+        :`<span class="scale-face" id="sface">👆</span> <span id="sval" style="font-size:15px;color:var(--ink-soft)">スライドして教えてね</span>`}</div>
+    </div>`;
+  }
+  const opt=cur.optional?`<span class="optional">任意</span>`:"";
+  stage.innerHTML=`<div class="card">
+    <div class="qmark">${cur.icon||"📝"}</div>
+    <span class="section-tag">${cur.grp||""}</span>
+    <h1 class="q">${cur.q}${opt}</h1>
+    ${cur.hint?`<p class="hint">${linkify(cur.hint)}</p>`:`<div style="height:8px"></div>`}
+    ${field}
+    <div class="nav">
+      ${idx>0?`<button class="btn btn-ghost" onclick="prev()">← 戻る</button>`:""}
+      <button class="btn btn-primary" onclick="next()">${isLast()?"完成させる 🎉":"次へ →"}</button>
+    </div>
+    ${cur.optional?`<div style="text-align:center;margin-top:12px"><button class="btn-skip" onclick="skip()">スキップする</button></div>`:""}
+    <div class="saved-note">✓ 入力は自動保存されるよ。途中で閉じても続きから書けます</div>
+  </div>`;
+  const f=document.getElementById('f'); if(f&&(cur.type==='text'||cur.type==='url'||cur.type==='textarea'))f.focus();
+}
+
+function isLast(){for(let j=idx+1;j<items.length;j++){if(items[j].type!=='break')return false;}return true;}
+function face(v,min,max){const r=(v-min)/(max-min);return r<.25?"😟":r<.5?"🙂":r<.75?"😊":"😆";}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function linkify(s){return esc(s).replace(/(https?:\/\/[^\s]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');}
+
+function grab(){
+  const cur=items[idx]; if(!cur||cur.type==='break')return;
+  const f=document.getElementById('f'); if(!f)return;
+  if(cur.type==='choices'){answers[cur.id]=[...f.querySelectorAll('.chip.on')].map(c=>c.dataset.o);}
+  else if(cur.type==='scale'){answers[cur.id]= f.dataset.touched==='1' ? f.value : (answers[cur.id]||'');}
+  else{answers[cur.id]=f.value;}
+}
+function autosave(){grab();save();}
+function toggleChip(el){el.classList.toggle('on');autosave();}
+function next(){grab();idx++;save();if(idx>=items.length){renderResult();return;}render();}
+function prev(){grab();do{idx--;}while(idx>0&&items[idx].type==='break');if(idx<0)idx=0;save();render();}
+function skip(){const cur=items[idx];if(cur){answers[cur.id]=(cur.type==='choices')?[]:'';}idx++;save();if(idx>=items.length){renderResult();return;}render();}
+
+// ---- intro ----
+function intro(){
+  stage.innerHTML=`<div class="card center">
+    <div class="iro-mark"><span class="bird">🕊️</span>IRODORI</div>
+    <h1 class="kaisei" style="font-size:27px;margin:6px 0 0">じぶんシート</h1>
+    <div class="uline"></div>
+    <p class="tegaki" style="font-size:16px;color:var(--sakura-deep);margin:12px 0 18px">〜 答えてくと、あなたのシートが完成 〜</p>
+    <p class="hint" style="text-align:left">これは「評価」じゃなくて、<b>あなたのことを知って、もっと働きやすくするため</b>の面談シートです😊<br>
+    点数をつけたり比べたりするものじゃないよ。<b>最近どう？を聞かせてほしいだけ</b>。<br>
+    1問ずつ気軽に、難しい質問はスキップOK。途中で閉じても続きから書けます🌿</p>
+    <p style="font-weight:700;margin:20px 0 4px">書き方、どっちにする？</p>
+    <div class="roles" style="display:flex;flex-direction:column;gap:12px">
+      <div class="role" onclick="start('compact')" style="display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;border:1.5px solid var(--line);background:#fffefb;border-radius:16px;padding:16px 18px"><span style="font-size:30px">⚡</span><div><b style="font-size:16px">さくっと答える</b><br><span style="font-size:13px;color:var(--ink-soft)">選択中心・約13問・5分くらい（おすすめ）</span></div></div>
+      <div class="role" onclick="start('full')" style="display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;border:1.5px solid var(--line);background:#fffefb;border-radius:16px;padding:16px 18px"><span style="font-size:30px">📝</span><div><b style="font-size:16px">じっくり書く</b><br><span style="font-size:13px;color:var(--ink-soft)">記述多め・約22問・しっかり言語化したい人に</span></div></div>
+    </div>
+  </div>`;
+  secTag.textContent="はじめに";count.textContent="";bar.style.width="0%";
+}
+function resumeScreen(){
+  stage.innerHTML=`<div class="card center">
+    <div class="logo">🌿</div>
+    <h1 class="kaisei" style="font-size:23px;margin-bottom:10px">おかえりなさい！</h1>
+    <p class="hint">前回の続きから書けます😊</p>
+    <div class="nav" style="flex-direction:column">
+      <button class="btn btn-primary" onclick="continueSaved()">続きから書く →</button>
+      <button class="btn btn-ghost" onclick="resetAll()" style="margin-top:4px">最初からやり直す</button>
+    </div>
+  </div>`;
+}
+function start(m){mode=m||'full';items=buildItems(mode);idx=0;answers={};save();render();}
+function continueSaved(){const s=load();mode=s.mode||'full';answers=s.answers||{};items=buildItems(mode);idx=Math.min(s.idx||0,items.length);render();}
+function resetAll(){localStorage.removeItem(KEY);answers={};idx=0;mode='full';intro();}
+
+// ---- result ----
+function renderResult(){
+  bar.style.width="100%";secTag.textContent="🎉 完成";count.textContent="完成";
+  let groups={},order=[];
+  items.forEach(it=>{if(it.type==='break')return;
+    if(!groups[it.grp]){groups[it.grp]=[];order.push(it.grp);}groups[it.grp].push(it);});
+  let sheet="";
+  order.forEach(g=>{
+    sheet+=`<div class="grp">${g}</div>`;
+    groups[g].forEach(it=>{
+      let a=answers[it.id]; if(Array.isArray(a))a=a.join(' / ');
+      const empty=!a||!String(a).trim();
+      sheet+=`<div class="qa"><div class="qt">${esc(it.q.replace(/<[^>]+>/g,''))}</div>
+        <div class="at ${empty?'empty':''}">${empty?'（未記入）':esc(a)}</div></div>`;
+    });
+  });
+  stage.innerHTML=`<div class="card result">
+    <div class="center"><div class="iro-mark" style="justify-content:center"><span class="bird">🕊️</span>IRODORI</div><div class="logo" style="margin-top:4px">🎉</div>
+    <h1 class="kaisei">シート、完成しました！</h1>
+    <p class="tegaki" style="color:var(--sakura-deep);margin-bottom:6px">ほんとうにお疲れさま☺️</p></div>
+    <div class="res-actions">
+      <button class="btn btn-primary" onclick="copyMD()">📋 コピーする</button>
+      <button class="btn btn-ghost" onclick="downloadMD()">⬇️ 保存(.md)</button>
+      <button class="btn btn-ghost" onclick="(()=>{idx=items.length-1;while(items[idx]&&items[idx].type==='break')idx--;render()})()">← 修正する</button>
+    </div>
+    <p class="hint">この内容をコピーして、面談担当（りえさん 等）に送ってね😊（または .md で保存）<br>
+    <span style="font-size:12px;color:var(--ink-soft)">※入力はこの端末にだけ保存されます。共用PCの人は、送ったあと「最初からやり直す」で消してね。</span></p>
+    <div class="sheet">${sheet}</div>
+    <div class="nav"><button class="btn-skip" onclick="resetAll()" style="margin:14px auto 0">最初からやり直す</button></div>
+  </div>`;
+}
+function toMD(){
+  let groups={},order=[];
+  items.forEach(it=>{if(it.type==='break')return;
+    if(!groups[it.grp]){groups[it.grp]=[];order.push(it.grp);}groups[it.grp].push(it);});
+  let md=`# IRODORI じぶんシート（${mode==='compact'?'さくっと版':'じっくり版'}）\n\n`;
+  order.forEach(g=>{md+=`## ${g}\n\n`;groups[g].forEach(it=>{
+    let a=answers[it.id];if(Array.isArray(a))a=a.join(' / ');
+    md+=`**${it.q.replace(/<[^>]+>/g,'')}**\n${a&&String(a).trim()?a:'（未記入）'}\n\n`;});});
+  return md;
+}
+function copyMD(){
+  const md=toMD();
+  const fallback=()=>{const ta=document.createElement('textarea');ta.value=md;ta.style.position='fixed';ta.style.top='0';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}document.body.removeChild(ta);toast(ok?"コピーしたよ📋":"コピーできなかった…「保存(.md)」を使ってね🙏");};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(md).then(()=>toast("コピーしたよ📋")).catch(fallback);}
+  else{fallback();}
+}
+function downloadMD(){const b=new Blob([toMD()],{type:"text/markdown"});const u=URL.createObjectURL(b);
+  const a=document.createElement('a');a.href=u;a.download=`IRODORIじぶんシート_${answers.name||'未記入'}.md`;a.click();URL.revokeObjectURL(u);toast("保存したよ⬇️");}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+
+document.addEventListener('keydown',e=>{
+  const cur=items[idx];if(!cur)return;
+  if(e.key==='Enter'){
+    if(cur.type==='text'||cur.type==='url'||cur.type==='break'){e.preventDefault();next();}
+    else if(cur.type==='textarea'&&(e.ctrlKey||e.metaKey)){e.preventDefault();next();}
+  }
+});
+
+// ---- boot ----
+const saved=load();
+if(saved&&saved.answers&&Object.keys(saved.answers).length){resumeScreen();}else{intro();}
+</script>
+</body>
+</html>
