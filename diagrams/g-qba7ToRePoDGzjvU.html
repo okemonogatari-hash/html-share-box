@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>「管理」と「マネジメント」、ちがうやんって話 | きょうちゃん図解</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@500;700;900&family=Cormorant+Garamond:wght@500;700;700italic&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #fbf8f3;
+    --paper-soft: #f3eee5;
+    --paper-deep: #ebe4d3;
+    --ink: #2a2620;
+    --ink-soft: #5a544a;
+    --ink-mute: #8a8377;
+    --line: #d8d3c5;
+    --line-soft: #ece6d7;
+
+    --night: #1f2a4a;
+    --night-deep: #131a32;
+    --gold: #c89b2a;
+    --gold-bright: #e7b93b;
+
+    --ajisai: #6d7fb3;
+    --ajisai-soft: #aab4d3;
+    --ajisai-bg: #eaeef7;
+    --ajisai-deep: #4a5d92;
+
+    --hydrangea-pink: #c87aa3;
+    --hydrangea-pink-bg: #f6e6ee;
+    --leaf: #5e8b6a;
+    --leaf-bg: #e6efe8;
+
+    --warn: #c25c2a;
+    --warn-bg: #fbeadf;
+
+    --shadow-soft: 0 6px 28px rgba(20, 24, 40, 0.08);
+    --shadow-card: 0 10px 36px rgba(74, 93, 146, 0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.85;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(109, 127, 179, 0.06), transparent 40%),
+      radial-gradient(circle at 85% 92%, rgba(200, 122, 163, 0.05), transparent 40%);
+  }
+
+  .serif { font-family: 'Noto Serif JP', serif; }
+  .roman { font-family: 'Cormorant Garamond', serif; letter-spacing: 0.06em; }
+
+  /* ============ ヒーロー ============ */
+  .hero {
+    position: relative;
+    min-height: 78vh;
+    background: linear-gradient(180deg, var(--night-deep) 0%, var(--night) 100%);
+    color: white;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+  }
+
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255,248,220,0.4) 0.6px, transparent 1.2px),
+      radial-gradient(circle, rgba(200,155,42,0.5) 1px, transparent 1.6px);
+    background-size: 80px 90px, 140px 150px;
+    background-position: 0 0, 40px 35px;
+    opacity: 0.7;
+  }
+
+  .hero-inner {
+    position: relative; z-index: 2;
+    text-align: center; max-width: 760px;
+  }
+
+  .hero-meta {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; letter-spacing: 0.5em;
+    color: var(--gold-bright);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .hero-meta::before, .hero-meta::after {
+    content: "✦"; margin: 0 16px; opacity: 0.7;
+  }
+
+  .hero h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 900;
+    line-height: 1.55;
+    margin-bottom: 28px;
+    letter-spacing: 0.04em;
+  }
+
+  .hero h1 .accent {
+    color: var(--gold-bright);
+    border-bottom: 2px dotted rgba(231, 185, 59, 0.5);
+    padding-bottom: 4px;
+  }
+
+  .hero p {
+    font-size: clamp(14px, 2.2vw, 17px);
+    color: rgba(255,255,255,0.82);
+    line-height: 2;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  .hero-source {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.1em;
+  }
+  .hero-source a { color: var(--gold-bright); text-decoration: none; border-bottom: 1px dotted; }
+
+  /* ============ 本文セクション ============ */
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section {
+    padding: 80px 0 40px;
+  }
+
+  .sec-label {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 32px;
+  }
+  .sec-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px; font-weight: 700;
+    color: var(--ajisai-deep);
+    line-height: 1;
+  }
+  .sec-tag {
+    font-size: 12px; letter-spacing: 0.3em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+  }
+  .sec-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 700;
+    margin-bottom: 24px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .sec-title .mark {
+    background: linear-gradient(transparent 60%, var(--ajisai-bg) 60%);
+    padding: 0 4px;
+  }
+  .sec-lead {
+    font-size: 17px; line-height: 2;
+    color: var(--ink-soft);
+    margin-bottom: 36px;
+  }
+
+  /* ============ 一言まとめカード ============ */
+  .summary-card {
+    background: linear-gradient(135deg, var(--paper-soft) 0%, var(--ajisai-bg) 100%);
+    border-radius: 24px;
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--line-soft);
+    margin: 24px 0;
+  }
+  .summary-card .label {
+    font-size: 11px; letter-spacing: 0.4em;
+    color: var(--ajisai-deep);
+    margin-bottom: 16px;
+  }
+  .summary-card .body {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(18px, 3.5vw, 24px);
+    font-weight: 700;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+  .summary-card .body em {
+    font-style: normal;
+    color: var(--ajisai-deep);
+    border-bottom: 2px dotted var(--ajisai-soft);
+  }
+
+  /* ============ 対比テーブル ============ */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 32px 0;
+  }
+  @media (max-width: 600px) {
+    .compare { grid-template-columns: 1fr; }
+  }
+  .compare-card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px 24px;
+    border: 1px solid var(--line-soft);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+  }
+  .compare-card.left { border-top: 4px solid var(--ink-mute); }
+  .compare-card.right { border-top: 4px solid var(--ajisai); }
+  .compare-card h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+  .compare-card .sub {
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+    margin-bottom: 18px;
+  }
+  .compare-card ul {
+    list-style: none;
+  }
+  .compare-card li {
+    padding: 8px 0 8px 22px;
+    position: relative;
+    font-size: 14.5px;
+    line-height: 1.7;
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  .compare-card li:last-child { border-bottom: none; }
+  .compare-card.left li::before {
+    content: "○"; position: absolute; left: 0; top: 8px;
+    color: var(--ink-mute); font-weight: 700;
+  }
+  .compare-card.right li::before {
+    content: "✦"; position: absolute; left: 0; top: 8px;
+    color: var(--ajisai); font-weight: 700;
+  }
+  .compare-card .image-line {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-mute);
+    font-style: italic;
+  }
+
+  /* ============ 勘違い4枚 ============ */
+  .trap-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin: 28px 0;
+  }
+  @media (max-width: 600px) {
+    .trap-grid { grid-template-columns: 1fr; }
+  }
+  .trap-card {
+    background: white;
+    border-radius: 18px;
+    padding: 26px 22px;
+    border: 1px solid var(--line-soft);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+  }
+  .trap-card::before {
+    content: ""; position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--warn) 0%, transparent 100%);
+  }
+  .trap-card .trap-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 700;
+    color: var(--warn);
+    line-height: 1; margin-bottom: 8px;
+  }
+  .trap-card h4 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .trap-card p {
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--ink-soft);
+  }
+  .trap-card .escape {
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: var(--leaf-bg);
+    border-left: 3px solid var(--leaf);
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .trap-card .escape strong { color: var(--leaf); font-weight: 700; }
+
+  /* ============ スキル4本 ============ */
+  .skill-list {
+    display: flex; flex-direction: column;
+    gap: 16px;
+    margin: 28px 0;
+  }
+  .skill-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 22px;
+    align-items: center;
+    background: white;
+    border-radius: 16px;
+    padding: 22px 24px;
+    border: 1px solid var(--line-soft);
+    box-shadow: var(--shadow-soft);
+  }
+  @media (max-width: 500px) {
+    .skill-row { grid-template-columns: 1fr; }
+  }
+  .skill-icon {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: var(--hydrangea-pink-bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+  }
+  .skill-body h4 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .skill-body .sub {
+    font-size: 12px; color: var(--hydrangea-pink); letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+  .skill-body p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.8;
+  }
+
+  /* ============ 具体策4本 ============ */
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin: 28px 0;
+  }
+  @media (max-width: 600px) {
+    .method-grid { grid-template-columns: 1fr; }
+  }
+  .method-card {
+    background: linear-gradient(135deg, var(--paper) 0%, var(--ajisai-bg) 100%);
+    border-radius: 18px;
+    padding: 24px 22px;
+    border: 1px solid var(--ajisai-soft);
+  }
+  .method-card h4 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    margin-bottom: 8px;
+    color: var(--ajisai-deep);
+  }
+  .method-card .tip {
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+  }
+  .method-card p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.8;
+  }
+
+  /* ============ 未来編 ============ */
+  .future-list {
+    background: white;
+    border-radius: 20px;
+    padding: 32px 28px;
+    border: 1px solid var(--line-soft);
+    box-shadow: var(--shadow-soft);
+    margin: 28px 0;
+  }
+  .future-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 16px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .future-row:last-child { border-bottom: none; }
+  .future-row .icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 36px;
+    text-align: center;
+  }
+  .future-row .text h4 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+  .future-row .text p {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.8;
+  }
+
+  /* ============ おけ森メモ ============ */
+  .okemori-memo {
+    background: linear-gradient(135deg, var(--hydrangea-pink-bg) 0%, var(--paper-soft) 100%);
+    border-radius: 24px;
+    padding: 36px 30px;
+    margin: 48px 0 24px;
+    border: 1px dashed var(--hydrangea-pink);
+    position: relative;
+  }
+  .okemori-memo::before {
+    content: "おけ森メモ";
+    position: absolute;
+    top: -14px; left: 30px;
+    background: var(--hydrangea-pink);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 99px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+  }
+  .okemori-memo h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 19px;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+  .okemori-memo p {
+    font-size: 15px;
+    line-height: 2;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+  .okemori-memo p:last-child { margin-bottom: 0; }
+  .okemori-memo em {
+    font-style: normal;
+    background: linear-gradient(transparent 60%, rgba(231, 185, 59, 0.4) 60%);
+    padding: 0 3px;
+  }
+
+  /* ============ フッター ============ */
+  footer {
+    background: var(--paper-deep);
+    padding: 50px 24px 40px;
+    text-align: center;
+    margin-top: 80px;
+    border-top: 1px solid var(--line);
+  }
+  footer .credit {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    letter-spacing: 0.3em;
+    color: var(--ink-mute);
+    margin-bottom: 12px;
+  }
+  footer .by {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+  footer .src {
+    font-size: 12px;
+    color: var(--ink-mute);
+  }
+  footer .src a {
+    color: var(--ajisai-deep);
+    text-decoration: none;
+    border-bottom: 1px dotted;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ ヒーロー ============ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">Management ＆ Control</div>
+    <h1>「管理」と<br><span class="accent">「マネジメント」</span>、<br>ちがうやんって話。</h1>
+    <p>毎日「タスク追えてる」「メンバー進捗OK」って言いながら、<br>気づくと自分がボトルネックになってる。<br>その理由、ちゃんと言葉になってる記事に出会った。</p>
+    <div class="hero-source">
+      Source ✦ <a href="https://www.kotora.jp/c/99257-2/" target="_blank" rel="noopener">kotora.jp「マネジメントと管理の違いとは？」</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 一言まとめ ============ -->
+<div class="container">
+  <section>
+    <div class="sec-label">
+      <span class="sec-num">00</span>
+      <span class="sec-tag">In One Sentence</span>
+    </div>
+    <div class="summary-card">
+      <div class="label">★ ざっくり一言でいうと ★</div>
+      <div class="body">
+        <em>「管理」</em>は<strong>細かいことを見張る</strong>こと。<br>
+        <em>「マネジメント」</em>は<strong>チームで成果を出す</strong>こと。<br>
+        <span style="font-size: 16px; color: var(--ink-mute); display: block; margin-top: 12px;">この2つを混同してる管理職、めちゃ多い。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 1章：違い ============ -->
+  <section>
+    <div class="sec-label">
+      <span class="sec-num">01</span>
+      <span class="sec-tag">Chapter One ✦ What's Different</span>
+    </div>
+    <h2 class="sec-title">そもそも、<span class="mark">なにが違うん？</span></h2>
+    <p class="sec-lead">
+      字面は似てるけど、見てる景色が全然ちがう。<br>
+      ひとつは「現場の細部」、もうひとつは「組織の全体と未来」。
+    </p>
+
+    <div class="compare">
+      <div class="compare-card left">
+        <h3>管理</h3>
+        <div class="sub">Control / 細部・現在</div>
+        <ul>
+          <li>進捗の確認、勤怠のチェック</li>
+          <li>抜け漏れを防ぐ</li>
+          <li>計画どおりに進めるための見張り役</li>
+          <li>主役は「業務」と「ルール」</li>
+        </ul>
+        <div class="image-line">— 工場の現場監督みたいなイメージ</div>
+      </div>
+      <div class="compare-card right">
+        <h3>マネジメント</h3>
+        <div class="sub">Management / 全体・中長期</div>
+        <ul>
+          <li>目標を決めて道筋を描く</li>
+          <li>人・お金・時間を組み合わせて動かす</li>
+          <li>成果を出すための仕組みづくり</li>
+          <li>主役は「人」と「成果」</li>
+        </ul>
+        <div class="image-line">— 船の船長みたいなイメージ</div>
+      </div>
+    </div>
+
+    <p class="sec-lead">
+      「管理」だけやってると、目の前のタスクに目が行きすぎて<br>
+      <strong>「で、なんのためにやってんの？」が見えなくなる</strong>のがコワいとこ。
+    </p>
+  </section>
+
+  <!-- ============ 2章：勘違い4つ ============ -->
+  <section>
+    <div class="sec-label">
+      <span class="sec-num">02</span>
+      <span class="sec-tag">Chapter Two ✦ Four Traps</span>
+    </div>
+    <h2 class="sec-title">管理職が<span class="mark">やりがちな勘違い、4つ。</span></h2>
+    <p class="sec-lead">
+      ここがこの記事のいちばん刺さるとこ。<br>
+      「あ、わたしやってるかも…」が止まらない章。
+    </p>
+
+    <div class="trap-grid">
+      <div class="trap-card">
+        <div class="trap-num">01</div>
+        <h4>「業務管理」と「ヒトのマネジメント」を<br>同じものだと思っちゃう</h4>
+        <p>タスクの進捗を追うことと、メンバーのモチベを上げることは別物。<br>「タスク全部追えてる＝マネジメントできてる」と勘違いしがち。</p>
+        <div class="escape"><strong>抜け方 ▸</strong> 数字の進捗と、人の機嫌は別ファイルで見る</div>
+      </div>
+
+      <div class="trap-card">
+        <div class="trap-num">02</div>
+        <h4>現場との距離が<br>気づかぬうちに開いていく</h4>
+        <p>偉くなると、現場のリアルな声が届かなくなる。<br>現実離れした指示を出して「なんで動かないの？」が始まる。</p>
+        <div class="escape"><strong>抜け方 ▸</strong> 1on1や定期ミーティングを意識的に入れる</div>
+      </div>
+
+      <div class="trap-card">
+        <div class="trap-num">03</div>
+        <h4>結果ばっかり見て、<br>過程を雑にする</h4>
+        <p>「とにかく達成しろ！」で無理させると、短期は上がる。<br>でも長期的には人が壊れて、離職とやる気減退に変わる。</p>
+        <div class="escape"><strong>抜け方 ▸</strong> 数字だけじゃなく、どう動いたかも見る</div>
+      </div>
+
+      <div class="trap-card">
+        <div class="trap-num">04</div>
+        <h4>「全部わたしが把握しなきゃ」<br>病になる</h4>
+        <p>管理職あるある。全部抱える。<br>結果：自分はストレスMAX／メンバーは責任感が育たない／チームが成長しない。</p>
+        <div class="escape"><strong>抜け方 ▸</strong> 任せる勇気＋信頼。これだけで世界がちがう</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3章：必要なスキル4本 ============ -->
+  <section>
+    <div class="sec-label">
+      <span class="sec-num">03</span>
+      <span class="sec-tag">Chapter Three ✦ Four Skills</span>
+    </div>
+    <h2 class="sec-title"><span class="mark">マネジメントに効く</span>、4つのちから。</h2>
+    <p class="sec-lead">
+      抜け方を実装するための、土台のスキル。<br>
+      ぜんぶ「人と関わる力」に集約されていく。
+    </p>
+
+    <div class="skill-list">
+      <div class="skill-row">
+        <div class="skill-icon">🎯</div>
+        <div class="skill-body">
+          <h4>リーダーシップ</h4>
+          <div class="sub">PEOPLE FOLLOW YOU</div>
+          <p>計画と実行を管理するのが「マネジメント」、「ついていきたい！」と思わせるのが「リーダーシップ」。両方ないと、人は動いてくれない。</p>
+        </div>
+      </div>
+
+      <div class="skill-row">
+        <div class="skill-icon">💬</div>
+        <div class="skill-body">
+          <h4>コミュニケーション</h4>
+          <div class="sub">TALK BOTH WAYS</div>
+          <p>「伝える」じゃなくて「お互いに話す」。1on1で聞く側に回る時間を、ちゃんと予定に入れる。</p>
+        </div>
+      </div>
+
+      <div class="skill-row">
+        <div class="skill-icon">🌿</div>
+        <div class="skill-body">
+          <h4>チームビルディング</h4>
+          <div class="sub">BUILD THE GARDEN</div>
+          <p>個人を管理するんじゃなく、チーム全体が動く環境をつくる。メンバー同士の信頼が育つように、間をデザインする。</p>
+        </div>
+      </div>
+
+      <div class="skill-row">
+        <div class="skill-icon">⚖️</div>
+        <div class="skill-body">
+          <h4>意思決定 ＆ 問題解決</h4>
+          <div class="sub">DECIDE WITH CARE</div>
+          <p>情報が足りなくても、決めるタイミングは来る。本質を見抜いて、選び、動く。失敗したら学んで、また選ぶ。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4章：具体策4本 ============ -->
+  <section>
+    <div class="sec-label">
+      <span class="sec-num">04</span>
+      <span class="sec-tag">Chapter Four ✦ How To Practice</span>
+    </div>
+    <h2 class="sec-title">じゃあ、<span class="mark">明日からどうする？</span></h2>
+    <p class="sec-lead">
+      理論だけじゃ動けないから、具体的な型を4つ。<br>
+      ぜんぶ「今あるツールで明日からできる」やつ。
+    </p>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <h4>① 目標管理の型を使う</h4>
+        <div class="tip">OKR / MBO</div>
+        <p>「目標」と「達成するための重要な成果3〜5個」をセットで決める方式（OKR）や、個人ごとに目標を決めて評価する方式（MBO）。型に乗せると会話が早くなる。</p>
+      </div>
+
+      <div class="method-card">
+        <h4>② フィードバックを文化にする</h4>
+        <div class="tip">FEEDBACK CULTURE</div>
+        <p>フィードバック＝批判じゃなくて「成長のための対話」。上司→部下だけじゃなく、部下→上司もOKにする空気づくりが大事。</p>
+      </div>
+
+      <div class="method-card">
+        <h4>③ 進捗を見える化する</h4>
+        <div class="tip">NOTION / TRELLO / ASANA</div>
+        <p>「あの人いま何やってる？」を聞かなくていい状態にする。可視化されると、信頼してまかせやすくなる。</p>
+      </div>
+
+      <div class="method-card">
+        <h4>④ リモートでも通じる関わり方</h4>
+        <div class="tip">REMOTE-FRIENDLY</div>
+        <p>細かい行動は追わない、成果ベースで信頼する。でも「話す機会」だけは意識的に予定に入れる。距離は仕組みで埋める。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5章：未来編 ============ -->
+  <section>
+    <div class="sec-label">
+      <span class="sec-num">05</span>
+      <span class="sec-tag">Chapter Five ✦ Future View</span>
+    </div>
+    <h2 class="sec-title">これからの管理職に、<span class="mark">求められる目線。</span></h2>
+    <p class="sec-lead">
+      昔の管理職とは、必要なものが変わってきてる。<br>
+      テクノロジー・働き方・多様性、ぜんぶ織り込んだ4つの目線。
+    </p>
+
+    <div class="future-list">
+      <div class="future-row">
+        <div class="icon">🌊</div>
+        <div class="text">
+          <h4>変化に柔軟な目線</h4>
+          <p>リモート・ハイブリッドが普通になった世界に、自分のやり方を合わせていく。昨日の正解は、今日の足かせになりやすい。</p>
+        </div>
+      </div>
+
+      <div class="future-row">
+        <div class="icon">📊</div>
+        <div class="text">
+          <h4>データで判断する目線</h4>
+          <p>感覚や勘だけじゃなく、数字を見て決める。透明性が上がれば、メンバーも納得しやすい。</p>
+        </div>
+      </div>
+
+      <div class="future-row">
+        <div class="icon">🌈</div>
+        <div class="text">
+          <h4>多様性を活かす目線</h4>
+          <p>違うバックグラウンドの人が混ざるチームを、まとめるんじゃなく「混ざったまま動かす」。違いがチームの厚みになる。</p>
+        </div>
+      </div>
+
+      <div class="future-row">
+        <div class="icon">🌱</div>
+        <div class="text">
+          <h4>自分も成長し続ける目線</h4>
+          <p>管理職だからこそ学び続ける。コーチング・問題解決の引き出しを増やしていく。背中で見せるのが、いちばんの教育。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ おけ森メモ ============ -->
+  <section>
+    <div class="okemori-memo">
+      <h3>★ おけ森的に翻訳すると ★</h3>
+      <p>
+        おけもんカンパニーは、<em>AI11人を「マネジメント」している会社</em>。<br>
+        毎日のタスクを「管理」するんじゃなくて、はるか・あおい・ひより・まな・りん・ゆい・しーちゃん・みっちゃん・きょうちゃん・なっちゃん・コウに<em>「任せる勇気＋信頼」</em>を渡しに行く練習場。
+      </p>
+      <p>
+        「全部わたしが把握しなきゃ」病から抜けて、<br>
+        AIたちを信頼してまかせて、おけちゃんは<em>「話す・選ぶ・会う」</em>に集中する。<br>
+        この記事に書いてあること、ぜんぶおけ森が日々やってることの理論版だった。
+      </p>
+      <p style="text-align: right; font-size: 13px; color: var(--ink-mute); margin-top: 16px;">
+        — 図解：きょうちゃん 🎨
+      </p>
+    </div>
+  </section>
+</div>
+
+<!-- ============ フッター ============ -->
+<footer>
+  <div class="credit">KYOCHAN ✦ DIAGRAM</div>
+  <div class="by">「管理」と「マネジメント」、ちがうやんって話。</div>
+  <div class="src">
+    Source: <a href="https://www.kotora.jp/c/99257-2/" target="_blank" rel="noopener">kotora.jp「マネジメントと管理の違いとは？」</a><br>
+    <span style="font-size: 11px; color: var(--ink-mute); display: block; margin-top: 8px;">2026.06.20 ✦ おけもんカンパニー きょうちゃん図解</span>
+  </div>
+</footer>
+
+</body>
+</html>
