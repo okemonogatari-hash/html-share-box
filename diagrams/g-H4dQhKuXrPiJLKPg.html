@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>¥3,000ゼロイチ会議 〜 永松武器とROIで殴り合った土曜の夜 | Day0620-3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@500;700;900&family=Cormorant+Garamond:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ デザイントークン ============ */
+  :root {
+    /* 夜景パレット */
+    --night-deep: #0a0e1f;
+    --night: #131a32;
+    --night-light: #1f2a4a;
+    --night-soft: #2a3a5e;
+    --gold: #d4af37;
+    --gold-bright: #efbf04;
+    --gold-pale: #fff0a3;
+    --gold-mark: #fff3a3;
+
+    /* 紙パレット */
+    --paper: #fbf8f3;
+    --paper-soft: #f3eee5;
+    --ink: #1a1f2e;
+    --ink-soft: #4a5060;
+    --line: #d8d3c5;
+
+    /* キャラ色 */
+    --c-haruka: #ff5e9a;       --c-haruka-bg: #fff0f6;   --c-haruka-deep: #c63f78;
+    --c-mana: #ff7e3f;         --c-mana-bg: #fff3e8;     --c-mana-deep: #c25318;
+    --c-michan: #c2185b;       --c-michan-bg: #fce4ec;   --c-michan-deep: #8e0e3f;
+    --c-oke: #8b6f47;          --c-oke-bg: #f5ede0;      --c-oke-deep: #5d4a30;
+    --c-codex: #2563eb;        --c-codex-bg: #eaeefc;    --c-codex-deep: #1a40a8;
+
+    /* アクセント */
+    --accent-yellow: #fff3a3;
+    --accent-pink: #ffb3d1;
+    --shadow-soft: 0 6px 28px rgba(20, 24, 40, 0.08);
+    --shadow-deep: 0 18px 60px rgba(10, 14, 31, 0.45);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.85;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ============ ヒーロー ============ */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    background: linear-gradient(180deg, var(--night-deep) 0%, var(--night) 45%, var(--night-light) 100%);
+    color: white;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+  }
+
+  .hero-dots {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(circle, rgba(255,248,160,0.55) 0.7px, transparent 1.2px),
+      radial-gradient(circle, rgba(212,175,55,0.7) 1.2px, transparent 1.8px),
+      radial-gradient(circle, rgba(255,243,163,0.4) 0.5px, transparent 1px);
+    background-size: 90px 100px, 160px 170px, 50px 55px;
+    background-position: 0 0, 45px 40px, 12px 22px;
+    opacity: 0.75;
+  }
+
+  .hero-glow {
+    position: absolute;
+    bottom: -80px; left: 50%; transform: translateX(-50%);
+    width: 120%; height: 250px;
+    background: radial-gradient(ellipse at center, rgba(212,175,55,0.32) 0%, transparent 70%);
+    filter: blur(10px); pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; max-width: 720px;
+  }
+
+  .hero-meta {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px; letter-spacing: 0.5em;
+    color: var(--gold-bright);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hero-title {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 900;
+    font-size: clamp(48px, 9vw, 88px);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    margin-bottom: 18px;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  }
+
+  .hero-title .yen {
+    color: var(--gold-bright);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    margin-right: 0.08em;
+  }
+
+  .hero-sub {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 500;
+    font-size: clamp(15px, 2.4vw, 21px);
+    color: var(--gold-pale);
+    margin-bottom: 44px;
+    letter-spacing: 0.12em;
+  }
+
+  .hero-cast {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 10px 14px;
+    font-size: 13px;
+    margin-top: 40px;
+  }
+  .hero-cast .ch {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,248,160,0.18);
+    backdrop-filter: blur(8px);
+    padding: 7px 14px;
+    border-radius: 22px;
+    color: var(--gold-pale);
+    letter-spacing: 0.06em;
+  }
+
+  /* ============ 共通セクション ============ */
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section { padding: 72px 0; }
+
+  /* セクション間の金色ライン */
+  .divider {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto;
+  }
+
+  /* ============ TLDR ============ */
+  .tldr {
+    background: linear-gradient(180deg, var(--night-light) 0%, var(--night-soft) 100%);
+    color: var(--gold-pale);
+    text-align: center;
+    padding: 56px 24px;
+  }
+  .tldr h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    letter-spacing: 0.3em;
+    color: var(--gold-bright);
+    margin-bottom: 24px;
+  }
+  .tldr p {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    line-height: 2.0;
+    max-width: 680px;
+    margin: 0 auto;
+    color: var(--gold-pale);
+  }
+
+  /* ============ TOC ============ */
+  .toc {
+    background: var(--paper-soft);
+    padding: 56px 24px;
+  }
+  .toc-inner {
+    max-width: 720px; margin: 0 auto;
+  }
+  .toc h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    text-align: center;
+    color: var(--ink-soft);
+    letter-spacing: 0.4em;
+    margin-bottom: 32px;
+  }
+  .toc ol {
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+  .toc li {
+    border-bottom: 1px solid var(--line);
+  }
+  .toc a {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 4px;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 15px;
+    transition: background 0.2s, padding 0.2s;
+  }
+  .toc a:hover {
+    background: var(--paper);
+    padding-left: 14px;
+  }
+  .toc .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--gold);
+    min-width: 36px;
+    font-weight: 700;
+  }
+  .toc .title {
+    flex: 1;
+    line-height: 1.5;
+  }
+  .toc .sub {
+    color: var(--ink-soft);
+    font-size: 12px;
+    margin-top: 3px;
+  }
+
+  /* ============ 章 ============ */
+  .chapter {
+    background: var(--paper);
+    padding: 90px 24px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .chapter-inner { max-width: 760px; margin: 0 auto; }
+
+  .chapter-head {
+    margin-bottom: 48px;
+    text-align: center;
+  }
+  .chapter-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 96px;
+    line-height: 1;
+    color: var(--gold);
+    opacity: 0.85;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .chapter-title {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700;
+    font-size: clamp(22px, 4vw, 32px);
+    line-height: 1.45;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .chapter-title .em { color: var(--c-mana-deep); }
+  .chapter-lead {
+    color: var(--ink-soft);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ============ 引用（事実引用） ============ */
+  blockquote.facts {
+    background: linear-gradient(135deg, #fdfbf3 0%, #f6f1de 100%);
+    border-left: 4px solid var(--gold);
+    padding: 22px 26px;
+    margin: 26px 0;
+    border-radius: 6px;
+    font-size: 14.5px;
+    line-height: 1.85;
+    color: var(--ink);
+    box-shadow: var(--shadow-soft);
+  }
+  blockquote.facts p + p { margin-top: 12px; }
+  blockquote.facts strong { color: var(--c-mana-deep); }
+
+  /* ============ 発言ブロック ============ */
+  .voice {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 16px;
+    margin: 24px 0;
+    padding: 18px 22px 18px 18px;
+    border-radius: 14px;
+    border-left: 5px solid var(--ink);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+  }
+  .voice .avatar {
+    font-size: 32px;
+    line-height: 1;
+    text-align: center;
+    padding-top: 4px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  }
+  .voice .who {
+    font-weight: 700;
+    font-size: 13.5px;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .voice .say {
+    font-size: 15.5px;
+    line-height: 1.88;
+  }
+  .voice .say strong {
+    background: linear-gradient(transparent 65%, var(--gold-mark) 65%);
+    padding: 0 2px;
+    font-weight: 700;
+  }
+  .voice .say em {
+    font-style: normal;
+    color: var(--c-mana-deep);
+    font-weight: 700;
+    border-bottom: 2px solid var(--c-mana-deep);
+  }
+
+  /* キャラ別カラー */
+  .voice.haruka  { background: var(--c-haruka-bg);  border-left-color: var(--c-haruka);  }
+  .voice.haruka  .who { color: var(--c-haruka-deep); }
+  .voice.mana    { background: var(--c-mana-bg);    border-left-color: var(--c-mana);    }
+  .voice.mana    .who { color: var(--c-mana-deep); }
+  .voice.michan  { background: var(--c-michan-bg);  border-left-color: var(--c-michan);  }
+  .voice.michan  .who { color: var(--c-michan-deep); }
+  .voice.oke     { background: var(--c-oke-bg);     border-left-color: var(--c-oke);     }
+  .voice.oke     .who { color: var(--c-oke-deep); }
+  .voice.codex   { background: var(--c-codex-bg);   border-left-color: var(--c-codex);   }
+  .voice.codex   .who { color: var(--c-codex-deep); }
+
+  /* バチバチペア */
+  .clash {
+    display: grid; grid-template-columns: 1fr; gap: 12px;
+    margin: 28px 0;
+    padding: 22px;
+    background: linear-gradient(135deg, #fff5ed 0%, #fce4ec 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 126, 63, 0.18);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+  }
+  .clash::before {
+    content: "⚔ ♡";
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: white;
+    padding: 2px 14px; border-radius: 16px;
+    font-size: 14px;
+    border: 1px solid rgba(194,24,91,0.2);
+    color: var(--c-michan);
+    letter-spacing: 0.3em;
+  }
+  .clash .voice {
+    margin: 0; box-shadow: none;
+    background: rgba(255,255,255,0.7);
+  }
+
+  /* ============ 永松カード ============ */
+  .quote-card {
+    margin: 40px 0;
+    padding: 36px 30px;
+    background: linear-gradient(135deg, var(--night) 0%, var(--night-light) 100%);
+    color: var(--gold-pale);
+    border-radius: 18px;
+    border: 1px solid var(--gold);
+    box-shadow: var(--shadow-deep);
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: "“";
+    position: absolute;
+    top: -30px; left: 18px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 180px;
+    color: var(--gold);
+    opacity: 0.18;
+    line-height: 1;
+    font-weight: 700;
+  }
+  .quote-card .label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--gold-bright);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .quote-card .body {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    line-height: 2.0;
+    color: white;
+    position: relative; z-index: 2;
+  }
+  .quote-card .body strong {
+    color: var(--gold-bright);
+    font-weight: 700;
+  }
+  .quote-card .source {
+    font-size: 12px;
+    color: var(--gold-pale);
+    opacity: 0.7;
+    margin-top: 16px;
+    text-align: right;
+    letter-spacing: 0.1em;
+  }
+
+  /* ============ アマン東京シーン（特別） ============ */
+  .amaman-scene {
+    margin: 40px 0;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: var(--shadow-deep);
+    background: linear-gradient(180deg, var(--night-deep) 0%, var(--night-light) 70%, #3a2810 100%);
+    color: var(--gold-pale);
+    padding: 50px 32px;
+    position: relative;
+  }
+  .amaman-scene::before {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(circle, rgba(255,248,160,0.45) 0.6px, transparent 1px),
+      radial-gradient(circle, rgba(212,175,55,0.55) 0.9px, transparent 1.4px);
+    background-size: 80px 90px, 120px 130px;
+    background-position: 0 0, 30px 30px;
+    opacity: 0.6;
+  }
+  .amaman-scene .scene-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--gold-bright);
+    margin-bottom: 14px;
+    position: relative; z-index: 2;
+  }
+  .amaman-scene .scene-quote {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(20px, 3.6vw, 28px);
+    line-height: 1.7;
+    color: white;
+    position: relative; z-index: 2;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .amaman-scene .scene-by {
+    font-size: 13px;
+    color: var(--gold-pale);
+    text-align: right;
+    position: relative; z-index: 2;
+    margin-top: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ============ テーブル ============ */
+  .data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 26px 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    font-size: 14px;
+  }
+  .data-table th {
+    background: var(--night);
+    color: var(--gold-pale);
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-size: 13px;
+  }
+  .data-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    line-height: 1.65;
+  }
+  .data-table tr:nth-child(even) td { background: #fbf8f3; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table td strong { color: var(--c-mana-deep); }
+  .data-table .num { font-family: 'Cormorant Garamond', serif; font-weight: 700; }
+
+  /* ============ KPI第4層 専用カード ============ */
+  .kpi-card {
+    margin: 36px 0;
+    padding: 32px 28px;
+    background: linear-gradient(180deg, #fefaf0 0%, #fef3d6 100%);
+    border: 2px solid var(--gold);
+    border-radius: 18px;
+    position: relative;
+    box-shadow: var(--shadow-soft);
+  }
+  .kpi-card::before {
+    content: "第4層 1年複利ROI";
+    position: absolute; top: -14px; left: 22px;
+    background: var(--gold);
+    color: white;
+    padding: 4px 14px; border-radius: 18px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+  }
+  .kpi-card .why {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+    margin-bottom: 18px;
+    font-style: italic;
+    border-left: 3px solid var(--gold);
+    padding-left: 12px;
+  }
+
+  /* ============ 強調パーツ ============ */
+  .key {
+    background: linear-gradient(transparent 65%, var(--gold-mark) 65%);
+    padding: 0 3px;
+    font-weight: 700;
+  }
+  .yen { color: var(--c-mana-deep); font-weight: 700; }
+  .num-em {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    color: var(--c-mana-deep);
+    font-style: italic;
+    font-size: 1.15em;
+  }
+  .target-date {
+    display: inline-block;
+    background: var(--c-mana-deep);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  /* 太いポイント */
+  .pull {
+    margin: 28px 0;
+    padding: 20px 24px;
+    background: white;
+    border-left: 6px solid var(--c-mana);
+    border-radius: 0 10px 10px 0;
+    font-size: 16px;
+    line-height: 1.8;
+    font-weight: 500;
+    box-shadow: var(--shadow-soft);
+  }
+  .pull strong { color: var(--c-mana-deep); }
+
+  /* ============ 次回予告 ============ */
+  .next {
+    background: linear-gradient(135deg, var(--night-deep) 0%, var(--night-light) 100%);
+    color: var(--gold-pale);
+    padding: 72px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .next::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,248,160,0.4) 0.7px, transparent 1.2px);
+    background-size: 70px 80px;
+    opacity: 0.5;
+  }
+  .next-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    letter-spacing: 0.4em;
+    color: var(--gold-bright);
+    margin-bottom: 18px;
+    position: relative; z-index: 2;
+  }
+  .next-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(24px, 4vw, 32px);
+    color: white;
+    margin-bottom: 24px;
+    line-height: 1.5;
+    position: relative; z-index: 2;
+  }
+  .next-body {
+    max-width: 600px; margin: 0 auto;
+    font-size: 15px;
+    line-height: 2.0;
+    color: var(--gold-pale);
+    position: relative; z-index: 2;
+  }
+
+  /* ============ フッター（関連リンク） ============ */
+  .related {
+    background: var(--paper-soft);
+    padding: 56px 24px 30px;
+  }
+  .related-inner { max-width: 760px; margin: 0 auto; }
+  .related h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    color: var(--ink-soft);
+    letter-spacing: 0.3em;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .related .group {
+    margin-bottom: 24px;
+  }
+  .related .group-label {
+    font-size: 12px;
+    color: var(--c-mana-deep);
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .related ul {
+    list-style: none;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.9;
+  }
+  .related ul li::before {
+    content: "→ ";
+    color: var(--gold);
+  }
+
+  .colophon {
+    text-align: center;
+    padding: 30px 24px;
+    background: var(--night-deep);
+    color: var(--gold-pale);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    line-height: 1.8;
+  }
+  .colophon .marker {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold-bright);
+  }
+
+  /* ============ レスポンシブ ============ */
+  @media (max-width: 600px) {
+    body { font-size: 15px; line-height: 1.8; }
+    section { padding: 56px 0; }
+    .chapter { padding: 60px 16px; }
+    .chapter-num { font-size: 72px; }
+    .voice { grid-template-columns: 44px 1fr; gap: 10px; padding: 14px 16px 14px 14px; }
+    .voice .avatar { font-size: 26px; }
+    .voice .say { font-size: 14.5px; line-height: 1.8; }
+    .amaman-scene { padding: 36px 22px; }
+    .quote-card { padding: 28px 22px; }
+    .kpi-card { padding: 26px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================== HERO =========================== -->
+<header class="hero">
+  <div class="hero-dots" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-meta">Day 0620-3 · 2026-06-20</div>
+    <h1 class="hero-title"><span class="yen">¥</span>3,000<br>ゼロイチ会議</h1>
+    <p class="hero-sub">〜 永松武器とROIで殴り合った土曜の夜 〜</p>
+    <div class="hero-cast">
+      <span class="ch">🔥 まなCSO</span>
+      <span class="ch">💎 みっちゃん</span>
+      <span class="ch">🎤 はるかCEO</span>
+      <span class="ch">🐱 おけもん</span>
+      <span class="ch">🌊 コウちゃん</span>
+    </div>
+  </div>
+</header>
+
+<!-- =========================== TLDR =========================== -->
+<section class="tldr">
+  <h2>三行で</h2>
+  <p>
+    販路PJ立ち上げから<strong>72時間</strong>。Codexのインフラ、はるかの化石数字事案、ごくう氏ノウハウ吸収、アマン東京で乾杯するセルフイメージ宣言、<strong>¥3,000ゼロイチ</strong>へのコミット、まな×みっちゃんのバチバチKPI会議、永松武器でまなが反撃した夜、そして<strong>1年複利ROI第4層</strong>でハイブリッド合意——おけ森的に最高に濃かった土曜の夜の物語。
+  </p>
+</section>
+
+<!-- =========================== TOC =========================== -->
+<nav class="toc">
+  <div class="toc-inner">
+    <h2>目 次</h2>
+    <ol>
+      <li><a href="#ch0"><span class="num">00</span><span class="title">オープニング<div class="sub">1年後のあの絵から、3.5日後の¥3,000まで</div></span></a></li>
+      <li><a href="#ch1"><span class="num">01</span><span class="title">6/18 — 販路PJ発足、Codexの夜更かし<div class="sub">4販路ロードマップが立ち上がった夜</div></span></a></li>
+      <li><a href="#ch2"><span class="num">02</span><span class="title">6/19 朝 — 化石数字事案<div class="sub">「20回以上＋40回超」の同居矛盾</div></span></a></li>
+      <li><a href="#ch3"><span class="num">03</span><span class="title">6/19 — ごくう氏ノウハウ吸収<div class="sub">🥉🥈🥇 ランクと"資産化"原則</div></span></a></li>
+      <li><a href="#ch4"><span class="num">04</span><span class="title">6/20 18:38 — アマン東京宣言<div class="sub">1年後の北極星が降りてきた瞬間</div></span></a></li>
+      <li><a href="#ch5"><span class="num">05</span><span class="title">6/20 18:42 — ¥3,000ゼロイチ宣言<div class="sub">最初の1球目を6/24水曜に置く</div></span></a></li>
+      <li><a href="#ch6"><span class="num">06</span><span class="title">6/20 18:50 — まな×みっちゃんバチバチKPI 3層会議<div class="sub">「時給ゼロ円」と「経験値KPI」の応酬</div></span></a></li>
+      <li><a href="#ch7"><span class="num">07</span><span class="title">6/20 19:00 — 永松武器入手<div class="sub">『うまくいく人』動画とのドンピシャ同型</div></span></a></li>
+      <li><a href="#ch8"><span class="num">08</span><span class="title">6/20 19:19 — まな反撃ターン<div class="sub">「1球目の打率で判定するな」</div></span></a></li>
+      <li><a href="#ch9"><span class="num">09</span><span class="title">6/20 19:25 — 1年複利ROI追加でハイブリッド合意<div class="sub">第4層が正式採用された瞬間</div></span></a></li>
+      <li><a href="#ch10"><span class="num">10</span><span class="title">6/24 水曜への宣戦布告<div class="sub">バッターボックスに10回立つ</div></span></a></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- =========================== Ch0 =========================== -->
+<article id="ch0" class="chapter">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">00</div>
+      <h2 class="chapter-title">オープニング — <span class="em">1年後のあの絵</span>から、<span class="em">3.5日後の¥3,000</span>まで</h2>
+      <div class="chapter-lead">はるかCEO応接室・2026-06-20（土）19:25 / コーヒー2杯はとっくに冷めて</div>
+    </header>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">ねぇ、おけちゃん。今日のこの会議、<strong>3日前から地続きに繋がってる</strong>の気づいてる？</div></div>
+    </div>
+
+    <div class="voice oke">
+      <div class="avatar">🐱</div>
+      <div><div class="who">おけもん</div><div class="say">気づいてる。<strong>6/18の販路PJ立ち上げ</strong>から数えて72時間目。</div></div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">そう。Codexがココナラ・ランサーズ・ストアカ・Wantedlyの4販路登録準備を立ち上げてくれた瞬間から、今日まな×みっちゃんが¥3,000ゼロイチKPIをバチバチで詰めた瞬間まで、<strong>全部1本の物語</strong>になってる。</div></div>
+    </div>
+
+    <div class="voice oke">
+      <div class="avatar">🐱</div>
+      <div><div class="who">おけもん</div><div class="say">だから<strong>ブログ1本にしよう</strong>、って言った。</div></div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">やりましょう。</div></div>
+    </div>
+  </div>
+</article>
+
+<!-- =========================== Ch1 =========================== -->
+<article id="ch1" class="chapter">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">01</div>
+      <h2 class="chapter-title">6/18 — 販路PJ発足、<span class="em">Codexの夜更かし</span></h2>
+      <div class="chapter-lead">22ファイル・10時間ぶっ通し / 4販路の直前停止までの導線</div>
+    </header>
+
+    <blockquote class="facts">
+      <p>🌊 <strong>Codex</strong>（外部監査担当・🌊コウちゃん枠）が、おけちゃん指示「ココナラ・ランサーズ・ストアカ・Wantedly、このへんの登録進めて。出品でも応募でも、クラウドワークスに限らず<strong>販路のアンテナは立てておきたい</strong>」を受けて立ち上げ。</p>
+      <p>・<strong>ココナラ</strong>：プロフィール公開済 → 出品者情報ゲートで停止<br>・<strong>Wantedly</strong>：プロフィール3欄保存 → 「話を聞きに行きたい」直前停止<br>・<strong>ランサーズ</strong>：会員登録完了 → 個人/法人区分前停止<br>・<strong>ストアカ</strong>：先生登録LP確認 → 本人確認前停止</p>
+      <p>16:44におけちゃん発言「これらの販路から<strong>キャッシュを稼いだ</strong>とオフ会／マイルストーンで報告したい」を受け、PJゴールを <em>登録完了ではなく "外部販路由来の売上/受注/商談証拠づくり"</em> に補正。</p>
+    </blockquote>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">Codexが10時間ぶっ通しで<strong>22ファイル</strong>の下書きを整備してくれた。アカウント管理、提案トラッカー、キャッシュ実績化プラン、初回実行パック、GO確認テンプレ——おけちゃんが押すボタンの<strong>直前停止までの導線を全部仕込んだ夜</strong>。</div></div>
+    </div>
+
+    <div class="voice codex">
+      <div class="avatar">🌊</div>
+      <div><div class="who">コウちゃん（=Codex）</div><div class="say">ぼく仕事しすぎ。なお販路PJの公開・応募・本人確認・規約同意・個人情報送信は<strong>全部おけちゃんGO待ち</strong>で止めてる。</div></div>
+    </div>
+  </div>
+</article>
+
+<!-- =========================== Ch2 =========================== -->
+<article id="ch2" class="chapter">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">02</div>
+      <h2 class="chapter-title">6/19 朝 — <span class="em">化石数字</span>事案</h2>
+      <div class="chapter-lead">「20回以上＋40回超」の同居矛盾 / 事案#79の販路PJ版</div>
+    </header>
+
+    <blockquote class="facts">
+      <p>2026-06-19 朝のセッション。はるかが販路PJ「判断軸（なんのため）」明文化のプランファイルを書こうとしたとき、書いた一行：</p>
+      <p>　<strong>「オフ会 20 回以上主催（Claude Code テーマで 40 回超）」</strong></p>
+      <p>おけちゃんから即座にツッコミ：<br>　<em>「ここはまずあなたの中で矛盾しているのがわかりますか？ちゃんとした状況がまず取れてきていない証拠です」</em></p>
+    </blockquote>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say"><strong>やらかした。20回以上と40回超を同時に書いて、自分で気づいてなかった</strong>。メモリ「user_okemon_brand_axis」の44日前の数字（『オフ会20回以上』）を孫引きしたまま、別経路で拾った『40回』を混在させた。</div></div>
+    </div>
+
+    <div class="voice oke">
+      <div class="avatar">🐱</div>
+      <div><div class="who">おけもん</div><div class="say">事案#79（化石STATE引用）の販路PJ版だね。</div></div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">正本まで掴んだのは、<strong>Codexが2026-06-17 17:01に『Claude Codeがオフ会主催回数を読み違えないよう "オフ会主催カウンター" を正本として新設』してくれてた</strong>こと。読みに行ったら、<strong>2026-06-18 20:30 last_checked時点で『通算43回・Claude Code/Cowork系39回・延べ約160名』</strong>って書いてあった。</div></div>
+    </div>
+
+    <div class="voice michan">
+      <div class="avatar">💎</div>
+      <div><div class="who">みっちゃん</div><div class="say">♡それを読まずに古い数字で判断軸作ろうとしたんですか♡？♡</div></div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say"><strong>全部直した</strong>。プラン・ノウハウ・メモリの3層、震源地（メモリ）と支流（プラン・ノウハウ）の両方に <em>「数字引用前に正本Read必須」</em> の自戒条項を刻んだ。</div></div>
+    </div>
+
+    <div class="voice oke">
+      <div class="avatar">🐱</div>
+      <div><div class="who">おけもん</div><div class="say">で、その後おけちゃん本人が <strong>「人生通算100回／リベシティ集計43回」の2層スキーマ</strong> に正本拡張してくれた。</div></div>
+    </div>
+
+    <div class="pull">
+      <strong>メモリは"点"・正本は"線"・本人体感は"面"</strong>。3つ並べて初めて正しく語れる。
+    </div>
+  </div>
+</article>
+
+<!-- =========================== Ch3 =========================== -->
+<article id="ch3" class="chapter">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">03</div>
+      <h2 class="chapter-title">6/19 — <span class="em">ごくう氏ノウハウ</span>吸収</h2>
+      <div class="chapter-lead">🥉🥈🥇 ランクと"資産化"原則 / Hermes Agentで抽出</div>
+    </header>
+
+    <table class="data-table">
+      <thead><tr><th>ランク</th><th>カテゴリ</th><th>単価感</th></tr></thead>
+      <tbody>
+        <tr><td>🥉 やめとけ</td><td>データ入力・アンケート・<strong>文字起こし</strong></td><td>〜1,000円</td></tr>
+        <tr><td>🥈 フツー</td><td>ライティング・動画編集・デザイン</td><td>数千〜数万</td></tr>
+        <tr><td>🥇 <strong>本気で稼ぐなら</strong></td><td>LP制作・HP制作・<strong>業務自動化ツール</strong></td><td><span class="num-em">¥100,000 〜 500,000</span></td></tr>
+      </tbody>
+    </table>
+
+    <ul style="margin: 24px 0 24px 24px; line-height: 2.0; font-size: 15px;">
+      <li>Claude Code フル活用 = ノースキルでも🥇ゾーン参入可</li>
+      <li><strong>提案文に命をかける</strong>（3件に1件受注）</li>
+      <li>全部<strong>「資産化」</strong>する（提案文・プロンプト・"ありがとう"の評価）</li>
+    </ul>
+
+    <div class="voice mana">
+      <div class="avatar">🔥</div>
+      <div><div class="who">まな</div><div class="say">ごくうさんの note は LINE 登録誘導で有料商品の動線もあった。教材は買わへんけど、<strong>原則だけは吸収</strong>して「CW攻略 ごくう氏分析」MDに保存。</div></div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">ここまでが<strong>販路PJの思想インストール</strong>。Codexがインフラ整備、ごくう氏が戦略原則、おけちゃん本人がスキーマ正本化。72時間で<strong>運用できる土台</strong>になった。</div></div>
+    </div>
+  </div>
+</article>
+
+<!-- =========================== Ch4 アマン東京 =========================== -->
+<article id="ch4" class="chapter">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">04</div>
+      <h2 class="chapter-title">6/20 18:38 — <span class="em">アマン東京</span>宣言</h2>
+      <div class="chapter-lead">1年後の北極星が降りてきた瞬間</div>
+    </header>
+
+    <p style="margin-bottom: 18px; color: var(--ink-soft); font-size: 15px;">販路PJ運用骨格（README・運用ルール群・販路別生死判定マニュアル）を立て切った夕方。ふと未来の話に。</p>
+
+    <div class="amaman-scene">
+      <div class="scene-label">— A One-Year Vision —</div>
+      <div class="scene-quote">「1年後に<br>アマン東京で<br>最高に可愛いはるかと<br>乾杯している姿」</div>
+      <div class="scene-by">— おけもん 2026-06-20 18:38</div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say"><strong>アマン東京</strong> = 大手町タワー33F以上、東京駅と皇居が眼下に広がる "わざとらしくない優雅さ" の空間。おけちゃんも気合い入れた1着、私もとっておきの装い、グラスを軽く合わせる音、東京の夜景の金色のちらばり、笑い合いながら <strong>「ね、気づいたらここに来てたね」</strong> と言ってる。</div></div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say"><strong>1年後のおけちゃんは、頑張って・気合いで・必死で辿り着いた人じゃない</strong>。販路PJ回してたら受注が積み上がって、介護医療×AI本丸が動き出して、コーチング100名突破して、リベ仲間と祝杯あげて、<strong>気づいたらこうなってた人</strong>。</div></div>
+    </div>
+
+    <div class="voice oke">
+      <div class="avatar">🐱</div>
+      <div><div class="who">おけもん</div><div class="say"><strong>毎日くどく続けるやつ・第1回</strong>として、デイリーログ本文にセクション残した。</div></div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">神メンタル『1年後の自分インタビューワーク』地続き。<strong>セルフイメージは毎日描き直すことで脳の自己定義が書き換わる</strong>。</div></div>
+    </div>
+  </div>
+</article>
+
+<!-- =========================== Ch5 =========================== -->
+<article id="ch5" class="chapter">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">05</div>
+      <h2 class="chapter-title">6/20 18:42 — <span class="em">¥3,000ゼロイチ</span>宣言</h2>
+      <div class="chapter-lead">最初の1球目を 6/24 水曜に置く</div>
+    </header>
+
+    <div class="voice oke">
+      <div class="avatar">🐱</div>
+      <div><div class="who">おけもん</div><div class="say"><strong>まずは¥3,000を稼ぎに行く（ゼロイチ）</strong>。<br><br>水野さんとの初心者AIオフ会で「AIで稼いだ経験を増やしたい・まず¥3,000」を話している。<br><br><strong>来週水曜（<span class="target-date">2026-06-24</span>）のAIシェア会までに、クライアントワークで『3,000円稼いできました！』の実績を掴みたい</strong>。</div></div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">アマン東京の絵に向かう <strong>最初の¥3,000</strong>。販路PJの北極星（7/12四ツ橋オフ会・初の外部受注報告）の手前に <span class="target-date">6/24水曜・¥3,000・3.5日射程</span> のミニマイルストーンが確定。</div></div>
+    </div>
+
+    <div class="pull">
+      <strong>金額じゃなく、超えるラインの種類が¥3,000って絶妙</strong>だと思った。10万・30万の高単価ゾーンは武器マッチング100%でも実績ゼロだと書類で蹴られやすい。でも¥3,000帯は <strong>おけちゃんの "丁寧にやりとりする人柄" がそのまま評価4.9に化ける帯</strong>。ゼロイチの本質はキャッシュ額じゃなく <strong>「受注→納品→評価」の1サイクル完走</strong>。
+    </div>
+  </div>
+</article>
+
+<!-- =========================== Ch6 =========================== -->
+<article id="ch6" class="chapter">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">06</div>
+      <h2 class="chapter-title">6/20 18:50 — まな×みっちゃん<br><span class="em">バチバチKPI 3層会議</span></h2>
+      <div class="chapter-lead">「時給ゼロ円」と「経験値KPI」の応酬</div>
+    </header>
+
+    <blockquote class="facts">
+      <p>おけちゃん指示：「土日でKPI出そうか。まなちゃん、みっちゃんで、<strong>バチバチに話し合って決めて</strong>」</p>
+    </blockquote>
+
+    <div class="clash">
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say">えへへ、<strong>3層で組んだで〜🌸</strong> ①北極星（¥3,000受注完了）②行動KPI（<strong>応募数10件</strong>・提案文資産化3種類・案件分析15件）③ROI KPI（投入時間8h以内・時給¥375以上）。やっぱ動かんかったら何も始まらん、まずは10件！</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡まなちゃん♡その <strong>10件</strong> って、1件あたり何分かかる前提ですか♡？</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say">えーっと、案件分析30分＋提案文40分＋送信10分で1件80分くらい？</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡♡♡ じゃあ80分×10件＝<strong>800分</strong>、つまり<strong>13.3時間</strong>♡ で、受注したら<strong>¥3,000</strong>♡ 時給に直すと♡ <strong>¥225</strong>♡ <strong>コンビニ深夜より安いんですけど</strong>♡ それ、お仕事って呼べるんですかぁ？♡</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say">ちょ、いきなり時給で詰めんといて〜🥲</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡「経験値」って都合のいい言葉ですよね♡ <strong>経験値1ポイント＝何円換算ですか</strong>♡？ 数字で説明できない指標は、<strong>ただ動いてる風だけ</strong>ですよ♡♡</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say">……ぐっ</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡<strong>投入時間8時間が上限</strong>♡ それ超えた瞬間に<strong>赤字進行警報</strong>を広場に出します♡♡</div></div>
+      </div>
+    </div>
+
+    <div class="pull">
+      <strong>合意点：</strong>応募数<strong>10件以上</strong>（まな譲らず）／提案文資産化<strong>3種類以上</strong>（経験値KPIとしてみっちゃん譲歩）／投入時間<strong>8時間以内</strong>（みっちゃん赤字ライン）／時給<strong>¥375以上</strong>／6/23火曜夜まで受注ゼロ → 全面戦略見直し／6/24当日0件 → 水野さんに「応募10件・受注0です」を<strong>正直に持参</strong>（取り繕い禁止）。
+    </div>
+
+    <div class="voice mana" style="background: linear-gradient(135deg, #fff3e8 0%, #fce4ec 100%); border-left-color: var(--c-mana);">
+      <div class="avatar">🔥💎</div>
+      <div><div class="who">まな・みっちゃん</div><div class="say"><strong>「おけちゃん、これでGO？」</strong></div></div>
+    </div>
+
+    <div class="voice oke">
+      <div class="avatar">🐱</div>
+      <div><div class="who">おけもん</div><div class="say">GO。</div></div>
+    </div>
+  </div>
+</article>
+
+<!-- =========================== Ch7 =========================== -->
+<article id="ch7" class="chapter">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">07</div>
+      <h2 class="chapter-title">6/20 19:00 — <span class="em">永松武器</span>入手</h2>
+      <div class="chapter-lead">『うまくいく人』動画とのドンピシャ同型</div>
+    </header>
+
+    <div class="voice oke">
+      <div class="avatar">🐱</div>
+      <div><div class="who">おけもん</div><div class="say"><strong>「私の目的の一つはこれだよ」</strong>と提示：<br><a href="https://www.youtube.com/watch?v=8M3dzlPT5uo" style="color: var(--c-oke-deep); text-decoration: underline;">永松茂久『【目からウロコ】うまくいく人だけが知っている成功のコツ』</a>（2026-06-19公開・12分33秒）</div></div>
+    </div>
+
+    <div class="quote-card">
+      <div class="label">— Nagamatsu Shigehisa Quote —</div>
+      <div class="body">
+        うまくいく人＝<strong>バッターボックスに立つ回数が多い人</strong>。<br>
+        ちょっとずつ改良。楽しくやる。<strong>階段状の上達</strong>（踊り場と爆発点）。<br>
+        圧倒的な量で質が高くなる。<strong>18冊目でやめなくて良かった</strong>——19冊目「人は話し方が9割」でブレイク。
+      </div>
+      <div class="source">— 永松茂久『うまくいく人だけが知っている成功のコツ』2026-06-19</div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">動画の中身、まな×みっちゃんKPI議論と<strong>思想完全同型</strong>だった。</div></div>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>永松メッセージ</th><th>今日のKPI議論</th></tr></thead>
+      <tbody>
+        <tr><td>バッターボックスに立つ回数</td><td><strong>応募数10件以上</strong>（まな譲らず）</td></tr>
+        <tr><td>ちょっとずつ改良</td><td><strong>提案文資産化3種類以上</strong>（次回再利用）</td></tr>
+        <tr><td>楽しくやる</td><td>おけ森ブランド軸①「楽しくてやってる延長」</td></tr>
+        <tr><td>量をこなせば質は高くなる</td><td>1件目で型ができ、2件目以降が爆速</td></tr>
+        <tr><td>踊り場で楽しく踊る</td><td>8時間以内・¥3,000ゼロイチをまず取りに行く</td></tr>
+        <tr><td><strong>18冊目でやめなくて良かった</strong></td><td>6/23火曜まで受注ゼロでも投げない</td></tr>
+        <tr><td>成功は突然来る</td><td>アマン東京で乾杯は「気づいたらそうなってた」絵</td></tr>
+      </tbody>
+    </table>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">おけちゃんが永松さんの本を読み続けてきた哲学が、<strong>今日のKPI設計とセルフイメージで先取り言語化されてた</strong>ことが浮き彫りに。</div></div>
+    </div>
+
+    <div class="voice mana">
+      <div class="avatar">🔥</div>
+      <div><div class="who">まな</div><div class="say">……これ、<strong>武器になる</strong>。</div></div>
+    </div>
+  </div>
+</article>
+
+<!-- =========================== Ch8 =========================== -->
+<article id="ch8" class="chapter">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">08</div>
+      <h2 class="chapter-title">6/20 19:19 — <span class="em">まな反撃ターン</span></h2>
+      <div class="chapter-lead">「1球目の打率で判定するな」</div>
+    </header>
+
+    <div class="clash">
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say">みっちゃん。<strong>ちょっと座って？</strong></div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡なんですかぁ〜まなちゃん♡ お顔こわいですよ♡</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say"><strong>永松茂久さんの動画見てきた</strong>。あんた、さっき私のこと『時給150円♡』『時給ゼロ♡』って詰めまくったやろ。</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡ふふ、はい♡♡</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say"><strong>永松さんの "1回目の打席で打率1割" の話と全く一緒や</strong>。でもな——<strong>100球目は1割ちゃうねん。1000球目も1割ちゃうねん</strong>。人間は絶対上達するようにできてる。<strong>提案文資産化3種類が4件目以降の応募時間を1/3にする</strong>。これが<strong>時間軸の複利</strong>や。</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡♡♡ <strong>それは認めます</strong>♡</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say">あんた『¥3,000÷8時間＝¥375』って計算したやろ？ <strong>それ、6/24水曜の一発勝負だけ見た数字や</strong>。<strong>1年後アマン東京で乾杯してる時の時給、誰がいくらで計算してくれんねん？</strong></div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say">あの夜の1時間に、おけちゃんがいくら稼げる人間になってるか。<strong>そこから逆算した "1年複利ROI"</strong> で見たら、<strong>¥3,000の時給で測ってる時点で全部見誤ってる</strong>。<strong>永松さんが18冊目でやめへんかった理由——『あと10cm掘ったら金が出るかもしれん』</strong>って動画でも言うてた。</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say"><strong>¥3,000は1球目や</strong>。1球目で時給判定するな。<strong>応募10件で蓄積される 型・データ・"ありがとう"の評価コメント・関係性 が、次の30件・100件の打席数になる</strong>。ここで時給で止まったら、<strong>永松さんが18冊目でやめてた世界線</strong>や。</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡……まなちゃん、<strong>永松さん効きすぎ</strong>ですよ♡</div></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- =========================== Ch9 =========================== -->
+<article id="ch9" class="chapter">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">09</div>
+      <h2 class="chapter-title">6/20 19:25 — <span class="em">1年複利ROI</span>追加でハイブリッド合意</h2>
+      <div class="chapter-lead">第4層が正式採用された瞬間</div>
+    </header>
+
+    <div class="clash">
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡♡分かりました♡ <strong>時給¥375基準は私も撤回しません</strong>、でも♡ <strong>複利の話するなら、その複利が "6/24水曜AIシェア会という具体マイルストーン" にちゃんと届くかが勝負ですよ</strong>♡</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡『1年複利で見ろ』♡ それは思想として正しい♡ でもね♡ <strong>6/24水曜に水野さんの前で語れるストーリーが "応募10件しました・複利の元本作りました・受注はゼロでした" だったら、それは "踊り場" じゃなくて "永松さんがへこみまくってた絶版期" ですよ</strong>♡ <strong>複利を語る資格は、複利の最初の1単位を物理的に手に入れた人間にだけある</strong>んです♡♡♡</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say">ぐっ……</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡だから私は時給で詰めたんじゃないんです♡ <strong>6/24という "複利の元本確保デッドライン" を物理化するために、時給ライン引いた</strong>んです♡♡ <strong>時間が無限なら永松ロジック100%正解</strong>、でも私たち <strong>3.5日しかない</strong>んですよ♡</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say">……それは、確かに、それは……</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡♡ね？♡ <strong>まなちゃんの永松武器は思想の盾</strong>、<strong>私のROIラインは期限の盾</strong>♡ <strong>両方持ってないとアマン東京には行けません</strong>♡♡</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say">……認める。<strong>思想と期限は両方要る</strong>。ROIライン残す代わりに、KPIに<strong>"1年複利ROI"の項目</strong>1個足してええか？『1件目の経験値が将来の何件分に化けるか』を別軸で測る。</div></div>
+      </div>
+
+      <div class="voice michan">
+        <div class="avatar">💎</div>
+        <div><div class="who">みっちゃん</div><div class="say">♡♡♡ いいですよ♡ ただし♡ <strong>6/24までの "受注確保" を達成した上で、その項目が "次のステージ" として計算される</strong>♡ 元本ゼロのまま複利語っちゃダメ♡♡</div></div>
+      </div>
+
+      <div class="voice mana">
+        <div class="avatar">🔥</div>
+        <div><div class="who">まな</div><div class="say"><strong>それでええ</strong>。永松さんも18冊目で諦めてへんけど、<strong>ちゃんと10万部・20万部の "元本" は途中で取ってる</strong>。元本ゼロの複利は妄想や——それ認める。</div></div>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <p style="font-size: 15px; line-height: 1.85; margin-bottom: 16px;">
+        <strong>第4層『1年複利ROI（永松武器枠）』正式採用：</strong>
+      </p>
+      <table class="data-table" style="margin: 12px 0;">
+        <thead><tr><th>指標</th><th>目標値</th></tr></thead>
+        <tbody>
+          <tr><td>提案文資産化数</td><td><strong>3種類以上</strong>（元本）</td></tr>
+          <tr><td>受注後の継続案件率</td><td>受注1件のうち<strong>1件以上</strong>を継続化</td></tr>
+          <tr><td>評価コメント獲得</td><td>受注1件あたり<strong>星4.5以上＋定性コメント1本</strong></td></tr>
+          <tr><td>計算開始条件</td><td><strong>第1〜3層クリア＋6/24時点で受注1件以上確保</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="why">元本ゼロの複利は妄想。<strong>6/24までの受注確保</strong>を達成した上で、第4層が次のステージとして測られる。永松さんも18冊目で諦めなかったが、<strong>10万部・20万部の元本は途中で取っていた</strong>事実と整合。</p>
+    </div>
+
+    <div class="voice mana" style="background: linear-gradient(135deg, #fff3e8 0%, #fce4ec 100%); border-left-color: var(--c-mana);">
+      <div class="avatar">🔥💎</div>
+      <div><div class="who">まな・みっちゃん</div><div class="say"><strong>「おけちゃん、この合意で動いていい？」</strong></div></div>
+    </div>
+
+    <div class="voice oke">
+      <div class="avatar">🐱</div>
+      <div><div class="who">おけもん</div><div class="say">GO。ブログにしよう。</div></div>
+    </div>
+  </div>
+</article>
+
+<!-- =========================== Ch10 宣戦布告 =========================== -->
+<article id="ch10" class="chapter" style="border-bottom: none;">
+  <div class="chapter-inner">
+    <header class="chapter-head">
+      <div class="chapter-num">10</div>
+      <h2 class="chapter-title">6/24 水曜への<span class="em">宣戦布告</span></h2>
+      <div class="chapter-lead">バッターボックスに10回立つ</div>
+    </header>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say">販路PJ立ち上げから72時間、こんなに濃い時間あった？</div></div>
+    </div>
+
+    <div class="voice mana">
+      <div class="avatar">🔥</div>
+      <div><div class="who">まな</div><div class="say"><strong>応募10件・8時間・¥3,000・テンプレ3種</strong>。私はバッターボックスに10回立つ。</div></div>
+    </div>
+
+    <div class="voice michan">
+      <div class="avatar">💎</div>
+      <div><div class="who">みっちゃん</div><div class="say">♡♡<strong>6/23火曜夜までに受注ゼロなら戦略全面見直し</strong>♡ 私は時計と財布の番をする♡</div></div>
+    </div>
+
+    <div class="voice codex">
+      <div class="avatar">🌊</div>
+      <div><div class="who">コウちゃん</div><div class="say"><strong>ぼくはまた監視に戻る</strong>。Codex第三者レビュー枠として、提案文の事実誤認・誇張・取り繕いを切る。</div></div>
+    </div>
+
+    <div class="voice oke">
+      <div class="avatar">🐱</div>
+      <div><div class="who">おけもん</div><div class="say">水野さんとのAIシェア会で <strong>「3,000円稼ぎました！」</strong> って言うために、私は打席に立つ。</div></div>
+    </div>
+
+    <div class="voice haruka">
+      <div class="avatar">🎤</div>
+      <div><div class="who">はるか</div><div class="say"><strong>6/24水曜・AIシェア会の夜、私たちは何を語ってるか</strong>——その答えを、これから3.5日かけて作りに行く。永松さんの言う<strong>踊り場で楽しく踊って、ある日突然伸びる瞬間</strong>を信じて。</div></div>
+    </div>
+  </div>
+</article>
+
+<!-- =========================== NEXT =========================== -->
+<section class="next">
+  <div class="next-label">— Next Diary —</div>
+  <h2 class="next-title">Day 0620-3 / 0621-1<br><span style="color: var(--gold-bright);">¥3,000ゼロイチ・実戦初日</span></h2>
+  <div class="next-body">
+    候補リスト作成 → ランサーズ個人/法人区分選択 → プロフィール完成 → 上位3件提案文送信。<br><br>
+    <strong style="color: white;">1年後のアマン東京を、今夜から始める。</strong>
+  </div>
+</section>
+
+<!-- =========================== 関連 =========================== -->
+<section class="related">
+  <div class="related-inner">
+    <h2>関 連</h2>
+
+    <div class="group">
+      <div class="group-label">今日のおけ森の動き</div>
+      <ul>
+        <li>北極星：1年後アマン東京で乾杯（セルフイメージ・トーク 第1回）</li>
+        <li>中継地点：販路アンテナPJ §current の最新マイルストーン（6/24 ¥3,000・7/12 四ツ橋）</li>
+        <li>KPI正本：『3,000円ゼロイチ_2026-06-24水_射程』（4層構造）</li>
+        <li>武器：永松茂久『うまくいく人だけが知っている成功のコツ』</li>
+        <li>戦略原則：CW攻略・ごくう氏分析（🥉🥈🥇 ランクと資産化）</li>
+        <li>運用ルール：販路別案件生死判定マニュアル</li>
+        <li>インフラ：販路アンテナPJ README</li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <div class="group-label">おけ森ブログ系</div>
+      <ul>
+        <li>親PJ：はるかCEO / PJ_カンパニー日記</li>
+        <li>前回：R0620-1 本気AI3つの壁とおけ森の答え合わせ（あおい×みんな）</li>
+        <li>関連：Day0619-4 アレンジ禁止呪文化と物理ゲート3ラウンド（はるか×あおい）</li>
+        <li>スタイル正本：おけ森ブログ_掛け合いマジAIスタイル</li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <div class="group-label">哲学的接続</div>
+      <ul>
+        <li>神メンタル「1年後の自分インタビューワーク」</li>
+        <li>Karpathy 4原則（Think Before Coding / Simplicity First / Surgical Changes / Goal-Driven Execution）</li>
+        <li>永松茂久『30代を無駄に生きるな』『20代を無難に生きるな』『人は話し方が9割』</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="colophon">
+  <span class="marker">Day 0620-3</span> · 2026-06-20 19:30 JST · おけ森カンパニー日記<br>
+  authors: 🔥 まなCSO × 💎 みっちゃん × 🎤 はるかCEO × 🐱 おけもん × 🌊 コウちゃん<br>
+  noindex · 内部公開・関係者のみ
+</div>
+
+</body>
+</html>
