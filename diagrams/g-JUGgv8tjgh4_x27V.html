@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>オンライン面談 → 面談メモ 自動作成デモ｜おけもん</title>
+<!--
+おけもん 出力デモサンプル（泉田さん向け・窪田さん案件説明用）
+素材：2026/03/02 おけもん×泉田さん Meet録画の文字起こし → Claude整形
+公開度：内部限定（noindex・推測不可URL・リンク共有のみ）／第三者個人名は伏せ
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f4ee; --paper:#ffffff; --ink:#26221c; --sub:#6d6358; --line:#e7ddca;
+  --ai:#2c5f7c; --ai-deep:#1a4258; --ai-light:#e6eef3; --ai-soft:#f2f7fa;
+  --akane:#c4622d; --akane-light:#fbeadf;
+  --raw:#8a8175; --raw-bg:#f0ece4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",sans-serif;font-size:15.5px;line-height:1.9;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 80px}
+h1,h2,h3{font-family:"Noto Serif JP",serif;letter-spacing:.02em}
+strong{background:linear-gradient(transparent 62%, #fde6b8 62%);font-weight:700}
+
+.hero{text-align:center;padding:54px 22px 40px;background:linear-gradient(160deg,#fbfaf6 0%,#eef3f5 100%);border-bottom:1px solid var(--line)}
+.hero .eyebrow{display:inline-block;font-size:12.5px;font-weight:700;color:var(--ai);letter-spacing:.16em;border:1px solid var(--ai);border-radius:999px;padding:4px 15px;margin-bottom:20px;background:#fff}
+.hero h1{font-size:26px;line-height:1.5;margin:0 0 14px;color:var(--ink)}
+.hero h1 .em{color:var(--ai-deep)}
+.hero p{font-size:15px;color:var(--sub);margin:0;max-width:540px;margin-inline:auto}
+
+.flow{display:flex;align-items:stretch;gap:0;margin:34px auto 6px;max-width:680px;flex-wrap:wrap;justify-content:center}
+.step{flex:1;min-width:150px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+.step .n{font-size:12px;font-weight:700;color:var(--akane);letter-spacing:.1em}
+.step .ic{font-size:30px;margin:6px 0 4px;display:block}
+.step .t{font-weight:700;font-size:14.5px;margin-bottom:3px}
+.step .d{font-size:12.5px;color:var(--sub);line-height:1.6}
+.arrow{display:flex;align-items:center;justify-content:center;color:var(--akane);font-size:24px;font-weight:700;padding:0 4px}
+@media(max-width:560px){.flow{flex-direction:column;align-items:stretch}.arrow{transform:rotate(90deg);padding:2px 0}}
+
+section{margin-top:46px}
+.label{display:inline-block;font-size:13px;font-weight:700;color:var(--ai);background:var(--ai-light);border-radius:8px;padding:3px 12px;margin-bottom:14px}
+.sec-title{font-size:20px;margin:0 0 8px}
+.sec-lead{font-size:14px;color:var(--sub);margin:0 0 18px}
+
+.ba{display:grid;grid-template-columns:1fr;gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 2px 14px rgba(60,50,30,.05)}
+.card .cap{font-size:12.5px;font-weight:700;padding:9px 16px;border-bottom:1px solid var(--line)}
+.card.before .cap{background:var(--raw-bg);color:var(--raw)}
+.card.after .cap{background:var(--ai-soft);color:var(--ai-deep)}
+.card .body{padding:16px 18px}
+.raw-text{font-size:13px;color:var(--raw);line-height:1.85}
+.raw-text .miss{color:#b8442d;font-weight:700;border-bottom:2px dotted #d99}
+.convert{text-align:center;color:var(--akane);font-size:13px;font-weight:700;margin:2px 0 -2px}
+
+.memo h3{font-size:16px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--ai-light);color:var(--ai-deep)}
+.memo table.meta{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 18px}
+.memo table.meta th{text-align:left;width:78px;color:var(--sub);font-weight:700;padding:5px 8px 5px 0;vertical-align:top;white-space:nowrap}
+.memo table.meta td{padding:5px 0;vertical-align:top}
+.memo .blk{margin:0 0 16px}
+.memo .blk .h{font-weight:700;font-size:14px;color:var(--ai-deep);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.memo .blk .h::before{content:"";width:4px;height:15px;background:var(--ai);border-radius:2px;display:inline-block}
+.memo ol,.memo ul{margin:4px 0 0;padding-left:22px}
+.memo li{margin-bottom:5px;font-size:13.8px}
+.memo .todo{width:100%;border-collapse:collapse;font-size:13.2px;border:1px solid var(--line)}
+.memo .todo th{background:var(--ai-soft);color:var(--ai-deep);font-weight:700;padding:7px 10px;text-align:left;font-size:12.5px}
+.memo .todo td{padding:7px 10px;border-top:1px solid var(--line)}
+.memo .todo td:first-child{font-weight:700;white-space:nowrap;color:var(--ink)}
+
+.variants{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:560px){.variants{grid-template-columns:1fr}}
+.variant{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:15px}
+.variant .vt{font-weight:700;font-size:14px;color:var(--ai-deep);margin-bottom:8px;display:flex;gap:7px;align-items:center}
+.variant .vt .e{font-size:18px}
+.variant .vd{font-size:12.5px;color:var(--sub);line-height:1.7}
+
+.note{background:var(--akane-light);border:1px solid #eccaaf;border-radius:14px;padding:18px 20px;margin-top:34px}
+.note .nh{font-weight:700;color:var(--akane);font-size:15px;margin:0 0 7px;display:flex;gap:8px;align-items:center}
+.note p{margin:0;font-size:14px;color:#5c4632;line-height:1.85}
+
+.close{background:var(--ai-soft);border-radius:16px;padding:22px;margin-top:34px;text-align:center;border:1px solid var(--ai-light)}
+.close p{margin:0;font-size:14.5px;color:var(--ai-deep);font-weight:500;line-height:1.85}
+.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--sub);line-height:1.7}
+
+.fade{opacity:0;transform:translateY(14px);animation:fi .7s forwards}
+@keyframes fi{to{opacity:1;transform:none}}
+.d1{animation-delay:.1s}.d2{animation-delay:.25s}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="eyebrow fade">ONLINE MEETING → 面談メモ 自動作成</span>
+  <h1 class="fade d1">オンライン面談の録画から、<br><span class="em">面談メモを&ldquo;自動&rdquo;で</span>つくる</h1>
+  <p class="fade d2">録画を文字起こしして、AI（Claude）が指定フォーマットに整形します。<br>手作業のメモ起こしが、まるごと無くなります。</p>
+</div>
+
+<div class="wrap">
+
+  <div class="flow fade d2">
+    <div class="step"><div class="n">STEP 1</div><span class="ic">🎥</span><div class="t">録画</div><div class="d">Google Meet / Zoom<br>いつもの面談を録るだけ</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">STEP 2</div><span class="ic">📝</span><div class="t">文字起こし</div><div class="d">録画データを<br>テキスト化</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">STEP 3</div><span class="ic">✨</span><div class="t">AIで整形</div><div class="d">会社指定の型に<br>自動で清書</div></div>
+  </div>
+
+  <section>
+    <span class="label">実際にやってみました</span>
+    <h2 class="sec-title">文字起こしの&ldquo;生データ&rdquo; → 面談メモ</h2>
+    <p class="sec-lead">下の例は、以前おけもん×泉田さんで実施したMeet（2026/3/2）の録画を、そのまま自動処理したものです。</p>
+
+    <div class="ba">
+      <div class="card before">
+        <div class="cap">BEFORE ── 録画から起こした生テキスト（音声認識ナマ）</div>
+        <div class="body">
+          <p class="raw-text">…とりあえず<span class="miss">脳子</span>に全部乗ってるよっていう状態には持っていきたいんやろうね。<span class="miss">ノートブックエレム</span>に聞いてねっていうのも、それが何なのか分からない。<span class="miss">サットワーク</span>の概要に置いてるよってことも、みんなわかってないんじゃないかな…</p>
+          <p class="raw-text" style="margin-top:10px;font-size:12px;color:#a89c8c">※ <b>脳子</b>＝Notion／<b>ノートブックエレム</b>＝NotebookLM／<b>サットワーク</b>＝Chatwork。固有名詞は音声認識でこのくらい崩れます（Zoom＋Nottaでも同程度）。整形時にAIが文脈で補正します。</p>
+        </div>
+      </div>
+
+      <div class="convert">▼ AIで整形 ▼</div>
+
+      <div class="card after">
+        <div class="cap">AFTER ── 会社指定フォーマットに整形した面談メモ</div>
+        <div class="body memo">
+          <h3>面談メモ｜オンボーディング・マニュアル整備 すり合わせ</h3>
+          <table class="meta">
+            <tr><th>日時</th><td>2026年3月2日（月）10:59〜</td></tr>
+            <tr><th>形式</th><td>オンライン（録画あり）</td></tr>
+            <tr><th>参加者</th><td>おけもん／泉田さん</td></tr>
+            <tr><th>目的</th><td>新人が自走できる仕組みづくりの方針決め</td></tr>
+          </table>
+
+          <div class="blk">
+            <div class="h">現状の課題</div>
+            <ul>
+              <li>情報が Notion・NotebookLM・Chatwork に点在し、新人が「何がどこにあるか」分からない</li>
+              <li>結果、質問が統括メンバーに集中している</li>
+              <li>マニュアルが3系統あり棲み分けが曖昧／情報量が多く読む前に離脱</li>
+            </ul>
+          </div>
+
+          <div class="blk">
+            <div class="h">決定事項</div>
+            <ol>
+              <li>PM業務の記述は「PMマニュアル」へ移管。秘書マニュアルは新人必須情報のみにスリム化</li>
+              <li>具体的手順は本体に詰めず「別ページ化」し、業務発生時に参照</li>
+              <li>NotebookLM の存在と使い方を周知。Notion各ページの役割・呼称も解説ページ化</li>
+              <li>ツール操作Tipsと社内勉強会動画を1ページに集約</li>
+            </ol>
+          </div>
+
+          <div class="blk">
+            <div class="h">ToDo</div>
+            <table class="todo">
+              <tr><th>担当</th><th>アクション</th><th>期限</th></tr>
+              <tr><td>泉田さん</td><td>マニュアルの引っ越し・仕分け、各ツールTips作成</td><td>次回まで</td></tr>
+              <tr><td>おけもん</td><td>ツール解説ページ＆勉強会動画まとめ、AI活用セミナー（要望次第）</td><td>次回まで</td></tr>
+              <tr><td>両者</td><td>普段使いの疑問を拾う「質問会」開催を検討</td><td>未定</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">ここが大事</span>
+    <h2 class="sec-title">出力の様式は、如何様にも調整できます</h2>
+    <p class="sec-lead">上はあくまで一例です。会社で決まっている型・項目に合わせて、いくらでも形を変えられます。</p>
+    <div class="variants">
+      <div class="variant">
+        <div class="vt"><span class="e">📋</span>会社指定テンプレ型</div>
+        <div class="vd">「面談日／対応者／相談内容／提案／次回アクション」など、御社の決まった項目にそのまま流し込み。</div>
+      </div>
+      <div class="variant">
+        <div class="vt"><span class="e">✓</span>箇条書き要約型</div>
+        <div class="vd">要点だけをサッと。決定事項・宿題・期日を短くまとめる、忙しい人向けのミニマム版。</div>
+      </div>
+      <div class="variant">
+        <div class="vt"><span class="e">🗒️</span>逐語＋要約 併記型</div>
+        <div class="vd">「言った／言わない」を残したい時は、発言ログと要約を両方。証跡として保管しやすい形。</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    <p class="nh">😉 窪田さんは今 Zoom をお使いですよね</p>
+    <p>大丈夫です、<strong>Google Meetに乗り換えなくてもOK</strong>。今お使いの <b>Zoomの録画データ（または Notta の文字起こし）をそのままAIに通すだけ</b>で、上と同じ面談メモが作れます。<br>つまり「①Zoom録画 → ②文字起こし → ③手作業でメモ」の<b>③だけがAIに置き換わる</b>形。ツールはそのまま、手作業だけが消えます。</p>
+  </div>
+
+  <div class="close">
+    <p>録画さえあれば、面談メモは&ldquo;書く&rdquo;ものから&ldquo;出てくる&rdquo;ものへ。<br>御社の型に合わせて、いつでも形を調整できます😊</p>
+  </div>
+
+  <div class="foot">
+    ※ このページは、おけもん×泉田さんの実際のMeet録画（2026/3/2）を自動処理して作成したデモです。第三者の個人名は伏せています。<br>
+    ※ 限定共有用（検索エンジン非掲載）。リンクをご存じの方のみ閲覧できます。
+  </div>
+
+</div>
+
+<script>
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fade');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('section,.note,.close').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
