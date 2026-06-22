@@ -81,6 +81,22 @@ section{margin-top:46px}
 .note .nh{font-weight:700;color:var(--akane);font-size:15px;margin:0 0 7px;display:flex;gap:8px;align-items:center}
 .note p{margin:0;font-size:14px;color:#5c4632;line-height:1.85}
 
+/* チャット風モック */
+.chat{background:#f3eee5;border:1px solid var(--line);border-radius:18px;padding:22px 18px 24px;max-width:600px;margin:0 auto}
+.chat .head{font-size:11.5px;color:#a8997f;letter-spacing:.12em;font-weight:700;text-align:center;margin-bottom:14px}
+.bubble{max-width:82%;padding:11px 15px;border-radius:18px;font-size:14px;line-height:1.7;margin-bottom:10px;position:relative;white-space:pre-wrap}
+.bubble.me{background:#ffe2c4;color:#5c3a1e;margin-left:auto;border-bottom-right-radius:5px}
+.bubble.ai{background:#fff;color:var(--ink);border:1px solid var(--line);border-bottom-left-radius:5px}
+.bubble.ai .nm{font-size:11.5px;font-weight:700;color:var(--ai);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.bubble.ai .nm::before{content:"🤖"}
+.bubble .log{background:#f7f4ee;border-radius:8px;padding:8px 11px;font-size:12px;color:var(--sub);margin:6px 0;font-family:"SF Mono","Menlo","Courier New",monospace;line-height:1.65}
+.bubble .log .ok{color:#5b8a4a;font-weight:700}
+.bubble .file{display:inline-flex;align-items:center;gap:6px;background:var(--ai-soft);border:1px solid var(--ai-light);padding:6px 11px;border-radius:8px;font-size:12.5px;color:var(--ai-deep);font-weight:700;margin-top:6px}
+.typing{display:inline-flex;gap:4px;align-items:center;color:var(--sub);font-size:12px;margin-top:4px}
+.typing .dot{width:6px;height:6px;background:var(--ai);border-radius:50%;animation:bo 1.2s infinite}
+.typing .dot:nth-child(2){animation-delay:.15s}.typing .dot:nth-child(3){animation-delay:.3s}
+@keyframes bo{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+
 .close{background:var(--ai-soft);border-radius:16px;padding:22px;margin-top:34px;text-align:center;border:1px solid var(--ai-light)}
 .close p{margin:0;font-size:14.5px;color:var(--ai-deep);font-weight:500;line-height:1.85}
 .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--sub);line-height:1.7}
@@ -94,8 +110,8 @@ section{margin-top:46px}
 
 <div class="hero">
   <span class="eyebrow fade">ONLINE MEETING → 面談メモ 自動作成</span>
-  <h1 class="fade d1">オンライン面談の録画から、<br><span class="em">面談メモを&ldquo;自動&rdquo;で</span>つくる</h1>
-  <p class="fade d2">録画を文字起こしして、AI（Claude）が指定フォーマットに整形します。<br>手作業のメモ起こしが、まるごと無くなります。</p>
+  <h1 class="fade d1">録画があれば、<span class="em">話しかけるだけで</span><br>面談メモが出てくる</h1>
+  <p class="fade d2">Claude（AI）のチャット欄に「この録画から面談メモを作って」と一言。<br>データ取得・文字起こし・指定フォーマットの清書まで、まるごと自動で。</p>
 </div>
 
 <div class="wrap">
@@ -103,13 +119,45 @@ section{margin-top:46px}
   <div class="flow fade d2">
     <div class="step"><div class="n">STEP 1</div><span class="ic">🎥</span><div class="t">録画</div><div class="d">Google Meet / Zoom<br>いつもの面談を録るだけ</div></div>
     <div class="arrow">→</div>
-    <div class="step"><div class="n">STEP 2</div><span class="ic">📝</span><div class="t">文字起こし</div><div class="d">録画データを<br>テキスト化</div></div>
+    <div class="step"><div class="n">STEP 2</div><span class="ic">💬</span><div class="t">話しかける</div><div class="d">Claudeに<br>「メモ作って」</div></div>
     <div class="arrow">→</div>
-    <div class="step"><div class="n">STEP 3</div><span class="ic">✨</span><div class="t">AIで整形</div><div class="d">会社指定の型に<br>自動で清書</div></div>
+    <div class="step"><div class="n">STEP 3</div><span class="ic">✨</span><div class="t">出てくる</div><div class="d">会社指定の型で<br>面談メモが完成</div></div>
   </div>
 
   <section>
-    <span class="label">実際にやってみました</span>
+    <span class="label">実際の操作イメージ</span>
+    <h2 class="sec-title">こんな感じで&ldquo;話しかけるだけ&rdquo;</h2>
+    <p class="sec-lead">おけもんも普段、Claude（AI）にこんなノリで頼んでいます。文章で言うだけで、AI側がDrive・録画・文字起こしを順にたぐって、最後に面談メモを出してくれます。</p>
+
+    <div class="chat">
+      <div class="head">— Claude チャット欄 —</div>
+
+      <div class="bubble me">6月22日の泉田さんとの面談録画から、会社指定の型で面談メモ作って</div>
+
+      <div class="bubble ai">
+        <div class="nm">Claude</div>
+        了解！録画を取りに行きます🎥
+        <div class="log">
+          <span class="ok">✔</span> Google Drive を検索中...<br>
+          <span class="ok">✔</span> 録画ファイル発見：「2026/06/22 泉田さん面談」<br>
+          <span class="ok">✔</span> 文字起こしデータを取得（28分・5,200文字）<br>
+          <span class="ok">✔</span> 会社指定フォーマットに整形中...
+        </div>
+        できました！下のメモをご確認ください👇
+        <div class="file">📎 面談メモ_2026-06-22_泉田さん.md</div>
+      </div>
+
+      <div class="bubble me">ありがと！クライアント向けの返信メールも下書きしといて</div>
+
+      <div class="bubble ai">
+        <div class="nm">Claude</div>
+        了解です。先方の関心ポイントを拾って、お礼＋次回提案の流れで書きますね✍️
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">出力サンプル</span>
     <h2 class="sec-title">文字起こしの&ldquo;生データ&rdquo; → 面談メモ</h2>
     <p class="sec-lead">下の例は、以前おけもん×泉田さんで実施したMeet（2026/3/2）の録画を、そのまま自動処理したものです。</p>
 
@@ -118,7 +166,7 @@ section{margin-top:46px}
         <div class="cap">BEFORE ── 録画から起こした生テキスト（音声認識ナマ）</div>
         <div class="body">
           <p class="raw-text">…とりあえず<span class="miss">脳子</span>に全部乗ってるよっていう状態には持っていきたいんやろうね。<span class="miss">ノートブックエレム</span>に聞いてねっていうのも、それが何なのか分からない。<span class="miss">サットワーク</span>の概要に置いてるよってことも、みんなわかってないんじゃないかな…</p>
-          <p class="raw-text" style="margin-top:10px;font-size:12px;color:#a89c8c">※ <b>脳子</b>＝Notion／<b>ノートブックエレム</b>＝NotebookLM／<b>サットワーク</b>＝Chatwork。固有名詞は音声認識でこのくらい崩れます（Zoom＋Nottaでも同程度）。整形時にAIが文脈で補正します。</p>
+          <p class="raw-text" style="margin-top:10px;font-size:12px;color:#a89c8c">※ <b>脳子</b>＝Notion／<b>ノートブックエレム</b>＝NotebookLM／<b>サットワーク</b>＝Chatwork。固有名詞は音声認識でこのくらい崩れます（どの文字起こしツールでも同程度）。整形時にClaudeが文脈で補正します。</p>
         </div>
       </div>
 
@@ -190,7 +238,7 @@ section{margin-top:46px}
 
   <div class="note">
     <p class="nh">😉 窪田さんは今 Zoom をお使いですよね</p>
-    <p>大丈夫です、<strong>Google Meetに乗り換えなくてもOK</strong>。今お使いの <b>Zoomの録画データ（または Notta の文字起こし）をそのままAIに通すだけ</b>で、上と同じ面談メモが作れます。<br>つまり「①Zoom録画 → ②文字起こし → ③手作業でメモ」の<b>③だけがAIに置き換わる</b>形。ツールはそのまま、手作業だけが消えます。</p>
+    <p>大丈夫です、<strong>Google Meetに乗り換えなくてもOK</strong>。Zoomで録画する運用はそのまま、<b>Claudeに「この録画から面談メモを作って」と話しかけるだけ</b>で、文字起こしから会社指定の型での清書まで、ぜんぶClaude側がやってくれます。<br>つまり「Zoom録画 → Claudeに話しかける」の<b>2ステップだけ</b>。間に挟んでいた文字起こしツールも、手作業のメモ起こしも、もう要りません。</p>
   </div>
 
   <div class="close">
