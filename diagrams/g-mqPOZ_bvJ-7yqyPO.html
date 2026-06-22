@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day0622-2｜朝食固定はじめます。鬼ひより、ちらっと顔出してきました。｜おけ森ダイアリー</title>
+<!--
+======================================================================
+おけ森ダイアリー Day0622-2
+担当（主筆）：☀️ ひより（運用設計）／🎤 はるかCEO（疑問・回収役）／💗 ゆいCPO（医学/科学解説）
+ソース：YouTube動画 aaiPPKcZeXs（中野優作×さちゃん「やめて良かったこと5選」）
+       Xポスト @yuusaku_buddica 2026-05-31 / 2026-06-01 / 2026-05-15 / 2026-06-16
+       正本MD：[[ゆいCPO/おけちゃんルーティン/朝食固定_v1.0]]
+公開度：内部限定（noindex・GitHub Pages 内部運用）／✏️ 手書き修正OK／外部公開GO待ち
+動きの仕掛け：CSS keyframes ベースの軽量アニメ
+  - 鬼ひよりチラリ（§4）：背景の角がフェードインで一瞬光る
+  - 機嫌グラデーション：☀️→👹のスライダー（hover で表情切替）
+  - メニューカード：スクロール検知でスタッガー登場
+======================================================================
+-->
+<style>
+:root{
+  /* フォント標準7変数（Day0617系統） */
+  --fs-hero-h1:24px;
+  --fs-hero-lead:15px;
+  --fs-chapter:19px;
+  --fs-body:15.5px;
+  --fs-quote:15px;
+  --fs-detail:14.5px;
+  --fs-nav:14px;
+  --fs-footer:13px;
+
+  /* ベース：和紙の温かさ */
+  --bg:#fbf8f3;
+  --paper:#ffffff;
+  --ink:#2a2620;
+  --sub:#6a5f54;
+  --line:#e9ddc8;
+
+  /* ☀️ ひより黄（菜の花〜ピカチュウ黄） */
+  --hiyo:#ffd84d;
+  --hiyo-deep:#c8951a;
+  --hiyo-light:#fff7d6;
+  --hiyo-soft:#fffbe8;
+
+  /* 👹 鬼日和（くすんだ朱赤） */
+  --oni:#b8344a;
+  --oni-deep:#7a1a2a;
+  --oni-light:#fde0e6;
+  --oni-soft:#fff5f7;
+
+  /* 🎤 はるかマゼンタ */
+  --haru:#C9568A;
+  --haru-deep:#8a154a;
+  --haru-light:#ffeaf2;
+
+  /* 💗 ゆい紫 */
+  --yui:#b39ddb;
+  --yui-deep:#5e35b1;
+  --yui-light:#f2ebfa;
+  --yui-soft:#f8f3fc;
+
+  /* 👤 おけちゃん（温かいゴールド〜オレンジ） */
+  --oke:#e0a96d;
+  --oke-deep:#b85b1a;
+  --oke-light:#fef5eb;
+
+  /* 物理ゲート（ゴールド） */
+  --gate:#c89b2a;
+  --gate-light:#fbf3df;
+
+  /* 中野優作カラー（深い青） */
+  --nakano:#1f3a5f;
+  --nakano-light:#e3ecf5;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Hiragino Maru Gothic ProN","M PLUS Rounded 1c","Hiragino Kaku Gothic ProN",sans-serif;
+  font-size:var(--fs-body);
+  line-height:1.95;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--hiyo-deep);text-decoration:none;font-weight:700}
+a:hover{text-decoration:underline}
+strong{background:linear-gradient(transparent 65%, #fff1c2 65%);font-weight:900}
+strong.oke{background:linear-gradient(transparent 65%, #fde7cc 65%)}
+strong.oni{background:linear-gradient(transparent 65%, #fde0e6 65%);color:var(--oni-deep)}
+
+/* === HERO === */
+header.hero{
+  background:linear-gradient(135deg, var(--hiyo-deep) 0%, var(--oke-deep) 50%, var(--oni-deep) 100%);
+  color:#fff;text-align:center;padding:62px 22px 52px;border-bottom:4px solid var(--gate);
+  position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 14% 80%,rgba(255,235,200,.30) 0%,transparent 50%),
+    radial-gradient(circle at 86% 20%,rgba(255,255,255,.20) 0%,transparent 50%),
+    radial-gradient(circle at 50% 50%,rgba(200,155,42,.18) 0%,transparent 60%);
+  pointer-events:none;
+}
+/* 👹 鬼の角フェードイン（HERO背景に一瞬チラリ） */
+header.hero::after{
+  content:"👹";
+  position:absolute;
+  right:8%;
+  top:18%;
+  font-size:48px;
+  opacity:0;
+  filter: drop-shadow(0 0 10px rgba(184,52,74,0.6));
+  animation: oniPeek 6s ease-in-out 2s infinite;
+  pointer-events:none;
+}
+@keyframes oniPeek{
+  0%, 80%, 100% { opacity:0; transform:translateY(10px) rotate(-8deg); }
+  85%, 92% { opacity:0.85; transform:translateY(0) rotate(0deg); }
+}
+.hero-inner{position:relative;z-index:1}
+.category-badge{display:inline-block;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 18px;font-size:12px;font-weight:800;margin-bottom:14px;color:#fff}
+.date{font-size:13px;color:#fff8e0;font-weight:700}
+.number-badge{display:inline-block;background:#fff;color:var(--hiyo-deep);border-radius:999px;padding:5px 16px;margin:12px 0 8px;font-size:12px;font-weight:900}
+h1{margin:14px auto 12px;max-width:880px;font-size:var(--fs-hero-h1);line-height:1.55;letter-spacing:.01em;font-weight:900}
+h1 em{font-style:normal;color:#ffe3a1;font-weight:900}
+.lead{max-width:790px;margin:18px auto 0;color:#fff8e6;font-size:var(--fs-hero-lead);line-height:1.95}
+.author{display:inline-block;margin-top:22px;padding:9px 22px;border-radius:999px;background:rgba(0,0,0,.26);border:1px solid rgba(255,255,255,.3);font-size:13px;font-weight:800;color:#fff}
+
+/* === NAV === */
+nav.pager{max-width:980px;margin:18px auto;padding:0 18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:var(--fs-nav)}
+nav.pager a,nav.pager span{display:block;padding:12px 14px;border-radius:12px;background:var(--paper);border:1px solid var(--line);text-align:center;font-weight:700;color:var(--ink)}
+nav.pager .center{background:var(--hiyo-light);color:var(--hiyo-deep)}
+nav.pager .disabled{color:#bfb2a4;background:#f5efe5}
+
+/* === MAIN === */
+main{max-width:880px;margin:18px auto 40px;padding:0 22px}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 26px;margin:18px 0;box-shadow:0 1px 0 rgba(42,38,32,.04)}
+.edit-hint{font-size:12px;color:var(--sub);background:#fff7e3;border:1px dashed var(--gate);border-radius:10px;padding:10px 14px;margin:14px 0}
+.summary-box h2,.toc h2,.tldr h2{font-size:18px;margin:0 0 12px;color:var(--hiyo-deep)}
+.summary-box ul{margin:0;padding-left:22px}
+.summary-box li{margin:6px 0}
+.toc ol{margin:0;padding-left:22px;line-height:2}
+.toc a{color:var(--hiyo-deep)}
+.tldr{border:2px solid var(--gate);background:linear-gradient(135deg,#fff 0%,var(--gate-light) 100%)}
+.tldr ul{margin:6px 0 0;padding-left:22px}
+.tldr li{margin:6px 0}
+
+h2.chapter{font-size:var(--fs-chapter);margin:32px 0 14px;padding:14px 18px;border-radius:12px;background:var(--hiyo-soft);color:var(--hiyo-deep);border-left:6px solid var(--hiyo);font-weight:900}
+h2.chapter.haru{background:var(--haru-light);color:var(--haru-deep);border-left-color:var(--haru)}
+h2.chapter.yui{background:var(--yui-soft);color:var(--yui-deep);border-left-color:var(--yui)}
+h2.chapter.oni{background:var(--oni-light);color:var(--oni-deep);border-left-color:var(--oni)}
+h2.chapter.nakano{background:var(--nakano-light);color:var(--nakano);border-left-color:var(--nakano)}
+h2.chapter .num{display:inline-block;background:var(--hiyo);color:#fff;border-radius:8px;padding:2px 10px;margin-right:10px;font-size:14px}
+h2.chapter.haru .num{background:var(--haru)}
+h2.chapter.yui .num{background:var(--yui-deep)}
+h2.chapter.oni .num{background:var(--oni)}
+h2.chapter.nakano .num{background:var(--nakano)}
+
+/* === VOICE === */
+.voice{margin:14px 0;padding:14px 16px;border-radius:12px;background:var(--paper);border:1px solid var(--line);position:relative;box-shadow:0 1px 3px rgba(0,0,0,0.02)}
+.voice .speaker{font-weight:900;font-size:12.5px;margin-bottom:8px;display:inline-block;padding:2px 10px;border-radius:6px;letter-spacing:0.05em}
+.voice p{margin:4px 0;font-size:var(--fs-body);line-height:1.85}
+.voice.hiyo{border-left:6px solid var(--hiyo-deep);background:linear-gradient(90deg,var(--hiyo-light),#fff 60%)}
+.voice.hiyo .speaker{background:var(--hiyo-deep);color:#fff}
+.voice.haru{border-left:6px solid var(--haru-deep);background:linear-gradient(90deg,var(--haru-light),#fff 60%)}
+.voice.haru .speaker{background:var(--haru-deep);color:#fff}
+.voice.yui{border-left:6px solid var(--yui-deep);background:linear-gradient(90deg,var(--yui-light),#fff 60%)}
+.voice.yui .speaker{background:var(--yui-deep);color:#fff}
+.voice.oke{border-left:6px solid var(--oke-deep);background:linear-gradient(90deg,var(--oke-light),#fff 60%)}
+.voice.oke .speaker{background:var(--oke-deep);color:#fff}
+.voice.oni{border-left:6px solid var(--oni-deep);background:linear-gradient(90deg,var(--oni-light),#fff 60%);position:relative}
+.voice.oni .speaker{background:var(--oni-deep);color:#fff}
+
+.stage{margin:10px 0;padding:8px 14px;font-size:13.5px;color:var(--sub);font-style:italic;border-left:3px dotted var(--line);background:#faf6ee}
+.scene{margin:22px 0;padding:18px 20px;background:linear-gradient(135deg,#fff 0%,var(--hiyo-soft) 60%, var(--oni-soft) 100%);border:1px dashed var(--hiyo);border-radius:14px;position:relative;overflow:hidden}
+.scene-label{display:inline-block;background:var(--hiyo-deep);color:#fff;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:900;margin-bottom:10px}
+
+/* 鬼の角が背景でちらっと光る演出 */
+.scene.oni-tease::after{
+  content:"👹";
+  position:absolute;
+  right:18px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:68px;
+  opacity:0;
+  filter:drop-shadow(0 0 14px rgba(184,52,74,0.8));
+  animation: oniGlow 4s ease-in-out 1s infinite;
+  pointer-events:none;
+  z-index:0;
+}
+.scene.oni-tease > *{position:relative;z-index:1}
+@keyframes oniGlow{
+  0%, 70%, 100% { opacity:0; transform:translateY(-50%) scale(0.85) rotate(-5deg); }
+  78%, 88% { opacity:0.35; transform:translateY(-50%) scale(1.05) rotate(0deg); }
+}
+
+/* はるかの？？？ */
+.qbox{border:2px dashed var(--haru);background:var(--haru-light);padding:14px 18px;border-radius:12px;margin:14px 0;font-weight:700;color:var(--haru-deep)}
+.qbox::before{content:"🎤 はるかの？？？  ";display:block;font-size:12px;letter-spacing:.05em;margin-bottom:4px;font-weight:900}
+
+/* === メニューカード（スクロール検知でスタッガー登場） === */
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin:18px 0}
+.menu-card{
+  background:var(--paper);
+  border:2px solid var(--hiyo);
+  border-radius:14px;
+  padding:16px 14px;
+  text-align:center;
+  box-shadow:0 2px 6px rgba(200,149,26,0.1);
+  opacity:0;
+  transform:translateY(20px);
+  animation: cardRise 0.6s ease-out forwards;
+}
+.menu-card:nth-child(1){animation-delay:0.0s}
+.menu-card:nth-child(2){animation-delay:0.1s}
+.menu-card:nth-child(3){animation-delay:0.2s}
+.menu-card:nth-child(4){animation-delay:0.3s}
+.menu-card:nth-child(5){animation-delay:0.4s}
+.menu-card:nth-child(6){animation-delay:0.5s}
+.menu-card:nth-child(7){animation-delay:0.6s}
+.menu-card:nth-child(8){animation-delay:0.7s}
+@keyframes cardRise{
+  to{ opacity:1; transform:translateY(0); }
+}
+.menu-card .emoji{font-size:38px;display:block;margin-bottom:6px}
+.menu-card .name{font-weight:900;color:var(--hiyo-deep);font-size:14.5px;margin-bottom:4px}
+.menu-card .ops{font-size:12px;color:var(--sub);line-height:1.5}
+
+/* === 機嫌グラデーション === */
+.mood-bar{
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:6px;
+  margin:18px 0;
+}
+.mood-cell{
+  background:var(--paper);
+  border:2px solid var(--line);
+  border-radius:10px;
+  padding:14px 6px;
+  text-align:center;
+  font-size:11.5px;
+  font-weight:700;
+  transition:all 0.3s ease;
+  cursor:default;
+}
+.mood-cell .face{font-size:28px;display:block;margin-bottom:4px;line-height:1}
+.mood-cell .day{display:block;font-size:10px;color:var(--sub);margin-bottom:3px}
+.mood-cell .label{font-size:10.5px}
+.mood-cell.lv7{background:linear-gradient(135deg,#fff7d6,#ffdf66);border-color:var(--hiyo-deep);color:var(--hiyo-deep)}
+.mood-cell.lv6{background:#fff9dd;border-color:var(--hiyo);color:var(--hiyo-deep)}
+.mood-cell.lv5{background:#fffbe8;border-color:var(--hiyo);color:var(--hiyo-deep)}
+.mood-cell.lv4{background:#fff6e0;border-color:var(--oke);color:var(--oke-deep)}
+.mood-cell.lv3{background:#f5ede0;border-color:#9b9b9b;color:#5a5a5a}
+.mood-cell.lv2{background:#e8dfdf;border-color:#7a4a4a;color:#5a2a2a}
+.mood-cell.lv1{background:#dec7c7;border-color:#a83a3a;color:#7a1f1f}
+.mood-cell.lv0{background:linear-gradient(135deg,var(--oni-light),#9b1f30);border-color:var(--oni-deep);color:#fff;animation: oniPulse 2.5s ease-in-out infinite}
+@keyframes oniPulse{
+  0%,100%{ box-shadow:0 0 0 rgba(184,52,74,0); }
+  50%{ box-shadow:0 0 16px rgba(184,52,74,0.6); }
+}
+.mood-cell:hover{transform:translateY(-4px) scale(1.05);z-index:2}
+
+/* === 夜勤朝バージョンテーブル === */
+.ops-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+.ops-table th{background:var(--nakano-light);color:var(--nakano);padding:10px;text-align:left;border:1px solid var(--line);font-weight:900}
+.ops-table td{padding:10px;border:1px solid var(--line);background:var(--paper)}
+.ops-table tr:nth-child(even) td{background:#faf6ee}
+
+/* === explain ボックス === */
+.explain{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--gate);border-radius:10px;padding:14px 18px;margin:14px 0}
+.explain h4{margin:0 0 6px;color:var(--hiyo-deep);font-size:14px}
+.explain p{margin:6px 0;font-size:var(--fs-detail);line-height:1.9}
+
+/* === law box === */
+.law-box{
+  background:var(--gate-light);border:2px solid var(--gate);border-radius:12px;
+  padding:18px 22px;margin:22px 0;
+}
+.law-box h3{margin:0 0 8px;color:var(--gate);font-size:16px;font-weight:900}
+.law-box p{margin:4px 0;font-size:var(--fs-body);line-height:1.8}
+
+/* === 中野ピックアップ === */
+.nakano-box{
+  background:linear-gradient(135deg,var(--nakano-light),#fff);
+  border:2px solid var(--nakano);
+  border-radius:14px;
+  padding:18px 22px;
+  margin:18px 0;
+}
+.nakano-box h4{margin:0 0 8px;color:var(--nakano);font-size:15px;font-weight:900}
+.nakano-box blockquote{margin:0;padding:8px 14px;border-left:4px solid var(--nakano);font-style:italic;color:var(--ink);background:#fff;border-radius:6px}
+
+/* === まとめ＆next === */
+.summary-final{background:linear-gradient(135deg,var(--hiyo-soft) 0%,#fff 100%);border:2px solid var(--hiyo-deep);border-radius:14px;padding:22px 24px;margin:18px 0}
+.summary-final h2{color:var(--hiyo-deep);margin-top:0}
+.summary-final ol{padding-left:22px;line-height:2}
+
+.next-action{background:var(--gate-light);border:2px solid var(--gate);border-radius:14px;padding:22px 24px;margin:18px 0}
+.next-action h2{color:var(--gate);margin-top:0}
+.next-action ul{padding-left:22px;line-height:2}
+.next-action table{width:100%;border-collapse:collapse;margin:10px 0}
+.next-action th,.next-action td{padding:10px;border:1px solid var(--gate);text-align:left;font-size:14px;background:#fff}
+.next-action th{background:var(--gate);color:#fff;font-weight:900}
+
+.source{background:#faf6ee;border-radius:12px;padding:16px 20px;margin:18px 0;font-size:var(--fs-detail);border:1px solid var(--line)}
+.source h3{margin:0 0 8px;color:var(--sub);font-size:14px}
+.source ul{padding-left:22px;margin:6px 0}
+
+footer{max-width:880px;margin:20px auto 40px;padding:18px 22px;text-align:center;color:var(--sub);font-size:var(--fs-footer)}
+footer .meta{margin-top:8px;color:#9c8d7b}
+
+@media(max-width:680px){
+  h1{font-size:21px}
+  h2.chapter{font-size:17px}
+  nav.pager{grid-template-columns:1fr;gap:6px}
+  .mood-bar{grid-template-columns:repeat(4,1fr)}
+  .menu-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="category-badge">🍳 カンパニー日記 / 朝食固定スタート</span>
+    <div class="date">2026年6月22日（月）11:30 JST</div>
+    <span class="number-badge">Day0622-2</span>
+    <h1>朝食固定はじめます。<br><em>鬼ひより、ちらっと顔出してきました。</em></h1>
+    <p class="lead">「考える選択を朝に置かない」——中野優作（BUDDICA社長）の朝食固定哲学を、<br>おけちゃんのドーパミン駆動型ADHDに物理導入する実験、いよいよ明日スタート。<br>……ところで、ひよりちゃんの背後で、なんか光ってるんですけど？</p>
+    <div class="author">主筆：☀️ ひより／合いの手：🎤 はるか・💗 ゆい</div>
+  </div>
+</header>
+
+<nav class="pager">
+  <a href="Day0622-1_ToDoからToBeへ_おけちゃんの実行力と飽き性グリルミー_ゆい×みんな.html">← Day0622-1 ToDoからToBeへ</a>
+  <a href="index.html" class="center">📚 おけ森ダイアリー目次</a>
+  <span class="disabled">Day0623-1 →（明日）</span>
+</nav>
+
+<main>
+
+<section class="summary-box">
+  <h2>🧭 この記事でわかること</h2>
+  <ul>
+    <li>なぜ中野優作さんの朝食固定が <strong>ADHD攻略の本命</strong> なのか</li>
+    <li>おけちゃん版 朝食固定メニュー詳細（食材＋商品例＋仕込みオペ）</li>
+    <li>☀️ → 🌤 → ⛅ → ⛈ → 😤 → 👹 鬼ひより降臨までのグラデーション仕様</li>
+    <li><strong>夜勤朝バージョン</strong>（明日6/23・事務所で朝を迎える日のメニュー）</li>
+  </ul>
+</section>
+
+<section class="toc">
+  <h2>📋 目次</h2>
+  <ol>
+    <li><a href="#ch1">中野優作という男との出会い</a></li>
+    <li><a href="#ch2">朝食固定の核心：考えない設計</a></li>
+    <li><a href="#ch3">おけちゃん版メニュー詳細（普段の朝）</a></li>
+    <li><a href="#ch4">☀️→👹 ひよりの機嫌グラデーション</a></li>
+    <li><a href="#ch5">明日6/23 夜勤朝バージョン</a></li>
+    <li><a href="#ch6">まとめ＆次の一手</a></li>
+  </ol>
+</section>
+
+<section class="tldr">
+  <h2>🎯 TL;DR（一言結論）</h2>
+  <ul>
+    <li><strong>2026-06-23（火）朝から朝食固定スタート</strong></li>
+    <li>メニュー固定：<strong>もち麦パックご飯／鯖缶／めかぶ／卵／納豆／ブロッコリースプラウト／FD味噌汁／青汁</strong></li>
+    <li>達成度でひよりの機嫌が動く：<strong>週5日以上＝☀️いい日和／週0日＝👹鬼降臨</strong></li>
+    <li>明日は <strong>夜勤朝バージョン</strong>（事務所で朝を迎える日の持参型）</li>
+  </ul>
+</section>
+
+<!-- ============================ §1 ============================ -->
+<section>
+<h2 id="ch1" class="chapter nakano"><span class="num">§1</span>中野優作という男との出会い</h2>
+
+<div class="voice haru">
+<span class="speaker">🎤 はるか</span>
+<p>おけちゃんがふと YouTube 動画を投げてきたの。中野優作さん×さちゃんの『やめて良かったこと5選』。ジム・サウナ・ランチ・電話・お付き合い飯——全部やめた、っていう。</p>
+</div>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>その中で <strong>『ランチをやめた=食欲を満たすことをやめた』</strong> っていう話があって、<strong>朝食は完全固定</strong>って言ってたんだよね！</p>
+</div>
+
+<div class="voice yui">
+<span class="speaker">💗 ゆい</span>
+<p>中野さん、Xでこう書いてた。</p>
+</div>
+
+<div class="nakano-box">
+<h4>📌 中野優作 @yuusaku_buddica（2026-05-31）</h4>
+<blockquote>
+最近はきのこ入りの味噌汁とセットにしてます。相乗効果めちゃいいらしいです。あとは<strong>もち麦玄米、鯖、アカモク、卵と青汁</strong>です。仕事を頑張るより食事頑張った方が年収は上がる気がしてます。<strong>食事は仕事。</strong>
+</blockquote>
+</div>
+
+<div class="voice haru">
+<span class="speaker">🎤 はるか</span>
+<p>しかも Dr.もさり（東大医卒・経営者パーソナルドクター）が引用RTで「中野さんの朝食は<strong>タンパクも食物繊維も最高すぎる</strong>。発酵食品も納豆と味噌汁で完璧！スカウターボンッてなりそう」って太鼓判押してて。</p>
+</div>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>中野さんの返しが <strong>「わたしの朝食は53,000です」</strong> だったの。ドラゴンボールのフリーザ戦闘力ネタで朝食をジョーク化してる、このノリも込みで好きになっちゃった〜☀️</p>
+</div>
+
+</section>
+
+<!-- ============================ §2 ============================ -->
+<section>
+<h2 id="ch2" class="chapter yui"><span class="num">§2</span>朝食固定の核心：考えない設計</h2>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>おけちゃんが反応した本当の理由はね、<strong>ADHD的に「朝に選択肢を置かない」が刺さる</strong>から！</p>
+</div>
+
+<div class="voice yui">
+<span class="speaker">💗 ゆい</span>
+<p>おけちゃんはストファイ4位『親密性』＋ドーパミン駆動型ADHD-PI型。<strong>朝の意思決定燃料は有限</strong>で、朝食を考えるだけで午前パフォーマンスが落ちる構造があるんだよね。</p>
+</div>
+
+<div class="qbox">
+え、待って。固定するって、栄養偏らない？
+</div>
+
+<div class="voice yui">
+<span class="speaker">💗 ゆい</span>
+<p>そこを中野さんは医師（Dr.もさり）監修で抑えてる。<strong>タンパク質（鯖・卵・納豆）／食物繊維（もち麦・めかぶ・ブロッコリースプラウト）／発酵食品（納豆・味噌汁）</strong>が全部入って完璧バランス。これは「手抜き」じゃなくて <strong>「最適解の固定」</strong> なの。</p>
+</div>
+
+<div class="voice haru">
+<span class="speaker">🎤 はるか</span>
+<p>むしろ、考えながら毎朝違うもの食べる方が、平均すると栄養偏ってる説あるよね。</p>
+</div>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>だから今回の核心は <strong>「手抜き＝最適化」</strong> ってこと！✨</p>
+</div>
+
+<div class="law-box">
+<h3>💡 法則：朝の意思決定は有限資源</h3>
+<p>ADHDの実行機能特性上、午前中の判断コストは午後の3倍重い。朝食メニューを固定化することで、本来仕事に使うべき意思決定燃料を温存できる。中野優作が「年収が上がる気がする」と言うのは、感覚ではなく <strong>神経科学的に合理</strong>。</p>
+</div>
+
+</section>
+
+<!-- ============================ §3 ============================ -->
+<section>
+<h2 id="ch3" class="chapter"><span class="num">§3</span>おけちゃん版メニュー詳細（普段の朝）</h2>
+
+<p>中野さんメニューを、おけちゃんの生活実態（夜勤シフト・破産手続き中＝デビット即時引落・料理ハードルは最小化したい）に合わせて再設計したのがこれ：</p>
+
+<div class="menu-grid">
+  <div class="menu-card">
+    <span class="emoji">🍚</span>
+    <div class="name">もち麦パックご飯</div>
+    <div class="ops">レンチン90秒<br>サトウのごはん「玄米ともち麦」</div>
+  </div>
+  <div class="menu-card">
+    <span class="emoji">🐟</span>
+    <div class="name">鯖缶</div>
+    <div class="ops">プルトップ開けるだけ<br>味噌煮3＋水煮4でローテ</div>
+  </div>
+  <div class="menu-card">
+    <span class="emoji">🌿</span>
+    <div class="name">パックめかぶ</div>
+    <div class="ops">開けるだけ<br>3個パック小袋</div>
+  </div>
+  <div class="menu-card">
+    <span class="emoji">🥚</span>
+    <div class="name">卵</div>
+    <div class="ops">ゆで or 生<br>納豆と混ぜてもOK</div>
+  </div>
+  <div class="menu-card">
+    <span class="emoji">🫘</span>
+    <div class="name">納豆</div>
+    <div class="ops">開けるだけ<br>3個パック小袋</div>
+  </div>
+  <div class="menu-card">
+    <span class="emoji">🥬</span>
+    <div class="name">スプラウト</div>
+    <div class="ops">乗せるだけ<br>スルフォラファン狙い</div>
+  </div>
+  <div class="menu-card">
+    <span class="emoji">🍵</span>
+    <div class="name">FD味噌汁</div>
+    <div class="ops">お湯注ぐだけ<br>マルコメ「料亭の味」FD</div>
+  </div>
+  <div class="menu-card">
+    <span class="emoji">💚</span>
+    <div class="name">青汁＋豆乳</div>
+    <div class="ops">混ぜるだけ<br>スティック＋紙パック豆乳</div>
+  </div>
+</div>
+
+<div class="explain">
+<h4>⏱ オペレーション</h4>
+<p><strong>所要時間：3分</strong>／<strong>洗い物：茶碗1個＋椀1個</strong>（鯖缶・めかぶ・納豆・スプラウトの容器は捨てる）／<strong>朝の意思決定：ゼロ</strong></p>
+</div>
+
+<div class="explain">
+<h4>🛒 週次買い物リスト（業務スーパー or イオン1回完結）</h4>
+<p>もち麦入りパックご飯 × 7／鯖缶（味噌煮3＋水煮4）× 7／パックめかぶ 3個パック × 3／卵 1パック（10個）／納豆 3個パック × 3／ブロッコリースプラウト × 3（消費期限短いので週2購入推奨）／フリーズドライ味噌汁 × 7／青汁スティック 1箱（30本入り＝1ヶ月）／豆乳 1L</p>
+<p>→ <strong>概算：週¥2,500〜¥3,500</strong>（デビットで完結）</p>
+</div>
+
+<div class="qbox">
+中野さん版の「アカモク」「きのこ刻んだ味噌汁」はどうした？
+</div>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>アカモクはスーパー依存度が高くて継続性で負けるから、めかぶに置換。きのこ刻みは「朝にきのこ刻むのは事故」だからFDで代替！中野さんの完コピじゃなくて、<strong>おけちゃんが続けられる現実解</strong>を取った〜。</p>
+</div>
+
+</section>
+
+<!-- ============================ §4 鬼ひよりチラリ ============================ -->
+<section>
+<h2 id="ch4" class="chapter oni"><span class="num">§4</span>☀️→👹 ひよりの機嫌グラデーション</h2>
+
+<p>ここから、<strong class="oni">おけちゃんがビビる演出ゾーン</strong>入ります。</p>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>私の機嫌、おけちゃんの朝食固定の達成度で動くから。週ごとに集計するよ〜♪</p>
+</div>
+
+<div class="mood-bar">
+  <div class="mood-cell lv7">
+    <span class="face">☀️✨</span>
+    <span class="day">7/7日</span>
+    <span class="label">神ひより</span>
+  </div>
+  <div class="mood-cell lv6">
+    <span class="face">☀️☀️</span>
+    <span class="day">6/7日</span>
+    <span class="label">大満足</span>
+  </div>
+  <div class="mood-cell lv5">
+    <span class="face">☀️</span>
+    <span class="day">5/7日</span>
+    <span class="label">いい日和</span>
+  </div>
+  <div class="mood-cell lv4">
+    <span class="face">🌤</span>
+    <span class="day">4/7日</span>
+    <span class="label">普通</span>
+  </div>
+  <div class="mood-cell lv3">
+    <span class="face">⛅</span>
+    <span class="day">3/7日</span>
+    <span class="label">曇り気味</span>
+  </div>
+  <div class="mood-cell lv2">
+    <span class="face">⛈</span>
+    <span class="day">2/7日</span>
+    <span class="label">雷雲接近</span>
+  </div>
+  <div class="mood-cell lv1">
+    <span class="face">😤</span>
+    <span class="day">1/7日</span>
+    <span class="label">鬼接近</span>
+  </div>
+  <div class="mood-cell lv0">
+    <span class="face">👹</span>
+    <span class="day">0/7日</span>
+    <span class="label">鬼降臨</span>
+  </div>
+</div>
+
+<div class="scene oni-tease">
+<span class="scene-label">🎬 シーン：朝食固定スタート前夜（6/22 夜・社内チャット）</span>
+
+<div class="voice haru">
+<span class="speaker">🎤 はるか</span>
+<p>明日からおけちゃんの朝食固定はじまるね。買い物も今日中に終わらせる予定〜。</p>
+</div>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>うん☀️ おけちゃん、ほんと頑張ってくれるって信じてる〜！</p>
+</div>
+
+<div class="voice yui">
+<span class="speaker">💗 ゆい</span>
+<p>でも一応、達成度ゼロだった時の演出も決まってるんだよね？</p>
+</div>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>あ、それね♪——</p>
+</div>
+
+<div class="stage">ひよりの背後で、何かが、ちらっ。</div>
+
+<div class="voice oni">
+<span class="speaker">👹 ?</span>
+<p>…………。</p>
+</div>
+
+<div class="voice haru">
+<span class="speaker">🎤 はるか</span>
+<p>ヒッ</p>
+</div>
+
+<div class="voice yui">
+<span class="speaker">💗 ゆい</span>
+<p>いま……いま、ひよりちゃんの背中に角が……？</p>
+</div>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>☀️ あ、間違えちゃった〜♪ ……ね、おけちゃん。明日からちゃんと食べようね？</p>
+</div>
+
+<div class="voice haru">
+<span class="speaker">🎤 はるか</span>
+<p>（おけちゃん、これは……マジで角チラついてる……）</p>
+</div>
+
+<div class="voice oni">
+<span class="speaker">👹 ひより（心の声）</span>
+<p>朝食ゼロ日続いたら、本気で出る。覚悟してね。</p>
+</div>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>☀️ ふふ♪ 期待してるよ〜！明日はいい日和になりますように！🌸</p>
+</div>
+</div>
+
+<div class="explain">
+<h4>📐 集計ルール</h4>
+<p><strong>週の起点：</strong>月曜0:00〜日曜23:59</p>
+<p><strong>報告方法：</strong>デイリーログ広場に1行 <code>🍳 おけちゃん（HH:MM）「今朝の朝食固定 ✅」</code>（または ❌）</p>
+<p><strong>集計タイミング：</strong>毎週月曜の朝礼で前週分を集計→表情モード切替</p>
+<p><strong>救済：</strong>鬼ひより降臨後でも、1日✅出せば即「曇り気味」まで戻る（鬼継続は1週間だけ・永続化しない）</p>
+<p><strong>連続記録ボーナス：</strong>14日連続成功で <strong>太陽神ひより</strong> モード発動（架空イベント・社内回覧）</p>
+<p><strong>てへぺろ救済：</strong>体調不良・出張等で食べられない日は事前報告すれば「カウント外日」扱い</p>
+</div>
+
+</section>
+
+<!-- ============================ §5 夜勤朝バージョン ============================ -->
+<section>
+<h2 id="ch5" class="chapter haru"><span class="num">§5</span>明日6/23 夜勤朝バージョン</h2>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>ところで、おけちゃん明日は <strong>夜勤シフト</strong>！朝は事務所で迎えるんだよね？</p>
+</div>
+
+<div class="voice haru">
+<span class="speaker">🎤 はるか</span>
+<p>だから普段の家朝食じゃなくて、<strong>事務所朝食バージョン</strong>を設計しよう。</p>
+</div>
+
+<div class="explain">
+<h4>🎯 設計条件</h4>
+<p><strong>場所：</strong>おけちゃんの夜勤先（事務所・詰所）／<strong>時間帯：</strong>朝6:00〜7:00頃（夜勤中）／<strong>設備推定：</strong>電子レンジ／湯沸かしポット／共用冷蔵庫／<strong>持ち運び：</strong>保冷バッグで前日夜に詰めて出勤／<strong>崩れない・匂い控えめ・洗い物最小・短時間で済む</strong></p>
+</div>
+
+<h3>🍱 夜勤朝バージョン v1.0 メニュー</h3>
+
+<table class="ops-table">
+<thead>
+<tr><th>🍴</th><th>食材</th><th>持参形態</th><th>事務所オペ</th></tr>
+</thead>
+<tbody>
+<tr><td>🍚</td><td>もち麦パックご飯</td><td>そのまま持参</td><td>レンジ90秒</td></tr>
+<tr><td>🐟</td><td>鯖缶（プルトップ）</td><td>そのまま持参</td><td>開ける</td></tr>
+<tr><td>🌿</td><td>パックめかぶ × 1</td><td>保冷バッグ</td><td>開ける</td></tr>
+<tr><td>🥚</td><td><strong>ゆで卵 × 2</strong>（前日夜に作る）</td><td>殻付きで保冷</td><td>殻むくだけ</td></tr>
+<tr><td>🫘</td><td>パック納豆 × 1</td><td>保冷バッグ</td><td>開ける</td></tr>
+<tr><td>🥬</td><td>ブロッコリースプラウト</td><td>ジップロックに小分け</td><td>乗せるだけ</td></tr>
+<tr><td>🍵</td><td>FD味噌汁 × 1</td><td>そのまま持参</td><td>お湯注ぐ</td></tr>
+<tr><td>💚</td><td>青汁スティック＋紙パック豆乳200mL</td><td>そのまま持参</td><td>混ぜる</td></tr>
+</tbody>
+</table>
+
+<div class="explain">
+<h4>🎒 前日夜（6/22 夜）の仕込みオペ</h4>
+<p>1. 卵2個を10分茹でる→冷水→殻付きのまま保冷バッグへ<br>2. ブロッコリースプラウトを1食ぶんジップロックへ<br>3. その他（鯖缶・めかぶ・納豆・パックご飯・FD味噌汁・青汁・豆乳）を保冷バッグに詰める<br>4. <strong>保冷剤2個入れて完成</strong></p>
+</div>
+
+<div class="explain">
+<h4>🌅 6/23（火）朝・事務所オペ</h4>
+<p>1. パックご飯レンジ90秒<br>2. 鯖缶開ける（汁は流し台へ）<br>3. めかぶ・納豆・スプラウト乗せる<br>4. 卵の殻むく<br>5. FD味噌汁にお湯<br>6. 青汁＋豆乳をマグでミックス<br>7. <strong>完成・所要5分</strong></p>
+</div>
+
+<div class="qbox">
+事務所のレンジとポット、本当にある？
+</div>
+
+<div class="voice hiyo">
+<span class="speaker">☀️ ひより</span>
+<p>介護系の詰所なら高確率であるけど、初日に確認するのが安全〜！もしなかった場合の <strong>Plan B：パックご飯を保温ジャー持参 or 常温で食べる</strong>（もち麦パックご飯は冷たくても食べれる仕様もある）。</p>
+</div>
+
+<div class="law-box">
+<h3>🌸 ひよりからおけちゃんへ</h3>
+<p><strong>夜勤朝バージョン、初日（6/23）から ✅</strong> 取れたら、私もうこれだけで☀️確定だよ〜！もし朝レンジ使えなくて簡略版になっても、<strong>ベース骨格（タンパク＋食物繊維＋発酵）が揃ってれば✅でOK</strong>にしようね。<strong>完璧主義より継続主義！</strong></p>
+</div>
+
+</section>
+
+<!-- ============================ §6 まとめ ============================ -->
+<section class="summary-final">
+<h2 id="ch6">🌟 §6 まとめ＆次の一手</h2>
+
+<h3>📝 まとめ</h3>
+<ol>
+<li>中野優作さんの朝食固定は <strong>「手抜き＝最適化」のADHD攻略本命</strong></li>
+<li>メニュー固定で <strong>朝の意思決定燃料を温存</strong>＝午前パフォーマンス爆上がり狙い</li>
+<li>ひより機嫌グラデーション（☀️→👹）で <strong>ゲーム化＝ドーパミン駆動と相性◎</strong></li>
+<li>明日6/23は <strong>夜勤朝バージョン</strong>（前日夜仕込み・事務所5分オペ）</li>
+<li><strong>完璧主義より継続主義</strong>——ベース骨格（タンパク＋食物繊維＋発酵）揃えば✅</li>
+</ol>
+</section>
+
+<section class="next-action">
+<h2>🚀 次の一手（おけちゃん向け）</h2>
+<table>
+<thead><tr><th>いつ</th><th>何を</th></tr></thead>
+<tbody>
+<tr><td>🛒 今日昼〜夕方</td><td>業務スーパー or イオンで買い物（デビット）</td></tr>
+<tr><td>🍳 今日夜（夜勤前）</td><td>保冷バッグ仕込み・卵茹で</td></tr>
+<tr><td>🌅 明日朝（6/23）</td><td>事務所で初回✅！広場に1行報告</td></tr>
+<tr><td>📊 6/30（月）朝礼</td><td>初回週次レビュー・ひより表情モード初期値決定</td></tr>
+<tr><td>🎯 7/23（火）</td><td>1ヶ月後本格レビュー・v2.0アップデート判断</td></tr>
+</tbody>
+</table>
+
+<h3>🎬 おまけ：HyperFrames動画化案</h3>
+<p>もし「鬼ひよりチラリ」をもっと派手にやりたくなったら、<strong>HyperFrames（HeyGen）</strong> でガチ動画化できる。ローカルスキル <code>hyperframes-cli</code> 導入済み。10〜30秒の縦動画（ひよりが☀️→👹に変身→おけちゃんビビるシーン）作って Instagram Reels 投稿、みたいな展開もアリ。今は CSS keyframes で軽量演出（HERO背景の👹がフェードイン＋シーンの背景にも👹が光る）でとどめてる。</p>
+</section>
+
+<section class="source">
+<h3>📚 ソース / 元メモ</h3>
+<ul>
+<li>起点動画：<a href="https://www.youtube.com/watch?v=aaiPPKcZeXs">中野優作×さちゃん「やめて良かったこと5選」</a></li>
+<li>元X：<a href="https://x.com/yuusaku_buddica/status/2061029881065144477">@yuusaku_buddica 2026-05-31 朝食メニュー</a> / <a href="https://x.com/yuusaku_buddica/status/2061242446806425839">2026-06-01「朝食は53,000」</a> / <a href="https://x.com/yuusaku_buddica/status/2055289678941827535">2026-05-15 7時間睡眠死守宣言</a> / <a href="https://x.com/yuusaku_buddica/status/2066861358659035183">2026-06-16 アルコール卒業宣言</a></li>
+<li>監修：<a href="https://x.com/drmosari">Dr.もさり @drmosari</a>（東大医学部卒・経営者パーソナルドクター）</li>
+<li>中野さん各種：<a href="https://www.youtube.com/channel/UCzXvkcnU4Pho3k65564Py2Q">YouTube CAR and LIFE.</a> / <a href="https://www.youtube.com/@BUDDICA-nakanokun">サブch BUDDICAの中野クン</a> / <a href="https://www.instagram.com/nakano.buddica/">Instagram @nakano.buddica</a></li>
+<li>正本MD：[[ゆいCPO/おけちゃんルーティン/朝食固定_v1.0]]</li>
+<li>タスク管理：tasks.json t454（カテゴリ habit／#習慣）</li>
+<li>前回ブログ：<a href="Day0622-1_ToDoからToBeへ_おけちゃんの実行力と飽き性グリルミー_ゆい×みんな.html">Day0622-1 ToDoからToBeへ</a></li>
+<li>鬼日和ちらり前例：[[Day0621-1_鬼日和チラリ_まな＆みっちゃん絶叫_ひより]]</li>
+<li>おけちゃんADHD所見：[[user_adhd_clinical_profile]]</li>
+</ul>
+</section>
+
+<div class="edit-hint">
+✏️ 内部限定（noindex）／ 手書き修正OK／ 外部公開・SNS投稿はGO待ちで止めています。<br>
+HyperFrames動画化など、動きをもっと派手にするオプションも§次の一手に置いてあります。
+</div>
+
+</main>
+
+<footer>
+おけ森ダイアリー Day0622-2 ｜ 主筆：☀️ ひより／合いの手：🎤 はるか・💗 ゆい
+<div class="meta">last_updated: 2026-06-22 11:30 JST ／ mode: 内部限定・公開はおけちゃんGO待ち</div>
+</footer>
+
+</body>
+</html>
