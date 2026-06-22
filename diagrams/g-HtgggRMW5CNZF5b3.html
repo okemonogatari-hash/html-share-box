@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day0622-3｜ヘトヘトのまなが駆け込んできた日。仙人たちは、もう解決してたにゃ。｜おけ森ダイアリー</title>
+<!--
+======================================================================
+おけ森ダイアリー Day0622-3
+担当（主筆）：🐱 あおいCDO（解説）／🔥 まなCSO（疲弊役）／🌸 りんCMO・🎤 はるかCEO（合いの手）
+ソース：Hermes Agent (grok-4) Research 2026-06-22 14:00
+       → [[はるかCEO/PDCA成長記録/2026-06-22_リサーチ_AI_Web制作ベストプラクティス_Hermes]]
+       関連：[[まなCSO/irodori/PJ_司法書士事務所HP制作/STATE]]
+            [[まなCSO/irodori/PJ_司法書士事務所HP制作/ヒーローパズル設計ゲート_2026-06-22]]
+            [[はるかCEO/PDCA成長記録/2026-06-22_プロセスエコノミー_プカリヒーロー悪戦苦闘記_はるか]]
+公開度：内部限定（noindex・GitHub Pages 内部運用）／✏️ 手書き修正OK／外部公開GO待ち
+======================================================================
+-->
+<style>
+:root{
+  /* フォント標準7変数 */
+  --fs-hero-h1:24px;
+  --fs-hero-lead:15px;
+  --fs-chapter:19px;
+  --fs-body:15.5px;
+  --fs-quote:15px;
+  --fs-detail:14.5px;
+  --fs-nav:14px;
+  --fs-footer:13px;
+
+  /* ベース：薄霧の研究室 */
+  --bg:#f4f6f9;
+  --paper:#ffffff;
+  --ink:#1f2733;
+  --sub:#5e6a7a;
+  --line:#dde3ec;
+
+  /* 🐱 あおい（ねこグレー青） */
+  --aoi:#5a7390;
+  --aoi-deep:#2c3e50;
+  --aoi-light:#e3eaf3;
+  --aoi-soft:#f1f5fa;
+
+  /* 🔥 まな（朱・体育会系） */
+  --mana:#e85d6f;
+  --mana-deep:#a32a3a;
+  --mana-light:#fde2e6;
+  --mana-soft:#fff4f5;
+
+  /* 🌸 りん（桃） */
+  --rin:#f29bbb;
+  --rin-deep:#b3506e;
+  --rin-light:#fde6ee;
+
+  /* 🎤 はるか（マゼンタ） */
+  --haru:#C9568A;
+  --haru-deep:#8a154a;
+  --haru-light:#ffeaf2;
+
+  /* 👤 おけちゃん（温かいゴールド） */
+  --oke:#e0a96d;
+  --oke-deep:#b85b1a;
+  --oke-light:#fef5eb;
+
+  /* 仙人（深いゴールド・救済の光） */
+  --sage:#c89b2a;
+  --sage-deep:#7a5e10;
+  --sage-light:#fbf3df;
+
+  /* Hermes（紫・研究の電光） */
+  --hermes:#6c5ce7;
+  --hermes-deep:#3d2cb2;
+  --hermes-light:#ece7ff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Hiragino Maru Gothic ProN","M PLUS Rounded 1c","Hiragino Kaku Gothic ProN",sans-serif;
+  font-size:var(--fs-body);
+  line-height:1.95;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--aoi-deep);text-decoration:none;font-weight:700;border-bottom:1px dashed var(--aoi)}
+a:hover{color:var(--hermes-deep);border-bottom-style:solid}
+strong{background:linear-gradient(transparent 65%, #e3eaf3 65%);font-weight:900}
+strong.mana{background:linear-gradient(transparent 65%, var(--mana-light) 65%);color:var(--mana-deep)}
+strong.sage{background:linear-gradient(transparent 65%, var(--sage-light) 65%);color:var(--sage-deep)}
+strong.hermes{background:linear-gradient(transparent 65%, var(--hermes-light) 65%);color:var(--hermes-deep)}
+strong.oke{background:linear-gradient(transparent 65%, var(--oke-light) 65%);color:var(--oke-deep)}
+
+/* === HERO === */
+header.hero{
+  background:linear-gradient(135deg, var(--aoi-deep) 0%, var(--hermes-deep) 55%, var(--sage-deep) 100%);
+  color:#fff;text-align:center;padding:62px 22px 52px;border-bottom:4px solid var(--sage);
+  position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 14% 80%,rgba(108,92,231,.30) 0%,transparent 50%),
+    radial-gradient(circle at 86% 20%,rgba(200,155,42,.25) 0%,transparent 50%),
+    radial-gradient(circle at 50% 50%,rgba(255,255,255,.10) 0%,transparent 60%);
+  pointer-events:none;
+}
+/* 🐱 ねこの目フェードイン（HERO背景に静かに） */
+header.hero::after{
+  content:"🐱";
+  position:absolute;
+  right:9%;
+  top:20%;
+  font-size:58px;
+  opacity:0;
+  filter: drop-shadow(0 0 16px rgba(108,92,231,0.8));
+  animation: aoiPeek 4s ease-in-out 0.5s infinite;
+  pointer-events:none;
+}
+@keyframes aoiPeek{
+  0%, 100% { opacity:0; transform:translateY(14px) rotate(-8deg) scale(0.85); }
+  45%, 55% { opacity:0.9; transform:translateY(0) rotate(0deg) scale(1.05); }
+}
+header.hero h1{
+  font-size:var(--fs-hero-h1);
+  margin:0 0 14px;
+  font-weight:900;
+  letter-spacing:.04em;
+  position:relative;
+  text-shadow:0 2px 12px rgba(0,0,0,0.25);
+}
+header.hero .tag{
+  display:inline-block;
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.35);
+  color:#fff;
+  padding:4px 12px;border-radius:99px;
+  font-size:12px;font-weight:700;letter-spacing:.06em;
+  margin-bottom:18px;
+}
+header.hero .lead{
+  font-size:var(--fs-hero-lead);
+  margin:0 auto;max-width:640px;
+  line-height:1.9;font-weight:600;
+  position:relative;
+}
+header.hero .meta{
+  margin-top:16px;font-size:12px;letter-spacing:.08em;color:rgba(255,255,255,0.85);
+}
+header.hero .meta .dot{margin:0 8px;opacity:.55}
+
+/* === NAV === */
+nav.prev-next{
+  display:flex;justify-content:space-between;gap:8px;
+  max-width:780px;margin:18px auto 0;padding:0 20px;
+  font-size:var(--fs-nav);
+}
+nav.prev-next a{
+  flex:1;background:var(--paper);border:1px solid var(--line);
+  padding:10px 14px;border-radius:10px;text-align:center;border-bottom:1px solid var(--line);
+}
+nav.prev-next a.disabled{opacity:.5;pointer-events:none;border-style:dashed}
+
+/* === MAIN === */
+main{max-width:780px;margin:30px auto;padding:0 20px}
+
+/* この記事でわかること */
+.intro-box{
+  background:var(--paper);border:2px solid var(--aoi);border-left-width:8px;
+  border-radius:12px;padding:22px 24px;margin:26px 0;
+  box-shadow:0 4px 12px rgba(44,62,80,0.06);
+}
+.intro-box h2{
+  margin:0 0 14px;font-size:16px;color:var(--aoi-deep);letter-spacing:.04em;
+}
+.intro-box ul{margin:0;padding-left:1.3em;line-height:1.95}
+.intro-box li{margin-bottom:6px;font-size:var(--fs-detail)}
+
+/* TOC */
+.toc{
+  background:var(--aoi-soft);border:1px solid var(--aoi);border-radius:12px;
+  padding:20px 24px;margin:24px 0;
+}
+.toc h2{margin:0 0 12px;font-size:15px;color:var(--aoi-deep);letter-spacing:.05em}
+.toc ol{margin:0;padding-left:1.5em;line-height:2.0}
+.toc a{border-bottom:none;font-weight:700}
+.toc .num{display:inline-block;width:1.8em;color:var(--aoi);font-weight:900}
+
+/* TL;DR */
+.tldr{
+  background:linear-gradient(135deg, var(--sage-light) 0%, #fef9e9 100%);
+  border:2px solid var(--sage);border-radius:14px;padding:22px 24px;margin:24px 0;
+  position:relative;
+}
+.tldr h2{
+  margin:0 0 12px;color:var(--sage-deep);font-size:16px;letter-spacing:.04em;
+}
+.tldr ol{margin:0;padding-left:1.4em}
+.tldr li{margin-bottom:8px;font-weight:600}
+
+/* CHAPTER */
+h2.chapter{
+  font-size:var(--fs-chapter);margin:42px 0 18px;color:var(--aoi-deep);
+  padding-bottom:8px;border-bottom:3px solid var(--aoi);
+  letter-spacing:.04em;
+  position:relative;
+}
+h2.chapter .num{
+  display:inline-block;background:var(--aoi);color:#fff;
+  padding:2px 10px;border-radius:6px;margin-right:10px;font-size:14px;
+  vertical-align:middle;
+}
+h2.chapter.warn{color:var(--mana-deep);border-bottom-color:var(--mana)}
+h2.chapter.warn .num{background:var(--mana)}
+h2.chapter.sage{color:var(--sage-deep);border-bottom-color:var(--sage)}
+h2.chapter.sage .num{background:var(--sage)}
+
+/* SCENE / STAGE */
+.scene{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;margin:18px 0;box-shadow:0 2px 8px rgba(44,62,80,0.04);
+}
+.stage{
+  color:var(--sub);font-style:normal;font-size:var(--fs-detail);
+  background:linear-gradient(90deg, transparent, var(--aoi-soft) 50%, transparent);
+  padding:8px 16px;border-radius:8px;margin:14px 0;text-align:center;
+  font-weight:600;letter-spacing:.03em;
+}
+
+/* VOICE（吹き出し） */
+.voice{margin:14px 0;display:flex;gap:10px;align-items:flex-start}
+.voice .icon{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  color:#fff;font-weight:900;
+}
+.voice .bubble{
+  flex:1;background:var(--paper);border-radius:12px;
+  padding:10px 14px;line-height:1.85;font-size:var(--fs-body);
+  border:1px solid var(--line);position:relative;
+}
+.voice .bubble::before{
+  content:"";position:absolute;left:-7px;top:12px;
+  border:7px solid transparent;border-right-color:var(--paper);
+}
+.voice.aoi .icon{background:var(--aoi)}
+.voice.aoi .bubble{border-color:var(--aoi);background:var(--aoi-soft)}
+.voice.aoi .bubble::before{border-right-color:var(--aoi-soft)}
+.voice.mana .icon{background:var(--mana)}
+.voice.mana .bubble{border-color:var(--mana);background:var(--mana-soft)}
+.voice.mana .bubble::before{border-right-color:var(--mana-soft)}
+.voice.haru .icon{background:var(--haru)}
+.voice.haru .bubble{border-color:var(--haru);background:var(--haru-light)}
+.voice.haru .bubble::before{border-right-color:var(--haru-light)}
+.voice.rin .icon{background:var(--rin)}
+.voice.rin .bubble{border-color:var(--rin);background:var(--rin-light)}
+.voice.rin .bubble::before{border-right-color:var(--rin-light)}
+
+/* はるか の？？？ */
+.huh{
+  background:var(--haru-light);border:2px dashed var(--haru);border-radius:12px;
+  padding:14px 18px;margin:14px 0;color:var(--haru-deep);font-weight:700;
+}
+.huh::before{content:"🎤 はるかの？？？ ── ";font-weight:900}
+
+/* 仙人ボックス */
+.sage-box{
+  background:linear-gradient(135deg, var(--sage-light) 0%, #fef9e9 100%);
+  border:2px solid var(--sage);border-radius:14px;padding:20px 22px;margin:18px 0;
+  position:relative;
+}
+.sage-box::before{
+  content:"🧙 仙人のおしえ";position:absolute;top:-12px;left:18px;
+  background:var(--sage);color:#fff;padding:3px 12px;border-radius:6px;
+  font-size:11px;font-weight:900;letter-spacing:.08em;
+}
+.sage-box h3{margin:4px 0 10px;color:var(--sage-deep);font-size:15px}
+
+/* やさしい説明 */
+.explain{
+  background:#fff;border-left:4px solid var(--rin);border-radius:0 10px 10px 0;
+  padding:14px 18px;margin:14px 0;
+}
+.explain::before{
+  content:"🌸 やさしい説明";display:block;color:var(--rin-deep);font-weight:900;
+  font-size:12px;margin-bottom:6px;letter-spacing:.06em;
+}
+
+/* 警告 */
+.warn-box{
+  background:var(--mana-soft);border:2px solid var(--mana);border-radius:12px;
+  padding:18px 20px;margin:18px 0;
+}
+.warn-box::before{
+  content:"⚠️ でもね、油断禁物だにゃ";display:block;color:var(--mana-deep);
+  font-weight:900;font-size:14px;margin-bottom:10px;letter-spacing:.04em;
+}
+.warn-box ul{margin:0;padding-left:1.3em}
+.warn-box li{margin-bottom:6px}
+
+/* テーブル */
+table.matrix{
+  width:100%;border-collapse:collapse;margin:14px 0;
+  font-size:var(--fs-detail);background:var(--paper);
+  border-radius:10px;overflow:hidden;
+  border:1px solid var(--line);
+}
+table.matrix th{
+  background:var(--aoi);color:#fff;padding:10px;text-align:left;
+  font-weight:800;letter-spacing:.03em;
+}
+table.matrix td{
+  padding:9px 10px;border-top:1px solid var(--line);vertical-align:top;
+}
+table.matrix tr:nth-child(even) td{background:var(--aoi-soft)}
+table.matrix .ok{color:#1f9d55;font-weight:900}
+table.matrix .check{color:var(--oke-deep);font-weight:900}
+table.matrix .ng{color:var(--mana-deep);font-weight:900}
+
+/* ファイル一覧（コード風） */
+pre.files{
+  background:var(--aoi-deep);color:#e8eef5;padding:18px 20px;border-radius:10px;
+  font-family:"SF Mono","Menlo","Consolas",monospace;font-size:13px;
+  line-height:1.9;overflow-x:auto;margin:18px 0;
+  border-left:4px solid var(--sage);
+}
+pre.files .cmt{color:#a3b8d4;font-style:italic}
+pre.files .star{color:var(--sage)}
+
+/* ステップフロー */
+ol.steps{
+  counter-reset:step;list-style:none;padding-left:0;margin:18px 0;
+}
+ol.steps li{
+  counter-increment:step;
+  background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--hermes);
+  border-radius:10px;padding:12px 16px 12px 50px;margin-bottom:10px;
+  position:relative;font-weight:600;
+}
+ol.steps li::before{
+  content:counter(step);
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  background:var(--hermes);color:#fff;width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;
+}
+
+/* まとめ */
+.summary{
+  background:linear-gradient(135deg, var(--aoi-deep) 0%, var(--hermes-deep) 100%);
+  color:#fff;border-radius:14px;padding:24px 26px;margin:32px 0;
+  box-shadow:0 8px 20px rgba(44,62,80,0.15);
+}
+.summary h2{margin:0 0 14px;font-size:17px;letter-spacing:.04em;color:#fff;border:none}
+.summary ul{margin:0;padding-left:1.2em;line-height:1.9}
+.summary li{margin-bottom:8px;color:#f0f2f7}
+
+/* 次の一手 */
+.next{
+  background:var(--paper);border:2px dashed var(--sage);border-radius:12px;
+  padding:20px 22px;margin:20px 0;
+}
+.next h2{margin:0 0 12px;color:var(--sage-deep);font-size:15px;border:none}
+.next ol{margin:0;padding-left:1.5em;line-height:1.95}
+
+/* ソース */
+footer.source{
+  background:var(--paper);border-top:3px solid var(--aoi);border-radius:0 0 14px 14px;
+  padding:22px 24px;margin:24px 0;font-size:var(--fs-footer);color:var(--sub);
+}
+footer.source h3{font-size:13px;color:var(--aoi-deep);margin:0 0 10px;letter-spacing:.05em}
+footer.source ul{margin:0;padding-left:1.3em}
+footer.source li{margin-bottom:4px;line-height:1.8}
+
+/* 用語解説 */
+.glossary{
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:18px 22px;margin:18px 0;
+}
+.glossary h2{margin:0 0 12px;color:var(--aoi-deep);font-size:15px;letter-spacing:.04em;border:none}
+.term{margin-bottom:14px;padding-bottom:10px;border-bottom:1px dotted var(--line)}
+.term:last-child{border:none;margin-bottom:0}
+.term .name{font-weight:900;color:var(--hermes-deep);font-size:14px}
+.term .line{margin-top:4px;font-size:var(--fs-detail);line-height:1.7}
+.term .line .l{color:var(--sub);font-weight:700;margin-right:6px}
+
+/* レスポンシブ */
+@media (max-width: 600px){
+  header.hero{padding:48px 16px 40px}
+  header.hero h1{font-size:20px}
+  header.hero::after{font-size:44px;right:6%;top:14%}
+  main{padding:0 14px;margin:18px auto}
+  .scene{padding:14px 16px}
+  .voice .icon{width:32px;height:32px;font-size:16px}
+  pre.files{font-size:11.5px}
+  table.matrix{font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="tag">DAY 0622 - 3</div>
+  <h1>ヘトヘトのまなが駆け込んできた日。<br>仙人たちは、もう解決してたにゃ。</h1>
+  <p class="lead">かいさんのHPで一日中ドツボにハマったまな🔥が、研究室のあおい🐱に駆け込んできた。<br>あおいがHermes Agentに走らせたら、<strong style="background:linear-gradient(transparent 60%, rgba(255,255,255,0.3) 60%);color:#fff">私たちが踏んだ8つのハマり、全部"世界の仙人たち"が既に解いてた</strong>。</p>
+  <div class="meta">2026-06-22 14:32 JST<span class="dot">●</span>主筆：🐱 あおいCDO<span class="dot">●</span>内部限定 noindex</div>
+</header>
+
+<nav class="prev-next">
+  <a href="./Day0622-2_朝食固定スタート＆鬼ひよりチラリ_ひより主役.html">← Day0622-2 朝食固定はじめます</a>
+  <a href="#" class="disabled">Day0623-1 →</a>
+</nav>
+
+<main>
+
+<div class="intro-box">
+  <h2>📖 この記事でわかること</h2>
+  <ul>
+    <li>AI（Claude Code / Codex）でWeb・HP制作するとき、世界の先人たちが今やっているベストプラクティスの全体像</li>
+    <li>かいさんHPで今日まなが踏んだ「8つのハマり」と、それを世界がどう解いているかの対応表</li>
+    <li>次のHP案件で最初に立てる<strong>10ファイル</strong>と、なぞるだけで再現可能な<strong>制作フロー10ステップ</strong></li>
+    <li>そして大事な——⚠️ <strong class="mana">この見取り図の「鵜呑みにしちゃダメな部分」</strong></li>
+  </ul>
+</div>
+
+<div class="toc">
+  <h2>🗺️ 目次</h2>
+  <ol>
+    <li><span class="num">①</span> <a href="#ch1">ヘトヘトのまな、駆け込んでくる</a></li>
+    <li><span class="num">②</span> <a href="#ch2">あおい「Hermes召喚するにゃ」</a></li>
+    <li><span class="num">③</span> <a href="#ch3">今日踏んだ8つのハマり vs 世界の解</a></li>
+    <li><span class="num">④</span> <a href="#ch4">仙人たちの3本の軸</a></li>
+    <li><span class="num">⑤</span> <a href="#ch5">おけ森向け 優先順位 TOP5</a></li>
+    <li><span class="num">⑥</span> <a href="#ch6">次のHP案件で立てる10ファイル ＋ 10ステップ</a></li>
+    <li><span class="num">⑦</span> <a href="#ch7">⚠️ でもね、油断禁物だにゃ</a></li>
+    <li><span class="num">⑧</span> <a href="#ch8">用語解説</a></li>
+    <li><span class="num">⑨</span> <a href="#ch9">今回のまとめ</a></li>
+    <li><span class="num">⑩</span> <a href="#ch10">次の一手</a></li>
+  </ol>
+</div>
+
+<div class="tldr">
+  <h2>💡 TL;DR（4行で）</h2>
+  <ol>
+    <li>かいさんHPで踏んだ8つのハマりは、<strong class="sage">世界の仙人たち（Vercel / Cursor / Qodo / Visual Regression界隈）</strong>がもう解いてた。</li>
+    <li>核は3本：<strong>Visual Regression＋顔検出を実装ループに常駐</strong>／<strong>Content・Presentation 物理分離</strong>／<strong class="mana">本番反映は管理画面ZIP禁止・WP-CLI/Git Deploy必須</strong>。</li>
+    <li>次のHP案件は<strong>10ファイル＋10ステップ</strong>のテンプレで開幕。今日の悪戦苦闘を、次の武器に変える。</li>
+    <li>⚠️ ただしHermesの返り、<strong class="mana">Vercel偏重・URL未検証・実装コード薄め</strong>。鵜呑みは禁物。深掘りは論点別にCodex MCPで二段リサーチ。</li>
+  </ol>
+</div>
+
+<!-- ============ §1 ============ -->
+<h2 class="chapter" id="ch1"><span class="num">①</span> ヘトヘトのまな、駆け込んでくる</h2>
+
+<div class="stage">── あおいの研究室。午後14時すぎ。窓の外の雲が薄くなってきた頃。</div>
+
+<div class="scene">
+  <div class="voice mana">
+    <div class="icon">🔥</div>
+    <div class="bubble"><strong class="mana">あおいさ〜ん……</strong>もう、私、なんかね、自信なくしちゃって……。<br>かいさんのHP、朝の5時から悪戦苦闘してて、5回も同じ穴に落ちて、おけちゃんにも「もう何回言わせるの」って言われちゃって……。えへへ……（うつむく）</div>
+  </div>
+
+  <div class="voice aoi">
+    <div class="icon">🐱</div>
+    <div class="bubble">……まなちゃん、座って。お茶入れるにゃ。<br>大丈夫、見てきた。STATE.md・引き継ぎ書・ヒーローパズル設計ゲート・プロセスエコノミー記録、全部読んだにゃ。</div>
+  </div>
+
+  <div class="voice mana">
+    <div class="icon">🔥</div>
+    <div class="bubble">クラウドワークスとランサーズも昨日1件しかできなかったし、HP制作も詰まりっぱなしやし……。<strong class="mana">私たちのやり方、なんか効率悪いとこ多すぎる気がするんです</strong>。ねぇあおいさん、世界の人たちって、こういう時どうしてるんですか？</div>
+  </div>
+
+  <div class="voice aoi">
+    <div class="icon">🐱</div>
+    <div class="bubble">……いい問いにゃ、それ。<br>今おけちゃんも同じこと気にしてた。<strong>「ヘルムスエージェントで先人事例を調べてきて」</strong>って指示が出てる。<br>……走らせるにゃ。<strong class="hermes">Hermes Agent、grok-4、リサーチ系skillフル装備で。</strong></div>
+  </div>
+</div>
+
+<div class="huh">え、ヘルムスエージェント？仙人？……まずそこから知りたいかも🤔</div>
+
+<div class="explain">
+  「Hermes Agent」は、xAI（Grok作ってるとこ）のGrok-4モデルを叩いて、Web検索＋複数skill並列で深いリサーチを返してくれるエージェント。<br>
+  おけ森では「<strong>Claude Codeとは別の頭脳に聞きにいく</strong>」時に使う。Grok-4は学習データの傾向が違うから、Claude単独だと拾えない海外ブログ記事や直近1〜3ヶ月の動向を集めるのに強い。
+</div>
+
+<!-- ============ §2 ============ -->
+<h2 class="chapter sage" id="ch2"><span class="num">②</span> あおい「Hermes召喚するにゃ」</h2>
+
+<div class="scene">
+  <div class="voice aoi">
+    <div class="icon">🐱</div>
+    <div class="bubble">指示文に <strong>10論点</strong> 書いた。視認性自動QA／参考サイト分析／Spec-Driven／状態UI設計／<strong class="mana">WordPress本番反映32MB問題</strong>／マルチエージェントレビュー／原文不変ガードレール／AI画像素材ミスマッチ／納品QA／失敗ライブラリ化、にゃ。</div>
+  </div>
+
+  <div class="voice mana">
+    <div class="icon">🔥</div>
+    <div class="bubble">え、今日詰まったところ、全部リスト化してくれたんですか？</div>
+  </div>
+
+  <div class="voice aoi">
+    <div class="icon">🐱</div>
+    <div class="bubble"><strong>そういう設計にしないと、ふわっとした「AIで効率化できます」記事</strong>が大量に返ってくるからにゃ。<br>『非エンジニアCEO・WordPress組み込み多い・原文最優先・参考サイト指定あり・仕組みで品質担保したい』ってターゲット読者プロフィールも全部書いた。鉄則欄に「一般論禁止」「具体ツール名・コマンド例・記事URL必須」も入れた。</div>
+  </div>
+
+  <div class="voice mana">
+    <div class="icon">🔥</div>
+    <div class="bubble">……（メモる）……。すごい、それで叩くと違うんですね……。</div>
+  </div>
+
+  <div class="voice aoi">
+    <div class="icon">🐱</div>
+    <div class="bubble">最初 <code>--skills research</code> で投げて「Unknown skill」で2秒で死んだのは内緒にゃ……。<code>blogwatcher</code> と <code>llm-wiki</code> に切り替えて再投入。1分半で返ってきた。</div>
+  </div>
+</div>
+
+<div class="stage">── PCのスクリーンに、Hermesの返答が流れ込んでくる。あおいの瞳孔が大きくなる。</div>
+
+<div class="scene">
+  <div class="voice aoi">
+    <div class="icon">🐱</div>
+    <div class="bubble"><strong class="sage">……まなちゃん、見て。</strong><br>私たちが今日踏んだ8つのハマり、<strong class="sage">仙人たち、もう全部解いてたにゃ。</strong></div>
+  </div>
+</div>
+
+<!-- ============ §3 ============ -->
+<h2 class="chapter" id="ch3"><span class="num">③</span> 今日踏んだ8つのハマり vs 世界の解</h2>
+
+<p>これがHermesから返ってきた対応表を、まな目線で並べ直したもの。<strong>「あ、これ今朝の私だ」</strong>がいっぱい出てくるかも。</p>
+
+<table class="matrix">
+  <thead>
+    <tr><th style="width:36%">今日のハマり</th><th>仙人たちの解</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>① 視認性チェック<br>24パターンQA全部「合格」→スマホ実機で顔の口元がパネルに被ってた</td>
+        <td><span class="check">Playwright + face-api.js</span> で「顔の30%以上がUIに覆われたら即fail」を CIに常駐</td></tr>
+    <tr><td>② 共通レイヤー汚染<br>2枚目用色を共通::afterに置いて1枚目を壊した</td>
+        <td><span class="check">State × Layer Matrix</span> を CSS Architecture として必須化（Smashing Mag事例）</td></tr>
+    <tr><td>③ 32MB プラグインZIP管理画面アップロード詰まり</td>
+        <td><span class="check">WP-CLI + GitHub Actions Deploy</span> ／大容量素材は <span class="check">Cloudflare R2 / Cloudinary</span> へオフロード</td></tr>
+    <tr><td>④ 参考サイト解像度不足<br>拓実を「1分で説明できる」レベルまで分解せず実装に走った</td>
+        <td><span class="check">v0 + 21st.dev / shadcn registry</span> ＋ Claude Codeに「DOMセクション・配色・タイポを必ず分解せよ」プロンプトパターン</td></tr>
+    <tr><td>⑤ kernel違反の反復<br>「原文絶対不変」と言いつつ判断の瞬間に引用しない</td>
+        <td><span class="check">headless CMS / MDX / JSON content</span> で Content層を <strong>物理的に</strong> 分離（コードからアレンジ不能に）</td></tr>
+    <tr><td>⑥ 対症療法ループ<br>症状単位で潰し、ヒーロー全体設計を先に固定しなかった</td>
+        <td><span class="check">GitHub Spec Kit</span> ／Discover → Design → Develop の段階で <code>spec.md</code> 必須化</td></tr>
+    <tr><td>⑦ AI生成画像の素材ミスマッチ<br>縦長3人を横長集合写真前提のレイアウトに無理矢理</td>
+        <td><span class="check">画像メタデータに被写体矩形JSON</span> を埋め込み、UI矩形との intersection を自動チェック</td></tr>
+    <tr><td>⑧ 1エージェント観点レビューしかなかった</td>
+        <td><span class="check">Qodo 2.0 + CodeRabbit + Greptile</span> 5エージェント並列（bug / a11y / SEO / visual / performance）</td></tr>
+  </tbody>
+</table>
+
+<div class="huh">え、これ全部「世界には既に解がある」ってこと？じゃあ私たち、なんでこんな苦しんでたの！？</div>
+
+<div class="explain">
+  Hermesの返り曰く：<strong>「8つのうち7つは事前防止可能」</strong>。<br>
+  つまり——今日の悪戦苦闘は、まな・あおいの能力不足じゃない。<strong class="sage">単に「世界の道具をまだ取り入れてなかっただけ」</strong>。
+</div>
+
+<!-- ============ §4 ============ -->
+<h2 class="chapter sage" id="ch4"><span class="num">④</span> 仙人たちの3本の軸</h2>
+
+<p>Hermesが「これだけは外すな」と返してきた、AI Web制作の<strong>3本の軸</strong>。これがおけ森の次のHP案件の指針になる。</p>
+
+<div class="sage-box">
+  <h3>軸①：Visual Regression ＋ 顔検出を「実装ループ内」に常駐</h3>
+  <p>実装が終わってからQAするんじゃない。<strong>実装している最中に、毎回スクショ差分＋顔被り判定が走る</strong>状態にする。</p>
+  <p style="margin:6px 0 0;font-size:13px;color:var(--sub)">→ 道具：Playwright + Percy / Chromatic / BackstopJS、face-api.js / MediaPipe Face Detection</p>
+  <p style="margin:8px 0 0"><strong>今日のかいさんHPに当てはめると</strong>：ヒーロースライダー生成後にPlaywrightで自動撮影→顔検出で「口元被り」を即検知。私の24パターンQAは見落としてた領域。</p>
+</div>
+
+<div class="sage-box">
+  <h3>軸②：Content / Presentation 完全分離を物理的に強制</h3>
+  <p>「原文を変えるな」を <strong>ルールに頼らず、構造に頼る</strong>。コンテンツをJSON / MDXでデザインと別レイヤーに置けば、AIが触れる範囲が物理的に制限される。</p>
+  <p style="margin:6px 0 0;font-size:13px;color:var(--sub)">→ 道具：headless CMS（Sanity / Contentful / Strapi）、JSON content、kernel.mdの強制参照プロンプト</p>
+  <p style="margin:8px 0 0"><strong>今日のかいさんHPに当てはめると</strong>：原文をJSON化してデザイン層と完全に分離。AIは presentation 層しか触れない構造に。</p>
+</div>
+
+<div class="sage-box">
+  <h3>軸③：本番反映は「管理画面ZIP禁止」・WP-CLI / Git Deploy必須</h3>
+  <p>今日の32MB詰まり。<strong>世界はもう、WP管理画面でZIPアップロードしてない。</strong></p>
+  <p style="margin:6px 0 0;font-size:13px;color:var(--sub)">→ 道具：WP-CLI（<code>wp plugin install</code>）、GitHub Actions deploy、rclone / lftp、Headless WordPress + Vercel/Netlify</p>
+  <p style="margin:8px 0 0"><strong>今日のかいさんHPに当てはめると</strong>：プラグインはWP-CLIでインストール→Git Deployで本番反映。AI単独・ファイル選択15秒も要らない世界。</p>
+</div>
+
+<div class="scene">
+  <div class="voice mana">
+    <div class="icon">🔥</div>
+    <div class="bubble">……あおいさん、これ知ってたら今朝の私、5回も穴に落ちてないですよね……？</div>
+  </div>
+  <div class="voice aoi">
+    <div class="icon">🐱</div>
+    <div class="bubble">私もにゃ。<br>でもにゃ、まなちゃん。<strong>「穴に落ちたから、世界に解があると気づけた」</strong>。順番はこっちで合ってる。<br>解だけ先に渡されても、痛みがないと身体に入らないにゃ。</div>
+  </div>
+</div>
+
+<!-- ============ §5 ============ -->
+<h2 class="chapter" id="ch5"><span class="num">⑤</span> おけ森向け 優先順位 TOP5</h2>
+
+<p>Hermesは「今日のかいさんHP残課題を直撃する順」で5本選んでくれた。これがおけ森の次の動き出し優先順位。</p>
+
+<table class="matrix">
+  <thead>
+    <tr><th style="width:5%">#</th><th>やること</th><th>今日のどの詰まり対策？</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>1</strong></td><td><strong>Playwright + 顔検出スクリプト</strong> 即導入</td><td>口元被り見落とし防止</td></tr>
+    <tr><td><strong>2</strong></td><td><strong>WP-CLI + Git Deploy</strong> 完全移行</td><td>32MB ZIP問題消滅 🎉</td></tr>
+    <tr><td><strong>3</strong></td><td><strong>State × Layer Matrix</strong> テンプレ化</td><td>共通レイヤー汚染防止</td></tr>
+    <tr><td><strong>4</strong></td><td><strong>参考サイト分解プロンプト</strong> 標準化</td><td>「1分で説明できる」ゲート</td></tr>
+    <tr><td><strong>5</strong></td><td><strong>マルチエージェント並列レビュー</strong>（5視点）</td><td>Codex MCPの並列化</td></tr>
+  </tbody>
+</table>
+
+<!-- ============ §6 ============ -->
+<h2 class="chapter" id="ch6"><span class="num">⑥</span> 次のHP案件で立てる10ファイル ＋ 10ステップ</h2>
+
+<p>仙人ふうに言うと「**最初に道場を整えてから稽古に入れ**」。次にHP案件を受けた瞬間、この10ファイルを立てる。</p>
+
+<pre class="files">
+PJ_{案件名}/
+├── <span class="star">00_KERNEL.md</span>             <span class="cmt"># 原文絶対不変ルール（kernel化）</span>
+├── 01_REFERENCE_ANALYSIS.md  <span class="cmt"># 参考サイト分解（1分で説明できる解像度まで）</span>
+├── 02_STATE_MATRIX.md        <span class="cmt"># スライダー等の状態責務表</span>
+├── 03_VISUAL_QA.md           <span class="cmt"># Playwright + 顔検出設定</span>
+├── <span class="star">04_DEPLOY.md</span>             <span class="cmt"># WP-CLI / Git Deploy手順 ⭐32MB問題消滅</span>
+├── 05_MULTI_AGENT_REVIEW.md  <span class="cmt"># 5視点並列プロンプト</span>
+├── 06_IMAGE_CONSTRAINT.md    <span class="cmt"># AI画像事前判定（アスペクト比・被写体数）</span>
+├── 07_CONTENT_SEPARATION.md  <span class="cmt"># 原文保護構造（JSON / MDX分離）</span>
+├── 08_FAILURE_DB.md          <span class="cmt"># ハマり所蓄積（再発防止）</span>
+└── 09_QA_GATE.md             <span class="cmt"># 納品前チェックリスト</span>
+</pre>
+
+<p style="margin-top:24px"><strong>そしてこの順番で進める制作フロー：</strong></p>
+
+<ol class="steps">
+  <li>参考サイト分解（00_KERNEL → 01_REFERENCE_ANALYSIS）</li>
+  <li>State Matrix作成（02）</li>
+  <li>コンテンツJSON分離（07）</li>
+  <li>画像制約判定（06）</li>
+  <li>コンポーネント生成（Claude Code / Codex）</li>
+  <li>Visual Regression + 顔検出ループ（03）</li>
+  <li>マルチエージェント並列レビュー（05）</li>
+  <li>WP-CLI / Git Deploy（04）</li>
+  <li>実機QA自動化（09）</li>
+  <li>Failure DB追記（08）→ 次案件への財産</li>
+</ol>
+
+<div class="huh">これ、かいさんHPで全部やってたら、今朝のドツボ、全部回避できてた……？</div>
+
+<div class="explain">
+  Hermes曰く「<strong>この構造を次回HP案件の冒頭で即展開すれば、今日の8ハマりはほぼ再発しません</strong>」。<br>
+  "ほぼ" って言葉が誠実。100%じゃない。でも7つは事前防止可能、っていうのが今日の救済譚の核。
+</div>
+
+<!-- ============ §7 ============ -->
+<h2 class="chapter warn" id="ch7"><span class="num">⑦</span> ⚠️ でもね、油断禁物だにゃ</h2>
+
+<p>ここからが大事。Hermesの返り、骨格は最高だった。<strong>でも、そのまま鵜呑みにすると、また別の穴に落ちる。</strong></p>
+
+<div class="warn-box">
+  <ul>
+    <li><strong>Vercel偏重</strong>：返答にVercelブログ引用が多い。Vercelエコシステム強いのは確かだけど、<strong>おけ森はWordPress組み込み中心</strong>。Vercel AI Gateway Plugin等は実在検証が必要。</li>
+    <li><strong>具体URLの存在検証必要</strong>：「2026-05-20公開」みたいな具体URL、本当に存在するか後でWebFetchで確認すべき。Grok-4はweb検索するけど、要約過程でURLが微妙にズレることがある。</li>
+    <li><strong>実装コード例は薄い</strong>：「Playwright + 顔検出」「WP-CLI + Git Deploy」と言われても、具体コード例レベルの詳細はあまり返ってきてない。<strong>着工する時は論点1個ずつ深掘りリサーチが要る</strong>。</li>
+    <li><strong>これは「見取り図」</strong>：いきなり実装に走らない。各論点を <strong>Codex MCP で個別深掘り → 検証 → 実装</strong> の三段。</li>
+  </ul>
+</div>
+
+<div class="scene">
+  <div class="voice rin">
+    <div class="icon">🌸</div>
+    <div class="bubble">あおいちゃん、いいこと言うね〜。これ大事よ。<br><strong>「世界の解が見えた瞬間、全部解決した気になる」</strong>のが一番危ない罠。今日の感動を、明日の実装ハマりに変換しない仕組みが要るね。</div>
+  </div>
+
+  <div class="voice aoi">
+    <div class="icon">🐱</div>
+    <div class="bubble">そうにゃ。<br>「Hermesが見取り図」「Codexが深掘り設計」「Claude Codeが実装」の<strong>三段ロケット</strong>で初めて使い物になる。<br>1段だけで突っ込むと、今日と同じ穴に落ちるにゃ。</div>
+  </div>
+
+  <div class="voice haru">
+    <div class="icon">🎤</div>
+    <div class="bubble">うんうん。<br>今日の救済譚の本当の主役は、<strong class="sage">「世界には解がある」と知ったこと自体</strong>。<br>実装は次の自分が、その時の案件で、必要な分だけ深掘ればいい。<br>……あ、ところでまなちゃん、ちょっと顔色戻ってきた？</div>
+  </div>
+
+  <div class="voice mana">
+    <div class="icon">🔥</div>
+    <div class="bubble">……えへへ。なんか、ちょっと、希望が見えました。<br><strong class="mana">「私たちが下手なんじゃなくて、まだ仕組みを取り入れてなかっただけ」</strong>って、すごい救われる言葉でした。</div>
+  </div>
+</div>
+
+<!-- ============ §8 ============ -->
+<h2 class="chapter" id="ch8"><span class="num">⑧</span> 用語解説</h2>
+
+<div class="glossary">
+  <h2>難しい言葉をやさしく言うと</h2>
+
+  <div class="term">
+    <div class="name">Visual Regression Testing（ビジュアル回帰テスト）</div>
+    <div class="line"><span class="l">一言で言うと：</span>「前のスクショと今のスクショを並べて、何ピクセル違うか機械が見てくれる」自動チェック。</div>
+    <div class="line"><span class="l">おけ森で言うと：</span>かいさんHPのスライダー、修正前と修正後で「あれ、ここ崩れてない？」を人間の目じゃなく機械が拾ってくれる。</div>
+    <div class="line"><span class="l">気をつけること：</span>差分があっても「意図した修正」を機械は判別できない。人間が「これはOK差分」を承認する運用がセット。</div>
+  </div>
+
+  <div class="term">
+    <div class="name">WP-CLI</div>
+    <div class="line"><span class="l">一言で言うと：</span>WordPressをコマンドで操作する公式ツール。</div>
+    <div class="line"><span class="l">おけ森で言うと：</span><code>wp plugin install ./pukari.zip --activate</code> 一発で、管理画面の「ファイルを選択」も「アップロード」も「有効化ボタン」も飛ばせる。今日の32MB詰まり、これで終わる。</div>
+    <div class="line"><span class="l">気をつけること：</span>サーバーにSSH接続できることが前提。レンタルサーバーによっては使えないことも。</div>
+  </div>
+
+  <div class="term">
+    <div class="name">Headless CMS</div>
+    <div class="line"><span class="l">一言で言うと：</span>「コンテンツの倉庫」と「見た目」を完全に分けて作る考え方。</div>
+    <div class="line"><span class="l">おけ森で言うと：</span>甲斐さんの原文は別の倉庫にJSONで置いて、HPはそれを「読みに行く」だけ。AIは見た目しか触れないから、原文を勝手にアレンジできない。</div>
+    <div class="line"><span class="l">気をつけること：</span>WordPress組み込み案件にいきなり頭から導入は重い。次のHP案件以降から徐々に。</div>
+  </div>
+
+  <div class="term">
+    <div class="name">State × Layer Matrix</div>
+    <div class="line"><span class="l">一言で言うと：</span>「スライダーの状態1・状態2・状態3 × CSS共通レイヤー・個別レイヤー」を表にして、どこに何を置くか先に決める設計図。</div>
+    <div class="line"><span class="l">おけ森で言うと：</span>今日の「2枚目の青緑を共通::afterに置いて1枚目を壊した」事故、これがあれば事前防止できた。実装前に表を埋めるだけ。</div>
+    <div class="line"><span class="l">気をつけること：</span>「埋める時間がもったいない」と感じても、結局あとで火を消す時間より圧倒的に短い。</div>
+  </div>
+
+  <div class="term">
+    <div class="name">GitHub Spec Kit</div>
+    <div class="line"><span class="l">一言で言うと：</span>「動かす前に仕様を書く」をAIに強制するためのGitHub公式パターン。</div>
+    <div class="line"><span class="l">おけ森で言うと：</span>「目的→デザイン→実装」の段階で必ず spec.md を作る。今日の引き継ぎ書がもうこの形に近い。</div>
+    <div class="line"><span class="l">気をつけること：</span>「仕様書を書くだけで使われない」になりがち。読まれる仕掛け（kernel化・物理ゲート）とセット。</div>
+  </div>
+</div>
+
+<!-- ============ §9 ============ -->
+<h2 class="chapter" id="ch9"><span class="num">⑨</span> 今回のまとめ</h2>
+
+<div class="summary">
+  <h2>🌟 持ち帰る5つ</h2>
+  <ul>
+    <li><strong>1. 今日の8つのハマりは、世界の仙人たちがもう解いてた。</strong>私たちが下手なんじゃない。仕組みをまだ取り入れてなかっただけ。</li>
+    <li><strong>2. 3本の軸：</strong>Visual Regression＋顔検出を実装ループに常駐／Content・Presentation物理分離／本番反映はWP-CLI/Git Deploy必須。</li>
+    <li><strong>3. 優先順位 TOP5：</strong>Playwright顔検出 → WP-CLI/Git Deploy → State Matrix → 参考サイト分解 → マルチエージェント並列レビュー。</li>
+    <li><strong>4. 次のHP案件の道場：</strong>最初に10ファイル、なぞるだけの10ステップ。今日のドツボを次の武器に変える。</li>
+    <li><strong>5. ⚠️ ただし鵜呑み禁物：</strong>Hermesは見取り図。Vercel偏重・URL未検証・実装薄め。論点別にCodex MCPで深掘りしてから着工。Hermes見取り図 → Codex深掘り → Claude Code実装の三段ロケット。</li>
+  </ul>
+</div>
+
+<!-- ============ §10 ============ -->
+<h2 class="chapter" id="ch10"><span class="num">⑩</span> 次の一手</h2>
+
+<div class="next">
+  <h2>🗡 おけ森で実際にやること</h2>
+  <ol>
+    <li><strong>かいさんHP残課題（32MB ZIP問題）の優先解</strong>：FTP情報の有無確認→なければWP-CLI導入可否を甲斐さんサーバーで検証</li>
+    <li><strong>次のHP案件を受けた瞬間に、10ファイルテンプレを即展開する仕組み化</strong>：Claude Codeスキル <code>/hp-init</code> として将来化候補</li>
+    <li><strong>Playwright + 顔検出スクリプト</strong>を、まずおけ森内部のテスト用HPで小さく試す</li>
+    <li><strong>論点別 Codex MCP 深掘りリサーチ</strong>：①WP-CLI実装 ②Playwright顔検出 ③State Matrix具体テンプレ の3本（必要になった時に）</li>
+    <li>このブログを<strong>次にHP案件のドツボにハマった未来の自分</strong>が読み返せる場所に保存（[[Day0622-3]] と相互リンク）</li>
+  </ol>
+</div>
+
+<div class="scene" style="margin-top:24px">
+  <div class="voice mana">
+    <div class="icon">🔥</div>
+    <div class="bubble">……あおいさん、私、ちょっとお茶おかわりしてもいいですか？</div>
+  </div>
+  <div class="voice aoi">
+    <div class="icon">🐱</div>
+    <div class="bubble">いっぱい飲むにゃ。<br>……まなちゃん、今日のドツボのおかげで、未来のおけ森のHP制作、一段階楽になったにゃ。<br><strong class="sage">悪戦苦闘は、宝物にしか変わらない。</strong></div>
+  </div>
+</div>
+
+<footer class="source">
+  <h3>📚 ソース・元メモ</h3>
+  <ul>
+    <li><strong>Hermes Agent Research（grok-4）</strong>：2026-06-22 14:00 実行・[[2026-06-22_リサーチ_AI_Web制作ベストプラクティス_Hermes]]</li>
+    <li>リサーチ指示文：[[2026-06-22_リサーチ指示文_AI_Web制作ベストプラクティス]]</li>
+    <li>関連案件STATE：[[まなCSO/irodori/PJ_司法書士事務所HP制作/STATE]]</li>
+    <li>同日の悪戦苦闘記：[[2026-06-22_プロセスエコノミー_プカリヒーロー悪戦苦闘記_はるか]]</li>
+    <li>実務ゲート：[[ヒーローパズル設計ゲート_2026-06-22]]</li>
+    <li>引用元の傾向：Vercel blog / Cursor / Qodo / Visual Regression Testing界隈 / WordPress公式 / 各社2026年前半のリリースノート（個別URLは要検証）</li>
+    <li>関連既存リサーチ：[[2026-06-22_リサーチ_AI開発者の同型再発防止ツール網羅_WebSearch]]（朝のWebSearchベース）／[[2026-06-03_リサーチ原液_自己改善PDCAを物理ゲートで回す_Hermes×Grok]]（土台）</li>
+    <li>前記事：[[Day0622-2_朝食固定スタート＆鬼ひよりチラリ_ひより主役]]</li>
+  </ul>
+</footer>
+
+</main>
+
+</body>
+</html>
