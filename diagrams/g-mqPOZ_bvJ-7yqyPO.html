@@ -104,21 +104,23 @@ header.hero::before{
     radial-gradient(circle at 50% 50%,rgba(200,155,42,.18) 0%,transparent 60%);
   pointer-events:none;
 }
-/* 👹 鬼の角フェードイン（HERO背景に一瞬チラリ） */
+/* 👹 鬼の角フェードイン（HERO背景に派手にチラリ・3秒周期） */
 header.hero::after{
   content:"👹";
   position:absolute;
   right:8%;
   top:18%;
-  font-size:48px;
+  font-size:64px;
   opacity:0;
-  filter: drop-shadow(0 0 10px rgba(184,52,74,0.6));
-  animation: oniPeek 6s ease-in-out 2s infinite;
+  filter: drop-shadow(0 0 18px rgba(184,52,74,0.9));
+  animation: oniPeek 3s ease-in-out 0.5s infinite;
   pointer-events:none;
 }
 @keyframes oniPeek{
-  0%, 80%, 100% { opacity:0; transform:translateY(10px) rotate(-8deg); }
-  85%, 92% { opacity:0.85; transform:translateY(0) rotate(0deg); }
+  0%, 100% { opacity:0; transform:translateY(20px) rotate(-15deg) scale(0.7); }
+  20%, 35% { opacity:0.95; transform:translateY(-5px) rotate(8deg) scale(1.15); }
+  50% { opacity:0.6; transform:translateY(0) rotate(-3deg) scale(1); }
+  70% { opacity:0.2; transform:translateY(8px) rotate(0deg) scale(0.9); }
 }
 .hero-inner{position:relative;z-index:1}
 .category-badge{display:inline-block;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 18px;font-size:12px;font-weight:800;margin-bottom:14px;color:#fff}
@@ -178,24 +180,26 @@ h2.chapter.nakano .num{background:var(--nakano)}
 .scene{margin:22px 0;padding:18px 20px;background:linear-gradient(135deg,#fff 0%,var(--hiyo-soft) 60%, var(--oni-soft) 100%);border:1px dashed var(--hiyo);border-radius:14px;position:relative;overflow:hidden}
 .scene-label{display:inline-block;background:var(--hiyo-deep);color:#fff;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:900;margin-bottom:10px}
 
-/* 鬼の角が背景でちらっと光る演出 */
+/* 鬼の角が背景でグワッと光る演出（2.5秒周期で派手に） */
 .scene.oni-tease::after{
   content:"👹";
   position:absolute;
-  right:18px;
+  right:24px;
   top:50%;
   transform:translateY(-50%);
-  font-size:68px;
+  font-size:88px;
   opacity:0;
-  filter:drop-shadow(0 0 14px rgba(184,52,74,0.8));
-  animation: oniGlow 4s ease-in-out 1s infinite;
+  filter:drop-shadow(0 0 28px rgba(184,52,74,1));
+  animation: oniGlow 2.5s ease-in-out 0.3s infinite;
   pointer-events:none;
   z-index:0;
 }
 .scene.oni-tease > *{position:relative;z-index:1}
 @keyframes oniGlow{
-  0%, 70%, 100% { opacity:0; transform:translateY(-50%) scale(0.85) rotate(-5deg); }
-  78%, 88% { opacity:0.35; transform:translateY(-50%) scale(1.05) rotate(0deg); }
+  0%, 100% { opacity:0; transform:translateY(-50%) scale(0.7) rotate(-12deg); }
+  25%, 40% { opacity:0.65; transform:translateY(-55%) scale(1.2) rotate(8deg); filter:drop-shadow(0 0 40px rgba(184,52,74,1)); }
+  60% { opacity:0.3; transform:translateY(-48%) scale(1) rotate(-3deg); }
+  80% { opacity:0.1; transform:translateY(-50%) scale(0.9) rotate(0deg); }
 }
 
 /* はるかの？？？ */
@@ -226,7 +230,25 @@ h2.chapter.nakano .num{background:var(--nakano)}
 @keyframes cardRise{
   to{ opacity:1; transform:translateY(0); }
 }
-.menu-card .emoji{font-size:38px;display:block;margin-bottom:6px}
+.menu-card .emoji{
+  font-size:38px;display:block;margin-bottom:6px;
+  animation: emojiBob 2.4s ease-in-out infinite;
+  transform-origin:center bottom;
+}
+.menu-card:nth-child(1) .emoji{animation-delay:0s}
+.menu-card:nth-child(2) .emoji{animation-delay:0.2s}
+.menu-card:nth-child(3) .emoji{animation-delay:0.4s}
+.menu-card:nth-child(4) .emoji{animation-delay:0.6s}
+.menu-card:nth-child(5) .emoji{animation-delay:0.8s}
+.menu-card:nth-child(6) .emoji{animation-delay:1.0s}
+.menu-card:nth-child(7) .emoji{animation-delay:1.2s}
+.menu-card:nth-child(8) .emoji{animation-delay:1.4s}
+@keyframes emojiBob{
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(-6deg); }
+  50% { transform: translateY(-4px) rotate(0deg); }
+  75% { transform: translateY(-6px) rotate(6deg); }
+}
 .menu-card .name{font-weight:900;color:var(--hiyo-deep);font-size:14.5px;margin-bottom:4px}
 .menu-card .ops{font-size:12px;color:var(--sub);line-height:1.5}
 
@@ -258,10 +280,15 @@ h2.chapter.nakano .num{background:var(--nakano)}
 .mood-cell.lv3{background:#f5ede0;border-color:#9b9b9b;color:#5a5a5a}
 .mood-cell.lv2{background:#e8dfdf;border-color:#7a4a4a;color:#5a2a2a}
 .mood-cell.lv1{background:#dec7c7;border-color:#a83a3a;color:#7a1f1f}
-.mood-cell.lv0{background:linear-gradient(135deg,var(--oni-light),#9b1f30);border-color:var(--oni-deep);color:#fff;animation: oniPulse 2.5s ease-in-out infinite}
+.mood-cell.lv0{background:linear-gradient(135deg,var(--oni-light),#9b1f30);border-color:var(--oni-deep);color:#fff;animation: oniPulse 1.4s ease-in-out infinite}
+.mood-cell.lv0 .face{display:inline-block;animation: oniWobble 0.6s ease-in-out infinite alternate;}
 @keyframes oniPulse{
-  0%,100%{ box-shadow:0 0 0 rgba(184,52,74,0); }
-  50%{ box-shadow:0 0 16px rgba(184,52,74,0.6); }
+  0%,100%{ box-shadow:0 0 0 rgba(184,52,74,0); transform:scale(1); }
+  50%{ box-shadow:0 0 30px rgba(184,52,74,1); transform:scale(1.04); }
+}
+@keyframes oniWobble{
+  0%{ transform:rotate(-8deg) scale(1); }
+  100%{ transform:rotate(8deg) scale(1.1); }
 }
 .mood-cell:hover{transform:translateY(-4px) scale(1.05);z-index:2}
 
@@ -458,7 +485,7 @@ footer .meta{margin-top:8px;color:#9c8d7b}
 <section>
 <h2 id="ch3" class="chapter"><span class="num">§3</span>おけちゃん版メニュー詳細（普段の朝）</h2>
 
-<p>中野さんメニューを、おけちゃんの生活実態（夜勤シフト・破産手続き中＝デビット即時引落・料理ハードルは最小化したい）に合わせて再設計したのがこれ：</p>
+<p>中野さんメニューを、おけちゃんの生活実態（夜勤シフトあり・料理ハードルは最小化したい）に合わせて再設計したのがこれ：</p>
 
 <div class="menu-grid">
   <div class="menu-card">
@@ -511,7 +538,7 @@ footer .meta{margin-top:8px;color:#9c8d7b}
 <div class="explain">
 <h4>🛒 週次買い物リスト（業務スーパー or イオン1回完結）</h4>
 <p>もち麦入りパックご飯 × 7／鯖缶（味噌煮3＋水煮4）× 7／パックめかぶ 3個パック × 3／卵 1パック（10個）／納豆 3個パック × 3／ブロッコリースプラウト × 3（消費期限短いので週2購入推奨）／フリーズドライ味噌汁 × 7／青汁スティック 1箱（30本入り＝1ヶ月）／豆乳 1L</p>
-<p>→ <strong>概算：週¥2,500〜¥3,500</strong>（デビットで完結）</p>
+<p>→ <strong>概算：週¥2,500〜¥3,500</strong></p>
 </div>
 
 <div class="qbox">
@@ -734,7 +761,7 @@ footer .meta{margin-top:8px;color:#9c8d7b}
 <table>
 <thead><tr><th>いつ</th><th>何を</th></tr></thead>
 <tbody>
-<tr><td>🛒 今日昼〜夕方</td><td>業務スーパー or イオンで買い物（デビット）</td></tr>
+<tr><td>🛒 今日昼〜夕方</td><td>業務スーパー or イオンで買い物</td></tr>
 <tr><td>🍳 今日夜（夜勤前）</td><td>保冷バッグ仕込み・卵茹で</td></tr>
 <tr><td>🌅 明日朝（6/23）</td><td>事務所で初回✅！広場に1行報告</td></tr>
 <tr><td>📊 6/30（月）朝礼</td><td>初回週次レビュー・ひより表情モード初期値決定</td></tr>
