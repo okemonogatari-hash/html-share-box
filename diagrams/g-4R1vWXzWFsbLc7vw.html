@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>ココアとアイス、並んで歩く人 ── 田畑さなえさん 取扱説明書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;700;800&family=Zen+Maru+Gothic:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cocoa-deep: #3a2820;     /* 深いココア・本文テキスト */
+    --cocoa: #6f4a38;          /* ココアブラウン・見出し */
+    --cocoa-soft: #a07d6a;
+    --ice-pink: #d6a5c5;       /* ココアの湯気にさすピンク */
+    --ice-pink-mist: #f6e6f0;
+    --ice-cream: #ecc9a8;      /* アイスクリーム色・温かいゴールド */
+    --ice-cream-mist: #faf0e3;
+    --ice-mint: #b8d4c8;       /* アイスの冷たさ・ミント差し色 */
+    --ice-mint-mist: #eaf3ef;
+    --berry: #9b6b8e;          /* ベリーダンスの紫・要所アクセント */
+    --berry-mist: #f0e6ee;
+    --paper: #fbf6ef;          /* 生成り背景 */
+    --paper-warm: #f6ece0;
+    --text-deep: #3a2820;
+    --text-soft: #6b584a;
+    --text-mute: #9d8b78;
+    --line: #ece0d4;
+    --gold: #cda45f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Noto Serif JP", "Shippori Mincho", "Hiragino Mincho ProN", serif;
+    color: var(--text-deep);
+    background:
+      radial-gradient(circle at 12% 10%, rgba(236,201,168,0.16) 0%, transparent 50%),
+      radial-gradient(circle at 88% 92%, rgba(214,165,197,0.12) 0%, transparent 50%),
+      linear-gradient(135deg, #fbf6ef 0%, #f6ece0 100%);
+    background-attachment: fixed;
+    line-height: 1.95;
+    padding: 0 0 80px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ━━━━━ HERO 全画面・ココアの湯気グラデーション ━━━━━ */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    color: #fff7ef;
+    overflow: hidden;
+  }
+  /* ココアのカップを上から覗き込むような、深い茶から温かいクリームへ立ちのぼるグラデ */
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 44% at 50% 78%, rgba(214,165,197,0.28) 0%, transparent 64%),
+      radial-gradient(ellipse 70% 50% at 50% 30%, rgba(236,201,168,0.30) 0%, transparent 70%),
+      linear-gradient(180deg, #2c1c14 0%, #4a3024 30%, #6f4a38 56%, #a07d6a 76%, #d6b59e 100%);
+    animation: heroGlow 18s ease-in-out infinite alternate;
+  }
+  @keyframes heroGlow {
+    from { background-position: 0 0, 0 0, 0 0; filter: saturate(1); }
+    to { filter: saturate(1.12) brightness(1.04); }
+  }
+  /* カップのふちのように下を締めて湯気の起点をつくる */
+  .hero-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 30% at 50% 100%, rgba(28,18,12,0.55) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(28,18,12,0.34) 0%, transparent 26%);
+  }
+  .hero::before {
+    content: ""; position: absolute; z-index: 1;
+    inset: 0;
+    background: radial-gradient(ellipse 64% 40% at 50% 46%, rgba(20,12,8,0.30) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  /* 立ちのぼる湯気の粒子 */
+  .hero-spark {
+    position: absolute; z-index: 2;
+    color: #f6e7d2;
+    pointer-events: none;
+    text-shadow: 0 0 14px rgba(246,231,210,0.8);
+    opacity: 0;
+    animation: sparkRise 8s ease-in-out infinite;
+  }
+  .hero-spark.s1 { left: 46%; bottom: 22%; font-size: 18px; animation-delay: 0s; color: #f6e7d2; }
+  .hero-spark.s2 { left: 54%; bottom: 18%; font-size: 12px; animation-delay: 1.6s; color: var(--ice-pink); }
+  .hero-spark.s3 { left: 50%; bottom: 26%; font-size: 14px; animation-delay: 3.2s; }
+  .hero-spark.s4 { left: 58%; bottom: 24%; font-size: 10px; animation-delay: 4.6s; color: var(--ice-mint); }
+  .hero-spark.s5 { left: 42%; bottom: 20%; font-size: 11px; animation-delay: 6s; }
+  @keyframes sparkRise {
+    0% { opacity: 0; transform: translateY(0) translateX(0) scale(0.6); }
+    20% { opacity: 0.9; }
+    55% { opacity: 0.6; transform: translateY(-70px) translateX(8px) scale(0.95); }
+    100% { opacity: 0; transform: translateY(-150px) translateX(-6px) scale(1.15); }
+  }
+  .hero-inner { position: relative; z-index: 3; max-width: 760px; }
+  .hero-tag {
+    font-family: "Inter", "Noto Sans JP", sans-serif;
+    font-size: 11px; letter-spacing: 0.34em;
+    margin-bottom: 22px;
+    color: rgba(255,244,228,0.92);
+    font-weight: 500;
+    text-shadow: 0 2px 10px rgba(20,12,8,0.5);
+  }
+  .hero-name {
+    font-family: "Shippori Mincho", "Noto Serif JP", serif;
+    font-size: clamp(32px, 6.6vw, 62px);
+    font-weight: 800;
+    line-height: 1.36;
+    letter-spacing: 0.05em;
+    margin-bottom: 22px;
+    color: #fffaf2;
+    text-shadow: 0 4px 28px rgba(20,12,8,0.55), 0 1px 4px rgba(20,12,8,0.4);
+  }
+  .hero-name .em {
+    color: var(--ice-cream);
+    text-shadow: 0 0 26px rgba(236,201,168,0.6), 0 4px 28px rgba(20,12,8,0.5);
+  }
+  .hero-sub {
+    font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
+    font-size: 14px; letter-spacing: 0.18em;
+    color: rgba(255,244,228,0.9);
+    margin-bottom: 24px;
+    text-shadow: 0 2px 12px rgba(20,12,8,0.5);
+  }
+  .hero-lead {
+    font-size: 15.5px; line-height: 2.1;
+    max-width: 580px; margin: 0 auto 32px;
+    color: rgba(255,247,235,0.96);
+    font-family: "Noto Serif JP", serif;
+    text-shadow: 0 2px 14px rgba(20,12,8,0.6);
+  }
+  .hero-lead .q { color: var(--ice-cream); font-weight: 500; }
+  .hero-lead .qp { color: var(--ice-pink); font-weight: 500; }
+  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .hero-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 26px; border-radius: 28px;
+    font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .hero-btn.primary { background: rgba(255,251,245,0.96); color: var(--cocoa-deep); box-shadow: 0 8px 26px rgba(20,12,8,0.32); }
+  .hero-btn.ghost { background: rgba(255,255,255,0.12); color: #fffaf2; border: 1px solid rgba(255,244,228,0.55); backdrop-filter: blur(2px); }
+  .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(20,12,8,0.36); }
+  .hero-sign {
+    font-family: "Inter", sans-serif;
+    font-size: 11px; letter-spacing: 0.24em;
+    color: rgba(255,244,228,0.82);
+    margin-top: 18px;
+    text-shadow: 0 2px 10px rgba(20,12,8,0.5);
+  }
+  .hero-scroll {
+    position: absolute; z-index: 3;
+    bottom: 26px; left: 50%; transform: translateX(-50%);
+    font-family: "Inter", sans-serif;
+    font-size: 10px; letter-spacing: 0.32em;
+    color: rgba(255,244,228,0.9);
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(20,12,8,0.5);
+  }
+  .hero-scroll .arrow { display: block; margin-top: 6px; font-size: 16px; animation: bounce 1.8s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);} }
+  .hero-inner { opacity: 0; filter: blur(8px); animation: heroEnter 1.5s 0.4s ease-out forwards; }
+  @keyframes heroEnter { to { opacity: 1; filter: blur(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg, .hero-inner, .hero-spark { animation: none; opacity: 1; filter: none; }
+    .hero-inner { opacity: 1; }
+  }
+
+  /* ━━━━━ コンテナ ━━━━━ */
+  .container {
+    max-width: 880px;
+    margin: -40px auto 0;
+    background: #fffdf9;
+    border-radius: 18px;
+    box-shadow: 0 12px 50px rgba(58, 40, 32, 0.12), 0 4px 18px rgba(214,165,197,0.06);
+    overflow: hidden;
+    position: relative;
+    z-index: 5;
+  }
+  .container.second { margin-top: 40px; }
+  .container::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, var(--cocoa-deep) 0%, var(--ice-cream) 46%, var(--ice-pink) 74%, var(--ice-mint) 100%);
+  }
+  .body { padding: 56px 52px 60px; }
+  section { margin-bottom: 56px; }
+  section:last-child { margin-bottom: 0; }
+
+  .sec-label {
+    display: flex; align-items: center; gap: 14px;
+    font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
+    font-size: 12px; color: var(--cocoa);
+    letter-spacing: 0.2em;
+    margin-bottom: 20px; font-weight: 700;
+  }
+  .sec-label::before { content: ""; width: 28px; height: 1.5px; background: var(--ice-cream); }
+  h2 {
+    font-family: "Shippori Mincho", "Noto Serif JP", serif;
+    font-size: 27px; color: var(--text-deep);
+    margin-bottom: 24px; font-weight: 700;
+    letter-spacing: 0.04em; line-height: 1.55;
+  }
+  h2 .accent { color: var(--cocoa-deep); border-bottom: 2px solid var(--ice-cream-mist); padding-bottom: 2px; }
+  h2 .accent-p { color: var(--berry); border-bottom: 2px solid var(--berry-mist); padding-bottom: 2px; }
+  p { color: var(--text-soft); margin-bottom: 14px; font-size: 15px; line-height: 1.95; }
+  .lead-p { color: var(--text-deep); font-size: 16px; }
+
+  /* ━━━━━ ひとことで（OPENING） ━━━━━ */
+  .opening {
+    background: linear-gradient(135deg, var(--paper-warm) 0%, #f1ddc6 100%);
+    border-left: 4px solid var(--cocoa-deep);
+    padding: 30px 32px;
+    border-radius: 0 14px 14px 0;
+    position: relative;
+  }
+  .opening::before {
+    content: "❝"; position: absolute;
+    top: -8px; right: 18px;
+    font-size: 56px; color: var(--cocoa-soft); opacity: 0.42;
+    font-family: serif; line-height: 1;
+  }
+  .opening p { color: var(--text-deep); font-size: 16px; line-height: 2.05; margin-bottom: 12px; }
+  .opening p:last-child { margin-bottom: 0; }
+  .opening strong {
+    color: var(--cocoa-deep);
+    background: linear-gradient(transparent 65%, rgba(236,201,168,0.55) 65%);
+    padding: 0 2px;
+  }
+  .opening .pink { background: linear-gradient(transparent 65%, rgba(214,165,197,0.45) 65%); color: var(--berry); }
+
+  /* ━━━━━ 2粒カード（ココア/アイス） ━━━━━ */
+  .duo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+  .duo {
+    border-radius: 16px; padding: 26px 24px;
+    border-top: 4px solid var(--line);
+  }
+  .duo.cocoa { background: linear-gradient(140deg, var(--paper-warm), #ead4bb); border-top-color: var(--cocoa); }
+  .duo.ice { background: linear-gradient(140deg, var(--ice-mint-mist), #d9ebe3); border-top-color: var(--ice-mint); }
+  .duo-emoji { font-size: 30px; line-height: 1; margin-bottom: 8px; }
+  .duo-title { font-family: "Shippori Mincho", serif; font-size: 18px; font-weight: 700; color: var(--text-deep); margin-bottom: 4px; }
+  .duo.cocoa .duo-title { color: var(--cocoa); }
+  .duo.ice .duo-title { color: #4f8775; }
+  .duo-sub { font-family: "Zen Maru Gothic", sans-serif; font-size: 11.5px; color: var(--text-mute); letter-spacing: 0.06em; margin-bottom: 12px; }
+  .duo-body { font-size: 13.5px; color: var(--text-soft); line-height: 1.9; }
+  .duo-body strong { color: var(--text-deep); }
+
+  .insight { background: linear-gradient(135deg, var(--ice-cream-mist) 0%, #f5e3c8 100%); padding: 26px 30px; border-radius: 14px; margin-top: 20px; font-size: 15px; line-height: 2.0; color: var(--text-deep); border-left: 4px solid var(--gold); }
+  .insight strong { color: var(--cocoa-deep); }
+  .insight .pink { color: var(--berry); }
+
+  /* ━━━━━ 名言カード（実引用） ━━━━━ */
+  .quote-card {
+    background: var(--ice-cream-mist); padding: 22px 24px; border-radius: 14px;
+    border-left: 4px solid var(--gold); position: relative; margin-top: 16px;
+  }
+  .quote-card.berry { background: linear-gradient(135deg, var(--berry-mist), #ecdcea); border-left-color: var(--berry); }
+  .quote-card.pink { background: linear-gradient(135deg, var(--ice-pink-mist), #f4dcec); border-left-color: var(--ice-pink); }
+  .quote-card::before { content: "❝"; position: absolute; top: 6px; right: 16px; font-size: 40px; color: var(--gold); opacity: 0.28; font-family: serif; line-height: 1; }
+  .quote-card.berry::before { color: var(--berry); }
+  .quote-text { font-family: "Noto Serif JP", serif; font-size: 15px; color: var(--text-deep); line-height: 2.0; margin-bottom: 8px; }
+  .quote-text strong { color: var(--cocoa-deep); }
+  .quote-card.berry .quote-text strong { color: var(--berry); }
+  .quote-source { font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif; font-size: 11px; color: var(--text-mute); letter-spacing: 0.06em; }
+
+  /* 引用を並べるグリッド */
+  .quotes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 16px; }
+  .quotes-grid .quote-card { margin-top: 0; }
+
+  /* ━━━━━ 正反対コレクション ━━━━━ */
+  .flip-list { display: grid; gap: 14px; margin-top: 18px; }
+  .flip {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch;
+    background: #fffdf9; border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  }
+  .flip-side { padding: 16px 18px; display: flex; flex-direction: column; justify-content: center; }
+  .flip-from { background: var(--ice-mint-mist); }
+  .flip-to { background: var(--ice-pink-mist); }
+  .flip-side-label { font-family: "Zen Maru Gothic", sans-serif; font-size: 10px; letter-spacing: 0.14em; color: var(--text-mute); margin-bottom: 4px; font-weight: 700; }
+  .flip-from .flip-side-label { color: #5f8d7d; }
+  .flip-to .flip-side-label { color: var(--berry); }
+  .flip-side-text { font-size: 13.5px; color: var(--text-deep); line-height: 1.7; font-weight: 500; }
+  .flip-arrow { display: flex; align-items: center; justify-content: center; padding: 0 8px; background: #fffdf9; font-size: 18px; color: var(--cocoa-soft); }
+  .flip.spark .flip-to { background: linear-gradient(135deg, var(--ice-cream-mist), #f6dfbf); }
+  .flip.spark .flip-arrow { color: var(--gold); }
+  .flip-note { font-family: "Zen Maru Gothic", sans-serif; font-size: 11px; color: var(--gold); font-weight: 700; padding: 2px 0 0; }
+
+  .serendipity {
+    background: linear-gradient(135deg, var(--ice-cream-mist) 0%, #f7e0ba 100%);
+    border-left: 4px solid var(--gold); border-radius: 0 14px 14px 0;
+    padding: 24px 28px; margin-top: 20px; line-height: 2.0; color: var(--text-deep); font-size: 14.5px;
+  }
+  .serendipity-tag { display: inline-block; background: var(--gold); color: #fffdf9; padding: 4px 14px; border-radius: 12px; font-size: 10.5px; margin-bottom: 12px; letter-spacing: 0.16em; font-family: "Zen Maru Gothic", sans-serif; font-weight: 700; }
+  .serendipity strong { color: var(--cocoa-deep); }
+
+  /* ━━━━━ note引用ブロック（伴走者の進化） ━━━━━ */
+  .note-block { display: grid; gap: 14px; margin-top: 18px; }
+  .note-row { background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--cocoa-soft); border-radius: 0 12px 12px 0; padding: 18px 22px; }
+  .note-row.honest { border-left-color: var(--ice-pink); }
+  .note-row.client { border-left-color: var(--gold); }
+  .note-row-label { font-family: "Zen Maru Gothic", sans-serif; font-size: 11px; color: var(--cocoa); font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .note-row.honest .note-row-label { color: var(--berry); }
+  .note-row-quote { font-family: "Noto Serif JP", serif; font-size: 14.5px; color: var(--text-deep); line-height: 1.95; }
+  .note-row-quote strong { color: var(--cocoa-deep); }
+  .note-row-src { font-family: "Zen Maru Gothic", sans-serif; font-size: 10.5px; color: var(--text-mute); margin-top: 8px; letter-spacing: 0.05em; }
+
+  /* ━━━━━ プレースホルダ（§06） ━━━━━ */
+  .placeholder {
+    background: repeating-linear-gradient(135deg, var(--paper) 0 14px, #f4ebe0 14px 28px);
+    border: 1.5px dashed var(--cocoa-soft); border-radius: 14px;
+    padding: 34px 30px; text-align: center; margin-top: 16px;
+  }
+  .placeholder-icon { font-size: 30px; margin-bottom: 10px; }
+  .placeholder-title { font-family: "Shippori Mincho", serif; font-size: 17px; color: var(--cocoa); font-weight: 700; margin-bottom: 8px; }
+  .placeholder-text { font-family: "Zen Maru Gothic", sans-serif; font-size: 13px; color: var(--text-soft); line-height: 1.85; }
+  .placeholder-slot { background: rgba(255,253,249,0.7); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-top: 16px; font-family: "Noto Serif JP", serif; font-size: 13.5px; color: var(--text-mute); }
+
+  /* ━━━━━ おやつエピソード ━━━━━ */
+  .oyatsu { background: linear-gradient(135deg, var(--ice-pink-mist) 0%, #f4dcec 100%); padding: 26px 30px; border-radius: 14px; border-left: 4px solid var(--ice-pink); margin-top: 16px; line-height: 2.0; color: var(--text-deep); font-size: 14.5px; }
+  .oyatsu strong { color: var(--berry); }
+  .feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+  .feat { background: var(--paper); border-radius: 14px; padding: 20px 22px; text-align: center; border-top: 3px solid var(--ice-cream); }
+  .feat-num { font-family: "Shippori Mincho", serif; font-size: 34px; font-weight: 700; color: var(--cocoa); line-height: 1; margin-bottom: 4px; }
+  .feat-unit { font-size: 14px; color: var(--cocoa-soft); }
+  .feat-label { font-family: "Zen Maru Gothic", sans-serif; font-size: 12px; color: var(--text-soft); margin-top: 6px; line-height: 1.6; }
+
+  /* ━━━━━ 経歴タイムライン ━━━━━ */
+  .timeline { margin-top: 18px; position: relative; padding-left: 8px; }
+  .tl-item { position: relative; padding: 0 0 22px 28px; border-left: 2px solid var(--line); }
+  .tl-item:last-child { border-left-color: transparent; padding-bottom: 0; }
+  .tl-item::before { content: ""; position: absolute; left: -7px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--ice-cream); border: 2px solid #fffdf9; box-shadow: 0 0 0 1px var(--cocoa-soft); }
+  .tl-item.hl::before { background: var(--cocoa-deep); }
+  .tl-when { font-family: "Zen Maru Gothic", sans-serif; font-size: 11px; color: var(--cocoa); font-weight: 700; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .tl-what { font-size: 14px; color: var(--text-deep); line-height: 1.8; }
+  .tl-what strong { color: var(--cocoa-deep); background: linear-gradient(transparent 65%, rgba(236,201,168,0.5) 65%); padding: 0 1px; }
+  .tl-note { font-size: 12.5px; color: var(--text-mute); margin-top: 3px; }
+
+  /* ━━━━━ 背骨（§09 まとめ） ━━━━━ */
+  .spine { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; margin-top: 20px; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
+  .spine-side { padding: 26px 24px; }
+  .spine-cocoa { background: linear-gradient(140deg, var(--paper-warm), #ead4bb); }
+  .spine-ice { background: linear-gradient(140deg, var(--ice-mint-mist), #d9ebe3); }
+  .spine-mid { background: #fffdf9; display: flex; align-items: center; justify-content: center; font-family: "Shippori Mincho", serif; font-size: 22px; color: var(--cocoa-soft); padding: 0 10px; }
+  .spine-label { font-family: "Zen Maru Gothic", sans-serif; font-size: 11px; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 8px; }
+  .spine-cocoa .spine-label { color: var(--cocoa); }
+  .spine-ice .spine-label { color: #4f8775; }
+  .spine-word { font-family: "Shippori Mincho", serif; font-size: 19px; font-weight: 700; color: var(--text-deep); margin-bottom: 8px; line-height: 1.5; }
+  .spine-body { font-size: 13px; color: var(--text-soft); line-height: 1.85; }
+  .spine-quote { background: linear-gradient(135deg, var(--berry-mist), #ecdcea); border-left: 4px solid var(--berry); border-radius: 0 12px 12px 0; padding: 22px 26px; margin-top: 20px; font-family: "Shippori Mincho", serif; font-size: 16px; color: var(--text-deep); line-height: 2.0; }
+  .spine-quote strong { color: var(--berry); }
+
+  /* ━━━━━ テーマソング ━━━━━ */
+  .song { background: linear-gradient(135deg, #2c1c14 0%, #4a3024 50%, #6f4a38 100%); border-radius: 16px; padding: 36px 34px; margin-top: 16px; color: #fff7ef; position: relative; overflow: hidden; }
+  .song::after { content: "♪"; position: absolute; top: -10px; right: 18px; font-size: 90px; color: rgba(236,201,168,0.16); font-family: serif; }
+  .song-title { font-family: "Shippori Mincho", serif; font-size: 22px; font-weight: 700; color: var(--ice-cream); margin-bottom: 6px; letter-spacing: 0.04em; }
+  .song-by { font-family: "Zen Maru Gothic", sans-serif; font-size: 12.5px; color: rgba(255,244,228,0.82); margin-bottom: 20px; letter-spacing: 0.04em; }
+  .song audio { width: 100%; margin: 6px 0 18px; border-radius: 28px; }
+  .song-seeds { background: rgba(255,253,249,0.08); border: 1px solid rgba(236,201,168,0.3); border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+  .song-seeds-label { font-family: "Zen Maru Gothic", sans-serif; font-size: 11px; color: var(--ice-cream); letter-spacing: 0.1em; font-weight: 700; margin-bottom: 10px; }
+  .song-seeds ul { list-style: none; padding: 0; margin: 0; }
+  .song-seeds li { font-size: 13px; color: rgba(255,247,235,0.92); line-height: 1.85; padding-left: 18px; position: relative; }
+  .song-seeds li::before { content: "♢"; position: absolute; left: 0; color: var(--ice-pink); font-size: 11px; }
+  .song-seeds li strong { color: var(--ice-cream); }
+  .lyrics { background: rgba(255,253,249,0.06); border-radius: 12px; border: 1px solid rgba(236,201,168,0.22); overflow: hidden; }
+  .lyrics summary { list-style: none; cursor: pointer; padding: 14px 20px; font-family: "Zen Maru Gothic", sans-serif; font-size: 13px; color: var(--ice-cream); font-weight: 700; letter-spacing: 0.08em; display: flex; justify-content: space-between; align-items: center; }
+  .lyrics summary::-webkit-details-marker { display: none; }
+  .lyrics summary::after { content: "▾"; font-size: 12px; transition: transform 0.3s; }
+  .lyrics[open] summary::after { transform: rotate(180deg); }
+  .lyrics-body { padding: 4px 24px 24px; }
+  .lyrics-body .lblock { margin-bottom: 16px; }
+  .lyrics-body .ltag { font-family: "Inter", sans-serif; font-size: 11px; letter-spacing: 0.14em; color: var(--ice-pink); margin-bottom: 4px; }
+  .lyrics-body .lline { font-family: "Noto Serif JP", serif; font-size: 14px; color: rgba(255,247,235,0.95); line-height: 1.9; }
+
+  /* ━━━━━ お手紙 ━━━━━ */
+  .letter { background: radial-gradient(ellipse at 8% 4%, rgba(255,255,255,0.4), transparent 40%), linear-gradient(135deg, #fdf5e8 0%, #f6e6d0 100%); border-radius: 14px; padding: 44px 48px; margin-top: 18px; position: relative; box-shadow: 0 8px 30px rgba(58,40,32,0.10); overflow: hidden; }
+  .letter::before { content: ""; position: absolute; top: 0; right: 0; width: 60px; height: 60px; background: linear-gradient(225deg, #efddc0 50%, transparent 50%); }
+  .letter-stamp { position: absolute; top: 36px; right: 48px; width: 74px; height: 74px; background: var(--berry); border-radius: 50%; color: #fffdf9; display: flex; align-items: center; justify-content: center; font-family: "Shippori Mincho", serif; font-size: 12px; font-weight: 600; transform: rotate(-8deg); box-shadow: 0 4px 12px rgba(155,107,142,0.34); text-align: center; line-height: 1.4; letter-spacing: 0.04em; }
+  .letter-head { font-family: "Shippori Mincho", serif; font-size: 22px; color: var(--text-deep); font-weight: 600; margin-bottom: 28px; letter-spacing: 0.06em; }
+  .letter-body p { font-size: 15px; color: var(--text-deep); line-height: 2.15; margin-bottom: 18px; font-family: "Noto Serif JP", serif; }
+  .letter-body strong { color: var(--cocoa-deep); }
+  .letter-body .berry { color: var(--berry); }
+  .letter-pull { background: rgba(255,253,249,0.65); border-left: 4px solid var(--gold); padding: 18px 22px; margin: 24px 0; font-size: 15.5px; color: var(--text-deep); border-radius: 0 10px 10px 0; line-height: 2.0; font-family: "Shippori Mincho", serif; }
+  .letter-pull strong { color: var(--berry); }
+  .letter-sign { text-align: right; margin-top: 32px; font-family: "Shippori Mincho", serif; color: var(--text-soft); font-size: 14px; line-height: 1.9; }
+  .letter-sign .name { font-size: 16px; color: var(--cocoa-deep); font-weight: 600; margin-top: 6px; display: block; }
+  .letter-draft-note { font-family: "Zen Maru Gothic", sans-serif; font-size: 11px; color: var(--text-mute); text-align: center; margin-top: 18px; letter-spacing: 0.04em; }
+
+  /* ━━━━━ FOOTER ━━━━━ */
+  .footer { background: linear-gradient(180deg, var(--ice-cream-mist) 0%, #f5e3c8 100%); padding: 36px 40px; text-align: center; font-size: 13.5px; color: var(--text-soft); line-height: 2.0; border-top: 1px solid var(--line); }
+  .footer strong { color: var(--cocoa-deep); }
+  .footer-mark { font-family: "Shippori Mincho", serif; color: var(--cocoa-deep); font-size: 18px; letter-spacing: 0.2em; margin-bottom: 6px; display: block; }
+  .footer-meta { font-family: "Inter", "Noto Sans JP", sans-serif; font-size: 10.5px; opacity: 0.7; margin-top: 10px; letter-spacing: 0.1em; }
+
+  /* ━━━━━ TOC ━━━━━ */
+  .toc { position: fixed; top: 24px; left: 24px; z-index: 50; background: rgba(255, 253, 249, 0.93); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid var(--line); border-radius: 14px; padding: 20px 18px; box-shadow: 0 8px 28px rgba(214,165,197,0.14); max-width: 224px; max-height: calc(100vh - 48px); overflow-y: auto; font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif; opacity: 0; animation: tocFade 1s 1.5s forwards; }
+  @keyframes tocFade { to { opacity: 1; } }
+  .toc-title { font-size: 10.5px; color: var(--text-mute); letter-spacing: 0.22em; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed var(--line); font-weight: 700; display: flex; align-items: center; gap: 6px; }
+  .toc-title::before { content: "☕"; font-size: 12px; }
+  .toc ol { list-style: none; padding: 0; margin: 0; }
+  .toc li { margin: 3px 0; }
+  .toc a { display: block; padding: 7px 8px; font-size: 11.5px; color: var(--text-soft); text-decoration: none; border-radius: 6px; line-height: 1.5; transition: background 0.2s, color 0.2s; border-left: 2px solid transparent; }
+  .toc a:hover { background: var(--ice-cream-mist); color: var(--cocoa-deep); }
+  .toc a.active { background: linear-gradient(90deg, rgba(236,201,168,0.30) 0%, transparent 100%); color: var(--cocoa-deep); font-weight: 700; border-left-color: var(--cocoa-deep); }
+  .toc-main { font-size: 12px; font-weight: 700; color: var(--text-deep); display: block; }
+  .toc a:hover .toc-main, .toc a.active .toc-main { color: var(--cocoa-deep); }
+  .toc-sub { font-size: 10.5px; color: var(--text-mute); margin-top: 2px; display: block; font-weight: 400; }
+
+  .toc-mobile { display: none; position: fixed; top: 12px; left: 12px; right: 12px; z-index: 50; background: rgba(255, 253, 249, 0.96); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 4px 16px rgba(214,165,197,0.16); font-family: "Zen Maru Gothic", "Noto Sans JP", sans-serif; }
+  .toc-mobile summary { list-style: none; cursor: pointer; padding: 12px 16px; font-size: 12px; color: var(--cocoa-deep); font-weight: 700; letter-spacing: 0.12em; display: flex; align-items: center; justify-content: space-between; }
+  .toc-mobile summary::-webkit-details-marker { display: none; }
+  .toc-mobile summary::after { content: "▾"; font-size: 10px; transition: transform 0.3s; }
+  .toc-mobile[open] summary::after { transform: rotate(180deg); }
+  .toc-mobile ol { list-style: none; padding: 0 8px 12px; margin: 0; max-height: 55vh; overflow-y: auto; }
+  .toc-mobile a { display: block; padding: 10px 12px; font-size: 12.5px; color: var(--text-soft); text-decoration: none; border-radius: 6px; }
+  .toc-mobile a.active { background: var(--ice-cream-mist); color: var(--cocoa-deep); font-weight: 700; }
+  .toc-mobile .toc-main { font-size: 13px; font-weight: 700; }
+  .toc-mobile .toc-sub { font-size: 11px; }
+
+  /* ━━━━━ レスポンシブ ━━━━━ */
+  @media (min-width: 1240px) {
+    .toc { left: calc((100vw - 880px) / 2 - 254px); top: 80px; }
+  }
+  @media (max-width: 1100px) {
+    .toc { max-width: 190px; padding: 16px 14px; left: 16px; }
+  }
+  @media (max-width: 900px) {
+    .toc { display: none; }
+    .toc-mobile { display: block; }
+  }
+  @media (max-width: 720px) {
+    .hero { padding: 50px 22px; }
+    .container { margin-top: -20px; }
+    .body { padding: 36px 24px 44px; }
+    h2 { font-size: 21px; }
+    .duo-grid { grid-template-columns: 1fr; }
+    .quotes-grid { grid-template-columns: 1fr; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .flip { grid-template-columns: 1fr; }
+    .flip-arrow { padding: 6px 0; transform: rotate(90deg); }
+    .spine { grid-template-columns: 1fr; }
+    .spine-mid { padding: 10px 0; transform: rotate(90deg); }
+    .letter { padding: 32px 24px; }
+    .letter-stamp { width: 58px; height: 58px; font-size: 10px; top: 24px; right: 24px; }
+    .song { padding: 28px 22px; }
+  }
+
+  section[id] { scroll-margin-top: 24px; }
+  .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .fade-in.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ━━━ §10 音源プレースホルダ ━━━ */
+  .song-note {
+    text-align: center;
+    font-size: 11.5px; color: var(--text-mute);
+    font-family: "Zen Maru Gothic","Noto Sans JP",sans-serif;
+    letter-spacing: 0.04em;
+    margin: 4px auto 18px;
+  }
+
+  /* ━━━ §06 スペースquote-card ━━━ */
+  .lead-p {
+    font-size: 15.5px; line-height: 2.1; color: var(--text-soft);
+    margin: 4px 0 24px; font-weight: 400;
+  }
+  .quotes-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    margin-top: 18px;
+  }
+  .quote-card {
+    background: linear-gradient(160deg, rgba(255,255,255,0.7) 0%, var(--paper-warm) 100%);
+    border-radius: 16px; padding: 22px 24px;
+    border-left: 4px solid var(--berry);
+    box-shadow: 0 4px 16px rgba(111,74,56,0.06);
+    position: relative;
+  }
+  .quote-card::before {
+    content: "“"; position: absolute; top: -8px; left: 14px;
+    font-family: "Shippori Mincho", serif; font-size: 48px;
+    color: var(--berry); opacity: 0.35; line-height: 1;
+  }
+  .quote-text {
+    font-family: "Noto Serif JP", serif;
+    font-size: 14.5px; line-height: 1.95;
+    color: var(--text-deep); margin-bottom: 12px;
+    padding-top: 4px;
+  }
+  .quote-text strong { color: var(--cocoa-deep); font-weight: 700; }
+  .quote-source {
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: 11.5px; color: var(--text-mute);
+    letter-spacing: 0.04em; font-weight: 500;
+  }
+  .quote-foot {
+    margin-top: 18px; font-size: 11px; color: var(--text-mute);
+    text-align: right; font-family: "Inter","Noto Sans JP",sans-serif;
+    letter-spacing: 0.04em;
+  }
+  @media (max-width: 720px) {
+    .quotes-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ━━━ §11 お仕事相談カード ━━━ */
+  .contact-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 14px; margin: 22px 0 28px;
+  }
+  .contact-card {
+    background: var(--paper); border-radius: 16px;
+    padding: 24px 20px 22px;
+    text-align: center;
+    text-decoration: none; color: inherit;
+    border: 1px solid var(--line);
+    box-shadow: 0 4px 14px rgba(111,74,56,0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    display: block;
+  }
+  .contact-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(155,107,142,0.18);
+    border-color: var(--berry);
+  }
+  .contact-icon {
+    font-size: 28px; margin-bottom: 8px;
+    color: var(--cocoa-deep);
+    font-family: "Shippori Mincho", serif;
+  }
+  .contact-label {
+    font-family: "Inter","Noto Sans JP",sans-serif;
+    font-size: 10.5px; letter-spacing: 0.2em;
+    color: var(--text-mute); margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .contact-handle {
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: 14px; font-weight: 700;
+    color: var(--cocoa-deep); margin-bottom: 6px;
+    word-break: break-all;
+  }
+  .contact-note {
+    font-size: 11.5px; color: var(--text-soft);
+    line-height: 1.55;
+  }
+  .fit-block {
+    background: linear-gradient(135deg, var(--paper-warm) 0%, rgba(236,201,168,0.25) 100%);
+    border-radius: 16px; padding: 24px 26px;
+    margin: 24px 0 22px;
+    border: 1px dashed var(--cocoa-soft);
+  }
+  .fit-head {
+    font-family: "Shippori Mincho", serif;
+    font-size: 15px; font-weight: 700;
+    color: var(--cocoa-deep); margin-bottom: 14px;
+    letter-spacing: 0.04em;
+  }
+  .fit-head::before {
+    content: "▶ "; color: var(--berry); margin-right: 4px;
+  }
+  .fit-list {
+    list-style: none; padding: 0; margin: 0;
+  }
+  .fit-list li {
+    padding: 8px 0 8px 24px;
+    font-size: 14px; line-height: 1.85;
+    color: var(--text-deep);
+    border-bottom: 1px dashed rgba(160,125,106,0.25);
+    position: relative;
+  }
+  .fit-list li:last-child { border-bottom: none; }
+  .fit-list li::before {
+    content: "☕"; position: absolute; left: 0; top: 8px;
+    font-size: 13px;
+  }
+  .fit-list li:nth-child(even)::before { content: "🍨"; }
+  .fit-list strong { color: var(--cocoa-deep); font-weight: 700; }
+  .hand-off {
+    margin: 22px 0 18px; padding: 22px 24px;
+    background: rgba(214,165,197,0.16);
+    border-left: 4px solid var(--berry);
+    border-radius: 8px;
+    font-size: 14.5px; line-height: 1.95;
+    color: var(--text-deep);
+  }
+  .hand-off strong { color: var(--cocoa-deep); }
+  .okemon-footnote {
+    margin-top: 28px; padding: 16px 18px;
+    background: rgba(0,0,0,0.025);
+    border-radius: 8px;
+    font-size: 11.5px; line-height: 1.8;
+    color: var(--text-mute);
+    font-family: "Noto Sans JP", sans-serif;
+  }
+  @media (max-width: 720px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 12px; }
+    .contact-card { padding: 20px 18px; }
+    .fit-block { padding: 20px 22px; }
+    .hand-off { padding: 18px 20px; font-size: 13.5px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ━━━━━ 目次（PC固定サイド） ━━━━━ -->
+<nav class="toc" aria-label="目次">
+  <div class="toc-title">CONTENTS</div>
+  <ol>
+    <li><a href="#sec-01" data-target="sec-01"><span class="toc-main">ひとことで</span><span class="toc-sub">ココアとアイス、並んで歩く人</span></a></li>
+    <li><a href="#sec-02" data-target="sec-02"><span class="toc-main">伝える人の核</span><span class="toc-sub">noteから見えたモットー</span></a></li>
+    <li><a href="#sec-03" data-target="sec-03"><span class="toc-main">決めると人生が動く</span><span class="toc-sub">バズ記事・正反対の哲学①</span></a></li>
+    <li><a href="#sec-04" data-target="sec-04"><span class="toc-main">「正反対」コレクション</span><span class="toc-sub">正反対の哲学②</span></a></li>
+    <li><a href="#sec-05" data-target="sec-05"><span class="toc-main">自分でAIを触る人</span><span class="toc-sub">伴走者の進化形</span></a></li>
+    <li><a href="#sec-06" data-target="sec-06"><span class="toc-main">スペースで光った言葉</span><span class="toc-sub">6/23の対話から</span></a></li>
+    <li><a href="#sec-07" data-target="sec-07"><span class="toc-main">おやつで怒る、かわいい人</span><span class="toc-sub">人間味・大食い伝説</span></a></li>
+    <li><a href="#sec-08" data-target="sec-08"><span class="toc-main">京都→札幌の道のり</span><span class="toc-sub">数字とお菓子を持って</span></a></li>
+    <li><a href="#sec-09" data-target="sec-09"><span class="toc-main">作る強さと、崩すしなやかさ</span><span class="toc-sub">あなたの真ん中</span></a></li>
+    <li><a href="#sec-10" data-target="sec-10"><span class="toc-main">テーマソング🎵</span><span class="toc-sub">ココアとアイス、並んで歩こう</span></a></li>
+    <li><a href="#sec-11" data-target="sec-11"><span class="toc-main">お仕事の相談</span><span class="toc-sub">さなえさんに会いたくなったら</span></a></li>
+  </ol>
+</nav>
+
+<!-- ━━━━━ 目次（SP折りたたみ） ━━━━━ -->
+<details class="toc-mobile" aria-label="目次">
+  <summary>☕ CONTENTS</summary>
+  <ol>
+    <li><a href="#sec-01" data-target="sec-01"><span class="toc-main">ひとことで</span><span class="toc-sub">ココアとアイス、並んで歩く人</span></a></li>
+    <li><a href="#sec-02" data-target="sec-02"><span class="toc-main">伝える人の核</span><span class="toc-sub">noteのモットー</span></a></li>
+    <li><a href="#sec-03" data-target="sec-03"><span class="toc-main">決めると人生が動く</span><span class="toc-sub">正反対の哲学①</span></a></li>
+    <li><a href="#sec-04" data-target="sec-04"><span class="toc-main">「正反対」コレクション</span><span class="toc-sub">正反対の哲学②</span></a></li>
+    <li><a href="#sec-05" data-target="sec-05"><span class="toc-main">自分でAIを触る人</span><span class="toc-sub">伴走者の進化形</span></a></li>
+    <li><a href="#sec-06" data-target="sec-06"><span class="toc-main">スペースで光った言葉</span><span class="toc-sub">6/23の対話から</span></a></li>
+    <li><a href="#sec-07" data-target="sec-07"><span class="toc-main">おやつで怒る人</span><span class="toc-sub">大食い伝説</span></a></li>
+    <li><a href="#sec-08" data-target="sec-08"><span class="toc-main">京都→札幌の道のり</span><span class="toc-sub">数字とお菓子</span></a></li>
+    <li><a href="#sec-09" data-target="sec-09"><span class="toc-main">作る強さと崩すしなやかさ</span><span class="toc-sub">真ん中</span></a></li>
+    <li><a href="#sec-10" data-target="sec-10"><span class="toc-main">テーマソング🎵</span><span class="toc-sub">ココアとアイス</span></a></li>
+    <li><a href="#sec-11" data-target="sec-11"><span class="toc-main">お仕事の相談</span><span class="toc-sub">さなえさんに会いたくなったら</span></a></li>
+  </ol>
+</details>
+
+<!-- ━━━━━ HERO（全画面・ココアの湯気） ━━━━━ -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <span class="hero-spark s1">✦</span>
+  <span class="hero-spark s2">✧</span>
+  <span class="hero-spark s3">✦</span>
+  <span class="hero-spark s4">✧</span>
+  <span class="hero-spark s5">✦</span>
+  <div class="hero-inner">
+    <div class="hero-tag">FOR SANAE — 2026.06.23 Xスペース記念</div>
+    <h1 class="hero-name">ココアとアイス、<br><span class="em">並んで歩く人</span></h1>
+    <div class="hero-sub">田畑さなえさん 取扱説明書</div>
+    <p class="hero-lead">
+      京都から、札幌へ。<br>
+      数字と、お菓子と、<span class="qp">ベリーダンス</span>。<br>
+      <span class="q">"正反対"</span> を選びながら、誰かの "売れる" に並んで歩く人の話。
+    </p>
+    <div class="hero-btns">
+      <a class="hero-btn primary" href="#sec-10">🎵 テーマソングを聴く</a>
+      <a class="hero-btn ghost" href="#sec-11">✉ お手紙を読む</a>
+    </div>
+    <div class="hero-sign">FOR SANAE / 2026.06.23 / from おけもん</div>
+  </div>
+  <div class="hero-scroll">SCROLL <span class="arrow">⌄</span></div>
+</section>
+
+<!-- ━━━━━ コンテナ① §1〜§6 ━━━━━ -->
+<div class="container">
+  <div class="body">
+
+    <!-- ━━━ §1 ひとことで ━━━ -->
+    <section class="fade-in" id="sec-01">
+      <div class="sec-label">01 ── ひとことで</div>
+      <h2>アカウント名は、<span class="accent">cocoatoaisu</span>。<br>読み解くと ── <span class="accent-p">ココアとアイス</span>。</h2>
+      <div class="opening">
+        <p>note の名前を見つけたとき、思わず笑ってしまった。<strong>cocoatoaisu</strong> ── ココアと、アイス。<br>
+        温かいものと、冷たいもの。正反対の二つが、ひとつの名前に並んでいる。</p>
+        <p>さなえさんは、その名前のとおりの人だと思う。<br>
+        誰かの「いい商品なのに売れない」に、<strong>温かいココアみたいに伴走する優しさ</strong>。そしてその裏で、ホテル財務5年・簿記2級で鍛えた、<strong class="pink">アイスみたいに冷えた数字の目</strong>。<br>
+        ぬくもりと、冷静さ。両方を、ちゃんと持っている。</p>
+        <p>これは、コーチングの診断シートじゃない。<br>
+        対談相手として向かい合った僕（おけもん）が、<strong>「さなえさんって、こういう人だよね」を勝手にまとめた、愛のある観察レポート</strong>です。<br>
+        お菓子は正義。── たぶん、あなたも。</p>
+      </div>
+      <div class="duo-grid">
+        <div class="duo cocoa">
+          <div class="duo-emoji">☕</div>
+          <div class="duo-title">ココア</div>
+          <div class="duo-sub">温かい・伴走・ぬくもり</div>
+          <div class="duo-body">「考えるだけで終わらせない。<strong>一緒に手を動かす</strong>」。相手の魅力・葛藤・転機を拾って、読者に届く言葉へ。中小企業の「売れない」に並んで歩く側。</div>
+        </div>
+        <div class="duo ice">
+          <div class="duo-emoji">🍨</div>
+          <div class="duo-title">アイス</div>
+          <div class="duo-sub">冷静・数字・しくみ</div>
+          <div class="duo-body">ホテル運営会社で<strong>財務5年</strong>。財務会計・管理会計・決算・監査。日商簿記2級。感情論じゃなく、数字で物事を見られる目を、ちゃんと持っている。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━ §2 noteから見えた、伝える人の核 ━━━ -->
+    <section class="fade-in" id="sec-02">
+      <div class="sec-label">02 ── 伝える人の核</div>
+      <h2>noteに、ずっと同じことが書いてある。<br><span class="accent">「もっと身近に、もっと楽しく」</span>。</h2>
+      <p class="lead-p">さなえさんの掲げるモットーは、いつも変わらない。<strong style="color:var(--cocoa-deep);">「中小企業マーケティングを、もっと身近に、もっと楽しく」</strong>。マーケティングを、難しい横文字の塊にしない。「誰に、何を、なぜ届けるか」へ、ほどいていく人。</p>
+
+      <div class="quote-card">
+        <div class="quote-text">専門用語は、一切いらない。<br>マーケティングは、<strong>「誰に、何を、なぜ届けるか」</strong>。それだけ。</div>
+        <div class="quote-source">── note「中小企業マーケティングをほどく」記事より（73♡）</div>
+      </div>
+
+      <p style="margin-top:20px;">そして、ただ言葉にするだけの人じゃない。<strong style="color:var(--cocoa-deep);">「考えるだけで終わらせない。一緒に手を動かす」</strong> ── これが、さなえさんのスタンス。</p>
+
+      <div class="note-block">
+        <div class="note-row">
+          <div class="note-row-label">📰 やってきたこと</div>
+          <div class="note-row-quote">プレスリリース<strong>40本以上</strong>。note運用代行。上川町のふるさと納税商品開発を<strong>1年半</strong>。「いい商品なのに売れない」を、言葉にして外に出す仕事。</div>
+          <div class="note-row-src">出典：ポートフォリオ・note cocoatoaisu</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━ §3 バズ記事「決めると人生が動く」 ━━━ -->
+    <section class="fade-in" id="sec-03">
+      <div class="sec-label">03 ── 正反対の哲学①</div>
+      <h2>130♡のバズ記事のタイトルは、<br><span class="accent-p">「嫌いな元彼と復縁して、結婚した話」</span>。</h2>
+      <p class="lead-p">さなえさんのnoteで、いちばん読まれた一本。タイトルだけで、もう正反対。「気持ちが重かったから嫌いだった(ひどい)」── この(ひどい)の茶目っ気が、たまらない。<br>その記事に、こんな言葉が並んでいる。</p>
+
+      <div class="quotes-grid">
+        <div class="quote-card berry">
+          <div class="quote-text"><strong>決めると、人生が動く。</strong></div>
+          <div class="quote-source">── note「決めると人生が動く」</div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-text">マイルールを作るのも、崩すのも、自分でできること。作る<strong>「強さ」</strong>と崩す<strong>「しなやかさ」</strong>、2つとも大切にしたい。</div>
+          <div class="quote-source">── 同記事</div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-text">いくつもの<strong>「かも」と「たら」</strong>を重ね、今日があります。</div>
+          <div class="quote-source">── 同記事</div>
+        </div>
+        <div class="quote-card berry">
+          <div class="quote-text">予想外な出来事が多いほど、人生は面白い。<strong>無意識に、自分で「予想外」を選択してるのかも。</strong></div>
+          <div class="quote-source">── 同記事</div>
+        </div>
+      </div>
+
+      <div class="insight" style="margin-top:18px;">
+        <strong>☕ ここが、さなえさんの背骨。</strong>「絶対会わない」と決めた相手と、結婚した。ルールを作るのも、壊すのも、自分。<span class="pink">「予想外」を、自分から選びにいく人</span>。── この一本のnoteに、さなえさんの生き方が、ぜんぶ入っている気がする。
+      </div>
+    </section>
+
+    <!-- ━━━ §4 「正反対」コレクション ━━━ -->
+    <section class="fade-in" id="sec-04">
+      <div class="sec-label">04 ── 正反対の哲学②</div>
+      <h2>スペースで本人が言っていた。<br><span class="accent">「自分が思った、正反対のことをしてみる」</span>。</h2>
+      <p class="lead-p">これ、口で言うのは簡単。でも実際に並べてみると、さなえさんは本当にやっている。ひとつずつ、見ていこう。</p>
+
+      <div class="flip-list">
+        <div class="flip">
+          <div class="flip-side flip-from"><div class="flip-side-label">思っていた</div><div class="flip-side-text">もう絶対、会わない</div></div>
+          <div class="flip-arrow">→</div>
+          <div class="flip-side flip-to"><div class="flip-side-label">選んだ</div><div class="flip-side-text">復縁して、結婚した</div></div>
+        </div>
+        <div class="flip spark">
+          <div class="flip-side flip-from"><div class="flip-side-label">こわい</div><div class="flip-side-text">高いところは、ふつう避ける</div></div>
+          <div class="flip-arrow">→</div>
+          <div class="flip-side flip-to"><div class="flip-side-label">飛んだ</div><div class="flip-side-text">バンジージャンプ、飛んだ（最近）<div class="flip-note">✦ 実は、おけもんも最近飛んだ</div></div></div>
+        </div>
+        <div class="flip">
+          <div class="flip-side flip-from"><div class="flip-side-label">数字の人</div><div class="flip-side-text">財務・簿記・決算の世界</div></div>
+          <div class="flip-arrow">→</div>
+          <div class="flip-side flip-to"><div class="flip-side-label">踊る</div><div class="flip-side-text">ベリーダンス</div></div>
+        </div>
+        <div class="flip">
+          <div class="flip-side flip-from"><div class="flip-side-label">生まれ育ち</div><div class="flip-side-text">京都生まれ、京都育ち</div></div>
+          <div class="flip-arrow">→</div>
+          <div class="flip-side flip-to"><div class="flip-side-label">いま</div><div class="flip-side-text">札幌に住んでいる</div></div>
+        </div>
+      </div>
+
+      <div class="serendipity">
+        <span class="serendipity-tag">✦ SERENDIPITY</span>
+        さなえさんが最近バンジーを飛んで、おけもんも最近バンジーを飛んでいた。<br>
+        打ち合わせたわけでもないのに、同じ時期に、同じ「自分の正反対」を選んでいた人が二人。── <strong>これを偶然と呼ぶには、ちょっと出来すぎている。</strong>「決めると人生が動く」人どうしが、Xスペースで向かい合う。たぶん、そういう縁です。
+      </div>
+    </section>
+
+    <!-- ━━━ §5 自分でAIを触る人 ━━━ -->
+    <section class="fade-in" id="sec-05">
+      <div class="sec-label">05 ── 伴走者の進化形</div>
+      <h2>クライアントが売れるように、<br><span class="accent">自分で、AIを触りはじめた人</span>。</h2>
+      <p class="lead-p">noteの「みのるんと仕組み化PJ」シリーズ（①②③）。AI導入の伴走を受けながら、自分自身の働き方を実験台にしている記録。ここがすごく、正直なんです。</p>
+
+      <div class="note-block">
+        <div class="note-row honest">
+          <div class="note-row-label">🫧 正直すぎる告白</div>
+          <div class="note-row-quote">AIを使えば何とかなると思っていたのに、<strong>仕事は全然ラクになっていなかった。</strong></div>
+          <div class="note-row-src">出典：note「みのるんと仕組み化PJ」</div>
+        </div>
+        <div class="note-row">
+          <div class="note-row-label">💡 気づき</div>
+          <div class="note-row-quote">習慣を守ることが、目的になっていた。仕組み化って、ガチガチに守ることじゃなく、<strong>自分でコントロールできるようにすること。</strong></div>
+          <div class="note-row-src">出典：同シリーズ</div>
+        </div>
+        <div class="note-row client">
+          <div class="note-row-label">🔥 みのるん談・本人の実績の価値</div>
+          <div class="note-row-quote">全部、<strong>具体、具体、具体じゃないですか！</strong>AIには出せない情報ですよ。</div>
+          <div class="note-row-src">出典：同シリーズ（さなえさんの実績の厚みを評された場面）</div>
+        </div>
+      </div>
+
+      <div class="insight" style="margin-top:18px;">
+        <strong>☕ 「相談を受ける」から、「相談を積み上げる」へ。</strong><br>
+        伴走する側の人が、自分でLLMを触って、つまずいて、言葉にして、また進む。クライアントの「売れる」のために、まず自分が実験台になる。── これは、ただのライターでも、ただのマーケターでもない。<strong>伴走者の、進化形</strong>です。
+      </div>
+    </section>
+
+    <!-- ━━━ §6 スペースで光った言葉（プレースホルダ） ━━━ -->
+    <section class="fade-in" id="sec-06">
+      <div class="sec-label">06 ── スペースで光った言葉</div>
+      <h2>2026年6月23日、<span class="accent-p">あの夜の対話</span>から。</h2>
+      <p class="lead-p">1時間6分の「AI・仕事・人生を語る変態対談」。さなえさんが、掛け合いの中でぽろっとこぼした言葉を、いくつか。── これが、いちばん素の、さなえさんです。</p>
+
+      <div class="quotes-grid">
+        <div class="quote-card">
+          <div class="quote-text">論理的の、反対。感情的とか。そういう<strong>両極端のものを、自分の両手で持っておくのが好き</strong>なんですね。</div>
+          <div class="quote-source">── 自分の哲学を語って</div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-text">塩ラーメンって決めたら、<strong>355日 塩ラーメン</strong>食べる。ゴール来たなって思ったら、次の日から一切食べずに、味噌に切り替える。</div>
+          <div class="quote-source">── 極端さを、自分でツッコミながら</div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-text"><strong>3-2-1で、絶対飛ぶ。</strong>1回目で無理だったら、もう一生無理なんですよね。</div>
+          <div class="quote-source">── バンジーで意識したこと</div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-text">Google考えてないで、<strong>どっか行ってみたら。</strong>やったことないこと、やってみたら。</div>
+          <div class="quote-source">── やりたいことがない人へ</div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-text">地域の中小企業さんが元気になると、<strong>日本の活性とか、国力が強くなる</strong>と思ってるので。そこを支援したい。</div>
+          <div class="quote-source">── 仕事の、芯</div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-text">（AIは）<strong>自分が使うっていう観点が、あんまない</strong>んですよね。全部、クライアントさんのため。</div>
+          <div class="quote-source">── 伴走者としての、姿勢</div>
+        </div>
+      </div>
+      <div class="quote-foot">出典：2026.06.23 Xスペース「AI・仕事・人生を語る変態対談」（おけもん × さなえ）より。聞き取りに基づく要約引用。</div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ━━━━━ コンテナ② §7〜§11 ━━━━━ -->
+<div class="container second">
+  <div class="body">
+
+    <!-- ━━━ §7 おやつで怒る、かわいい人 ━━━ -->
+    <section class="fade-in" id="sec-07">
+      <div class="sec-label">07 ── 人間味</div>
+      <h2>「お菓子は正義」の人が、<br><span class="accent-p">おやつを勝手に食べられて、怒る</span>。</h2>
+      <p class="lead-p">スペースで出た、最高にかわいいエピソード。お菓子をこよなく愛するさなえさんは、<strong style="color:var(--berry);">自分のおやつを勝手に食べられると、ちゃんと怒る</strong>。── そう、正義は、奪われると怒っていい。</p>
+
+      <div class="oyatsu">
+        スペースで聞いた、本人の口から出た、たぶんいちばんかわいい言葉：<br>
+        <strong>「楽しみにしてたおやつを、食べられた。最後の一口、食べられた。私が食べようと思ってたのに……」</strong><br>
+        ── 怒るときはちっちゃいことで、家族に対して、ぐらい。それ以外で怒ったところを、たぶん誰も見たことがない。
+      </div>
+      <div class="oyatsu" style="margin-top:14px;">
+        note「仕組み化PJ③」にも、関連する"あるある"が。<br>
+        <strong>「夫の帰宅時間を逆算して家事を組んでるのに、連絡なしで早く/遅くなるとモヤッとする(あるあるですよね？)」</strong>。<br>
+        ── 計画を立てる人ほど、予定が崩されるとモヤッとする。財務の人らしい、几帳面さの裏返し。この(あるあるですよね？)の同意の求め方が、また人間くさい。
+      </div>
+
+      <p style="margin-top:22px;">そして、お菓子といえば、ポートフォリオに堂々と書いてある伝説がある。</p>
+
+      <div class="feat-grid">
+        <div class="feat">
+          <div class="feat-num">195<span class="feat-unit">杯</span></div>
+          <div class="feat-label">わんこ蕎麦・40分</div>
+        </div>
+        <div class="feat">
+          <div class="feat-num">17<span class="feat-unit">個</span></div>
+          <div class="feat-label">ドーナツ・60分</div>
+        </div>
+      </div>
+
+      <p style="margin-top:18px;">財務で数字を冷静に見る人が、わんこ蕎麦は195杯いく。このギャップ。<br>
+      「お菓子は正義」を掲げ、おやつを取られたら怒り、大食い記録を持つ。── 取扱説明書に書いておくべき、いちばん大事な注意事項かもしれない。<strong style="color:var(--cocoa-deep);">さなえさんのおやつには、手を出さないこと。</strong></p>
+    </section>
+
+    <!-- ━━━ §8 京都→札幌の道のり ━━━ -->
+    <section class="fade-in" id="sec-08">
+      <div class="sec-label">08 ── 数字とお菓子を持って</div>
+      <h2>京都から札幌まで。<br><span class="accent">数字と、お菓子を、両手に持って</span>。</h2>
+      <p class="lead-p">さなえさんが、いまの「中小企業マーケティングの人」になるまでの道。一本道じゃない。でも、ぜんぶ繋がっている。</p>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-when">学生時代</div>
+          <div class="tl-what">同志社大学 法学部 法律学科 卒</div>
+        </div>
+        <div class="tl-item hl">
+          <div class="tl-when">財務 ── 5年4ヶ月</div>
+          <div class="tl-what">都内ホテル運営会社で <strong>財務会計・管理会計・決算・監査・株主対応</strong>。</div>
+          <div class="tl-note">最年少で管理職試験に抜擢。最高水準で合格。そして業務量の半減を実現した。── 数字も、しくみも、結果で示した人。</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-when">現場 ── 半年</div>
+          <div class="tl-what">ホテル現場（フロント・販売・レストラン）。机の上の数字だけじゃなく、売る現場にも立った。</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-when">医療事務</div>
+          <div class="tl-what">訪問看護ステーションで医療事務。</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-when">資格</div>
+          <div class="tl-what"><strong>日商簿記2級</strong>・ITパスポート。ゼロフラ9期。</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-when">気づき</div>
+          <div class="tl-what">観光業の現場で、「これは<strong>一過性</strong>だ」と気づく。</div>
+          <div class="tl-note">スペースで本人が語った言葉：「地域を長期的に盛り上げるには、観光業だけじゃ足りない。地域の中小企業が元気になることが、いちばん効く」── 仕事のいまの軸が、ここで生まれた。</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-when">ライターへの転身</div>
+          <div class="tl-what">マーケ一本で行く予定が、<strong>「価値が伝わるのに時間がかかる」</strong>と感じる。</div>
+          <div class="tl-note">目に見える価値＝記事を書くスキルを身につけるためにライターに。── 意外なことに本人いわく「もともと書くの、好きじゃなかった」。それでも、必要だと判断したから踏み込んだ。"作る強さと崩すしなやかさ"の、実例。</div>
+        </div>
+        <div class="tl-item hl">
+          <div class="tl-when">いま</div>
+          <div class="tl-what">京都生まれ・京都育ち → <strong>札幌在住</strong>。中小企業マーケティング × ライティングの人へ。</div>
+          <div class="tl-note">「なぜ商品が売れるのか・人はなぜ働くのか・なぜ生きるのか」── その問いが、地方活性化、そして中小企業支援へと、さなえさんを運んできた。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━ §9 作る強さと、崩すしなやかさ ━━━ -->
+    <section class="fade-in" id="sec-09">
+      <div class="sec-label">09 ── あなたの真ん中にあるもの</div>
+      <h2>ココア（温）と、アイス（冷）。<br>その正体は、<span class="accent">この二つの両立</span>でした。</h2>
+      <p class="lead-p">§01で、ココアとアイスの話をした。最後に、その正体を言葉にしておきたい。さなえさん自身が、バズ記事で書いていた、あの一節がそのまま答えになる。</p>
+
+      <div class="spine">
+        <div class="spine-side spine-cocoa">
+          <div class="spine-label">☕ 作る「強さ」</div>
+          <div class="spine-word">マイルールを<br>作る強さ</div>
+          <div class="spine-body">財務5年。簿記2級。決算も監査も。計画を立て、しくみを作り、コツコツ積む。── これが、ココアの温度。守る側の力。</div>
+        </div>
+        <div class="spine-mid">＋</div>
+        <div class="spine-side spine-ice">
+          <div class="spine-label">🍨 崩す「しなやかさ」</div>
+          <div class="spine-word">マイルールを<br>崩すしなやかさ</div>
+          <div class="spine-body">「絶対会わない」を覆す。バンジーを飛ぶ。財務の人が踊る。予想外を、自分から選ぶ。── これが、アイスの温度。動く側の力。</div>
+        </div>
+      </div>
+
+      <div class="spine-quote">
+        「作る<strong>『強さ』</strong>と崩す<strong>『しなやかさ』</strong>、2つとも大切にしたい」<br>
+        ── この一文を書ける人は、両方を、ちゃんと自分の中に持っている人だけ。さなえさんの真ん中には、これがある。
+      </div>
+    </section>
+
+    <!-- ━━━ §10 テーマソング ━━━ -->
+    <section class="fade-in" id="sec-10">
+      <div class="sec-label">10 ── テーマソング</div>
+      <h2>スペース当日のために、<span class="accent-p">一曲、作りました</span>。</h2>
+      <p class="lead-p">『ココアとアイス、並んで歩こう』。さなえさんとの対談のために、おけもんが作ったテーマソングです。歌詞には、ここまで出てきた素材を、こっそり全部、仕込んであります。</p>
+
+      <div class="song">
+        <div class="song-title">♪ ココアとアイス、並んで歩こう</div>
+        <div class="song-by">music for SANAE ── by おけもん</div>
+        <audio id="theme-audio" controls preload="none" src="THEME_SONG_MP3_URL" style="width:100%; max-width:560px; margin:16px auto 8px; display:block;">
+          お使いのブラウザは audio 要素に対応していません。
+        </audio>
+        <div class="song-note">※ 音源ファイルは、おけもんから個別にお届けします。下の歌詞を眺めながら、お待ちください🎵</div>
+
+        <div class="song-seeds">
+          <div class="song-seeds-label">🍫 歌詞に仕込んだ、種明かし</div>
+          <ul>
+            <li><strong>ココアとアイス</strong> ── アカウント名 cocoatoaisu。温と冷、両方持ってるあなた</li>
+            <li><strong>論理と感情 両手に持って</strong> ── スペースで本人が言った哲学の核心</li>
+            <li><strong>塩ラーメン 三百五十五日</strong> ── スペースで本人が爆笑しながら自分でツッコんでた、極端さの実例</li>
+            <li><strong>3、2、1で 飛んだ</strong> ── バンジーで本人が意識した「絶対飛ぶ」の声</li>
+            <li><strong>会うはずのない街で／ばったり 二度見した</strong> ── 東京飲み会で偶然再会した、あの夜のセレンディピティ</li>
+            <li><strong>決めると 人生が動く</strong> ── バズ記事「嫌いな元彼と復縁して結婚した話」の核フレーズ</li>
+            <li><strong>お菓子は 正義／あなたも 正義</strong> ── そのまんま、最後に</li>
+          </ul>
+        </div>
+
+        <details class="lyrics" open>
+          <summary>📜 歌詞を全部ひらく</summary>
+          <div class="lyrics-body">
+            <div class="lblock"><div class="ltag">[Intro]</div><div class="lline">ココアとアイス<br>ココアとアイス</div></div>
+            <div class="lblock"><div class="ltag">[Verse 1]</div><div class="lline">京都の街から 雪の街へ<br>「いい商品なのに」って ため息<br>聞かせて 急がなくていい<br>答えは あなたの中</div></div>
+            <div class="lblock"><div class="ltag">[Pre-Chorus]</div><div class="lline">会うはずのない街で<br>ばったり 二度見した</div></div>
+            <div class="lblock"><div class="ltag">[Chorus]</div><div class="lline">ココアとアイス 並んで歩こう<br>温かい甘さも 冷たい甘さも<br>正義はそれぞれ ちゃんとある<br>となりにいるよ ずっと</div></div>
+            <div class="lblock"><div class="ltag">[Verse 2]</div><div class="lline">論理と感情 両手に持って<br>こっちへ ゆらり あっちへ ゆらり<br>塩ラーメン 三百五十五日<br>決めたら まっすぐ いく人</div></div>
+            <div class="lblock"><div class="ltag">[Pre-Chorus]</div><div class="lline">決めると 人生が動く<br>タイミングは ほんとうにいる</div></div>
+            <div class="lblock"><div class="ltag">[Chorus]</div><div class="lline">ココアとアイス 並んで歩こう<br>強みを言葉に 一緒に並べよう<br>ベリーダンスみたいに<br>ゆれて 自由に</div></div>
+            <div class="lblock"><div class="ltag">[Bridge]</div><div class="lline">飛べるか どうか 知りたくて<br>3、2、1で 飛んだ<br>正反対を 選ぶたびに<br>世界が ひらいていく</div></div>
+            <div class="lblock"><div class="ltag">[Chorus]</div><div class="lline">ココアとアイス 並んで歩こう<br>温かい甘さも 冷たい甘さも<br>正義はそれぞれ ちゃんとある<br>となりにいるよ ずっと</div></div>
+            <div class="lblock"><div class="ltag">[Outro]</div><div class="lline">お菓子は 正義<br>あなたも 正義<br>ココアとアイス</div></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ━━━ §11 あなたへの手紙 ━━━ -->
+    <section class="fade-in" id="sec-11">
+      <div class="sec-label">11 ── お仕事の相談</div>
+      <h2>さなえさんに会いたくなったら、<br><span class="accent">こちらから。</span></h2>
+
+      <p class="lead-p"><strong style="color:var(--cocoa-deep);">中小企業マーケティング、商品開発、販促、発信。</strong><br>
+      「いい商品なのに売れない」を、一緒に言葉にしてくれる人。<br>
+      自分の強みが言葉にならず、止まっている人。<br>
+      専門用語じゃなく、現場で手を動かしてくれる人を探している人。── そんな方は、ぜひ。</p>
+
+      <div class="contact-grid">
+        <a class="contact-card" href="https://x.com/sanana_belly" target="_blank" rel="noopener">
+          <div class="contact-icon">𝕏</div>
+          <div class="contact-label">X（旧Twitter）</div>
+          <div class="contact-handle">@sanana_belly</div>
+          <div class="contact-note">日々の発信／DMで気軽に</div>
+        </a>
+        <a class="contact-card" href="https://note.com/cocoatoaisu" target="_blank" rel="noopener">
+          <div class="contact-icon">📓</div>
+          <div class="contact-label">note</div>
+          <div class="contact-handle">cocoatoaisu</div>
+          <div class="contact-note">仕事観・伴走事例・ポートフォリオ</div>
+        </a>
+        <a class="contact-card" href="mailto:sne.yamamura@gmail.com">
+          <div class="contact-icon">✉</div>
+          <div class="contact-label">メール</div>
+          <div class="contact-handle">sne.yamamura@gmail.com</div>
+          <div class="contact-note">正式な相談・お見積もり</div>
+        </a>
+      </div>
+
+      <div class="fit-block">
+        <div class="fit-head">こんな相談、向いています</div>
+        <ul class="fit-list">
+          <li><strong>「いい商品なのに売れない」</strong>と感じている中小企業経営者・地方事業者・個人事業主の方</li>
+          <li>自分の<strong>強みを言葉に</strong>できず、発信が止まっている方</li>
+          <li>専門用語の解説じゃなく、<strong>現場で実行できる言葉</strong>に落とし込みたい方</li>
+          <li>地方発の事業を、<strong>長期的に・じっくり</strong>育てていきたい方</li>
+          <li>商品開発・販促・発信を、<strong>一緒に手を動かしながら</strong>進めてほしい方</li>
+        </ul>
+      </div>
+
+      <p class="hand-off"><strong>気に入ったら、この取説をそのまま、お仕事候補の人に渡してみてください。</strong><br>
+      ── ココアとアイスを並んで持っている人を探している、誰かの目に、届きますように。</p>
+
+      <div class="okemon-footnote">
+        ※ このページは、おけもんが2026年6月23日のXスペース「AI・仕事・人生を語る変態対談」の感謝として、さなえさんの公開情報（note・ポートフォリオ・スペースの対話）から、勝手に編んだ取扱説明書です。
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ━━━ FOOTER ━━━ -->
+  <div class="footer">
+    <span class="footer-mark">☕ ♡ 🍨</span>
+    この取扱説明書は、<strong>さなえさんが「正反対」を選びながら歩いてきたことの、ちいさな記念碑</strong>です。<br>
+    温かい甘さも、冷たい甘さも、正義はそれぞれ、ちゃんとある。<br><br>
+    <strong>For SANAE ── from おけもん</strong>
+    <div class="footer-meta">2026.06.23 Xスペース記念 ── 一冊だけの、あなたの取扱説明書</div>
+  </div>
+
+</div>
+
+<script>
+  // フェードイン
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-in').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) el.classList.add('is-visible');
+    else io.observe(el);
+  });
+
+  // 目次の現在地ハイライト
+  const tocLinks = document.querySelectorAll('.toc a[data-target], .toc-mobile a[data-target]');
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  let ticking = false;
+  function highlight() {
+    const scrollY = window.scrollY + 140;
+    let active = sections[0];
+    sections.forEach(s => { if (s.offsetTop <= scrollY) active = s; });
+    if (active) tocLinks.forEach(a => a.classList.toggle('active', a.dataset.target === active.id));
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(highlight); ticking = true; }
+  });
+  highlight();
+
+  // SPで目次内リンクをタップしたら目次を畳む
+  document.querySelectorAll('.toc-mobile a[data-target]').forEach(a => {
+    a.addEventListener('click', () => {
+      const m = document.querySelector('.toc-mobile');
+      if (m) m.removeAttribute('open');
+    });
+  });
+</script>
+
+</body>
+</html>
