@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>面談メモ、まだ手で書いてる？AIで一気通貫化のすすめ｜おけもん</title>
+<!--
+おけもん 汎用提案資料（営業/お茶会/ノウハウ図書館向け）
+派生元：g-JUGgv8tjgh4_x27V（泉田さん向け窪田さん案件説明）
+想定読者：保険営業／コーチング／コンサル／法務／不動産／士業／オンライン秘書等、
+        「面談メモを手作業で書いている」全ての職種
+公開度：限定共有（noindex・推測不可URL・リンク共有のみ）
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f4ee; --paper:#ffffff; --ink:#26221c; --sub:#6d6358; --line:#e7ddca;
+  --ai:#2c5f7c; --ai-deep:#1a4258; --ai-light:#e6eef3; --ai-soft:#f2f7fa;
+  --akane:#c4622d; --akane-light:#fbeadf;
+  --raw:#8a8175; --raw-bg:#f0ece4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",sans-serif;font-size:15.5px;line-height:1.9;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 80px}
+h1,h2,h3{font-family:"Noto Serif JP",serif;letter-spacing:.02em}
+strong{background:linear-gradient(transparent 62%, #fde6b8 62%);font-weight:700}
+
+.hero{text-align:center;padding:54px 22px 40px;background:linear-gradient(160deg,#fbfaf6 0%,#eef3f5 100%);border-bottom:1px solid var(--line)}
+.hero .eyebrow{display:inline-block;font-size:12.5px;font-weight:700;color:var(--ai);letter-spacing:.16em;border:1px solid var(--ai);border-radius:999px;padding:4px 15px;margin-bottom:20px;background:#fff}
+.hero h1{font-size:26px;line-height:1.5;margin:0 0 14px;color:var(--ink)}
+.hero h1 .em{color:var(--ai-deep)}
+.hero p{font-size:15px;color:var(--sub);margin:0;max-width:540px;margin-inline:auto}
+
+.flow{display:flex;align-items:stretch;gap:0;margin:34px auto 6px;max-width:680px;flex-wrap:wrap;justify-content:center}
+.step{flex:1;min-width:150px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+.step .n{font-size:12px;font-weight:700;color:var(--akane);letter-spacing:.1em}
+.step .ic{font-size:30px;margin:6px 0 4px;display:block}
+.step .t{font-weight:700;font-size:14.5px;margin-bottom:3px}
+.step .d{font-size:12.5px;color:var(--sub);line-height:1.6}
+.arrow{display:flex;align-items:center;justify-content:center;color:var(--akane);font-size:24px;font-weight:700;padding:0 4px}
+@media(max-width:560px){.flow{flex-direction:column;align-items:stretch}.arrow{transform:rotate(90deg);padding:2px 0}}
+
+section{margin-top:46px}
+.label{display:inline-block;font-size:13px;font-weight:700;color:var(--ai);background:var(--ai-light);border-radius:8px;padding:3px 12px;margin-bottom:14px}
+.sec-title{font-size:20px;margin:0 0 8px}
+.sec-lead{font-size:14px;color:var(--sub);margin:0 0 18px}
+
+.ba{display:grid;grid-template-columns:1fr;gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 2px 14px rgba(60,50,30,.05)}
+.card .cap{font-size:12.5px;font-weight:700;padding:9px 16px;border-bottom:1px solid var(--line)}
+.card.before .cap{background:var(--raw-bg);color:var(--raw)}
+.card.after .cap{background:var(--ai-soft);color:var(--ai-deep)}
+.card .body{padding:16px 18px}
+.raw-text{font-size:13px;color:var(--raw);line-height:1.85}
+.raw-text .miss{color:#b8442d;font-weight:700;border-bottom:2px dotted #d99}
+.convert{text-align:center;color:var(--akane);font-size:13px;font-weight:700;margin:2px 0 -2px}
+
+.memo h3{font-size:16px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--ai-light);color:var(--ai-deep)}
+.memo table.meta{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 18px}
+.memo table.meta th{text-align:left;width:78px;color:var(--sub);font-weight:700;padding:5px 8px 5px 0;vertical-align:top;white-space:nowrap}
+.memo table.meta td{padding:5px 0;vertical-align:top}
+.memo .blk{margin:0 0 16px}
+.memo .blk .h{font-weight:700;font-size:14px;color:var(--ai-deep);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.memo .blk .h::before{content:"";width:4px;height:15px;background:var(--ai);border-radius:2px;display:inline-block}
+.memo ol,.memo ul{margin:4px 0 0;padding-left:22px}
+.memo li{margin-bottom:5px;font-size:13.8px}
+.memo .todo{width:100%;border-collapse:collapse;font-size:13.2px;border:1px solid var(--line)}
+.memo .todo th{background:var(--ai-soft);color:var(--ai-deep);font-weight:700;padding:7px 10px;text-align:left;font-size:12.5px}
+.memo .todo td{padding:7px 10px;border-top:1px solid var(--line)}
+.memo .todo td:first-child{font-weight:700;white-space:nowrap;color:var(--ink)}
+
+.variants{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:560px){.variants{grid-template-columns:1fr}}
+.variant{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:15px}
+.variant .vt{font-weight:700;font-size:14px;color:var(--ai-deep);margin-bottom:8px;display:flex;gap:7px;align-items:center}
+.variant .vt .e{font-size:18px}
+.variant .vd{font-size:12.5px;color:var(--sub);line-height:1.7}
+
+.note{background:var(--akane-light);border:1px solid #eccaaf;border-radius:14px;padding:18px 20px;margin-top:34px}
+.note .nh{font-weight:700;color:var(--akane);font-size:15px;margin:0 0 7px;display:flex;gap:8px;align-items:center}
+.note p{margin:0;font-size:14px;color:#5c4632;line-height:1.85}
+
+/* チャット風モック */
+.chat{background:#f3eee5;border:1px solid var(--line);border-radius:18px;padding:22px 18px 24px;max-width:600px;margin:0 auto}
+.chat .head{font-size:11.5px;color:#a8997f;letter-spacing:.12em;font-weight:700;text-align:center;margin-bottom:14px}
+.bubble{max-width:82%;padding:11px 15px;border-radius:18px;font-size:14px;line-height:1.7;margin-bottom:10px;position:relative;white-space:pre-wrap}
+.bubble.me{background:#ffe2c4;color:#5c3a1e;margin-left:auto;border-bottom-right-radius:5px}
+.bubble.ai{background:#fff;color:var(--ink);border:1px solid var(--line);border-bottom-left-radius:5px}
+.bubble.ai .nm{font-size:11.5px;font-weight:700;color:var(--ai);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.bubble.ai .nm::before{content:"🤖"}
+.bubble .log{background:#f7f4ee;border-radius:8px;padding:8px 11px;font-size:12px;color:var(--sub);margin:6px 0;font-family:"SF Mono","Menlo","Courier New",monospace;line-height:1.65}
+.bubble .log .ok{color:#5b8a4a;font-weight:700}
+.bubble .file{display:inline-flex;align-items:center;gap:6px;background:var(--ai-soft);border:1px solid var(--ai-light);padding:6px 11px;border-radius:8px;font-size:12.5px;color:var(--ai-deep);font-weight:700;margin-top:6px}
+.typing{display:inline-flex;gap:4px;align-items:center;color:var(--sub);font-size:12px;margin-top:4px}
+.typing .dot{width:6px;height:6px;background:var(--ai);border-radius:50%;animation:bo 1.2s infinite}
+.typing .dot:nth-child(2){animation-delay:.15s}.typing .dot:nth-child(3){animation-delay:.3s}
+@keyframes bo{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+
+/* 困りごとチェックリスト */
+.troubles{background:linear-gradient(180deg,#fef5eb 0%,#fdf0e0 100%);border:1px solid #f0d8b8;border-radius:18px;padding:24px 22px 22px;margin-top:6px}
+.troubles .th{font-size:18px;font-weight:700;color:#7a3a1a;text-align:center;margin:0 0 4px;letter-spacing:.02em;font-family:"Noto Serif JP",serif}
+.troubles .ts{font-size:13px;color:#9c7050;text-align:center;margin:0 0 18px}
+.troubles ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:560px){.troubles ul{grid-template-columns:1fr 1fr}}
+.troubles li{background:#fff;border:1px solid #f0d8b8;border-radius:10px;padding:10px 12px 10px 36px;font-size:13.5px;line-height:1.65;color:#3a2a1a;position:relative}
+.troubles li::before{content:"☑";position:absolute;left:11px;top:9px;color:#c4622d;font-size:18px;font-weight:700}
+.troubles li b{color:#b85b1a}
+.troubles .answer{margin-top:18px;text-align:center;padding:14px 12px;background:#fff;border-radius:12px;border:2px solid #c4622d;color:#7a3a1a;font-size:15px;font-weight:700;line-height:1.6}
+.troubles .answer .em{color:#c4622d;background:linear-gradient(transparent 62%, #ffd9a8 62%);padding:0 4px}
+
+/* 価格表 */
+.price-table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 2px 14px rgba(60,50,30,.05);margin-top:6px}
+.price-table th{background:var(--ai-soft);color:var(--ai-deep);font-weight:700;padding:10px 12px;text-align:left;font-size:12.5px;border-bottom:1px solid var(--ai-light)}
+.price-table td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:middle}
+.price-table td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--ai-deep);white-space:nowrap}
+.price-table tr.hl td{background:#fff8e8}
+.price-table tr.hl td.num{color:#b85b1a}
+.price-table .pill{display:inline-block;font-size:11px;padding:1.5px 7px;border-radius:999px;background:var(--ai-light);color:var(--ai-deep);margin-left:5px;font-weight:700}
+.price-table .pill.warn{background:#fde0e6;color:#b8344a}
+
+/* 構成比較 */
+.combo{width:100%;border-collapse:collapse;font-size:13.2px;background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:6px}
+.combo th{background:#f3eee5;color:#5c3a1e;font-weight:700;padding:10px 12px;text-align:left;font-size:12.5px;border-bottom:1px solid var(--line)}
+.combo td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+.combo .label-row{font-weight:700;font-size:13.5px;color:var(--ink)}
+.combo .price{font-weight:900;color:var(--ai-deep);white-space:nowrap;font-variant-numeric:tabular-nums;font-size:14px}
+.combo .manual-x{color:#b8344a;font-weight:700}
+.combo .manual-ok{color:#5b8a4a;font-weight:700}
+.combo tr.best{background:#fff8e8}
+.combo tr.best .price{color:#b85b1a}
+.combo tr.now td{background:#faf0ea}
+.combo .tag{display:inline-block;font-size:11px;padding:1.5px 8px;border-radius:999px;font-weight:700;margin-right:4px}
+.combo .tag.now{background:#f0ddd0;color:#7a3a1a}
+.combo .tag.best{background:#ffe2c4;color:#b85b1a}
+
+/* フローチャート */
+.flowchart{background:#fbfaf6;border:1px solid var(--line);border-radius:18px;padding:24px 18px 28px;margin-top:6px}
+.fc-title{text-align:center;font-size:12.5px;color:var(--ai);letter-spacing:.12em;font-weight:700;margin-bottom:18px}
+.fc-start{background:var(--ink);color:#fff;border-radius:999px;padding:9px 22px;font-size:13.5px;font-weight:700;display:inline-block;margin:0 auto 12px;text-align:center}
+.fc-center{text-align:center}
+.fc-arrow{color:var(--akane);font-size:22px;font-weight:700;line-height:1;margin:6px 0}
+.fc-q{background:var(--paper);border:2px solid var(--ai);border-radius:14px;padding:13px 18px;font-size:14px;font-weight:700;color:var(--ai-deep);display:inline-block;max-width:96%;text-align:center;line-height:1.5}
+.fc-q .qmark{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;background:var(--ai);color:#fff;border-radius:50%;font-size:13px;margin-right:7px}
+.fc-branch{display:flex;justify-content:center;gap:14px;margin-top:12px;flex-wrap:wrap}
+.fc-branch.split{align-items:flex-start}
+.fc-col{flex:1;min-width:240px;max-width:340px;display:flex;flex-direction:column;align-items:center}
+.fc-label{font-size:12px;font-weight:700;padding:3px 12px;border-radius:999px;margin-bottom:6px}
+.fc-label.yes{background:#e0f0d6;color:#3d6b28}
+.fc-label.no{background:#fde0e6;color:#8a2a3a}
+.fc-label.fast{background:#fff1d2;color:#7a4a0d}
+.fc-label.slow{background:#e6eef3;color:var(--ai-deep)}
+.fc-result{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px;width:100%;text-align:left}
+.fc-result.best{border-color:#e0a96d;background:#fff8e8;box-shadow:0 4px 18px rgba(184,91,26,.12)}
+.fc-result .rt{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.fc-result.best .rt::before{content:"★";color:#b85b1a;font-size:15px}
+.fc-result .rd{font-size:12.5px;color:var(--sub);line-height:1.7;margin-bottom:8px}
+.fc-result .rprice{font-weight:900;color:var(--ai-deep);font-size:15px;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:6px}
+.fc-result.best .rprice{color:#b85b1a}
+.fc-result .rprice .lbl{font-size:11px;color:var(--sub);font-weight:700;letter-spacing:.06em}
+
+.close{background:var(--ai-soft);border-radius:16px;padding:22px;margin-top:34px;text-align:center;border:1px solid var(--ai-light)}
+.close p{margin:0;font-size:14.5px;color:var(--ai-deep);font-weight:500;line-height:1.85}
+.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--sub);line-height:1.7}
+
+.fade{opacity:0;transform:translateY(14px);animation:fi .7s forwards}
+@keyframes fi{to{opacity:1;transform:none}}
+.d1{animation-delay:.1s}.d2{animation-delay:.25s}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="eyebrow fade">面談メモを"書く時間"を、もう捨てよう</span>
+  <h1 class="fade d1">面談メモ、まだ<span class="em">手で書いてますか？</span><br>AIで一気通貫化のすすめ</h1>
+  <p class="fade d2">録画さえあれば、あとはAIに「会社指定の型でメモ作って」と一言。<br>文字起こしも整形もAIが全部やる。手作業はゼロになります。</p>
+</div>
+
+<div class="wrap">
+
+  <div class="flow fade d2">
+    <div class="step"><div class="n">STEP 1</div><span class="ic">🎥</span><div class="t">録画</div><div class="d">Google Meet / Zoom<br>いつもの面談を録るだけ</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">STEP 2</div><span class="ic">💬</span><div class="t">話しかける</div><div class="d">Claude Codeに<br>「メモ作って」</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">STEP 3</div><span class="ic">✨</span><div class="t">出てくる</div><div class="d">会社指定の型で<br>面談メモが完成</div></div>
+  </div>
+
+  <section>
+    <span class="label">こんな心当たり、ありませんか？</span>
+    <h2 class="sec-title">面談業務の&ldquo;あるある&rdquo;</h2>
+    <p class="sec-lead">保険営業・コンサル・コーチング・オンライン秘書 etc. お客様との面談を生業にしている人なら、たぶん全部知ってる悩み👇</p>
+
+    <div class="troubles">
+      <p class="th">☕ 面談メモ、こんな状態になってませんか？</p>
+      <p class="ts">— ひとつでも当てはまったら、もう手作業はやめてOKです —</p>
+      <ul>
+        <li>面談が終わってから議事録を書くのに、毎回 <b>1〜2時間</b> 取られている</li>
+        <li>NottaやAI議事録の要約は出るけど、結局 <b>会社指定の型に整え直して</b>いる</li>
+        <li>面談中、メモを取るのに必死で <b>お客様の話に集中できない</b></li>
+        <li>「あの時お客様、何て言ってたっけ…」と <b>後から思い出せない</b></li>
+        <li>録画は取ってるけど、後で見返す時間がないまま <b>溜まっていく一方</b></li>
+        <li>営業フィードバックや次回提案が、議事録待ちで <b>翌日以降にずれ込む</b></li>
+        <li>録画・文字起こし・要約・メモ清書…<b>ツールが多くて月額もバラバラ</b></li>
+        <li>AIに任せたい気持ちはあるけど、<b>何から始めればいいかわからない</b></li>
+      </ul>
+      <div class="answer">
+        ✨ ここから先のページは、その<span class="em">"全部"</span>をAIに任せる方法と、<span class="em">月額いくらでできるか</span>のレシピです。
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">実際の操作イメージ</span>
+    <h2 class="sec-title">こんな感じで&ldquo;話しかけるだけ&rdquo;</h2>
+    <p class="sec-lead">普段こんなノリでAIに頼んでいます。文章で言うだけで、AI側がDrive・録画・文字起こしを順にたぐって、最後に面談メモを出してくれます。</p>
+
+    <div class="chat">
+      <div class="head">— Claude Code チャット欄 —</div>
+
+      <div class="bubble me">昨日のA様との面談録画から、会社指定の型で面談メモ作って</div>
+
+      <div class="bubble ai">
+        <div class="nm">Claude Code</div>
+        了解！録画を取りに行きます🎥
+        <div class="log">
+          <span class="ok">✔</span> Google Drive を検索中...<br>
+          <span class="ok">✔</span> 録画ファイル発見：「お客様面談（A様）」<br>
+          <span class="ok">✔</span> 文字起こしデータを取得（45分・8,400文字）<br>
+          <span class="ok">✔</span> 会社指定フォーマットに整形中...
+        </div>
+        できました！下のメモをご確認ください👇
+        <div class="file">📎 面談メモ_A様_YYYY-MM-DD.md</div>
+      </div>
+
+      <div class="bubble me">ありがと！A様向けのお礼メール下書きと、上司への報告サマリも</div>
+
+      <div class="bubble ai">
+        <div class="nm">Claude Code</div>
+        了解です。お礼メールは関心トピックを拾って次回提案に繋げる流れで、報告サマリは決定事項とアクションだけ抜粋して書きますね✍️
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">出力サンプル</span>
+    <h2 class="sec-title">文字起こしの&ldquo;生データ&rdquo; → 面談メモ</h2>
+    <p class="sec-lead">下の例は、実際の60分面談の録画を自動処理した結果です（業界・固有名詞は伏せて再構成しています）。</p>
+
+    <div class="ba">
+      <div class="card before">
+        <div class="cap">BEFORE ── 録画から起こした生テキスト（音声認識ナマ）</div>
+        <div class="body">
+          <p class="raw-text">…とりあえず<span class="miss">脳子</span>に全部乗ってるよっていう状態には持っていきたいんやろうね。<span class="miss">ノートブックエレム</span>に聞いてねっていうのも、それが何なのか分からない。<span class="miss">サットワーク</span>の概要に置いてるよってことも、みんなわかってないんじゃないかな…</p>
+          <p class="raw-text" style="margin-top:10px;font-size:12px;color:#a89c8c">※ <b>脳子</b>＝Notion／<b>ノートブックエレム</b>＝NotebookLM／<b>サットワーク</b>＝Chatwork。固有名詞は音声認識でこのくらい崩れます（どの文字起こしツールでも同程度）。整形時にClaude Codeが文脈で補正します。</p>
+        </div>
+      </div>
+
+      <div class="convert">▼ Claude Codeで整形 ▼</div>
+
+      <div class="card after">
+        <div class="cap">AFTER ── 会社指定フォーマットに整形した面談メモ</div>
+        <div class="body memo">
+          <h3>面談メモ｜A様 初回ヒアリング</h3>
+          <table class="meta">
+            <tr><th>日時</th><td>YYYY年M月D日（X）HH:MM〜（45分）</td></tr>
+            <tr><th>形式</th><td>オンライン（録画あり）</td></tr>
+            <tr><th>参加者</th><td>A様／弊社担当</td></tr>
+            <tr><th>目的</th><td>ご家族構成・現状把握と次回ご提案範囲のすり合わせ</td></tr>
+          </table>
+
+          <div class="blk">
+            <div class="h">ヒアリング内容</div>
+            <ul>
+              <li>ご家族構成：夫婦＋お子様2名（小学生）／お住まい賃貸／お勤め先勤続8年</li>
+              <li>現在のご加入：医療系1本のみ。死亡保障・就業不能・教育資金の検討は未着手</li>
+              <li>ご関心事項：①万一の生活費保障 ②お子様の教育費 ③老後資金の3本柱で整理希望</li>
+              <li>気がかり：保険料の総額が見えづらく、家計内のバランスが不安</li>
+            </ul>
+          </div>
+
+          <div class="blk">
+            <div class="h">決定事項・方向性</div>
+            <ol>
+              <li>次回までに「家計から無理のない範囲」でのご提案プランを2案準備</li>
+              <li>教育費は学資保険＋つみたて系の併用検討、死亡保障は収入保障型で見積もり</li>
+              <li>奥様にも同席いただきたいとのご希望→次回は土曜午前で日程調整</li>
+              <li>会社規程：個人情報持ち出し不可のため、必要書類はオンライン提示で対応</li>
+            </ol>
+          </div>
+
+          <div class="blk">
+            <div class="h">次回アクション</div>
+            <table class="todo">
+              <tr><th>担当</th><th>アクション</th><th>期限</th></tr>
+              <tr><td>担当</td><td>2プランのご提案資料作成（家計シミュレーション付き）</td><td>次回前日</td></tr>
+              <tr><td>担当</td><td>土曜午前の候補日3つをメールで送付（奥様同席）</td><td>本日中</td></tr>
+              <tr><td>A様</td><td>直近の家計支出概算（住居費・教育費・通信費等）をご共有</td><td>次回まで</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">ここが大事</span>
+    <h2 class="sec-title">出力の様式は、如何様にも調整できます</h2>
+    <p class="sec-lead">上はあくまで一例です。会社で決まっている型・項目に合わせて、いくらでも形を変えられます。</p>
+    <div class="variants">
+      <div class="variant">
+        <div class="vt"><span class="e">📋</span>会社指定テンプレ型</div>
+        <div class="vd">「面談日／対応者／相談内容／提案／次回アクション」など、御社の決まった項目にそのまま流し込み。</div>
+      </div>
+      <div class="variant">
+        <div class="vt"><span class="e">✓</span>箇条書き要約型</div>
+        <div class="vd">要点だけをサッと。決定事項・宿題・期日を短くまとめる、忙しい人向けのミニマム版。</div>
+      </div>
+      <div class="variant">
+        <div class="vt"><span class="e">🗒️</span>逐語＋要約 併記型</div>
+        <div class="vd">「言った／言わない」を残したい時は、発言ログと要約を両方。証跡として保管しやすい形。</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">価格と手間 比較</span>
+    <h2 class="sec-title">いくらかかる？どこが手作業で残る？</h2>
+    <p class="sec-lead">公式ページの最新料金（2026年6月時点・1USD≒¥150換算）でまとめました。月額そのものより、<strong>「手作業が残るか」</strong>が窪田さんの実利益に効きます。</p>
+
+    <h3 style="font-size:14.5px;margin:18px 0 8px;color:var(--ai-deep)">① 各ツール単体の月額</h3>
+    <table class="price-table">
+      <thead><tr><th>ツール</th><th>用途</th><th style="text-align:right">月額</th></tr></thead>
+      <tbody>
+        <tr><td><b>Zoom Pro</b></td><td>会議＋クラウド録画＋文字起こし</td><td class="num">$16.99<br>≒ ¥2,550</td></tr>
+        <tr><td><b>Notta Pro</b></td><td>文字起こし1,800分/月＋AI要約</td><td class="num">$13.99<br>≒ ¥2,100</td></tr>
+        <tr class="hl"><td><b>Google Workspace Standard</b><span class="pill">最安</span></td><td>Meet録画＋<b>文字起こし自動</b>＋Drive保存</td><td class="num">¥1,600</td></tr>
+        <tr><td>Google Workspace Starter<span class="pill warn">文字起こし不可</span></td><td>※Meet文字起こし<b>非対応</b></td><td class="num">¥800</td></tr>
+        <tr><td><b>ChatGPT Plus</b><span class="pill">Codex同梱</span></td><td>面談メモへの自動整形（Codex CLI）</td><td class="num">$20<br>≒ ¥3,000</td></tr>
+        <tr><td><b>Claude Pro</b><span class="pill">Claude Code同梱</span></td><td>面談メモへの自動整形（Claude Code）</td><td class="num">$20<br>≒ ¥3,000</td></tr>
+        <tr><td>Circleback（おけもん使用）</td><td>リアルタイム文字起こし＋自動要約メール</td><td class="num">$25<br>≒ ¥3,750</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:14.5px;margin:24px 0 8px;color:var(--ai-deep)">② 構成パターンでいくらになる？</h3>
+    <table class="combo">
+      <thead><tr><th>構成</th><th>月額</th><th>面談メモ作成</th></tr></thead>
+      <tbody>
+        <tr class="now">
+          <td><span class="tag now">現状</span><br><div class="label-row">🅐 Zoom Pro ＋ Notta Pro ＋ 手作業</div></td>
+          <td><span class="price">約 ¥4,650</span></td>
+          <td><span class="manual-x">❌ 手作業（20〜40分/件）</span></td>
+        </tr>
+        <tr>
+          <td><div class="label-row">🅑 Zoom継続 ＋ ChatGPT Plus（Codex）</div></td>
+          <td><span class="price">約 ¥5,550</span></td>
+          <td><span class="manual-ok">✅ 指示するだけ</span></td>
+        </tr>
+        <tr>
+          <td><div class="label-row">🅒 Zoom継続 ＋ Claude Pro（Claude Code）</div></td>
+          <td><span class="price">約 ¥5,550</span></td>
+          <td><span class="manual-ok">✅ 指示するだけ</span></td>
+        </tr>
+        <tr>
+          <td><div class="label-row">🅓 Google Meet統一 ＋ ChatGPT Plus（Codex）</div></td>
+          <td><span class="price">約 ¥4,600</span></td>
+          <td><span class="manual-ok">✅ 指示するだけ</span></td>
+        </tr>
+        <tr>
+          <td><div class="label-row">🅔 Google Meet統一 ＋ Claude Pro</div></td>
+          <td><span class="price">約 ¥4,600</span></td>
+          <td><span class="manual-ok">✅ 指示するだけ</span></td>
+        </tr>
+        <tr class="best">
+          <td><span class="tag best">最安</span><br><div class="label-row">🅕 ChatGPT既課金あり＋Google Workspace追加だけ</div></td>
+          <td><span class="price">追加 ¥1,600</span></td>
+          <td><span class="manual-ok">✅ 指示するだけ</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:12.5px;color:var(--sub);margin-top:6px;line-height:1.75">
+      👀 <strong>注目ポイント</strong>：現状の🅐は月¥4,650払って、それでも<strong>毎回メモ整形の手作業が残る</strong>。
+      🅑〜🅔はだいたい同価格帯で<strong>手作業がゼロ</strong>。すでにChatGPT or Claudeに課金してるなら🅕で<strong>月¥1,600追加だけ</strong>で済みます。
+    </p>
+
+    <h3 style="font-size:14.5px;margin:24px 0 8px;color:var(--ai-deep)">③ 窪田さんの選び方 フローチャート</h3>
+    <div class="flowchart">
+      <div class="fc-title">— どのパターンが一番おトクか、2問で決まる —</div>
+
+      <div class="fc-center">
+        <div class="fc-start">START</div>
+        <div class="fc-arrow">▼</div>
+        <div class="fc-q"><span class="qmark">Q1</span>ChatGPT or Claude に<br>すでに課金していますか？</div>
+      </div>
+
+      <div class="fc-branch split">
+        <div class="fc-col">
+          <div class="fc-label yes">YES</div>
+          <div class="fc-arrow">▼</div>
+          <div class="fc-result best">
+            <div class="rt">🅕 既存契約 ＋ Google Workspace を追加するだけ</div>
+            <div class="rd">いま使ってるChatGPT/ClaudeをそのままCodex/Claude Codeとして使う。Meet録画と文字起こしのためにGoogle Workspace Standardを足すだけでOK。</div>
+            <div class="rprice"><span class="lbl">月額追加</span>¥1,600 のみ</div>
+          </div>
+        </div>
+
+        <div class="fc-col">
+          <div class="fc-label no">NO</div>
+          <div class="fc-arrow">▼</div>
+          <div class="fc-q" style="font-size:13.5px"><span class="qmark">Q2</span>面談メモは終わってから<br>2〜3時間待っても大丈夫？</div>
+          <div class="fc-arrow">▼</div>
+          <div class="fc-branch" style="margin-top:4px">
+            <div class="fc-col" style="min-width:0">
+              <div class="fc-label slow">待てる</div>
+              <div class="fc-arrow">▼</div>
+              <div class="fc-result">
+                <div class="rt">🅓 Google Meet統一 ＋ ChatGPT Plus</div>
+                <div class="rd">Meet文字起こしDocsを取ってCodexで整形。Zoomは解約OK。</div>
+                <div class="rprice"><span class="lbl">月額</span>約 ¥4,600</div>
+              </div>
+            </div>
+            <div class="fc-col" style="min-width:0">
+              <div class="fc-label fast">早く欲しい</div>
+              <div class="fc-arrow">▼</div>
+              <div class="fc-result">
+                <div class="rt">🅑 Zoom継続 ＋ ChatGPT Plus</div>
+                <div class="rd">いまのZoom運用そのまま。終わったらすぐCodexにメモ整形してもらう。</div>
+                <div class="rprice"><span class="lbl">月額</span>約 ¥5,550</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:12px;color:var(--sub);text-align:center;margin:18px 0 0;line-height:1.7">※ Claude派の場合は ChatGPT Plus → Claude Pro に読み替えてください（金額同じ）。<br>※「指示するだけ」は Claude Code / Codex CLI のセットアップ後の状態。初期セットアップはおけもん側でサポート可能。</p>
+    </div>
+  </section>
+
+  <div class="note">
+    <p class="nh">🎯 コスパとのバランスでいうと、おすすめはこの組み合わせ</p>
+    <p style="font-size:15.5px;font-weight:700;color:#5c4632;margin:0 0 10px;line-height:1.7">
+      ➕ <strong>Google Meet（Google Workspace Standard）</strong> ＋ <strong>ChatGPT Plus（Codex）</strong> もしくは <strong>Claude Pro（Claude Code）</strong>
+    </p>
+    <p>月額の合計は <b>約 ¥4,600/月</b>。これで <b>面談メモの手作業がまるごとゼロ</b> になります。Codex / Claude Code は<b>「会社指定の型」に毎回正確に整える</b>のが得意なので、ここがハマる構成です。</p>
+    <p style="margin-top:10px;font-size:13.5px;color:#6b5538;border-top:1px dashed #e6c8a9;padding-top:10px">
+      💡 <b>補足：Google Workspace Standard には公式の Meet 文字起こし（日本語対応・8言語）と、Gemini AI議事録機能「<b>Take notes for me</b>」が標準で含まれます</b>。AI議事録だけならGoogle単体でも出せるので、まずは Google Workspace Standard を入れてみる→「会社指定の型」での精度をもう一段上げたい時に ChatGPT Plus か Claude Pro を足す、の順番でもOKです。
+    </p>
+  </div>
+
+  <div class="close">
+    <p>録画さえあれば、面談メモは&ldquo;書く&rdquo;ものから&ldquo;出てくる&rdquo;ものへ。<br>御社の型に合わせて、いつでも形を調整できます😊</p>
+  </div>
+
+  <div class="foot">
+    ※ このページは、実際の面談録画を自動処理した出力サンプルを業界・固有名詞ともに伏せて汎用化したデモです。<br>
+    ※ 限定共有用（検索エンジン非掲載）。リンクをご存じの方のみ閲覧できます。<br>
+    ※ 初期セットアップや「会社指定の型」へのカスタマイズはおけもん側でサポート可能です。お気軽にお声がけください😊
+  </div>
+
+</div>
+
+<script>
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('fade');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('section,.note,.close').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
