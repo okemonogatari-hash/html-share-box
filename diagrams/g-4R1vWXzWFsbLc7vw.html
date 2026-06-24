@@ -102,37 +102,61 @@
   .label{font-family:var(--hand);font-size:15px;letter-spacing:.18em;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
   .label::before{content:"";width:32px;height:3px;background:var(--gold-soft);border-radius:2px}
 
-  /* designlang: testimonial サンドイッチ構造（おけ森reading order に合わせる） */
+  /* designlang: testimonial サンドイッチ構造（コウ指摘で構造改修・冒頭/中盤/終盤に1枚ずつ） */
   .testi-grid{
-    display:grid;grid-template-columns:repeat(2,1fr);
-    gap:18px;margin:28px 0 8px;
+    display:grid;grid-template-columns:1fr;
+    gap:18px;margin:32px 0 8px;
+    max-width:560px;
   }
+  /* 紙の手仕事感：傾き＋紙質＋マスキングテープ */
   .testi{
-    background:var(--paper-warm);
-    border-radius:14px;padding:22px 22px 20px;
-    border:1.5px solid var(--gold-soft);
-    box-shadow:var(--shadow-stamp);
+    background:
+      repeating-linear-gradient(90deg,rgba(244,200,106,.025) 0 2px,transparent 2px 4px),
+      var(--paper-warm);
+    border-radius:6px;padding:30px 26px 24px;
+    border:1px solid rgba(244,200,106,.55);
+    box-shadow:3px 5px 0 rgba(74,64,57,.12),0 0 0 1px rgba(74,64,57,.04);
     position:relative;
+    transform:rotate(-.7deg);
+    transition:transform .35s cubic-bezier(.22,1,.36,1);
   }
-  .testi::before{
-    content:"\201D";
-    position:absolute;top:-6px;right:14px;
-    font-family:var(--brush);font-size:2.6rem;
-    color:var(--gold-soft);line-height:1;
+  .testi:nth-child(even){transform:rotate(.5deg)}
+  .testi:hover{transform:rotate(0deg) translateY(-2px)}
+  /* マスキングテープ風 */
+  .testi::after{
+    content:"";position:absolute;
+    top:-9px;left:50%;width:78px;height:18px;
+    background:repeating-linear-gradient(45deg,rgba(244,200,106,.55) 0 6px,rgba(244,200,106,.7) 6px 12px);
+    transform:translateX(-50%) rotate(-1.5deg);
+    border-radius:1px;
+    box-shadow:0 1px 2px rgba(74,64,57,.18);
   }
   .testi-q{
     font-family:var(--brush);font-weight:500;
-    font-size:1.08rem;line-height:1.85;
+    font-size:1.18rem;line-height:1.85;
     color:var(--cocoa-deep);
-    margin-bottom:12px;
+    margin-bottom:14px;
+    margin-top:6px;
   }
   .testi-by{
-    font-family:var(--hand);font-size:.86rem;
+    font-family:var(--hand);font-size:.92rem;
     color:var(--text-mute);letter-spacing:.04em;
   }
+  .testi-grid.center{margin-left:auto;margin-right:auto}
+  .testi-grid.right{margin-left:auto;margin-right:0}
   @media(max-width:680px){
-    .testi-grid{grid-template-columns:1fr;gap:14px}
+    .testi{padding:26px 22px 20px;transform:rotate(-.5deg)}
+    .testi:nth-child(even){transform:rotate(.3deg)}
   }
+
+  /* コウ指摘②カード一律に紙の傾きを微小付与（量産感を消す） */
+  .ex{transform:rotate(-.3deg)}
+  .ex:nth-child(2){transform:rotate(.4deg)}
+  .ex:nth-child(3){transform:rotate(-.2deg)}
+  .ex:hover{transform:rotate(0) translateY(-3px)}
+  .ex{transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .kid-card{transform:rotate(.4deg);transition:transform .35s}
+  .kid-card:hover{transform:rotate(0)}
   h2.title{
     font-family:var(--serif);font-weight:700;
     font-size:clamp(1.55rem,4.6vw,2.2rem);
@@ -647,8 +671,8 @@
     <p class="lead">京都生まれ、札幌在住。<br>
     六花亭のマルセイバターサンドを、心から愛している人。<br>
     全国の銘菓（めいか）を出張のたびにひとつずつ集めて、ぜんぶ覚えている人。<br>
-    さなえさんは、会えばニコッと笑って、話せばワクワクが伝染してくる、<br>
-    みんなが大好きな人です。</p>
+    さなえさんの言葉は、<strong>銘菓の包み紙のように、丁寧で、温かい</strong>。<br>
+    会えばニコッと笑って、話せばワクワクが伝染してくる、みんなが大好きな人です。</p>
     <div class="hero-stats">
       <div class="hstat"><div class="n">地方銘菓マニア</div><div class="l">六花亭・季節限定にぐっとくる</div></div>
       <div class="hstat"><div class="n">京都 → 札幌</div><div class="l">数字と、お菓子と、ベリーダンス</div></div>
@@ -658,6 +682,18 @@
   <div class="dots" id="dots"></div>
   <div class="scroll-cue">SCROLL</div>
 </header>
+
+<!-- ============ 冒頭 testimonial（サンドイッチの上）============ -->
+<section class="intro-quote">
+  <div class="wrap">
+    <div class="testi-grid center reveal">
+      <div class="testi">
+        <div class="testi-q">来るもの拒まず、<br>去る者追わず。</div>
+        <div class="testi-by">── SANAEさん本人の言葉</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ §2 SANAEさんの正体 ============ -->
 <section class="who" id="sec-02">
@@ -734,16 +770,6 @@
 
       <p>私も「行ってみる」を選んだ夜があるから、この感覚はよく分かります。<strong>動いている人のところに、縁は集まる。</strong>SANAEさんを見ていると、そう思うのです。</p>
 
-      <div class="testi-grid">
-        <div class="testi">
-          <div class="testi-q">来るもの拒まず、<br>去る者追わず。</div>
-          <div class="testi-by">── SANAEさん本人の言葉</div>
-        </div>
-        <div class="testi">
-          <div class="testi-q">予想外な出来事が多いほど、<br>人生は面白い。</div>
-          <div class="testi-by">── note「決めると人生が動く」より</div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -875,6 +901,13 @@
       <p>「やりたいことを探す」のではなく、「世界の入口を増やす」ほうに動いている人だと思います。いま読んでいるのは『札幌誕生』という分厚い歴史小説。本人は「<strong>家の近くの地域に絡めた歴史小説、結構面白いよ</strong>」とおすすめしてきます。京都生まれ札幌在住の人が、いま住んでいる街の歴史を、分厚い小説で味わっている。</p>
 
       <p>やりたいことを見つけるのではなく、<strong>やったことないことから世界を広げる。</strong>だからこそ、SANAEさんの背中はいつも軽い。読んでいるこっちまで、立ち上がりたくなる軽さです。</p>
+
+      <div class="testi-grid right reveal">
+        <div class="testi">
+          <div class="testi-q">予想外な出来事が多いほど、<br>人生は面白い。</div>
+          <div class="testi-by">── note「決めると人生が動く」より</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -953,6 +986,7 @@
 
       <div class="closing">
         全国の銘菓を集めるように、いい商品を集めて世の中に並べていく人。<br>
+        その商品を、<strong>包み紙のような言葉</strong>で、ちゃんと届けてくれる人。<br>
         その人の隣に自分の事業を置きたい方は、まず一度、声をかけてみてください。<br>
         <em>みんなが大好きなSANAEさんに、会いに行ってみてください。</em>
         <br><br>
