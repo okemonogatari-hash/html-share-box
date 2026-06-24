@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>とろろさんの取扱説明書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wakaba-fukami: #3f6e44;   /* 若葉の深み */
+    --shinryoku: #6a9b65;       /* 新緑 */
+    --shinryoku-awa: #aac7a0;
+    --aoringo: #9bc24c;         /* 青りんご */
+    --aoringo-awa: #c5dd86;
+    --wakaba-mist: #e7f1e0;
+    --hidamari: #f3d28a;        /* 陽だまり */
+    --hidamari-awa: #fbecc4;
+    --sakura-iro: #e9b8ab;
+    --sakura-mist: #f9e8e4;
+    --orange-soft: #e8945a;     /* 注意の橙 */
+    --orange-mist: #fbe9da;
+    --orimono: #f0e6d2;
+    --kinari: #fdf8ec;
+    --kinari-fukami: #f5ecd4;
+    --kin: #c89c4a;
+    --kin-awa: #dcb96e;
+    --text-fukami: #2d3528;
+    --text-yawa: #545a4d;
+    --text-usu: #8a8d7f;
+    --sen: #e2d9c2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Noto Serif JP", "Shippori Mincho", "Hiragino Mincho ProN", serif;
+    color: var(--text-fukami);
+    background:
+      radial-gradient(circle at 10% 12%, rgba(155,194,76,0.08) 0%, transparent 48%),
+      radial-gradient(circle at 90% 88%, rgba(106,155,101,0.08) 0%, transparent 52%),
+      linear-gradient(135deg, #fdf8ec 0%, #ece4cd 100%);
+    background-attachment: fixed;
+    line-height: 1.95;
+    letter-spacing: 0.02em;
+    overflow-x: hidden;
+  }
+
+  /* ══════════════ HERO ══════════════ */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 40px 24px; overflow: hidden;
+    background:
+      linear-gradient(168deg, rgba(63,110,68,0.92) 0%, rgba(106,155,101,0.74) 46%, rgba(170,199,160,0.42) 100%),
+      radial-gradient(ellipse at 28% 20%, rgba(255,253,246,0.55), transparent 58%),
+      linear-gradient(142deg, #3f6e44 0%, #6a9b65 38%, #aac7a0 100%);
+    color: var(--kinari);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 18% 30%, rgba(255,255,255,0.5) 0 2px, transparent 3px),
+      radial-gradient(circle at 72% 22%, rgba(255,255,255,0.4) 0 2px, transparent 3px),
+      radial-gradient(circle at 40% 70%, rgba(255,255,255,0.35) 0 2px, transparent 3px),
+      radial-gradient(circle at 85% 64%, rgba(255,255,255,0.45) 0 2px, transparent 3px),
+      radial-gradient(circle at 58% 44%, rgba(255,255,255,0.3) 0 1.5px, transparent 3px),
+      radial-gradient(circle at 8% 78%, rgba(255,255,255,0.4) 0 2px, transparent 3px);
+    animation: twinkle 6s ease-in-out infinite; pointer-events: none;
+  }
+  .hero::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 140px;
+    background: linear-gradient(to bottom, transparent, #ece4cd); pointer-events: none;
+  }
+  @keyframes twinkle { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+  .hero-deco { position: absolute; font-size: 90px; opacity: 0.16; pointer-events: none; animation: floatDeco 9s ease-in-out infinite; }
+  .hero-deco.d1 { top: 12%; left: 8%; transform: rotate(-12deg); }
+  .hero-deco.d2 { top: 22%; right: 9%; font-size: 62px; animation-delay: 1.5s; }
+  .hero-deco.d3 { bottom: 22%; left: 14%; font-size: 54px; animation-delay: 3s; }
+  .hero-deco.d4 { bottom: 28%; right: 12%; font-size: 70px; animation-delay: 2.2s; transform: rotate(10deg); }
+  @keyframes floatDeco { 0%,100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-18px) rotate(4deg); } }
+  .hero-inner { position: relative; z-index: 2; max-width: 680px; }
+  .hero-label { font-family: "Noto Sans JP", sans-serif; font-size: 11.5px; letter-spacing: 0.34em; color: var(--hidamari-awa); margin-bottom: 26px; font-weight: 600; opacity: 0; animation: heroIn 0.9s ease 0.2s forwards; }
+  .hero-name { font-family: "Shippori Mincho", serif; font-size: clamp(34px, 7vw, 60px); font-weight: 700; line-height: 1.42; letter-spacing: 0.06em; margin-bottom: 24px; text-shadow: 0 2px 24px rgba(0,0,0,0.18); opacity: 0; filter: blur(8px); animation: heroBlurIn 1.1s ease 0.5s forwards; }
+  .hero-name .accent { color: var(--hidamari); background: linear-gradient(transparent 62%, rgba(155,194,76,0.45) 62%); padding: 0 8px; }
+  .hero-poem { font-family: "Noto Serif JP", serif; font-size: clamp(13.5px, 2.3vw, 16px); line-height: 2.25; letter-spacing: 0.06em; color: var(--kinari); margin-bottom: 30px; opacity: 0; animation: heroIn 1s ease 0.95s forwards; }
+  .hero-meta { font-family: "Noto Sans JP", sans-serif; font-size: 12px; letter-spacing: 0.16em; color: rgba(253,248,236,0.82); margin-bottom: 34px; opacity: 0; animation: heroIn 1s ease 1.3s forwards; }
+  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; opacity: 0; animation: heroIn 1s ease 1.6s forwards; }
+  .hero-btn { font-family: "Noto Sans JP", sans-serif; font-size: 13px; letter-spacing: 0.08em; text-decoration: none; padding: 13px 26px; border-radius: 30px; font-weight: 600; background: var(--kinari); color: var(--wakaba-fukami); border: 1px solid transparent; transition: transform 0.25s ease, box-shadow 0.25s ease; box-shadow: 0 6px 18px rgba(0,0,0,0.14); }
+  .hero-btn.ghost { background: transparent; color: var(--kinari); border: 1px solid rgba(253,248,236,0.6); box-shadow: none; }
+  .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(0,0,0,0.2); }
+  .hero-scroll { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 3; font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.3em; color: rgba(253,248,236,0.85); animation: bounce 2s ease-in-out infinite; }
+  .hero-scroll::after { content: "⌄"; display: block; font-size: 20px; line-height: 1; margin-top: 2px; }
+  @keyframes heroIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes heroBlurIn { from { opacity: 0; filter: blur(8px); transform: translateY(18px); } to { opacity: 1; filter: blur(0); transform: translateY(0); } }
+  @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+  /* ══════════════ コンテナ ══════════════ */
+  .container { max-width: 880px; margin: 0 auto; padding: 0 20px 80px; position: relative; }
+
+  /* TOC */
+  .toc { position: fixed; top: 54px; left: calc(50% - 680px); width: 210px; background: rgba(253,248,236,0.95); border: 1px solid var(--sen); border-radius: 14px; padding: 18px 14px; font-family: "Noto Sans JP", sans-serif; max-height: calc(100vh - 90px); overflow-y: auto; z-index: 50; box-shadow: 0 6px 24px rgba(63,110,68,0.08); }
+  .toc-label { font-size: 10px; color: var(--kin); letter-spacing: 0.24em; margin-bottom: 12px; font-weight: 700; padding-bottom: 8px; border-bottom: 1px dashed var(--sen); }
+  .toc ol { padding: 0; list-style: none; counter-reset: toc; }
+  .toc li { counter-increment: toc; padding: 7px 0 7px 26px; position: relative; font-size: 12px; line-height: 1.45; }
+  .toc li::before { content: counter(toc, decimal-leading-zero); position: absolute; left: 0; top: 8px; font-size: 9px; color: var(--kin); font-weight: 700; }
+  .toc a { color: var(--text-yawa); text-decoration: none; display: block; transition: color 0.3s; }
+  .toc a:hover, .toc li.active a { color: var(--wakaba-fukami); font-weight: 600; }
+  .toc li.active::before { color: var(--shinryoku); }
+  .toc-sub { display: block; font-size: 9.5px; color: var(--text-usu); margin-top: 2px; }
+  @media (max-width: 1420px) { .toc { display: none; } }
+  .toc-mobile { display: none; margin: 28px 0 0; background: var(--wakaba-mist); border-radius: 12px; padding: 14px 18px; border: 1px solid var(--sen); }
+  .toc-mobile summary { cursor: pointer; list-style: none; font-family: "Noto Sans JP", sans-serif; font-size: 13px; color: var(--wakaba-fukami); font-weight: 700; letter-spacing: 0.08em; }
+  .toc-mobile summary::-webkit-details-marker { display: none; }
+  .toc-mobile summary::after { content: " ▾"; }
+  .toc-mobile[open] summary::after { content: " ▴"; }
+  .toc-mobile ol { margin-top: 12px; padding-left: 18px; }
+  .toc-mobile li { font-family: "Noto Sans JP", sans-serif; font-size: 13px; color: var(--text-yawa); padding: 5px 0; }
+  .toc-mobile a { color: var(--text-yawa); text-decoration: none; }
+  .toc-mobile .s { display: block; font-size: 10.5px; color: var(--text-usu); }
+  @media (max-width: 1420px) { .toc-mobile { display: block; } }
+
+  /* セクション */
+  .sec { padding: 60px 0 4px; opacity: 0; transform: translateY(24px); transition: opacity 0.85s ease, transform 0.85s ease; }
+  .sec.visible { opacity: 1; transform: translateY(0); }
+  .sec-eyebrow { font-family: "Noto Sans JP", sans-serif; font-size: 10.5px; color: var(--kin); letter-spacing: 0.3em; font-weight: 700; margin-bottom: 8px; }
+  .sec-title { font-family: "Shippori Mincho", serif; font-size: clamp(22px, 4vw, 30px); color: var(--text-fukami); font-weight: 600; letter-spacing: 0.05em; line-height: 1.5; margin-bottom: 10px; }
+  .sec-title .ja { color: var(--shinryoku); }
+  .sec-desc { font-size: 14px; color: var(--text-yawa); line-height: 2.0; margin: 18px 0 28px; }
+  .divider { width: 64px; height: 2px; background: linear-gradient(90deg, var(--shinryoku), var(--kin)); border-radius: 2px; margin-bottom: 28px; }
+
+  /* ひとことで */
+  .hitokoto { background: linear-gradient(135deg, var(--wakaba-mist) 0%, #dde9d3 100%); border-left: 4px solid var(--wakaba-fukami); padding: 34px 36px; border-radius: 0 16px 16px 0; position: relative; box-shadow: 0 6px 22px rgba(63,110,68,0.07); }
+  .hitokoto::before { content: "\201C"; position: absolute; top: -6px; right: 22px; font-size: 64px; color: var(--shinryoku); opacity: 0.35; font-family: serif; }
+  .hitokoto p { font-family: "Noto Serif JP", serif; font-size: 16px; color: var(--text-fukami); line-height: 2.1; margin-bottom: 14px; }
+  .hitokoto p:last-child { margin-bottom: 0; }
+  .hitokoto strong { color: var(--wakaba-fukami); background: linear-gradient(transparent 64%, rgba(155,194,76,0.35) 64%); padding: 0 3px; font-weight: 600; }
+
+  /* 領域マップ */
+  .ryouiki-lead { font-size: 14px; color: var(--text-yawa); line-height: 2.0; margin-bottom: 22px; }
+  .balance { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .bal { padding: 20px 12px; border-radius: 14px; text-align: center; font-family: "Noto Sans JP", sans-serif; }
+  .bal .bl { font-size: 10.5px; letter-spacing: 0.06em; margin-bottom: 8px; font-weight: 600; }
+  .bal .bc { font-family: "Shippori Mincho", serif; font-size: 32px; font-weight: 700; line-height: 1; }
+  .bal .bn { font-size: 9px; color: var(--text-usu); margin-top: 6px; letter-spacing: 0.04em; }
+  .bal.rel { background: rgba(74,122,76,0.12); color: var(--wakaba-fukami); }
+  .bal.str { background: rgba(155,194,76,0.18); color: #6a8a30; }
+  .bal.inf { background: rgba(231,140,90,0.16); color: #b06430; }
+  .bal.exe { background: rgba(200,156,74,0.16); color: #8a6a25; }
+  .ryouiki-note { background: var(--kinari); border: 1px solid var(--sen); border-radius: 12px; padding: 22px 26px; font-size: 13.5px; color: var(--text-yawa); line-height: 2.0; }
+  .ryouiki-note b { color: var(--wakaba-fukami); }
+
+  /* ══════ 資質カード（解説・解析を構造化） ══════ */
+  .deep-list { display: grid; gap: 22px; margin-top: 8px; }
+  .deep { background: var(--kinari); border-radius: 16px; padding: 28px 30px; border: 1px solid var(--sen); box-shadow: 0 4px 16px rgba(63,110,68,0.05); }
+  .deep-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px dashed var(--sen); flex-wrap: wrap; }
+  .deep-rank { font-family: "Shippori Mincho", serif; font-size: 30px; color: var(--kin); font-weight: 700; line-height: 1; }
+  .deep-name { font-family: "Shippori Mincho", serif; font-size: 20px; color: var(--text-fukami); font-weight: 600; }
+  .deep-tag { font-family: "Noto Sans JP", sans-serif; font-size: 10px; padding: 3px 10px; border-radius: 10px; align-self: center; }
+  .dt-rel { background: rgba(74,122,76,0.12); color: var(--wakaba-fukami); }
+  .dt-str { background: rgba(155,194,76,0.2); color: #6a8a30; }
+  .dt-inf { background: rgba(231,140,90,0.18); color: #b06430; }
+  .dt-exe { background: rgba(200,156,74,0.18); color: #8a6a25; }
+  .deep-meta { font-family: "Noto Sans JP", sans-serif; font-size: 11px; color: var(--text-usu); letter-spacing: 0.08em; margin-left: auto; align-self: center; }
+  .deep-summary { font-size: 14px; color: var(--text-yawa); line-height: 2.0; margin-bottom: 14px; }
+  .deep-summary b { color: var(--wakaba-fukami); }
+  .honnin { background: var(--sakura-mist); border-left: 3px solid var(--sakura-iro); padding: 16px 20px; border-radius: 0 10px 10px 0; margin-bottom: 8px; }
+  .honnin .hl { font-family: "Noto Sans JP", sans-serif; font-size: 10.5px; color: #c08070; letter-spacing: 0.14em; font-weight: 700; margin-bottom: 6px; }
+  .honnin p { font-size: 13.5px; color: var(--text-fukami); line-height: 1.95; }
+  .deep-quote { margin: 10px 0 18px; padding: 14px 20px; background: linear-gradient(135deg, var(--wakaba-mist), #dde9d3); border-radius: 12px; }
+  .deep-quote p { font-family: "Noto Serif JP", serif; font-size: 14px; color: var(--wakaba-fukami); line-height: 1.95; }
+  .deep-quote .ql { display: block; font-family: "Noto Sans JP", sans-serif; font-size: 9.5px; letter-spacing: 0.16em; color: var(--shinryoku); margin-top: 8px; font-weight: 600; }
+
+  /* 3点ボックス：活かすヒント / 掛け合わせ / 注意 */
+  .qpoints { display: grid; gap: 10px; margin-top: 4px; }
+  .qp { border-radius: 12px; padding: 15px 18px; }
+  .qp .qp-h { font-family: "Noto Sans JP", sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 6px; display: flex; align-items: center; gap: 7px; }
+  .qp p { font-size: 12.5px; line-height: 1.9; color: var(--text-fukami); }
+  .qp.tips { background: rgba(106,155,101,0.10); border: 1px solid rgba(106,155,101,0.24); }
+  .qp.tips .qp-h { color: var(--wakaba-fukami); }
+  .qp.combo { background: rgba(155,194,76,0.12); border: 1px solid rgba(155,194,76,0.30); }
+  .qp.combo .qp-h { color: #6a8a30; }
+  .qp.combo b { color: #5a7a20; background: rgba(155,194,76,0.22); padding: 0 3px; border-radius: 3px; }
+  .qp.caution { background: var(--orange-mist); border: 1px solid rgba(232,148,90,0.30); }
+  .qp.caution .qp-h { color: #b06430; }
+
+  /* 11-34 */
+  .others { background: var(--kinari-fukami); border-radius: 12px; padding: 22px 26px; margin-top: 26px; }
+  .others h4 { font-family: "Noto Sans JP", sans-serif; font-size: 11.5px; color: var(--kin); letter-spacing: 0.2em; margin-bottom: 14px; font-weight: 700; }
+  .others-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px 14px; font-family: "Noto Sans JP", sans-serif; font-size: 11.5px; }
+  .others-grid span { color: var(--text-yawa); }
+  .others-grid span b { color: var(--text-usu); font-weight: 500; margin-right: 5px; font-size: 9.5px; }
+  @media (max-width: 720px) { .others-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  /* 強み/省エネ */
+  .manual { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .mcol { border-radius: 16px; padding: 26px 26px; }
+  .mcol.plus { background: linear-gradient(160deg, var(--wakaba-mist), #e9f3e0); border: 1px solid var(--shinryoku-awa); }
+  .mcol.minus { background: linear-gradient(160deg, var(--hidamari-awa), #f7ecd2); border: 1px solid var(--kin-awa); }
+  .mcol h3 { font-family: "Shippori Mincho", serif; font-size: 17px; margin-bottom: 16px; }
+  .mcol.plus h3 { color: var(--wakaba-fukami); }
+  .mcol.minus h3 { color: #8a6a25; }
+  .mcol ul { list-style: none; }
+  .mcol li { padding: 9px 0 9px 26px; position: relative; font-size: 13px; line-height: 1.85; color: var(--text-fukami); border-bottom: 1px dashed rgba(0,0,0,0.06); }
+  .mcol li:last-child { border-bottom: none; }
+  .mcol.plus li::before { content: "🌱"; position: absolute; left: 0; top: 8px; font-size: 13px; }
+  .mcol.minus li::before { content: "☕"; position: absolute; left: 0; top: 9px; font-size: 12px; }
+  @media (max-width: 720px) { .manual { grid-template-columns: 1fr; } }
+
+  /* REFRAME */
+  .reframe { background: linear-gradient(135deg, var(--wakaba-fukami), var(--shinryoku)); color: var(--kinari); border-radius: 18px; padding: 38px 36px; box-shadow: 0 10px 30px rgba(63,110,68,0.22); }
+  .reframe .rf-tag { font-family: "Noto Sans JP", sans-serif; font-size: 10.5px; letter-spacing: 0.26em; color: var(--hidamari-awa); margin-bottom: 16px; font-weight: 600; }
+  .reframe h3 { font-family: "Shippori Mincho", serif; font-size: clamp(19px, 3.4vw, 24px); line-height: 1.7; margin-bottom: 18px; }
+  .reframe p { font-size: 14px; line-height: 2.05; color: rgba(253,248,236,0.94); margin-bottom: 14px; }
+  .reframe p:last-child { margin-bottom: 0; }
+  .reframe strong { color: var(--hidamari); }
+
+  /* 名言集 */
+  .meigen { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .mg { background: var(--kinari); border-radius: 14px; padding: 22px 24px; border: 1px solid var(--sen); transition: transform 0.3s; }
+  .mg:hover { transform: translateY(-3px); }
+  .mg.hi { background: linear-gradient(150deg, var(--wakaba-mist), #e3efd8); border-color: var(--shinryoku-awa); }
+  .mg .mg-q { font-family: "Noto Serif JP", serif; font-size: 15px; color: var(--text-fukami); line-height: 1.95; }
+  .mg.hi .mg-q { color: var(--wakaba-fukami); font-weight: 500; }
+  .mg .mg-src { font-family: "Noto Sans JP", sans-serif; font-size: 10px; color: var(--kin); letter-spacing: 0.1em; margin-top: 12px; font-weight: 600; }
+  @media (max-width: 720px) { .meigen { grid-template-columns: 1fr; } }
+
+  /* STATE MAP */
+  .statemap { background: var(--kinari); border: 1px solid var(--sen); border-radius: 16px; padding: 30px 32px; }
+  .statemap .now { display: inline-block; background: var(--shinryoku); color: var(--kinari); font-family: "Noto Sans JP", sans-serif; font-size: 11px; letter-spacing: 0.14em; padding: 5px 16px; border-radius: 20px; margin-bottom: 18px; font-weight: 600; }
+  .statemap-steps { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .sm-node { flex: 1; min-width: 110px; text-align: center; padding: 14px 8px; border-radius: 12px; font-family: "Noto Sans JP", sans-serif; font-size: 11.5px; line-height: 1.5; }
+  .sm-node.past { background: var(--wakaba-mist); color: var(--text-usu); }
+  .sm-node.cur { background: linear-gradient(150deg, var(--hidamari-awa), var(--aoringo-awa)); color: var(--wakaba-fukami); font-weight: 700; border: 2px solid var(--shinryoku); }
+  .sm-node.next { background: var(--sakura-mist); color: #c08070; }
+  .sm-arrow { color: var(--kin); font-size: 14px; }
+  .statemap p { font-size: 13.5px; color: var(--text-yawa); line-height: 2.0; }
+  .statemap p b { color: var(--wakaba-fukami); }
+  @media (max-width: 720px) { .sm-arrow { display: none; } .sm-node { min-width: 100%; } }
+
+  /* うすぐも */
+  .usugumo { background: linear-gradient(160deg, #eef3f5, #e3ebef); border-radius: 16px; padding: 30px 32px; border: 1px solid #d6e0e4; }
+  .usugumo h3 { font-family: "Shippori Mincho", serif; font-size: 18px; color: #5a6b75; margin-bottom: 14px; }
+  .usugumo p { font-size: 13.5px; color: #5a6470; line-height: 2.0; margin-bottom: 12px; }
+  .usugumo p:last-child { margin-bottom: 0; }
+  .usugumo .cloud-quote { font-family: "Noto Serif JP", serif; font-size: 15px; color: #4a5560; background: rgba(255,255,255,0.6); padding: 16px 20px; border-radius: 12px; margin: 6px 0 14px; border-left: 3px solid #9fb3bd; }
+
+  /* TINY STEPS */
+  .tiny { display: grid; gap: 12px; }
+  .tn { background: var(--kinari); border: 1px solid var(--sen); border-radius: 12px; padding: 18px 22px; display: flex; gap: 16px; align-items: flex-start; transition: transform 0.25s; }
+  .tn:hover { transform: translateX(4px); }
+  .tn .tn-num { font-family: "Shippori Mincho", serif; font-size: 22px; color: var(--kin); line-height: 1.2; flex-shrink: 0; }
+  .tn .tn-body h4 { font-family: "Noto Sans JP", sans-serif; font-size: 14px; color: var(--wakaba-fukami); margin-bottom: 4px; font-weight: 700; }
+  .tn .tn-body p { font-size: 12.5px; color: var(--text-yawa); line-height: 1.85; }
+  .tiny-note { text-align: center; font-size: 12.5px; color: var(--text-usu); margin-top: 18px; font-family: "Noto Sans JP", sans-serif; }
+
+  /* セッションアーカイブ */
+  .replay { background: linear-gradient(150deg, var(--wakaba-fukami), #2d5232); border-radius: 18px; padding: 38px 36px; text-align: center; color: var(--kinari); box-shadow: 0 10px 30px rgba(45,82,50,0.25); }
+  .replay .rp-icon { font-size: 40px; margin-bottom: 14px; }
+  .replay h3 { font-family: "Shippori Mincho", serif; font-size: 22px; margin-bottom: 12px; }
+  .replay p { font-size: 13.5px; line-height: 2.0; color: rgba(253,248,236,0.9); margin-bottom: 22px; }
+  .replay .rp-btn { display: inline-block; background: var(--kinari); color: var(--wakaba-fukami); font-family: "Noto Sans JP", sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-decoration: none; padding: 14px 30px; border-radius: 30px; box-shadow: 0 6px 18px rgba(0,0,0,0.2); transition: transform 0.25s; }
+  .replay .rp-btn:hover { transform: translateY(-3px); }
+  .replay .rp-note { font-size: 11px; color: rgba(253,248,236,0.7); margin-top: 14px; margin-bottom: 0; }
+
+  /* お手紙 */
+  .letter { background: linear-gradient(165deg, #fffdf7 0%, var(--kinari-fukami) 100%); border-radius: 18px; padding: 46px 44px; position: relative; box-shadow: 0 10px 34px rgba(63,110,68,0.1); border: 1px solid var(--sen); }
+  .letter::before { content: ""; position: absolute; top: 0; right: 0; width: 64px; height: 64px; background: linear-gradient(225deg, rgba(200,156,74,0.18), transparent); border-radius: 0 18px 0 60px; }
+  .letter-stamp { position: absolute; top: 24px; right: 28px; width: 60px; height: 60px; border-radius: 50%; background: rgba(201,84,72,0.9); color: #fff; font-family: "Shippori Mincho", serif; font-size: 11px; line-height: 1.3; display: flex; align-items: center; justify-content: center; text-align: center; transform: rotate(-9deg); box-shadow: 0 4px 12px rgba(201,84,72,0.3); }
+  .letter-label { font-family: "Noto Sans JP", sans-serif; font-size: 10.5px; letter-spacing: 0.22em; color: var(--kin); margin-bottom: 22px; font-weight: 600; }
+  .letter p { font-family: "Noto Serif JP", serif; font-size: 15px; color: var(--text-fukami); line-height: 2.2; margin-bottom: 18px; }
+  .letter strong { color: var(--wakaba-fukami); font-weight: 600; }
+  .letter-pull { margin: 22px 0; padding: 18px 24px; border-left: 3px solid var(--kin); background: rgba(155,194,76,0.08); border-radius: 0 12px 12px 0; }
+  .letter-pull p { margin-bottom: 0; font-size: 16px; color: var(--wakaba-fukami); }
+  .letter-sign { text-align: right; margin-top: 28px; font-family: "Shippori Mincho", serif; }
+  .letter-sign .date { font-size: 12px; color: var(--text-usu); letter-spacing: 0.1em; margin-bottom: 6px; }
+  .letter-sign .from { font-size: 15px; color: var(--wakaba-fukami); }
+
+  /* フッター */
+  .footer { text-align: center; padding: 50px 20px 20px; }
+  .footer .sig { font-family: "Shippori Mincho", serif; font-size: 15px; color: var(--wakaba-fukami); margin-bottom: 8px; }
+  .footer .brand { font-family: "Noto Sans JP", sans-serif; font-size: 11px; letter-spacing: 0.14em; color: var(--text-usu); }
+  .footer .leaf { font-size: 22px; margin-bottom: 12px; opacity: 0.7; }
+
+  @media (max-width: 720px) {
+    .container { padding: 0 14px 60px; }
+    .sec { padding: 44px 0 4px; }
+    .balance { grid-template-columns: repeat(2, 1fr); }
+    .hitokoto, .reframe, .letter, .statemap, .usugumo, .replay { padding-left: 24px; padding-right: 24px; }
+    .letter { padding: 36px 24px; }
+    .deep { padding: 22px 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero::before, .hero-deco, .hero-scroll { animation: none; }
+    .hero-label, .hero-name, .hero-poem, .hero-meta, .hero-actions { animation: none; opacity: 1; filter: none; }
+    .sec { transition: none; opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero" id="top">
+  <div class="hero-deco d1">🌿</div>
+  <div class="hero-deco d2">🍃</div>
+  <div class="hero-deco d3">🌱</div>
+  <div class="hero-deco d4">🍏</div>
+  <div class="hero-inner">
+    <div class="hero-label">STRENGTHS FINDER ── 10 COLORS OF YOU</div>
+    <h1 class="hero-name">とろろさんという、<br><span class="accent">彩り豊かな人</span></h1>
+    <p class="hero-poem">
+      「私ってこういうタイプなんだ」で終わっていた診断を、<br>
+      「もったいない」と思って、開き直しに来たあなたへ。<br>
+      強みは、もうぜんぶそろっています。<br>
+      ここから、一緒に動かしていきましょう。
+    </p>
+    <p class="hero-meta">── とろろさんの取扱説明書 ／ 2026.06.24 おけもんワクワク作戦会議より ──</p>
+    <div class="hero-actions">
+      <a class="hero-btn" href="#sec-deep">🌿 10の強みを見にいく</a>
+      <a class="hero-btn ghost" href="#sec-letter">✉ お手紙へ</a>
+    </div>
+  </div>
+  <div class="hero-scroll">SCROLL</div>
+</section>
+
+<div class="container">
+
+  <!-- TOC -->
+  <nav class="toc" aria-label="目次">
+    <div class="toc-label">CONTENTS</div>
+    <ol>
+      <li><a href="#sec-hitokoto">あなたを一言でいうと<span class="toc-sub">まずは全体像</span></a></li>
+      <li><a href="#sec-ryouiki">強みを4つのグループで見る<span class="toc-sub">領域バランス 5/3/1/1</span></a></li>
+      <li><a href="#sec-deep">あなたの10の強み<span class="toc-sub">活かし方・掛け合わせ・注意点</span></a></li>
+      <li><a href="#sec-manual">力が出る場所、休めていい場所<span class="toc-sub">強み・省エネ</span></a></li>
+      <li><a href="#sec-reframe">欠点じゃなくて、あなたの動き方<span class="toc-sub">頑張りきれないの正体</span></a></li>
+      <li><a href="#sec-meigen">あなたが言ってた、大事な言葉<span class="toc-sub">セッションの名言集</span></a></li>
+      <li><a href="#sec-state">いま、あなたが立っている場所<span class="toc-sub">迷子じゃなく過渡期</span></a></li>
+      <li><a href="#sec-cloud">すぐ解決しなくていいモヤモヤ<span class="toc-sub">発信の怖さとの付き合い方</span></a></li>
+      <li><a href="#sec-tiny">明日できる、小さな一歩<span class="toc-sub">7つの行動ヒント</span></a></li>
+      <li><a href="#sec-replay">あの90分を、もう一度<span class="toc-sub">セッション録画</span></a></li>
+      <li><a href="#sec-letter">とろろさんへ<span class="toc-sub">おけもんからの手紙</span></a></li>
+    </ol>
+  </nav>
+
+  <details class="toc-mobile">
+    <summary>目次をひらく</summary>
+    <ol>
+      <li><a href="#sec-hitokoto">あなたを一言でいうと<span class="s">まずは全体像</span></a></li>
+      <li><a href="#sec-ryouiki">強みを4つのグループで見る<span class="s">5/3/1/1</span></a></li>
+      <li><a href="#sec-deep">あなたの10の強み<span class="s">活かし方・掛け合わせ・注意点</span></a></li>
+      <li><a href="#sec-manual">力が出る場所、休めていい場所<span class="s">強み・省エネ</span></a></li>
+      <li><a href="#sec-reframe">欠点じゃなくて、あなたの動き方<span class="s">頑張りきれないの正体</span></a></li>
+      <li><a href="#sec-meigen">あなたが言ってた、大事な言葉<span class="s">名言集</span></a></li>
+      <li><a href="#sec-state">いま、あなたが立っている場所<span class="s">過渡期</span></a></li>
+      <li><a href="#sec-cloud">すぐ解決しなくていいモヤモヤ<span class="s">発信の怖さ</span></a></li>
+      <li><a href="#sec-tiny">明日できる、小さな一歩<span class="s">7つのヒント</span></a></li>
+      <li><a href="#sec-replay">あの90分を、もう一度<span class="s">セッション録画</span></a></li>
+      <li><a href="#sec-letter">とろろさんへ<span class="s">お手紙</span></a></li>
+    </ol>
+  </details>
+
+  <!-- §1 -->
+  <section class="sec" id="sec-hitokoto">
+    <div class="sec-eyebrow">CHAPTER 01</div>
+    <h2 class="sec-title">あなたを<span class="ja">一言でいうと</span></h2>
+    <div class="divider"></div>
+    <p class="sec-desc">まずは全体像から。セッションで話してくれたこと全部から、とろろさんがどんな人か、ここに一言で置いてみます。</p>
+    <div class="hitokoto">
+      <p>とろろさんは、<strong>人の話を聞いて、その人の素敵なところを見つけられる人</strong>。そして、<strong>聞いた話の中から「この人はこういう人だな」と人物像を思い描くのが得意</strong>な人です。</p>
+      <p>もうひとつ大事なこと。<strong>「私ってこういうタイプなんだ」で終わらせず、「もったいない」と感じて、自分から一歩を踏み出せた人</strong>。1年前に受けた診断を、今日こうして開き直しに来た——それ自体が、とろろさんの強みがもう動いている証拠です。</p>
+      <p>誰かを前に立って引っ張るより、<strong>人の話を受け取って、聴いて、整えて、そっと巻き込んでいく</strong>。そういう温かさで、人と場をあたためられる人です。</p>
+    </div>
+  </section>
+
+  <!-- §2 -->
+  <section class="sec" id="sec-ryouiki">
+    <div class="sec-eyebrow">CHAPTER 02</div>
+    <h2 class="sec-title">強みを<span class="ja">4つのグループ</span>で見る</h2>
+    <div class="divider"></div>
+    <p class="ryouiki-lead">ストレングスファインダーの34の強みは、4つのグループ（領域）に分かれています。とろろさんのTOP10を分けると、こうなりました。</p>
+
+    <div class="balance">
+      <div class="bal rel"><div class="bl">人間関係構築力</div><div class="bc">5</div><div class="bn">RELATIONSHIP</div></div>
+      <div class="bal str"><div class="bl">戦略的思考力</div><div class="bc">3</div><div class="bn">STRATEGIC</div></div>
+      <div class="bal inf"><div class="bl">影響力</div><div class="bc">1</div><div class="bn">INFLUENCING</div></div>
+      <div class="bal exe"><div class="bl">実行力</div><div class="bc">1</div><div class="bn">EXECUTING</div></div>
+    </div>
+
+    <div class="ryouiki-note">
+      TOP10のうち <b>半分の5つが「人間関係構築力」</b>です（ポジティブ・成長促進・包含・適応性・調和性）。これは、<b>人を温める・受け入れる・育てる・合わせる・つなぐ力が同時に働く人</b>だということ。保育士というお仕事を長く続けてこられたのも、この5つの強みが支えてくれていたからです。<br><br>
+      残りは、戦略的思考力が3つ（内省・収集心・学習欲）＝<b>情報を集めて、じっくり考えて、学ぶ力</b>。影響力が1つ（社交性）＝<b>初対面の人と仲良くなれる力</b>。実行力が1つ（公平性）＝<b>誰にでも同じ温度で接する誠実さ</b>。<br><br>
+      まとめると、とろろさんは<b>「人を温めながら、内側で深く考えて、学びを溜めていく人」</b>。プロフィールに書いた「もっと自分から動きたい・発信したい」は、人を押し出すタイプの発信じゃなくて、<b>「人の素敵を見つけて、温かく伝える発信」</b>のこと。それなら、人間関係構築力5＋戦略的思考力3 のとろろさんが、いちばん無理なくできることなんです。
+    </div>
+  </section>
+
+  <!-- §3 10の強み -->
+  <section class="sec" id="sec-deep">
+    <div class="sec-eyebrow">CHAPTER 03</div>
+    <h2 class="sec-title">あなたの<span class="ja">10の強み</span>、ひとつずつ</h2>
+    <div class="divider"></div>
+    <p class="sec-desc">TOP10をひとつずつ見ていきます。それぞれ「どんな強みか」「とろろさんの場合」のあとに、<b>💪 活かすヒント</b>・<b>🔗 強みの掛け合わせ</b>・<b>⚠️ 注意ポイント</b>の3つを整理しました。読むだけで、自分の使い方がわかるように作っています。</p>
+
+    <div class="deep-list">
+
+      <!-- 1 ポジティブ -->
+      <article class="deep">
+        <header class="deep-head"><span class="deep-rank">1</span><span class="deep-name">ポジティブ</span><span class="deep-tag dt-rel">人間関係構築力</span><span class="deep-meta">太陽 / Positivity</span></header>
+        <p class="deep-summary">物事の<b>良い面に、自分から光を当てられる</b>強み。同じ景色でも明るい角度を見つけて、その場の空気をあたためられる人です。「根っから明るい」というより、自然と良いところに目が向くタイプ。</p>
+        <div class="honnin"><div class="hl">💗 とろろさんの場合</div><p>「しんどいけど、家族誰も病気してないやん」と、無意識に良い面へ切り替える——これがポジティブの動きです。意識して励ましてるんじゃなくて、勝手にそうなる。保育の現場で毎日小さな「できた！」を見つけてきた経験が、この強みを育てています。</p></div>
+        <div class="deep-quote"><p>「しんどいけど、家族誰も病気してないやん、って、気づいたら切り替えてるんです」<span class="ql">── ポジティブの自然な動きを話してくれたとき</span></p></div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 活かすヒント</div><p>子ども・保護者・落ち込んでいる人の不安な空気を、明るく切り替える役割が自然にできます。Webライターの0→1でも「どうにかなる」と前を向ける力が、苦しい立ち上げ期の燃料に。オフ会では場の温度を上げるムードメーカーとして重宝されます。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 強みの掛け合わせ</div><p><b>ポジティブ × 適応性</b>＝困難を抱え込まず、受け流しながら前向きに保てる、しなやかな回復力。「家族誰も病気してないやん」と切り替えられるのは、この2つが一緒に働いているからです。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>周りの愚痴や暗い話が続くと、無理に明るくしようとして自分が消耗することがあります。公式でも「ネガティブな感情も認めて受け入れる余裕を」とされています。<b>全部を明るくしなくていい</b>。力を抜く瞬間も大切に。</p></div>
+        </div>
+      </article>
+
+      <!-- 2 成長促進 -->
+      <article class="deep">
+        <header class="deep-head"><span class="deep-rank">2</span><span class="deep-name">成長促進</span><span class="deep-tag dt-rel">人間関係構築力</span><span class="deep-meta">コーチ / Developer</span></header>
+        <p class="deep-summary">人の<b>小さな伸びしろ・可能性に気づいて、信じて後押しできる</b>強み。「この人、こうしたらもっと伸びるのに」が自然に見える。人を育てる仕事と、運命的に相性がいいタイプです。</p>
+        <div class="honnin"><div class="hl">💗 とろろさんの場合</div><p>保育士・幼稚園教諭という選択は、この強みがいちばん輝くお仕事のひとつ。子どもの「できた！」に立ち会って一緒に喜べるのが、まさに成長促進です。そして、セッションで出てきた大きな気づきのひとつも、この強みに関わっていました。</p></div>
+        <div class="deep-quote"><p>「能力があるのに、もったいないなって、つい思っちゃうんですよね」<span class="ql">── お友だちとの関係のモヤモヤを話してくれたとき</span></p></div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 活かすヒント</div><p>子どもや仲間の小さな前進を見つけて、言葉にして返せる人は信頼されます。Webライティングでも、はじめの一歩を踏み出す人に寄り添う記事がいちばん噛みます。「人を育てる・伴走する」役割で力を発揮します。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 強みの掛け合わせ</div><p><b>成長促進 × 包含</b>＝誰も取り残さず、その人の可能性まで見てあげられる包容力。東京のフェスで一人でいた人に声をかけて輪を作ったエピソードは、この2つが同時に働いた瞬間です。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>ネガティブなお友だちに「能力があるのに、もったいない」と過剰に可能性を見て、自分がしんどくなる——これがこの強みの裏面です。相手の成長は、相手のもの。<b>「見守る」と「背負う」を分ける</b>と、とろろさん自身が軽くなります。</p></div>
+        </div>
+      </article>
+
+      <!-- 3 内省 -->
+      <article class="deep">
+        <header class="deep-head"><span class="deep-rank">3</span><span class="deep-name">内省</span><span class="deep-tag dt-str">戦略的思考力</span><span class="deep-meta">哲学者 / Intellection</span></header>
+        <p class="deep-summary">気になったことを<b>頭のなかで深く掘り下げていける</b>強み。一人の静かな時間がエネルギー源。考えて、整理して、それから動くのが自然なリズムです。</p>
+        <div class="honnin"><div class="hl">💗 とろろさんの場合</div><p>「モヤモヤしたら日記に書いて整理する」——これが内省の最高の使い方です。「情報が一気に入ると、何からやっていいか分からなくなる」のも、頭の中で考えが渦巻くこの強みゆえ。飽きっぽいんじゃなくて、<b>ちゃんと考えてから動きたい</b>だけなんです。</p></div>
+        <div class="deep-quote"><p>「情報が一気に入ってくると、何からやっていいか分からなくなっちゃって」<span class="ql">── リベシティで目移りした話をしてくれたとき</span></p></div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 活かすヒント</div><p>Webライティングは「一人でじっくり考えを練る」内省と相性抜群。思考を文章に落とす作業そのものが得意分野です。企画・構成を考える段階で、とろろさんの深さが活きます。日記の習慣を、そのまま発信に変えていけます。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 強みの掛け合わせ</div><p><b>内省 × 収集心</b>＝集めた知識を、一人の時間でじっくり咀嚼して自分のものにする力。エピクテトスや行動心理学の本を手元に残しているのは、集めて終わりにせず深く考えたい証です。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>考えすぎて動けなくなったり、自分にダメ出ししやすいのが裏面。でも対処法はもう持っています——<b>書き出すこと</b>。「これは事実かな？」と紙の上で分けると、考えのぐるぐるが止まります。公式でも「思考を形にする習慣」が鍵とされています。</p></div>
+        </div>
+      </article>
+
+      <!-- 4 包含 -->
+      <article class="deep">
+        <header class="deep-head"><span class="deep-rank">4</span><span class="deep-name">包含</span><span class="deep-tag dt-rel">人間関係構築力</span><span class="deep-meta">大きな木 / Includer</span></header>
+        <p class="deep-summary"><b>誰も外に置かない</b>強み。輪の外にいる人に気づいて、自然に手招きできる。「あなたもおいでよ」が言える、感度の高い優しさです。</p>
+        <div class="honnin"><div class="hl">💗 とろろさんの場合</div><p>東京のフェスで一人でいた人に声をかけて、何人かで話せるようにしたら感謝された——あれが包含の最高のかたち。誰かが輪に入れていないと、自然と体が動く。保育でもオフ会でも、ずっと発動してきたとろろさんの優しさです。</p></div>
+        <div class="deep-quote"><p>「一人でいる人がいると、つい声かけちゃうんです。気づいたら輪ができてて」<span class="ql">── 東京のフェスのエピソードを話してくれたとき</span></p></div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 活かすヒント</div><p>誰も仲間はずれにしない感度は、保育やコミュニティ運営で大きな信頼を生みます。オフ会やイベントで一人でいる人に自然に声をかけられるので、新メンバーの歓迎役にぴったり。「ここにいていいんだよ」を渡せる人です。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 強みの掛け合わせ</div><p><b>包含 × 社交性</b>＝初対面の人にも声をかけ、その人を輪に迎え入れて広げていく力。フェスの「声かけ→輪ができる→感謝された」体験は、この2つが噛み合った成功例そのものです。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>「一度入れた人と距離を置けない」のは、この優しさが強く出すぎた状態。全員を抱え続けなくて大丈夫です。<b>距離を置くことは、相手を外に置くこととは違います</b>。心地よい距離を選ぶのも、自分を守る大切な選択です。</p></div>
+        </div>
+      </article>
+
+      <!-- 5 収集心 -->
+      <article class="deep">
+        <header class="deep-head"><span class="deep-rank">5</span><span class="deep-name">収集心</span><span class="deep-tag dt-str">戦略的思考力</span><span class="deep-meta">図書館 / Input</span></header>
+        <p class="deep-summary">情報・知識・人の話を<b>集めること自体が好き</b>な強み。「いつか役立つかも」のストックが多い。本好き・聞き上手が多いタイプです。</p>
+        <div class="honnin"><div class="hl">💗 とろろさんの場合</div><p>自己啓発本や経済の本を自然に手に取るのも、エピクテトスや行動心理学の本を手元に残しているのも、収集心です。朝読書会でアダム・グラントの『GIVE & TAKE』を読み続けられるのも、集めること自体が栄養になっているから。「聞いた話から人物像をイメージするのが好き」も、まさにこれです。</p></div>
+        <div class="deep-quote"><p>「エピクテトスの本は、朝読書会で読んだ中で、唯一売らずに残してるんです」<span class="ql">── 大事にしている本の話をしてくれたとき</span></p></div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 活かすヒント</div><p>集めた知識のストックは、Webライターにとって最大の武器＝記事の引き出しになります。「これは誰かの役に立つ」と思える情報を貯めておく図書館のような役割で輝きます。インプット力は、もう十分すぎるほどあります。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 強みの掛け合わせ</div><p><b>収集心 × 学習欲</b>＝集めるだけでなく、その中身を学んで深めたい欲求。本を残して簿記の勉強もできたのは、「集める → 学ぶ」のサイクルが自然に回っているからです。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>集めたまま活かせず、溜め込むばかりになりがち。公式でも「これは誰の役に立つかを意識する」が注意点です。令和8年の目標「インプット3：アウトプット7」は、<b>溜めた宝を外に出していく</b>、この強みの正しい育て方そのものです。</p></div>
+        </div>
+      </article>
+
+      <!-- 6 適応性 -->
+      <article class="deep">
+        <header class="deep-head"><span class="deep-rank">6</span><span class="deep-name">適応性</span><span class="deep-tag dt-rel">人間関係構築力</span><span class="deep-meta">川の流れ / Adaptability</span></header>
+        <p class="deep-summary">予測できない変化に、<b>柔らかく合わせていける</b>強み。「どうにかなるだろう」と、今この瞬間に集中できる。計画よりも、目の前を大切にするタイプです。</p>
+        <div class="honnin"><div class="hl">💗 とろろさんの場合</div><p>ここがセッションいちばんの発見でした。「ストイックに頑張りきれない」「副業が続かない」——その正体は、欠点じゃなくて<b>適応性という強み</b>だったんです。そして証拠もあります。FP3級・簿記3級は、朝4〜5時に起きて勉強できた。「試験日」という期限と「受かりたい」という動機があったとき、ちゃんと走れた。<b>続かないんじゃなくて、期限と動機があれば走れる人</b>なんです。</p></div>
+        <div class="deep-quote"><p>「簿記とFPのときは、朝4時、5時に起きて勉強できたんですよ。試験日があったから」<span class="ql">── 「頑張りきれない」の話の中で、ふっと出てきた言葉</span></p></div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 活かすヒント</div><p>予測できない子どもの動きや、現場の急な変化に柔軟に対応できる力は、保育の必須スキル。「どうにかなる」という楽観は、新しい挑戦に飛び込むときの後押しになります。変化の多い環境ほど、とろろさんは生き生きします。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 強みの掛け合わせ</div><p><b>適応性 × 期限・目的</b>＝これがとろろさんの攻略法。適応性は、近い期限とやりたい動機があると、一気に推進力に変わります。簿記・FPを朝4時起きでやりきれたのが、その証拠です。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>「今ここ」を生きる力が強いぶん、長期計画は苦手で、副業が続かなかったのもその裏面。公式でも「大事なことは記録して後で振り返る」が勧められています。<b>ゴール日を先に決める</b>と続きやすくなります。期限を味方につけてください。</p></div>
+        </div>
+      </article>
+
+      <!-- 7 公平性 -->
+      <article class="deep">
+        <header class="deep-head"><span class="deep-rank">7</span><span class="deep-name">公平性</span><span class="deep-tag dt-exe">実行力</span><span class="deep-meta">天秤 / Consistency</span></header>
+        <p class="deep-summary">誰に対しても<b>同じ基準で、同じ温度で接する</b>強み。えこひいきせず、みんなに同じ機会を配れる。ルールや手順を大切にする誠実さです。</p>
+        <div class="honnin"><div class="hl">💗 とろろさんの場合</div><p>保育の現場で、子どもに分け隔てなく接してきた基本姿勢が、この強みそのもの。FP3級・簿記3級を取った律儀さもここに通じます。「えこひいきしない先生」は、子どもにも保護者にも安心を与えます。とろろさんと一緒にいると安心するのは、この「いつでも同じ温度」があるからです。</p></div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 活かすヒント</div><p>誰に対しても誠実に接する姿勢は、保育の現場で保護者からの信頼に直結します。明確なルールや手順がある環境で、安定して力を出せるタイプ。「あの人に任せれば公平にやってくれる」と頼られます。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 強みの掛け合わせ</div><p><b>公平性 × 調和性</b>＝全員を平等に扱い、かつ波風を立てずに場をまとめる、穏やかな安定感。みんなが同じように扱われる場を、対立なく整えられるのは、この組み合わせの賜物です。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>「みんなと同じに」を大切にするあまり、自分の希望を後回しにしていないか——ときどき立ち止まってみてください。<b>とろろさん自身も「みんな」のひとり</b>。同じ温度を、自分にも配っていいんです。</p></div>
+        </div>
+      </article>
+
+      <!-- 8 学習欲 -->
+      <article class="deep">
+        <header class="deep-head"><span class="deep-rank">8</span><span class="deep-name">学習欲</span><span class="deep-tag dt-str">戦略的思考力</span><span class="deep-meta">スポンジ / Learner</span></header>
+        <p class="deep-summary"><b>学ぶプロセスそのものが楽しい</b>強み。結果より過程。新しいことに触れた瞬間が、いちばんワクワクするタイプです。</p>
+        <div class="honnin"><div class="hl">💗 とろろさんの場合</div><p>「簿記の問題が解けたときのスッキリ感」が、まさに学習欲の喜びです。50歳でリベシティに入って、学長ライブを毎朝聴いて、FP3級・簿記3級を取って、Webライターに挑戦して、AIで効率化して……学びの枝が止まらない。Webライターという新領域も、AI習得も、とろろさんには最高の遊び場です。</p></div>
+        <div class="deep-quote"><p>「簿記の問題が解けたときの、あのスッキリ感が好きなんです」<span class="ql">── 学ぶ喜びを話してくれたとき</span></p></div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 活かすヒント</div><p>「学ぶこと自体が楽しい」とろろさんにとって、新しい分野はワクワクの宝庫。Webライティングは「学んだことを書いて渡す」＝学習欲を仕事にできる、最高のかたちです。学びながら稼ぐ、が自然にできます。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 強みの掛け合わせ</div><p><b>学習欲 × 内省</b>＝新しく学んだことを、一人の時間でじっくり噛み砕いて自分のものにする力。インプットしたら日記で整理する流れは、学びを定着させる理想的なサイクルになっています。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>「学んで満足」で止まりがちなのが裏面。公式でも「定期的にアウトプットする場を作る」が勧められています。「インプット好きだがアウトプットが怖い」のは、学び続けたい欲が強いぶんの自然な反応。<b>小さく書いて出す</b>ことから、怖さは溶けていきます。</p></div>
+        </div>
+      </article>
+
+      <!-- 9 社交性 -->
+      <article class="deep">
+        <header class="deep-head"><span class="deep-rank">9</span><span class="deep-name">社交性</span><span class="deep-tag dt-inf">影響力</span><span class="deep-meta">場の司会者 / Woo</span></header>
+        <p class="deep-summary">初対面の人と<b>仲良くなるのが楽しい</b>強み。「知らない人と話す」がエネルギーになる、希少なタイプ。これがTOP10で唯一の「影響力」の強みです。</p>
+        <div class="honnin"><div class="hl">💗 とろろさんの場合</div><p>梅田・四ツ橋オフィスに月1回通って、リベシティで341フォロー／289フォロワー。この活動量が社交性の証拠です。影響力の強みはこの1つだけなので、社交性は<b>とろろさんの中で「前に出る、数少ないエンジン」</b>。発信が怖くても、「人と直接話す」入口からなら、自然に始められます。</p></div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 活かすヒント</div><p>初対面の人とも気軽に話せる力は、人脈づくりの起点。Webライターとして仕事の縁を広げるうえでも、新しいつながりを作る行動力が財産になります。オフ会で「こんなのやってるよ」と話すだけで、もう立派な一歩です。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 強みの掛け合わせ</div><p><b>社交性 × 包含</b>＝広く出会いながら、その人を輪に迎え入れる温かさ。「広げる社交性」と「迎え入れる包含」が揃うと、人数が多いだけでなく、誰もが居心地よく感じる場を作れます。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>一般的に、社交性は「浅く広く」になりがちですが、とろろさんは人を深く大切にする面も持っているので、バランスは自然に取れています。気負わず、新しい出会いを楽しんでください。ここは数少ないエンジン。大事に使う場所です。</p></div>
+        </div>
+      </article>
+
+      <!-- 10 調和性 -->
+      <article class="deep">
+        <header class="deep-head"><span class="deep-rank">10</span><span class="deep-name">調和性</span><span class="deep-tag dt-rel">人間関係構築力</span><span class="deep-meta">平和の使者 / Harmony</span></header>
+        <p class="deep-summary">対立より<b>合意点を探す</b>強み。場の和を大切にして、みんなが安心できる空気を作るのが得意。揉めごとより、協力を選ぶタイプです。</p>
+        <div class="honnin"><div class="hl">💗 とろろさんの場合</div><p>保育園の職員室で、きっと頼られてきた温度。多様な個性を受け止めて、安心できる環境をつくる——これが調和性の生き方です。プロフィールの「でもでもだってマインドから脱却中」「もっと発信したい」という葛藤の正体も、ここにあります。調和性の人は「自分の意見を出すと、和を乱すかも」と感じやすいんです。</p></div>
+        <div class="deep-quote"><p>「自分の意見を強く言うのは、ちょっと苦手で……和を乱しちゃう気がして」<span class="ql">── 発信のハードルを話してくれたとき</span></p></div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 活かすヒント</div><p>全員が納得できる落としどころを探せる力は、保育でもオフ会でも、場の空気を穏やかに保つ潤滑油。対立を避けて協力関係を作れるので、チームの「いてくれると安心する人」になれます。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 強みの掛け合わせ</div><p><b>調和性 × 公平性</b>＝波風を立てず、かつ全員を平等に扱う、揺るがない安定感。みんなが心地よくいられる場を、フェアに整えられるのは、この組み合わせです。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>「自分の意見を強く言うのが苦手」は、和を大切にするあまり本音を飲み込んだ状態です。でも——<b>「意見を言う＝和を乱す」ではありません</b>。とろろさんの穏やかな伝え方なら、和を保ったまま本音も置けます。少しずつ「私はこう思う」を出してみてください。</p></div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="others">
+      <h4>その他の強み（11〜34位）</h4>
+      <div class="others-grid">
+        <span><b>11</b>共感性</span><span><b>12</b>最上志向</span><span><b>13</b>原点思考</span><span><b>14</b>活発性</span>
+        <span><b>15</b>自己確信</span><span><b>16</b>自我</span><span><b>17</b>目標志向</span><span><b>18</b>コミュ</span>
+        <span><b>19</b>着想</span><span><b>20</b>運命思考</span><span><b>21</b>信念</span><span><b>22</b>達成欲</span>
+        <span><b>23</b>親密性</span><span><b>24</b>未来志向</span><span><b>25</b>アレンジ</span><span><b>26</b>回復志向</span>
+        <span><b>27</b>責任感</span><span><b>28</b>規律性</span><span><b>29</b>競争性</span><span><b>30</b>慎重さ</span>
+        <span><b>31</b>分析思考</span><span><b>32</b>指令性</span><span><b>33</b>戦略性</span><span><b>34</b>個別化</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- §4 -->
+  <section class="sec" id="sec-manual">
+    <div class="sec-eyebrow">CHAPTER 04</div>
+    <h2 class="sec-title">力が出る場所、<span class="ja">休めていい場所</span></h2>
+    <div class="divider"></div>
+    <p class="sec-desc">同じ人でも、力が活きる場所と、無理がかかる場所があります。どんな場所でとろろさんの強みが一番活きて、どんな場所では休んでいいか。「休めていい場所」は弱さじゃなく、そこに力を使わないことで強みが光る、賢い選び方です。</p>
+    <div class="manual">
+      <div class="mcol plus">
+        <h3>🌿 力が出る場所</h3>
+        <ul>
+          <li>人の話を聴いて、その人の素敵を見つけて返す場所（ポジティブ×成長促進）</li>
+          <li>輪に入れない人を、そっと招き入れる場所（包含×社交性）</li>
+          <li>集めた学びを、自分の言葉にして誰かに渡す場所（収集心×内省×学習欲）</li>
+          <li>「期限」と「やりたい動機」がはっきりある挑戦（適応性／簿記・FPで実証済み）</li>
+          <li>初対面の人がいる場を、安心の場に変える役割（包含×社交性×調和性）</li>
+        </ul>
+      </div>
+      <div class="mcol minus">
+        <h3>☕ 休めていい場所</h3>
+        <ul>
+          <li>自分から旗を振って、強く主張して人を動かす場所（影響力は社交性1つ・押し出しは苦手でいい）</li>
+          <li>3年・5年の長期計画でガチガチに決める場所（適応性は「今ここ」が得意）</li>
+          <li>ロジックだけで即決を迫られる場所（考える時間が欲しい人）</li>
+          <li>情報が一気に入ってくる場所（内省の人は、整理する間が要る）</li>
+          <li>ネガティブな空気が続く場所（成長促進が「もったいない」で消耗する）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- §5 REFRAME -->
+  <section class="sec" id="sec-reframe">
+    <div class="sec-eyebrow">CHAPTER 05</div>
+    <h2 class="sec-title">欠点じゃなくて、<span class="ja">あなたの動き方</span></h2>
+    <div class="divider"></div>
+    <div class="reframe">
+      <div class="rf-tag">REFRAME ── 見方を変えると</div>
+      <h3>「頑張りきれない」は、欠点じゃなくて、<strong>適応性という動き方</strong>でした。</h3>
+      <p>とろろさんがずっと気にしていた「ストイックに頑張りきれない」「副業が続かない」——セッションで、その正体がはっきりしました。それは性格の弱さでも、根性のなさでもなく、<strong>適応性という強みの、自然な動き方</strong>です。</p>
+      <p>長期計画でガチガチに決めるより、その瞬間その瞬間に柔らかく合わせる。これがとろろさんの動き方。だから「3年後にこうなる」で走るのは、もともと向いていません。でも——<strong>「簿記の試験日」「FPの試験日」という近い期限があったとき、朝4時5時に起きて走れた</strong>。続かない人じゃありません。<strong>期限と動機があれば、ちゃんと走れる人</strong>です。</p>
+      <p>続かなかった副業は、失敗の山じゃありません。<strong>「これは合わなかった」と分かった、方向転換の材料</strong>です。変化の速いこれからの時代に、決め込みすぎず小さく始めて舵を切れる適応性は、むしろ強い力。とろろさんは、ダメなんじゃなくて、<strong>そういう動き方をする人</strong>なんです。</p>
+    </div>
+  </section>
+
+  <!-- §6 名言集 -->
+  <section class="sec" id="sec-meigen">
+    <div class="sec-eyebrow">CHAPTER 06</div>
+    <h2 class="sec-title">あなたが言ってた、<span class="ja">大事な言葉</span></h2>
+    <div class="divider"></div>
+    <p class="sec-desc">セッションのなかで、とろろさんが自分の口から出してくれた言葉たち。どれも、あなたの強みが動いた瞬間の記録です。落ち込んだ日に、ここを開き直してみてください。</p>
+    <div class="meigen">
+      <div class="mg hi"><div class="mg-q">「私ってこういうタイプなんだ、で終わってたんです。でも、もったいないなって」</div><div class="mg-src">── 1年放置した診断を、開き直しに来た理由</div></div>
+      <div class="mg hi"><div class="mg-q">「簿記とFPのときは、朝4時5時に起きて勉強できたんですよ。試験日があったから」</div><div class="mg-src">── 「頑張りきれない」の中に隠れていた、走れる証拠</div></div>
+      <div class="mg"><div class="mg-q">「しんどいけど、家族誰も病気してないやん、って気づいたら切り替えてる」</div><div class="mg-src">── ポジティブの、無意識の動き</div></div>
+      <div class="mg"><div class="mg-q">「能力があるのに、もったいないなって、つい思っちゃう」</div><div class="mg-src">── 成長促進の、優しさと痛みの両面</div></div>
+      <div class="mg"><div class="mg-q">「一人でいる人がいると、つい声かけちゃうんです」</div><div class="mg-src">── 包含が、東京のフェスで動いた瞬間</div></div>
+      <div class="mg"><div class="mg-q">「モヤモヤしたら、日記に書いて整理するんです」</div><div class="mg-src">── 内省の、いちばん健やかな使い方</div></div>
+      <div class="mg"><div class="mg-q">「簿記の問題が解けたときの、あのスッキリ感が好き」</div><div class="mg-src">── 学習欲の、ピュアな喜び</div></div>
+      <div class="mg hi"><div class="mg-q">「聞かれたとき答えられないと、申し訳ないなって思っちゃって」</div><div class="mg-src">── 発信の怖さの正体。でも、知ってることだけ話せばいい</div></div>
+    </div>
+  </section>
+
+  <!-- §7 STATE MAP -->
+  <section class="sec" id="sec-state">
+    <div class="sec-eyebrow">CHAPTER 07</div>
+    <h2 class="sec-title">いま、あなたが<span class="ja">立っている場所</span></h2>
+    <div class="divider"></div>
+    <p class="sec-desc">とろろさんが、いま人生のどこに立っているか。結論から言うと——<b>迷子じゃなくて、過渡期として、ちゃんと正しい場所</b>にいます。</p>
+    <div class="statemap">
+      <span class="now">YOU ARE HERE</span>
+      <div class="statemap-steps">
+        <div class="sm-node past">受け取るだけ<br>だった頃</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-node cur">「もったいない」で<br>一歩踏み出した今<br>＝動かしはじめ</div>
+        <div class="sm-arrow">→</div>
+        <div class="sm-node next">ワクワクを<br>誰かに渡す<br>これから</div>
+      </div>
+      <p>令和7年の目標「インプット1：アウトプット9 → 3：7」を達成して、令和8年は「3：7 → 7：3」へ。これは、<b>受け取る人から、渡す人へ</b>、ちょうど移ろうとしている過渡期です。<br><br>
+      「もっと自分から動きたい」「発信したい」「受け取るばかりじゃなく他者貢献したい」——その全部が、<b>今まさに動かしはじめている証拠</b>。まだ完成していなくて当たり前。<b>あなたは、ちゃんと前に進んでいます。</b></p>
+    </div>
+  </section>
+
+  <!-- §8 うすぐも -->
+  <section class="sec" id="sec-cloud">
+    <div class="sec-eyebrow">CHAPTER 08</div>
+    <h2 class="sec-title">すぐ解決しなくていい<span class="ja">モヤモヤ</span></h2>
+    <div class="divider"></div>
+    <p class="sec-desc">最後に、すぐ解決しなくていい、でも知っておくと楽になるモヤモヤを、ひとつ置いていきます。治すものじゃなくて、「あ、また来たな」と気づいておくためのものです。</p>
+    <div class="usugumo">
+      <h3>🌥 「発信が怖い」というモヤモヤ</h3>
+      <p>とろろさんが話してくれた、いちばん優しい怖さ。「聞かれたとき答えられないと、申し訳ない」。これは、<b>公平性と成長促進と調和性が合わさった、誠実さからくる怖さ</b>です。いい加減なことを言いたくない。相手に失礼をしたくない。だから発信のハードルが上がる。</p>
+      <div class="cloud-quote">でもね——発信は「全部知ってる人」がするものじゃなくて、「今これを学んで面白かった人」がするものです。</div>
+      <p>「答えられなかったら、一緒に調べましょうね」でいい。学習欲のとろろさんにとって、それはむしろ次の学びの入口です。クロードコードを「<b>こんなのやってるよ</b>」とオフ会で話すだけで、もう立派な発信。完璧に答えられなくて大丈夫。あなたが面白がっている姿が、いちばん人を巻き込みます。<br><br>
+      このモヤモヤがまた出てきたら——「お、また誠実さのモヤモヤが来たな🌥」と気づいて、そのまま、ちょっとだけ話してみてください。</p>
+    </div>
+  </section>
+
+  <!-- §9 TINY -->
+  <section class="sec" id="sec-tiny">
+    <div class="sec-eyebrow">CHAPTER 09</div>
+    <h2 class="sec-title">明日できる、<span class="ja">小さな一歩</span></h2>
+    <div class="divider"></div>
+    <p class="sec-desc">全部やらなくて大丈夫。気になったものを、ひとつだけ手に取ってみてください。やらない、も正解です。</p>
+    <div class="tiny">
+      <div class="tn"><div class="tn-num">1</div><div class="tn-body"><h4>「期限」をひとつ置いてみる</h4><p>やりたいことに、近い期限（次のオフ会・1週間後）を置く。適応性のとろろさんは、遠い目標より近い期限で走れます。</p></div></div>
+      <div class="tn"><div class="tn-num">2</div><div class="tn-body"><h4>オフ会で「こんなのやってるよ」と1回話す</h4><p>クロードコードでも、ストレングスでもOK。発信は、人に直接話す入口から。社交性が手伝ってくれます。</p></div></div>
+      <div class="tn"><div class="tn-num">3</div><div class="tn-body"><h4>モヤッとした日、日記に「どの強みが動いた？」と書く</h4><p>内省の得意技。嬉しい・しんどいの裏で、どの強みが動いていたかを振り返ると、自己理解がぐっと深まります。</p></div></div>
+      <div class="tn"><div class="tn-num">4</div><div class="tn-body"><h4>学んだことを、1人にシェアしてみる</h4><p>学習欲は「学ぶ→渡す」で完成。1人でいい。渡すと足りない部分に気づいて、また学びたくなります。</p></div></div>
+      <div class="tn"><div class="tn-num">5</div><div class="tn-body"><h4>合わないと感じた関係に、そっと間を取っていい</h4><p>距離を置くのは、相手を外に置くこととは違う。包含のとろろさんが、自分を大切にするための優しさです。</p></div></div>
+      <div class="tn"><div class="tn-num">6</div><div class="tn-body"><h4>続かなかったことを「方向転換の材料」と書き直す</h4><p>適応性の強み。やめたこと＝失敗じゃなく「合わないと分かった収穫」。次の舵取りの材料です。</p></div></div>
+      <div class="tn"><div class="tn-num">7</div><div class="tn-body"><h4>『移動する人はうまくいく』『始める力』を読んでみる</h4><p>おけもんのおすすめ本。「やり遂げる」より「小さく始めて方向転換する」。適応性のとろろさんに、きっと効きます。</p></div></div>
+    </div>
+    <p class="tiny-note">── ぜんぶやらなくて、いい。ひとつでも、ゼロでも、あなたはもう十分すすんでいます ──</p>
+  </section>
+
+  <!-- §10 アーカイブ -->
+  <section class="sec" id="sec-replay">
+    <div class="sec-eyebrow">CHAPTER 10</div>
+    <h2 class="sec-title">あの90分を、<span class="ja">もう一度</span></h2>
+    <div class="divider"></div>
+    <div class="replay">
+      <div class="rp-icon">🎬</div>
+      <h3>おけもんワクワク作戦会議 ── 録画</h3>
+      <p>2026年6月24日、一緒に話した約90分。<br>「私ってこういうタイプなんだ」で終わっていた診断が、<br>「もったいない、やってみよう」に変わっていった時間です。<br>気になったところを、いつでも見返せます。</p>
+      <a class="rp-btn" href="https://circleback.ai/view/tAeWez6OgD6OkftZ9SQOJ" target="_blank" rel="noopener">▶ セッションを見にいく</a>
+      <p class="rp-note">※ あなただけのリンクです。文字起こし・要約も一緒に見られます。</p>
+    </div>
+  </section>
+
+  <!-- §11 お手紙 -->
+  <section class="sec" id="sec-letter">
+    <div class="sec-eyebrow">CHAPTER 11</div>
+    <h2 class="sec-title">とろろさんへ</h2>
+    <div class="divider"></div>
+    <div class="letter">
+      <div class="letter-stamp">また<br>会おうね</div>
+      <div class="letter-label">A LETTER ── 2026.06.24</div>
+
+      <p>とろろさんへ、</p>
+
+      <p>最初にお話を聞いたとき、とろろさんは「1年前に診断を受けたけど、<strong>『私ってこういうタイプなんだ』で終わっちゃって</strong>、活かし方が分からなくて」と話してくれましたね。たくさんの情報に目移りして、深掘りできなかった、と。</p>
+
+      <p>でも、わたしはそこで、すごく大事なことに気づいていました。だって、とろろさんは<strong>「もったいない」と感じて、自分からこの場所に来た</strong>。その「もったいない」こそ、あなたのいちばん強い力——<strong>成長促進</strong>が、ほかでもない<strong>自分自身</strong>に向いた瞬間だったんです。</p>
+
+      <p>話していくうちに、ずっと気にしていた「頑張りきれない自分」が、欠点じゃなくて<strong>適応性という動き方</strong>だと分かった。人といてしんどくなる理由が、あなたが冷たいからじゃなく、<strong>可能性が見えすぎる成長促進と、誰も外に置けない包含</strong>のせいだと分かった。ひとつずつ、モヤモヤがほどけていきましたね。</p>
+
+      <div class="letter-pull">
+        <p>そして最後、とろろさんは<strong>「自分のワクワクに、人を巻き込んでいけたらいいな」</strong>と、自分の言葉で言ってくれました。</p>
+      </div>
+
+      <p>その言葉を、わたしはきっとずっと忘れません。だってあれは、<strong>あなたが自分で、自分の進む方向を見つけ直した瞬間</strong>だったから。誰かに言われたんじゃなく、あなた自身の口から出てきた。それが、いちばん嬉しかったです。</p>
+
+      <p>「発信が怖い」「答えられないと申し訳ない」——その誠実さは、ずっと大切にしてください。でも思い出して。あなたには、<strong>初対面の人を安心させる社交性も、輪に招き入れる包含も、学ぶ喜びの学習欲も</strong>、ぜんぶそろっています。「こんなのやってるよ」と話すだけで、もう立派な発信。完璧じゃなくていい。あなたが面白がっている姿が、いちばん人を巻き込むからです。</p>
+
+      <p>とろろさんは、ダメなんじゃありません。<strong>そういう動き方をする、彩り豊かなあなた</strong>です。これから一歩ずつ、あなたのペースで進んでいってください。</p>
+
+      <p>また、梅田か四ツ橋で会いましょう。<br>あなたのワクワクの話を、聞かせてくださいね。</p>
+
+      <div class="letter-sign">
+        <div class="date">2026年6月24日 ／ おけもんワクワク作戦会議より</div>
+        <div class="from">おけもん より 🌿</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">
+  <div class="leaf">🌿</div>
+  <div class="sig">寄り添い型 個性診断師 おけもん</div>
+  <div class="brand">とろろさんの取扱説明書 ／ ストレングスファインダー34 ／ 2026.06.24</div>
+</footer>
+
+<script>
+  const secs = document.querySelectorAll('.sec');
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.06 });
+  secs.forEach(s => io.observe(s));
+  requestAnimationFrame(() => {
+    secs.forEach(s => { if (s.getBoundingClientRect().top < window.innerHeight) s.classList.add('visible'); });
+  });
+  const tocItems = document.querySelectorAll('.toc li');
+  const ids = [...document.querySelectorAll('.sec')].map(s => s.id);
+  function upd() {
+    const y = window.scrollY + window.innerHeight * 0.3;
+    let cur = ids[0];
+    for (const id of ids) { const el = document.getElementById(id); if (el && el.offsetTop <= y) cur = id; }
+    tocItems.forEach((li, i) => li.classList.toggle('active', ids[i] === cur));
+  }
+  let tick = false;
+  window.addEventListener('scroll', () => { if (!tick) { requestAnimationFrame(() => { upd(); tick = false; }); tick = true; } });
+  upd();
+</script>
+
+</body>
+</html>
