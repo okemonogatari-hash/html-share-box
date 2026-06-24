@@ -7,40 +7,47 @@
 <title>みんなが大好きな、SANAEさん ── 田畑さなえさん紹介ページ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Yomogi&family=Kaisei+Decol:wght@400;500;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --cocoa-deep:#3a2820;
     --cocoa:#6f4a38;
     --cocoa-soft:#a07d6a;
-    --ice-pink:#f1d1e3;   /* WCAG: #6f4a38上で 5.52:1 */
+    --ice-pink:#f1d1e3;
     --ice-cream:#ecc9a8;
-    --berry:#7c4f72;       /* WCAG: paper上で 6.07:1 */
-    --paper:#fbf6ef;
-    --paper-warm:#f6ece0;
+    --berry:#7c4f72;
+    --paper:#fffdf7;       /* designlang: おけ森基準 */
+    --paper-warm:#fdf3e0;  /* designlang: おけ森accent */
+    --gold-soft:#f4c86a;   /* designlang: おけ森secondary（柔らかいゴールド）*/
     --text-deep:#2c1f17;
     --text-soft:#6b584a;
-    --text-mute:#7d6757;   /* WCAG: paper上で 4.94:1 */
+    --text-mute:#7d6757;
     --line:#ece0d4;
-    --gold:#7b5226;        /* WCAG: paper上で 6.35:1 */
+    --gold:#7b5226;
     --serif:'Noto Serif JP',serif;
-    --sans:'Noto Sans JP',sans-serif;
-    --round:'Zen Maru Gothic',sans-serif;
-    --shadow-s:0 2px 12px rgba(58,40,32,.08);
+    --maru:'Zen Maru Gothic','Noto Sans JP',sans-serif;   /* designlang: おけ森メイン */
+    --hand:'Yomogi',cursive;                              /* designlang: おけ森手書き */
+    --brush:'Kaisei Decol',serif;                         /* designlang: おけ森書道 */
+    /* スタンプ風オフセット影（designlang: おけ森の絵本/お便り感の正体）*/
+    --shadow-stamp:3px 4px 0px rgba(74,64,57,.22);
+    --shadow-stamp-sm:1px 2px 0px rgba(74,64,57,.18);
     --shadow:0 12px 36px rgba(58,40,32,.14);
     --shadow-l:0 22px 60px rgba(58,40,32,.22);
+    --shadow-s:0 2px 12px rgba(58,40,32,.08);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    font-family:var(--sans);
+    font-family:var(--maru);    /* designlang: Zen Maru Gothic を主軸に */
     color:var(--text-deep);
     background:var(--paper);
-    font-size:17px;
-    line-height:1.9;
+    font-size:20px;             /* designlang: 17→20（モバイル20・PC21相当）*/
+    line-height:2.0;            /* designlang: 行間2.0比 */
+    letter-spacing:.04em;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
+  @media(min-width:880px){body{font-size:21px}}
   img{display:block;max-width:100%}
   .wrap{max-width:860px;margin:0 auto;padding:0 22px}
 
@@ -91,8 +98,41 @@
 
   /* ===== SECTION base ===== */
   section{padding:84px 0}
-  .label{font-family:var(--round);font-size:11px;letter-spacing:.26em;color:var(--cocoa);margin-bottom:14px;display:flex;align-items:center;gap:10px}
-  .label::before{content:"";width:26px;height:2px;background:var(--gold);border-radius:2px}
+  /* designlang: ラベルはYomogi手書き風＋柔らかいゴールド線 */
+  .label{font-family:var(--hand);font-size:15px;letter-spacing:.18em;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .label::before{content:"";width:32px;height:3px;background:var(--gold-soft);border-radius:2px}
+
+  /* designlang: testimonial サンドイッチ構造（おけ森reading order に合わせる） */
+  .testi-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);
+    gap:18px;margin:28px 0 8px;
+  }
+  .testi{
+    background:var(--paper-warm);
+    border-radius:14px;padding:22px 22px 20px;
+    border:1.5px solid var(--gold-soft);
+    box-shadow:var(--shadow-stamp);
+    position:relative;
+  }
+  .testi::before{
+    content:"\201D";
+    position:absolute;top:-6px;right:14px;
+    font-family:var(--brush);font-size:2.6rem;
+    color:var(--gold-soft);line-height:1;
+  }
+  .testi-q{
+    font-family:var(--brush);font-weight:500;
+    font-size:1.08rem;line-height:1.85;
+    color:var(--cocoa-deep);
+    margin-bottom:12px;
+  }
+  .testi-by{
+    font-family:var(--hand);font-size:.86rem;
+    color:var(--text-mute);letter-spacing:.04em;
+  }
+  @media(max-width:680px){
+    .testi-grid{grid-template-columns:1fr;gap:14px}
+  }
   h2.title{
     font-family:var(--serif);font-weight:700;
     font-size:clamp(1.55rem,4.6vw,2.2rem);
@@ -173,7 +213,7 @@
   }
   .kw{
     background:#fff;border-radius:18px;padding:22px 20px 20px;
-    box-shadow:var(--shadow-s);border:1px solid var(--line);
+    box-shadow:var(--shadow-stamp-sm);border:1px solid var(--line);
     transition:transform .3s,box-shadow .3s;
   }
   .kw:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
@@ -279,7 +319,7 @@
     margin-top:26px;
     background:#fff;border-radius:18px;
     padding:24px 24px 22px;
-    box-shadow:var(--shadow-s);
+    box-shadow:var(--shadow-stamp-sm);
     border:1px solid var(--line);
   }
   .mei-note h3{
@@ -403,7 +443,7 @@
   .ccard{
     background:#fff;border-radius:16px;
     padding:24px 22px;
-    box-shadow:var(--shadow-s);
+    box-shadow:var(--shadow-stamp-sm);
     border:1px solid var(--line);
     text-align:center;
     transition:transform .3s,box-shadow .3s;
@@ -430,7 +470,7 @@
     background:#fff;
     border-radius:18px;
     padding:24px 26px 22px;
-    box-shadow:var(--shadow-s);
+    box-shadow:var(--shadow-stamp-sm);
     border:1px solid var(--line);
   }
   .suited h3{
@@ -517,7 +557,7 @@
     position:relative;
     overflow:hidden;
     border-radius:14px;
-    box-shadow:0 10px 28px rgba(58,40,32,.14);
+    box-shadow:var(--shadow-stamp);
     margin:0;
   }
   .sg-item img{
@@ -693,6 +733,17 @@
       <p>このひとことが、SANAEさんの輪郭をいちばん正確に描いていると思います。SANAEさんは「来るもの拒まず、去る者追わず」と言う。誘われたら基本断らない。だからこそ、北海道にいるはずの人が、なぜか東京の小さな飲み会で笑っているのです。5年ぐらい前にライター仲間の紹介で知り合った人とも、ぜんぜん違うコミュニティで再会する。</p>
 
       <p>私も「行ってみる」を選んだ夜があるから、この感覚はよく分かります。<strong>動いている人のところに、縁は集まる。</strong>SANAEさんを見ていると、そう思うのです。</p>
+
+      <div class="testi-grid">
+        <div class="testi">
+          <div class="testi-q">来るもの拒まず、<br>去る者追わず。</div>
+          <div class="testi-by">── SANAEさん本人の言葉</div>
+        </div>
+        <div class="testi">
+          <div class="testi-q">予想外な出来事が多いほど、<br>人生は面白い。</div>
+          <div class="testi-by">── note「決めると人生が動く」より</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
