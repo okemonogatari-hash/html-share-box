@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>ふくまめさんの取扱説明書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --aurora-deep: #2e4a64;        /* オーロラの夜空 */
+    --aurora-mid: #4a7b8c;          /* 北の海 */
+    --aurora-soft: #7fb0a6;         /* 緑のオーロラ */
+    --aurora-mint: #c7e3d3;
+    --asahi: #f0c987;               /* 朝のひかり */
+    --asahi-awa: #fbe6c0;
+    --kinari: #fdf8ec;
+    --kinari-fukami: #f4ecd6;
+    --kiri: #e8e3d3;                /* 霧 */
+    --sumire: #c2b9d4;              /* すみれ */
+    --sumire-awa: #ebe6f1;
+    --sakura: #e9b8ab;
+    --sakura-mist: #f9e8e4;
+    --orange-soft: #e8945a;
+    --orange-mist: #fbe9da;
+    --text-fukami: #2a3038;
+    --text-yawa: #51596a;
+    --text-usu: #898f9c;
+    --sen: #ddd6c6;
+    --kin: #b88846;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  html { background-color: #ede4cd; }  /* 長尺ページの末尾fallback */
+  body {
+    font-family: "Noto Serif JP", "Shippori Mincho", "Hiragino Mincho ProN", serif;
+    color: var(--text-fukami);
+    background-color: #fdf8ec;
+    background-image:
+      radial-gradient(circle at 12% 14%, rgba(127,176,166,0.10) 0%, transparent 50%),
+      radial-gradient(circle at 88% 86%, rgba(194,185,212,0.10) 0%, transparent 52%),
+      linear-gradient(135deg, #fdf8ec 0%, #ede4cd 100%);
+    /* attachment: fixed を外して、body 全長に背景を伸ばす */
+    line-height: 1.95;
+    letter-spacing: 0.02em;
+    overflow-x: hidden;
+  }
+
+  /* ══════════════ HERO（写真フルブリード版・コナコーヒー型踏襲）══════════════ */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 60px 24px;
+    color: #fffaf0; overflow: hidden;
+  }
+  /* 写真背景レイヤー（ken-burns ズーム） */
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: url('g-ocr0Zg-iceland.jpg') center 48%/cover no-repeat;
+    animation: heroZoom 28s ease-out both;
+  }
+  @keyframes heroZoom { from { transform: scale(1.12); } to { transform: scale(1); } }
+  /* 写真の上に重ねる「夜空のベール」── 上下を締めて、中央は星明かりを抜く */
+  .hero-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 78% 56% at 50% 44%, rgba(0,0,0,0.10) 0%, transparent 65%),
+      linear-gradient(180deg,
+        rgba(14,22,36,0.45) 0%,
+        rgba(20,32,52,0.30) 22%,
+        rgba(30,52,76,0.25) 48%,
+        rgba(46,74,100,0.60) 80%,
+        #ede4cd 100%);
+  }
+  /* テキスト裏の局所スクリム（可読性） */
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: 1;
+    background:
+      radial-gradient(ellipse 68% 46% at 50% 50%, rgba(8,16,28,0.55) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  /* 細かい星の点 */
+  .hero::after {
+    content: ""; position: absolute; inset: 0; z-index: 1;
+    background:
+      radial-gradient(circle at 11% 22%, rgba(255,255,255,0.85) 0 1.4px, transparent 2px),
+      radial-gradient(circle at 28% 14%, rgba(255,255,255,0.7) 0 1.2px, transparent 2px),
+      radial-gradient(circle at 62% 8%, rgba(255,255,255,0.9) 0 1.6px, transparent 2.4px),
+      radial-gradient(circle at 78% 22%, rgba(255,255,255,0.75) 0 1.2px, transparent 2px),
+      radial-gradient(circle at 92% 12%, rgba(255,255,255,0.65) 0 1px, transparent 2px),
+      radial-gradient(circle at 38% 30%, rgba(255,255,255,0.6) 0 1px, transparent 2px),
+      radial-gradient(circle at 70% 36%, rgba(255,255,255,0.55) 0 1.2px, transparent 2px);
+    animation: twinkle 5.5s ease-in-out infinite; pointer-events: none;
+  }
+  @keyframes twinkle { 0%,100% { opacity: 0.45; } 50% { opacity: 1; } }
+  /* オーロラの光のかけら（立ちのぼる） */
+  .hero-spark {
+    position: absolute; z-index: 2;
+    color: #c7e3d3; font-size: 14px;
+    text-shadow: 0 0 14px rgba(199,227,211,0.95), 0 0 24px rgba(127,176,166,0.6);
+    opacity: 0;
+    animation: sparkRise 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .hero-spark.s1 { left: 44%; bottom: 26%; animation-delay: 0s; }
+  .hero-spark.s2 { left: 56%; bottom: 22%; font-size: 11px; animation-delay: 1.6s; }
+  .hero-spark.s3 { left: 48%; bottom: 30%; font-size: 13px; animation-delay: 3.2s; color: #ebe6f1; }
+  .hero-spark.s4 { left: 60%; bottom: 28%; font-size: 10px; animation-delay: 4.6s; color: #f0c987; }
+  .hero-spark.s5 { left: 40%; bottom: 24%; font-size: 12px; animation-delay: 5.8s; }
+  @keyframes sparkRise {
+    0%   { opacity: 0; transform: translateY(0) scale(0.55); }
+    20%  { opacity: 0.95; }
+    60%  { opacity: 0.7; }
+    100% { opacity: 0; transform: translateY(-140px) scale(1.15); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg, .hero-spark, .hero::after { animation: none; }
+    .hero-bg { transform: none; }
+  }
+  .hero-deco { z-index: 2; }
+  .hero-deco { position: absolute; font-size: 78px; opacity: 0.18; pointer-events: none; animation: floatDeco 9s ease-in-out infinite; }
+  .hero-deco.d1 { top: 12%; left: 8%; transform: rotate(-12deg); }
+  .hero-deco.d2 { top: 22%; right: 9%; font-size: 54px; animation-delay: 1.5s; }
+  .hero-deco.d3 { bottom: 22%; left: 14%; font-size: 48px; animation-delay: 3s; }
+  .hero-deco.d4 { bottom: 28%; right: 12%; font-size: 60px; animation-delay: 2.2s; transform: rotate(10deg); }
+  @keyframes floatDeco { 0%,100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-18px) rotate(4deg); } }
+  .hero-inner { position: relative; z-index: 3; max-width: 720px; opacity: 0; filter: blur(6px); animation: heroEnter 1.4s 0.4s ease-out forwards; }
+  @keyframes heroEnter { to { opacity: 1; filter: blur(0); } }
+  .hero-label { font-family: "Noto Sans JP", sans-serif; font-size: 11.5px; letter-spacing: 0.34em; color: #ecc983; margin-bottom: 26px; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.55); }
+  .hero-name { font-family: "Shippori Mincho", serif; font-size: clamp(32px, 7vw, 60px); font-weight: 700; line-height: 1.42; letter-spacing: 0.06em; margin-bottom: 28px; color: #fffaf0; text-shadow: 0 4px 28px rgba(0,0,0,0.65), 0 1px 4px rgba(0,0,0,0.55); }
+  .hero-name .accent { color: #f0c987; text-shadow: 0 0 24px rgba(240,201,135,0.6), 0 4px 28px rgba(0,0,0,0.6); background: linear-gradient(transparent 62%, rgba(127,176,166,0.42) 62%); padding: 0 8px; }
+  .hero-poem { font-family: "Noto Serif JP", serif; font-size: clamp(14px, 2.2vw, 16.5px); line-height: 2.25; letter-spacing: 0.06em; color: rgba(255,248,236,0.96); margin-bottom: 32px; text-shadow: 0 2px 14px rgba(0,0,0,0.65); }
+  .hero-meta { font-family: "Noto Sans JP", sans-serif; font-size: 12px; letter-spacing: 0.16em; color: rgba(253,248,236,0.88); margin-bottom: 34px; text-shadow: 0 1px 8px rgba(0,0,0,0.55); }
+  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .hero-btn { font-family: "Noto Sans JP", sans-serif; font-size: 13px; letter-spacing: 0.08em; text-decoration: none; padding: 13px 28px; border-radius: 30px; font-weight: 600; background: rgba(253,248,236,0.96); color: var(--aurora-deep); border: 1px solid transparent; transition: transform 0.25s ease, box-shadow 0.25s ease; box-shadow: 0 8px 26px rgba(0,0,0,0.30); }
+  .hero-btn.ghost { background: rgba(255,255,255,0.10); color: #fffaf0; border: 1px solid rgba(253,248,236,0.65); backdrop-filter: blur(2px); box-shadow: none; }
+  .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+  .hero-scroll { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 3; font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.3em; color: rgba(253,248,236,0.85); text-shadow: 0 1px 8px rgba(0,0,0,0.55); animation: bounce 2s ease-in-out infinite; }
+  .hero-scroll::after { content: "⌄"; display: block; font-size: 20px; line-height: 1; margin-top: 2px; }
+  @keyframes heroIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes heroBlurIn { from { opacity: 0; filter: blur(8px); transform: translateY(18px); } to { opacity: 1; filter: blur(0); transform: translateY(0); } }
+  @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+  /* ══════════════ コンテナ ══════════════ */
+  .container { max-width: 880px; margin: 0 auto; padding: 0 20px 80px; position: relative; }
+
+  /* TOC */
+  .toc { position: fixed; top: 54px; left: calc(50% - 680px); width: 210px; background: rgba(253,248,236,0.95); border: 1px solid var(--sen); border-radius: 14px; padding: 18px 14px; font-family: "Noto Sans JP", sans-serif; max-height: calc(100vh - 90px); overflow-y: auto; z-index: 50; box-shadow: 0 6px 24px rgba(46,74,100,0.10); }
+  .toc-label { font-size: 10px; color: var(--kin); letter-spacing: 0.24em; margin-bottom: 12px; font-weight: 700; padding-bottom: 8px; border-bottom: 1px dashed var(--sen); }
+  .toc ol { padding: 0; list-style: none; counter-reset: toc; }
+  .toc li { counter-increment: toc; padding: 7px 0 7px 26px; position: relative; font-size: 12px; line-height: 1.45; }
+  .toc li::before { content: counter(toc, decimal-leading-zero); position: absolute; left: 0; top: 8px; font-size: 9px; color: var(--kin); font-weight: 700; }
+  .toc a { color: var(--text-yawa); text-decoration: none; display: block; transition: color 0.3s; }
+  .toc a:hover, .toc li.active a { color: var(--aurora-deep); font-weight: 600; }
+  .toc li.active::before { color: var(--aurora-mid); }
+  .toc-sub { display: block; font-size: 9.5px; color: var(--text-usu); margin-top: 2px; }
+  @media (max-width: 1420px) { .toc { display: none; } }
+  .toc-mobile { display: none; margin: 28px 0 0; background: var(--aurora-mint); border-radius: 12px; padding: 14px 18px; border: 1px solid var(--sen); }
+  .toc-mobile summary { cursor: pointer; list-style: none; font-family: "Noto Sans JP", sans-serif; font-size: 13px; color: var(--aurora-deep); font-weight: 700; letter-spacing: 0.08em; }
+  .toc-mobile summary::-webkit-details-marker { display: none; }
+  .toc-mobile summary::after { content: " ▾"; }
+  .toc-mobile[open] summary::after { content: " ▴"; }
+  .toc-mobile ol { margin-top: 12px; padding-left: 18px; }
+  .toc-mobile li { font-family: "Noto Sans JP", sans-serif; font-size: 13px; color: var(--text-yawa); padding: 5px 0; }
+  .toc-mobile a { color: var(--text-yawa); text-decoration: none; }
+  .toc-mobile .s { display: block; font-size: 10.5px; color: var(--text-usu); }
+  @media (max-width: 1420px) { .toc-mobile { display: block; } }
+
+  /* セクション */
+  .sec { padding: 60px 0 4px; opacity: 0; transform: translateY(24px); transition: opacity 0.85s ease, transform 0.85s ease; }
+  .sec.visible { opacity: 1; transform: translateY(0); }
+  .sec-eyebrow { font-family: "Noto Sans JP", sans-serif; font-size: 10.5px; color: var(--kin); letter-spacing: 0.3em; font-weight: 700; margin-bottom: 8px; }
+  .sec-title { font-family: "Shippori Mincho", serif; font-size: clamp(22px, 4vw, 30px); color: var(--text-fukami); font-weight: 600; letter-spacing: 0.05em; line-height: 1.5; margin-bottom: 10px; }
+  .sec-title .ja { color: var(--aurora-mid); }
+  .sec-desc { font-size: 14px; color: var(--text-yawa); line-height: 2.0; margin: 18px 0 28px; }
+  .divider { width: 64px; height: 2px; background: linear-gradient(90deg, var(--aurora-mid), var(--kin)); border-radius: 2px; margin-bottom: 28px; }
+
+  /* ひとことで */
+  .hitokoto { background: linear-gradient(135deg, var(--aurora-mint) 0%, #d2e8de 100%); border-left: 4px solid var(--aurora-deep); padding: 34px 36px; border-radius: 0 16px 16px 0; position: relative; box-shadow: 0 6px 22px rgba(46,74,100,0.08); }
+  .hitokoto::before { content: "\201C"; position: absolute; top: -6px; right: 22px; font-size: 64px; color: var(--aurora-mid); opacity: 0.35; font-family: serif; }
+  .hitokoto p { font-family: "Noto Serif JP", serif; font-size: 16px; color: var(--text-fukami); line-height: 2.1; margin-bottom: 14px; }
+  .hitokoto p:last-child { margin-bottom: 0; }
+  .hitokoto strong { color: var(--aurora-deep); background: linear-gradient(transparent 64%, rgba(127,176,166,0.42) 64%); padding: 0 3px; font-weight: 600; }
+
+  /* 領域マップ */
+  .ryouiki-lead { font-size: 14px; color: var(--text-yawa); line-height: 2.0; margin-bottom: 22px; }
+  .balance { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .bal { padding: 20px 12px; border-radius: 14px; text-align: center; font-family: "Noto Sans JP", sans-serif; }
+  .bal .bl { font-size: 10.5px; letter-spacing: 0.06em; margin-bottom: 8px; font-weight: 600; }
+  .bal .bc { font-family: "Shippori Mincho", serif; font-size: 32px; font-weight: 700; line-height: 1; }
+  .bal .bn { font-size: 9px; color: var(--text-usu); margin-top: 6px; letter-spacing: 0.04em; }
+  .bal.exe { background: rgba(184,136,70,0.16); color: #8a6a25; }
+  .bal.rel { background: rgba(127,176,166,0.18); color: #3d6e60; }
+  .bal.inf { background: rgba(232,148,90,0.16); color: #b06430; }
+  .bal.str { background: rgba(194,185,212,0.20); color: #6a5b8b; }
+  .ryouiki-note { background: var(--kinari); border: 1px solid var(--sen); border-radius: 12px; padding: 22px 26px; font-size: 13.5px; color: var(--text-yawa); line-height: 2.0; }
+  .ryouiki-note b { color: var(--aurora-deep); }
+
+  /* 資質カード */
+  .deep-list { display: grid; gap: 22px; margin-top: 8px; }
+  .deep { background: var(--kinari); border-radius: 16px; padding: 28px 30px; border: 1px solid var(--sen); box-shadow: 0 4px 16px rgba(46,74,100,0.06); }
+  .deep-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px dashed var(--sen); flex-wrap: wrap; }
+  .deep-rank { font-family: "Shippori Mincho", serif; font-size: 30px; color: var(--kin); font-weight: 700; line-height: 1; }
+  .deep-name { font-family: "Shippori Mincho", serif; font-size: 20px; color: var(--text-fukami); font-weight: 600; }
+  .deep-tag { font-family: "Noto Sans JP", sans-serif; font-size: 10px; padding: 3px 10px; border-radius: 10px; align-self: center; }
+  .dt-exe { background: rgba(184,136,70,0.18); color: #8a6a25; }
+  .dt-rel { background: rgba(127,176,166,0.20); color: #3d6e60; }
+  .dt-inf { background: rgba(232,148,90,0.18); color: #b06430; }
+  .dt-str { background: rgba(194,185,212,0.22); color: #6a5b8b; }
+  .deep-meta { font-family: "Noto Sans JP", sans-serif; font-size: 11px; color: var(--text-usu); letter-spacing: 0.08em; margin-left: auto; align-self: center; }
+  .deep-summary { font-size: 14px; color: var(--text-yawa); line-height: 2.0; margin-bottom: 14px; }
+  .deep-summary b { color: var(--aurora-deep); }
+  .deep-quote { margin: 10px 0 18px; padding: 14px 20px; background: linear-gradient(135deg, var(--aurora-mint), #d8ebe2); border-radius: 12px; }
+  .deep-quote p { font-family: "Noto Serif JP", serif; font-size: 14px; color: var(--aurora-deep); line-height: 1.95; }
+  .deep-quote .ql { display: block; font-family: "Noto Sans JP", sans-serif; font-size: 9.5px; letter-spacing: 0.16em; color: var(--aurora-mid); margin-top: 8px; font-weight: 600; }
+
+  /* 公式定義クオート（GALLUP公式より） */
+  .deep-official { background: var(--kinari-fukami); border-left: 3px solid var(--kin); border-radius: 0 10px 10px 0; padding: 12px 18px; margin: 10px 0 16px; }
+  .deep-official .dol { font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.16em; color: var(--kin); font-weight: 700; margin-bottom: 6px; }
+  .deep-official p { font-size: 12.5px; line-height: 1.85; color: var(--text-fukami); margin-bottom: 4px; }
+  .deep-official p:last-child { margin-bottom: 0; }
+  .deep-official em { color: var(--text-yawa); font-style: normal; }
+
+  /* 3点ボックス */
+  .qpoints { display: grid; gap: 10px; margin-top: 4px; }
+  .qp { border-radius: 12px; padding: 15px 18px; }
+  .qp .qp-h { font-family: "Noto Sans JP", sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 6px; display: flex; align-items: center; gap: 7px; }
+  .qp p { font-size: 12.5px; line-height: 1.9; color: var(--text-fukami); }
+  .qp.tips { background: rgba(127,176,166,0.12); border: 1px solid rgba(127,176,166,0.28); }
+  .qp.tips .qp-h { color: var(--aurora-deep); }
+  .qp.combo { background: rgba(194,185,212,0.14); border: 1px solid rgba(194,185,212,0.34); }
+  .qp.combo .qp-h { color: #6a5b8b; }
+  .qp.combo b { color: #524373; background: rgba(194,185,212,0.30); padding: 0 3px; border-radius: 3px; }
+  .qp.caution { background: var(--orange-mist); border: 1px solid rgba(232,148,90,0.30); }
+  .qp.caution .qp-h { color: #b06430; }
+
+  /* 11-34 */
+  .others { background: var(--kinari-fukami); border-radius: 12px; padding: 22px 26px; margin-top: 26px; }
+  .others h4 { font-family: "Noto Sans JP", sans-serif; font-size: 11.5px; color: var(--kin); letter-spacing: 0.2em; margin-bottom: 14px; font-weight: 700; }
+  .others-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px 14px; font-family: "Noto Sans JP", sans-serif; font-size: 11.5px; }
+  .others-grid span { color: var(--text-yawa); }
+  .others-grid span b { color: var(--text-usu); font-weight: 500; margin-right: 5px; font-size: 9.5px; }
+  @media (max-width: 720px) { .others-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  /* 強み/省エネ */
+  .manual { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .mcol { border-radius: 16px; padding: 26px 26px; }
+  .mcol.plus { background: linear-gradient(160deg, var(--aurora-mint), #d8ebe2); border: 1px solid var(--aurora-soft); }
+  .mcol.minus { background: linear-gradient(160deg, var(--asahi-awa), #f7ecd2); border: 1px solid var(--asahi); }
+  .mcol h4 { font-family: "Noto Sans JP", sans-serif; font-size: 12px; letter-spacing: 0.18em; margin-bottom: 14px; font-weight: 700; }
+  .mcol.plus h4 { color: var(--aurora-deep); }
+  .mcol.minus h4 { color: var(--kin); }
+  .mcol ul { list-style: none; padding: 0; }
+  .mcol li { font-size: 13.5px; color: var(--text-fukami); line-height: 1.95; padding: 6px 0 6px 18px; position: relative; }
+  .mcol.plus li::before { content: "✓"; position: absolute; left: 0; color: var(--aurora-deep); font-weight: 700; }
+  .mcol.minus li::before { content: "・"; position: absolute; left: 4px; color: var(--kin); }
+  @media (max-width: 720px) { .manual { grid-template-columns: 1fr; } }
+
+  /* 今への一言（四重苦への手紙） */
+  .letter { background: linear-gradient(160deg, var(--sumire-awa), #e8e1f0); border: 1px solid var(--sumire); border-radius: 16px; padding: 32px 34px; position: relative; }
+  .letter::before { content: "\2709"; position: absolute; top: 18px; right: 22px; font-size: 28px; opacity: 0.4; }
+  .letter h4 { font-family: "Shippori Mincho", serif; font-size: 18px; color: #524373; margin-bottom: 14px; font-weight: 600; }
+  .letter p { font-family: "Noto Serif JP", serif; font-size: 14.5px; color: var(--text-fukami); line-height: 2.1; margin-bottom: 12px; }
+  .letter p:last-child { margin-bottom: 0; }
+  .letter strong { color: #524373; background: linear-gradient(transparent 64%, rgba(194,185,212,0.42) 64%); padding: 0 3px; font-weight: 600; }
+
+  /* ビジョンボード */
+  .vision-intro { font-size: 14px; color: var(--text-yawa); line-height: 2.0; margin-bottom: 24px; }
+  .vision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 26px; }
+  @media (max-width: 720px) { .vision-grid { grid-template-columns: repeat(2, 1fr); } }
+  .vbox { padding: 22px 18px; border-radius: 14px; text-align: center; min-height: 138px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+  .vbox::before { content: ""; position: absolute; inset: 0; opacity: 0.18; }
+  .vbox .vemoji { font-size: 36px; margin-bottom: 8px; position: relative; z-index: 2; }
+  .vbox .vlabel { font-family: "Shippori Mincho", serif; font-size: 14.5px; font-weight: 700; margin-bottom: 4px; position: relative; z-index: 2; }
+  .vbox .vsub { font-family: "Noto Sans JP", sans-serif; font-size: 10.5px; letter-spacing: 0.06em; line-height: 1.6; position: relative; z-index: 2; }
+  .vbox.aurora { background: linear-gradient(160deg, #2e4a64, #4a7b8c); color: var(--kinari); }
+  .vbox.thai { background: linear-gradient(160deg, #f0c987, #e8945a); color: #5a3818; }
+  .vbox.srilanka { background: linear-gradient(160deg, #7fb0a6, #c7e3d3); color: #2a4538; }
+  .vbox.vietnam { background: linear-gradient(160deg, #e9b8ab, #f9e8e4); color: #6e3838; }
+  .vbox.spain { background: linear-gradient(160deg, #e8945a, #fbe6c0); color: #6e3818; }
+  .vbox.aus { background: linear-gradient(160deg, #c2b9d4, #ebe6f1); color: #524373; }
+
+  .vision-suki { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 720px) { .vision-suki { grid-template-columns: 1fr; } }
+  .sbox { background: var(--kinari); border: 1px solid var(--sen); border-radius: 12px; padding: 20px 22px; }
+  .sbox h5 { font-family: "Noto Sans JP", sans-serif; font-size: 10.5px; color: var(--kin); letter-spacing: 0.2em; margin-bottom: 10px; font-weight: 700; }
+  .sbox p { font-family: "Noto Serif JP", serif; font-size: 14px; color: var(--text-fukami); line-height: 1.9; }
+
+  /* メインビジュアル（アイスランド写真） */
+  .vmain { position: relative; border-radius: 18px; overflow: hidden; margin-bottom: 28px; box-shadow: 0 12px 40px rgba(46,74,100,0.18); }
+  .vmain img { display: block; width: 100%; height: auto; }
+  .vmain-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 20px 24px; background: linear-gradient(to top, rgba(0,0,0,0.65), transparent); color: var(--kinari); font-family: "Shippori Mincho", serif; font-size: 14.5px; line-height: 1.7; letter-spacing: 0.04em; }
+  .vmain-cap b { color: #f0c987; font-weight: 600; }
+
+  /* タイムバケット */
+  .bucket-intro { font-size: 14px; color: var(--text-yawa); line-height: 2.0; margin-bottom: 22px; background: var(--kinari); border-left: 3px solid var(--aurora-mid); padding: 14px 18px; border-radius: 0 10px 10px 0; }
+  .bucket-intro b { color: var(--aurora-deep); }
+  .buckets { display: grid; gap: 16px; margin-bottom: 30px; }
+  .bk { background: var(--kinari); border: 1px solid var(--sen); border-radius: 14px; padding: 22px 24px; position: relative; }
+  .bk-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--sen); flex-wrap: wrap; }
+  .bk-icon { font-size: 22px; line-height: 1; }
+  .bk-when { font-family: "Noto Sans JP", sans-serif; font-size: 10.5px; letter-spacing: 0.22em; color: var(--kin); font-weight: 700; }
+  .bk-title { font-family: "Shippori Mincho", serif; font-size: 17px; color: var(--text-fukami); font-weight: 600; }
+  .bk-shishitsu { font-family: "Noto Sans JP", sans-serif; font-size: 10px; padding: 3px 10px; border-radius: 10px; background: rgba(127,176,166,0.18); color: var(--aurora-deep); margin-left: auto; align-self: center; }
+  .bk p { font-size: 13.5px; color: var(--text-fukami); line-height: 1.95; margin-bottom: 8px; }
+  .bk p:last-child { margin-bottom: 0; }
+  .bk p b { color: var(--aurora-deep); }
+  .bk ul { list-style: none; padding: 0; margin-top: 8px; }
+  .bk li { font-size: 13px; color: var(--text-fukami); line-height: 1.85; padding: 4px 0 4px 18px; position: relative; }
+  .bk li::before { content: "▹"; position: absolute; left: 0; color: var(--aurora-mid); }
+
+  /* おけもんの考察ブロック */
+  .okemon-thought { background: linear-gradient(160deg, #f3eef8 0%, #ebe2f0 100%); border: 1px solid var(--sumire); border-radius: 16px; padding: 26px 28px; margin: 26px 0 30px; position: relative; box-shadow: 0 4px 14px rgba(82,67,115,0.08); }
+  .okemon-thought::before { content: "👀"; position: absolute; top: 18px; right: 22px; font-size: 22px; opacity: 0.5; }
+  .okemon-thought .ot-label { font-family: "Noto Sans JP", sans-serif; font-size: 10.5px; letter-spacing: 0.24em; color: #6a5b8b; font-weight: 700; margin-bottom: 10px; }
+  .okemon-thought h4 { font-family: "Shippori Mincho", serif; font-size: 17px; color: #524373; margin-bottom: 14px; font-weight: 600; line-height: 1.55; }
+  .okemon-thought p { font-family: "Noto Serif JP", serif; font-size: 14px; color: var(--text-fukami); line-height: 2.05; margin-bottom: 12px; }
+  .okemon-thought p:last-child { margin-bottom: 0; }
+  .okemon-thought strong { color: #524373; background: linear-gradient(transparent 64%, rgba(194,185,212,0.42) 64%); padding: 0 3px; font-weight: 600; }
+  .okemon-thought .ot-box { background: rgba(253,248,236,0.7); border-left: 3px solid var(--sumire); border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 14px 0; }
+  .okemon-thought .ot-box p { font-size: 13px; line-height: 1.95; margin-bottom: 6px; }
+  .okemon-thought .ot-box p:last-child { margin-bottom: 0; }
+  .okemon-thought .ot-box .lbl { font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.18em; color: #6a5b8b; font-weight: 700; margin-bottom: 6px; }
+
+  /* 取扱説明書（家族・クライアント） */
+  .torimuke { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 8px; }
+  @media (max-width: 720px) { .torimuke { grid-template-columns: 1fr; } }
+  .tcard { border-radius: 16px; padding: 26px 26px; border: 1px solid var(--sen); }
+  .tcard.fam { background: linear-gradient(160deg, var(--sakura-mist), #f9e3dd); border-color: var(--sakura); }
+  .tcard.cli { background: linear-gradient(160deg, var(--aurora-mint), #d8ebe2); border-color: var(--aurora-soft); }
+  .tcard h4 { font-family: "Shippori Mincho", serif; font-size: 17px; margin-bottom: 12px; font-weight: 600; }
+  .tcard.fam h4 { color: #8a4040; }
+  .tcard.cli h4 { color: var(--aurora-deep); }
+  .tcard ul { list-style: none; padding: 0; }
+  .tcard li { font-size: 13.5px; color: var(--text-fukami); line-height: 1.95; padding: 6px 0 6px 18px; position: relative; }
+  .tcard.fam li::before { content: "♡"; position: absolute; left: 0; color: var(--sakura); }
+  .tcard.cli li::before { content: "▸"; position: absolute; left: 0; color: var(--aurora-mid); }
+
+  /* しおり（フッター） */
+  .shiori { margin-top: 70px; padding: 40px 30px; background: linear-gradient(135deg, var(--aurora-deep), var(--aurora-mid)); border-radius: 18px; color: var(--kinari); text-align: center; }
+  .shiori h4 { font-family: "Shippori Mincho", serif; font-size: 18px; margin-bottom: 14px; font-weight: 600; letter-spacing: 0.05em; }
+  .shiori p { font-family: "Noto Serif JP", serif; font-size: 14px; line-height: 2.0; margin-bottom: 12px; }
+  .shiori p:last-child { margin-bottom: 0; }
+  .shiori .signature { font-family: "Shippori Mincho", serif; font-size: 13px; letter-spacing: 0.18em; margin-top: 20px; opacity: 0.85; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HERO（写真フルブリード型・コナコーヒー型踏襲）══════════════ -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <span class="hero-spark s1">✦</span>
+  <span class="hero-spark s2">✧</span>
+  <span class="hero-spark s3">✦</span>
+  <span class="hero-spark s4">✧</span>
+  <span class="hero-spark s5">✦</span>
+  <div class="hero-inner">
+    <p class="hero-label">FUKUMAME'S STRENGTHS PROFILE ── 2026.06</p>
+    <h1 class="hero-name">実行系<span class="accent">5</span> × 共感性。<br>常に走り続ける<br><span class="accent">装備</span>の使い方</h1>
+    <p class="hero-poem">
+      ストレングスファインダーTOP10から、<br>
+      装備の構造・強みが出る場所・<br>
+      不安が強くなる時の活かし方を整理した1冊です。
+    </p>
+    <p class="hero-meta">ふくまめさんの資質プロファイリング ── 全7章 ＋ ビジョンボード</p>
+    <div class="hero-actions">
+      <a class="hero-btn" href="#hitokoto">読みはじめる</a>
+      <a class="hero-btn ghost" href="#vision">ビジョンを見る</a>
+    </div>
+  </div>
+  <p class="hero-scroll">SCROLL</p>
+</section>
+
+<div class="container">
+
+  <!-- ══════ 目次（モバイル）══════ -->
+  <details class="toc-mobile">
+    <summary>目次（タップで開く）</summary>
+    <ol>
+      <li><a href="#hitokoto">ひとことで言うと <span class="s">あなたの像</span></a></li>
+      <li><a href="#ryouiki">領域マップ <span class="s">5・3・1・1のバランス</span></a></li>
+      <li><a href="#top10">TOP10 ひとつずつ解説 <span class="s">活かす／掛け合わせ／注意</span></a></li>
+      <li><a href="#others">11-34 のお話 <span class="s">省エネで動ける資質たち</span></a></li>
+      <li><a href="#manual">強み・省エネで動ける場所 <span class="s">プラスとマイナス</span></a></li>
+      <li><a href="#letter">今のあなたへの手紙 <span class="s">四重苦の真っ最中に</span></a></li>
+      <li><a href="#vision">ビジョンボード <span class="s">アイスランドと、その先</span></a></li>
+      <li><a href="#torimuke">関係者向け資質ガイド<span class="s">家族・クライアント向け</span></a></li>
+      <li><a href="#shiori">しおり <span class="s">最後に</span></a></li>
+    </ol>
+  </details>
+
+  <!-- ══════ サイド目次 ══════ -->
+  <nav class="toc">
+    <div class="toc-label">CONTENTS</div>
+    <ol>
+      <li><a href="#hitokoto">ひとことで言うと<span class="toc-sub">あなたの像</span></a></li>
+      <li><a href="#ryouiki">領域マップ<span class="toc-sub">5・3・1・1</span></a></li>
+      <li><a href="#top10">TOP10 解説<span class="toc-sub">活かす・掛け合わせ・注意</span></a></li>
+      <li><a href="#others">11-34 のお話<span class="toc-sub">省エネ資質たち</span></a></li>
+      <li><a href="#manual">強み・省エネで動ける場所<span class="toc-sub">プラス・マイナス</span></a></li>
+      <li><a href="#letter">今のあなたへの手紙<span class="toc-sub">四重苦の真っ最中に</span></a></li>
+      <li><a href="#vision">ビジョンボード<span class="toc-sub">アイスランドと、その先</span></a></li>
+      <li><a href="#torimuke">関係者向け資質ガイド<span class="toc-sub">家族・クライアント向け</span></a></li>
+      <li><a href="#shiori">しおり<span class="toc-sub">最後に</span></a></li>
+    </ol>
+  </nav>
+
+  <!-- ══════ 01 全体像 ══════ -->
+  <section class="sec" id="hitokoto">
+    <p class="sec-eyebrow">01 ── 全体像</p>
+    <h2 class="sec-title">プロファイル概要 ── <span class="ja">「実行系5資質＋共感性」の遂行型</span></h2>
+    <div class="divider"></div>
+    <div class="hitokoto">
+      <p>ふくまめさんの34資質構造を一言で表すと、<strong>「実行系の資質を5つ持ち、そこに人間関係構築力3つが乗る、優しく確実な遂行型」</strong>。</p>
+      <p>TOP10のうち <strong>実行系が5つ</strong>──達成欲・公平性・責任感・アレンジ・目標志向。さらに最上志向（影響力）が加わるため、<strong>「並のままにしておく」というOFFスイッチが構造的に存在しにくい</strong>。これが、常に何かに追われているように感じる構造的要因です。</p>
+      <p>一方で、人間関係構築力が3つ（調和性・ポジティブ・共感性）あるため、<strong>遂行力が「対人配慮の上に乗る」形</strong>になります。仕事ぶりが「確実」かつ「気持ちよく頼める」と評価されやすいのはこの組み合わせ。プロフィールにあるEC運営・楽天モール特化のフリーランス活動とも整合性が高い構造です。</p>
+      <p>戦略的思考力は1つ（未来志向）のみ。<strong>「考え抜いてから動く」より「動きながら整える」型</strong>。これは弱みではなく特性で、行動の速さと納期遵守力の土台になっています。ただし「立ち止まる・手放す・分析し直す」判断は意識的なトリガーが必要な領域です。</p>
+    </div>
+  </section>
+
+  <!-- ══════ 02 領域マップ ══════ -->
+  <section class="sec" id="ryouiki">
+    <p class="sec-eyebrow">02 ── 領域バランス</p>
+    <h2 class="sec-title">領域マップ ── <span class="ja">実行5 ・ 人3 ・ 影1 ・ 戦1</span></h2>
+    <div class="divider"></div>
+    <p class="ryouiki-lead">ストレングスファインダーの34資質は、4つの領域（実行力・人間関係構築力・影響力・戦略的思考力）に分かれます。ふくまめさんのTOP10のバランスはこう。</p>
+    <div class="balance">
+      <div class="bal exe"><div class="bl">実行力</div><div class="bc">5</div><div class="bn">EXECUTING</div></div>
+      <div class="bal rel"><div class="bl">人間関係構築力</div><div class="bc">3</div><div class="bn">RELATIONSHIP</div></div>
+      <div class="bal inf"><div class="bl">影響力</div><div class="bc">1</div><div class="bn">INFLUENCING</div></div>
+      <div class="bal str"><div class="bl">戦略的思考力</div><div class="bc">1</div><div class="bn">STRATEGIC</div></div>
+    </div>
+    <div class="ryouiki-note">
+      <p><b>主役は「実行力」</b>。TOP10の半分が実行系（達成欲・公平性・責任感・アレンジ・目標志向）。「やるって決めたら、最善のやり方で、最後まで」を、息を吸うようにやってしまう人。</p>
+      <p style="margin-top:10px;">そこに <b>人間関係構築力が3つ</b>（調和性・ポジティブ・共感性）。「人を傷つけずに」「明るく」「相手を察して」が、実行力の上に乗っかる。だから <b>「お任せしたら、確実にやってくれて、しかも気持ちよく仕事できる」</b> 人。クライアントが手放したくない理由がここ。</p>
+      <p style="margin-top:10px;">一方で <b>戦略的思考力は1つ（未来志向）のみ</b>。「やめる・省く・分析する・じっくり考え抜く」系の資質が下位寄り。これは弱みじゃなくて、<b>「考えるより、まず動ける」</b> という強みの裏返し。だけど、<b>「立ち止まる」「手放す」判断は意識的にやる必要がある</b> 領域でもあります。</p>
+    </div>
+  </section>
+
+  <!-- ══════ 03 TOP10 解説 ══════ -->
+  <section class="sec" id="top10">
+    <p class="sec-eyebrow">03 ── 資質ひとつずつ</p>
+    <h2 class="sec-title">TOP10 ひとつずつ解説 ── <span class="ja">活かす ／ 掛け合わせ ／ 注意</span></h2>
+    <div class="divider"></div>
+    <p class="sec-desc">各資質に「💪 活かすヒント」「🔗 掛け合わせ」「⚠️ 注意ポイント」の3点セット。気になるところから読んでOK。</p>
+
+    <div class="deep-list">
+
+      <!-- 1. 最上志向 -->
+      <div class="deep">
+        <div class="deep-head">
+          <span class="deep-rank">01</span>
+          <span class="deep-name">最上志向 <span style="font-size:12px;color:var(--text-usu);">Maximizer</span></span>
+          <span class="deep-tag dt-inf">影響力</span>
+          <span class="deep-meta">第1位</span>
+        </div>
+        <p class="deep-summary">「並でいい」が、心の底からピンとこない人。<b>すでに70点のものを90点にしたい</b>と、自然に手が動いてしまう。EC運営の改善案件で「ここもう少し」が無限に湧き出るのは、これ。</p>
+        <div class="deep-official">
+          <div class="dol">📖 GALLUP公式定義より</div>
+          <p>「<em>卓越したものにコミットする。「良い」で満足せず「最高」を追求する。強みを見出し、それを磨き上げるのが得意。質と効率にこだわり、常に改善の余地を探している。</em>」</p>
+          <p>自然な行動・貢献：「<em>強みに集中し、弱みにうまく対処する。質へのこだわりを持ち、個人や集団の卓越性を高め、効果を最大化するための手段を常に追求する。</em>」</p>
+        </div>
+        <div class="deep-quote">
+          <p>「失敗しなかった一日は、何もしなかった一日！」</p>
+          <span class="ql">── ふくまめさんの好きな言葉。最上志向＋達成欲の合金。</span>
+        </div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 公式「より生かすために」</div><p>「自分が熱中できるものを見つける／尊敬する人の近くにいる機会を作る／<b>弱みは人に任せる・やらないようにする</b>／質を上げるために量をこなす視点を持つ」（GALLUP公式）。── 楽天モール特化はまさにこの「熱中できる強み領域」。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 掛け合わせ</div><p><b>最上志向 × 達成欲</b>＝ゴールが移動し続ける。今日の80点が、明日は60点に見える。これが「ずっと足りない」感の正体。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>公式が示す注意：「<em>弱みの矯正に取り憑かれる／妥協や程々で良いという考え方</em>が苦手」。── 「もうここで十分」のラインを <b>事前に紙に書く</b>と、最上志向の暴走に外側からブレーキがかけられる。</p></div>
+        </div>
+      </div>
+
+      <!-- 2. 調和性 -->
+      <div class="deep">
+        <div class="deep-head">
+          <span class="deep-rank">02</span>
+          <span class="deep-name">調和性 <span style="font-size:12px;color:var(--text-usu);">Harmony</span></span>
+          <span class="deep-tag dt-rel">人間関係構築力</span>
+          <span class="deep-meta">第2位</span>
+        </div>
+        <p class="deep-summary">対立を避けて、合意点を探す人。会議で意見が割れたとき、<b>「で、どうしたら全員動けるか？」</b> に自然と頭が回る。クライアントワークで揉めごとを起こさないのは、これがあるから。</p>
+        <div class="deep-official">
+          <div class="dol">📖 GALLUP公式定義より</div>
+          <p>「<em>穏やかな人。対立よりも合意点を探そうとする。全員が納得できる道を見つけることに満足感を覚える。争いごとを避け、調和のとれた環境を好む。</em>」</p>
+          <p>自然な行動・貢献：「<em>逆立った羽を滑らかにするように、異なる意見を調整し平和的な問題解決をもたらす。対立を避け、共通点を見出すことで協力関係を強化する。</em>」</p>
+        </div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 公式「より生かすために」</div><p>「対話・交渉・意見調整の経験を積む／会議や話し合いの仲介役を買って出る／<b>「必要な対立」と「無駄な対立」を区別する</b>／異なる立場の人の意見を引き出す質問力を磨く」（GALLUP公式）。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 掛け合わせ</div><p><b>調和性 × 共感性</b>＝相手の感情を察した上で、波風立てずに合意を探す。万能だけど、<b>自分の「無理」を一番後回しにしがち</b>。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>公式が示す苦手：「<em>誰かが不満を抱えたまま物事が進むこと</em>」。── ここで言う"誰か"には <b>自分自身も含まれる</b>。短期の波風を避け続けると、長期で自分側に大波が来る構造。</p></div>
+        </div>
+      </div>
+
+      <!-- 3. ポジティブ -->
+      <div class="deep">
+        <div class="deep-head">
+          <span class="deep-rank">03</span>
+          <span class="deep-name">ポジティブ <span style="font-size:12px;color:var(--text-usu);">Positivity</span></span>
+          <span class="deep-tag dt-rel">人間関係構築力</span>
+          <span class="deep-meta">第3位</span>
+        </div>
+        <p class="deep-summary">場を明るくする伝染力。本人が意識しなくても、ふくまめさんが入ると <b>「なんかいけそうな気がする」</b> 雰囲気になる。お酒の場で人気者なのは絶対これ。</p>
+        <div class="deep-official">
+          <div class="dol">📖 GALLUP公式定義より</div>
+          <p>「<em>楽観的で周囲を明るくする人。熱意と明るさを持ち、その前向きさが人に伝染する。どんな状況でも良い面を見つけ出し、ポジティブなエネルギーを発散する。</em>」</p>
+          <p>自然な行動・貢献：「<em>場を盛り上げ、能動的に周囲を元気づける。明るさを伝染させ、チームに活気とエネルギーを与える。暗い雰囲気を一変させる力がある。</em>」</p>
+        </div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 公式「より生かすために」</div><p>「チームのムードメーカーとして役割を担う／ポジティブなエネルギーに触れる環境を作る／難しい状況でも「明るい側面」を伝える役割を引き受ける／<b>時にはネガティブな感情も認め、受け入れる余裕を持つ</b>」（GALLUP公式）。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 掛け合わせ</div><p><b>ポジティブ × 調和性</b>＝「暗い顔を見せない」が癖になる。家族にも、クライアントにも、自分にも。<b>「弱音を吐く許可」を自分に出すのが一番苦手</b>。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>公式が認めている活かし方として、<b>「ネガティブな感情を認める時間」</b>も含まれている。── 安全な相手（夫・親友・コーチ）の前では、ポジティブを意識的にOFFにする時間を確保していい。それは資質の劣化ではなく、公式推奨の使い方。</p></div>
+        </div>
+      </div>
+
+      <!-- 4. 共感性 -->
+      <div class="deep">
+        <div class="deep-head">
+          <span class="deep-rank">04</span>
+          <span class="deep-name">共感性 <span style="font-size:12px;color:var(--text-usu);">Empathy</span></span>
+          <span class="deep-tag dt-rel">人間関係構築力</span>
+          <span class="deep-meta">第4位</span>
+        </div>
+        <p class="deep-summary">相手の感情を、言葉になる前に察する人。0歳の息子さんの「ちょっと違和感」も、夫の「言わないけど疲れてる」も、クライアントの「迷ってるサイン」も、ほぼ自動で受信してしまう。</p>
+        <div class="deep-official">
+          <div class="dol">📖 GALLUP公式定義より</div>
+          <p>「<em>場の空気や人の気持ちに敏感で、感情豊か。他者の感情や状況を察知するアンテナを持ち、周りの感情の変化に自然と反応できる人。</em>」</p>
+          <p>自然な行動・貢献：「<em>相手の感情をよく察して対応を変える。言葉にされていない気持ちを汲み取り、寄り添うことで他者との信頼関係を構築できる。</em>」</p>
+        </div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 公式「より生かすために」</div><p>「感情表現を大切にする環境づくりをする／<b>感情的に疲れたときは意識的に距離を取る</b>／相手の感情を言葉にして確認する習慣をつける／チーム内の感情的な橋渡し役を担当する」（GALLUP公式）。── 公式自身が <b>「距離を取る」</b>を活かし方として明記。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 掛け合わせ</div><p><b>共感性 × 責任感</b>＝相手の感情を <b>受信した瞬間に「自分が解決しなきゃ」</b> モードになる。家族の体調不良を「自分の責任」に変換しがち。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>共感性は <b>受信機能</b>であって、<b>解決義務とは別物</b>。「察した感情」と「自分が引き受ける感情」を分けることが公式定義上も推奨される使い方。受信＝引き受ける、ではない。</p></div>
+        </div>
+      </div>
+
+      <!-- 5. 達成欲 -->
+      <div class="deep">
+        <div class="deep-head">
+          <span class="deep-rank">05</span>
+          <span class="deep-name">達成欲 <span style="font-size:12px;color:var(--text-usu);">Achiever</span></span>
+          <span class="deep-tag dt-exe">実行力</span>
+          <span class="deep-meta">第5位</span>
+        </div>
+        <p class="deep-summary">毎日「今日、何かやり遂げた」感がないと落ち着かない人。実践済リスト（簿記3級・積立NISA・転職・格安SIM・独立…）の長さが、達成欲の足跡そのもの。</p>
+        <div class="deep-official">
+          <div class="dol">📖 GALLUP公式定義より</div>
+          <p>「<em>並外れたスタミナで目標に向かって走り続ける。長い距離も諦めずにやり遂げる力がある。働き者で、常に生産性を高めるペースを設定する。<b>一日の終わりに何かを成し遂げたという実感がないと満足できない。</b></em>」</p>
+          <p>自然な行動・貢献：「<em>常に前進し続ける継続力があり、チームを引っ張る持続力を持つ。完了することに大きな喜びを感じる。</em>」</p>
+        </div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 公式「より生かすために」</div><p>「目標やタスクを小さく分割し、達成感を増やす／完了した項目をチェックするToDoリストを活用する／成果を記録し、進捗を振り返る習慣をつける／<b>休息と健康のバランスも意識する</b>」（GALLUP公式）。── 公式自身が <b>「休息」</b>を活かし方の項目に明記している点が、達成欲持ちには重要。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 掛け合わせ</div><p><b>達成欲 × 目標志向</b>＝ゴールが明確だと無限に走る、ゴールがないと迷子。育休・家事育児みたいに「終わりがない営み」だと <b>達成感が湧きにくい構造</b>。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>公式が示す苦手：「<em>途中で止まること・中断されること／何も達成できない日</em>」。── 「休んだ＝達成項目」と書き換え、ToDoリストに <b>「休息」「家族と過ごす」「ごはんを食べる」</b>を正式タスクとして入れると、達成欲の枠組みの中で休める。</p></div>
+        </div>
+      </div>
+
+      <!-- 6. 公平性 -->
+      <div class="deep">
+        <div class="deep-head">
+          <span class="deep-rank">06</span>
+          <span class="deep-name">公平性 <span style="font-size:12px;color:var(--text-usu);">Consistency</span></span>
+          <span class="deep-tag dt-exe">実行力</span>
+          <span class="deep-meta">第6位</span>
+        </div>
+        <p class="deep-summary">「同じルールを、みんなに同じだけ」が腑に落ちる人。クライアントによって対応の質を変えない＝信頼が積み上がりやすい。</p>
+        <div class="deep-official">
+          <div class="dol">📖 GALLUP公式定義より</div>
+          <p>「<em>個人の要望よりも、グループ全体のニーズに関心がある。公平性を重視し、誰に対しても同じ基準で接する人。明確なルールや手順があると安心する。</em>」</p>
+          <p>自然な行動・貢献：「<em>違いをなくして、みんな同じ状況を作り出すことに努める。規則や方針を決めて、予測しやすい職場や環境を作ることが得意。平等な扱いで信頼を得る。</em>」</p>
+        </div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 公式「より生かすために」</div><p>「公平性と効率性のバランスを取る／ルールの「なぜ」を説明して納得性を高める／定期的に判断や基準を振り返る習慣をもつ／<b>特別な事情がある場合の例外ルールも設ける</b>」（GALLUP公式）。── 公式が <b>「例外ルール」</b>を活かし方として明記している。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 掛け合わせ</div><p><b>公平性 × 責任感</b>＝「自分だけ例外」が許せない。みんなが頑張ってるから、<b>自分も休めない</b>に翻訳されがち。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>公式が示す苦手：「<em>特別扱いや例外を作ること</em>」が <em>苦手</em>とされる一方、活かし方では <em>「例外ルールも設ける」</em>が推奨される。── この矛盾を解く鍵は <b>「明文化された例外ルール」</b>。「家族の体調不良の時は私もペースを落とす」のように、<b>事前に書いておく</b>と公平性に整合する。</p></div>
+        </div>
+      </div>
+
+      <!-- 7. 未来志向 -->
+      <div class="deep">
+        <div class="deep-head">
+          <span class="deep-rank">07</span>
+          <span class="deep-name">未来志向 <span style="font-size:12px;color:var(--text-usu);">Futuristic</span></span>
+          <span class="deep-tag dt-str">戦略的思考力</span>
+          <span class="deep-meta">第7位</span>
+        </div>
+        <p class="deep-summary">「数年後どうなってたい」が、ふっと頭に浮かぶ人。アイスランドに行きたい、もここから来てる。未来志向は <b>不安が強い時期にこそ機能する</b>資質で、後回しにすべきものではない。</p>
+        <div class="deep-official">
+          <div class="dol">📖 GALLUP公式定義より</div>
+          <p>「<em>未来に思いを馳せるのが好きで、明日のことを考えるとワクワクする。可能性を見出し、「あんな未来があったらいいな」と夢見ることが得意。現状に満足せず、常に先を見ている。</em>」</p>
+          <p>自然な行動・貢献：「<em>先を見通して計画や提案を行う。未来の展望を提示することでチームに方向性を与え、周囲にひらめきやエネルギーをもたらす。</em>」</p>
+        </div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 公式「より生かすために」</div><p>「<b>夢リスト・ビジョンボードを作り、目に見える形にする</b>／ビジョンづくりや新しい企画の立案役を担う／未来の可能性を他の人に伝える機会を持つ／現実的な視点を持つ人と協力して実行計画を立てる」（GALLUP公式）。── 公式自身が <b>ビジョンボード</b>を活かし方の第一項目に置いている。この取説§06がその実装。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 掛け合わせ</div><p><b>未来志向 × 目標志向 × 達成欲</b>＝「夢」を「年単位の計画」に変換し、達成項目として刻める。<b>「2026年11月発のツアー」</b>のような具体素材があると、3資質が同時起動する。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>公式が示す苦手：「<em>現状に満足して停滞すること／可能性を狭める否定的な意見</em>」。── 不安期に「今しんどいから未来を考えない」と未来志向をOFFにすると、ふくまめさんの装備の <b>主要なエネルギー源を1つ手放すことになる</b>。逆に、視覚的なビジョン強化が現在の処理負荷を下げる構造。</p></div>
+        </div>
+      </div>
+
+      <!-- 8. 責任感 -->
+      <div class="deep">
+        <div class="deep-head">
+          <span class="deep-rank">08</span>
+          <span class="deep-name">責任感 <span style="font-size:12px;color:var(--text-usu);">Responsibility</span></span>
+          <span class="deep-tag dt-exe">実行力</span>
+          <span class="deep-meta">第8位</span>
+        </div>
+        <p class="deep-summary">引き受けたら、最後までやる人。クライアントワークで信頼を勝ち取ってきたのはこの資質。だけど <b>「降りる」「諦める」「他人に渡す」の選択肢が見えにくい</b> 副作用付き。</p>
+        <div class="deep-official">
+          <div class="dol">📖 GALLUP公式定義より</div>
+          <p>「<em>他者から信頼される人。決めたことに強い責任感を持ち、誠実さや正直さを大切にする。「頼まれたことは必ずやる」という心構えの持ち主。</em>」</p>
+          <p>自然な行動・貢献：「<em>約束を守りやり抜く姿勢で周囲に安心感を与える。信頼と行動の倫理観でチームに貢献。「自分が引き受けた」という自覚が強く、最後までやり切る。</em>」</p>
+        </div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 公式「より生かすために」</div><p>「<b>NOのテンプレートを作成し、適切に断る練習をする</b>／自分の役割や約束の範囲を明確にする／<b>完璧主義にならず、優先順位をつける</b>／信頼されることの価値を認識し、適切に活用する」（GALLUP公式）。── 公式自身が <b>「断る練習」</b>を活かし方として明記。責任感持ちの必須スキル。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 掛け合わせ</div><p><b>責任感 × 共感性</b>＝家族の不調まで「自分が」モード。子どもの胃腸炎も、夫のダウンも、<b>「私がもっと…」</b> に変換される。これは責任感の濫用。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>公式が示す苦手：「<em>自分の約束を守れない状況に追い込まれること</em>」。── 言い換えると、最初から <b>「約束しすぎない」</b>ことが、責任感を健全に発揮する条件。引き受け範囲は紙に書いて明文化、書いてないことは範囲外と切り分ける。</p></div>
+        </div>
+      </div>
+
+      <!-- 9. アレンジ -->
+      <div class="deep">
+        <div class="deep-head">
+          <span class="deep-rank">09</span>
+          <span class="deep-name">アレンジ <span style="font-size:12px;color:var(--text-usu);">Arranger</span></span>
+          <span class="deep-tag dt-exe">実行力</span>
+          <span class="deep-meta">第9位</span>
+        </div>
+        <p class="deep-summary">複数のタスクや人やリソースを、最適に組み合わせる人。EC運営の「画像制作×SEO×LP×広告」を <b>同時に回せる</b> のは、これ。</p>
+        <div class="deep-official">
+          <div class="dol">📖 GALLUP公式定義より</div>
+          <p>「<em>動かせるパーツがたくさんあると心地よい。様々な要素を最適に組み合わせることで、最高の成果を出すことを楽しむ人。異なる資源や人を柔軟に組み合わせるのが得意。</em>」</p>
+          <p>自然な行動・貢献：「<em>物事に効率よく対処し、成果を上げる。柔軟に、いろんな方向から対処できる。マルチタスクが得意で、様々なリソースを最適配置して生産性を高める。</em>」</p>
+        </div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 公式「より生かすために」</div><p>「変化自体が目的にならないよう、成果を意識する／変化のある複数のプロジェクト管理を担当する／効率化の工夫や改善案を共有する／「なぜ変えるのか」を説明して周囲を巻き込む」（GALLUP公式）。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 掛け合わせ</div><p><b>アレンジ × 達成欲</b>＝「組む」と「やる」の両エンジンが回る。だから 1日24時間の中に <b>無限にタスクを詰められてしまう</b>構造。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>アレンジは <b>休息・余白・無為の時間も配置対象に含められる</b>──ここがふくまめさん装備の救いポイント。「散歩30分」「夫と話す15分」「何もしない1時間」を <b>1日のパズルに最初から組み込む</b>と、後回しで消えるリスクが減る。</p></div>
+        </div>
+      </div>
+
+      <!-- 10. 目標志向 -->
+      <div class="deep">
+        <div class="deep-head">
+          <span class="deep-rank">10</span>
+          <span class="deep-name">目標志向 <span style="font-size:12px;color:var(--text-usu);">Focus</span></span>
+          <span class="deep-tag dt-exe">実行力</span>
+          <span class="deep-meta">第10位</span>
+        </div>
+        <p class="deep-summary">「で、ゴールどこ？」が口癖の人。ゴールが見えると一直線、見えないとぐったり迷子。フリーランス独立も「2024年6月」と決めて切ったから動けた。</p>
+        <div class="deep-official">
+          <div class="dol">📖 GALLUP公式定義より</div>
+          <p>「<em>一つのことに打ち込む。明確な目標があると集中できて力を発揮する。何かするときは「そのゴール／目的は何か？」を意識する人。</em>」</p>
+          <p>自然な行動・貢献：「<em>優先順位と目的を明確化して効率的に行動する。迷いの時に方向性を示し、周囲を目標に向かって導くことができる。</em>」</p>
+        </div>
+        <div class="qpoints">
+          <div class="qp tips"><div class="qp-h">💪 公式「より生かすために」</div><p>「進捗確認や目標振り返りを定期的に行う／<b>大きな目標を小さなステップに分解する</b>／目標の「なぜ？」を明確にしておく／チームの目標設定や方向性の明確化を担当する」（GALLUP公式）。── アイスランド行きも、小ステップ（パスポート確認→積立開始→候補ツアー比較）に分解すると動きやすい。</p></div>
+          <div class="qp combo"><div class="qp-h">🔗 掛け合わせ</div><p><b>目標志向 × 未来志向</b>＝「アイスランド」を <b>具体的な日付・予算・予定</b>に落とせる。夢を計画にする超能力。</p></div>
+          <div class="qp caution"><div class="qp-h">⚠️ 注意ポイント</div><p>公式が示す苦手：「<em>脱線や目的不明の作業／ゴールが見えない状態</em>」。── 育児・家事・休息は構造的にゴール無しの営みなので、ストレス源になりやすい。<b>「今日のゴール＝休む」「今日のゴール＝家族と笑う」</b>のように、ゴール無しの時間にも仮ゴールを置くと、目標志向の枠組みで休める。</p></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 11-34 -->
+    <div class="others" id="others">
+      <h4>── 11-34 のお話 ──</h4>
+      <p style="font-size:13.5px;color:var(--text-yawa);line-height:2.0;margin-bottom:12px;">下位資質は「使わない」じゃなく「省エネで動ける場所」。ふくまめさんの場合、<b>戦略的思考力（分析思考・収集心・学習欲・戦略性 等）と、影響力（活発性・指令性・社交性 等）が下位寄り</b>と推測されます（全34位の詳細結果があれば、もう少し精緻にできます）。</p>
+      <p style="font-size:13px;color:var(--text-yawa);line-height:1.95;">これは <b>「分析で固まらず、声高に押し出さず、優しく確実にやり切る」</b> という、ふくまめさんのスタイルの土台。下位を上げようとせず、TOP10を信じて動けば、ちゃんと進む人。</p>
+    </div>
+  </section>
+
+  <!-- ══════ 04 強み・省エネ ══════ -->
+  <section class="sec" id="manual">
+    <p class="sec-eyebrow">04 ── 動ける場所</p>
+    <h2 class="sec-title">強みが出る場所 ／ <span class="ja">省エネで動ける場所</span></h2>
+    <div class="divider"></div>
+    <div class="manual">
+      <div class="mcol plus">
+        <h4>✦ 強みが爆発する仕事</h4>
+        <ul>
+          <li>既存ECモールの売上改善（最上志向 × アレンジ）</li>
+          <li>クライアントの「困った」を察して先回り提案（共感性 × 責任感）</li>
+          <li>複数案件の同時進行・段取り（アレンジ × 目標志向）</li>
+          <li>長期継続契約・チームの中継ぎ役（公平性 × 調和性）</li>
+          <li>未経験領域へのチャレンジ（達成欲 × ポジティブ）</li>
+        </ul>
+      </div>
+      <div class="mcol minus">
+        <h4>⚐ 省エネでいい場所</h4>
+        <ul>
+          <li>ゼロイチの戦略立案（戦略的思考下位なので消耗大）</li>
+          <li>声高にリーダーシップを取る役割（影響力1個のみ）</li>
+          <li>「終わりがない」業務に長くいること（達成欲が疲れる）</li>
+          <li>分析・深掘り・調査だけで動かない時間が長い仕事</li>
+          <li>公平性を曲げないといけない政治的な場</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ 05 状態の構造的読解 ══════ -->
+  <section class="sec" id="letter">
+    <p class="sec-eyebrow">05 ── 「追われている感」を、構造から読む</p>
+    <h2 class="sec-title">不安が強くなる時の資質構造と、<span class="ja">公式が示している対処</span></h2>
+    <div class="divider"></div>
+    <div class="letter">
+      <h4>① 同時に5つのスイッチが入っている状態</h4>
+      <p>「いつも何かに追われている」「立ち止まると何かが崩れそう」「ゆっくりしようと思ってもできない」──この体感は、ふくまめさんの場合、<strong>TOP10の構造上、自然に起こる反応</strong>です。性格や頑張り方の問題ではありません。</p>
+      <p>ストレングスファインダー公式の資質定義書には、各資質ごとに <strong>「苦手なこと／嫌いなこと」</strong>が明記されています。ふくまめさんのTOP10で該当箇所を並べると、こうなります：</p>
+      <div style="background:rgba(253,248,236,0.7); border:1px solid var(--sumire); border-radius:12px; padding:18px 22px; margin:16px 0;">
+        <p style="font-family:'Noto Sans JP',sans-serif; font-size:11px; letter-spacing:0.18em; color:#6a5b8b; font-weight:700; margin-bottom:12px;">── 公式定義「苦手なこと」抜粋（ふくまめさんTOP10より）──</p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:6px;"><strong>達成欲</strong>：「<em>途中で止まること・中断されること／何も達成できない日</em>」</p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:6px;"><strong>目標志向</strong>：「<em>ゴールが見えない状態／脱線や目的不明の作業／曖昧な指示</em>」</p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:6px;"><strong>責任感</strong>：「<em>自分の約束を守れない状況に追い込まれること／あいまいな役割や期待値</em>」</p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:6px;"><strong>公平性</strong>：「<em>特別扱いや例外を作ること／ルールが人によって変わる状況</em>」</p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:6px;"><strong>最上志向</strong>：「<em>妥協や「程々で良い」という考え方／平均点で満足すること</em>」</p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:6px;"><strong>共感性</strong>：「<em>感情を抑制・制限される環境／感情を無視した効率優先</em>」</p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:6px;"><strong>調和性</strong>：「<em>意見が割れて収拾がつかない場面／誰かが不満を抱えたまま物事が進む</em>」</p>
+        <p style="font-size:13px; line-height:1.9;"><strong>ポジティブ</strong>：「<em>ネガティブな人や愚痴／暗い雰囲気や重苦しい環境</em>」</p>
+      </div>
+      <p>育児・引越し・繁忙・体調不良といった <strong>「終わりが見えず・予定通りに進まず・誰かの不調を引き取り・暗くなりがちな」</strong> 状況は、ふくまめさんのTOP10の <strong>苦手項目を一斉に踏み抜く</strong> 構造です。<br>つまり、不安が強くなるのは <strong>装備の自然な警報音</strong>であって、不調でも怠けでもない。</p>
+
+      <h4 style="margin-top:24px;">② 「気にしないで／休んで」が届かない理由</h4>
+      <p>周囲から贈られる優しい言葉──「気にしないで」「ゆっくり休んで」「考えすぎないで」──は、温度としては愛のあるメッセージですが、<strong>達成欲・目標志向・公平性・責任感の言語体系の外側</strong>からの提案なので、ふくまめさんの装備にはコマンドとして認識されにくい構造です。</p>
+      <p>「わかってる、でもできない」と感じるのは <strong>正常な反応</strong>です。装備が「<em>休む＝中断＝苦手項目</em>」と処理してしまうため、休もうとするほど不安が増す逆効果が起きやすい。</p>
+
+      <h4 style="margin-top:24px;">③ ストレングスファインダー公式が示している「より生かすために」</h4>
+      <p>同じ公式定義書には、各資質ごとに <strong>「より生かすために」</strong>セクションがあります。ふくまめさんのTOP10で、いま効くものを引用します。「気にしないで」ではない、<strong>装備の枠組みの中で動ける形のヒント</strong>です。</p>
+      <div style="background:rgba(199,227,211,0.35); border:1px solid var(--aurora-soft); border-radius:12px; padding:18px 22px; margin:16px 0;">
+        <p style="font-family:'Noto Sans JP',sans-serif; font-size:11px; letter-spacing:0.18em; color:var(--aurora-deep); font-weight:700; margin-bottom:12px;">── 公式「より生かすために」抜粋 ──</p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:8px;"><strong>達成欲 →</strong>「<em>休息と健康のバランスも意識する</em>」<br><span style="color:var(--text-yawa); font-size:12px;">公式自身が、達成欲には休息設計が必要と明記。「休んだ」を達成項目に入れていい。</span></p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:8px;"><strong>責任感 →</strong>「<em>NOのテンプレートを作成し、適切に断る練習をする／完璧主義にならず、優先順位をつける</em>」<br><span style="color:var(--text-yawa); font-size:12px;">「断る」は責任感の <em>放棄ではなく活かし方</em>と公式が位置づけている。</span></p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:8px;"><strong>共感性 →</strong>「<em>感情的に疲れたときは意識的に距離を取る</em>」<br><span style="color:var(--text-yawa); font-size:12px;">共感性は受信機。電源を切る時間が必要と公式自身が示している。</span></p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:8px;"><strong>公平性 →</strong>「<em>特別な事情がある場合の例外ルールも設ける</em>」<br><span style="color:var(--text-yawa); font-size:12px;">「自分にも例外ルールを適用していい」──公平性の枠組みの中で休む権利が許されている。</span></p>
+        <p style="font-size:13px; line-height:1.9; margin-bottom:8px;"><strong>ポジティブ →</strong>「<em>時にはネガティブな感情も認め、受け入れる余裕を持つ</em>」<br><span style="color:var(--text-yawa); font-size:12px;">ポジティブをOFFにする時間も、公式が認めている活かし方の一部。</span></p>
+        <p style="font-size:13px; line-height:1.9;"><strong>未来志向 →</strong>「<em>夢リスト・ビジョンボードを作り、目に見える形にする</em>」<br><span style="color:var(--text-yawa); font-size:12px;">不安期にこそ強く働く資質。この取説の§06がその実装。</span></p>
+      </div>
+
+      <h4 style="margin-top:24px;">④ 「届く言葉」への変換表</h4>
+      <p>同じ意図を、ふくまめさんの装備に届く言語に翻訳すると、認知に乗りやすくなります。</p>
+      <div style="overflow-x:auto; margin:14px 0;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px; background:var(--kinari); border-radius:10px; overflow:hidden;">
+          <thead>
+            <tr style="background:rgba(127,176,166,0.20);">
+              <th style="padding:10px 14px; text-align:left; color:var(--aurora-deep); font-family:'Noto Sans JP',sans-serif; font-size:11.5px; letter-spacing:0.1em; border-bottom:1px solid var(--sen);">届かない言葉</th>
+              <th style="padding:10px 14px; text-align:left; color:var(--aurora-deep); font-family:'Noto Sans JP',sans-serif; font-size:11.5px; letter-spacing:0.1em; border-bottom:1px solid var(--sen);">届く言葉（資質言語）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:10px 14px; border-bottom:1px dashed var(--sen); color:var(--text-yawa);">休んで</td><td style="padding:10px 14px; border-bottom:1px dashed var(--sen);"><strong>休息を今日の達成チェックリストに入れる</strong>（達成欲）</td></tr>
+            <tr><td style="padding:10px 14px; border-bottom:1px dashed var(--sen); color:var(--text-yawa);">気にしないで</td><td style="padding:10px 14px; border-bottom:1px dashed var(--sen);"><strong>気にする対象を1つに絞る</strong>（目標志向）</td></tr>
+            <tr><td style="padding:10px 14px; border-bottom:1px dashed var(--sen); color:var(--text-yawa);">自分も大事に</td><td style="padding:10px 14px; border-bottom:1px dashed var(--sen);"><strong>自分にも公平性の例外ルールを適用する</strong>（公平性）</td></tr>
+            <tr><td style="padding:10px 14px; border-bottom:1px dashed var(--sen); color:var(--text-yawa);">無理しないで</td><td style="padding:10px 14px; border-bottom:1px dashed var(--sen);"><strong>「降りる」を、責任感の活かし方として実行する</strong>（責任感）</td></tr>
+            <tr><td style="padding:10px 14px; border-bottom:1px dashed var(--sen); color:var(--text-yawa);">考えすぎないで</td><td style="padding:10px 14px; border-bottom:1px dashed var(--sen);"><strong>共感性のスイッチを意識的にOFFにする時間を作る</strong>（共感性）</td></tr>
+            <tr><td style="padding:10px 14px; color:var(--text-yawa);">明るく</td><td style="padding:10px 14px;"><strong>暗さも受け入れる時間を1日のどこかに置く</strong>（ポジティブ）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="margin-top:24px;">⑤ いちばん大事な前提</h4>
+      <p>ふくまめさんは <strong>「走り続ける装備」を持って生まれてきた人</strong>です。これは強みであって、修正の対象ではありません。<br>不安が強くなるのは、装備が止まりたがらないから。だから <strong>装備を止めようとするのではなく、装備の中に「休む」「断る」「距離を取る」「例外を作る」を組み込む</strong>──これが、公式定義の「より生かすために」と整合する、構造的に成立する唯一の道です。</p>
+      <p>そして構造的に──プロフィール記載の実践済リスト（簿記3級・積立NISA・未経験Webデザイナー転職・格安SIM・フリーランス独立…）は、TOP10の達成欲＋目標志向＋責任感が高密度で稼働した <strong>客観的な実行ログ</strong>です。ご自身では「まだ足りない」と感じやすい構造ですが、<strong>装備の出力としては既に十分に高い水準</strong>が出ています。<br>追加で何かを足すフェーズではなく、公式が示している <strong>「より生かすために」</strong>に従って、装備の出力を整える時期に来ています。</p>
+    </div>
+  </section>
+
+  <!-- ══════ 06 ビジョンボード ══════ -->
+  <section class="sec" id="vision">
+    <p class="sec-eyebrow">06 ── 未来志向 × 目標志向の活かし方</p>
+    <h2 class="sec-title">ビジョンボード ＆ <span class="ja">タイムバケット</span></h2>
+    <div class="divider"></div>
+    <p class="vision-intro">未来志向の資質は、視覚的なビジョンと、時間軸での区切り（タイムバケット）の2つで活性化します。プロフィール記載の「行きたい国」を素材に、資質的な活かし方を時間軸で整理しました。</p>
+
+    <!-- おけもんの考察：未来志向の未活用問題 -->
+    <div class="okemon-thought">
+      <div class="ot-label">── 個性診断士おけもんの考察 ──</div>
+      <h4>未来志向を、持っているのに使えていない状態</h4>
+      <p>プロフィール記載と資質構造から読み取れるのは、<strong>ふくまめさんは未来志向（第7位）を持っているのに、その資質を今ほとんど稼働させられていない</strong>可能性です。「ワクワクする未来を想像する時間」そのものが、構造的に圧迫されてしまっている。</p>
+      <p>原因はおそらく、TOP10に並んでいる<strong>実行系5資質＋共感性＋責任感</strong>が常時フル稼働しているため、未来志向が起動する「余白の時間」がなくなっているからです。「目の前の処理」と「人の感情の受信」で1日のスロットが埋まり、未来を眺めるスペースが残らない構造。</p>
+
+      <p style="margin-top:18px;">ここで提案したいのが、<strong>「今日の完成」と「未来の感情の先取り」を1セットで運用する</strong>使い方です。</p>
+
+      <div class="ot-box">
+        <div class="lbl">🔄 セット運用の中身</div>
+        <p><strong>今日の完成</strong>（達成欲）── 1日の終わりに「今日やったこと」を可視化する。仕事・家事・育児・自分のケアを並べて、達成欲を満たす。</p>
+        <p><strong>未来の感情の先取り</strong>（未来志向）── そのすぐ後に、「アイスランドのオーロラを見ている時の自分の気持ち」を30秒〜1分、目を閉じてイメージする。空気の冷たさ、見上げた時の感動、「来てよかった」と思っている自分の表情。<strong>感情の質感を、今この瞬間に味わう</strong>。</p>
+      </div>
+
+      <p>これがなぜ効くか──未来志向の本質は「未来の出来事を予測する」ではなく、<strong>「未来の感情を、今ここで先取りして体験する」</strong>ことだからです。ビジョンボードや夢リストが資質公式で推奨されるのも、視覚化を通じて「その時の感情」が今この瞬間に湧き上がる仕掛けだから。</p>
+
+      <p>達成欲と未来志向を毎日セットで動かすと、<strong>「今日も整えた」という完了感と、「行きたい未来がちゃんとある」という安心感</strong>が同時に得られる。これは「いつも何かに追われている」という体感に対する、構造的な解毒剤になりやすい組み合わせです。</p>
+
+      <p>未来を「いつかの宿題」にせず、<strong>毎日数分だけ、今の自分を支える栄養として使う</strong>。これがふくまめさんのTOP10の中で、いちばん未活用なリソースの活かし方です。</p>
+    </div>
+
+    <!-- アイスランド メインビジュアル -->
+    <div class="vmain">
+      <img src="g-ocr0Zg-iceland.jpg" alt="アイスランドのオーロラ">
+      <div class="vmain-cap"><b>🌌 アイスランド ── オーロラ</b><br>未来志向は「具体的な像」と相性が良い資質。漠然と「いつか」より、写真1枚を持つだけで起動の質が変わります。</div>
+    </div>
+
+    <!-- タイムバケット -->
+    <div class="bucket-intro">
+      <b>タイムバケットとは</b>──「いつ・何を・どのくらい」を時間軸で区切る考え方。<b>未来志向（夢を描く）＋目標志向（ゴール設定）＋アレンジ（配置）＋達成欲（完了感）</b>の4資質が同時に動くので、ふくまめさんの装備と相性が抜群です。
+    </div>
+
+    <div class="buckets">
+
+      <div class="bk">
+        <div class="bk-head">
+          <span class="bk-icon">🔍</span>
+          <span class="bk-when">NOW ── 今週</span>
+          <span class="bk-title">未来志向の起動</span>
+          <span class="bk-shishitsu">未来志向</span>
+        </div>
+        <p>視覚刺激で未来志向が起動。所要時間3分・コストゼロ・達成リスト1項目分。</p>
+        <ul>
+          <li>アイスランドのオーロラ写真を、スマホの待ち受けに設定</li>
+          <li>デスク・冷蔵庫・洗面所など「1日複数回視界に入る場所」にもう1枚</li>
+        </ul>
+      </div>
+
+      <div class="bk">
+        <div class="bk-head">
+          <span class="bk-icon">🌱</span>
+          <span class="bk-when">SHORT ── 今月〜半年</span>
+          <span class="bk-title">アレンジで「行ける形」を組む</span>
+          <span class="bk-shishitsu">アレンジ × 目標志向</span>
+        </div>
+        <p>具体的な「いつ・いくら・誰と」を決めると、目標志向が稼働する。決めることでむしろ <b>「いつか行けるかな」の不安が減る</b> 構造。</p>
+        <ul>
+          <li>パスポートの有効期限確認（息子さんの分含む）</li>
+          <li>旅行用積立口座を1つ作る（月額は無理ない範囲で）</li>
+          <li>「行きたい国リスト6カ国」に優先順位を付ける（順位を付けること自体が目標志向の活かし方）</li>
+        </ul>
+      </div>
+
+      <div class="bk">
+        <div class="bk-head">
+          <span class="bk-icon">🌌</span>
+          <span class="bk-when">MID ── 1〜3年</span>
+          <span class="bk-title">アイスランド ── 候補ツアー実在</span>
+          <span class="bk-shishitsu">未来志向 × 達成欲</span>
+        </div>
+        <p>素材として既に <b>「2026年11月発・お一人様歓迎のオーロラ＆世界遺産ツアー」</b> を確認済とのこと。これは未来志向の資質的に <b>「現実の選択肢として置く」だけで価値がある</b> 情報です。</p>
+        <ul>
+          <li>「行く／行かない」の判断を急がず、<b>「候補リストに正式追加」</b> という1ステップだけ進める</li>
+          <li>息子さんの年齢・夫の予定・仕事の繁忙期と重ねた時のフィット感を、紙1枚に整理</li>
+          <li>もし行ける条件が整ったら、達成欲が自然に「やる」モードに切り替わる構造</li>
+        </ul>
+      </div>
+
+      <div class="bk">
+        <div class="bk-head">
+          <span class="bk-icon">🌍</span>
+          <span class="bk-when">LONG ── 中長期ライフバケット</span>
+          <span class="bk-title">行きたい国の「行ける時期」分類</span>
+          <span class="bk-shishitsu">未来志向 × アレンジ</span>
+        </div>
+        <p>プロフィール記載の6カ国を、ライフステージで分類するとアレンジ資質がフィットしやすい。<b>分類すること自体が、漠然とした未来を整える行為</b>です。</p>
+        <ul>
+          <li><b>子どもが小さい時期に行きやすい</b>：タイ・チェンマイ（屋台文化・子連れ歓迎）／ベトナム（フォー＝子どもにも食べやすい）</li>
+          <li><b>子どもが少し大きくなってから</b>：オーストラリア（広い空・コアラ）／スペイン（サグラダ・タパス）</li>
+          <li><b>大人だけで行きたい時期に</b>：アイスランド（オーロラ・温泉）／スリランカ（紅茶・列車旅）</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- 6国カード（既存） -->
+    <p style="font-size:12.5px;letter-spacing:0.16em;color:var(--kin);font-weight:700;margin:30px 0 14px;font-family:'Noto Sans JP',sans-serif;">── ビジョンボード（6カ国カード） ──</p>
+    <div class="vision-grid">
+      <div class="vbox aurora">
+        <div class="vemoji">🌌</div>
+        <div class="vlabel">アイスランド</div>
+        <div class="vsub">オーロラ／温泉／<br>世界遺産</div>
+      </div>
+      <div class="vbox thai">
+        <div class="vemoji">🍜</div>
+        <div class="vlabel">タイ・チェンマイ</div>
+        <div class="vsub">屋台／お寺／<br>長居しやすい町</div>
+      </div>
+      <div class="vbox srilanka">
+        <div class="vemoji">🌿</div>
+        <div class="vlabel">スリランカ</div>
+        <div class="vsub">紅茶／列車旅／<br>仏教文化</div>
+      </div>
+      <div class="vbox vietnam">
+        <div class="vemoji">🍲</div>
+        <div class="vlabel">ベトナム</div>
+        <div class="vsub">フォー／ランタン／<br>路地裏文化</div>
+      </div>
+      <div class="vbox spain">
+        <div class="vemoji">🥘</div>
+        <div class="vlabel">スペイン</div>
+        <div class="vsub">タパス／サグラダ／<br>夜文化</div>
+      </div>
+      <div class="vbox aus">
+        <div class="vemoji">🐨</div>
+        <div class="vlabel">オーストラリア</div>
+        <div class="vsub">海／コアラ／<br>大自然</div>
+      </div>
+    </div>
+
+    <div class="vision-suki">
+      <div class="sbox">
+        <h5>── 好きな食べもの ──</h5>
+        <p>餃子 ・ パン ・ カレー ・ モンブラン<br><span style="font-size:12px;color:var(--text-usu);">プロフィール記載。ご褒美設計に組み込みやすい素材。</span></p>
+      </div>
+      <div class="sbox">
+        <h5>── 好きな言葉 ──</h5>
+        <p>「失敗しなかった一日は、<br>何もしなかった一日！」<br><span style="font-size:12px;color:var(--text-usu);">達成欲＋最上志向の世界観を端的に表す言葉。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ 07 周囲の人向けガイド ══════ -->
+  <section class="sec" id="torimuke">
+    <p class="sec-eyebrow">07 ── 関係者向け資質ガイド</p>
+    <h2 class="sec-title">周囲の人が知っておくと <span class="ja">相互理解が進むポイント</span></h2>
+    <div class="divider"></div>
+    <p class="sec-desc">資質構造から見た、家族・クライアントとの関係性で起きやすいパターンと、双方が消耗しない関わり方の整理。</p>
+
+    <div class="torimuke">
+      <div class="tcard fam">
+        <h4>♡ 身近な人（家族）との関係で出やすい傾向</h4>
+        <ul>
+          <li><b>共感性＋責任感</b>の組み合わせで、家族の感情・体調を「自分の処理対象」として受信しやすい。本人が辛そうでなくても、内部負荷は高いことが多い。</li>
+          <li>調和性＋ポジティブにより、<b>「大丈夫」と表現する閾値が高め</b>。表情だけでは内部状態が判別しにくい構造。</li>
+          <li>責任感持ちは「手伝うよ」より <b>「これは私が担当する」と範囲を明示</b> される方が、タスクを手放しやすい。</li>
+          <li>体調不良時も達成欲・責任感が稼働し続ける傾向。<b>「休む」より「自分のためのゴールを立てる」表現</b> の方が認知に乗りやすい。</li>
+          <li>未来志向が強いため、<b>具体的な未来の話（旅行先・5年後のビジョンなど）が起動の栄養</b>になる。</li>
+        </ul>
+      </div>
+      <div class="tcard cli">
+        <h4>▸ クライアントとの仕事で出やすい傾向</h4>
+        <ul>
+          <li>責任感＋達成欲＋公平性で、納期遵守率が高い。<b>「遅らせたい」の申告は、本当に必要な時のみ</b>と捉えると齟齬がない。</li>
+          <li>最上志向＋アレンジで <b>「もう少し改善」が無限に湧く</b>。完成定義（スコープ）を最初に明文化すると、双方の消耗を防げる。</li>
+          <li>共感性で言語化前の要望も察知しやすい。<b>雑談・背景情報の共有</b>が、成果物の精度に直結する。</li>
+          <li>公平性が強いため、<b>明確な単価・条件・長期契約</b>と相性が良い。例外的特別扱いはむしろ消耗要因になりやすい。</li>
+          <li>EC・楽天モール領域の専門性は希少。<b>継続契約・複数案件アサイン</b>がアレンジ資質の強みを最大化する形。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ しおり ══════ -->
+  <section class="sec" id="shiori">
+    <div class="shiori">
+      <h4>── しおり ──</h4>
+      <p>この資料は、ふくまめさんを <strong>変える</strong> ためのものではなく、<br>装備の <strong>使い方を整理する</strong> ためのプロファイリングです。</p>
+      <p>TOP10の構造上、<strong>「走り続ける装備」はすでに高い完成度で揃っている</strong>状態。<br>追加で必要なのは、公式が明記している <strong>「休息」「断る練習」「距離を取る」「例外ルール」</strong> といった、<strong>装備を健全に運用するための周辺ツール</strong>です。</p>
+      <p>不安が強くなる時期は、性格でも気の持ちようでもなく、<strong>5つの実行系資質＋共感性が同時に出力を上げている構造</strong>。<br>そう理解しておくだけで、自分への扱い方が変わります。</p>
+      <p style="font-size:12.5px; opacity:0.85; margin-top:18px;">本資料は2026年6月時点のプロフィール記載情報＋ストレングスファインダーTOP10をベースとした構造分析です。<br>セッションを経ていない仮版のため、本人の体験・価値観のヒアリングを経た上で、より精度の高い版に更新可能です。</p>
+      <p class="signature">寄り添い型 個性診断士　おけもん</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ── セクションフェードイン：三重フォールバック方式（レシピ_デモサイト3パターン §実装の要点・IO不発バグ対策）
+  const animEls = [...document.querySelectorAll('.sec')];
+  function reveal(){
+    animEls.forEach(el => {
+      if (el.classList.contains('visible')) return;
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.92 && r.bottom > 0) {
+        el.classList.add('visible');
+      }
+    });
+  }
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => { reveal(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+  window.addEventListener('resize', reveal, { passive: true });
+  // 500msポーリング（全部出たら自動停止）
+  const revealTimer = setInterval(() => {
+    reveal();
+    if (animEls.every(el => el.classList.contains('visible'))) clearInterval(revealTimer);
+  }, 500);
+  // 初回即実行
+  reveal();
+
+  // ── QA用 ?static フック（スクショ検証時：全アニメ停止＋即表示）
+  if (location.search.includes('static')) {
+    const st = document.createElement('style');
+    st.textContent = '*{animation:none!important;transition:none!important;}.sec{opacity:1!important;transform:none!important;filter:none!important;}.hero-bg,.hero-spark,.hero-inner{animation:none!important;opacity:1!important;filter:none!important;transform:none!important;}';
+    document.head.appendChild(st);
+  }
+
+  // ── 目次アクティブ
+  const tocLinks = document.querySelectorAll('.toc li');
+  const sectionEls = Array.from(document.querySelectorAll('.sec[id]'));
+  function updateToc() {
+    const sy = window.scrollY + 120;
+    let active = -1;
+    sectionEls.forEach((el, i) => { if (el.offsetTop <= sy) active = i; });
+    tocLinks.forEach((li, i) => li.classList.toggle('active', i === active));
+  }
+  window.addEventListener('scroll', updateToc, { passive: true });
+  updateToc();
+</script>
+
+</body>
+</html>
