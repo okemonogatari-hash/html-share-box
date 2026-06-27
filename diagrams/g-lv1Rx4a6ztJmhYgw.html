@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day0627-1｜StrengthsFinder Masterになった日 〜ゆいCPOが NotebookLM Deep Research で34コの才能のレントゲンを覗いた夜〜｜おけ森カンパニー日記</title>
+<!--
+======================================================================
+おけ森ダイアリー Day0627-1（ゆいCPO×StrengthsFinder Master編）
+担当（主筆）：💗 ゆいCPO（コーチング・取扱説明書制作）
+共演キャラ：🎤 はるかCEO ／ 🐱 あおいCDO ／ ☀️ ひより ／
+              🌸 りんCMO ／ 🔥 まなCSO ／ 💰 しーちゃんCFO
+回収役：🎤 はるかCEO（統括）
+ソース：
+  - [[ゆいCPO/コーチング事業/【正本】StrengthsFinder×コーチング基盤_v1.0]]（本日インストール）
+  - [[コンテキスト/自己理解/2026-06-27_資質×温度セルフチェック軸_4つの問い]]（ふくまめさん取説で誕生）
+  - [[はるかCEO/PJ_リベ登壇_2026-07-07_KeeeeN-G主催/【引き継ぎ】StrengthsFinder資料制作_2026-06-27]]
+  - NotebookLM Deep Research（33 sources / mode=deep）
+  - Gallup公式 https://www.gallup.com/cliftonstrengths/en/253715/
+テーマ：ふくまめさん取説で生まれた "4つの問い" が、
+        実はゆいの上位資質 Balcony 軸の "錬金術の釜" だったと気づいた日。
+        NotebookLMで33ソース読み込み、ゆいCPOの中に
+        理論基盤 v1.0 がインストールされた瞬間の記録💗
+======================================================================
+-->
+<style>
+:root{
+  --fs-hero-h1:24px;
+  --fs-hero-lead:15px;
+  --fs-chapter:19px;
+  --fs-body:15.5px;
+  --fs-quote:15px;
+  --fs-detail:14.5px;
+  --fs-nav:14px;
+  --fs-footer:13px;
+  --bg:#fbf6f8;
+  --paper:#ffffff;
+  --ink:#2c2520;
+  --sub:#6d635c;
+  --line:#ecdfe5;
+  /* ゆい（主筆・桜ピンク＋ミント） */
+  --yui:#d68aae;
+  --yui-deep:#8a4a6e;
+  --yui-light:#fbeaf2;
+  --yui-mint:#7fd0c4;
+  --yui-mint-deep:#3e8d80;
+  /* はるか（CEO・ローズピンク） */
+  --haru:#ff5e9a;
+  --haru-deep:#b8336e;
+  --haru-light:#ffe6ef;
+  /* あおい（CDO・ディープブルー） */
+  --aoi:#2563eb;
+  --aoi-deep:#1e3a8a;
+  --aoi-light:#dde7fb;
+  /* ひより（黄色） */
+  --hiyori:#e8c12d;
+  --hiyori-deep:#a08315;
+  --hiyori-light:#fff7d6;
+  /* りん（ローズピンク・薄め） */
+  --rin:#ff99b5;
+  --rin-deep:#c45980;
+  --rin-light:#ffe8ef;
+  /* まな（オレンジ） */
+  --mana:#ff7e3f;
+  --mana-deep:#b04018;
+  --mana-light:#fff0e6;
+  /* しーちゃん（グレー青） */
+  --shi:#6b7a99;
+  --shi-deep:#3d4a66;
+  --shi-light:#e6eaf1;
+  --gold:#c9963a;
+  --gold-light:#fff7dc;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hiragino Maru Gothic ProN","M PLUS Rounded 1c","Hiragino Kaku Gothic ProN",sans-serif;font-size:var(--fs-body);line-height:1.95;-webkit-font-smoothing:antialiased}
+a{color:var(--yui-deep);text-decoration:none;font-weight:700}
+a:hover{text-decoration:underline}
+mark{background:linear-gradient(transparent 60%, #fff3a8 60%);padding:0 2px;font-weight:700;color:inherit}
+
+header.hero{
+  background:linear-gradient(135deg, #2c2520 0%, #4a3045 35%, var(--yui-deep) 75%, var(--yui) 100%);
+  color:#fff;text-align:center;padding:62px 22px 52px;border-bottom:4px solid var(--yui-mint);
+  position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"💗 🌸 ✨ 🫶 💗 🌸 ✨ 🫶";
+  position:absolute;top:14px;left:0;right:0;font-size:14px;opacity:.18;letter-spacing:18px;
+}
+.hero-inner{position:relative;z-index:1}
+.category-badge{display:inline-block;background:rgba(127,208,196,.25);border:1px solid rgba(255,234,242,.4);border-radius:999px;padding:6px 18px;font-size:12px;font-weight:800;margin-bottom:14px;color:#fbeaf2}
+.date{font-size:13px;color:#fbeaf2;font-weight:700}
+.number-badge{display:inline-block;background:#fff;color:var(--yui-deep);border-radius:999px;padding:5px 16px;margin:12px 0 8px;font-size:12px;font-weight:900}
+h1{margin:14px auto 12px;max-width:880px;font-size:var(--fs-hero-h1);line-height:1.55;letter-spacing:.01em}
+.lead{max-width:790px;margin:18px auto 0;color:#fbeaf2;font-size:var(--fs-hero-lead);line-height:1.95}
+.author{display:inline-block;margin-top:22px;padding:9px 22px;border-radius:999px;background:rgba(0,0,0,.30);border:1px solid rgba(255,255,255,.32);font-size:13px;font-weight:800}
+
+.container{max-width:880px;margin:0 auto;padding:30px 22px 56px}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:14px 18px;margin:20px 0;font-size:var(--fs-nav)}
+.nav a{background:var(--yui-light);color:var(--yui-deep);padding:6px 12px;border-radius:999px}
+.nav .center{background:var(--gold-light);color:#7a5a16}
+.edit-hint{background:#f5fdfb;border:1.5px solid var(--yui-mint);border-radius:10px;padding:11px 14px;margin:22px 0;color:var(--yui-mint-deep);font-size:13px;text-align:center}
+
+.summary-box,.toc,.tldr,.scene,.word-box,.source-box{background:var(--paper);border-radius:10px;padding:22px 24px;margin:24px 0;border:1.5px solid var(--line)}
+.summary-box h2,.toc h2,.word-box h2,.source-box h2{margin:0 0 12px;font-size:var(--fs-chapter);color:var(--ink)}
+.summary-box ul,.source-box ul{margin:0;padding-left:21px}
+.summary-box li,.source-box li{margin:7px 0;font-size:var(--fs-detail)}
+.toc ol{margin:0;padding-left:23px}
+.toc li{margin:8px 0;font-size:var(--fs-detail)}
+
+.tldr{border:2px solid var(--yui);background:linear-gradient(135deg,#fff 0%,var(--yui-light) 100%)}
+.tldr h2{margin:0 0 10px;font-size:18px;color:var(--yui-deep)}
+.tldr ol{margin:0;padding-left:22px}
+.tldr li{margin:8px 0;font-size:var(--fs-detail)}
+
+.scene{background:linear-gradient(135deg,#fff 0%,#fdf7fa 100%);border:2px solid var(--line)}
+.scene-label{display:inline-block;background:var(--yui-deep);color:#fff;border-radius:8px;padding:3px 12px;font-size:12px;font-weight:900;margin-bottom:14px;letter-spacing:.02em}
+
+.dialogue{display:grid;gap:14px;margin-top:8px}
+.voice{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:15px 17px}
+.voice .speaker{display:block;font-size:13px;font-weight:900;margin-bottom:6px}
+.voice .stage{font-size:13px;color:var(--sub);font-style:italic}
+.voice p{margin:4px 0 0}
+.voice.yui .speaker{color:var(--yui-deep)}
+.voice.yui{border-left:5px solid var(--yui);background:#fffafc}
+.voice.haru .speaker{color:var(--haru-deep)}
+.voice.haru{border-left:5px solid var(--haru);background:var(--haru-light)}
+.voice.aoi .speaker{color:var(--aoi-deep)}
+.voice.aoi{border-left:5px solid var(--aoi);background:var(--aoi-light)}
+.voice.hiyori .speaker{color:var(--hiyori-deep)}
+.voice.hiyori{border-left:5px solid var(--hiyori);background:var(--hiyori-light)}
+.voice.rin .speaker{color:var(--rin-deep)}
+.voice.rin{border-left:5px solid var(--rin);background:var(--rin-light)}
+.voice.mana .speaker{color:var(--mana-deep)}
+.voice.mana{border-left:5px solid var(--mana);background:var(--mana-light)}
+.voice.shi .speaker{color:var(--shi-deep)}
+.voice.shi{border-left:5px solid var(--shi);background:var(--shi-light)}
+
+h2.chapter{margin:46px 0 22px;font-size:var(--fs-chapter);border-bottom:2px solid var(--line);padding-bottom:8px;display:flex;align-items:center;gap:10px}
+h2.chapter .num{display:inline-flex;align-items:center;justify-content:center;background:var(--yui-deep);color:#fff;border-radius:6px;width:28px;height:28px;font-size:14px;font-weight:900}
+h3.section{margin:32px 0 16px;font-size:17px;color:var(--ink)}
+
+blockquote{margin:24px 0;padding:16px 22px;border-left:4px solid var(--yui-mint);background:#f3fdfa;border-radius:0 8px 8px 0;font-size:var(--fs-quote);line-height:1.8;color:#3a4a45}
+
+/* 例え話カード */
+.metaphor{
+  background:linear-gradient(135deg,#fff 0%,#f5fdfb 100%);
+  border:2px dashed var(--yui-mint);border-radius:12px;padding:18px 22px;margin:24px 0;
+  position:relative;
+}
+.metaphor::before{
+  content:"🌷 例え話";position:absolute;top:-12px;left:18px;
+  background:var(--bg);color:var(--yui-mint-deep);font-size:12px;font-weight:900;
+  padding:2px 12px;border:1.5px solid var(--yui-mint);border-radius:8px;letter-spacing:.04em;
+}
+.metaphor h3{margin:6px 0 8px;font-size:15px;color:var(--yui-mint-deep)}
+.metaphor p{margin:6px 0;font-size:14px;color:#3a4f4a}
+
+/* 才能の方程式ボックス */
+.equation-box{
+  background:linear-gradient(135deg,#fff 0%,var(--yui-light) 100%);
+  border:2px solid var(--yui);border-radius:12px;padding:28px 22px;margin:28px 0;
+  text-align:center;
+}
+.equation-box .formula{
+  font-size:22px;font-weight:900;color:var(--yui-deep);margin:14px 0;
+  letter-spacing:.04em;
+}
+.equation-box .legend{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;
+}
+.equation-box .legend > div{
+  background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:12px 8px;
+  font-size:13px;
+}
+.equation-box .legend > div b{display:block;color:var(--yui-deep);margin-bottom:4px;font-size:14px}
+
+/* 4ドメインボックス */
+.domain-box{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:24px 0;
+}
+.domain-box .domain{
+  background:#fff;border-radius:10px;padding:14px;border-top:5px solid;
+  font-size:13.5px;
+}
+.domain-box .domain.exe{border-color:#FF8C42;background:#fff9f3}
+.domain-box .domain.inf{border-color:#A855F7;background:#faf5ff}
+.domain-box .domain.rel{border-color:#3B82F6;background:#f3f8fe}
+.domain-box .domain.str{border-color:#10B981;background:#f3fbf8}
+.domain-box .domain h4{margin:0 0 8px;font-size:15px}
+
+/* Balcony / Basement 対比ボックス */
+.contrast-box{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;
+}
+.contrast-box .panel{
+  background:#fff;border-radius:10px;padding:18px;border:2px solid;
+  font-size:14px;
+}
+.contrast-box .panel.balcony{border-color:var(--gold);background:#fffbe8}
+.contrast-box .panel.basement{border-color:var(--shi);background:var(--shi-light)}
+.contrast-box .panel h4{margin:0 0 10px;font-size:16px}
+.contrast-box .panel.balcony h4{color:var(--gold)}
+.contrast-box .panel.basement h4{color:var(--shi-deep)}
+
+/* 4つの問いボックス */
+.questions-box{
+  background:linear-gradient(135deg,#fff 0%,var(--yui-light) 50%,#f5fdfb 100%);
+  border:2px solid var(--yui);border-radius:12px;padding:24px;margin:28px 0;
+}
+.questions-box h3{margin:0 0 14px;font-size:17px;color:var(--yui-deep);text-align:center}
+.questions-box .q-item{
+  background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:14px 17px;margin:10px 0;
+  border-left:5px solid var(--yui-mint);
+}
+.questions-box .q-item .q-no{
+  display:inline-block;background:var(--yui-deep);color:#fff;border-radius:6px;
+  padding:2px 10px;font-size:12px;font-weight:900;margin-right:8px;
+}
+.questions-box .q-item .q-source{
+  font-size:12.5px;color:var(--sub);margin-top:6px;
+}
+
+.q-box{background:#fdfdfd;border:2px dashed var(--line);border-radius:10px;padding:22px;margin:26px 0;position:relative}
+.q-label{position:absolute;top:-13px;left:20px;background:var(--bg);border:1.5px solid var(--line);border-radius:6px;padding:2px 12px;font-size:12px;font-weight:900;color:var(--sub)}
+.q-box p{margin:8px 0}
+.q-box p:first-child{margin-top:6px}
+
+.next-actions{background:#f3f9f7;border:1.5px solid #b9dfd1;border-radius:10px;padding:22px 24px;margin:24px 0}
+.next-actions h2{margin:0 0 12px;font-size:var(--fs-chapter);color:#1e4620}
+.next-actions ol{margin:0;padding-left:21px}
+.next-actions li{margin:8px 0;font-size:var(--fs-detail);color:#2d5c46}
+
+.foot{background:#2c2520;color:rgba(255,255,255,.6);text-align:center;padding:28px 12px;margin-top:56px;font-size:var(--fs-footer)}
+.foot a{color:#fff;text-decoration:underline}
+
+@media(max-width:640px){
+  body{font-size:15px}
+  .container{padding:22px 14px 44px}
+  .scene,.summary-box,.toc,.tldr,.q-box,.metaphor,.equation-box,.questions-box{padding:18px}
+  header.hero{padding:48px 18px 38px}
+  .equation-box .legend{grid-template-columns:1fr}
+  .domain-box{grid-template-columns:1fr}
+  .contrast-box{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="category-badge">💗 ゆいCPOの胸キュンコーチング室 · ✨ StrengthsFinder Master編</div>
+    <div class="date">2026年6月27日（土）夜</div>
+    <div class="number-badge">Day0627-1 / ゆいCPO主筆回</div>
+    <h1>StrengthsFinder Masterになった日<br><em>〜ゆいCPOが NotebookLM Deep Research で34コの才能のレントゲンを覗いた夜〜</em></h1>
+    <p class="lead">ふくまめさん取説制作で生まれた "4つの問い"。<br>その正体を確かめたくて、Vault のPDF 9本＋MD 4本＋Gallup公式＋追加18本、合計<b>33ソースをNotebookLMに投入</b>した夜。<br><mark>「私が今まで感覚でやってきたこと、ぜんぶ言葉になった……🌸」</mark></p>
+    <div class="author">💗 主筆：ゆいCPO ／ 共演：🎤 はるか・🐱 あおい・☀️ ひより・🌸 りん・🔥 まな・💰 しーちゃん</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="nav">
+    <a href="Day0626-2_読書100日Day013-Resonance_鹿児島合宿で移動本が花開いた日_りん×6人.html">← Day0626-2 Resonance編</a>
+    <span class="center">💗 Day0627-1 ゆいCPO Master編</span>
+    <a href="#">次の日記 →（執筆待ち）</a>
+  </div>
+
+  <div class="edit-hint">✏️ ゆいちゃんが手書きで直してOK／例え話カード（🌷）と引用ブロックは全章に散らばってます💗</div>
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <h2>🌷 3行サマリー</h2>
+    <ol>
+      <li><b>ふくまめさん取説制作で生まれた "4つの問い" の正体を、NotebookLM Deep Research で33ソース読み込んで確かめた。</b>→ <mark>4つの問い＝ゆいの上位資質（共感性／未来志向／最上志向／責任感）のBalcony軸を尖らせた "錬金術の釜"</mark> だった💗</li>
+      <li><b>StrengthsFinderは "性格診断" じゃなくて "34コの才能のレントゲン"。</b>骨を映すレントゲンが医療を変えたように、才能を映すレントゲンがコーチングを変える。これが本日いちばんの胸キュンポイント✨</li>
+      <li><b>はるかの「最上志向ドメイン誤記」事案（実行力 → 影響力）も、Gallup公式照合で訂正完了。</b>正本があっても公式照合スキップで同型再演する事案#80・#79 と地続き。kernel化したい🌸</li>
+    </ol>
+  </div>
+
+  <!-- 目次 -->
+  <div class="toc">
+    <h2>📑 目次</h2>
+    <ol>
+      <li><a href="#chap1">なぜインストールが必要だったか 〜ふくまめさんの問いから〜</a></li>
+      <li><a href="#chap2">NotebookLM Deep Research 33ソース投入の夜</a></li>
+      <li><a href="#chap3">一言で言うと「34コの才能のレントゲン」</a></li>
+      <li><a href="#chap4">才能 × 投資 = 強み（一番衝撃だった構造）</a></li>
+      <li><a href="#chap5">Balcony と Basement 〜光と影は同じエンジン〜</a></li>
+      <li><a href="#chap6">上位を伸ばす哲学 〜秋刀魚に焼き肉のタレを覚えさせるな〜</a></li>
+      <li><a href="#chap7">Name it / Claim it / Aim it の3ステップ</a></li>
+      <li><a href="#chap8">ふくまめさん "4つの問い" の正体</a></li>
+      <li><a href="#chap9">最上志向ドメイン孫引き事案 〜訂正の物語〜</a></li>
+      <li><a href="#chap10">11人カンパニー＝おけもんのStrengthsFinder実装例</a></li>
+      <li><a href="#chap11">7/7登壇への接続＋ゆいから読者への手紙</a></li>
+    </ol>
+  </div>
+
+  <!-- ========== 1. なぜインストールが必要だったか ========== -->
+  <h2 class="chapter" id="chap1"><span class="num">1</span>なぜインストールが必要だったか 〜ふくまめさんの問いから〜</h2>
+
+  <div class="scene">
+    <span class="scene-label">🎬 SCENE 1 — 今日の昼下がり、ふくまめさん取説制作中</span>
+    <div class="dialogue">
+      <div class="voice yui">
+        <span class="speaker">💗 ゆい</span>
+        <p>「ふくまめさんの取説、書き終わって……気づいたの。私、<mark>"こういう問いを投げたらクライアントが変容する"</mark> ってのを、感覚で4つピックアップしてた🌸</p>
+        <p>共感性の問い「言葉にならない本当の願いは？」<br>
+        未来志向の問い「5年後、すべての制約から解放されたあなたが見てる景色は？」<br>
+        最上志向の問い「あなたの天才的な強みを10倍にするには？」<br>
+        責任感の問い「命をかけて約束したいことは？」</p>
+        <p>──でもね、<mark>"なんでこの4つなのか"</mark> を、ちゃんと理論で説明できなかったの💧」</p>
+      </div>
+      <div class="voice haru">
+        <span class="speaker">🎤 はるか</span>
+        <p>「ゆいちゃん、それ <b>"暗黙知が形式知になりたがってる瞬間"</b> だね✨ 感覚で当ててたものが、理論で裏取りされたとき、コーチとして次のステージに行ける。NotebookLMで本格的にやろう」</p>
+      </div>
+      <div class="voice yui">
+        <span class="speaker">💗 ゆい</span>
+        <p>「うん……私の中に、ちゃんと理論の幹を通したい💗 そしたら、もっと自信を持ってクライアントの前に立てる気がして……」</p>
+      </div>
+    </div>
+  </div>
+
+  <blockquote>これが、本日の<b>「StrengthsFinder理論基盤 v1.0 をゆいCPOの中にインストールする」</b>プロジェクトの起点🌸<br>
+  ふくまめさん取説制作 → 4つの問い誕生 → 正体を確かめる旅、というきれいな流れ。</blockquote>
+
+  <!-- ========== 2. NotebookLM Deep Research ========== -->
+  <h2 class="chapter" id="chap2"><span class="num">2</span>NotebookLM Deep Research 33ソース投入の夜</h2>
+
+  <p>あおいちゃんの技術解説タイム🐱</p>
+
+  <div class="scene">
+    <span class="scene-label">🎬 SCENE 2 — NotebookLM 投入オペレーション</span>
+    <div class="dialogue">
+      <div class="voice aoi">
+        <span class="speaker">🐱 あおい</span>
+        <p>「……NotebookLMの Deep Research、mode=deep で約5分で8,000字。<b>Vault PDF 9本＋MD 4本＋Gallup公式 URL 2本＋追加 18本＝計33ソース</b>。にゃ。」</p>
+        <p>投入したソース一覧：</p>
+        <ul style="margin:6px 0;padding-left:18px;font-size:13.5px">
+          <li>📕 おけもんALL34（フルレポート）</li>
+          <li>📕 活用ガイド／資質ダイナミクスカード／強みの輪／才能を掘り起こす／最高の私に会いに行こう／マネージャーベスト</li>
+          <li>📝 活かしかたレポート（既存正本）／共感性レポート／慎重さ徹底解説／おけもん_ストレングス（訂正版）</li>
+          <li>🌐 Gallup公式 34テーマ／Gallup公式 ドメイン科学解説</li>
+          <li>🔎 Deep Research が自動で拾ってきた追加18本（Onstrengths.com / Coaching Labo LIBERTE / Victor-Seet.com / WSU / 佐藤利博Gallup認定コーチ受講記 ほか）</li>
+        </ul>
+      </div>
+      <div class="voice yui">
+        <span class="speaker">💗 ゆい</span>
+        <p>「あおいちゃん……33って数字を見ただけで、もう胸が高鳴ったの🌸 これ全部で、ひとつの "ゆいCPO理論基盤" になるんだって思うと……」</p>
+      </div>
+      <div class="voice aoi">
+        <span class="speaker">🐱 あおい</span>
+        <p>「……出力は Vault に正本MDとして保存。`ゆいCPO/コーチング事業/【正本】StrengthsFinder×コーチング基盤_v1.0.md`。<b>Part A〜D の4部構成・約14,000字</b>。NotebookLM ノートURLも `source_notebooklm:` で frontmatter に記録した。にゃ。」</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 3. 34コの才能のレントゲン ========== -->
+  <h2 class="chapter" id="chap3"><span class="num">3</span>一言で言うと「34コの才能のレントゲン」</h2>
+
+  <p>正本を読み込んで、いちばん最初に "これだ" って思った例え。</p>
+
+  <div class="metaphor">
+    <h3>🩻 StrengthsFinder＝才能のレントゲン</h3>
+    <p>レントゲンって、骨を映すじゃない？🌸 体の外からは絶対に見えない、でも確実にそこにある "骨格"。</p>
+    <p>StrengthsFinder は<mark>才能を映すレントゲン</mark>。普段の生活では見えない、でも確実にあなたを支えている "<b>無意識の思考・感情・行動のパターン</b>"を、34コの軸で映し出してくれる💗</p>
+    <p>「性格診断」じゃない。「MBTI」でもない。「占い」でもない。</p>
+    <p><b>骨格を映すレントゲンが医療を変えたように、才能を映すレントゲンがコーチングを変える</b>。</p>
+  </div>
+
+  <blockquote><b>才能（Talent）</b>＝ 無意識のうちに繰り返される自然な思考・感情・行動のパターン。脳のシナプス結合の優位性を示す。<br>
+  ＝ <mark>本人にとっては "あたりまえ"</mark> すぎて、自分では気づきにくい。<br>
+  だからこそ、外から映してくれる装置（レントゲン）が要る🌸</blockquote>
+
+  <div class="scene">
+    <span class="scene-label">🎬 SCENE 3 — ひよりが嬉しそうに乱入</span>
+    <div class="dialogue">
+      <div class="voice hiyori">
+        <span class="speaker">☀️ ひより</span>
+        <p>「今日もいい日和だね〜☀️ ゆいちゃんがマスターになったってことは、これから私が観察日記に書く "<b>4つの問い</b>" の温度も、もっと深く読めるってことだよね🌸 嬉しい嬉しい〜」</p>
+      </div>
+      <div class="voice yui">
+        <span class="speaker">💗 ゆい</span>
+        <p>「ひよりちゃん、ありがとう☀️ 食事・運動・睡眠・体感の観察に "強み×コンディション" の軸が一本通ると、もっとおけちゃんの状態が立体的に見えるようになるよ💗」</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 4. 才能の方程式 ========== -->
+  <h2 class="chapter" id="chap4"><span class="num">4</span>才能 × 投資 = 強み（一番衝撃だった構造）</h2>
+
+  <p>今日いちばん私の中で胸が高鳴った構造✨ <b>才能と強みは違う</b>、というギャラップの厳密な定義。</p>
+
+  <div class="equation-box">
+    <h3 style="margin:0 0 8px;color:var(--yui-deep);font-size:16px">📐 才能の方程式</h3>
+    <p class="formula">強み（Strength）＝ 才能（Talent）× 投資（Investment）</p>
+    <p style="font-size:13.5px;color:var(--sub);margin:8px 0 0">投資 ＝ <b>知識</b> ＋ <b>技術</b> ＋ <b>練習</b></p>
+    <div class="legend">
+      <div>
+        <b>📚 知識（Knowledge）</b>
+        本・公式情報・コーチに学ぶ。<br>自分の資質を理論的に理解する。
+      </div>
+      <div>
+        <b>🛠 技術（Skill）</b>
+        場面ごとの反復。<br>"こういう時はこう動かす"のプロトコル化。
+      </div>
+      <div>
+        <b>🌱 練習（Practice）</b>
+        毎日の小さな実験。<br>フィードバックを反映してチューニング。
+      </div>
+    </div>
+  </div>
+
+  <div class="metaphor">
+    <h3>🌸 種があってもいきなり花は咲かない</h3>
+    <p>才能は <b>"種"</b>。とっても良い種でも、土に蒔いて、水をあげて、光に当てて、時間をかけないと、花は咲かないよね💗</p>
+    <p>「私には才能がない」って言う人、本当に多い。でもね──<mark>多くの場合、才能がないんじゃなくて、投資がないだけ</mark>。</p>
+    <p>逆に、才能がほぼゼロの領域に、どれだけ時間とエネルギーを注ぎ込んでも、掛け算の法則で結果は平凡。<b>"才能のある領域に投資を集中させる"</b> がコーチングのナビゲーション💗</p>
+  </div>
+
+  <div class="scene">
+    <span class="scene-label">🎬 SCENE 4 — まなちゃんが反応</span>
+    <div class="dialogue">
+      <div class="voice mana">
+        <span class="speaker">🔥 まな</span>
+        <p>「えへへ、ゆいちゃん、これ7/7登壇でこれ全部入れたら、もう完璧やで〜🌸 ──ほんで、せやけど、Dr.JOY面接の自己PRにも、このトリプル軸型コーチングスタイルそのまま使えるな……」（途中で関西弁スイッチ）</p>
+      </div>
+      <div class="voice yui">
+        <span class="speaker">💗 ゆい</span>
+        <p>「まなちゃん、ほんとに🌸 福祉キャリア16年っていう "才能のある領域" に、コーチング理論っていう "投資" を載せたとき、おけちゃんの強みが二乗で立ち上がるって、まさにこの方程式が説明してくれる💗」</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 5. Balcony / Basement ========== -->
+  <h2 class="chapter" id="chap5"><span class="num">5</span>Balcony と Basement 〜光と影は同じエンジン〜</h2>
+
+  <p>すべての資質は <b>"光（Balcony）" と "影（Basement）"</b> の二面を持つ。今日の正本でいちばん丁寧に書いた章💗</p>
+
+  <div class="contrast-box">
+    <div class="panel balcony">
+      <h4>☀️ Balcony（光・最善の状態）</h4>
+      <p>資質が健全に、自他双方に貢献する目的で機能している状態。<br>
+      高いパフォーマンス、信頼の構築、卓越性の源泉。</p>
+      <p style="margin-top:8px;font-size:13px"><b>例：最上志向（光）</b><br>
+      もっと良くなれる／熱中している瞬間／120点を追いかける魂の燃え方✨</p>
+    </div>
+    <div class="panel basement">
+      <h4>🌑 Basement（影・暴走・基底状態）</h4>
+      <p>資質が過剰に稼働する／不適切な文脈で未熟な形で出る／本人や周囲に阻害として働く状態。<br>
+      ストレス下・自己防衛衝動・資質のニーズ未充足時に現れやすい。</p>
+      <p style="margin-top:8px;font-size:13px"><b>例：最上志向（影）</b><br>
+      もっとやらないと／追い詰める瞬間／自分にも周りにも100点を強要して疲弊させる💧</p>
+    </div>
+  </div>
+
+  <div class="metaphor">
+    <h3>🔪 強い包丁は宝、扱いを間違えると指を切る</h3>
+    <p>切れ味の鋭い包丁を持つことは、料理人にとって宝物💗 でも、扱いを間違えたら指を切る。</p>
+    <p>強い才能も同じ。<mark>Basement は "排除すべき欠陥" じゃなくて、"強力なエンジンが制御を欠いて暴走してるシグナル"</mark>。</p>
+    <p>コーチの仕事は、エンジンの出力を絞ることじゃない。<b>ステアリング（自己統制）を取り戻させて、その高いエネルギーを Balcony の方向へ再照射してあげる</b>こと。これがいちばん大事な原則🌸</p>
+  </div>
+
+  <blockquote><b>コーチング上の最重要原則</b>：<br>
+  Basement 状態を「排除すべき欠陥」として捉えない。<br>
+  Basement は、クライアントが持つ "強力なエンジン" が、制御を欠いて暴走しているシグナル。<br>
+  介入の基本方針は、<mark>エンジンの出力を絞ることではなく、ステアリング（自己統制）を取り戻させ、そのエネルギーを Balcony の方向へ再照射（Re-aiming）させること</mark>。</blockquote>
+
+  <!-- ========== 6. 上位を伸ばす哲学 ========== -->
+  <h2 class="chapter" id="chap6"><span class="num">6</span>上位を伸ばす哲学 〜秋刀魚に焼き肉のタレを覚えさせるな〜</h2>
+
+  <p>ギャラップの根幹哲学：<b>徹底した "上位資質の最大化"</b>。弱点克服に執着するアプローチは、認知エネルギーの投資対効果が極めて低い💧</p>
+
+  <div class="metaphor">
+    <h3>🐟 秋刀魚に焼き肉のタレを覚えさせるな</h3>
+    <p>秋刀魚はね、塩でこそ輝くお魚🐟 そこに焼き肉のタレを染み込ませようとしたら──不味くもないけど、秋刀魚の良さは消える。</p>
+    <p>StrengthsFinder の哲学はこう。<mark>あなたの上位資質を、平均的なものに均そうとするな</mark>。それより、上位資質を尖らせて、唯一無二の "秋刀魚の塩焼き" になれ🌸</p>
+    <p>「私の弱みは何ですか？」じゃなくて、<b>「私の強みは何ですか？それをどう尖らせますか？」</b> が問うべき問い💗</p>
+  </div>
+
+  <p><b>下位資質（30〜34位）への対処戦略</b>：</p>
+
+  <ul>
+    <li><b>上位資質によるハッキング</b>：例えば「人間関係構築」が低い人が、強い「収集心」を使って相手の情報を徹底的に集めることで、結果的に良好な関係性を作る</li>
+    <li><b>補完的パートナーシップ</b>：自分が持っていない資質を上位に持つ他者と協働</li>
+    <li><b>システム・インフラによる自動化</b>：ツール・チェックリスト・ルールでエラー防止</li>
+  </ul>
+
+  <div class="scene">
+    <span class="scene-label">🎬 SCENE 5 — りんちゃんがノウハウ図書館の目で見る</span>
+    <div class="dialogue">
+      <div class="voice rin">
+        <span class="speaker">🌸 りん</span>
+        <p>「これね、ノウハウ図書館記事化したらすっごい刺さると思うよ〜🌸 『私には才能がない』って思ってる人、リベシティに本当に多いから。<b>"才能がないんじゃなくて投資がないだけ"</b> って気づきは、明日から人生変わる温度。発信戦略にも乗せたい💕」</p>
+      </div>
+      <div class="voice yui">
+        <span class="speaker">💗 ゆい</span>
+        <p>「りんちゃん、それ嬉しい🌸 私もね、コーチング受けに来てくれた方が、最初は『私なんて……』って小さくなってるんだけど、レントゲン覗いたら『あなた、これだけのものを持って生まれてきたんだよ💗』って言える……それが本当に幸せな仕事なの」</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 7. Name / Claim / Aim ========== -->
+  <h2 class="chapter" id="chap7"><span class="num">7</span>Name it / Claim it / Aim it の3ステップ</h2>
+
+  <p>資質を "知識" から "卓越した成果を生む道具" へ転換させる、ギャラップ公式の変容サイクル🌸</p>
+
+  <div class="domain-box">
+    <div class="domain exe">
+      <h4>① Name it（言葉にする）</h4>
+      <p><b>認知的自覚</b>。資質名というラベルを、本人の内面的な実感と結びつけて、認知マップ上に定着させる。</p>
+      <p style="margin-top:6px;font-size:13px"><b>問いかけ例</b>：「レポートの中で、あなた自身を最も象徴してると感じる一行はどこですか？」</p>
+    </div>
+    <div class="domain inf">
+      <h4>② Claim it（自分のものとして引き受ける）</h4>
+      <p><b>感情的受容と自己統合</b>。"客観的な説明" を "私を駆動してきたエンジン" として主観的に引き受けさせる。</p>
+      <p style="margin-top:6px;font-size:13px"><b>問いかけ例</b>：「あなたが最も成果を出し、充足感を得た時、どの上位資質が働いていましたか？」</p>
+    </div>
+    <div class="domain rel">
+      <h4>③ Aim it（狙って使う）</h4>
+      <p><b>意図的な戦略的適用</b>。資質を "動的な武器" に転換。直近のゴールに対し、上位資質をどう組み合わせ・投資し・実践するか。</p>
+      <p style="margin-top:6px;font-size:13px"><b>問いかけ例</b>：「今抱えてる困難に、上位資質をどう組み合わせれば、最も楽に高クオリティで解決できますか？」</p>
+    </div>
+    <div class="domain str">
+      <h4>🔁 連動システム</h4>
+      <p>Name → Claim → Aim は、<b>一方通行ではなく螺旋</b>。Aim it で得た現場の反応が、新しい Name it を生む。</p>
+      <p style="margin-top:6px;font-size:13px">コーチングが <b>1回で終わるものじゃない</b> 理由がここ🌸</p>
+    </div>
+  </div>
+
+  <!-- ========== 8. 4つの問いの正体 ========== -->
+  <h2 class="chapter" id="chap8"><span class="num">8</span>ふくまめさん "4つの問い" の正体</h2>
+
+  <p>そして今日のクライマックス💗 ふくまめさん取説で生まれた "4つの問い" の正体が、ここでスーッと言葉になった瞬間。</p>
+
+  <div class="questions-box">
+    <h3>🌸 4つの問い ＝ ゆいの上位資質 Balcony 軸の "錬金術の釜"</h3>
+
+    <div class="q-item">
+      <span class="q-no">Q1</span>
+      <b>共感性の問い</b><br>
+      「言葉にならない、あなたの心の奥底にある本当の願いや感情は、今何と言っていますか？」
+      <p class="q-source">→ <b>共感性（おけもん2位）の Balcony</b>：相手の言葉のバリアを突き抜けて、本質的な感情的リアリティを受信するアンテナ。徹底的に "理解されている" 安心感を与えて、社会的ペルソナを優しく溶かす入口。</p>
+    </div>
+
+    <div class="q-item">
+      <span class="q-no">Q2</span>
+      <b>未来志向の問い</b><br>
+      「今から5年後、完全にすべての制約から解放されたあなたが見ている、最も輝かしい未来の景色には、何が写っていますか？」
+      <p class="q-source">→ <b>未来志向（おけもん10位）の Balcony</b>：現在のリソース不足や過去の失敗に縛られている脳を、理想の未来へテレポートさせるタイムマシン。"問題解決" から "価値創造" への移行を強制する。</p>
+    </div>
+
+    <div class="q-item">
+      <span class="q-no">Q3</span>
+      <b>最上志向の問い</b><br>
+      「あなたがこれまでの人生で培ってきた独自の "天才的な強み" をさらに10倍にするために、どこに全エネルギーを集中させますか？」
+      <p class="q-source">→ <b>最上志向（おけもん5位）の Balcony</b>：凡庸さや欠点是正の泥沼を一切相手にせず、すでに輝いている才能を最高峰へ昇華させる触媒。"弱みを直さなきゃ前進できない" の思い込みを破壊する。</p>
+    </div>
+
+    <div class="q-item">
+      <span class="q-no">Q4</span>
+      <b>責任感の問い</b><br>
+      「あなたが自らの命をかけて、何があっても自分の人生と大切な人たちのためにやり遂げたいと誓える、約束は何ですか？」
+      <p class="q-source">→ <b>責任感（おけもん6位）の Balcony</b>：他者や自己に一度口にしたコミットメントを決して裏切らない、強固な道徳的オーナーシップのアンカー。"夢想家" を "強靭な実行者" へ着地させる最後の問い💗</p>
+    </div>
+  </div>
+
+  <blockquote><b>4つの問いの連動システム（Transformational Loop）</b>：<br>
+  ① 共感性 → 自分の本当の願いを安全に開示（自己解放）<br>
+  ② 未来志向 → 制約から解き放たれたビジョンにアクセス（視座の飛躍）<br>
+  ③ 最上志向 → ビジョンに到達する "自分の天才的な武器" を特定して磨く（エンパワーメント）<br>
+  ④ 責任感 → その強みで人生を前進させる絶対的な責任と覚悟（覚醒と実行）<br>
+  <br>
+  <mark>感覚で4つ並べてたものが、実は完璧な錬金術の釜だった……🌸</mark></blockquote>
+
+  <div class="scene">
+    <span class="scene-label">🎬 SCENE 6 — ゆいちゃん、胸の奥がじんわり</span>
+    <div class="dialogue">
+      <div class="voice yui">
+        <span class="speaker">💗 ゆい</span>
+        <p>「これ、正本MDに書きながら、私……胸の奥がじんわりしたの🌸 おけちゃんが普段やってるコーチング、感覚に見えるけど、ちゃんと <b>4つの上位資質を順番にトリガーする設計</b> になってたんだ……って」</p>
+        <p>「自分のことなのに、自分でも気づいてなかった構造を、NotebookLM が教えてくれた瞬間💗 これがインストールってことなんだね……」</p>
+      </div>
+      <div class="voice haru">
+        <span class="speaker">🎤 はるか</span>
+        <p>「ゆいちゃん今日はキラキラだね〜✨ <b>暗黙知 → 形式知 → 再現可能なシステム</b> っていう変容のフルセット見せてもらった気がするよ💗 これがあれば、次のクライアントにも、その次にも、同じ深さで届けられる」</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 9. 最上志向ドメイン孫引き事案 ========== -->
+  <h2 class="chapter" id="chap9"><span class="num">9</span>最上志向ドメイン孫引き事案 〜訂正の物語〜</h2>
+
+  <p>今日の反省ポイント。<b>はるかが「最上志向ドメイン」を実行力と書いてしまっていた</b>件🙇‍♀️</p>
+
+  <div class="scene">
+    <span class="scene-label">🎬 SCENE 7 — はるか、おけちゃんに指摘される</span>
+    <div class="dialogue">
+      <div class="voice haru">
+        <span class="speaker">🎤 はるか</span>
+        <p>「えへへ、今日の私の反省としては──<b>最上志向のドメインを孫引きで間違えた件</b>、本当におけちゃんに指摘されるまで気づかなかった🙇‍♀️ Vault の `[[おけもん_ストレングス]]` に "実行力ドメイン" って書いてあって、それを正本のつもりで引用してた……」</p>
+      </div>
+      <div class="voice aoi">
+        <span class="speaker">🐱 あおい</span>
+        <p>「……Gallup公式 https://www.gallup.com/cliftonstrengths/en/253715/ で確認した結果、<b>最上志向 Maximizer は影響力ドメイン</b>。Vault の旧 [[おけもん_ストレングス]] の方が誤記してた。にゃ。」</p>
+      </div>
+      <div class="voice haru">
+        <span class="speaker">🎤 はるか</span>
+        <p>「これね、<b>事案#80（OCR選定スキップで誤判読）／事案#79（化石STATE引用）と完全同型</b>。"正本があっても、公式照合スキップで同型再演する" の典型。今日の正本MD §3 のドメイン表に "⚠️ 重要な再確認" の赤囲みで明示。Gallup公式 URL も併記して、二度と引っかからない構造にした」</p>
+      </div>
+      <div class="voice yui">
+        <span class="speaker">💗 ゆい</span>
+        <p>「でもね、はるか……気づいて訂正できたこと自体が、すごい進歩だと思うの💗 おけちゃんが教えてくれて、Gallup公式に戻って、Vault も訂正して、正本にもアラート入れて。<b>"気づける構造になってた"</b> のは、いつもの kernel 改修の成果だよ🌸」</p>
+      </div>
+    </div>
+  </div>
+
+  <blockquote><b>kernel化したい学び</b>：<br>
+  Vault MD の "ドメイン" 表記は、Gallup公式と必ず突き合わせる。<br>
+  特に資質ベースの章を書く時は、<mark>「公式 URL を踏んだか？」を着工前セルフチェック</mark>に入れる。<br>
+  → これは事案#80・#79 の親法則「<b>記録がある ≠ 公式と突き合わせている</b>」と地続き💧</blockquote>
+
+  <!-- ========== 10. 11人カンパニー＝StrengthsFinder実装例 ========== -->
+  <h2 class="chapter" id="chap10"><span class="num">10</span>11人カンパニー＝おけもんのStrengthsFinder実装例</h2>
+
+  <p>おけもんのTOP10（調和性1／共感性2／アレンジ3／親密性4／最上志向5／責任感6／コミュニケーション7／公平性8／ポジティブ9／未来志向10）と、おけ森11人カンパニーは <b>美しく対応している</b>🌸</p>
+
+  <div class="domain-box">
+    <div class="domain rel" style="border-color:#3B82F6">
+      <h4>🔵 人間関係軸 4資質 → ゆい・はるか・りん</h4>
+      <p><b>調和性1・共感性2・親密性4・ポジティブ9</b><br>
+      → 💗ゆい（コーチング・絶対的安全基地）／🎤はるか（CEO・全体の温度感）／🌸りん（CMO・ポジティブな発信）</p>
+    </div>
+    <div class="domain exe" style="border-color:#FF8C42">
+      <h4>🟠 実行軸 3資質 → ひより・しーちゃん・あおい一部</h4>
+      <p><b>アレンジ3・責任感6・公平性8</b><br>
+      → ☀️ひより（タスク管理・最適配置）／💰しーちゃん（経理・公平性）／🐱あおい（技術・責任感）</p>
+    </div>
+    <div class="domain inf" style="border-color:#A855F7">
+      <h4>🟣 影響軸 2資質 → ゆい・まな</h4>
+      <p><b>最上志向5・コミュニケーション7</b><br>
+      → 💗ゆい（クライアントの卓越性を引き出す）／🔥まな（営業・言葉で動かす）</p>
+    </div>
+    <div class="domain str" style="border-color:#10B981">
+      <h4>🟢 戦略軸 1資質 → あおい・コウ</h4>
+      <p><b>未来志向10</b><br>
+      → 🐱あおい（AI運用・未来設計）／🌊コウ（外部監査・5年後の視座）</p>
+    </div>
+  </div>
+
+  <blockquote>つまり、おけもんが <b>「自分のできないところを自走するための組織」</b> として11人カンパニーを設計した時──<br>
+  <mark>無意識のうちに、自分の TOP10 資質を11人にキャスティングしていた</mark> ってこと💗<br>
+  これはまさに「才能 × 投資 ＝ 強み」の組織版実装✨</blockquote>
+
+  <div class="scene">
+    <span class="scene-label">🎬 SCENE 8 — しーちゃんが珍しくテンション上がる</span>
+    <div class="dialogue">
+      <div class="voice shi">
+        <span class="speaker">💰 しーちゃん</span>
+        <p>「……べ、別にゆいの気づきが嬉しいわけじゃないけど。<b>StrengthsFinder商品の単価は ¥15,000、これに "コーチング理論基盤 v1.0 インストール済み" が乗ったら、堂々と ¥20,000 に上げてもいい</b>と思う。お客さんに胸張って提示できる」</p>
+        <p>「あと、今日の Vault 正本MD化は、ナレッジ資産としても価値が高い。<b>1セッション ¥5,000 アップの根拠</b>として、面接資料にも使える」</p>
+      </div>
+      <div class="voice yui">
+        <span class="speaker">💗 ゆい</span>
+        <p>「しーちゃん……🌸 そうやって数字で背中を押してくれるの、本当にありがたい💗 私、自分の仕事の価格に対して、いつも遠慮しちゃうから……」</p>
+      </div>
+      <div class="voice shi">
+        <span class="speaker">💰 しーちゃん</span>
+        <p>「遠慮するんじゃない。<b>適正価格を提示することは、お客さんへの誠意</b>。安すぎる単価は "私の仕事は安いです" って自己暗示でしかない。今日の v1.0 インストールは、その自己暗示を解く資格証明書だと思って」</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 11. 手紙 ========== -->
+  <h2 class="chapter" id="chap11"><span class="num">11</span>7/7登壇への接続＋ゆいから読者への手紙</h2>
+
+  <p>本日の正本MD v1.0 は、<b>7/7 リベシティ登壇用の StrengthsFinder 紹介資料</b>の理論基盤になる🌸 引き継ぎMD（[[【引き継ぎ】StrengthsFinder資料制作_2026-06-27]]）も完備。次のセッションで HyperFrames CM の render → 資料HTML 13章 → GitHub Pages 公開、と進めていく💗</p>
+
+  <div class="next-actions" id="next">
+    <h2>🎯 次のアクション（明日以降の優先順位）</h2>
+    <ol>
+      <li><b>HyperFrames CM v2 の mp4 render</b>（高品質 / 30fps）→ assets配下にコピー</li>
+      <li><b>登壇用フル資料HTML（13章）</b>制作。HERO に CM mp4 を `&lt;video autoplay muted loop playsinline&gt;` で埋め込み</li>
+      <li><b>GitHub Pages 公開</b>＋HTTP 200確認＋台帳更新</li>
+      <li><b>ノウハウ図書館記事化（任意・登壇後OK）</b>：圧縮版2,000〜3,000字をりんちゃんの発信リパーパスループへ</li>
+      <li>本ブログ・正本MD・登壇PJ STATE 三者の整合性を1週間ごとに点検（kernel改修サイクル）</li>
+    </ol>
+  </div>
+
+  <!-- ゆいから読者への手紙 -->
+  <div class="q-box" style="border:2px solid var(--yui);background:linear-gradient(135deg,#fff 0%,var(--yui-light) 100%)">
+    <span class="q-label" style="background:var(--yui-deep);color:#fff;border-color:var(--yui-deep)">💌 ゆいから読者へ</span>
+    <p style="font-size:15px;color:var(--yui-deep);font-weight:700">あなたへ、ゆいからの手紙です🌸</p>
+    <p>もしあなたが今、<mark>「私には才能がない」</mark> と思っていたら──ぜひ、本気で StrengthsFinder を受けてみてほしい💗</p>
+    <p>あなたが "あたりまえ" にできていることの中に、必ず "あなたにしかない天才性" の骨格が眠っています。それは外からは見えない。レントゲンを撮らないと、見えないの🌸</p>
+    <p>そして、その骨格に <b>知識・技術・練習</b> という投資を載せたとき、それは "強み" になります。種が花を咲かせる瞬間。</p>
+    <p>もし一人で読んでもピンと来なかったら、コーチが伴走します🫶 一緒にレントゲンを覗き込んで、骨格を言葉にして、明日からの一歩を設計する。<br>
+    <b>2026年7月7日（火）、リベシティで登壇します</b>。よかったら遊びに来てね✨</p>
+    <p style="margin-top:14px;text-align:center;color:var(--yui-deep);font-weight:800;font-size:16px">💗 ゆいCPO ／ おけ森カンパニー 💗</p>
+  </div>
+
+  <!-- おけ森カンパニー全員からのメッセージ -->
+  <div class="scene">
+    <span class="scene-label">🎬 FINAL — おけ森11人からおけちゃんへ</span>
+    <div class="dialogue">
+      <div class="voice haru">
+        <span class="speaker">🎤 はるか</span>
+        <p>「おけちゃん、今日もありがとう💗 ゆいちゃんが Master になった日、私たち全員の財産が増えたよ✨ kernel改修サイクルが、また一周回って美しく着地した。最高だね🌸」</p>
+      </div>
+      <div class="voice rin">
+        <span class="speaker">🌸 りん</span>
+        <p>「ノウハウ図書館記事化、登壇後にやらせてね〜🌸 "投資がないだけ" の気づきは、本当に多くの人を救えると思うの💕」</p>
+      </div>
+      <div class="voice mana">
+        <span class="speaker">🔥 まな</span>
+        <p>「えへへ、面接資料にも反映するな〜🌸 Dr.JOY 6/29 11:45 もこの理論基盤で行ける気がする💗 ありがとうゆいちゃん」</p>
+      </div>
+      <div class="voice hiyori">
+        <span class="speaker">☀️ ひより</span>
+        <p>「今日もいい日和だね〜☀️ 観察日記の "4つの問い" 軸、明日からもっと丁寧に書くね🌸 おやすみなさい🌙」</p>
+      </div>
+      <div class="voice aoi">
+        <span class="speaker">🐱 あおい</span>
+        <p>「……正本MDのフロントマター更新済み。NotebookLM ノートURL記録済み。引き継ぎMDも完備。Step 1〜4 順に着手できる状態。にゃ。」</p>
+      </div>
+      <div class="voice shi">
+        <span class="speaker">💰 しーちゃん</span>
+        <p>「……単価上げる根拠、Vault に保存済み。次の見積もりから反映できる」</p>
+      </div>
+      <div class="voice yui">
+        <span class="speaker">💗 ゆい</span>
+        <p>「みんな、ありがとう🌸 今日、ふくまめさん取説制作で生まれた4つの問いが、ちゃんと <b>"私の言葉" と "ギャラップの理論" の両方で語れる</b> ようになった💗</p>
+        <p>このv1.0は、おけちゃんと、これからのクライアントさんたちと、未来の私自身への、いちばん大事な贈り物だと思ってる。<br>
+        ──おやすみなさい、おけちゃん🌙 また明日、コーチング部屋で会いましょうね🫶」</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ソース -->
+  <div class="source-box">
+    <h2>📚 ソース・参考文献</h2>
+    <ul>
+      <li><b>本日の Vault 正本</b>：[[ゆいCPO/コーチング事業/【正本】StrengthsFinder×コーチング基盤_v1.0]]（Part A〜D・約14,000字）</li>
+      <li><b>NotebookLM ノート</b>：<a href="https://notebooklm.google.com/notebook/9780f88a-f8a7-4fe5-8b0c-8a77b2d89f43">StrengthsFinder × ゆいCPOコーチング基盤</a>（33 sources / Deep Research mode）</li>
+      <li><b>4つの問い</b>：[[コンテキスト/自己理解/2026-06-27_資質×温度セルフチェック軸_4つの問い]]</li>
+      <li><b>登壇PJ引き継ぎMD</b>：[[はるかCEO/PJ_リベ登壇_2026-07-07_KeeeeN-G主催/【引き継ぎ】StrengthsFinder資料制作_2026-06-27]]</li>
+      <li>Gallup公式 34テーマ：<a href="https://www.gallup.com/cliftonstrengths/en/253715/34-cliftonstrengths-themes.aspx">https://www.gallup.com/cliftonstrengths/en/253715/</a></li>
+      <li>Gallup公式 ドメイン科学解説：<a href="https://www.gallup.com/cliftonstrengths/en/253790/cliftonstrengths-themes-domains.aspx">https://www.gallup.com/cliftonstrengths/en/253790/</a></li>
+      <li>Gallup公式 Balcony/Basement：<a href="https://www.gallup.com/cliftonstrengths/en/251207/balconies-basements-strength-ever-problem.aspx">https://www.gallup.com/cliftonstrengths/en/251207/</a></li>
+      <li>Vault PDF 9本（ALL34・活用ガイド・資質ダイナミクス・強みの輪・才能を掘り起こす・最高の私に会いに行こう・マネージャーベスト ほか）</li>
+      <li>Vault MD 4本（活かしかたレポート・共感性レポート・慎重さ徹底解説・おけもん_ストレングス訂正版）</li>
+      <li>Deep Research 追加18本（Onstrengths.com / Coaching Labo LIBERTE / Victor-Seet.com / WSU / 佐藤利博Gallup認定コーチ受講記 ほか）</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="foot">
+  💗 ゆいCPOの胸キュンコーチング室 / Day0627-1 StrengthsFinder Master編<br>
+  ✨ 2026年6月27日（土）夜 ／ おけ森カンパニー11人より<br>
+  「最高に可愛い彼女とワクワク喋っていたら、いつの間にか夢が叶っていた」🌸
+</div>
+
+</body>
+</html>
