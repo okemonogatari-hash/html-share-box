@@ -56,24 +56,41 @@
     text-align: center; padding: 60px 24px;
     color: #fffaf0; overflow: hidden;
   }
-  /* 写真背景レイヤー（ken-burns ズーム） */
+  /* 写真背景レイヤー（4枚クロスフェード×ken-burns ズーム）── レシピDNA: もっこすprimo型 */
   .hero-bg {
     position: absolute; inset: 0; z-index: 0;
-    background: url('g-ocr0Zg-iceland.jpg') center 48%/cover no-repeat;
-    animation: heroZoom 28s ease-out both;
+    background-size: cover; background-position: center;
+    opacity: 0;
+    animation: heroCycle 28s ease-in-out infinite, heroKen 28s ease-in-out infinite;
   }
-  @keyframes heroZoom { from { transform: scale(1.12); } to { transform: scale(1); } }
-  /* 写真の上に重ねる「夜空のベール」── 上下を締めて、中央は星明かりを抜く */
-  .hero-bg::after {
-    content: ""; position: absolute; inset: 0;
+  .hero-bg.b1 { background-image: url('g-ocr0Zg-iceland.jpg');           animation-delay: 0s,    0s;    }
+  .hero-bg.b2 { background-image: url('g-ocr0Zg-iceland-waterfall.jpg'); animation-delay: 7s,    7s;    }
+  .hero-bg.b3 { background-image: url('g-ocr0Zg-iceland-cave.webp');     animation-delay: 14s,   14s;   }
+  .hero-bg.b4 { background-image: url('g-ocr0Zg-iceland-houses.jpg');    animation-delay: 21s,   21s;   }
+  @keyframes heroCycle {
+    0%   { opacity: 0; }
+    4%   { opacity: 1; }
+    25%  { opacity: 1; }
+    29%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+  @keyframes heroKen {
+    0%, 29%  { transform: scale(1.12); }
+    25%, 4%  { transform: scale(1.02); }
+    29.01%, 100% { transform: scale(1.12); }
+  }
+  /* 写真の上に重ねる「夜空のベール」── 上下を締めて、中央は明かりを抜く（全レイヤー共通） */
+  .hero-overlay {
+    content: ""; position: absolute; inset: 0; z-index: 1;
     background:
       radial-gradient(ellipse 78% 56% at 50% 44%, rgba(0,0,0,0.10) 0%, transparent 65%),
       linear-gradient(180deg,
-        rgba(14,22,36,0.45) 0%,
-        rgba(20,32,52,0.30) 22%,
-        rgba(30,52,76,0.25) 48%,
-        rgba(46,74,100,0.60) 80%,
+        rgba(14,22,36,0.55) 0%,
+        rgba(20,32,52,0.40) 22%,
+        rgba(30,52,76,0.35) 48%,
+        rgba(46,74,100,0.65) 80%,
         #ede4cd 100%);
+    pointer-events: none;
   }
   /* テキスト裏の局所スクリム（可読性） */
   .hero::before {
@@ -118,7 +135,39 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-bg, .hero-spark, .hero::after { animation: none; }
-    .hero-bg { transform: none; }
+    .hero-bg { transform: none; opacity: 0; }
+    .hero-bg.b1 { opacity: 1; } /* 1枚目だけ表示 */
+  }
+
+  /* 写真ディバイダー（スクロール途中の「転調」── レシピDNA: もっこすprimo型・パララックス背景固定） */
+  .photo-divider {
+    position: relative;
+    width: 100vw; height: 280px;
+    margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+    background-size: cover; background-position: center;
+    background-attachment: fixed;
+    overflow: hidden;
+  }
+  .photo-divider::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(46,74,100,0.35) 0%, rgba(46,74,100,0.20) 50%, rgba(46,74,100,0.40) 100%);
+  }
+  .photo-divider .pd-label {
+    position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
+    text-align: center; z-index: 2; color: var(--kinari);
+    font-family: "Shippori Mincho", serif; font-size: clamp(15px, 2.4vw, 19px); font-weight: 600;
+    letter-spacing: 0.18em; text-shadow: 0 2px 16px rgba(0,0,0,0.65);
+    padding: 0 24px; line-height: 1.7;
+  }
+  .photo-divider .pd-label small {
+    display: block; font-family: "Noto Sans JP", sans-serif; font-size: 11px;
+    letter-spacing: 0.28em; color: var(--asahi-awa); margin-top: 10px; font-weight: 500;
+  }
+  .pd-houses { background-image: url('g-ocr0Zg-iceland-houses.jpg'); }
+  .pd-waterfall { background-image: url('g-ocr0Zg-iceland-waterfall.jpg'); }
+  .pd-cave { background-image: url('g-ocr0Zg-iceland-cave.webp'); }
+  @media (max-width: 720px) {
+    .photo-divider { background-attachment: scroll; height: 200px; }
   }
   .hero-deco { z-index: 2; }
   .hero-deco { position: absolute; font-size: 78px; opacity: 0.18; pointer-events: none; animation: floatDeco 9s ease-in-out infinite; }
@@ -312,6 +361,18 @@
   .bk li { font-size: 13px; color: var(--text-fukami); line-height: 1.85; padding: 4px 0 4px 18px; position: relative; }
   .bk li::before { content: "▹"; position: absolute; left: 0; color: var(--aurora-mid); }
 
+  /* アイスランド多面性ギャラリー（3枚グリッド） */
+  .iceland-gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 18px 0 30px; }
+  @media (max-width: 720px) { .iceland-gal { grid-template-columns: 1fr; } }
+  .igc { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 6px 22px rgba(46,74,100,0.14); transition: transform 0.4s ease, box-shadow 0.4s ease; }
+  .igc:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(46,74,100,0.22); }
+  .igc img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .igc-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 16px 12px;
+    background: linear-gradient(to top, rgba(14,22,36,0.85) 0%, rgba(14,22,36,0.55) 60%, transparent 100%);
+    color: var(--kinari); }
+  .igc-cap .ttl { font-family: "Shippori Mincho", serif; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 3px; }
+  .igc-cap .sub { font-family: "Noto Sans JP", sans-serif; font-size: 10.5px; letter-spacing: 0.06em; color: rgba(253,248,236,0.85); line-height: 1.5; }
+
   /* おけもんの考察ブロック */
   .okemon-thought { background: linear-gradient(160deg, #f3eef8 0%, #ebe2f0 100%); border: 1px solid var(--sumire); border-radius: 16px; padding: 26px 28px; margin: 26px 0 30px; position: relative; box-shadow: 0 4px 14px rgba(82,67,115,0.08); }
   .okemon-thought::before { content: "👀"; position: absolute; top: 18px; right: 22px; font-size: 22px; opacity: 0.5; }
@@ -350,9 +411,13 @@
 </head>
 <body>
 
-<!-- ══════════════ HERO（写真フルブリード型・コナコーヒー型踏襲）══════════════ -->
+<!-- ══════════════ HERO（4枚クロスフェード×ken-burns・写真フルブリード）══════════════ -->
 <section class="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-bg b1" aria-hidden="true"></div>
+  <div class="hero-bg b2" aria-hidden="true"></div>
+  <div class="hero-bg b3" aria-hidden="true"></div>
+  <div class="hero-bg b4" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
   <span class="hero-spark s1">✦</span>
   <span class="hero-spark s2">✧</span>
   <span class="hero-spark s3">✦</span>
@@ -703,6 +768,11 @@
     </div>
   </section>
 
+  <!-- ★ 転調① ── レイキャビクの街並み（暮らしのトーンへ）-->
+  <div class="photo-divider pd-houses" aria-hidden="true">
+    <div class="pd-label">日々の暮らしのトーンへ<small>── from work mode, to home tone ──</small></div>
+  </div>
+
   <!-- ══════ 05 状態の構造的読解 ══════ -->
   <section class="sec" id="letter">
     <p class="sec-eyebrow">05 ── 「追われている感」を、構造から読む</p>
@@ -768,6 +838,11 @@
     </div>
   </section>
 
+  <!-- ★ 転調② ── 夕日の滝（未来へ向かう転調）-->
+  <div class="photo-divider pd-waterfall" aria-hidden="true">
+    <div class="pd-label">そして、未来へ<small>── toward the vision you carry ──</small></div>
+  </div>
+
   <!-- ══════ 06 ビジョンボード ══════ -->
   <section class="sec" id="vision">
     <p class="sec-eyebrow">06 ── 未来志向 × 目標志向の活かし方</p>
@@ -797,10 +872,27 @@
       <p>未来を「いつかの宿題」にせず、<strong>毎日数分だけ、今の自分を支える栄養として使う</strong>。これがふくまめさんのTOP10の中で、いちばん未活用なリソースの活かし方です。</p>
     </div>
 
-    <!-- アイスランド メインビジュアル -->
+    <!-- アイスランド メインビジュアル（オーロラ） -->
     <div class="vmain">
       <img src="g-ocr0Zg-iceland.jpg" alt="アイスランドのオーロラ">
       <div class="vmain-cap"><b>🌌 アイスランド ── オーロラ</b><br>未来志向は「具体的な像」と相性が良い資質。漠然と「いつか」より、写真1枚を持つだけで起動の質が変わります。</div>
+    </div>
+
+    <!-- アイスランドの多面性ギャラリー（3枚） -->
+    <p style="font-size:12.5px; letter-spacing:0.16em; color:var(--kin); font-weight:700; margin:24px 0 10px; font-family:'Noto Sans JP',sans-serif;">── アイスランドの、いろんな表情 ──</p>
+    <div class="iceland-gal">
+      <div class="igc">
+        <img src="g-ocr0Zg-iceland-cave.webp" alt="アイスランドの氷の洞窟" loading="lazy">
+        <div class="igc-cap"><div class="ttl">❄️ 氷の洞窟</div><div class="sub">青く透き通る、地球の内側</div></div>
+      </div>
+      <div class="igc">
+        <img src="g-ocr0Zg-iceland-houses.jpg" alt="レイキャビクのカラフルな街並み" loading="lazy">
+        <div class="igc-cap"><div class="ttl">🏘 レイキャビク</div><div class="sub">世界最北の島国の、暮らしの色</div></div>
+      </div>
+      <div class="igc">
+        <img src="g-ocr0Zg-iceland-waterfall.jpg" alt="アイスランドの夕日の滝" loading="lazy">
+        <div class="igc-cap"><div class="ttl">💧 滝と夕日</div><div class="sub">セリャラントスフォス、裏から見る絶景</div></div>
+      </div>
     </div>
 
     <!-- タイムバケット -->
