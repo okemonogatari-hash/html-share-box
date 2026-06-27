@@ -57,21 +57,54 @@
     overflow-x: hidden;
   }
 
-  /* HERO */
+  /* HERO（4枚クロスフェード×ken-burns・写真フルブリード ── ふくまめさんパターン踏襲）*/
   .hero {
     position: relative; min-height: 100vh;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center; padding: 60px 24px;
     color: var(--kinari); overflow: hidden;
+    background: #2a2240;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background-size: cover; background-position: center;
+    opacity: 0;
+    animation: heroCycle 28s ease-in-out infinite, heroKen 28s ease-in-out infinite;
+  }
+  .hero-bg.b1 { background-image: url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=2000&q=72'); animation-delay: 0s, 0s; }
+  .hero-bg.b2 { background-image: url('https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=2000&q=72'); animation-delay: 7s, 7s; }
+  .hero-bg.b3 { background-image: url('https://images.unsplash.com/photo-1554797589-7241bb691973?auto=format&fit=crop&w=2000&q=72'); animation-delay: 14s, 14s; }
+  .hero-bg.b4 { background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2000&q=72'); animation-delay: 21s, 21s; }
+  @keyframes heroCycle {
+    0%   { opacity: 0; }
+    4%   { opacity: 1; }
+    25%  { opacity: 1; }
+    29%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+  @keyframes heroKen {
+    0%, 29%  { transform: scale(1.12); }
+    25%, 4%  { transform: scale(1.02); }
+    29.01%, 100% { transform: scale(1.12); }
+  }
+  .hero-overlay {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background:
-      radial-gradient(ellipse 60% 50% at 25% 25%, rgba(160,74,122,0.55) 0%, transparent 60%),
-      radial-gradient(ellipse 55% 45% at 78% 70%, rgba(138,90,46,0.45) 0%, transparent 58%),
-      radial-gradient(ellipse 50% 40% at 50% 80%, rgba(197,74,74,0.32) 0%, transparent 60%),
-      linear-gradient(160deg, #2a2240 0%, #3d3158 45%, #4a3a5e 100%);
+      radial-gradient(ellipse 78% 56% at 50% 44%, rgba(0,0,0,0.12) 0%, transparent 65%),
+      linear-gradient(180deg,
+        rgba(42,34,64,0.55) 0%,
+        rgba(61,49,88,0.40) 22%,
+        rgba(61,49,88,0.40) 48%,
+        rgba(42,34,64,0.65) 80%,
+        #ede4cd 100%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg { animation: none; opacity: 0; transform: none; }
+    .hero-bg.b1 { opacity: 1; }
   }
   .hero::before {
-    content: ""; position: absolute; inset: 0; z-index: 1;
+    content: ""; position: absolute; inset: 0; z-index: 2;
     background:
       radial-gradient(circle at 14% 22%, rgba(255,255,255,0.8) 0 1.6px, transparent 2.4px),
       radial-gradient(circle at 32% 12%, rgba(255,255,255,0.65) 0 1.2px, transparent 2px),
@@ -83,18 +116,14 @@
       radial-gradient(circle at 18% 48%, rgba(255,255,255,0.55) 0 1px, transparent 2px);
     animation: twinkle 6s ease-in-out infinite; pointer-events: none;
   }
-  @keyframes twinkle { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
-  .hero::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 140px; z-index: 1;
-    background: linear-gradient(to bottom, transparent, #ede4cd); pointer-events: none;
-  }
-  .hero-cat { position: absolute; top: 8%; left: 8%; z-index: 2; font-size: 56px; opacity: 0.65; transform: rotate(-8deg); animation: floatDeco 9s ease-in-out infinite; }
-  .hero-mochi { position: absolute; top: 14%; right: 12%; z-index: 2; font-size: 42px; opacity: 0.5; animation: floatDeco 7s ease-in-out infinite reverse; }
-  .hero-flower { position: absolute; bottom: 28%; right: 8%; z-index: 2; font-size: 38px; opacity: 0.55; animation: floatDeco 8s ease-in-out 1s infinite; }
-  .hero-camera { position: absolute; bottom: 24%; left: 10%; z-index: 2; font-size: 44px; opacity: 0.55; animation: floatDeco 7.5s ease-in-out 2s infinite; }
+  @keyframes twinkle { 0%,100% { opacity: 0.45; } 50% { opacity: 0.85; } }
+  .hero-cat { position: absolute; top: 8%; left: 8%; z-index: 3; font-size: 56px; opacity: 0.75; transform: rotate(-8deg); animation: floatDeco 9s ease-in-out infinite; text-shadow: 0 4px 16px rgba(0,0,0,0.6); }
+  .hero-mochi { position: absolute; top: 14%; right: 12%; z-index: 3; font-size: 42px; opacity: 0.6; animation: floatDeco 7s ease-in-out infinite reverse; text-shadow: 0 3px 12px rgba(0,0,0,0.5); }
+  .hero-flower { position: absolute; bottom: 28%; right: 8%; z-index: 3; font-size: 38px; opacity: 0.65; animation: floatDeco 8s ease-in-out 1s infinite; text-shadow: 0 3px 12px rgba(0,0,0,0.5); }
+  .hero-camera { position: absolute; bottom: 24%; left: 10%; z-index: 3; font-size: 44px; opacity: 0.65; animation: floatDeco 7.5s ease-in-out 2s infinite; text-shadow: 0 3px 12px rgba(0,0,0,0.5); }
   @keyframes floatDeco { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-14px) rotate(2deg); } }
 
-  .hero-inner { position: relative; z-index: 3; max-width: 720px; opacity: 0; filter: blur(6px); animation: heroEnter 1.4s 0.4s ease-out forwards; }
+  .hero-inner { position: relative; z-index: 4; max-width: 720px; opacity: 0; filter: blur(6px); animation: heroEnter 1.4s 0.4s ease-out forwards; }
   @keyframes heroEnter { to { opacity: 1; filter: blur(0); } }
   .hero-label { font-family: "Noto Sans JP", sans-serif; font-size: 11.5px; letter-spacing: 0.34em; color: #ecc983; margin-bottom: 26px; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.55); }
   .hero-name { font-family: "Shippori Mincho", serif; font-size: clamp(30px, 6.4vw, 54px); font-weight: 700; line-height: 1.46; letter-spacing: 0.06em; margin-bottom: 28px; color: #fffaf0; text-shadow: 0 4px 28px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.5); }
@@ -106,7 +135,37 @@
   .hero-btn { font-family: "Noto Sans JP", sans-serif; font-size: 13px; letter-spacing: 0.08em; text-decoration: none; padding: 13px 28px; border-radius: 30px; font-weight: 600; background: rgba(253,248,236,0.96); color: var(--yoi-deep); transition: transform 0.25s ease, box-shadow 0.25s ease; box-shadow: 0 8px 26px rgba(0,0,0,0.28); }
   .hero-btn.ghost { background: rgba(255,255,255,0.10); color: #fffaf0; border: 1px solid rgba(253,248,236,0.65); backdrop-filter: blur(2px); box-shadow: none; }
   .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
-  .hero-scroll { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 3; font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.3em; color: rgba(253,248,236,0.85); text-shadow: 0 1px 8px rgba(0,0,0,0.55); animation: bounce 2s ease-in-out infinite; }
+  .hero-scroll { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 4; font-family: "Noto Sans JP", sans-serif; font-size: 10px; letter-spacing: 0.3em; color: rgba(253,248,236,0.85); text-shadow: 0 1px 8px rgba(0,0,0,0.55); animation: bounce 2s ease-in-out infinite; }
+
+  /* 写真ディバイダー（章間の転調 ── レシピDNA: もっこすprimo型・background-attachment: fixed パララックス）*/
+  .photo-divider {
+    position: relative;
+    width: 100vw; height: 280px;
+    margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+    background-size: cover; background-position: center;
+    background-attachment: fixed;
+    overflow: hidden;
+  }
+  .photo-divider::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(42,34,64,0.45) 0%, rgba(61,49,88,0.30) 50%, rgba(42,34,64,0.55) 100%);
+  }
+  .photo-divider .pd-label {
+    position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
+    text-align: center; z-index: 2; color: var(--kinari);
+    font-family: "Shippori Mincho", serif; font-size: clamp(15px, 2.4vw, 19px); font-weight: 600;
+    letter-spacing: 0.18em; text-shadow: 0 2px 16px rgba(0,0,0,0.65);
+    padding: 0 24px; line-height: 1.7;
+  }
+  .photo-divider .pd-label small {
+    display: block; font-family: "Noto Sans JP", sans-serif; font-size: 11px;
+    letter-spacing: 0.28em; color: #ecc983; margin-top: 10px; font-weight: 500;
+  }
+  .pd-cafe { background-image: url('https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=2000&q=72'); }
+  .pd-sunrise { background-image: url('https://images.unsplash.com/photo-1465311354783-219c0b250012?auto=format&fit=crop&w=2000&q=72'); }
+  @media (max-width: 720px) {
+    .photo-divider { background-attachment: scroll; height: 200px; }
+  }
   .hero-scroll::after { content: "⌄"; display: block; font-size: 20px; line-height: 1; margin-top: 2px; }
   @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
 
@@ -275,8 +334,13 @@
 </head>
 <body>
 
-<!-- HERO -->
+<!-- HERO（4枚クロスフェード×ken-burns）-->
 <section class="hero">
+  <div class="hero-bg b1" aria-hidden="true"></div>
+  <div class="hero-bg b2" aria-hidden="true"></div>
+  <div class="hero-bg b3" aria-hidden="true"></div>
+  <div class="hero-bg b4" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
   <span class="hero-cat">🐈‍⬛</span>
   <span class="hero-mochi">🥢</span>
   <span class="hero-flower">🌸</span>
@@ -607,6 +671,11 @@
     </div>
   </section>
 
+  <!-- ★ 転調① ── 少人数で深く話す温度へ -->
+  <div class="photo-divider pd-cafe" aria-hidden="true">
+    <div class="pd-label">少人数で、深く話せる温度へ<small>── from many, to a few you trust ──</small></div>
+  </div>
+
   <!-- §05 悩み3点 -->
   <section class="sec" id="nayami">
     <p class="sec-eyebrow">05 ── 悩み3点の温度読解</p>
@@ -674,6 +743,11 @@
 
     </div>
   </section>
+
+  <!-- ★ 転調② ── 次の温度へ向かう -->
+  <div class="photo-divider pd-sunrise" aria-hidden="true">
+    <div class="pd-label">そして、次の温度へ<small>── toward the air that fits you ──</small></div>
+  </div>
 
   <!-- §06 おけもんの考察 -->
   <section class="sec" id="kousatsu">
