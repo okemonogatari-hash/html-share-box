@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>プカリ司法書士法人HP 運用管理ガイド 正式版</title>
+  <meta name="description" content="プカリ司法書士法人HPの納品後運用管理ガイド正式版。記事更新、検索確認、Analytics、フォーム確認、困った時の確認順をまとめています。">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    :root {
+      --ink: #22323f;
+      --sub: #5f7180;
+      --muted: #7b8b98;
+      --line: #d8e6ee;
+      --paper: #f6fafc;
+      --white: #ffffff;
+      --navy: #06486f;
+      --blue: #075f8e;
+      --blue-soft: #eaf6fb;
+      --sky: #dff0f7;
+      --green: #2f7d53;
+      --green-soft: #edf8f2;
+      --orange: #d8852e;
+      --orange-soft: #fff3e4;
+      --red: #a7483c;
+      --red-soft: #fff2ef;
+      --shadow: 0 12px 32px rgba(19, 72, 102, .10);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #edf7fb 0, #f8fcfd 340px, #ffffff 720px);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      line-height: 1.75;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration-thickness: 1px;
+      text-underline-offset: .22em;
+      overflow-wrap: anywhere;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 28px 0 72px;
+    }
+
+    .cover {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(300px, .88fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .cover-main,
+    .cover-status,
+    .toc,
+    .section,
+    .callout,
+    .flow,
+    .footer {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .96);
+      box-shadow: var(--shadow);
+    }
+
+    .cover-main {
+      padding: clamp(24px, 4vw, 42px);
+      display: grid;
+      align-content: space-between;
+      min-height: 390px;
+    }
+
+    .logo {
+      width: min(330px, 84%);
+      height: auto;
+      display: block;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(34px, 5.5vw, 60px);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 18px 0 0;
+      color: var(--sub);
+      font-size: 16px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 26px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .cover-status {
+      padding: clamp(20px, 3vw, 30px);
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .status-item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      background: #fff;
+    }
+
+    .status-item strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--navy);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .status-item span {
+      color: var(--sub);
+      font-size: 14px;
+    }
+
+    .status-item.done {
+      border-color: rgba(47, 125, 83, .26);
+      background: var(--green-soft);
+    }
+
+    .status-item.watch {
+      border-color: rgba(216, 133, 46, .36);
+      background: var(--orange-soft);
+    }
+
+    .toc {
+      margin-bottom: 18px;
+      padding: 18px;
+    }
+
+    .toc h2,
+    .section h2,
+    .cover-status h2 {
+      margin: 0 0 14px;
+      color: var(--navy);
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.34;
+      letter-spacing: 0;
+    }
+
+    .toc-list {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .toc-list a {
+      display: block;
+      min-height: 54px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      color: var(--navy);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    main {
+      display: grid;
+      gap: 18px;
+    }
+
+    .section {
+      padding: clamp(22px, 3.2vw, 36px);
+      scroll-margin-top: 20px;
+    }
+
+    .section > p:first-of-type {
+      margin-top: 0;
+    }
+
+    .section > p:last-child,
+    .callout > p:last-child,
+    .note-list:last-child,
+    .check-list:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .section-kicker {
+      margin: 0 0 5px;
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .section-number {
+      min-width: 42px;
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .info-box {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: #fff;
+    }
+
+    .info-box h3 {
+      margin: 0 0 6px;
+      color: var(--navy);
+      font-size: 17px;
+      line-height: 1.45;
+      letter-spacing: 0;
+    }
+
+    .info-box p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      width: 28%;
+      background: var(--blue-soft);
+      color: var(--navy);
+      font-weight: 900;
+    }
+
+    tr:last-child th,
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .flow {
+      box-shadow: none;
+      background: var(--paper);
+      padding: 18px;
+      margin: 16px 0;
+    }
+
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .flow-steps li {
+      min-height: 118px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fff;
+      display: grid;
+      align-content: start;
+      gap: 6px;
+    }
+
+    .step-label {
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .flow-steps strong {
+      color: var(--navy);
+      line-height: 1.45;
+    }
+
+    .flow-steps span {
+      color: var(--sub);
+      font-size: 13px;
+    }
+
+    .check-list,
+    .note-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .check-list li,
+    .note-list li {
+      position: relative;
+      padding: 12px 14px 12px 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .check-list li::before,
+    .note-list li::before {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 20px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .note-list li::before {
+      background: var(--orange);
+    }
+
+    .callout {
+      box-shadow: none;
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--blue-soft);
+      border-color: #c6dfec;
+    }
+
+    .callout.warning {
+      background: var(--orange-soft);
+      border-color: #f0d2a9;
+    }
+
+    .callout.danger {
+      background: var(--red-soft);
+      border-color: #edc9c2;
+    }
+
+    .callout strong {
+      color: var(--navy);
+    }
+
+    code,
+    pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    code {
+      padding: 1px 5px;
+      border-radius: 5px;
+      background: var(--blue-soft);
+      color: var(--navy);
+      font-size: .92em;
+    }
+
+    pre {
+      margin: 14px 0 0;
+      padding: 16px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #102f46;
+      color: #eef8fc;
+      white-space: pre-wrap;
+      line-height: 1.65;
+      font-size: 13px;
+    }
+
+    .footer {
+      margin-top: 18px;
+      padding: 18px;
+      color: var(--sub);
+      font-size: 13px;
+      text-align: center;
+      box-shadow: none;
+    }
+
+    @media (max-width: 920px) {
+      .cover,
+      .grid.two,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .cover-main {
+        min-height: auto;
+      }
+
+      .toc-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .flow-steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        width: min(100% - 24px, 1120px);
+        padding-top: 14px;
+      }
+
+      .cover {
+        gap: 12px;
+      }
+
+      .cover-main,
+      .cover-status,
+      .section,
+      .toc {
+        padding: 18px;
+      }
+
+      .logo {
+        width: min(270px, 96%);
+        margin-bottom: 22px;
+      }
+
+      .toc-list,
+      .flow-steps {
+        grid-template-columns: 1fr;
+      }
+
+      .toc-list a {
+        min-height: 46px;
+      }
+
+      .section-head {
+        display: grid;
+      }
+
+      .section-number {
+        order: -1;
+      }
+
+      table,
+      tbody,
+      tr,
+      th,
+      td {
+        display: block;
+        width: 100%;
+      }
+
+      tr {
+        border-bottom: 1px solid var(--line);
+      }
+
+      tr:last-child {
+        border-bottom: 0;
+      }
+
+      th,
+      td {
+        border-bottom: 0;
+      }
+
+      th {
+        padding-bottom: 6px;
+      }
+
+      td {
+        padding-top: 6px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .cover-main,
+      .cover-status,
+      .toc,
+      .section,
+      .footer {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      a {
+        color: #000;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="cover">
+      <div class="cover-main">
+        <div>
+          <img class="logo" src="https://kai-shihosyoshi.com/wp-content/plugins/pukari-static-v0118-column/assets/pukari-logo-horizontal.jpg" alt="プカリ司法書士法人">
+          <p class="eyebrow">Official Operation Manual / 2026.06</p>
+          <h1>HP運用管理ガイド<br>正式版</h1>
+          <p class="lead">ホームページ納品後に、日常更新・検索まわり・アクセス解析・問い合わせフォームを安全に確認するための運用資料です。</p>
+        </div>
+        <div class="meta">
+          <span class="pill">対象: プカリ司法書士法人HP</span>
+          <span class="pill">版: 正式版 v1.0</span>
+          <span class="pill">最終更新: 2026-06-28</span>
+          <span class="pill">通常更新: お知らせ・コラム</span>
+        </div>
+      </div>
+
+      <aside class="cover-status" aria-label="納品時点の確認状況">
+        <h2>納品時点の要点</h2>
+        <div class="status-item done">
+          <strong>本番HPは公開済み</strong>
+          <span>公開ページは確認済みです。</span>
+        </div>
+        <div class="status-item done">
+          <strong>記事はWordPress内で投稿できます</strong>
+          <span>「お知らせ・コラム」から更新できます。</span>
+        </div>
+        <div class="status-item watch">
+          <strong>保守は必要時に相談</strong>
+          <span>日常更新は先方で可能。大きな変更や不具合時だけ相談する形です。</span>
+        </div>
+      </aside>
+    </header>
+
+    <nav class="toc" aria-label="目次">
+      <h2>目次</h2>
+      <ol class="toc-list">
+        <li><a href="#basic">1. 基本情報</a></li>
+        <li><a href="#column">2. 記事更新</a></li>
+        <li><a href="#search">3. 検索・解析</a></li>
+        <li><a href="#form">4. フォーム</a></li>
+        <li><a href="#maintenance">5. 保守・運用</a></li>
+        <li><a href="#trouble">6. 困った時</a></li>
+      </ol>
+    </nav>
+
+    <main>
+      <section class="section" id="basic">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Basic Information</p>
+            <h2>1. ホームページの基本情報</h2>
+          </div>
+          <span class="section-number">1</span>
+        </div>
+        <p>日常運用でよく使うURLをまとめています。通常の記事更新は、WordPress管理画面の「お知らせ・コラム」から行います。</p>
+        <table>
+          <tr>
+            <th>公開URL</th>
+            <td><a href="https://kai-shihosyoshi.com/">https://kai-shihosyoshi.com/</a></td>
+          </tr>
+          <tr>
+            <th>お問い合わせ</th>
+            <td><a href="https://kai-shihosyoshi.com/contact/">https://kai-shihosyoshi.com/contact/</a></td>
+          </tr>
+          <tr>
+            <th>お知らせ・コラム一覧</th>
+            <td><a href="https://kai-shihosyoshi.com/column/">https://kai-shihosyoshi.com/column/</a></td>
+          </tr>
+          <tr>
+            <th>記事更新用 管理画面</th>
+            <td><a href="https://kai-shihosyoshi.com/wp-admin/edit.php?post_type=pukari_column">https://kai-shihosyoshi.com/wp-admin/edit.php?post_type=pukari_column</a></td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="section" id="column">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Column Operation</p>
+            <h2>2. 記事更新について</h2>
+          </div>
+          <span class="section-number">2</span>
+        </div>
+        <p>WordPress内で記事を投稿できます。投稿した記事は「お知らせ・コラム」に表示されます。</p>
+
+        <div class="grid two">
+          <div class="info-box">
+            <h3>通常更新</h3>
+            <p>「お知らせ・コラム」から記事を追加します。</p>
+          </div>
+          <div class="info-box">
+            <h3>記事がない時</h3>
+            <p>記事がまだない間は、コラム欄に「準備中」と表示されます。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="search">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Google Search</p>
+            <h2>3. 検索・アクセス解析について</h2>
+          </div>
+          <span class="section-number">3</span>
+        </div>
+        <p>Google検索の確認設定は済んでいます。検索結果の表示は、Google側の反映に時間がかかる場合があります。</p>
+
+        <div class="grid two">
+          <div class="info-box">
+            <h3>検索表示</h3>
+            <p>新しいトップページは検索結果に表示されています。旧URLが残る場合もあります。</p>
+          </div>
+          <div class="info-box">
+            <h3>Analytics</h3>
+            <p>現時点では未設置です。追加する場合は、甲斐さん側Googleアカウントのメールアドレス共有で対応できます。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="form">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Contact Form</p>
+            <h2>4. お問い合わせフォーム</h2>
+          </div>
+          <span class="section-number">4</span>
+        </div>
+        <p>お問い合わせフォームは設置済みです。送信後は、送信完了ページへ移動します。通知先メールは最終確認中です。</p>
+
+        <div class="callout warning">
+          <strong>通知先の予定:</strong> 2026年6月30日までに別の受付メール指定がない場合は、WordPressログイン用メール（kaimariko@outlook.com）に届くよう設定します。設定後に1件テスト送信して確認してください。
+        </div>
+      </section>
+
+      <section class="section" id="maintenance">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Maintenance</p>
+            <h2>5. 保守・運用について</h2>
+          </div>
+          <span class="section-number">5</span>
+        </div>
+        <p>日常的な記事更新は先方で対応できます。継続保守を前提にしなくても、通常運用はできる状態です。</p>
+
+        <table>
+          <tr>
+            <th>先方でできること</th>
+            <td>お知らせ・コラム記事の追加・編集</td>
+          </tr>
+          <tr>
+            <th>相談すること</th>
+            <td>トップページの文章変更、デザイン変更、フォーム通知先変更、アクセス解析の追加、不具合対応</td>
+          </tr>
+          <tr>
+            <th>保守の考え方</th>
+            <td>必要な時に都度相談する形で問題ありません。</td>
+          </tr>
+        </table>
+
+        <h3>保守管理の料金目安</h3>
+        <p>普段の記事更新はWordPress内で行えます。文章修正や表示確認など、必要な時だけ依頼したい場合は単発対応、定期的な確認や軽微な修正まで任せたい場合は月額保守を選べます。</p>
+
+        <table>
+          <tr>
+            <th>単発対応</th>
+            <td>5,000円〜 / 回。軽微な文章修正、画像差し替え、表示確認など。</td>
+          </tr>
+          <tr>
+            <th>継続保守管理</th>
+            <td>20,000円 / 月。WordPress更新確認、バックアップ確認、軽微な修正、フォーム・表示トラブルの一次確認。</td>
+          </tr>
+          <tr>
+            <th>別途見積</th>
+            <td>ページ追加、大きなデザイン変更、機能追加、緊急復旧など。</td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="section" id="trouble">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Trouble Check</p>
+            <h2>6. 困った時</h2>
+          </div>
+          <span class="section-number">6</span>
+        </div>
+        <p>困った時は、該当URLと状況が分かるスクリーンショットを添えて相談してください。</p>
+
+        <div class="grid three">
+          <div class="info-box">
+            <h3>記事が出ない</h3>
+            <p>記事が公開済みになっているか確認します。</p>
+          </div>
+          <div class="info-box">
+            <h3>画面が変わらない</h3>
+            <p>少し時間をおいて、もう一度確認します。</p>
+          </div>
+          <div class="info-box">
+            <h3>メールが届かない</h3>
+            <p>迷惑メールフォルダや受付メールアドレスを確認します。</p>
+          </div>
+        </div>
+
+        <div class="callout danger">
+          <strong>重要:</strong> GoogleアカウントやWordPressのパスワードを制作側へ共有する必要はありません。
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>プカリ司法書士法人HP 運用管理ガイド 正式版 / v1.0 / 最終更新 2026-06-28</p>
+    </footer>
+  </div>
+</body>
+</html>
