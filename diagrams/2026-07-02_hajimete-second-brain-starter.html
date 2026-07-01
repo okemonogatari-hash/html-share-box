@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>はじめてのセカンドブレイン | 「忘れてもいい」を、はじめよう。Obsidian超入門テンプレ</title>
+<meta name="description" content="AIとの会話も日々の気づきも、流れて消える前に「第二の脳」へ。Obsidianをはじめて触る人のための無料スターターテンプレ。フォルダ7つ＋サンプルノート入り、5分ではじめられます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest-deep: #1b3a2d;
+    --forest: #2d5741;
+    --leaf: #4c9a6a;
+    --leaf-bright: #6fbf8b;
+    --leaf-pale: #dcefe2;
+    --cream: #faf8f2;
+    --cream-soft: #f1ede2;
+    --ink: #24312a;
+    --ink-soft: #5a6a60;
+    --line: #d8dfd8;
+    --accent: #e8a03c;
+    --accent-soft: #fdf3e0;
+    --shadow-soft: 0 4px 18px rgba(27,58,45,0.08);
+    --shadow-deep: 0 14px 44px rgba(27,58,45,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.9;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    overflow-x: hidden;
+  }
+  img, svg { max-width: 100%; }
+  .serif { font-family: 'Noto Serif JP', serif; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    background: linear-gradient(168deg, var(--forest-deep) 0%, var(--forest) 62%, #3c6b50 100%);
+    color: #fdfdfb;
+    padding: clamp(64px, 12vw, 120px) 24px clamp(72px, 12vw, 120px);
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero-net { position: absolute; inset: 0; opacity: 0.35; pointer-events: none; }
+  .hero-inner { position: relative; max-width: 720px; margin: 0 auto; }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.22em;
+    color: var(--leaf-bright);
+    border: 1px solid rgba(111,191,139,0.55);
+    border-radius: 999px;
+    padding: 6px 18px;
+    margin-bottom: 26px;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(30px, 6.4vw, 52px);
+    font-weight: 900;
+    line-height: 1.45;
+    margin-bottom: 20px;
+  }
+  .hero h1 .thin { display: block; font-size: 0.52em; font-weight: 700; color: #cfe6d6; margin-bottom: 14px; letter-spacing: 0.12em; }
+  .hero p.lead {
+    font-size: clamp(15px, 2.6vw, 17.5px);
+    color: #e2ede5;
+    max-width: 560px;
+    margin: 0 auto 34px;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent);
+    color: #2d2413;
+    font-weight: 900;
+    font-size: 16px;
+    padding: 15px 34px;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: var(--shadow-deep);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 18px 50px rgba(0,0,0,0.28); }
+  .hero-note { font-size: 12.5px; color: #b9d2c1; margin-top: 14px; }
+
+  /* ===== 共通レイアウト ===== */
+  main { max-width: 760px; margin: 0 auto; padding: 0 22px; }
+  section { padding: clamp(52px, 9vw, 84px) 0; }
+  section + section { border-top: 1px solid var(--line); }
+  .sec-label {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.2em;
+    color: var(--leaf);
+    margin-bottom: 14px;
+  }
+  .sec-label::before { content: ""; width: 26px; height: 2px; background: var(--leaf); border-radius: 2px; }
+  h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(23px, 4.6vw, 31px);
+    font-weight: 900;
+    line-height: 1.5;
+    margin-bottom: 22px;
+  }
+  p.body { color: var(--ink-soft); margin-bottom: 16px; }
+  p.body strong { color: var(--ink); }
+  .highlight {
+    background: linear-gradient(transparent 62%, var(--leaf-pale) 62%);
+    font-weight: 700; color: var(--ink);
+  }
+
+  /* ===== 吹き出し風の問題提起 ===== */
+  .pain-list { display: grid; gap: 12px; margin: 26px 0; }
+  .pain {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    display: flex; gap: 12px; align-items: flex-start;
+    box-shadow: var(--shadow-soft);
+  }
+  .pain svg { flex-shrink: 0; margin-top: 3px; }
+
+  /* ===== 3つの約束 ===== */
+  .promise-grid { display: grid; gap: 16px; margin-top: 30px; }
+  @media (min-width: 640px) { .promise-grid { grid-template-columns: repeat(3, 1fr); } }
+  .promise {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 26px 22px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+  }
+  .promise .icon {
+    width: 52px; height: 52px;
+    margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--leaf-pale);
+    border-radius: 16px;
+    color: var(--forest);
+  }
+  .promise h3 { font-size: 16.5px; font-weight: 900; margin-bottom: 8px; }
+  .promise p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.8; }
+
+  /* ===== フォルダカード ===== */
+  .folder-list { display: grid; gap: 12px; margin-top: 30px; }
+  .folder {
+    display: flex; align-items: center; gap: 16px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 20px;
+    box-shadow: var(--shadow-soft);
+  }
+  .folder .num {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--leaf);
+    background: var(--leaf-pale);
+    border-radius: 8px;
+    padding: 4px 10px;
+    white-space: nowrap;
+  }
+  .folder .f-icon { color: var(--forest); flex-shrink: 0; }
+  .folder .f-body { min-width: 0; }
+  .folder h3 { font-size: 15.5px; font-weight: 900; }
+  .folder p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .folder.star { border: 2px solid var(--leaf-bright); background: linear-gradient(180deg, #ffffff, var(--leaf-pale)); }
+  .folder-note {
+    margin-top: 18px;
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: #6b5426;
+  }
+
+  /* ===== ステップ ===== */
+  .steps { counter-reset: step; display: grid; gap: 0; margin-top: 30px; }
+  .step {
+    position: relative;
+    padding: 0 0 30px 58px;
+  }
+  .step::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute; left: 0; top: 0;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--forest);
+    color: #fff;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 900; font-size: 18px;
+    border-radius: 50%;
+  }
+  .step:not(:last-child)::after {
+    content: "";
+    position: absolute; left: 19px; top: 44px; bottom: 4px;
+    width: 2px;
+    background: var(--line);
+  }
+  .step h3 { font-size: 16.5px; font-weight: 900; margin-bottom: 6px; padding-top: 7px; }
+  .step p { font-size: 14px; color: var(--ink-soft); }
+  .step code {
+    background: var(--cream-soft);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1px 8px;
+    font-size: 13px;
+    color: var(--forest);
+    font-weight: 700;
+  }
+
+  /* ===== リンク3ステップ（成長段階） ===== */
+  .grow-grid { display: grid; gap: 16px; margin-top: 30px; }
+  .grow {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: var(--shadow-soft);
+  }
+  .grow .phase {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.08em;
+    color: var(--forest);
+    background: var(--leaf-pale);
+    border-radius: 999px;
+    padding: 5px 14px;
+    margin-bottom: 12px;
+  }
+  .grow h3 { font-size: 17px; font-weight: 900; margin-bottom: 8px; }
+  .grow p { font-size: 14px; color: var(--ink-soft); }
+  .grow .visual { margin-top: 14px; text-align: center; }
+
+  /* ===== AI未来 ===== */
+  .ai-box {
+    background: linear-gradient(160deg, var(--forest-deep), var(--forest));
+    color: #eef6f0;
+    border-radius: 22px;
+    padding: clamp(28px, 5vw, 44px);
+    margin-top: 30px;
+    box-shadow: var(--shadow-deep);
+  }
+  .ai-box h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(19px, 3.6vw, 24px);
+    font-weight: 900;
+    margin-bottom: 14px;
+    color: #fff;
+  }
+  .ai-box p { font-size: 14.5px; color: #cfe2d5; margin-bottom: 12px; }
+  .ai-box .quote {
+    border-left: 3px solid var(--leaf-bright);
+    padding: 4px 0 4px 16px;
+    margin: 18px 0;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15.5px;
+    color: #fff;
+    line-height: 2;
+  }
+  .ai-box .quote small { display: block; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; color: #9fc4ab; margin-top: 6px; }
+  .ai-examples { display: grid; gap: 10px; margin-top: 18px; }
+  .ai-examples .ex {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    color: #e6f1e9;
+  }
+
+  /* ===== ダウンロード ===== */
+  .dl-box {
+    background: #fff;
+    border: 2px solid var(--leaf-bright);
+    border-radius: 24px;
+    padding: clamp(30px, 5vw, 46px);
+    text-align: center;
+    margin-top: 30px;
+    box-shadow: var(--shadow-deep);
+  }
+  .dl-box h3 { font-family: 'Noto Serif JP', serif; font-size: clamp(20px, 4vw, 26px); font-weight: 900; margin-bottom: 12px; }
+  .dl-box p { font-size: 14px; color: var(--ink-soft); margin-bottom: 24px; }
+  .dl-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--forest);
+    color: #fff;
+    font-weight: 900;
+    font-size: 16px;
+    padding: 16px 38px;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: var(--shadow-deep);
+    transition: transform 0.18s ease;
+  }
+  .dl-btn:hover { transform: translateY(-2px); background: var(--forest-deep); }
+  .dl-steps {
+    margin-top: 22px;
+    text-align: left;
+    background: var(--cream-soft);
+    border-radius: 14px;
+    padding: 18px 22px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .dl-steps li { margin-left: 1.4em; margin-bottom: 6px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    margin-top: 40px;
+    background: var(--forest-deep);
+    color: #b9d2c1;
+    text-align: center;
+    padding: 40px 24px 48px;
+    font-size: 12.5px;
+    line-height: 2;
+  }
+  footer .brand { font-family: 'Noto Serif JP', serif; font-weight: 700; font-size: 15px; color: #fff; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <svg class="hero-net" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g stroke="#7fbf95" stroke-width="1" opacity="0.5">
+      <line x1="120" y1="110" x2="300" y2="70"/><line x1="300" y1="70" x2="480" y2="150"/>
+      <line x1="480" y1="150" x2="660" y2="90"/><line x1="120" y1="110" x2="220" y2="290"/>
+      <line x1="480" y1="150" x2="410" y2="330"/><line x1="220" y1="290" x2="410" y2="330"/>
+      <line x1="660" y1="90" x2="700" y2="280"/><line x1="410" y1="330" x2="590" y2="410"/>
+      <line x1="700" y1="280" x2="590" y2="410"/><line x1="220" y1="290" x2="110" y2="420"/>
+    </g>
+    <g fill="#a8d6b8">
+      <circle cx="120" cy="110" r="5"/><circle cx="300" cy="70" r="7"/><circle cx="480" cy="150" r="5"/>
+      <circle cx="660" cy="90" r="6"/><circle cx="220" cy="290" r="6"/><circle cx="410" cy="330" r="8"/>
+      <circle cx="700" cy="280" r="5"/><circle cx="590" cy="410" r="6"/><circle cx="110" cy="420" r="5"/>
+    </g>
+  </svg>
+  <div class="hero-inner">
+    <span class="hero-eyebrow">OBSIDIAN STARTER KIT</span>
+    <h1 class="serif">
+      <span class="thin">「忘れてもいい」を、はじめよう。</span>
+      はじめての<br>セカンドブレイン
+    </h1>
+    <p class="lead">AIとの会話も、日々の気づきも、流れて消える前に「第二の脳」へ。<br>Obsidianをはじめて触る人のための、フォルダ7つの無料スターターテンプレです。</p>
+    <a class="hero-cta" href="#download">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      テンプレを受け取る
+    </a>
+    <p class="hero-note">無料・登録不要・ただのテキストファイルなので一生使えます</p>
+  </div>
+</header>
+
+<main>
+
+<!-- ===== 問題提起 ===== -->
+<section>
+  <div class="sec-label">PROBLEM</div>
+  <h2>AIと話したこと、<br>ぜんぶどこかに消えていく。</h2>
+  <p class="body">ChatGPTやClaudeと、けっこう大事な話をしていませんか。仕事の悩み、これからやりたいこと、ふと降りてきたアイデア。</p>
+  <div class="pain-list">
+    <div class="pain">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c98a3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      「あの神回答、どのチャットだったっけ…」が見つからない
+    </div>
+    <div class="pain">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c98a3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      AIは次の会話で、私のことをきれいさっぱり忘れている
+    </div>
+    <div class="pain">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c98a3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+      毎回、自己紹介と状況説明からやり直し
+    </div>
+  </div>
+  <p class="body">これ、ぜんぶ<span class="highlight">「置き場所」が無いだけ</span>なんです。覚えておくのをやめて、忘れてもいい仕組みを作りましょう。その置き場所が <strong>Obsidian（オブシディアン）</strong>——ノート同士をリンクで繋げられる無料メモアプリです。データは全部、自分のPCの中のただのテキストファイル。だから<span class="highlight">AIがそのまま読める</span>。ここが今日の主役です。</p>
+</section>
+
+<!-- ===== 3つの約束 ===== -->
+<section>
+  <div class="sec-label">CONCEPT</div>
+  <h2>このテンプレの、3つの約束。</h2>
+  <div class="promise-grid">
+    <div class="promise">
+      <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <h3>完璧に分類しない</h3>
+      <p>迷ったら「とりあえずメモ」へ。分類に使う脳みそは、考えごとに使う。</p>
+    </div>
+    <div class="promise">
+      <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2.4"/><circle cx="19" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><line x1="7" y1="7.2" x2="10.4" y2="16.2"/><line x1="17" y1="7.2" x2="13.6" y2="16.2"/><line x1="7.4" y1="6" x2="16.6" y2="6"/></svg></div>
+      <h3>フォルダは家、リンクは道</h3>
+      <p>どこに置いたか忘れても、リンクの道をたどれば戻ってこられる。</p>
+    </div>
+    <div class="promise">
+      <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+      <h3>毎日3行でいい</h3>
+      <p>3行の日記が、未来のあなた（とAI）への最高の贈り物になる。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== フォルダ構成 ===== -->
+<section>
+  <div class="sec-label">STRUCTURE</div>
+  <h2>フォルダは、この7つだけ。</h2>
+  <p class="body">世界中の達人たちの結論はほぼ一致しています——<strong>フォルダは少なく（7つまで）・深くしない（2階層まで）・整理はリンクと検索にまかせる</strong>。このテンプレはその2026年標準に沿って設計しました。</p>
+  <div class="folder-list">
+    <div class="folder star">
+      <span class="num">00</span>
+      <svg class="f-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <div class="f-body"><h3>きょうの日記</h3><p>毎日3行でOK。セカンドブレインの心臓部はここ</p></div>
+    </div>
+    <div class="folder">
+      <span class="num">10</span>
+      <svg class="f-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+      <div class="f-body"><h3>とりあえずメモ</h3><p>迷ったら全部ここ。散らかっていても正常です</p></div>
+    </div>
+    <div class="folder">
+      <span class="num">20</span>
+      <svg class="f-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div class="f-body"><h3>わたしのこと</h3><p>自分の取扱説明書。AIと繋ぐとき、いちばん効く場所</p></div>
+    </div>
+    <div class="folder">
+      <span class="num">30</span>
+      <svg class="f-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+      <div class="f-body"><h3>やってること</h3><p>進行中のこと。1件1ノート。「これは何のため？」を1行目に</p></div>
+    </div>
+    <div class="folder">
+      <span class="num">40</span>
+      <svg class="f-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <div class="f-body"><h3>きになること</h3><p>学び・本・気になった言葉。「出典＋3行＋感想」の型で</p></div>
+    </div>
+    <div class="folder">
+      <span class="num">90</span>
+      <svg class="f-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+      <div class="f-body"><h3>おわったもの</h3><p>終わったこと置き場。消さない。過去も未来のAIの材料</p></div>
+    </div>
+    <div class="folder">
+      <span class="num">99</span>
+      <svg class="f-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <div class="f-body"><h3>テンプレート</h3><p>日記・人・プロジェクトのひな形3種入り</p></div>
+    </div>
+  </div>
+  <div class="folder-note">
+    番号が飛んでいるのはわざとです。あとで「15_健康」のように<strong>間に増やせる</strong>設計。そして各フォルダに「このフォルダの使い方」ノートが入っているので、開けば分かります。
+  </div>
+</section>
+
+<!-- ===== 最初の5分 ===== -->
+<section>
+  <div class="sec-label">FIRST 5 MINUTES</div>
+  <h2>最初の5分で、やること。</h2>
+  <div class="steps">
+    <div class="step"><h3>Obsidianを入れて、テンプレを開く</h3><p>Obsidianは無料アプリ。テンプレのフォルダを「Vault（保管庫）として開く」だけで準備完了。</p></div>
+    <div class="step"><h3>今日の日付でノートを作る</h3><p><code>00_きょうの日記</code> に、ファイル名 <code>2026-07-02</code> のように。</p></div>
+    <div class="step"><h3>3行だけ書く</h3><p>やったこと・思ったこと・明日やりたいこと。きれいさは要りません。</p></div>
+    <div class="step"><h3>言葉を [[ ]] でかこむ</h3><p>例：<code>[[田中さん]]とランチ</code>。それだけで、その言葉のページへの「道」ができます。</p></div>
+    <div class="step"><h3>グラフビューを開く</h3><p>点と点が線でつながった画面が出ます。<strong>それが、あなたの脳の地図の1日目。</strong></p></div>
+  </div>
+</section>
+
+<!-- ===== リンクの育て方 ===== -->
+<section>
+  <div class="sec-label">GROW</div>
+  <h2>リンクは、3段階で育てる。</h2>
+  <div class="grow-grid">
+    <div class="grow">
+      <span class="phase">STEP 1｜最初の1週間</span>
+      <h3>日記に [[名前]] を書くだけ</h3>
+      <p>中身が空のページができても大丈夫。リンクは「あとで書くかも」の予約席です。</p>
+      <div class="visual"><svg width="180" height="44" viewBox="0 0 180 44" aria-hidden="true"><circle cx="30" cy="22" r="9" fill="#4c9a6a"/><line x1="42" y1="22" x2="128" y2="22" stroke="#b7d6c1" stroke-width="2" stroke-dasharray="5 5"/><circle cx="145" cy="22" r="9" fill="none" stroke="#b7d6c1" stroke-width="2" stroke-dasharray="4 4"/></svg></div>
+    </div>
+    <div class="grow">
+      <span class="phase">STEP 2｜2週間目〜</span>
+      <h3>よく出てくる名前のページを育てる</h3>
+      <p>ページ下の「バックリンク」欄に、その名前が登場した日記が全部自動で並びます。あなたが整理しなくても、Obsidianが道を覚えている——これが「思い出せる仕組み」の正体。</p>
+      <div class="visual"><svg width="180" height="44" viewBox="0 0 180 44" aria-hidden="true"><circle cx="30" cy="22" r="9" fill="#4c9a6a"/><line x1="42" y1="22" x2="128" y2="22" stroke="#4c9a6a" stroke-width="2.5"/><circle cx="145" cy="22" r="11" fill="#2d5741"/></svg></div>
+    </div>
+    <div class="grow">
+      <span class="phase">STEP 3｜ノート30個を超えたら</span>
+      <h3>まとめノート（目次ページ）を作る</h3>
+      <p>関連ノートへのリンクを並べるだけの「本の目次」。最初から作らないのがコツ。散らかってから作る方がうまくいきます。</p>
+      <div class="visual"><svg width="200" height="60" viewBox="0 0 200 60" aria-hidden="true"><circle cx="100" cy="16" r="11" fill="#2d5741"/><line x1="100" y1="27" x2="40" y2="46" stroke="#4c9a6a" stroke-width="2"/><line x1="100" y1="27" x2="100" y2="46" stroke="#4c9a6a" stroke-width="2"/><line x1="100" y1="27" x2="160" y2="46" stroke="#4c9a6a" stroke-width="2"/><circle cx="40" cy="50" r="7" fill="#6fbf8b"/><circle cx="100" cy="50" r="7" fill="#6fbf8b"/><circle cx="160" cy="50" r="7" fill="#6fbf8b"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AIとつながる未来 ===== -->
+<section>
+  <div class="sec-label">NEXT LEVEL</div>
+  <h2>そのメモ帳、いつか<br>「あなたを覚えているAI」に化けます。</h2>
+  <p class="body">このテンプレには1個だけ仕込みがあります。一番上に入っている「<strong>AIへの説明書</strong>」というノート。これは将来、ClaudeなどのAIにあなたのノートを読んでもらう日のための案内図です。</p>
+  <div class="ai-box">
+    <h3>ノートの束が、AIの脳みそになる。</h3>
+    <p>Obsidianのノートはただのテキストファイル。だからAIがそのまま読めます。貯めた日記をAIに読ませると、こんな会話ができるようになります。</p>
+    <div class="ai-examples">
+      <div class="ex">「今週の日記を読んで、よく出てきたテーマを3つ教えて」</div>
+      <div class="ex">「[[あの人]]と過去に話したこと、まとめて」</div>
+      <div class="ex">「先月のわたしと今月のわたし、何が変わった？」</div>
+    </div>
+    <div class="quote">
+      AI界の第一人者アンドレイ・カルパシー氏も、「資料を放り込むと、AIが自動で整理して自分専用の知識ベースに育てていく」使い方をObsidianで実践し、大きな反響を呼びました。
+      <small>出典：A. Karpathy “LLM Knowledge Bases”（X・2026年4月）</small>
+    </div>
+    <p>難しいことは、その日が来てから覚えれば十分。<strong>今日から3行ずつ貯めておくことが、最高の下ごしらえです。</strong></p>
+  </div>
+</section>
+
+<!-- ===== ダウンロード ===== -->
+<section id="download">
+  <div class="sec-label">GIFT</div>
+  <h2>テンプレを受け取る</h2>
+  <div class="dl-box">
+    <h3 class="serif">はじめてのセカンドブレイン<br>スターターテンプレ</h3>
+    <p>フォルダ7つ＋使い方ノート＋サンプルノート＋ひな形3種入り。<br>無料・登録不要・改変も配布も自由です。</p>
+    <a class="dl-btn" href="./hajimete-second-brain-template.zip" download>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      ダウンロード（zip）
+    </a>
+    <ol class="dl-steps">
+      <li>zipを解凍（ダブルクリック）して、好きな場所に置く</li>
+      <li>Obsidian（obsidian.md・無料）をインストール</li>
+      <li>「保管庫としてフォルダを開く」で、解凍したフォルダを選ぶ</li>
+      <li>「START ここからよんでね」を開けば、あとは中で案内します</li>
+    </ol>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="brand">おけもんの森</div>
+  Obsidian × AI で「忘れてもいい仕組み」をつくる実験室<br>
+  このテンプレは 2026年7月版・世界のセカンドブレイン最新事例をもとに設計しています
+</footer>
+
+</body>
+</html>
