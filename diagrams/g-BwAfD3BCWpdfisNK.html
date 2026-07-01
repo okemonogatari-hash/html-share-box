@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>内と外、両方の幸せを満たす経営へ。｜経営者のための「健幸学」入門セミナー</title>
 <meta name="description" content="社員の心身の健康（内）と、事業の繁栄（外）。その両立を“科学”する——「健幸学」創設者・亀ヶ谷正信が、経営者のための第一歩を90分でお伝えする無料オンラインセミナー。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +12,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; background: #fbf7f0; -webkit-font-smoothing: antialiased; font-family: 'Noto Sans JP', sans-serif; color: #243044; overflow-x: hidden; }
+  html { overflow-x: hidden; }
+  body { margin: 0; background: #fbf7f0; -webkit-font-smoothing: antialiased; font-family: 'Noto Sans JP', sans-serif; color: #243044; overflow-x: hidden; width: 100%; }
   ::selection { background: #f3b97f; color: #14264a; }
   @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
   input::placeholder, textarea::placeholder { color: #9aa3b2; }
@@ -49,9 +50,9 @@
   .site-header { transition: box-shadow .25s ease; }
   .site-header.scrolled { box-shadow: 0 8px 22px rgba(20,38,74,.10); }
   #scrollProgress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg,#f5a85a,#ef8a3c); z-index: 70; }
-  .floating-cta { position: fixed; right: 22px; bottom: 22px; z-index: 60; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg,#f5a85a,#ef8a3c); color: #fff; font-size: 14px; font-weight: 700; padding: 14px 22px; border-radius: 999px; box-shadow: 0 14px 30px rgba(239,138,60,.45); letter-spacing: .03em; opacity: 0; transform: translateY(16px) scale(.94); pointer-events: none; transition: opacity .35s ease, transform .35s cubic-bezier(.34,1.56,.64,1); }
+  .floating-cta { position: fixed; right: 22px; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 60; display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg,#f5a85a,#ef8a3c); color: #fff; font-size: 14px; font-weight: 700; padding: 14px 22px; border-radius: 999px; box-shadow: 0 14px 30px rgba(239,138,60,.45); letter-spacing: .03em; opacity: 0; transform: translateY(16px) scale(.94); pointer-events: none; transition: opacity .35s ease, transform .35s cubic-bezier(.34,1.56,.64,1); }
   .floating-cta.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-  @media (max-width: 640px) { .floating-cta { right: 16px; bottom: 16px; padding: 13px 20px; font-size: 13.5px; } }
+  @media (max-width: 640px) { .floating-cta { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); padding: 13px 20px; font-size: 13.5px; } }
 
   /* ===== ヒーロー入場アニメーション ===== */
   @keyframes heroFadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
@@ -60,6 +61,74 @@
   /* ===== 診断パネルの階層変化パルス ===== */
   @keyframes tierPulse { 0% { transform: scale(1); } 45% { transform: scale(1.015); } 100% { transform: scale(1); } }
   .tier-pulse { animation: tierPulse .45s ease; }
+
+  /* ===== モバイルナビゲーション ===== */
+  .nav-desktop { display: flex; align-items: center; gap: 26px; }
+  .nav-toggle { display: none; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; border: 1px solid #ece7dc; background: #fff; color: #14264a; font-size: 17px; cursor: pointer; flex: none; padding: 0; }
+  .nav-panel { position: fixed; left: 0; right: 0; z-index: 49; background: #fbf7f0; border-bottom: 1px solid #ece7dc; box-shadow: 0 12px 24px rgba(20,38,74,.12); display: flex; flex-direction: column; gap: 2px; padding: 0 20px; max-height: 0; overflow: hidden; opacity: 0; transition: max-height .3s ease, opacity .25s ease, padding .3s ease; }
+  .nav-panel.open { max-height: 420px; opacity: 1; padding: 10px 20px 20px; }
+  .nav-panel .nav-link { padding: 13px 4px; font-size: 15px; border-bottom: 1px solid #ece7dc; width: 100%; }
+  .nav-panel .btn-cta { margin-top: 12px; justify-content: center; width: 100%; }
+  .logo-text { min-width: 0; overflow: hidden; }
+  .logo-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .logo-sub { white-space: nowrap; }
+
+  /* ===== モバイル：ヘッダー / タイポグラフィ ===== */
+  @media (max-width: 760px) {
+    .nav-desktop { display: none; }
+    .nav-toggle { display: inline-flex; }
+    #siteHeader > div { height: 56px; padding: 0 16px; }
+    .nav-panel { top: 56px; }
+  }
+  @media (max-width: 480px) {
+    .logo-sub { font-size: 8.5px !important; letter-spacing: .04em !important; }
+  }
+  @media (max-width: 380px) {
+    .logo-sub { display: none; }
+  }
+
+  /* ===== モバイル：Before/After 比較 ===== */
+  .before-after-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch; }
+  @media (max-width: 620px) {
+    .before-after-grid { grid-template-columns: 1fr; }
+    .before-after-grid .ba-before { border-radius: 18px 18px 0 0 !important; }
+    .before-after-grid .ba-arrow { border: 1px solid #ece7dc !important; border-top: none !important; border-bottom: none !important; border-radius: 0 !important; padding: 14px 0 !important; }
+    .before-after-grid .ba-after { border-radius: 0 0 18px 18px !important; }
+  }
+
+  /* ===== モバイル：講師紹介の信頼バンド ===== */
+  .trust-band { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; }
+  @media (max-width: 430px) {
+    .trust-band { grid-template-columns: 1fr; }
+  }
+
+  /* ===== モバイル：問いかけ3カードのオフセットを解除 ===== */
+  @media (max-width: 480px) {
+    #about [data-stagger] > div { margin-top: 0 !important; }
+  }
+
+  /* ===== モバイル：アジェンダのタイムライン ===== */
+  @media (max-width: 480px) {
+    #agendaTimeline { padding-left: 4px; }
+    #agendaTimeline > div[style*="position:absolute"] { left: 44px; }
+    #agendaLineFill { left: 44px; }
+    #agendaTimeline [data-stagger] > div { gap: 12px !important; }
+    #agendaTimeline [data-stagger] > div > div:first-child { width: 38px !important; font-size: 12px !important; }
+    #agendaTimeline [data-stagger] > div > div:nth-child(2) { width: 10px !important; }
+    #agendaTimeline h3 { font-size: 15px !important; }
+  }
+
+  /* ===== モバイル：開催概要テーブルをラベル/値で縦積みに ===== */
+  .outline-row { display: flex; }
+  .outline-label { flex: none; width: 130px; }
+  .outline-value { flex: 1; }
+  .outline-badge { display: inline-block; }
+  @media (max-width: 480px) {
+    .outline-row { flex-direction: column; }
+    .outline-label { width: 100%; padding: 10px 16px !important; }
+    .outline-value { padding: 12px 16px 16px !important; }
+    .outline-badge { display: inline-block; margin-top: 6px; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
@@ -73,23 +142,33 @@
 <div>
 
   <!-- ===== HEADER ===== -->
-  <header id="siteHeader" class="site-header" style="position:sticky;top:0;z-index:50;background:rgba(251,247,240,.86);backdrop-filter:blur(10px);border-bottom:1px solid #ece7dc;">
+  <header id="siteHeader" class="site-header" style="position:sticky;top:0;z-index:50;background:rgba(251,247,240,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid #ece7dc;">
     <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:66px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
-      <div style="display:flex;align-items:center;gap:11px;">
-        <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#234a86,#14264a);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Noto Serif JP',serif;font-weight:700;font-size:18px;">健</div>
-        <div style="line-height:1.15;">
-          <div style="font-family:'Noto Serif JP',serif;font-weight:700;font-size:15px;color:#14264a;letter-spacing:.04em;">健幸学セミナー</div>
-          <div style="font-size:10px;color:#8a8474;letter-spacing:.1em;">SOCIAL HEALTHCARE DESIGN</div>
+      <div style="display:flex;align-items:center;gap:11px;min-width:0;">
+        <div style="flex:none;width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#234a86,#14264a);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Noto Serif JP',serif;font-weight:700;font-size:18px;">健</div>
+        <div class="logo-text" style="line-height:1.15;">
+          <div class="logo-title" style="font-family:'Noto Serif JP',serif;font-weight:700;font-size:15px;color:#14264a;letter-spacing:.04em;">健幸学セミナー</div>
+          <div class="logo-sub" style="font-size:10px;color:#8a8474;letter-spacing:.1em;">SOCIAL HEALTHCARE DESIGN</div>
         </div>
       </div>
-      <nav style="display:flex;align-items:center;gap:26px;">
+      <nav class="nav-desktop">
         <a href="#diagnose" class="nav-link">自己診断</a>
         <a href="#benefits" class="nav-link">得られること</a>
         <a href="#profile" class="nav-link">講師紹介</a>
         <a href="#outline" class="nav-link">開催概要</a>
         <a href="#apply" class="btn-cta" style="display:inline-flex;align-items:center;gap:7px;background:#ef8a3c;color:#fff;font-size:13px;font-weight:700;padding:10px 18px;border-radius:11px;box-shadow:0 4px 14px rgba(239,138,60,.32);letter-spacing:.03em;">無料で申し込む</a>
       </nav>
+      <button type="button" id="navToggle" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="navPanel">
+        <i class="fa-solid fa-bars"></i>
+      </button>
     </div>
+    <nav id="navPanel" class="nav-panel">
+      <a href="#diagnose" class="nav-link">自己診断</a>
+      <a href="#benefits" class="nav-link">得られること</a>
+      <a href="#profile" class="nav-link">講師紹介</a>
+      <a href="#outline" class="nav-link">開催概要</a>
+      <a href="#apply" class="btn-cta" style="display:flex;align-items:center;gap:7px;background:#ef8a3c;color:#fff;font-size:13px;font-weight:700;padding:12px 18px;border-radius:11px;box-shadow:0 4px 14px rgba(239,138,60,.32);letter-spacing:.03em;">無料で申し込む</a>
+    </nav>
   </header>
 
   <!-- ===== HERO ===== -->
@@ -262,8 +341,8 @@
       <!-- Before / After -->
       <div style="max-width:900px;margin:0 auto;">
         <div class="reveal" style="text-align:center;font-family:'Noto Serif JP',serif;font-size:16px;font-weight:600;color:#14264a;margin-bottom:24px;">90分の前と後で、視界はこう変わります。</div>
-        <div data-stagger style="display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;">
-          <div class="reveal-left" style="background:#f4f2ee;border:1px solid #e6e1d5;border-radius:18px 0 0 18px;padding:28px 26px;">
+        <div data-stagger class="before-after-grid">
+          <div class="reveal-left ba-before" style="background:#f4f2ee;border:1px solid #e6e1d5;border-radius:18px 0 0 18px;padding:28px 26px;">
             <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#8a8474;letter-spacing:.1em;margin-bottom:18px;"><i class="fa-regular fa-circle" style="font-size:12px;"></i>参加前</div>
             <div style="display:flex;flex-direction:column;gap:14px;">
               <div style="display:flex;gap:11px;align-items:flex-start;"><i class="fa-solid fa-minus" style="color:#b6ae9d;font-size:12px;margin-top:5px;"></i><span style="font-size:13.5px;line-height:1.75;color:#6b6456;">健康施策を“感覚”と善意で回している</span></div>
@@ -271,10 +350,10 @@
               <div style="display:flex;gap:11px;align-items:flex-start;"><i class="fa-solid fa-minus" style="color:#b6ae9d;font-size:12px;margin-top:5px;"></i><span style="font-size:13.5px;line-height:1.75;color:#6b6456;">不調が表面化してから後手で対応する</span></div>
             </div>
           </div>
-          <div class="reveal-scale" style="display:flex;align-items:center;justify-content:center;background:#fff;border-top:1px solid #ece7dc;border-bottom:1px solid #ece7dc;padding:0 6px;">
+          <div class="reveal-scale ba-arrow" style="display:flex;align-items:center;justify-content:center;background:#fff;border-top:1px solid #ece7dc;border-bottom:1px solid #ece7dc;padding:0 6px;">
             <div style="width:44px;height:44px;border-radius:50%;background:#ef8a3c;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(239,138,60,.4);"><i class="fa-solid fa-arrow-right" style="color:#fff;font-size:16px;"></i></div>
           </div>
-          <div class="reveal-right" style="background:linear-gradient(160deg,#234a86,#14264a);border-radius:0 18px 18px 0;padding:28px 26px;color:#fff;box-shadow:0 20px 40px -18px rgba(20,38,74,.5);">
+          <div class="reveal-right ba-after" style="background:linear-gradient(160deg,#234a86,#14264a);border-radius:0 18px 18px 0;padding:28px 26px;color:#fff;box-shadow:0 20px 40px -18px rgba(20,38,74,.5);">
             <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#f5a85a;letter-spacing:.1em;margin-bottom:18px;"><i class="fa-solid fa-circle-check" style="font-size:12px;"></i>参加後</div>
             <div style="display:flex;flex-direction:column;gap:14px;">
               <div style="display:flex;gap:11px;align-items:flex-start;"><i class="fa-solid fa-check" style="color:#f5a85a;font-size:13px;margin-top:4px;"></i><span style="font-size:13.5px;line-height:1.75;color:#eaf0f9;">「健幸度」という共通のものさしで判断できる</span></div>
@@ -344,7 +423,7 @@
             株式会社カメガヤの取締役として29年以上にわたり経営に携わりながら、人の<strong style="color:#14264a;">「健康」と事業の「繁栄」</strong>を統合的に捉える「健幸学」を創設。未病のうちに健幸度を可視化し、個人と組織の幸せを科学する取り組みを各地の企業へ広げています。
           </p>
           <!-- 信頼バンド：数値・固有名詞 -->
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#ece7dc;border:1px solid #ece7dc;border-radius:14px;overflow:hidden;margin-bottom:22px;">
+          <div class="trust-band" style="background:#ece7dc;border:1px solid #ece7dc;border-radius:14px;overflow:hidden;margin-bottom:22px;">
             <div style="background:#fff;padding:16px 12px;text-align:center;">
               <div style="font-family:'Noto Serif JP',serif;font-weight:700;font-size:24px;color:#234a86;line-height:1;"><span class="countup" data-target="29">0</span><span style="font-size:13px;">年+</span></div>
               <div style="font-size:10.5px;color:#8a8474;margin-top:6px;line-height:1.4;">経営に従事</div>
@@ -473,29 +552,29 @@
         <h2 style="font-family:'Noto Serif JP',serif;font-weight:700;font-size:clamp(24px,3.4vw,34px);color:#14264a;margin:0;">開催概要</h2>
       </div>
       <div data-stagger class="reveal-scale" style="background:#fff;border:1px solid #ece7dc;border-radius:20px;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 2px 5px rgba(20,38,74,.05),0 18px 40px -20px rgba(20,38,74,.24);">
-        <div class="reveal-left" style="display:flex;gap:0;border-bottom:1px solid #f0ebe0;">
-          <div style="flex:none;width:130px;background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">日時</div>
-          <div style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;">調整中（決まり次第ご案内します）<span style="display:inline-block;background:#eef2f9;color:#234a86;font-size:11px;font-weight:700;padding:2px 9px;border-radius:6px;margin-left:8px;">近日公開</span></div>
+        <div class="reveal-left outline-row" style="border-bottom:1px solid #f0ebe0;">
+          <div class="outline-label" style="background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">日時</div>
+          <div class="outline-value" style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;">調整中（決まり次第ご案内します）<span class="outline-badge" style="background:#eef2f9;color:#234a86;font-size:11px;font-weight:700;padding:2px 9px;border-radius:6px;margin-left:8px;">近日公開</span></div>
         </div>
-        <div class="reveal-left" style="display:flex;gap:0;border-bottom:1px solid #f0ebe0;">
-          <div style="flex:none;width:130px;background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">形式</div>
-          <div style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;">オンライン開催（お申込みの方へURLをお送りします）</div>
+        <div class="reveal-left outline-row" style="border-bottom:1px solid #f0ebe0;">
+          <div class="outline-label" style="background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">形式</div>
+          <div class="outline-value" style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;">オンライン開催（お申込みの方へURLをお送りします）</div>
         </div>
-        <div class="reveal-left" style="display:flex;gap:0;border-bottom:1px solid #f0ebe0;">
-          <div style="flex:none;width:130px;background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">所要時間</div>
-          <div style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;">90分（質疑応答を含む）</div>
+        <div class="reveal-left outline-row" style="border-bottom:1px solid #f0ebe0;">
+          <div class="outline-label" style="background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">所要時間</div>
+          <div class="outline-value" style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;">90分（質疑応答を含む）</div>
         </div>
-        <div class="reveal-left" style="display:flex;gap:0;border-bottom:1px solid #f0ebe0;">
-          <div style="flex:none;width:130px;background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">定員</div>
-          <div style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;">先着 30名</div>
+        <div class="reveal-left outline-row" style="border-bottom:1px solid #f0ebe0;">
+          <div class="outline-label" style="background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">定員</div>
+          <div class="outline-value" style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;">先着 30名</div>
         </div>
-        <div class="reveal-left" style="display:flex;gap:0;border-bottom:1px solid #f0ebe0;">
-          <div style="flex:none;width:130px;background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">参加費</div>
-          <div style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;font-weight:700;">無料</div>
+        <div class="reveal-left outline-row" style="border-bottom:1px solid #f0ebe0;">
+          <div class="outline-label" style="background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">参加費</div>
+          <div class="outline-value" style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;font-weight:700;">無料</div>
         </div>
-        <div class="reveal-left" style="display:flex;gap:0;">
-          <div style="flex:none;width:130px;background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">特典</div>
-          <div style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;">Happiness Book 簡易診断 体験</div>
+        <div class="reveal-left outline-row">
+          <div class="outline-label" style="background:#14264a;color:#dbe3f0;font-size:13px;font-weight:600;padding:20px 22px;letter-spacing:.06em;">特典</div>
+          <div class="outline-value" style="padding:20px 24px;font-size:14.5px;color:#243044;line-height:1.7;">Happiness Book 簡易診断 体験</div>
         </div>
       </div>
     </div>
@@ -812,7 +891,7 @@
     var applyObserver = new IntersectionObserver(function (entries) {
       applyInView = entries[0].isIntersecting;
       updateFab();
-    }, { threshold: 0.1 });
+    }, { threshold: 0, rootMargin: '0px 0px -60% 0px' });
     applyObserver.observe(applySection);
   }
 
@@ -834,6 +913,28 @@
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // モバイルナビゲーション（ハンバーガーメニュー）
+  var navToggle = document.getElementById('navToggle');
+  var navPanel = document.getElementById('navPanel');
+  if (navToggle && navPanel) {
+    var closeNavPanel = function () {
+      navPanel.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    };
+    navToggle.addEventListener('click', function () {
+      var open = navPanel.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.innerHTML = open ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+    });
+    navPanel.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', closeNavPanel);
+    });
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape') closeNavPanel();
+    });
+  }
 })();
 </script>
 </body>
