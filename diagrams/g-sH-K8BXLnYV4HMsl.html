@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>音声入力×カルテ下書き 調査レポート｜Superwhisper Windows対応の現在地</title>
+  <meta name="description" content="音声からカルテ下書きまでを端末内で完結できるかについて、公式ドキュメントを確認した一次報告レポートです。">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    :root {
+      --ink: #1c2b30;
+      --sub: #55707a;
+      --muted: #7c9199;
+      --line: #d7e6e6;
+      --paper: #f3f9f8;
+      --white: #ffffff;
+      --navy: #0f4c5c;
+      --navy-soft: #e8f1f2;
+      --teal: #2a9d8f;
+      --teal-soft: #e6f5f2;
+      --sky: #e3f2f1;
+      --green: #2f7d53;
+      --green-soft: #eaf7ee;
+      --orange: #d3821f;
+      --orange-soft: #fdf1e0;
+      --blue: #2f6f9e;
+      --blue-soft: #eaf3fa;
+      --red: #a7483c;
+      --red-soft: #fbeeeb;
+      --shadow: 0 12px 32px rgba(15, 76, 92, .10);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #eaf4f4 0, #f6fbfa 340px, #ffffff 720px);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      line-height: 1.75;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: .22em;
+      overflow-wrap: anywhere;
+    }
+
+    svg { flex-shrink: 0; }
+
+    .icon {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 28px 0 72px;
+    }
+
+    .cover {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(300px, .88fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .cover-main,
+    .cover-status,
+    .toc,
+    .section,
+    .callout,
+    .flow,
+    .footer {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .96);
+      box-shadow: var(--shadow);
+    }
+
+    .cover-main {
+      padding: clamp(24px, 4vw, 42px);
+      display: grid;
+      align-content: space-between;
+      min-height: 390px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(30px, 4.6vw, 48px);
+      line-height: 1.28;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 14px 0 0;
+      color: var(--sub);
+      font-size: 16px;
+    }
+
+    .to-block {
+      margin-top: 26px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .to-block .to-name {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .to-block p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 14px;
+    }
+
+    .cover-status {
+      padding: clamp(20px, 3vw, 30px);
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .cover-status h2 {
+      margin: 0 0 4px;
+      color: var(--navy);
+      font-size: clamp(20px, 2.6vw, 26px);
+      line-height: 1.34;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      background: #fff;
+    }
+
+    .status-item .icon-wrap {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .status-item strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--navy);
+      font-size: 14.5px;
+      line-height: 1.5;
+    }
+
+    .status-item span {
+      color: var(--sub);
+      font-size: 13px;
+    }
+
+    .status-item.done { border-color: rgba(47, 125, 83, .28); background: var(--green-soft); }
+    .status-item.done .icon-wrap { background: rgba(47, 125, 83, .16); color: var(--green); }
+
+    .status-item.watch { border-color: rgba(211, 130, 31, .34); background: var(--orange-soft); }
+    .status-item.watch .icon-wrap { background: rgba(211, 130, 31, .16); color: var(--orange); }
+
+    .status-item.progress { border-color: rgba(47, 111, 158, .3); background: var(--blue-soft); }
+    .status-item.progress .icon-wrap { background: rgba(47, 111, 158, .16); color: var(--blue); }
+
+    main { display: grid; gap: 18px; }
+
+    .section {
+      padding: clamp(22px, 3.2vw, 36px);
+      scroll-margin-top: 20px;
+      min-width: 0;
+    }
+
+    .section > p:first-of-type { margin-top: 0; }
+
+    .section > p:last-child,
+    .callout > p:last-child,
+    .note-list:last-child,
+    .check-list:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .section-kicker {
+      margin: 0 0 5px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .section h2 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(21px, 2.8vw, 28px);
+      line-height: 1.36;
+      letter-spacing: 0;
+    }
+
+    .section-number {
+      min-width: 42px;
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .grid { display: grid; gap: 12px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .status-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: #fff;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .status-card .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px 6px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      width: fit-content;
+    }
+
+    .status-card .badge .icon { width: 16px; height: 16px; }
+
+    .status-card.ok { border-color: rgba(47, 125, 83, .3); }
+    .status-card.ok .badge { background: var(--green-soft); color: var(--green); }
+
+    .status-card.warn { border-color: rgba(211, 130, 31, .34); }
+    .status-card.warn .badge { background: var(--orange-soft); color: var(--orange); }
+
+    .status-card.check { border-color: rgba(47, 111, 158, .3); }
+    .status-card.check .badge { background: var(--blue-soft); color: var(--blue); }
+
+    .status-card h3 {
+      margin: 0;
+      color: var(--navy);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .status-card p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 14px;
+    }
+
+    .info-box {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: #fff;
+    }
+
+    .info-box h3 {
+      margin: 0 0 6px;
+      color: var(--navy);
+      font-size: 16px;
+      line-height: 1.45;
+      letter-spacing: 0;
+    }
+
+    .info-box p { margin: 0; color: var(--sub); font-size: 14px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--navy-soft);
+      color: var(--navy);
+      font-weight: 900;
+    }
+
+    td.ok { color: var(--green); font-weight: 800; }
+    td.no { color: var(--red); font-weight: 800; }
+
+    .table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    tr:last-child th, tr:last-child td { border-bottom: 0; }
+
+    /* 工程フロー図（セクション3） */
+    .flow-wrap {
+      overflow-x: auto;
+      padding: 4px 0 6px;
+    }
+
+    .flow-diagram {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      min-width: 720px;
+      margin: 6px 0 0;
+    }
+
+    .flow-node {
+      flex: 1 1 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 16px 14px;
+      display: grid;
+      align-content: start;
+      gap: 8px;
+      text-align: center;
+      min-width: 130px;
+    }
+
+    .flow-node .icon-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .flow-node.mic .icon-circle { background: var(--navy-soft); color: var(--navy); }
+    .flow-node.stage1 .icon-circle { background: var(--green-soft); color: var(--green); }
+    .flow-node.stage2 .icon-circle { background: var(--orange-soft); color: var(--orange); }
+    .flow-node.draft .icon-circle { background: var(--teal-soft); color: var(--teal); }
+    .flow-node.human .icon-circle { background: var(--blue-soft); color: var(--blue); }
+
+    .flow-node strong {
+      color: var(--navy);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .flow-node span {
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .flow-node .stage-tag {
+      display: inline-block;
+      margin: 0 auto;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 900;
+    }
+
+    .flow-node.stage1 .stage-tag { background: var(--green-soft); color: var(--green); }
+    .flow-node.stage2 .stage-tag { background: var(--orange-soft); color: var(--orange); }
+
+    .flow-arrow {
+      flex: 0 0 auto;
+      align-self: center;
+      color: var(--muted);
+      width: 22px;
+      height: 22px;
+    }
+
+    .flow-note-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .flow-note {
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      font-size: 13.5px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .flow-note.ok { background: var(--green-soft); color: #1e5b3c; }
+    .flow-note.warn { background: var(--orange-soft); color: #8a5713; }
+
+    .flow-note .icon { width: 18px; height: 18px; margin-top: 1px; }
+
+    /* ローカル vs クラウド 対比図（セクション4） */
+    .compare-wrap {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .compare-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: #fff;
+    }
+
+    .compare-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      font-size: 15px;
+      color: var(--navy);
+    }
+
+    .compare-card.local { border-color: rgba(47, 125, 83, .3); }
+    .compare-card.cloud { border-color: rgba(211, 130, 31, .3); }
+
+    .building-frame {
+      border: 2px dashed var(--green);
+      border-radius: 10px;
+      background: var(--green-soft);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+    }
+
+    .cloud-frame {
+      border: 2px dashed var(--orange);
+      border-radius: 10px;
+      background: var(--orange-soft);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+      position: relative;
+    }
+
+    .mini-flow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--navy);
+    }
+
+    .mini-flow .icon { width: 20px; height: 20px; }
+    .mini-flow .mini-arrow { width: 14px; height: 14px; color: var(--muted); }
+
+    .compare-caption {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--sub);
+      text-align: center;
+    }
+
+    .safe-icon-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .risk-icon-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .check-list, .note-list, .step-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .check-list li, .note-list li, .step-list li {
+      position: relative;
+      padding: 12px 14px 12px 40px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .check-list .icon, .note-list .icon, .step-list .icon {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      width: 18px;
+      height: 18px;
+    }
+
+    .check-list .icon { color: var(--teal); }
+    .note-list .icon { color: var(--orange); }
+    .step-list .icon { color: var(--navy); }
+
+    .step-list li { display: flex; gap: 12px; align-items: flex-start; padding-left: 14px; }
+    .step-list .step-num {
+      flex: 0 0 auto;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .callout {
+      box-shadow: none;
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--teal-soft);
+      border-color: #bfe1dc;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .callout .icon { color: var(--teal); margin-top: 2px; }
+    .callout.warning { background: var(--orange-soft); border-color: #f0d2a9; }
+    .callout.warning .icon { color: var(--orange); }
+    .callout strong { color: var(--navy); }
+    .callout p { margin: 0; }
+
+    .source-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .source-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      font-size: 13.5px;
+    }
+
+    .source-list .icon { color: var(--teal); width: 18px; height: 18px; }
+
+    .footer {
+      margin-top: 18px;
+      padding: 18px;
+      color: var(--sub);
+      font-size: 13px;
+      text-align: center;
+      box-shadow: none;
+    }
+
+    .footer p { margin: 4px 0; }
+
+    @media (max-width: 920px) {
+      .cover, .grid.two, .grid.three, .compare-wrap {
+        grid-template-columns: 1fr;
+      }
+      .cover-main { min-height: auto; }
+      .flow-note-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .page { width: min(100% - 24px, 1120px); padding-top: 14px; }
+      .cover { gap: 12px; }
+      .cover-main, .cover-status, .section { padding: 18px; }
+      .section-head { display: grid; }
+      .section-number { order: -1; justify-self: start; width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; }
+
+      table, tbody, tr, th, td { display: block; width: 100%; }
+      tr { border-bottom: 1px solid var(--line); }
+      tr:last-child { border-bottom: 0; }
+      th, td { border-bottom: 0; }
+      th { padding-bottom: 6px; }
+      td { padding-top: 6px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { width: 100%; padding: 0; }
+      .cover-main, .cover-status, .section, .footer {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+      a { color: #000; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="cover">
+      <div class="cover-main">
+        <div>
+          <p class="eyebrow">調査レポート｜2026年7月4日</p>
+          <h1>音声からカルテ下書きまで、<br>ぜんぶ端末の中で完結できる？</h1>
+          <p class="lead">Superwhisper（スーパーウィスパー）のWindows対応・公式ドキュメント確認結果</p>
+
+          <div class="to-block">
+            <p class="to-name">ここな先生へ</p>
+            <p>昨日は現場の実感がこもった貴重なお話をありがとうございました。「ローカルで動く音声→カルテ下書き」というテーマ、当事者の困りごととニーズを聞かせていただけたこと自体が大きな財産でした。さっそく公式情報を確認したので、まず一次報告です。</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="cover-status" aria-label="結論サマリー">
+        <h2>結論サマリー</h2>
+        <div class="status-item done">
+          <span class="icon-wrap">
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <div>
+            <strong>音声→文字はWindowsでも端末内完結</strong>
+            <span>公式ドキュメントに記載があります。</span>
+          </div>
+        </div>
+        <div class="status-item watch">
+          <span class="icon-wrap">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+          </span>
+          <div>
+            <strong>整形の端末内処理は現時点でMac限定</strong>
+            <span>Windows単体だと、この部分だけネットのAIに送るか整形なしになります。</span>
+          </div>
+        </div>
+        <div class="status-item progress">
+          <span class="icon-wrap">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+          </span>
+          <div>
+            <strong>別の組み合わせなら端末内完結できる見込み</strong>
+            <span>こちらで実際に試して、またご報告します。</span>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    <main>
+      <!-- 2. まず結論 -->
+      <section class="section" id="conclusion">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Summary</p>
+            <h2>まず結論</h2>
+          </div>
+          <span class="section-number">1</span>
+        </div>
+        <p>誇張せず、確認できたことと、まだ確認中のことをそのままお伝えします。</p>
+
+        <div class="grid three">
+          <div class="status-card ok">
+            <span class="badge">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              確認済み
+            </span>
+            <h3>「音声→文字」は端末内で完結</h3>
+            <p>Windowsでも公式ドキュメントに記載があり、ネットに出さずに処理できます。</p>
+          </div>
+          <div class="status-card warn">
+            <span class="badge">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+              要注意
+            </span>
+            <h3>「文字→カルテ風」の端末内処理はMac限定</h3>
+            <p>現時点で公式に明記されています。Windows単体だとこの部分だけネット上のAIに送るか、AI整形なしになります。</p>
+          </div>
+          <div class="status-card check">
+            <span class="badge">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+              検証中
+            </span>
+            <h3>別の組み合わせで端末内完結できる見込み</h3>
+            <p>ただし別の部品を組み合わせれば、Windowsでも実現できる見込みです。こちらで実際に試してご報告します。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. 2段階に分かれている -->
+      <section class="section" id="stages">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">How It Works</p>
+            <h2>実は「2段階」に分かれています</h2>
+          </div>
+          <span class="section-number">2</span>
+        </div>
+        <p>音声からカルテ下書きまでは、実は2つの工程に分かれています。ここを分けて考えるのが今回のいちばんのポイントです。</p>
+
+        <div class="flow-wrap">
+          <div class="flow-diagram">
+            <div class="flow-node mic">
+              <span class="icon-circle">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </span>
+              <strong>話す</strong>
+              <span>マイクに向かって話しかける</span>
+            </div>
+            <svg class="icon flow-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div class="flow-node stage1">
+              <span class="stage-tag">工程1</span>
+              <span class="icon-circle">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/></svg>
+              </span>
+              <strong>文字起こし</strong>
+              <span>音声→文字。Windowsでも端末内で完結</span>
+            </div>
+            <svg class="icon flow-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div class="flow-node stage2">
+              <span class="stage-tag">工程2</span>
+              <span class="icon-circle">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </span>
+              <strong>整形</strong>
+              <span>文字→記録の型に整える。端末内処理は現状Mac限定</span>
+            </div>
+            <svg class="icon flow-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div class="flow-node draft">
+              <span class="icon-circle">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </span>
+              <strong>カルテ下書き</strong>
+              <span>あくまで下書き段階</span>
+            </div>
+            <svg class="icon flow-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <div class="flow-node human">
+              <span class="icon-circle">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
+              <strong>人が確認して確定</strong>
+              <span>最後は必ず先生が確認</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-note-row">
+          <div class="flow-note ok">
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>工程1（文字起こし）はWindowsでも端末内でOK</span>
+          </div>
+          <div class="flow-note warn">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+            <span>工程2（整形）の端末内処理は現状Mac限定</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. ローカルってなぜ安心？ -->
+      <section class="section" id="local-safety">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Why Local Feels Safe</p>
+            <h2>「ローカル」ってなぜ安心？</h2>
+          </div>
+          <span class="section-number">3</span>
+        </div>
+        <p>ローカル＝データが端末（建物）の外に出ない、ということ。院内の金庫に保管しているのと同じで、そもそもネットに出ていかないので、途中で漏れようがない——これが安心の根拠です。</p>
+
+        <div class="compare-wrap">
+          <div class="compare-card local">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24" style="color:var(--green)"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5"/></svg>
+              ローカル処理
+            </h3>
+            <div class="building-frame">
+              <div class="mini-flow">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                <svg class="icon mini-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/></svg>
+                <svg class="icon mini-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <svg class="icon" viewBox="0 0 24 24" style="width:32px;height:32px;color:var(--green)"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5"/></svg>
+              <div class="safe-icon-row">
+                <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                建物（端末）の中だけで完結
+              </div>
+            </div>
+            <p class="compare-caption">マイク→文字→下書きが、すべて建物の枠の中で完結します。</p>
+          </div>
+
+          <div class="compare-card cloud">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24" style="color:var(--orange)"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+              クラウド処理
+            </h3>
+            <div class="cloud-frame">
+              <svg class="icon" viewBox="0 0 24 24" style="width:36px;height:36px;color:var(--orange)"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+              <div class="mini-flow">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="18" x2="12" y2="21"/></svg>
+                <svg class="icon mini-arrow" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+                <svg class="icon mini-arrow" viewBox="0 0 24 24" style="transform:rotate(180deg)"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+              </div>
+              <div class="risk-icon-row">
+                <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+                データが建物の外の雲へ往復
+              </div>
+            </div>
+            <p class="compare-caption">整形処理などを外部AIに送る場合、データが建物の外へ一度出ます。</p>
+          </div>
+        </div>
+
+        <div class="callout warning">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+          <p><strong>誠実にお伝えすると：</strong>「ローカル＝全部安全」ではありません。端末そのものの管理、録音の同意、いつ消すかのルールもセットで初めて安心になります。ここまで含めて設計するのが本命だと考えています。</p>
+        </div>
+      </section>
+
+      <!-- 5. Superwhisperの現在地 -->
+      <section class="section" id="current-status">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Feature Support</p>
+            <h2>Superwhisperの現在地</h2>
+          </div>
+          <span class="section-number">4</span>
+        </div>
+        <p>2026年7月4日時点の公式ドキュメントより、Windows対応表をまとめました。</p>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>できること</th>
+                <th>Mac</th>
+                <th>Windows</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>音声→文字を端末内で完結</td>
+                <td class="ok">○</td>
+                <td class="ok">○</td>
+              </tr>
+              <tr>
+                <td>整形（カルテ風に整える）を端末内で完結</td>
+                <td class="ok">○</td>
+                <td class="no">×（現時点・公式に「Mac限定」と明記）</td>
+              </tr>
+              <tr>
+                <td>Windowsでの整形の選択肢</td>
+                <td>—</td>
+                <td>ネット上のAIを使う／AI整形なし</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <p>Superwhisper自体はとても良いツールです。ただ「Windowsで・整形まで・端末内で」の3つを同時に満たすのは、現時点ではSuperwhisper単体では難しい、というのが公式情報からの結論です。</p>
+        </div>
+      </section>
+
+      <!-- 6. じゃあどうする -->
+      <section class="section" id="next-route">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Alternative Route</p>
+            <h2>じゃあ、どうする？</h2>
+          </div>
+          <span class="section-number">5</span>
+        </div>
+        <p>Superwhisper単体にこだわらず、別の組み合わせでの端末内完結を検証します。</p>
+
+        <ul class="note-list">
+          <li>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+            Whisper系（音声→文字のオープン技術）＋軽量なローカルAI（整形担当）を、Windows上で組み合わせる構成を検証します。
+          </li>
+          <li>
+            <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+            現場にあるふつうの事務用Windowsパソコンで、実用的な速さで動くか。ここを実測で確かめます。
+          </li>
+          <li>
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+            「動きました」だけでなく「この程度のパソコンで、この速さで動きます」までお見せするのが目標です。
+          </li>
+        </ul>
+      </section>
+
+      <!-- 7. 次の一歩 -->
+      <section class="section" id="next-step">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Next Step</p>
+            <h2>次の一歩</h2>
+          </div>
+          <span class="section-number">6</span>
+        </div>
+
+        <ul class="step-list">
+          <li>
+            <span class="step-num">1</span>
+            <span>架空のケースで作ったダミー音声で試作し、文字起こし→記録の型への整形サンプルをお見せします。</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span>患者さん・利用者さんの実データ・実音声では一切試しません（試作はすべて架空データで行います）。</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span>現場の「これが困っている」「ここが不安」を、またぜひ聞かせてください。それが一番の設計材料です。</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 8. 出典 -->
+      <section class="section" id="sources">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Official Sources</p>
+            <h2>出典（公式一次情報）</h2>
+          </div>
+          <span class="section-number">7</span>
+        </div>
+        <p>本レポートの内容は、すべて以下の公式ドキュメントの記載を確認して作成しています。</p>
+
+        <ul class="source-list">
+          <li>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>Superwhisper Introduction: <a href="https://superwhisper.com/docs/get-started/introduction" target="_blank" rel="noopener">https://superwhisper.com/docs/get-started/introduction</a></span>
+          </li>
+          <li>
+            <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+            <span>Windows Feature Support: <a href="https://superwhisper.com/docs/get-started/windows" target="_blank" rel="noopener">https://superwhisper.com/docs/get-started/windows</a></span>
+          </li>
+          <li>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+            <span>Voice Models: <a href="https://superwhisper.com/docs/models/voice" target="_blank" rel="noopener">https://superwhisper.com/docs/models/voice</a></span>
+          </li>
+          <li>
+            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1.5"/></svg>
+            <span>Sensitive Data Best Practices: <a href="https://superwhisper.com/docs/security/sensitive-data" target="_blank" rel="noopener">https://superwhisper.com/docs/security/sensitive-data</a></span>
+          </li>
+          <li>
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Compliance &amp; Trust: <a href="https://superwhisper.com/docs/security/compliance" target="_blank" rel="noopener">https://superwhisper.com/docs/security/compliance</a></span>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>本資料は2026年7月4日時点の公式ドキュメントの記載に基づいています。仕様は今後変わる可能性があります。</p>
+      <p>作成：おけもん</p>
+    </footer>
+  </div>
+</body>
+</html>
