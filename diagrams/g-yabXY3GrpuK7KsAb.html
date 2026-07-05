@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>散らばった情報を、ひとつに。｜Codex 情報統合ハブ構想</title>
+  <meta name="description" content="複数のAIツールに分散した情報を、Codexを司令塔にして統合・集約・呼び出しできるようにする仕組みのご提案資料です。">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    :root {
+      --ink: #1c2b30;
+      --sub: #55707a;
+      --muted: #7c9199;
+      --line: #d7e6e6;
+      --paper: #f3f9f8;
+      --white: #ffffff;
+      --navy: #0f4c5c;
+      --navy-soft: #e8f1f2;
+      --teal: #2a9d8f;
+      --teal-soft: #e6f5f2;
+      --green: #2f7d53;
+      --green-soft: #eaf7ee;
+      --orange: #d3821f;
+      --orange-soft: #fdf1e0;
+      --blue: #2f6f9e;
+      --blue-soft: #eaf3fa;
+      --red: #a7483c;
+      --red-soft: #fbeeeb;
+      --shadow: 0 12px 32px rgba(15, 76, 92, .10);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #eaf4f4 0, #f6fbfa 340px, #ffffff 720px);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      line-height: 1.75;
+    }
+
+    svg { flex-shrink: 0; }
+
+    .icon {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 28px 0 72px;
+    }
+
+    .cover {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(300px, .88fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .cover-main, .cover-status, .section, .footer {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .96);
+      box-shadow: var(--shadow);
+    }
+
+    .cover-main {
+      padding: clamp(24px, 4vw, 42px);
+      display: grid;
+      align-content: space-between;
+      min-height: 360px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(28px, 4.6vw, 46px);
+      line-height: 1.3;
+    }
+
+    .lead {
+      max-width: 700px;
+      margin: 14px 0 0;
+      color: var(--sub);
+      font-size: 16px;
+    }
+
+    .to-block {
+      margin-top: 26px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .to-block p { margin: 0; color: var(--sub); font-size: 14px; }
+    .to-block .to-name { margin: 0 0 6px; color: var(--navy); font-size: 15px; font-weight: 900; }
+
+    .cover-status {
+      padding: clamp(20px, 3vw, 30px);
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .cover-status h2 {
+      margin: 0 0 4px;
+      color: var(--navy);
+      font-size: clamp(19px, 2.6vw, 24px);
+      line-height: 1.34;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      background: #fff;
+    }
+
+    .status-item .icon-wrap {
+      width: 34px; height: 34px; min-width: 34px;
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+
+    .status-item strong { display: block; margin-bottom: 2px; color: var(--navy); font-size: 14.5px; line-height: 1.5; }
+    .status-item span { color: var(--sub); font-size: 13px; }
+
+    .status-item.watch { border-color: rgba(211, 130, 31, .34); background: var(--orange-soft); }
+    .status-item.watch .icon-wrap { background: rgba(211, 130, 31, .16); color: var(--orange); }
+
+    .status-item.progress { border-color: rgba(47, 111, 158, .3); background: var(--blue-soft); }
+    .status-item.progress .icon-wrap { background: rgba(47, 111, 158, .16); color: var(--blue); }
+
+    .status-item.done { border-color: rgba(47, 125, 83, .28); background: var(--green-soft); }
+    .status-item.done .icon-wrap { background: rgba(47, 125, 83, .16); color: var(--green); }
+
+    main { display: grid; gap: 18px; }
+
+    .section { padding: clamp(22px, 3.2vw, 36px); scroll-margin-top: 20px; min-width: 0; }
+    .section > p:first-of-type { margin-top: 0; }
+
+    .section-head {
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .section-number {
+      min-width: 42px; height: 42px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-weight: 900; line-height: 1;
+    }
+
+    .section-kicker {
+      margin: 0 0 5px;
+      color: var(--teal);
+      font-size: 12px; font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .section h2 { margin: 0; color: var(--navy); font-size: clamp(20px, 2.8vw, 27px); line-height: 1.36; }
+    .section p { color: var(--ink); font-size: 15px; }
+    .section .note { color: var(--sub); font-size: 13.5px; }
+
+    /* 分散の島イラスト */
+    .islands {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 20px 0 8px;
+    }
+
+    .island {
+      border: 1px dashed rgba(167, 72, 60, .45);
+      border-radius: var(--radius);
+      background: var(--red-soft);
+      padding: 16px 16px 14px;
+    }
+
+    .island h3 {
+      display: flex; align-items: center; gap: 8px;
+      margin: 0 0 8px;
+      color: var(--red);
+      font-size: 15px;
+    }
+
+    .island ul { margin: 0; padding-left: 18px; color: var(--sub); font-size: 13.5px; }
+    .island li { margin: 3px 0; }
+
+    .pain-line {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px solid rgba(167, 72, 60, .3);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--red);
+      font-weight: 700;
+      font-size: 14.5px;
+    }
+
+    /* ハブ図 */
+    .hub-figure {
+      margin: 22px 0 6px;
+      padding: clamp(18px, 3vw, 30px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .hub-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .hub-tool {
+      display: grid; justify-items: center; gap: 6px;
+      padding: 14px 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      text-align: center;
+    }
+
+    .hub-tool strong { color: var(--navy); font-size: 14px; }
+    .hub-tool span { color: var(--sub); font-size: 12px; line-height: 1.5; }
+    .hub-tool .icon-wrap {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--blue-soft); color: var(--blue);
+    }
+
+    .hub-arrows {
+      display: flex; justify-content: center;
+      padding: 6px 0;
+      color: var(--teal);
+    }
+
+    .hub-core {
+      display: grid; justify-items: center; gap: 6px;
+      margin: 0 auto;
+      max-width: 520px;
+      padding: 20px 18px;
+      border: 2px solid var(--teal);
+      border-radius: var(--radius);
+      background: var(--teal-soft);
+      text-align: center;
+    }
+
+    .hub-core .icon-wrap {
+      width: 46px; height: 46px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--teal); color: #fff;
+    }
+
+    .hub-core strong { color: var(--navy); font-size: 17px; }
+    .hub-core span { color: var(--sub); font-size: 13px; }
+
+    .hub-out {
+      display: grid; justify-items: center; gap: 4px;
+      margin: 0 auto;
+      max-width: 520px;
+      padding: 16px;
+      border: 1px solid rgba(47, 125, 83, .3);
+      border-radius: var(--radius);
+      background: var(--green-soft);
+      text-align: center;
+    }
+
+    .hub-out strong { color: var(--green); font-size: 15px; }
+    .hub-out span { color: var(--sub); font-size: 13px; }
+
+    /* 3ステップフロー */
+    .flow3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .flow3-step {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 18px 16px 16px;
+    }
+
+    .flow3-step .num {
+      position: absolute;
+      top: -12px; left: 14px;
+      padding: 2px 12px;
+      border-radius: 999px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 12px; font-weight: 800;
+      letter-spacing: .06em;
+    }
+
+    .flow3-step h3 {
+      display: flex; align-items: center; gap: 8px;
+      margin: 6px 0 8px;
+      color: var(--navy);
+      font-size: 16px;
+    }
+
+    .flow3-step p { margin: 0; color: var(--sub); font-size: 13.5px; }
+
+    /* ケース別 */
+    .case {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .case-head {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 18px;
+      background: var(--navy-soft);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .case-head .icon-wrap {
+      width: 36px; height: 36px; min-width: 36px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--navy); color: #fff;
+    }
+
+    .case-head h3 { margin: 0; color: var(--navy); font-size: 17px; }
+    .case-head .case-tag { margin-left: auto; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+
+    .case-body { padding: 16px 18px 18px; }
+
+    .steps { display: grid; gap: 0; margin: 4px 0 0; }
+
+    .step {
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .step .dot-col { display: grid; justify-items: center; grid-template-rows: auto 1fr; }
+
+    .step .dot {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--teal-soft); color: var(--teal);
+      font-size: 12.5px; font-weight: 900;
+    }
+
+    .step .vline { width: 2px; background: var(--line); margin: 4px 0; }
+    .step:last-child .vline { display: none; }
+
+    .step .step-text { padding-bottom: 14px; }
+    .step:last-child .step-text { padding-bottom: 0; }
+
+    .step .step-text strong { color: var(--navy); font-size: 14.5px; }
+    .step .step-text p { margin: 2px 0 0; color: var(--sub); font-size: 13.5px; }
+
+    .who {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 1px 10px;
+      border-radius: 999px;
+      font-size: 11.5px; font-weight: 800;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .who.codex { background: var(--teal-soft); color: var(--teal); }
+    .who.human { background: var(--orange-soft); color: var(--orange); }
+    .who.tool { background: var(--blue-soft); color: var(--blue); }
+
+    .case-effect {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid rgba(47, 125, 83, .28);
+      border-radius: var(--radius);
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 13.5px; font-weight: 700;
+    }
+
+    /* 役割分担表 */
+    .table-wrap { overflow-x: auto; margin-top: 16px; }
+
+    table {
+      width: 100%;
+      min-width: 640px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: var(--navy-soft); color: var(--navy); font-size: 13.5px; white-space: nowrap; }
+    td strong { color: var(--navy); }
+    td { color: var(--sub); }
+    tr.hl td { background: var(--teal-soft); color: var(--ink); }
+
+    /* 導入ステップ */
+    .roadmap { display: grid; gap: 12px; margin-top: 16px; }
+
+    .roadmap-item {
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 16px;
+    }
+
+    .roadmap-item .rnum {
+      width: 52px; height: 52px;
+      border-radius: var(--radius);
+      display: grid; place-items: center;
+      background: var(--navy);
+      color: #fff;
+      font-weight: 900; font-size: 18px;
+    }
+
+    .roadmap-item h3 { margin: 0 0 4px; color: var(--navy); font-size: 15.5px; }
+    .roadmap-item p { margin: 0; color: var(--sub); font-size: 13.5px; }
+
+    .callout {
+      display: flex; gap: 12px; align-items: flex-start;
+      margin-top: 18px;
+      padding: 16px 18px;
+      border: 1px solid rgba(211, 130, 31, .34);
+      border-radius: var(--radius);
+      background: var(--orange-soft);
+    }
+
+    .callout .icon { color: var(--orange); margin-top: 2px; }
+    .callout p { margin: 0; color: var(--ink); font-size: 14px; }
+    .callout strong { color: var(--orange); }
+
+    .footer {
+      margin-top: 18px;
+      padding: 18px 22px;
+      color: var(--muted);
+      font-size: 12.5px;
+      text-align: center;
+    }
+
+    @media (max-width: 820px) {
+      .cover { grid-template-columns: 1fr; }
+      .islands, .flow3, .hub-row { grid-template-columns: 1fr; }
+      .hub-core, .hub-out { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- カバー -->
+    <header class="cover">
+      <div class="cover-main">
+        <div>
+          <p class="eyebrow">AI Workflow Proposal</p>
+          <h1>散らばった情報を、<br>ひとつに。</h1>
+          <p class="lead">複数のAIツールを使いこなしているからこそ起きる「情報の分散」。Codexを<strong>司令塔</strong>に置いて、統合 → 集約 → いつでも呼び出せる仕組みをつくるご提案です。</p>
+        </div>
+        <div class="to-block">
+          <p class="to-name">この資料の読み方</p>
+          <p>専門用語はできるだけ使っていません。全体の考え方（§1〜§3）→ ケース別の使い方（§4）→ 導入の順番（§6）の順に、5分で読めます。</p>
+        </div>
+      </div>
+
+      <div class="cover-status">
+        <h2>いまの状況</h2>
+        <div class="status-item done">
+          <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <div><strong>AI活用はすでに上級レベル</strong><span>Gemini・NotebookLM・Copilot の3ツールを日常業務で運用中</span></div>
+        </div>
+        <div class="status-item watch">
+          <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></span>
+          <div><strong>ただし情報がツールごとに分散</strong><span>どこに何があるか、探す時間が増えている</span></div>
+        </div>
+        <div class="status-item progress">
+          <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+          <div><strong>バックヤード全般を担い多忙</strong><span>「探す・まとめ直す」の時間をゼロに近づけたい</span></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+
+      <!-- §1 課題 -->
+      <section class="section">
+        <div class="section-head">
+          <span class="section-number">1</span>
+          <div>
+            <p class="section-kicker">Problem</p>
+            <h2>ツールが増えるほど、情報は「島」に分かれる</h2>
+          </div>
+        </div>
+        <p>Gemini・NotebookLM・Copilot はそれぞれ優秀です。ただし、それぞれの中に会話や成果物が残るため、<strong>「あの内容、どのツールでやったっけ？」</strong>が毎回発生します。</p>
+
+        <div class="islands">
+          <div class="island">
+            <h3><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Gemini の島</h3>
+            <ul>
+              <li>調べもの・壁打ちの履歴</li>
+              <li>チャットの中に埋もれる</li>
+            </ul>
+          </div>
+          <div class="island">
+            <h3><svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>NotebookLM の島</h3>
+            <ul>
+              <li>読み込ませた資料と要約</li>
+              <li>ノートブック単位で孤立</li>
+            </ul>
+          </div>
+          <div class="island">
+            <h3><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 22h8M12 18v4"/></svg>Copilot の島</h3>
+            <ul>
+              <li>Word・Excel・PowerPoint の成果物</li>
+              <li>ファイルは各所のフォルダへ</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="pain-line">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          結果：情報を「作る時間」より「探す・思い出す時間」が増えていく
+        </p>
+      </section>
+
+      <!-- §2 解決の考え方 -->
+      <section class="section">
+        <div class="section-head">
+          <span class="section-number">2</span>
+          <div>
+            <p class="section-kicker">Solution</p>
+            <h2>解決策：Codex を「司令塔」に置く</h2>
+          </div>
+        </div>
+        <p>Codex は、チャット画面に文章をコピペするタイプのAIと違い、<strong>パソコンや共有フォルダの中のファイルを直接読み書きできるAI</strong>です。この性質を使って、次の形をつくります。</p>
+
+        <div class="hub-figure">
+          <div class="hub-row">
+            <div class="hub-tool">
+              <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+              <strong>Gemini</strong>
+              <span>調査・壁打ちの結果</span>
+            </div>
+            <div class="hub-tool">
+              <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+              <strong>NotebookLM</strong>
+              <span>資料の要約・分析</span>
+            </div>
+            <div class="hub-tool">
+              <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 22h8M12 18v4"/></svg></span>
+              <strong>Copilot</strong>
+              <span>Office の成果物</span>
+            </div>
+          </div>
+
+          <div class="hub-arrows">
+            <svg class="icon" style="width:32px;height:32px" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </div>
+
+          <div class="hub-core">
+            <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg></span>
+            <strong>Codex（司令塔）＋ 共有フォルダ（正本置き場）</strong>
+            <span>成果物はすべて1か所のフォルダへ。Codexがそれを読み、整理し、必要なときに引き出す</span>
+          </div>
+
+          <div class="hub-arrows">
+            <svg class="icon" style="width:32px;height:32px" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </div>
+
+          <div class="hub-out">
+            <strong>「あの件どうなってた？」と日本語で聞くだけ</strong>
+            <span>過去の会議・資料・決定事項を横断して即答。資料の下書きもここから生成</span>
+          </div>
+        </div>
+
+        <p class="note">※ ポイントは「ツールを乗り換える」のではなく、<strong>成果物の置き場所を1つに決めて、そこにCodexを住まわせる</strong>こと。今の3ツールはそのまま使い続けます。</p>
+      </section>
+
+      <!-- §3 3ステップ -->
+      <section class="section">
+        <div class="section-head">
+          <span class="section-number">3</span>
+          <div>
+            <p class="section-kicker">How it works</p>
+            <h2>仕組みは3ステップだけ</h2>
+          </div>
+        </div>
+
+        <div class="flow3">
+          <div class="flow3-step">
+            <span class="num">STEP 1</span>
+            <h3><svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.7 4H7.3a2 2 0 0 0-1.8 1.1z"/></svg>統合する</h3>
+            <p>各ツールで作ったもの（要約・議事録・資料）を、決めた共有フォルダに保存するだけ。ルールは「ここに置く」の1個だけ。</p>
+          </div>
+          <div class="flow3-step">
+            <span class="num">STEP 2</span>
+            <h3><svg class="icon" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>集約する</h3>
+            <p>Codexがフォルダの中身を読んで、日付・案件・決定事項ごとに整理。目次や索引もCodexが自動で作って更新します。</p>
+          </div>
+          <div class="flow3-step">
+            <span class="num">STEP 3</span>
+            <h3><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>呼び出す</h3>
+            <p>「先月の役員会の決定事項は？」「あの案件の経緯まとめて」と聞くだけ。探す作業はCodexの仕事になります。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- §4 ケース別 -->
+      <section class="section">
+        <div class="section-head">
+          <span class="section-number">4</span>
+          <div>
+            <p class="section-kicker">Use cases</p>
+            <h2>ケース別：実際の仕事はこう変わる</h2>
+          </div>
+        </div>
+        <p>バックヤード業務で特に多い3つの場面で、具体的な流れを描きました。<span class="who human">人がやる</span><span class="who codex">Codex</span><span class="who tool">既存ツール</span>の3色で役割を示しています。</p>
+
+        <!-- ケース1 会議資料 -->
+        <div class="case">
+          <div class="case-head">
+            <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></span>
+            <h3>ケース1｜会議資料の作成</h3>
+            <span class="case-tag">CASE 01</span>
+          </div>
+          <div class="case-body">
+            <div class="steps">
+              <div class="step">
+                <div class="dot-col"><span class="dot">1</span><span class="vline"></span></div>
+                <div class="step-text"><strong>「来週の定例会議の資料を作って」と指示<span class="who human">人がやる</span></strong>
+                <p>指示はこの一言だけ。議題のメモがあれば添える。</p></div>
+              </div>
+              <div class="step">
+                <div class="dot-col"><span class="dot">2</span><span class="vline"></span></div>
+                <div class="step-text"><strong>過去の議事録・関連資料をフォルダから自動収集<span class="who codex">Codex</span></strong>
+                <p>前回の宿題・進行中の案件・数字の推移を、共有フォルダの正本から拾ってくる。</p></div>
+              </div>
+              <div class="step">
+                <div class="dot-col"><span class="dot">3</span><span class="vline"></span></div>
+                <div class="step-text"><strong>資料の下書きを生成<span class="who codex">Codex</span></strong>
+                <p>アジェンダ・前回からの進捗・論点整理まで入った状態で下書きが出てくる。</p></div>
+              </div>
+              <div class="step">
+                <div class="dot-col"><span class="dot">4</span><span class="vline"></span></div>
+                <div class="step-text"><strong>Word / PowerPoint で体裁を仕上げ<span class="who tool">Copilot</span></strong>
+                <p>社内フォーマットへの流し込み・清書はいつものCopilotで。</p></div>
+              </div>
+            </div>
+            <p class="case-effect"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>ゼロから作る時間 → 「下書きを直す時間」に短縮。過去資料を探し回る工程が消える</p>
+          </div>
+        </div>
+
+        <!-- ケース2 会議録 -->
+        <div class="case">
+          <div class="case-head">
+            <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></span>
+            <h3>ケース2｜会議録の作成と蓄積</h3>
+            <span class="case-tag">CASE 02</span>
+          </div>
+          <div class="case-body">
+            <div class="steps">
+              <div class="step">
+                <div class="dot-col"><span class="dot">1</span><span class="vline"></span></div>
+                <div class="step-text"><strong>会議を録音、文字起こしを共有フォルダへ<span class="who human">人がやる</span></strong>
+                <p>録音と文字起こしは今使っているツールのままでOK（Gemini等の文字起こし機能も可）。</p></div>
+              </div>
+              <div class="step">
+                <div class="dot-col"><span class="dot">2</span><span class="vline"></span></div>
+                <div class="step-text"><strong>議事録に整形＋決定事項・宿題を抽出<span class="who codex">Codex</span></strong>
+                <p>「決まったこと」「誰がいつまでに何をやるか」「持ち越し」を型どおりに整理。</p></div>
+              </div>
+              <div class="step">
+                <div class="dot-col"><span class="dot">3</span><span class="vline"></span></div>
+                <div class="step-text"><strong>案件ごとの台帳に自動で追記<span class="who codex">Codex</span></strong>
+                <p>会議単体で終わらせず、案件別の経緯ファイルにも反映。ここが「資産化」の肝。</p></div>
+              </div>
+              <div class="step">
+                <div class="dot-col"><span class="dot">4</span><span class="vline"></span></div>
+                <div class="step-text"><strong>後日「あの件どうなってた？」と聞くだけ<span class="who human">人がやる</span></strong>
+                <p>Codexが台帳から経緯・決定事項・残っている宿題を即答。</p></div>
+              </div>
+            </div>
+            <p class="case-effect"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>議事録が「書いて終わり」から「あとから引き出せる経営の記録」に変わる</p>
+          </div>
+        </div>
+
+        <!-- ケース3 プレゼン資料 -->
+        <div class="case">
+          <div class="case-head">
+            <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4M7 8h4M7 12h7"/></svg></span>
+            <h3>ケース3｜プレゼン資料の作成</h3>
+            <span class="case-tag">CASE 03</span>
+          </div>
+          <div class="case-body">
+            <div class="steps">
+              <div class="step">
+                <div class="dot-col"><span class="dot">1</span><span class="vline"></span></div>
+                <div class="step-text"><strong>伝えたい相手とゴールを一言で伝える<span class="who human">人がやる</span></strong>
+                <p>「取引先向けに、新サービスの説明を15分で」程度でOK。</p></div>
+              </div>
+              <div class="step">
+                <div class="dot-col"><span class="dot">2</span><span class="vline"></span></div>
+                <div class="step-text"><strong>裏付け資料の深掘り<span class="who tool">NotebookLM</span></strong>
+                <p>参考資料・過去実績の読み込みと要点抽出は NotebookLM の得意分野をそのまま活用。</p></div>
+              </div>
+              <div class="step">
+                <div class="dot-col"><span class="dot">3</span><span class="vline"></span></div>
+                <div class="step-text"><strong>構成案〜スライド骨子を生成<span class="who codex">Codex</span></strong>
+                <p>共有フォルダの過去プレゼン・議事録・NotebookLMの要約を材料に、ストーリーと各ページの骨子まで作る。</p></div>
+              </div>
+              <div class="step">
+                <div class="dot-col"><span class="dot">4</span><span class="vline"></span></div>
+                <div class="step-text"><strong>PowerPoint で仕上げ<span class="who tool">Copilot</span></strong>
+                <p>デザイン・清書は Copilot ＋ 手直し。完成版は共有フォルダへ戻して次回の材料に。</p></div>
+              </div>
+            </div>
+            <p class="case-effect"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>一度作った資料が次の資料の材料になる「積み上がる」サイクルができる</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- §5 役割分担 -->
+      <section class="section">
+        <div class="section-head">
+          <span class="section-number">5</span>
+          <div>
+            <p class="section-kicker">Role sharing</p>
+            <h2>ツールは捨てない。役割を分けるだけ</h2>
+          </div>
+        </div>
+        <p>今お使いの3ツールへの投資と慣れは、そのまま活きます。それぞれの得意分野に専念させて、<strong>横串だけをCodexに任せる</strong>役割分担です。</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>ツール</th><th>役割（得意なこと）</th><th>これからの位置づけ</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Gemini</strong></td>
+                <td>調べもの・アイデア出し・文字起こし</td>
+                <td>今までどおり。結果を共有フォルダに残すだけ</td>
+              </tr>
+              <tr>
+                <td><strong>NotebookLM</strong></td>
+                <td>大量資料の読み込み・要約・音声解説</td>
+                <td>今までどおり。要約を共有フォルダに残すだけ</td>
+              </tr>
+              <tr>
+                <td><strong>Copilot</strong></td>
+                <td>Word・Excel・PowerPoint の中での作業</td>
+                <td>今までどおり。最終仕上げ担当</td>
+              </tr>
+              <tr class="hl">
+                <td><strong>Codex（新規）</strong></td>
+                <td><strong>司令塔。</strong>フォルダ全体を読んで整理・横断検索・下書き生成</td>
+                <td>3つの島をつなぐ橋。「探す・まとめ直す」を全部引き受ける</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- §6 導入ステップ -->
+      <section class="section">
+        <div class="section-head">
+          <span class="section-number">6</span>
+          <div>
+            <p class="section-kicker">Roadmap</p>
+            <h2>導入は小さく始める（4ステップ）</h2>
+          </div>
+        </div>
+
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <span class="rnum">1</span>
+            <div>
+              <h3>情報の「正本置き場」を1つ決める</h3>
+              <p>共有フォルダを1つ用意し、「AIで作ったものは全部ここ」と決める。フォルダ構成の設計はご一緒します。</p>
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <span class="rnum">2</span>
+            <div>
+              <h3>Codex を導入して、置き場とつなぐ</h3>
+              <p>Codexがそのフォルダを読み書きできるように設定。初期設定は一度だけ、あとは日本語で話しかけるだけです。</p>
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <span class="rnum">3</span>
+            <div>
+              <h3>まず「会議録」から運用開始</h3>
+              <p>毎回発生して型が決まっている会議録が練習に最適。2〜3回まわすと効果と勘所が体感できます。</p>
+            </div>
+          </div>
+          <div class="roadmap-item">
+            <span class="rnum">4</span>
+            <div>
+              <h3>会議資料 → プレゼン資料へ拡大</h3>
+              <p>蓄積が増えるほどCodexの下書きの精度が上がるので、範囲を広げるのは慣れてからで十分です。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          <p><strong>大事な前提：</strong>社外秘・個人情報を含む情報の扱い方（どこまでAIに読ませるか）は、導入の最初に線引きを一緒に決めます。ここを曖昧にしたまま始めないのが鉄則です。</p>
+        </div>
+      </section>
+
+      <!-- §7 効果まとめ -->
+      <section class="section">
+        <div class="section-head">
+          <span class="section-number">7</span>
+          <div>
+            <p class="section-kicker">Outcome</p>
+            <h2>この仕組みで手に入るもの</h2>
+          </div>
+        </div>
+        <div class="flow3">
+          <div class="flow3-step">
+            <h3><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>探す時間がゼロに近づく</h3>
+            <p>「どのツールでやったっけ？」が消える。聞けば出てくる状態に。</p>
+          </div>
+          <div class="flow3-step">
+            <h3><svg class="icon" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>情報が資産として積み上がる</h3>
+            <p>会議録・資料が使い捨てでなく、次の仕事の材料になり続ける。</p>
+          </div>
+          <div class="flow3-step">
+            <h3><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>引き継ぎ・共有がラクになる</h3>
+            <p>経緯が台帳に残るので、人に渡すとき・振り返るときに強い。</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      本資料は構想段階のご提案です。導入範囲・情報の取り扱いルールは、ご相談のうえで確定します。
+    </footer>
+  </div>
+</body>
+</html>
