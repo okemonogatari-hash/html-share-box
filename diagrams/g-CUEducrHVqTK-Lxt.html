@@ -155,19 +155,20 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;heigh
 
 <script>
 /* =========================================================
-   IRODORI じぶんシート — 全メンバー共通 面談ヒアリングシート（叩き台 v0.4）
+   IRODORI じぶんシート — 全メンバー共通 面談ヒアリングシート（v0.5）
    用途: メンバー面談（1on1）用。事前にメンバーが記入→面談で深掘り。
    ※人事評価システム(Notion統計表)とは別物。「評価」ではなく現状把握・悩み相談がメイン。
+   --- v0.5（2026-07-06 じっくり版に統一）---
+   ・「さくっと/じっくり」の2モード選択を廃止し、じっくり版（記述多め・全23問）1本に統一
+   ・面談として成り立つ内容の深さを優先（おけちゃん指示）
+   ・v0.4の「人事担当が面談で確認」「goal_action（最初の一歩）」等の反映内容はそのまま維持
    --- v0.4（2026-06-25 りえさんFB反映）---
-   ・2モードは「ぱぱっと派(さくっと) / 書きたい派(じっくり)」で維持。中身は揃えず"量"で分ける
-   ・両モードで聞く「共通コア質問」は文言・選択肢・順序を揃えた（りえFB②）
    ・「りえさんが面談で確認」→「人事担当が面談で確認」に変更（りえFB③・小山さん担当もあるため）
    ・3ヶ月目標に「最初の一歩＝行動への落とし込み」を追加（りえFB④）
    ・回答の集約(Notion連携)は項目FIX後（りえFB⑤・今回は未実装）
    ========================================================= */
 
 // type: text | textarea | url | choices | scale | break
-// ===== じっくり版（書きたい派・記述多め・コア＋深掘り）=====
 const SHEET_FULL = [
   {grp:"あなたのこと", icon:"🌱"},
   {id:"name", type:"text", q:"お名前（ニックネーム）を教えてください", hint:"呼んでほしい名前でOK😊"},
@@ -208,56 +209,18 @@ const SHEET_FULL = [
   {id:"free", type:"textarea", q:"最後に、自由に書きたいことがあれば✍️", hint:"質問になかったこと・伝えたいこと・ひとりごと、なんでもOK。空欄でも大丈夫だよ😊", optional:true},
 ];
 
-// ===== さくっと版（ぱぱっと派・選択中心・コアのみ）=====
-const SHEET_COMPACT = [
-  {grp:"あなたのこと", icon:"🌱"},
-  {id:"name", type:"text", q:"お名前（ニックネーム）を教えてください", hint:"呼んでほしい名前でOK😊"},
-  {id:"role", type:"choices", q:"いまの主な担当・得意は？（複数OK）", multi:true, opts:[
-    "🎨 デザイナー","✒️ ライター","🧾 事務・経理","💁‍♀️ オンライン秘書・メール確認",
-    "📋 PM・ディレクション","📣 広報・SNS","その他"]},
-  {id:"tenure", type:"text", q:"irodori歴はどれくらい？", hint:"例）今年4月から／半年くらい など", optional:true},
-
-  {grp:"最近どう？", icon:"☕", brk:"ここからは「最近のあなた」のこと。\n評価じゃないよ。直感でポンッと選んでね😊"},
-  {id:"recent", type:"choices", q:"最近、業務まわりはどんな感じ？", hint:"近いものを選んでね（複数OK）", multi:true, opts:[
-    "🙆 順調","😌 ふつう","😣 少し重い","🥵 かなりしんどい","🌊 波がある"]},
-  {id:"workload", type:"choices", q:"いまの作業量は？", multi:true, opts:[
-    "多い","ちょうどいい","少ない","波がある","判断しづらい"]},
-  {id:"recent_more", type:"textarea", q:"ひとことあれば（任意）", hint:"気になること・順調なこと、なんでも", optional:true, presets:["順調で楽しい","慣れてきた","ちょっと疲れ気味","相談したいことがある"]},
-
-  {grp:"話したいこと", icon:"💭", brk:"言いにくいことほど、ここで大丈夫🤍\nここは人事担当が面談で確認します。本人に直接は伝えてほしくないことは、その旨ひとこと添えてね"},
-  {id:"topics", type:"choices", q:"面談で話したいテーマは？（複数OK）", multi:true, opts:[
-    "業務の進め方","作業量・忙しさ","人間関係・コミュニケーション","スキル・成長","家庭との両立","将来・キャリア","特にない"]},
-  {id:"topic_detail", type:"textarea", q:"そのことについて、もう少し聞かせて", hint:"困ってること・モヤッとすること・相談したいこと、自由に。難しければ空欄でもOK", optional:true, presets:["うまく言えないけどモヤモヤがある","作業量のバランスを相談したい","進め方に迷っている","誰かとの連携で気になることがある","今後のこと・キャリアを相談したい"]},
-
-  {grp:"この3ヶ月", icon:"🎯", brk:"つぎは、ちょっと先のこと。\n大きな夢より「この3ヶ月でできそうなこと」を🌿"},
-  {id:"goal3m", type:"textarea", q:"この3ヶ月でやってみたい・伸ばしたいことは？", hint:"自分の言葉で、肩の力を抜いて。小さな一歩でOK", presets:["新しいスキルを覚えたい","今の業務をもっと効率化したい","任される範囲を少し広げたい","苦手なことを克服したい","丁寧さ・正確さを上げたい","コミュニケーションを増やしたい"]},
-  {id:"goal_action", type:"choices", q:"その目標、まず何から始めてみる？（複数OK）", hint:"「やりたい」を行動に🌱 近いものを選んでね。面談で一緒に整理するよ", multi:true, opts:["情報を集める・調べる","詳しい人に聞く・相談する","小さく試してみる","毎日コツコツ続ける","事例を1つ真似る","スケジュールに組み込む","まだ決められない"]},
-  {id:"value", type:"textarea", q:"自分の仕事が「役に立てた」と感じるのは、どんな時？", hint:"難しければ空欄でOK。面談で一緒に考えよう", optional:true, presets:["「ありがとう」と言われた時","頼られた・任せてもらえた時","自分の工夫がうまくハマった時","締切や約束を守れた時","誰かの手間を減らせた時","チームがスムーズに回った時"]},
-  {id:"commit", type:"choices", q:"これからのirodoriとの関わり方、いまの気持ちに近いのは？", multi:true, opts:[
-    "今のペースを保ちたい","少し広げたい","時間を絞りたい","相談したい","まだわからない"]},
-
-  {grp:"irodoriのこと", icon:"🕊️"},
-  {id:"philosophy", type:"choices", q:"いま、しっくりくるPhilosophyは？（複数OK）", optional:true, multi:true, opts:[
-    "❤️ 愛","💎 誠実（真心）","📈 向上心","🔥 本気（情熱・エネルギー）","🤝 気遣い・心配り","😊 ご機嫌（笑顔）","🙏 感謝"]},
-  {id:"mbti", type:"text", q:"MBTI（16personalities）のタイプは？", hint:"分かる人だけでOK。面談の話題に使う程度です😊", optional:true},
-
-  {grp:"さいごに", icon:"🍀"},
-  {id:"free", type:"textarea", q:"最後に、自由に書きたいことがあれば✍️", hint:"なんでもOK。空欄でも大丈夫だよ😊", optional:true},
-];
-
 // ---- state ----
-let mode='full', items=[], idx=0, answers={};
+let items=[], idx=0, answers={};
 const KEY="irodori_jibun_sheet_v4";
-function sheetFor(m){return m==='compact'?SHEET_COMPACT:SHEET_FULL;}
 
 const stage=document.getElementById('stage');
 const bar=document.getElementById('bar');
 const secTag=document.getElementById('secTag');
 const count=document.getElementById('count');
 
-function buildItems(m){
+function buildItems(){
   let curGrp="", curIcon="", out=[];
-  sheetFor(m).forEach(r=>{
+  SHEET_FULL.forEach(r=>{
     if(r.grp){curGrp=r.grp;curIcon=r.icon||"";
       if(r.brk){out.push({type:"break",grp:curGrp,icon:curIcon,brk:r.brk});}
       return;}
@@ -266,7 +229,7 @@ function buildItems(m){
   return out;
 }
 
-function save(){localStorage.setItem(KEY,JSON.stringify({mode,answers,idx}));}
+function save(){localStorage.setItem(KEY,JSON.stringify({answers,idx}));}
 function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
 
 // ---- render ----
@@ -367,11 +330,8 @@ function intro(){
     <p class="hint" style="text-align:left">これは「評価」じゃなくて、<b>あなたのことを知って、もっと働きやすくするため</b>の面談シートです😊<br>
     点数をつけたり比べたりするものじゃないよ。<b>最近どう？を聞かせてほしいだけ</b>。<br>
     1問ずつ気軽に、難しい質問はスキップOK。途中で閉じても続きから書けます🌿</p>
-    <p style="font-weight:700;margin:20px 0 2px">書き方、どっちにする？</p>
-    <p style="font-size:12.5px;color:var(--ink-soft);margin:0 0 12px">どっちを選んでも、大事なことはちゃんと聞くよ😊 ちがいは「答える量」だけ。</p>
-    <div class="roles" style="display:flex;flex-direction:column;gap:12px">
-      <div class="role" onclick="start('compact')" style="display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;border:1.5px solid var(--line);background:#fffefb;border-radius:16px;padding:16px 18px"><span style="font-size:30px">⚡</span><div><b style="font-size:16px">さくっと答える</b><br><span style="font-size:13px;color:var(--ink-soft)">選択でポンポン・約13問・5分くらい。忙しい人・ぱぱっと派に（おすすめ）</span></div></div>
-      <div class="role" onclick="start('full')" style="display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;border:1.5px solid var(--line);background:#fffefb;border-radius:16px;padding:16px 18px"><span style="font-size:30px">📝</span><div><b style="font-size:16px">じっくり書く</b><br><span style="font-size:13px;color:var(--ink-soft)">さくっとの内容＋もう少し深掘り・記述多め。言葉にして整理したい人に</span></div></div>
+    <div class="nav" style="margin-top:24px">
+      <button class="btn btn-primary" onclick="start()">はじめる →</button>
     </div>
   </div>`;
   secTag.textContent="はじめに";count.textContent="";bar.style.width="0%";
@@ -387,9 +347,9 @@ function resumeScreen(){
     </div>
   </div>`;
 }
-function start(m){mode=m||'full';items=buildItems(mode);idx=0;answers={};save();render();}
-function continueSaved(){const s=load();mode=s.mode||'full';answers=s.answers||{};items=buildItems(mode);idx=Math.min(s.idx||0,items.length);render();}
-function resetAll(){localStorage.removeItem(KEY);answers={};idx=0;mode='full';intro();}
+function start(){items=buildItems();idx=0;answers={};save();render();}
+function continueSaved(){const s=load();answers=s.answers||{};items=buildItems();idx=Math.min(s.idx||0,items.length);render();}
+function resetAll(){localStorage.removeItem(KEY);answers={};idx=0;intro();}
 
 // ---- result ----
 function renderResult(){
@@ -426,7 +386,7 @@ function toMD(){
   let groups={},order=[];
   items.forEach(it=>{if(it.type==='break')return;
     if(!groups[it.grp]){groups[it.grp]=[];order.push(it.grp);}groups[it.grp].push(it);});
-  let md=`# IRODORI じぶんシート（${mode==='compact'?'さくっと版':'じっくり版'}）\n\n`;
+  let md=`# IRODORI じぶんシート\n\n`;
   order.forEach(g=>{md+=`## ${g}\n\n`;groups[g].forEach(it=>{
     let a=answers[it.id];if(Array.isArray(a))a=a.join(' / ');
     md+=`**${it.q.replace(/<[^>]+>/g,'')}**\n${a&&String(a).trim()?a:'（未記入）'}\n\n`;});});
