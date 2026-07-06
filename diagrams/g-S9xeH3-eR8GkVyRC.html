@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>🎰 ガラガラポン♪ 席決めマシン — 四ツ橋スナック風オフ会</title>
+<style>
+  :root{
+    --bg:#fff8f1; --paper:#fff; --ink:#2b2520; --muted:#7a6d63; --line:rgba(0,0,0,0.07);
+    --neon-pink:#ff5b8a; --neon-orange:#ff8c42; --bordeaux:#8b2942; --gold:#d4a850; --teal:#2eb5a8; --sky:#4a9ed9;
+    --pink-soft:rgba(255,91,138,0.08); --orange-soft:rgba(255,140,66,0.10);
+    --gold-soft:rgba(212,168,80,0.14); --teal-soft:rgba(46,181,168,0.12); --sky-soft:rgba(74,158,217,0.12);
+    --bordeaux-soft:rgba(139,41,66,0.10);
+    --shadow:0 10px 30px rgba(139,41,66,0.10); --radius:22px; --max:980px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN",sans-serif;
+    color:var(--ink); background:var(--bg);
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(255,91,138,0.08), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(74,158,217,0.09), transparent 40%),
+      radial-gradient(circle at 50% 120%, rgba(212,168,80,0.10), transparent 45%);
+    line-height:1.8; min-height:100vh; padding:20px 14px 90px;
+  }
+  .page{width:min(var(--max),100%);margin:0 auto;}
+
+  /* ヒーロー：ネオン管風 */
+  .hero{
+    text-align:center; padding:30px 20px 26px; border-radius:28px;
+    background:linear-gradient(135deg,#2b1a24 0%,#3d1f2e 55%,#241a2b 100%);
+    box-shadow:var(--shadow), 0 0 40px rgba(255,91,138,0.18) inset;
+    position:relative; overflow:hidden; margin-bottom:20px;
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  .hero::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:5px;
+    background:linear-gradient(90deg,var(--bordeaux),var(--neon-pink),var(--neon-orange),var(--gold),var(--teal));
+  }
+  .hero .kicker{ font-size:12px; letter-spacing:0.18em; color:var(--gold); margin-bottom:8px; font-weight:700;}
+  .hero h1{
+    font-size:clamp(24px,6vw,40px); font-weight:800; letter-spacing:0.02em; color:#fff;
+    text-shadow:0 0 8px rgba(255,91,138,0.9),0 0 18px rgba(255,91,138,0.6),0 0 30px rgba(255,140,66,0.4);
+    animation:flicker 4s infinite;
+  }
+  @keyframes flicker{ 0%,97%,100%{opacity:1;} 97.5%{opacity:0.7;} 98.5%{opacity:0.95;} }
+  .hero .sub{ font-size:13px; color:#e9d5c9; margin-top:6px;}
+  .hero .bulbs{ margin-top:12px; font-size:15px; letter-spacing:0.35em;}
+
+  /* カード共通 */
+  .panel{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 20px; margin-bottom:18px; box-shadow:var(--shadow);
+  }
+  .panel h2{ font-size:16px; font-weight:800; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
+  .field-label{ font-size:12px; font-weight:700; color:var(--bordeaux); letter-spacing:0.06em; margin-bottom:8px; display:block;}
+
+  /* タブ（ピル） */
+  .tabs{ display:inline-flex; background:rgba(0,0,0,0.04); border-radius:999px; padding:4px; gap:4px; margin-bottom:14px;}
+  .tab{
+    border:none; background:transparent; color:var(--muted); font-family:inherit; font-weight:700;
+    font-size:13px; padding:8px 16px; border-radius:999px; cursor:pointer; transition:all .18s;
+  }
+  .tab.active{ background:var(--bordeaux); color:#fff; box-shadow:0 3px 10px rgba(139,41,66,0.25);}
+
+  textarea, input[type=number]{
+    width:100%; font-family:inherit; font-size:15px; color:var(--ink);
+    border:1.5px solid var(--line); border-radius:14px; padding:12px 14px; background:#fffdfb;
+  }
+  textarea{ min-height:120px; resize:vertical; line-height:1.7;}
+  textarea:focus,input:focus{ outline:none; border-color:var(--neon-pink); box-shadow:0 0 0 3px var(--pink-soft);}
+  .hint{ font-size:12px; color:var(--muted); margin-top:6px;}
+
+  .slider-row{ display:flex; align-items:center; gap:14px; margin-top:6px;}
+  input[type=range]{ flex:1; accent-color:var(--neon-pink); height:6px;}
+  .num-box{
+    width:74px; text-align:center; font-size:18px; font-weight:800; color:var(--bordeaux);
+    border:1.5px solid var(--line); border-radius:12px; padding:8px 6px; background:#fffdfb;
+  }
+  .unit{ font-size:13px; color:var(--muted); font-weight:700;}
+
+  .live-preview{
+    margin-top:14px; padding:12px 16px; border-radius:14px;
+    background:linear-gradient(135deg,var(--pink-soft),var(--orange-soft));
+    border:1.5px dashed var(--neon-pink); font-size:14px; font-weight:700; text-align:center; color:var(--bordeaux);
+  }
+  .live-preview b{ font-size:18px; color:var(--neon-pink);}
+
+  /* でかボタン */
+  .go-wrap{ text-align:center; margin:22px 0 10px;}
+  .go-btn{
+    font-family:inherit; font-weight:800; color:#fff; cursor:pointer; border:none;
+    font-size:clamp(20px,5vw,28px); padding:20px 40px; border-radius:999px; letter-spacing:0.04em;
+    background:linear-gradient(135deg,var(--bordeaux),var(--neon-pink) 55%,var(--neon-orange));
+    box-shadow:0 10px 26px rgba(255,91,138,0.42),0 0 0 6px rgba(255,91,138,0.10);
+    transition:transform .1s, box-shadow .2s; animation:pulse 2.2s infinite;
+  }
+  .go-btn:active{ transform:scale(0.96);}
+  .go-btn:disabled{ opacity:0.5; cursor:not-allowed; animation:none;}
+  @keyframes pulse{ 0%,100%{box-shadow:0 10px 26px rgba(255,91,138,0.42),0 0 0 6px rgba(255,91,138,0.10);} 50%{box-shadow:0 10px 30px rgba(255,91,138,0.55),0 0 0 12px rgba(255,91,138,0.04);} }
+
+  .sub-actions{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:12px;}
+  .btn2{
+    font-family:inherit; font-weight:700; font-size:14px; cursor:pointer;
+    border:1.5px solid var(--line); background:var(--paper); color:var(--ink);
+    padding:11px 18px; border-radius:999px; transition:all .15s;
+  }
+  .btn2:hover{ border-color:var(--neon-pink); color:var(--bordeaux);}
+  .btn2.primary{ background:var(--teal); color:#fff; border-color:var(--teal);}
+  .btn2:disabled{ opacity:0.4; cursor:not-allowed;}
+
+  /* ラウンドバッジ */
+  .round-badge{
+    display:none; text-align:center; margin:6px auto 16px; width:fit-content;
+    padding:6px 20px; border-radius:999px; font-weight:800; font-size:15px; color:#fff;
+    background:linear-gradient(135deg,var(--neon-orange),var(--bordeaux)); box-shadow:0 4px 12px rgba(139,41,66,0.28);
+  }
+
+  /* 結果グリッド */
+  .result-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px;}
+  .table-card{
+    border:1.5px solid var(--line); border-top:6px solid var(--accent); border-radius:16px;
+    padding:16px 16px 18px; background:var(--paper); box-shadow:0 6px 18px rgba(0,0,0,0.05);
+    animation:popin .5s cubic-bezier(.2,1.2,.35,1) both;
+  }
+  @keyframes popin{ from{opacity:0; transform:translateY(16px) scale(0.92);} to{opacity:1; transform:none;} }
+  .tc-head{ display:flex; align-items:center; gap:8px; margin-bottom:12px; padding-bottom:10px; border-bottom:1px dashed var(--line);}
+  .tc-emoji{ font-size:24px;}
+  .tc-name{ font-size:17px; font-weight:800; color:var(--ink); flex:1;}
+  .tc-count{ font-size:12px; font-weight:800; color:#fff; background:var(--accent); border-radius:999px; padding:3px 10px;}
+  .tc-members{ display:flex; flex-wrap:wrap; gap:7px;}
+  .chip{
+    font-size:14px; font-weight:700; padding:6px 13px; border-radius:999px;
+    background:color-mix(in srgb, var(--accent) 12%, #fff); color:var(--ink);
+    border:1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+
+  .empty-note{ text-align:center; color:var(--muted); font-size:14px; padding:24px 10px;}
+
+  /* オーバーレイ・スロット */
+  .overlay{
+    position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center;
+    background:radial-gradient(circle at center, rgba(43,26,36,0.92), rgba(20,12,16,0.97));
+    backdrop-filter:blur(3px);
+  }
+  .overlay.show{ display:flex; }
+  .slot-box{ text-align:center; padding:20px;}
+  .slot-label{ font-size:14px; letter-spacing:0.3em; color:var(--gold); font-weight:700; margin-bottom:18px;}
+  .slot-name{
+    font-size:clamp(34px,10vw,72px); font-weight:800; color:#fff; min-height:1.2em;
+    text-shadow:0 0 12px rgba(255,91,138,0.9),0 0 26px rgba(255,140,66,0.5);
+  }
+  .slot-reels{ margin-top:16px; font-size:26px; letter-spacing:0.2em; animation:spinReel .4s linear infinite;}
+  @keyframes spinReel{ from{opacity:.6;} 50%{opacity:1;} to{opacity:.6;} }
+
+  #confetti{ position:fixed; inset:0; z-index:55; pointer-events:none;}
+
+  /* ミュートトグル固定 */
+  .mute-toggle{
+    position:fixed; right:16px; bottom:16px; z-index:70; width:52px; height:52px; border-radius:50%;
+    border:none; cursor:pointer; font-size:22px; background:var(--paper); box-shadow:0 6px 18px rgba(0,0,0,0.18);
+  }
+
+  footer{ text-align:center; margin-top:26px; font-size:12px; color:var(--muted);}
+  footer .stamp{ display:inline-block; border:1.5px solid var(--bordeaux); color:var(--bordeaux); padding:5px 14px; border-radius:999px; font-weight:700; margin-top:4px;}
+
+  @media(max-width:520px){
+    .panel{ padding:18px 15px;}
+    .tabs{ display:flex; width:100%;}
+    .tab{ flex:1; text-align:center; padding:9px 6px;}
+  }
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+
+<div class="page">
+  <div class="hero">
+    <div class="kicker">四ツ橋スナック風オフ会 ・ 7/12(日) 18:00-20:00</div>
+    <h1>🎰 ガラガラポン♪<br>席決めマシン</h1>
+    <div class="sub">ボタンをドンッと押して、今夜の席を決めよう。時間ごとの席替えもおまかせ✨</div>
+    <div class="bulbs">🔴🟠🟡🟢🔵🟣</div>
+  </div>
+
+  <!-- 参加者入力 -->
+  <div class="panel">
+    <h2>👥 参加者を入れる</h2>
+    <div class="tabs" id="inputTabs">
+      <button class="tab active" data-mode="names">名前で入れる</button>
+      <button class="tab" data-mode="count">人数だけ</button>
+    </div>
+
+    <div id="namesPane">
+      <span class="field-label">お名前（改行 or カンマ区切り）</span>
+      <textarea id="namesInput" placeholder="おけもん&#10;とらまめ&#10;たい&#10;のおら&#10;…受付名簿をそのまま貼り付けてOK"></textarea>
+      <div class="hint">改行・カンマ・読点、どれで区切っても大丈夫。空行は無視するよ。</div>
+    </div>
+
+    <div id="countPane" style="display:none;">
+      <span class="field-label">参加人数</span>
+      <div class="slider-row">
+        <input type="range" id="countRange" min="2" max="55" value="12">
+        <input type="number" id="countNum" class="num-box" min="2" max="200" value="12"><span class="unit">人</span>
+      </div>
+      <div class="hint">名前を打つ暇がない当日はこれ。「1番さん〜」の番号札で分けるよ。</div>
+    </div>
+  </div>
+
+  <!-- 分け方 -->
+  <div class="panel">
+    <h2>🪑 分け方を決める</h2>
+    <div class="tabs" id="splitTabs">
+      <button class="tab" data-split="tables">卓の数で分ける</button>
+      <button class="tab active" data-split="perTable">1卓の人数で分ける</button>
+    </div>
+
+    <div id="tablesPane" style="display:none;">
+      <span class="field-label">何卓に分ける？</span>
+      <div class="slider-row">
+        <input type="range" id="tablesRange" min="2" max="15" value="6">
+        <input type="number" id="tablesNum" class="num-box" min="1" max="30" value="6"><span class="unit">卓</span>
+      </div>
+    </div>
+
+    <div id="perTablePane">
+      <span class="field-label">1卓あたり何人？</span>
+      <div class="slider-row">
+        <input type="range" id="perRange" min="2" max="8" value="4">
+        <input type="number" id="perNum" class="num-box" min="2" max="12" value="4"><span class="unit">人</span>
+      </div>
+      <div class="hint">4〜5人がスナックの丸テーブルにちょうど良い温度感✨</div>
+    </div>
+
+    <div class="live-preview" id="livePreview">— 人を、— 卓に分けます</div>
+  </div>
+
+  <!-- 実行 -->
+  <div class="go-wrap">
+    <div class="round-badge" id="roundBadge">第1部</div>
+    <button class="go-btn" id="goBtn">🎰 ガラガラポン！</button>
+    <div class="sub-actions">
+      <button class="btn2 primary" id="reshuffleBtn" disabled>🔄 席替えタイム！</button>
+      <button class="btn2" id="copyBtn" disabled>📋 結果をコピー</button>
+      <button class="btn2" id="resetBtn" disabled>↺ リセット</button>
+    </div>
+  </div>
+
+  <!-- 結果 -->
+  <div class="panel" id="resultPanel">
+    <div class="empty-note" id="emptyNote">まだ席は決まってないよ。上のボタンをドンッと押してね🎰</div>
+    <div class="result-grid" id="result"></div>
+  </div>
+
+  <footer>
+    四ツ橋スナック風オフ会 ・ 席決めマシン<br>
+    <span class="stamp">🏮 のおらさん発案「ランダム席決め＋時間ごと席替え」</span>
+  </footer>
+</div>
+
+<!-- スロット演出 -->
+<div class="overlay" id="overlay">
+  <div class="slot-box">
+    <div class="slot-label">🎰 S E A T　R O U L E T T E 🎰</div>
+    <div class="slot-name" id="slotName">…</div>
+    <div class="slot-reels">🍒 🔔 ⭐ 🍋 🍇</div>
+  </div>
+</div>
+
+<button class="mute-toggle" id="muteBtn" title="音のオン/オフ">🔊</button>
+
+<script>
+(function(){
+  "use strict";
+  // ---- 状態 ----
+  var inputMode = 'names';     // names | count
+  var splitMode = 'perTable';  // tables | perTable — デフォルトは1卓4-5人
+  var participants = [];
+  var round = 0;
+  var coMet = {};              // coMet[a][b] = 同席回数
+  var lastTables = [];
+  var muted = false;
+  var busy = false;
+
+  var tableThemes = [
+    {emoji:'🍸', name:'ネオン',   varName:'--neon-pink'},
+    {emoji:'🍊', name:'オレンジ', varName:'--neon-orange'},
+    {emoji:'🌟', name:'ゴールド', varName:'--gold'},
+    {emoji:'🌊', name:'ティール', varName:'--teal'},
+    {emoji:'🌙', name:'スカイ',   varName:'--sky'},
+    {emoji:'🍷', name:'ボルドー', varName:'--bordeaux'}
+  ];
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  // ---- 音（AudioContext・音源ファイル不要） ----
+  var audioCtx = null;
+  function ensureAudio(){ if(!audioCtx){ try{ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } }
+  function beep(freq,dur,type,vol){
+    if(muted) return; ensureAudio(); if(!audioCtx) return;
+    var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type=type||'sine'; o.frequency.value=freq;
+    o.connect(g); g.connect(audioCtx.destination);
+    var t=audioCtx.currentTime;
+    g.gain.setValueAtTime(vol||0.12,t);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.start(t); o.stop(t+dur);
+  }
+  function tickSound(){ beep(380+Math.random()*320,0.05,'square',0.05); }
+  function fanfare(){ [523,659,784,1047].forEach(function(f,i){ setTimeout(function(){ beep(f,0.4,'triangle',0.16); }, i*95); }); }
+
+  // ---- ユーティリティ ----
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function shuffle(arr){
+    var a=arr.slice();
+    for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var tmp=a[i]; a[i]=a[j]; a[j]=tmp; }
+    return a;
+  }
+  function getParticipants(){
+    if(inputMode==='names'){
+      return $('namesInput').value.split(/[\n,、，]+/).map(function(s){ return s.trim(); }).filter(function(s){ return s.length>0; });
+    }else{
+      var n = parseInt($('countNum').value,10)||0;
+      var arr=[]; for(var i=1;i<=n;i++){ arr.push(i+'番さん'); } return arr;
+    }
+  }
+  function currentCount(){
+    if(inputMode==='names'){ return getParticipants().length; }
+    return parseInt($('countNum').value,10)||0;
+  }
+  function tableSizes(n,t){
+    var base=Math.floor(n/t), rem=n%t, out=[];
+    for(var i=0;i<t;i++){ out.push(base+(i<rem?1:0)); }
+    return out;
+  }
+  function decideTableCount(n){
+    if(n<=0) return 0;
+    if(splitMode==='tables'){
+      var t=parseInt($('tablesNum').value,10)||1;
+      return Math.max(1, Math.min(t, n));
+    }else{
+      var per=parseInt($('perNum').value,10)||2;
+      // 「1卓per人」希望 → per〜per+1人の卓になるように floor で卓数を決める
+      // （余りは既存の卓に1人ずつ分散＝3人卓を作らず、5人卓になる）
+      return Math.max(1, Math.floor(n/per));
+    }
+  }
+
+  // ---- 割り当て（初回もreshuffleも共通・被り回避の貪欲法） ----
+  function metCount(a,b){ return (coMet[a] && coMet[a][b]) ? coMet[a][b] : 0; }
+  function bumpMet(a,b){ if(!coMet[a]) coMet[a]={}; coMet[a][b]=(coMet[a][b]||0)+1; }
+  function assign(ps){
+    var n=ps.length, t=decideTableCount(n);
+    var sizes=tableSizes(n,t);
+    var order=shuffle(ps);
+    var tables=[]; for(var i=0;i<t;i++){ tables.push([]); }
+    order.forEach(function(p){
+      var best=-1, bestScore=Infinity;
+      for(var i=0;i<t;i++){
+        if(tables[i].length>=sizes[i]) continue;
+        var score=0;
+        for(var k=0;k<tables[i].length;k++){ score+=metCount(p,tables[i][k]); }
+        // 同スコアなら空いてる卓を優先（均等化）
+        score = score*1000 + tables[i].length;
+        if(score<bestScore){ bestScore=score; best=i; }
+      }
+      if(best<0){ best=0; } // 保険
+      tables[best].push(p);
+    });
+    return tables;
+  }
+  function countReunions(tables){
+    var r=0;
+    tables.forEach(function(tbl){
+      for(var i=0;i<tbl.length;i++){ for(var j=i+1;j<tbl.length;j++){ if(metCount(tbl[i],tbl[j])>0) r++; } }
+    });
+    return r;
+  }
+  function recordMeetings(tables){
+    tables.forEach(function(tbl){
+      for(var i=0;i<tbl.length;i++){ for(var j=0;j<tbl.length;j++){ if(i!==j) bumpMet(tbl[i],tbl[j]); } }
+    });
+  }
+
+  // ---- 描画 ----
+  function renderTables(tables){
+    var wrap=$('result'); wrap.innerHTML='';
+    $('emptyNote').style.display='none';
+    tables.forEach(function(tbl,i){
+      var th=tableThemes[i%tableThemes.length];
+      var loop=Math.floor(i/tableThemes.length);
+      var suffix = loop>0 ? (['','②','③','④','⑤'][loop]||('('+(loop+1)+')')) : '';
+      var card=document.createElement('div');
+      card.className='table-card';
+      card.style.setProperty('--accent','var('+th.varName+')');
+      card.style.animationDelay=(i*0.11)+'s';
+      var members=tbl.map(function(m){ return '<span class="chip">'+escapeHtml(m)+'</span>'; }).join('');
+      card.innerHTML =
+        '<div class="tc-head"><span class="tc-emoji">'+th.emoji+'</span>'+
+        '<span class="tc-name">'+th.name+'卓'+suffix+'</span>'+
+        '<span class="tc-count">'+tbl.length+'人</span></div>'+
+        '<div class="tc-members">'+members+'</div>';
+      wrap.appendChild(card);
+    });
+  }
+
+  // ---- スロット演出 ----
+  function drumroll(names){
+    return new Promise(function(resolve){
+      var slot=$('slotName'), overlay=$('overlay');
+      overlay.classList.add('show');
+      var elapsed=0, delay=45, total=1700;
+      function spin(){
+        slot.textContent = names[Math.floor(Math.random()*names.length)];
+        tickSound();
+        elapsed+=delay; delay*=1.07;
+        if(elapsed<total){ setTimeout(spin,delay); }
+        else{
+          slot.textContent='席、きまりっ！🎉';
+          setTimeout(function(){ overlay.classList.remove('show'); resolve(); }, 550);
+        }
+      }
+      spin();
+    });
+  }
+
+  // ---- 紙吹雪 ----
+  function confettiBurst(){
+    var canvas=$('confetti'), ctx=canvas.getContext('2d');
+    canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+    var colors=['#ff5b8a','#ff8c42','#d4a850','#2eb5a8','#4a9ed9','#8b2942'];
+    var pieces=[]; for(var i=0;i<140;i++){
+      pieces.push({ x:Math.random()*canvas.width, y:-20-Math.random()*canvas.height*0.4,
+        r:5+Math.random()*7, c:colors[Math.floor(Math.random()*colors.length)],
+        vy:2+Math.random()*3.5, vx:-1.6+Math.random()*3.2, rot:Math.random()*Math.PI, vr:-0.22+Math.random()*0.44 });
+    }
+    var frames=0;
+    function tick(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      pieces.forEach(function(p){
+        p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.vy+=0.035;
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+        ctx.fillStyle=p.c; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*0.62); ctx.restore();
+      });
+      frames++;
+      if(frames<170){ requestAnimationFrame(tick); } else { ctx.clearRect(0,0,canvas.width,canvas.height); }
+    }
+    tick();
+  }
+
+  // ---- メイン ----
+  function updateRoundBadge(){
+    var b=$('roundBadge');
+    if(round>0){ b.textContent='第'+round+'部'; b.style.display='block'; }
+    else{ b.style.display='none'; }
+  }
+  function updateLivePreview(){
+    var n=currentCount();
+    var lp=$('livePreview');
+    if(n<1){ lp.innerHTML='人数を入れてね'; return; }
+    var t=decideTableCount(n);
+    var sizes=tableSizes(n,t);
+    var min=Math.min.apply(null,sizes), max=Math.max.apply(null,sizes);
+    var sizeTxt = (min===max) ? (min+'人ずつ') : (min+'〜'+max+'人');
+    lp.innerHTML='<b>'+n+'</b>人を、<b>'+t+'</b>卓に分けます（'+sizeTxt+'）';
+  }
+
+  function run(isReshuffle){
+    if(busy) return;
+    var ps = isReshuffle ? participants : getParticipants();
+    if(ps.length<2){ alert('参加者を2人以上入れてね🙌'); return; }
+    busy=true;
+    $('goBtn').disabled=true; $('reshuffleBtn').disabled=true;
+    participants=ps;
+    var tables=assign(ps);
+    lastTables=tables;
+    var reunions=countReunions(tables);
+    recordMeetings(tables);
+    round++;
+    // コンソールに被りチェック（検証用）
+    var totalPairs=0; tables.forEach(function(t){ totalPairs+=t.length*(t.length-1)/2; });
+    console.log('[席決め] 第'+round+'部 / '+ps.length+'人 / '+tables.length+'卓 / 同席ペア'+totalPairs+'組中 再会'+reunions+'組');
+
+    drumroll(ps).then(function(){
+      renderTables(tables);
+      confettiBurst(); fanfare();
+      updateRoundBadge();
+      $('reshuffleBtn').disabled=false; $('copyBtn').disabled=false; $('resetBtn').disabled=false;
+      $('goBtn').disabled=false; $('goBtn').textContent='🎰 もう一回引き直す';
+      busy=false;
+      $('resultPanel').scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  }
+
+  function buildCopyText(){
+    var lines=['🏮 四ツ橋スナック風オフ会 席決め（第'+round+'部）',''];
+    lastTables.forEach(function(tbl,i){
+      var th=tableThemes[i%tableThemes.length];
+      var loop=Math.floor(i/tableThemes.length);
+      var suffix = loop>0 ? (['','②','③','④','⑤'][loop]||('('+(loop+1)+')')) : '';
+      lines.push(th.emoji+' '+th.name+'卓'+suffix+'：'+tbl.join('、'));
+    });
+    return lines.join('\n');
+  }
+
+  function reset(){
+    participants=[]; round=0; coMet={}; lastTables=[];
+    $('result').innerHTML=''; $('emptyNote').style.display='block';
+    updateRoundBadge();
+    $('reshuffleBtn').disabled=true; $('copyBtn').disabled=true; $('resetBtn').disabled=true;
+    $('goBtn').textContent='🎰 ガラガラポン！';
+  }
+
+  // ---- イベント配線 ----
+  // 入力モードタブ
+  Array.prototype.forEach.call(document.querySelectorAll('#inputTabs .tab'), function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('#inputTabs .tab').forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      inputMode=tab.getAttribute('data-mode');
+      $('namesPane').style.display = inputMode==='names' ? 'block':'none';
+      $('countPane').style.display = inputMode==='count' ? 'block':'none';
+      updateLivePreview();
+    });
+  });
+  // 分け方タブ
+  Array.prototype.forEach.call(document.querySelectorAll('#splitTabs .tab'), function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('#splitTabs .tab').forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      splitMode=tab.getAttribute('data-split');
+      $('tablesPane').style.display = splitMode==='tables' ? 'block':'none';
+      $('perTablePane').style.display = splitMode==='perTable' ? 'block':'none';
+      updateLivePreview();
+    });
+  });
+  // スライダー↔数値の同期
+  function link(rangeId,numId,cb){
+    var r=$(rangeId), n=$(numId);
+    r.addEventListener('input', function(){ n.value=r.value; cb&&cb(); });
+    n.addEventListener('input', function(){ r.value=n.value; cb&&cb(); });
+  }
+  link('countRange','countNum',updateLivePreview);
+  link('tablesRange','tablesNum',updateLivePreview);
+  link('perRange','perNum',updateLivePreview);
+  $('namesInput').addEventListener('input', updateLivePreview);
+
+  $('goBtn').addEventListener('click', function(){ ensureAudio(); run(false); });
+  $('reshuffleBtn').addEventListener('click', function(){ run(true); });
+  $('resetBtn').addEventListener('click', reset);
+  $('copyBtn').addEventListener('click', function(){
+    var txt=buildCopyText();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){ flashCopy(); }, function(){ fallbackCopy(txt); });
+    }else{ fallbackCopy(txt); }
+  });
+  function flashCopy(){ var b=$('copyBtn'); var o=b.textContent; b.textContent='✅ コピーしたよ'; setTimeout(function(){ b.textContent=o; },1500); }
+  function fallbackCopy(txt){
+    var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); flashCopy(); }catch(e){ alert('コピーできなかった…手動で選択してね'); }
+    document.body.removeChild(ta);
+  }
+  $('muteBtn').addEventListener('click', function(){
+    muted=!muted; $('muteBtn').textContent = muted ? '🔇' : '🔊';
+    if(!muted){ ensureAudio(); beep(660,0.12,'sine',0.12); }
+  });
+
+  window.addEventListener('resize', function(){
+    var c=$('confetti'); c.width=window.innerWidth; c.height=window.innerHeight;
+  });
+
+  updateLivePreview();
+})();
+</script>
+</body>
+</html>
