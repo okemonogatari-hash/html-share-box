@@ -155,9 +155,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;heigh
 
 <script>
 /* =========================================================
-   IRODORI じぶんシート — 全メンバー共通 面談ヒアリングシート（v0.5）
+   IRODORI じぶんシート — 全メンバー共通 面談ヒアリングシート（v0.6）
    用途: メンバー面談（1on1）用。事前にメンバーが記入→面談で深掘り。
    ※人事評価システム(Notion統計表)とは別物。「評価」ではなく現状把握・悩み相談がメイン。
+   --- v0.6（2026-07-07 スプレッドシート送信機能を追加）---
+   ・完成画面に「📤送信する」ボタンを追加。GAS Web App経由でGoogleスプレッドシートへ1行追加
+   ・コピー/.md保存は手元用として維持（送信失敗時のフォールバック導線）
    --- v0.5（2026-07-06 じっくり版に統一）---
    ・「さくっと/じっくり」の2モード選択を廃止し、じっくり版（記述多め・全23問）1本に統一
    ・面談として成り立つ内容の深さを優先
@@ -212,6 +215,7 @@ const SHEET_FULL = [
 // ---- state ----
 let items=[], idx=0, answers={};
 const KEY="irodori_jibun_sheet_v4";
+const GAS_ENDPOINT="https://script.google.com/macros/s/AKfycbwwsfJ_VYL-Lp-ZgSu-QplwPml_gxwQkcGO0hzRbHAwgmjnr9vpH_63aqQ9Y1DWN7nR/exec";
 
 const stage=document.getElementById('stage');
 const bar=document.getElementById('bar');
@@ -367,20 +371,40 @@ function renderResult(){
         <div class="at ${empty?'empty':''}">${empty?'（未記入）':esc(a)}</div></div>`;
     });
   });
+  const savedNow=load();
+  const already=!!(savedNow&&savedNow.submitted);
   stage.innerHTML=`<div class="card result">
     <div class="center"><div class="iro-mark" style="justify-content:center"><span class="bird">🕊️</span>IRODORI</div><div class="logo" style="margin-top:4px">🎉</div>
     <h1 class="kaisei">シート、完成しました！</h1>
     <p class="tegaki" style="color:var(--sakura-deep);margin-bottom:6px">ほんとうにお疲れさま☺️</p></div>
     <div class="res-actions">
-      <button class="btn btn-primary" onclick="copyMD()">📋 コピーする</button>
+      <button class="btn btn-primary" id="submitBtn" onclick="submitToSheet()"${already?' disabled':''}>${already?'送信ずみ ✓':'📤 送信する'}</button>
+      <button class="btn btn-ghost" onclick="copyMD()">📋 コピーする</button>
       <button class="btn btn-ghost" onclick="downloadMD()">⬇️ 保存(.md)</button>
       <button class="btn btn-ghost" onclick="(()=>{idx=items.length-1;while(items[idx]&&items[idx].type==='break')idx--;render()})()">← 修正する</button>
     </div>
-    <p class="hint">この内容をコピーして、人事担当に送ってね😊（または .md で保存）<br>
-    <span style="font-size:12px;color:var(--ink-soft)">※入力はこの端末にだけ保存されます。共用PCの人は、送ったあと「最初からやり直す」で消してね。</span></p>
+    <p class="hint">「📤 送信する」を押すと、そのまま人事担当に届きます😊（コピー・保存は念のため手元用に）<br>
+    <span style="font-size:12px;color:var(--ink-soft)">※入力はこの端末にも保存されます。共用PCの人は、送ったあと「最初からやり直す」で消してね。</span></p>
     <div class="sheet">${sheet}</div>
     <div class="nav"><button class="btn-skip" onclick="resetAll()" style="margin:14px auto 0">最初からやり直す</button></div>
   </div>`;
+}
+function submitToSheet(){
+  const btn=document.getElementById('submitBtn'); if(!btn||btn.disabled)return;
+  btn.disabled=true; btn.textContent="送信中…";
+  fetch(GAS_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(answers)})
+    .then(r=>r.json())
+    .then(res=>{
+      if(res && res.result==='ok'){
+        const s=load()||{answers,idx}; s.submitted=true; localStorage.setItem(KEY,JSON.stringify(s));
+        btn.textContent="送信ずみ ✓";
+        toast("送信したよ📤");
+      }else{ throw new Error((res&&res.message)||'unknown'); }
+    })
+    .catch(()=>{
+      btn.disabled=false; btn.textContent="📤 送信する";
+      toast("送信できなかった…コピーか保存で送ってね🙏");
+    });
 }
 function toMD(){
   let groups={},order=[];
