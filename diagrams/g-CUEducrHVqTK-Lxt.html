@@ -155,9 +155,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;heigh
 
 <script>
 /* =========================================================
-   IRODORI じぶんシート — 全メンバー共通 面談ヒアリングシート（v0.6）
+   IRODORI じぶんシート — 全メンバー共通 面談ヒアリングシート（v0.7）
    用途: メンバー面談（1on1）用。事前にメンバーが記入→面談で深掘り。
    ※人事評価システム(Notion統計表)とは別物。「評価」ではなく現状把握・悩み相談がメイン。
+   --- v0.7（2026-07-07 メールアドレス質問＋回答控えメール送信を追加）---
+   ・「あなたのこと」にemail項目を追加（任意）。入力があれば送信時に回答控えメールを本人へ送付
    --- v0.6（2026-07-07 スプレッドシート送信機能を追加）---
    ・完成画面に「📤送信する」ボタンを追加。GAS Web App経由でGoogleスプレッドシートへ1行追加
    ・コピー/.md保存は手元用として維持（送信失敗時のフォールバック導線）
@@ -171,10 +173,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;heigh
    ・回答の集約(Notion連携)は項目FIX後（今回は未実装）
    ========================================================= */
 
-// type: text | textarea | url | choices | scale | break
+// type: text | textarea | url | email | choices | scale | break
 const SHEET_FULL = [
   {grp:"あなたのこと", icon:"🌱"},
   {id:"name", type:"text", q:"お名前（ニックネーム）を教えてください", hint:"呼んでほしい名前でOK😊"},
+  {id:"email", type:"email", q:"メールアドレスを教えてください", hint:"入れておくと、あなたの回答をこのメールアドレスに控えとしてお送りします（任意・空欄でもOK）", optional:true},
   {id:"role", type:"choices", q:"いまの主な担当・得意は？（複数OK）", multi:true, opts:[
     "🎨 デザイナー","✒️ ライター","🧾 事務・経理","💁‍♀️ オンライン秘書・メール確認",
     "📋 PM・ディレクション","📣 広報・SNS","その他"]},
@@ -257,8 +260,9 @@ function render(){
   }
   const v=answers[cur.id];
   let field="";
-  if(cur.type==='text'||cur.type==='url'){
-    field=`<input type="${cur.type==='url'?'url':'text'}" id="f" value="${esc(v||'')}" placeholder="ここに入力…" oninput="autosave()">`;
+  if(cur.type==='text'||cur.type==='url'||cur.type==='email'){
+    const inputType=cur.type==='url'?'url':(cur.type==='email'?'email':'text');
+    field=`<input type="${inputType}" id="f" value="${esc(v||'')}" placeholder="${cur.type==='email'?'you@example.com':'ここに入力…'}" oninput="autosave()">`;
   }else if(cur.type==='textarea'){
     const pre=cur.presets?`<div class="presets"><span class="presets-lead">💡 タップで入れられます（そのまま自由に書き足せます）</span><div class="preset-chips">`+cur.presets.map(o=>`<button type="button" class="pchip${(v||'').includes(o)?' used':''}" data-o="${esc(o)}" onclick="addPreset(this)">＋ ${o}</button>`).join('')+`</div></div>`:'';
     field=pre+`<textarea id="f" placeholder="ここに入力…" oninput="autosave()">${esc(v||'')}</textarea>`;
@@ -398,7 +402,7 @@ function submitToSheet(){
       if(res && res.result==='ok'){
         const s=load()||{answers,idx}; s.submitted=true; localStorage.setItem(KEY,JSON.stringify(s));
         btn.textContent="送信ずみ ✓";
-        toast("送信したよ📤");
+        toast(res.mailError ? "送信したよ📤（メールは届かなかったかも…記録はできてます）" : "送信したよ📤");
       }else{ throw new Error((res&&res.message)||'unknown'); }
     })
     .catch(()=>{
