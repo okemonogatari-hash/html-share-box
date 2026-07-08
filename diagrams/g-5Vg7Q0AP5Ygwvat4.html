@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>弁護士業務とAI ― 先生の時間を、いちばん大切な仕事に返すために</title>
+<style>
+  :root{
+    --paper:#f4efe4;        /* 生成り地 */
+    --paper-2:#fbf8f1;      /* カード地（アイボリー） */
+    --ink:#2a2b28;          /* 本文 */
+    --ink-soft:#5f5c52;     /* 補助文 */
+    --navy:#1e2b43;         /* 濃紺 */
+    --navy-soft:#41507a;    /* 明るめ紺 */
+    --gold:#9a7a37;         /* 金茶 */
+    --gold-soft:#b89a5e;    /* 淡い金茶 */
+    --line:#e0d6c2;         /* 罫線 */
+    --line-soft:#ece4d5;
+    --danger:#8a4a3c;       /* 抑えた朱（注意色・赤ではなく煉瓦） */
+    --ok:#4a6b52;           /* 抑えた緑 */
+    --serif:"Yu Mincho","YuMincho","Hiragino Mincho ProN","Hiragino Mincho Pro","Noto Serif JP",serif;
+    --gothic:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Yu Gothic Medium",Meiryo,sans-serif;
+    --maxw:820px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--gothic);
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.95;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    letter-spacing:.01em;
+  }
+  .wrap{width:min(var(--maxw),100%);margin:0 auto;padding:0 22px;}
+
+  /* ===== 見出し系（明朝） ===== */
+  .serif{font-family:var(--serif);font-weight:600;}
+  h2.chap{
+    font-family:var(--serif);font-weight:600;color:var(--navy);
+    font-size:clamp(21px,4.4vw,27px);line-height:1.5;letter-spacing:.02em;
+    margin-bottom:6px;
+  }
+  .chap-no{
+    font-family:var(--serif);color:var(--gold);font-size:13px;letter-spacing:.22em;
+    display:block;margin-bottom:10px;
+  }
+  .lead{color:var(--ink-soft);font-size:15px;margin-bottom:26px;line-height:1.95;}
+
+  /* ===== hero ===== */
+  .hero{
+    background:
+      radial-gradient(1100px 520px at 80% -10%, rgba(30,43,67,.06), transparent 60%),
+      linear-gradient(180deg,#1e2b43 0%, #24325083 0%, transparent 0%);
+    padding:70px 0 54px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .hero-inner{width:min(var(--maxw),100%);margin:0 auto;padding:0 22px;}
+  .hero .kicker{
+    font-family:var(--serif);color:var(--gold);font-size:13px;letter-spacing:.2em;
+    display:flex;align-items:center;gap:12px;margin-bottom:22px;
+  }
+  .hero .kicker::after{content:"";flex:1;height:1px;background:var(--line);}
+  .hero h1{
+    font-family:var(--serif);font-weight:600;color:var(--navy);
+    font-size:clamp(28px,6.6vw,44px);line-height:1.5;letter-spacing:.02em;
+    margin-bottom:20px;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(transparent 68%, rgba(184,154,94,.35) 68%);
+  }
+  .hero .sub{font-size:16px;color:var(--ink-soft);line-height:1.95;margin-bottom:34px;max-width:640px;}
+  .signrow{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding-top:22px;border-top:1px solid var(--line);
+  }
+  .signrow .thanks{font-size:13.5px;color:var(--ink-soft);}
+  .signrow .from{
+    font-family:var(--serif);color:var(--navy);font-size:14px;letter-spacing:.05em;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .signrow .from svg{color:var(--gold);}
+
+  /* ===== section frame ===== */
+  section{padding:52px 0;border-bottom:1px solid var(--line-soft);}
+  section:last-of-type{border-bottom:none;}
+
+  /* ===== 第1章 図解 ===== */
+  .figure{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:14px;
+    padding:26px 24px 20px;margin-top:8px;
+  }
+  .figure svg{width:100%;height:auto;display:block;}
+  .figure figcaption{
+    font-size:13px;color:var(--ink-soft);text-align:center;margin-top:14px;line-height:1.8;
+  }
+
+  /* ===== Before/After カード ===== */
+  .ba-grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:8px;}
+  @media(min-width:640px){.ba-grid{grid-template-columns:1fr 1fr;}}
+  .ba-card{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:12px;
+    padding:24px 22px;position:relative;display:flex;flex-direction:column;
+  }
+  .ba-card .head{display:flex;align-items:flex-start;gap:13px;margin-bottom:16px;}
+  .ba-card .icon{
+    flex:none;width:42px;height:42px;border-radius:10px;
+    background:#fff;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;color:var(--navy);
+  }
+  .ba-card .icon svg{width:22px;height:22px;}
+  .ba-card .no{font-family:var(--serif);color:var(--gold);font-size:12px;letter-spacing:.14em;}
+  .ba-card h3{font-family:var(--serif);font-weight:600;color:var(--navy);font-size:17px;line-height:1.5;margin-top:2px;}
+  .ba-body{font-size:14px;line-height:1.85;}
+  .ba-row{display:flex;gap:10px;padding:9px 0;}
+  .ba-tag{
+    flex:none;font-family:var(--serif);font-size:11px;letter-spacing:.1em;
+    width:54px;padding-top:2px;
+  }
+  .ba-tag.before{color:var(--ink-soft);}
+  .ba-tag.after{color:var(--gold);}
+  .ba-row.before .txt{color:var(--ink-soft);}
+  .ba-row.after .txt{color:var(--ink);}
+  .ba-arrow{display:flex;align-items:center;gap:8px;color:var(--gold-soft);padding:2px 0 2px 2px;}
+  .ba-arrow svg{width:16px;height:16px;}
+  .ba-arrow span{font-size:11px;letter-spacing:.08em;color:var(--gold);}
+  .recommend{
+    margin-top:14px;font-size:12.5px;color:var(--gold);
+    display:flex;align-items:center;gap:7px;border-top:1px dashed var(--line);padding-top:12px;
+  }
+  .recommend svg{width:15px;height:15px;flex:none;}
+
+  /* ===== 線引き表（セキュリティ） ===== */
+  .split{display:grid;grid-template-columns:1fr;gap:16px;margin:10px 0 4px;}
+  @media(min-width:640px){.split{grid-template-columns:1fr 1fr;}}
+  .split-col{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:22px 20px;}
+  .split-col.ok{border-top:3px solid var(--ok);}
+  .split-col.ng{border-top:3px solid var(--danger);}
+  .split-col h4{
+    font-family:var(--serif);font-size:15px;display:flex;align-items:center;gap:9px;margin-bottom:14px;
+  }
+  .split-col.ok h4{color:var(--ok);}
+  .split-col.ng h4{color:var(--danger);}
+  .split-col h4 svg{width:20px;height:20px;flex:none;}
+  .split-col ul{list-style:none;}
+  .split-col li{
+    font-size:14px;line-height:1.7;padding:7px 0 7px 20px;position:relative;color:var(--ink);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .split-col li:last-child{border-bottom:none;}
+  .split-col li::before{
+    content:"";position:absolute;left:2px;top:15px;width:6px;height:6px;border-radius:50%;
+  }
+  .split-col.ok li::before{background:var(--ok);}
+  .split-col.ng li::before{background:var(--danger);}
+
+  .point-list{list-style:none;margin-top:8px;}
+  .point-list > li{
+    display:flex;gap:15px;padding:18px 0;border-bottom:1px solid var(--line-soft);
+  }
+  .point-list > li:last-child{border-bottom:none;}
+  .point-list .pnum{
+    flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--gold-soft);
+    color:var(--gold);font-family:var(--serif);font-size:15px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .point-list .ptxt h4{font-family:var(--serif);font-weight:600;color:var(--navy);font-size:16px;margin-bottom:4px;}
+  .point-list .ptxt p{font-size:14px;color:var(--ink-soft);line-height:1.85;}
+
+  /* ===== 引用・結論ブロック ===== */
+  .quote{
+    background:var(--paper-2);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;
+    padding:20px 24px;margin:22px 0;
+  }
+  .quote p{font-family:var(--serif);font-size:16px;color:var(--navy);line-height:1.9;}
+  .quote .who{display:block;margin-top:10px;font-family:var(--gothic);font-size:12.5px;color:var(--ink-soft);letter-spacing:.02em;}
+
+  .type-cards{display:grid;grid-template-columns:1fr;gap:14px;margin-top:8px;}
+  @media(min-width:560px){.type-cards{grid-template-columns:1fr 1fr;}}
+  .type-card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:20px 20px;}
+  .type-card .label{font-family:var(--serif);font-size:12px;letter-spacing:.1em;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .type-card .label svg{width:17px;height:17px;}
+  .type-card h4{font-family:var(--serif);font-weight:600;color:var(--navy);font-size:16px;margin-bottom:6px;}
+  .type-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.8;}
+
+  /* ===== 3ステップ ===== */
+  .steps{position:relative;margin-top:8px;}
+  .step{display:flex;gap:18px;padding:20px 0;}
+  .step:not(:last-child){border-bottom:1px solid var(--line-soft);}
+  .step .stepno{
+    flex:none;width:48px;height:48px;border-radius:12px;background:var(--navy);color:#f4efe4;
+    font-family:var(--serif);font-size:15px;letter-spacing:.05em;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;line-height:1.2;
+  }
+  .step .stepno small{font-size:9px;letter-spacing:.14em;color:var(--gold-soft);}
+  .step .stepbody h4{font-family:var(--serif);font-weight:600;color:var(--navy);font-size:16.5px;margin-bottom:5px;}
+  .step .stepbody p{font-size:14px;color:var(--ink-soft);line-height:1.85;}
+  .cost-note{
+    margin-top:20px;background:var(--paper-2);border:1px dashed var(--gold-soft);border-radius:10px;
+    padding:16px 20px;font-size:14px;color:var(--ink);display:flex;gap:12px;align-items:flex-start;
+  }
+  .cost-note svg{width:22px;height:22px;flex:none;color:var(--gold);margin-top:2px;}
+
+  /* ===== 誠実注記 ===== */
+  .fine{
+    font-size:12.5px;color:var(--ink-soft);line-height:1.8;
+    background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:22px;
+    display:flex;gap:11px;align-items:flex-start;
+  }
+  .fine svg{width:19px;height:19px;flex:none;color:var(--ink-soft);margin-top:2px;}
+
+  /* ===== 結び ===== */
+  .closing{background:linear-gradient(180deg,var(--paper) 0%, #efe8d8 100%);}
+  .closing .cbox{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:16px;
+    padding:40px 34px;text-align:center;
+  }
+  .closing .ornament{color:var(--gold);margin-bottom:20px;}
+  .closing .ornament svg{width:44px;height:auto;}
+  .closing p.msg{font-family:var(--serif);font-size:17px;color:var(--navy);line-height:2.1;margin-bottom:8px;}
+  .closing p.sub{font-size:14px;color:var(--ink-soft);line-height:1.95;margin:18px 0 26px;}
+  .sign{
+    display:inline-flex;flex-direction:column;gap:4px;padding-top:22px;border-top:1px solid var(--line);
+  }
+  .sign .from-label{font-size:11px;letter-spacing:.18em;color:var(--gold);font-family:var(--serif);}
+  .sign .from-name{font-family:var(--serif);font-size:20px;color:var(--navy);letter-spacing:.06em;}
+  .sign .from-desc{font-size:12px;color:var(--ink-soft);}
+  .contact{margin-top:24px;font-size:12.5px;color:var(--ink-soft);}
+
+  footer{padding:26px 0 40px;text-align:center;}
+  footer p{font-size:11px;color:var(--ink-soft);letter-spacing:.06em;}
+
+  /* ===== 印刷（A4縦） ===== */
+  @media print{
+    body{background:#fff;font-size:11.5pt;line-height:1.7;}
+    .hero{padding:24pt 0 18pt;}
+    section{padding:16pt 0;page-break-inside:avoid;}
+    .ba-card,.split-col,.step,.type-card,.figure,.point-list>li{page-break-inside:avoid;}
+    .hero h1{font-size:22pt;}
+    h2.chap{font-size:15pt;}
+    .figure,.ba-card,.split-col,.type-card,.quote,.cost-note,.fine,.closing .cbox{
+      box-shadow:none;background:#fff;
+    }
+  }
+  @media(max-width:520px){
+    body{font-size:15px;}
+    .wrap,.hero-inner{padding:0 18px;}
+    section{padding:42px 0;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="kicker">弁護士業務 &times; AI活用のご提案</div>
+    <h1>先生の時間を、<br><span class="accent">いちばん大切な仕事</span>に返す。</h1>
+    <p class="sub">
+      AIは、判断や交渉といった「先生にしかできない仕事」を代わることはできません。
+      けれど、その手前にある下ごしらえ ―― 清書、要約、整理、下書き ―― を引き受けて、
+      一日の時間を静かに取り戻すことはできます。
+    </p>
+    <div class="signrow">
+      <span class="thanks">この一年、大変お世話になりました。日頃の感謝を込めて。</span>
+      <span class="from">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 21s-6.5-4.35-9-8.5C1.4 9.8 2.6 6 6 6c2 0 3.2 1.2 4 2.4C10.8 7.2 12 6 14 6c3.4 0 4.6 3.8 3 6.5C18.5 16.65 12 21 12 21z"/></svg>
+        贈り主 ・ おけもん
+      </span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 第1章 ============ -->
+<section>
+  <div class="wrap">
+    <span class="chap-no">第 一 章</span>
+    <h2 class="chap">弁護士の一日は、書類と時間との戦い</h2>
+    <p class="lead">
+      書面の起案、積み上がった記録を読む時間、期日の管理、依頼者への対応、鳴りやまない電話とメール、
+      調べもの ―― 。<br>
+      先生にしかできない「判断・交渉・法廷」と、必ずしもそうではない「清書・要約・整理・下書き」が
+      一日のなかで混ざり合い、いつのまにか時間が溶けていく。まず、その一日を眺めるところから。
+    </p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 720 340" role="img" aria-label="弁護士の一日の仕事の仕分け図" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <style>
+            .f-t{font-family:'Yu Mincho','Hiragino Mincho ProN',serif;fill:#1e2b43;}
+            .f-s{font-family:'Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;fill:#5f5c52;}
+            .ln{fill:none;stroke:#1e2b43;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+            .ln-g{fill:none;stroke:#9a7a37;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+            .box{fill:#fbf8f1;stroke:#e0d6c2;stroke-width:1;}
+          </style>
+        </defs>
+
+        <!-- 左：先生にしかできない仕事 -->
+        <rect class="box" x="14" y="40" width="300" height="264" rx="12"/>
+        <text class="f-t" x="34" y="70" font-size="15">先生にしかできない仕事</text>
+        <line class="ln-g" x1="34" y1="82" x2="128" y2="82"/>
+
+        <!-- 天秤（判断） -->
+        <g transform="translate(44,108)">
+          <path class="ln" d="M18 2 v22 M4 10 h28 M8 10 l-6 12 h12 z M28 10 l-6 12 h12 z M10 30 h16"/>
+        </g>
+        <text class="f-t" x="88" y="126" font-size="14">判断</text>
+        <text class="f-s" x="88" y="144" font-size="11">証拠評価・法的構成・見立て</text>
+
+        <!-- 握手（交渉） -->
+        <g transform="translate(44,168)">
+          <path class="ln" d="M2 16 l7 -6 5 4 M30 16 l-7 -6 -5 4 M9 10 l5 4 4 -3 5 4 M2 22 l6 -5 M30 22 l-6 -5"/>
+        </g>
+        <text class="f-t" x="88" y="186" font-size="14">交渉</text>
+        <text class="f-s" x="88" y="204" font-size="11">相手方との折衝・和解</text>
+
+        <!-- 演壇（法廷） -->
+        <g transform="translate(44,228)">
+          <path class="ln" d="M4 30 h26 M8 30 v-14 M26 30 v-14 M6 16 h22 M17 16 v-12 M11 6 h12"/>
+        </g>
+        <text class="f-t" x="88" y="246" font-size="14">法廷</text>
+        <text class="f-s" x="88" y="264" font-size="11">主張・尋問・弁論</text>
+
+        <!-- 中央の矢印 -->
+        <g transform="translate(330,150)">
+          <text class="f-s" x="30" y="-6" font-size="11" text-anchor="middle" fill="#9a7a37">下ごしらえを</text>
+          <text class="f-s" x="30" y="10" font-size="11" text-anchor="middle" fill="#9a7a37">AIに任せる</text>
+          <path class="ln-g" d="M6 34 h48 M40 24 l16 10 -16 10"/>
+        </g>
+
+        <!-- 右：AIが下ごしらえできる仕事 -->
+        <rect class="box" x="406" y="40" width="300" height="264" rx="12"/>
+        <text class="f-t" x="426" y="70" font-size="15">AIが下ごしらえできる仕事</text>
+        <line class="ln-g" x1="426" y1="82" x2="560" y2="82"/>
+
+        <!-- 書類（清書） -->
+        <g transform="translate(436,104)">
+          <path class="ln-g" d="M4 2 h16 l8 8 v22 h-24 z M20 2 v8 h8 M9 16 h14 M9 22 h14 M9 28 h9"/>
+        </g>
+        <text class="f-t" x="480" y="120" font-size="14">清書・整形</text>
+        <text class="f-s" x="480" y="138" font-size="11">体裁・定型文の整え</text>
+
+        <!-- 要約 -->
+        <g transform="translate(436,158)">
+          <path class="ln-g" d="M4 6 h24 M4 14 h24 M4 22 h16 M4 30 h20"/>
+          <path class="ln-g" d="M22 27 l3 3 5 -6"/>
+        </g>
+        <text class="f-t" x="480" y="174" font-size="14">要約・時系列化</text>
+        <text class="f-s" x="480" y="192" font-size="11">大量記録の下読み</text>
+
+        <!-- フォルダ（整理） -->
+        <g transform="translate(436,212)">
+          <path class="ln-g" d="M4 8 h9 l3 4 h12 v18 h-24 z M4 8 v-2 h7 l2 2"/>
+        </g>
+        <text class="f-t" x="480" y="228" font-size="14">整理・分類</text>
+        <text class="f-s" x="480" y="246" font-size="11">資料の突合・仕分け</text>
+
+        <!-- 鉛筆（下書き） -->
+        <g transform="translate(436,262)">
+          <path class="ln-g" d="M2 26 l4 -12 16 -16 8 8 -16 16 -12 4 z M18 6 l8 8"/>
+        </g>
+        <text class="f-t" x="480" y="278" font-size="14">下書き</text>
+        <text class="f-s" x="480" y="296" font-size="11">第一稿のたたき台</text>
+      </svg>
+      <figcaption>
+        左の三つは、これからも先生の手のなかに。右の四つを AI が下ごしらえすれば、<br>
+        溶けていた時間が、判断と対話のために戻ってきます。
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 第2章 ============ -->
+<section>
+  <div class="wrap">
+    <span class="chap-no">第 二 章</span>
+    <h2 class="chap">AIができること ― Before / After 6選</h2>
+    <p class="lead">
+      いずれも「AIが最後まで仕上げる」話ではありません。<span class="serif" style="color:var(--navy)">下ごしらえは AI、
+      仕上げと責任は先生</span>。その分担を、身近な六つの場面でご覧ください。<br>
+      ※ 時間はあくまで一例・目安です。案件によって当然変わります。
+    </p>
+
+    <div class="ba-grid">
+
+      <!-- 1 -->
+      <div class="ba-card">
+        <div class="head">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12h5M10 16h5"/></svg></div>
+          <div><span class="no">CASE 01</span><h3>書面の第一稿</h3></div>
+        </div>
+        <div class="ba-body">
+          <div class="ba-row before"><span class="ba-tag before">Before</span><span class="txt">内容証明・通知書・定型契約書を、白紙から起こす。例えば1通あたり1〜2時間。</span></div>
+          <div class="ba-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg><span>AIで下ごしらえ</span></div>
+          <div class="ba-row after"><span class="ba-tag after">After</span><span class="txt">要点を伝えて AI が8割の下書き。先生が最後の2割を精査して品質を担保。</span></div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="ba-card">
+        <div class="head">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 10h16M4 14h10M4 18h13"/><circle cx="19" cy="17" r="3"/><path d="M18 17l.8.8 1.6-1.8"/></svg></div>
+          <div><span class="no">CASE 02</span><h3>大量記録の要約と時系列整理</h3></div>
+        </div>
+        <div class="ba-body">
+          <div class="ba-row before"><span class="ba-tag before">Before</span><span class="txt">通帳・診療記録・メールの往復を、目で追って自分で年表に。例えば半日がかり。</span></div>
+          <div class="ba-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg><span>AIで下ごしらえ</span></div>
+          <div class="ba-row after"><span class="ba-tag after">After</span><span class="txt">AI が日付順の時系列表に整理。先生は突き合わせと解釈に集中できる。</span></div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="ba-card">
+        <div class="head">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg></div>
+          <div><span class="no">CASE 03</span><h3>リサーチの入口</h3></div>
+        </div>
+        <div class="ba-body">
+          <div class="ba-row before"><span class="ba-tag before">Before</span><span class="txt">論点の当たりをつけ、関連しそうな法令を一から洗い出す最初の手間。</span></div>
+          <div class="ba-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg><span>AIで下ごしらえ</span></div>
+          <div class="ba-row after"><span class="ba-tag after">After</span><span class="txt">AI で論点と関連法令の見取り図を作り、<b style="color:var(--danger)">原典は必ず先生が確認</b>。あくまで入口として。</span></div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="ba-card">
+        <div class="head">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6"/></svg></div>
+          <div><span class="no">CASE 04</span><h3>音声メモ → 打合せメモ</h3></div>
+        </div>
+        <div class="ba-body">
+          <div class="ba-row before"><span class="ba-tag before">Before</span><span class="txt">打合せや移動のあと、記憶を頼りにメモを起こし直す。</span></div>
+          <div class="ba-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg><span>AIで下ごしらえ</span></div>
+          <div class="ba-row after"><span class="ba-tag after">After</span><span class="txt">移動中に話すだけ。文字起こし→要点整理まで AI が下書き。仕上げは先生の目で。</span></div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="ba-card">
+        <div class="head">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h11M4 9h8M4 13h11"/><path d="M15 18h6M18 15l3 3-3 3"/></svg></div>
+          <div><span class="no">CASE 05</span><h3>依頼者向けの「やさしい言葉」</h3></div>
+        </div>
+        <div class="ba-body">
+          <div class="ba-row before"><span class="ba-tag before">Before</span><span class="txt">法律用語を、依頼者に伝わる言葉へかみ砕いて説明文を書く。</span></div>
+          <div class="ba-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg><span>AIで下ごしらえ</span></div>
+          <div class="ba-row after"><span class="ba-tag after">After</span><span class="txt">AI が平易な言い換えの下書き。先生が正確さを確かめて、そのまま説明に使える。</span></div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="ba-card">
+        <div class="head">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 8h18M8 12h6M8 16h4"/><circle cx="17" cy="15" r="2"/></svg></div>
+          <div><span class="no">CASE 06</span><h3>Googleドキュメント共有での起案往復</h3></div>
+        </div>
+        <div class="ba-body">
+          <div class="ba-row before"><span class="ba-tag before">Before</span><span class="txt">修正のたびにメール添付で送り合い、どれが最新版か分からなくなる。</span></div>
+          <div class="ba-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg><span>同じ書面を同時に</span></div>
+          <div class="ba-row after"><span class="ba-tag after">After</span><span class="txt">一つの書面を同時に見ながら、その場で赤入れ。往復のタイムラグが消える。</span></div>
+        </div>
+        <div class="recommend">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.6H21l-5.3 4 2 6.6L12 15.8 6.3 19.2l2-6.6L3 8.6h6.6z"/></svg>
+          今日お話に出た「共有しながら更新できる」を、まずここから。最初の一歩におすすめです。
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ 第3章 ============ -->
+<section>
+  <div class="wrap">
+    <span class="chap-no">第 三 章</span>
+    <h2 class="chap">ご懸念 ① ―「セキュリティは大丈夫？」</h2>
+    <p class="lead">
+      これは、逃げずにお話しすべきいちばん大事な点だと思っています。結論から言えば、
+      <span class="serif" style="color:var(--navy)">「何を入れるか」の線引きと運用</span>で、実用に足る安全性は確保できます。
+    </p>
+
+    <div class="split">
+      <div class="split-col ok">
+        <h4>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          入れてよい情報
+        </h4>
+        <ul>
+          <li>依頼者名を伏せた、匿名化・仮名化ずみの事実関係</li>
+          <li>一般的な論点・法令・書式の相談</li>
+          <li>「A社」「甲」などに置き換えた設定での下書き依頼</li>
+          <li>公知の情報・ひな型の整形</li>
+        </ul>
+      </div>
+      <div class="split-col ng">
+        <h4>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          入れてはいけない情報
+        </h4>
+        <ul>
+          <li>依頼者の実名・連絡先などの個人情報</li>
+          <li>事件番号・当事者が特定できる固有名詞</li>
+          <li>機微情報（健康・前科・財産の詳細など）</li>
+          <li>そのまま貼ると本人が特定できてしまう資料</li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="point-list">
+      <li>
+        <span class="pnum">1</span>
+        <div class="ptxt">
+          <h4>匿名化してから相談する、を運用の基本に</h4>
+          <p>名前や特定情報を「甲・乙」「A社」に置き換えてから AI に渡す。この一手間を習慣にするだけで、リスクの大半は下げられます。</p>
+        </div>
+      </li>
+      <li>
+        <span class="pnum">2</span>
+        <div class="ptxt">
+          <h4>法人向け・有料プランの「学習させない」設定を使う</h4>
+          <p>ビジネス向けの AI サービスには、入力データを学習に使わない設定や契約形態が用意されているものがあります。導入前に利用規約・データの取り扱いを確認することが前提です。</p>
+        </div>
+      </li>
+      <li>
+        <span class="pnum">3</span>
+        <div class="ptxt">
+          <h4>端末とアカウントの基本を守る</h4>
+          <p>二段階認証を有効にする、共有パソコンでログインしたままにしない。特別なことではなく、日常のオンライン管理と同じ発想です。</p>
+        </div>
+      </li>
+      <li>
+        <span class="pnum">4</span>
+        <div class="ptxt">
+          <h4>それでも、リスクはゼロにはならない</h4>
+          <p>ここは正直にお伝えします。だからこそ「扱う情報のレベルに応じて使い分ける」。機微な情報ほど手前で止め、下ごしらえは安全な範囲に留める ―― この線引きこそが、いちばんの安全策です。</p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="fine">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+      <span>守秘義務に関わる運用ですので、実際のご利用にあたっては、所属される弁護士会の指針や関連する規程をご確認のうえでのご判断をおすすめします。本資料は、あくまで考え方の入口としてのご提案です。</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 第4章 ============ -->
+<section>
+  <div class="wrap">
+    <span class="chap-no">第 四 章</span>
+    <h2 class="chap">ご懸念 ② ―「自分の頭で考える力が、鈍りませんか？」</h2>
+    <p class="lead">
+      もっともなご懸念です。私自身、最初にいちばん引っかかった問いでした。
+      けれど毎日 AI と働いてみて、答えははっきりしています。
+    </p>
+
+    <div class="quote">
+      <p>AIに「任せる」仕事と、AIと「議論する」仕事を分ければ、思考はむしろ研がれる。</p>
+      <span class="who">― AIは、優秀な書記官であり修習生。第一稿は書かせても、判断と署名は、常に先生のもの。</span>
+    </div>
+
+    <p style="font-size:15px;color:var(--ink);margin:6px 0 22px;line-height:1.95;">
+      むしろ「AIの出力を疑って赤を入れる」行為そのものが、検証の訓練になります。
+      出てきた文章のどこが弱いか、どの前提が甘いかを突く読み方は、日々先生がされていることと同じ。
+      使い方を二つの型に分けるのが要点です。
+    </p>
+
+    <div class="type-cards">
+      <div class="type-card">
+        <div class="label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 13h5M10 16h5"/></svg>
+          TYPE A ― 任せる
+        </div>
+        <h4>下書きは、任せる</h4>
+        <p>清書・要約・整形・たたき台。答えが決まっている作業は、迷わず AI に。ここで浮いた時間を、次の型に回します。</p>
+      </div>
+      <div class="type-card">
+        <div class="label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10h8M8 14h5"/><path d="M4 5h16v11H9l-4 4V16H4z"/></svg>
+          TYPE B ― 議論する
+        </div>
+        <h4>判断は、壁打ち相手として使う</h4>
+        <p>結論を聞くのではなく「この主張の穴は？」と反対尋問する。AI に反論させ、自分の見立てを検証する。最終判断は必ず自分 ―― この順番を崩さない。</p>
+      </div>
+    </div>
+
+    <div class="quote" style="margin-top:24px;">
+      <p>「考える量は、むしろ増えました。考える場所が、清書から判断へ移っただけです。」</p>
+      <span class="who">― 毎日 AI と働いている、贈り主の実感として。</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 第5章 ============ -->
+<section>
+  <div class="wrap">
+    <span class="chap-no">第 五 章</span>
+    <h2 class="chap">小さく始める、三つのステップ</h2>
+    <p class="lead">
+      大がかりな導入は要りません。今お使いのパソコンとスマートフォンだけで、今日から始められます。
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="stepno">01<small>STEP</small></div>
+        <div class="stepbody">
+          <h4>Googleドキュメント共有を、一つの案件書面で試す</h4>
+          <p>今日お話に出た「同じ書面を共有しながら更新する」を、まず一件だけ。往復のストレスが消える手応えを、最初に味わっていただくのがおすすめです。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="stepno">02<small>STEP</small></div>
+        <div class="stepbody">
+          <h4>機微情報を含まない定型文書の下書きを、AIに</h4>
+          <p>匿名化した設定で、通知書やお知らせ文のたたき台をつくらせてみる。「8割を任せて2割を直す」感覚を、安全な範囲でつかむ段階です。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="stepno">03<small>STEP</small></div>
+        <div class="stepbody">
+          <h4>慣れたら、記録整理・リサーチの入口へ</h4>
+          <p>時系列の整理や論点の見取り図づくりへ広げる。原典の確認と最終判断は、変わらず先生の手で。ここまで来ると、一日の時間の使い方が変わってきます。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cost-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M8 7c-2 0-3 1.2-3 2.6C5 12 7 12.5 9 13c2 .5 4 1 4 3.4 0 1.4-1 2.6-3 2.6-2.3 0-4-1.3-4-3"/></svg>
+      導入コストは、ほぼゼロ。新しい機材も特別な契約も、まずは要りません。今の環境のまま、片手で始められる範囲からで十分です。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 結び ============ -->
+<section class="closing">
+  <div class="wrap">
+    <div class="cbox">
+      <div class="ornament">
+        <svg viewBox="0 0 120 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2 12h40M78 12h40"/><path d="M60 4l3.2 5.2L69 12l-5.8 2.8L60 20l-3.2-5.2L51 12l5.8-2.8z"/><circle cx="46" cy="12" r="1.6"/><circle cx="74" cy="12" r="1.6"/></svg>
+      </div>
+      <p class="msg">
+        この一年、大変お世話になりました。<br>
+        私は、AIを毎日の仕事と暮らしに使って、<br>人生が変わった一人です。
+      </p>
+      <p class="sub">
+        先生の毎日が、少しでも軽くなるのなら。<br>
+        大切な仕事に、もっと時間を使えるようになるのなら。<br>
+        その一歩を、いつでも隣で伴走します。押し売りは、いたしません。
+      </p>
+      <div class="sign">
+        <span class="from-label">FROM</span>
+        <span class="from-name">おけもん</span>
+        <span class="from-desc">介護福祉の現場16年 ― いまは AI活用の個人事業主として</span>
+      </div>
+      <p class="contact">ご関心があれば、いつでもお気軽に。まずは雑談からでも。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>本資料は感謝を込めた私的なご提案です &middot; 統計・判例の引用は行っていません &middot; 2026</p>
+</footer>
+
+</body>
+</html>
