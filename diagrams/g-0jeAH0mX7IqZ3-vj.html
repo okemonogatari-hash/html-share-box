@@ -1156,14 +1156,23 @@
 
 <script>
   const animEls = document.querySelectorAll('.fade-in, .stagger');
-  const animObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); animObs.unobserve(e.target); } });
-  }, { threshold: 0.05, rootMargin: '0px 0px -8% 0px' });
-  animEls.forEach(el => {
-    const r = el.getBoundingClientRect();
-    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
-    else animObs.observe(el);
-  });
+  // 根本対策（2026-07-09発見）：#sec-replay等へのURLフラグメント直リンク・共有リンクで着地した場合、
+  // ブラウザの自然なスクロールを経由しないためgetBoundingClientRectの判定タイミングと
+  // ブラウザ自身のフラグメントジャンプ（scroll-behavior:smooth時は特に）が競合し、
+  // 着地先セクションがopacity:0のまま表示されない事故が起きうる（れおっちさん本取説で実確認）。
+  // フラグメント付き読み込みは演出そのものを諦めて即座に全部表示する。
+  if (window.location.hash) {
+    animEls.forEach(el => el.classList.add('is-visible'));
+  } else {
+    const animObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); animObs.unobserve(e.target); } });
+    }, { threshold: 0.05, rootMargin: '0px 0px -8% 0px' });
+    animEls.forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+      else animObs.observe(el);
+    });
+  }
 
   const tocPc = document.getElementById('tocPc');
   const heroEl = document.getElementById('top');

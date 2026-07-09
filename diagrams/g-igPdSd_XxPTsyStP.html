@@ -902,18 +902,28 @@
 (function(){
   var targets = document.querySelectorAll('.reveal, .chap-head');
   var revealAll = function(){ targets.forEach(function(el){ el.classList.add('is-visible'); }); };
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || typeof IntersectionObserver === 'undefined') {
+  var noAnimation = window.matchMedia('(prefers-reduced-motion: reduce)').matches || typeof IntersectionObserver === 'undefined';
+  // 根本原因（2026-07-09発見）：IntersectionObserverは「上から自然にスクロールしてくる」前提の仕組み。
+  // TOCの直リンクや共有リンクで #sec-replay のような特定セクションへ直接着地すると、
+  // そのセクションが一度も「画面外→画面内」の変化を通らないためIOが発火せず、
+  // opacity:0のまま固まって本文が丸ごと見えなくなる（本人確認済みの実バグ）。
+  // 対策は「発火を待つ」のではなく、フラグメント付き着地そのものを検知して演出を最初からスキップすること。
+  var deepLinked = !!window.location.hash;
+  if (noAnimation || deepLinked) {
     revealAll();
-  } else {
-    var anyRevealed = false;
+  }
+  if (!noAnimation) {
+    var anyRevealed = deepLinked;
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
         if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); anyRevealed = true; }
       });
     }, { threshold: 0.12 });
     targets.forEach(function(el){ io.observe(el); });
-    // 安全策：IntersectionObserverが3秒経っても一度も発火しない場合だけ、強制的に全部revealする
-    setTimeout(function(){ if (!anyRevealed) revealAll(); }, 3000);
+    // 安全策：フラグメント無しの通常読み込みで、IntersectionObserverが3秒経っても一度も発火しない場合だけ強制revealする
+    if (!deepLinked) {
+      setTimeout(function(){ if (!anyRevealed) revealAll(); }, 3000);
+    }
   }
 
   // TOC active state + show/hide
