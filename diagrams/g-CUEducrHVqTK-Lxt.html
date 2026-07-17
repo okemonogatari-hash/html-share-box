@@ -61,6 +61,10 @@ h1.q::after{content:"";display:block;width:34px;height:3px;border-radius:3px;
 .uline{width:62px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--sakura),var(--sun));margin:12px auto 2px}
 .hint{font-size:14px;color:var(--ink-soft);margin:10px 0 22px;white-space:pre-wrap}
 .hint a{color:var(--sakura-deep)}
+.why-box{margin-top:16px;background:var(--cream,#fdf7f4);border:1.5px dashed var(--sakura,#f47b6a);border-radius:14px;padding:14px}
+.why-lead{font-size:13.5px;color:var(--ink);margin-bottom:8px}
+.why-box textarea{min-height:64px}
+.why-escape{display:block;margin:8px auto 0;font-size:13px}
 .optional{font-size:12px;color:var(--leaf);font-weight:700;margin-left:6px}
 
 input[type=text],textarea,input[type=url]{
@@ -158,6 +162,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;heigh
    IRODORI じぶんシート — 全メンバー共通 面談ヒアリングシート（v0.7）
    用途: メンバー面談（1on1）用。事前にメンバーが記入→面談で深掘り。
    ※人事評価システム(Notion統計表)とは別物。「評価」ではなく現状把握・悩み相談がメイン。
+   --- v0.8（2026-07-17 選択式に「選んだ理由」必須欄＋逃げ道ボタンを追加）---
+   ・choices型（担当・Philosophy）に理由テキスト欄を追加。選択したのに理由が空だと次へ進めない
+   ・「うまく言葉にできない…面談のときに相談する」ボタンで定型文が入る逃げ道つき
+   ・理由は回答配列に「（理由）〜」として合流＝GAS/スプシ/控えメールの改修不要
    --- v0.7.1（2026-07-17 控えメールの案内を冒頭＋完成画面に明記）---
    ・intro：メアド入力で回答コピーが本人に届く旨を追記
    ・完成画面：入力済みメアドを表示して「控えが届く」ことを明示（未入力者には一般案内）
@@ -270,9 +278,16 @@ function render(){
     const pre=cur.presets?`<div class="presets"><span class="presets-lead">💡 タップで入れられます（そのまま自由に書き足せます）</span><div class="preset-chips">`+cur.presets.map(o=>`<button type="button" class="pchip${(v||'').includes(o)?' used':''}" data-o="${esc(o)}" onclick="addPreset(this)">＋ ${o}</button>`).join('')+`</div></div>`:'';
     field=pre+`<textarea id="f" placeholder="ここに入力…" oninput="autosave()">${esc(v||'')}</textarea>`;
   }else if(cur.type==='choices'){
-    const sel=Array.isArray(v)?v:[];
+    const raw=Array.isArray(v)?v:[];
+    const sel=raw.filter(x=>!String(x).startsWith('（理由）'));
+    const why=(raw.find(x=>String(x).startsWith('（理由）'))||'').replace(/^（理由）/,'');
     field=`<div class="chips" id="f">`+cur.opts.map(o=>
-      `<button type="button" class="chip ${sel.includes(o)?'on':''}" data-o="${esc(o)}" onclick="toggleChip(this)">${o}</button>`).join('')+`</div>`;
+      `<button type="button" class="chip ${sel.includes(o)?'on':''}" data-o="${esc(o)}" onclick="toggleChip(this)">${o}</button>`).join('')+`</div>
+    <div class="why-box">
+      <p class="why-lead">💬 <b>それを選んだ理由・いまの気持ちをひとこと</b>（選んだらここだけは書いてね✍️）</p>
+      <textarea id="why" placeholder="例）いちばん時間を使っているから／最近ここを頑張っているから など" oninput="autosave()">${esc(why)}</textarea>
+      <button type="button" class="btn-skip why-escape" onclick="whyEscape()">🙋 うまく言葉にできない…面談のときに相談する</button>
+    </div>`;
   }else if(cur.type==='scale'){
     const touched=(v!==undefined&&v!==null&&v!=='');
     const val=touched?v:Math.round((cur.min+cur.max)/2);
@@ -309,7 +324,11 @@ function linkify(s){return esc(s).replace(/(https?:\/\/[^\s]+)/g,'<a href="$1" t
 function grab(){
   const cur=items[idx]; if(!cur||cur.type==='break')return;
   const f=document.getElementById('f'); if(!f)return;
-  if(cur.type==='choices'){answers[cur.id]=[...f.querySelectorAll('.chip.on')].map(c=>c.dataset.o);}
+  if(cur.type==='choices'){
+    const picked=[...f.querySelectorAll('.chip.on')].map(c=>c.dataset.o);
+    const w=document.getElementById('why');
+    answers[cur.id]=(w&&w.value.trim())?[...picked,'（理由）'+w.value.trim()]:picked;
+  }
   else if(cur.type==='scale'){answers[cur.id]= f.dataset.touched==='1' ? f.value : (answers[cur.id]||'');}
   else{answers[cur.id]=f.value;}
 }
@@ -327,7 +346,27 @@ function addPreset(el){
   }
   autosave();f.focus();
 }
-function next(){grab();idx++;save();if(idx>=items.length){renderResult();return;}render();}
+function next(){
+  grab();
+  const cur=items[idx];
+  if(cur&&cur.type==='choices'){
+    const raw=Array.isArray(answers[cur.id])?answers[cur.id]:[];
+    const hasChoice=raw.some(x=>!String(x).startsWith('（理由）'));
+    const hasWhy=raw.some(x=>String(x).startsWith('（理由）'));
+    if(hasChoice&&!hasWhy){
+      toast("選んだ理由をひとことだけお願い🙏 難しければ下のボタンでOKだよ");
+      const w=document.getElementById('why'); if(w)w.focus();
+      return;
+    }
+  }
+  idx++;save();if(idx>=items.length){renderResult();return;}render();
+}
+function whyEscape(){
+  const w=document.getElementById('why'); if(!w)return;
+  w.value="うまく言葉にできないので、面談のときに相談させてください🙏";
+  autosave();
+  toast("OK！面談で一緒に言葉にしよう😊 「次へ」で進めるよ");
+}
 function prev(){grab();do{idx--;}while(idx>0&&items[idx].type==='break');if(idx<0)idx=0;save();render();}
 function skip(){const cur=items[idx];if(cur){answers[cur.id]=(cur.type==='choices')?[]:'';}idx++;save();if(idx>=items.length){renderResult();return;}render();}
 
