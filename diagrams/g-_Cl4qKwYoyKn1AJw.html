@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>IRODORI 人事評価のしくみ（進捗共有）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#fdf7f4; --card:#ffffff; --peach:#fdeae2; --skyblue:#e6f5f3;
+  --sakura:#f47b6a; --sakura-deep:#e8607e; --leaf:#56b8ad; --sun:#f6a14f;
+  --ink:#3f3a39; --ink-soft:#8a807c; --line:#f0e2dc;
+}
+*{margin:0;padding:0;box-sizing:border-box;min-width:0}
+html,body{overflow-x:hidden}
+body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--cream);color:var(--ink);line-height:1.8;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Zen Maru Gothic',sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px}
+.icon{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+.hero{padding:44px 0 30px;text-align:center}
+.badge{display:inline-block;background:var(--peach);color:var(--sakura-deep);font-size:.75rem;font-weight:700;padding:4px 14px;border-radius:999px;letter-spacing:.05em}
+.hero h1{font-size:clamp(1.35rem,4.5vw,2rem);font-weight:900;margin:14px 0 4px;letter-spacing:.03em}
+.hero .sub{color:var(--ink-soft);font-size:.88rem}
+
+section{padding:26px 0}
+h2{font-size:clamp(1.1rem,3.4vw,1.35rem);font-weight:900;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+h2 .num{font-size:.8rem;color:#fff;background:var(--leaf);min-width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+h2.sun .num{background:var(--sun)}
+h2.sakura .num{background:var(--sakura)}
+
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:18px 20px}
+
+/* step flow */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px 18px}
+.step .who{min-width:104px;text-align:center;font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:.82rem;border-radius:10px;padding:6px 4px;margin-top:2px}
+.step .who small{display:block;font-weight:500;font-size:.68rem;opacity:.85}
+.w-dora{background:var(--skyblue);color:#2a8d82}
+.w-cc{background:var(--peach);color:var(--sakura-deep)}
+.w-ai{background:#fdf1e0;color:#c77b1e}
+.step p{font-size:.9rem}
+.step p b{font-weight:700}
+.step p span{color:var(--ink-soft);font-size:.84rem;display:block}
+.step-arrow{display:flex;justify-content:center;padding:6px 0;color:var(--sakura)}
+.step-arrow svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.goal{background:var(--peach);border:2px dashed var(--sakura);border-radius:16px;padding:14px 18px;text-align:center;font-size:.95rem}
+.goal b{font-family:'Zen Maru Gothic',sans-serif;font-weight:900}
+
+/* 評価表カード */
+.hyoka{border-color:var(--sun)}
+.hyoka h3{display:flex;align-items:center;gap:8px;font-size:1rem;font-weight:900;margin-bottom:10px}
+.hyoka h3 .icon{color:var(--sun)}
+.hyoka ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.hyoka li{display:flex;gap:8px;align-items:flex-start;font-size:.88rem}
+.hyoka li svg{margin-top:5px;color:var(--leaf);width:15px;height:15px}
+.hyoka .note{margin-top:12px;background:var(--cream);border-radius:10px;padding:10px 14px;font-size:.82rem;color:var(--ink-soft)}
+
+/* 運用 */
+.cycle{display:flex;flex-direction:column;gap:10px}
+.crow{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 16px}
+.crow .when{min-width:96px;font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:.82rem;color:var(--leaf);margin-top:2px}
+.crow p{font-size:.88rem}
+.crow p small{color:var(--ink-soft);display:block;font-size:.8rem}
+
+/* 論点 */
+.ronten{display:flex;flex-direction:column;gap:12px}
+.rcard{background:var(--card);border:2px solid var(--sun);border-radius:16px;padding:16px 18px}
+.rcard h3{display:flex;gap:10px;align-items:flex-start;font-size:.95rem;font-weight:900;margin-bottom:6px}
+.rcard h3 .qnum{color:#fff;background:var(--sun);min-width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;font-family:'Zen Maru Gothic',sans-serif;margin-top:2px}
+.rcard .q{font-size:.9rem;margin-bottom:6px}
+.rcard .a{font-size:.84rem;color:var(--ink-soft);background:var(--cream);border-radius:10px;padding:8px 12px}
+.rcard .a b{color:var(--ink)}
+
+/* 予定 */
+.plan{display:flex;flex-direction:column;gap:10px}
+.prow{display:flex;gap:12px;align-items:flex-start}
+.prow .month{min-width:88px;text-align:center;font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:.85rem;color:#fff;background:var(--sakura);border-radius:10px;padding:5px 4px;margin-top:2px}
+.prow:nth-child(2) .month{background:var(--sun)}
+.prow:nth-child(3) .month{background:var(--leaf)}
+.prow p{font-size:.9rem}
+.prow p small{display:block;color:var(--ink-soft);font-size:.8rem}
+
+footer{padding:30px 0 42px;text-align:center;color:var(--ink-soft);font-size:.74rem;border-top:1px solid var(--line);margin-top:26px}
+</style>
+</head>
+<body>
+
+<header class="hero wrap">
+  <span class="badge">🔒 社内限定・関係者のみ</span>
+  <h1>IRODORI 人事評価のしくみ</h1>
+  <div class="sub">いま作っているもの・検討中のこと（2026-07-17時点）</div>
+</header>
+
+<section class="wrap">
+  <h2><span class="num">1</span>いま、こういう体制で作っています</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="who w-dora">Notion<small>（どらさん構築）</small></div>
+      <p><b>データを集める</b><span>朝礼・日報・フィロソフィーを月ごとに集計するデータベースが完成。6月分・16名の実績データがすでに入っています。</span></p>
+    </div>
+    <div class="step-arrow"><svg viewBox="0 0 24 24"><path d="M12 4v16"/><path d="m6 14 6 6 6-6"/></svg></div>
+    <div class="step">
+      <div class="who w-cc">Claude Code<small>（設計担当）</small></div>
+      <p><b>評価の「座組」を設計する ← いまここ</b><span>集まったデータを「評価の材料」に変換するルールを設計中。評価表のフォーマット・AIへの指示文6本・運用手順書ができました。実データ1名分で試作済み。</span></p>
+    </div>
+    <div class="step-arrow"><svg viewBox="0 0 24 24"><path d="M12 4v16"/><path d="m6 14 6 6 6-6"/></svg></div>
+    <div class="step">
+      <div class="who w-ai">Notion AI<small>＋人事担当</small></div>
+      <p><b>ふだんの運用を回す</b><span>月初の集計（15分）→面談前の資料づくり→面談後の評価表づくり。AIは「材料を整える」まで。単価の判断は経営メンバーが行います。</span></p>
+    </div>
+  </div>
+  <div class="goal" style="margin-top:14px"><b>最終ゴール：</b>設計者がいなくても、<b>Notion AI＋人だけで完結して回る</b>仕組みにすること</div>
+</section>
+
+<section class="wrap">
+  <h2 class="sun"><span class="num">2</span>できたもの：評価表（1人1枚の「判断材料」）</h2>
+  <div class="card hyoka">
+    <h3><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>1枚に載るもの（3分で読める分量）</h3>
+    <ul>
+      <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><b>数字</b>：朝礼・日報などの実績をそのまま（データに写らない働き方の人には「⚠️写っていません」と明記）</span></li>
+      <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><b>本人の言葉</b>：面談シート（じぶんシート）の回答を原文で引用</span></li>
+      <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><b>面談メモ</b>と<b>まわりの見立て</b>：7つの観点＋根拠エピソード</span></li>
+      <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><b>単価レベル表との照合</b>：「いまのレベルの基準」と「次のレベルの基準」を並べて、何が足りていて何がこれからかを見える化</span></li>
+    </ul>
+    <div class="note">点数はつけません（いまのデータだと事務系に数字が偏り、デザイナーさん等の仕事が写らず不公平になるため）。そのかわり<b>「単価の根拠を言葉で説明できる」</b>状態を目指します。実データで試作したら、数字と本人の言葉を並べるだけで「次に話すべきこと」が浮かび上がりました。</div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2><span class="num">3</span>ふだんの回し方（担当者の作業は最小）</h2>
+  <div class="cycle">
+    <div class="crow"><span class="when">毎月・月初</span><p>数字を一覧に整形して記録<small>Notion AIに指示文をコピペするだけ・約15分</small></p></div>
+    <div class="crow"><span class="when">面談の前</span><p>数字＋本人の回答から面談用の資料を生成<small>1人あたり約10分</small></p></div>
+    <div class="crow"><span class="when">面談のあと</span><p>評価表の下書きを生成 → 人が確認して記録<small>AIの下書きをそのまま使わない（必ず人の目を通す）</small></p></div>
+    <div class="crow"><span class="when">3ヶ月ごと</span><p>全員分をまとめて経営メンバーへ → 単価の決裁 → 改定履歴に記録<small>ここだけが「判断」の場</small></p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2 class="sun"><span class="num">4</span>検討中の論点（ここを一緒に決めたい）</h2>
+  <div class="ronten">
+    <div class="rcard">
+      <h3><span class="qnum">Q1</span>Notion AIは、スプレッドシートを読みに行ける？</h3>
+      <p class="q">面談シート（じぶんシート）の回答はGoogleスプレッドシートに溜まる仕組み。Notion AIがそれを直接読めないと、受け渡しに一手間が発生する。</p>
+      <p class="a"><b>いまの案：</b>面談のタイミングで回答をNotion側に貼り付ける運用（1人1回・コピペ）でまず回す。Notion AIのコネクタ機能で直接読めるかは<b>要検証</b>。</p>
+    </div>
+    <div class="rcard">
+      <h3><span class="qnum">Q2</span>AIが作った評価表を、Notionのどこに・誰が集約する？</h3>
+      <p class="q">生成した評価表の置き場所（経営限定ページ？月次評価DBのメモ欄？）と、貼る担当がまだ固まっておらず、運用が不安定。</p>
+      <p class="a"><b>いまの案：</b>経営側限定ページの配下に「評価表置き場」を決め打ちし、面談後に人事担当が貼るところまでを手順書に固定する。<b>置き場所はこの会議で決めたい。</b></p>
+    </div>
+    <div class="rcard">
+      <h3><span class="qnum">Q3</span>「ふわっとした評価」にならない？　入れる意味ある？と言われない？</h3>
+      <p class="q">点数をつけない方針のため、そのままだと感想文っぽくなるリスクがある。</p>
+      <p class="a"><b>意味を出す鍵は3つ：</b>①<b>単価レベル基準の文章との照合</b>（次のレベルに何が足りないかが具体的に見える）②本人の自己認識とまわりの見立ての<b>ギャップ</b>③根拠となる<b>具体エピソード</b>。ゴールは「<b>単価の金額に対して、根拠を持って説明できる</b>」状態。まず試運転4名分で手応えを確認する。</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2 class="sakura"><span class="num">5</span>これからの予定</h2>
+  <div class="plan">
+    <div class="prow"><span class="month">7月</span><p>面談の試運転（4名）＋その4名分の評価表を実際に作ってみる<small>「判断材料になるか」「怖くないか」を確認</small></p></div>
+    <div class="prow"><span class="month">8月前半</span><p>担当者だけで回すリハーサル<small>手順書だけを見て、月次集計→面談資料づくりが回るかテスト</small></p></div>
+    <div class="prow"><span class="month">8月後半〜</span><p>Notion AI＋人だけで自走スタート<small>詰まった箇所を直して、仕組みとして自立</small></p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    IRODORI 人事評価 進捗共有資料 ／ 2026-07-17 作成<br>
+    社内関係者限定・このページのURLは外部に共有しないでください
+  </div>
+</footer>
+
+</body>
+</html>
