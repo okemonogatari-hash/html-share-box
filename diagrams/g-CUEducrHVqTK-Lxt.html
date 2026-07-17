@@ -158,6 +158,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;heigh
    IRODORI じぶんシート — 全メンバー共通 面談ヒアリングシート（v0.7）
    用途: メンバー面談（1on1）用。事前にメンバーが記入→面談で深掘り。
    ※人事評価システム(Notion統計表)とは別物。「評価」ではなく現状把握・悩み相談がメイン。
+   --- v0.7.1（2026-07-17 控えメールの案内を冒頭＋完成画面に明記）---
+   ・intro：メアド入力で回答コピーが本人に届く旨を追記
+   ・完成画面：入力済みメアドを表示して「控えが届く」ことを明示（未入力者には一般案内）
    --- v0.7（2026-07-07 メールアドレス質問＋回答控えメール送信を追加）---
    ・「あなたのこと」にemail項目を追加（任意）。入力があれば送信時に回答控えメールを本人へ送付
    --- v0.6（2026-07-07 スプレッドシート送信機能を追加）---
@@ -337,7 +340,8 @@ function intro(){
     <p class="tegaki" style="font-size:16px;color:var(--sakura-deep);margin:12px 0 18px">〜 答えてくと、あなたのシートが完成 〜</p>
     <p class="hint" style="text-align:left">これは「評価」じゃなくて、<b>あなたのことを知って、もっと働きやすくするため</b>の面談シートです😊<br>
     点数をつけたり比べたりするものじゃないよ。<b>最近どう？を聞かせてほしいだけ</b>。<br>
-    1問ずつ気軽に、難しい質問はスキップOK。途中で閉じても続きから書けます🌿</p>
+    1問ずつ気軽に、難しい質問はスキップOK。途中で閉じても続きから書けます🌿<br>
+    📧 メールアドレスを入れておくと、<b>回答のコピー（控え）があなたのメールにも届きます</b>（任意・あとで見返す用に）</p>
     <div class="nav" style="margin-top:24px">
       <button class="btn btn-primary" onclick="start()">はじめる →</button>
     </div>
@@ -388,6 +392,7 @@ function renderResult(){
       <button class="btn btn-ghost" onclick="(()=>{idx=items.length-1;while(items[idx]&&items[idx].type==='break')idx--;render()})()">← 修正する</button>
     </div>
     <p class="hint">「📤 送信する」を押すと、そのまま人事担当に届きます😊（コピー・保存は念のため手元用に）<br>
+    ${answers.email?`📧 回答のコピー（控え）が <b>${esc(answers.email)}</b> にも届きます。あとで見返してね。<br>`:`📧 メールアドレスを入力した人には、回答のコピー（控え）がメールでも届きます。<br>`}
     <span style="font-size:12px;color:var(--ink-soft)">※入力はこの端末にも保存されます。共用PCの人は、送ったあと「最初からやり直す」で消してね。</span></p>
     <div class="sheet">${sheet}</div>
     <div class="nav"><button class="btn-skip" onclick="resetAll()" style="margin:14px auto 0">最初からやり直す</button></div>
