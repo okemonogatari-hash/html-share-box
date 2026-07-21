@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>今週のおけもんトピック｜2026.07.01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board: #1e2f26;
+    --board-dark: #16241d;
+    --board-frame: #6b4a34;
+    --board-frame-dark: #4f3625;
+    --chalk-white: #f4f1e3;
+    --chalk-yellow: #f2d472;
+    --chalk-pink: #f0a8a8;
+    --chalk-blue: #8fc7d9;
+    --chalk-green: #a8d8b0;
+    --paper: #faf6ec;
+    --paper-line: #e6ddc8;
+    --ink: #2c2620;
+    --ink-soft: #5a5148;
+    --font-hand: 'Yomogi', cursive;
+    --font-serif: 'Shippori Mincho', 'Noto Serif JP', serif;
+    --font-sans: 'Noto Sans JP', sans-serif;
+  }
+  *,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family: var(--font-sans);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.9;
+    overflow-x: hidden;
+  }
+
+  /* ---------- HERO BOARD ---------- */
+  .hero{
+    position:relative;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(255,255,255,0.05), transparent 40%),
+      radial-gradient(ellipse at 80% 85%, rgba(255,255,255,0.04), transparent 45%),
+      linear-gradient(160deg, var(--board) 0%, var(--board-dark) 100%);
+    border: 14px solid var(--board-frame);
+    border-image: linear-gradient(160deg, var(--board-frame), var(--board-frame-dark)) 1;
+    margin: clamp(10px, 3vw, 28px);
+    border-radius: 6px;
+    box-shadow: 0 24px 60px rgba(20,15,8,0.35), inset 0 0 80px rgba(0,0,0,0.25);
+    padding: clamp(36px, 8vw, 80px) clamp(20px, 6vw, 60px) clamp(48px, 8vw, 90px);
+    overflow: hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 22%, rgba(255,255,255,0.18), transparent),
+      radial-gradient(1.5px 1.5px at 68% 8%, rgba(255,255,255,0.14), transparent),
+      radial-gradient(1px 1px at 40% 60%, rgba(255,255,255,0.12), transparent),
+      radial-gradient(1.5px 1.5px at 85% 45%, rgba(255,255,255,0.15), transparent),
+      radial-gradient(1px 1px at 25% 80%, rgba(255,255,255,0.1), transparent),
+      radial-gradient(1.5px 1.5px at 92% 78%, rgba(255,255,255,0.13), transparent);
+    pointer-events:none;
+  }
+  .hero-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    color: var(--chalk-yellow);
+    font-family: var(--font-hand);
+    font-size: clamp(14px, 2vw, 17px);
+    letter-spacing: 0.06em;
+    border: 2px dashed rgba(242,212,114,0.55);
+    border-radius: 999px;
+    padding: 6px 18px;
+    opacity:0;
+    transform: translateY(-8px);
+  }
+  .hero h1{
+    font-family: var(--font-hand);
+    color: var(--chalk-white);
+    font-size: clamp(34px, 7vw, 68px);
+    line-height: 1.3;
+    margin-top: 22px;
+    text-shadow: 0 2px 0 rgba(0,0,0,0.15);
+    opacity:0;
+    transform: translateY(14px) scale(0.98);
+  }
+  .hero h1 .accent{ color: var(--chalk-pink); }
+  .hero-sub{
+    margin-top: 18px;
+    color: rgba(244,241,227,0.72);
+    font-family: var(--font-sans);
+    font-size: clamp(13px, 1.6vw, 16px);
+    letter-spacing: 0.03em;
+    opacity:0;
+  }
+
+  .board-underline{
+    display:block;
+    width: min(320px, 70%);
+    height: 14px;
+    margin-top: 16px;
+    opacity:0;
+  }
+
+  /* topic board list */
+  .board-list{
+    margin-top: clamp(30px, 6vw, 56px);
+    display:grid;
+    gap: 14px;
+    max-width: 640px;
+  }
+  .board-item{
+    display:flex;
+    align-items:flex-start;
+    gap: 16px;
+    color: var(--chalk-white);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(15px, 2.2vw, 18px);
+    opacity:0;
+    transform: translateX(-10px);
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 4px 8px;
+    margin: -4px -8px;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .board-item:hover, .board-item:focus-visible{
+    background: rgba(244,241,227,0.08);
+    transform: translateX(2px);
+  }
+  .board-item span:last-child{ text-decoration: underline; text-decoration-color: rgba(244,241,227,0.25); text-underline-offset: 4px; }
+  .board-item:hover span:last-child, .board-item:focus-visible span:last-child{ text-decoration-color: currentColor; }
+  .board-num{
+    flex:none;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 2px solid var(--chalk-yellow);
+    color: var(--chalk-yellow);
+    font-family: var(--font-hand);
+    font-size: 17px;
+    display:flex; align-items:center; justify-content:center;
+    transform: rotate(-3deg);
+  }
+  .board-item:nth-child(3n+2) .board-num{ border-color: var(--chalk-pink); color: var(--chalk-pink); transform: rotate(2deg); }
+  .board-item:nth-child(3n) .board-num{ border-color: var(--chalk-blue); color: var(--chalk-blue); transform: rotate(-2deg); }
+
+  /* ---------- SECTIONS ---------- */
+  .wrap{ max-width: 760px; margin: 0 auto; padding: 0 clamp(18px, 5vw, 24px); }
+
+  section.topic{
+    padding: clamp(46px, 8vw, 72px) 0;
+    border-bottom: 1px solid var(--paper-line);
+    opacity: 0;
+    transform: translateY(24px);
+    scroll-margin-top: 28px;
+  }
+  section.topic:last-of-type{ border-bottom:none; }
+
+  .topic-eyebrow{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    color: var(--ink-soft);
+    font-family: var(--font-hand);
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  .topic-eyebrow .num-badge{
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--board);
+    color: var(--chalk-yellow);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 15px;
+  }
+  .topic h2{
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: var(--ink);
+  }
+  .topic p{
+    font-size: clamp(15px, 2vw, 16.5px);
+    color: var(--ink-soft);
+    max-width: 62ch;
+  }
+  .topic p + p{ margin-top: 14px; }
+
+  .chalk-divider{
+    width: 100%;
+    height: 18px;
+    margin: 10px 0 0;
+    opacity: 0.5;
+  }
+
+  /* mini quote card */
+  .quote-card{
+    margin-top: 22px;
+    background: #fff;
+    border: 1px solid var(--paper-line);
+    border-left: 4px solid var(--chalk-yellow);
+    border-radius: 4px;
+    padding: 16px 20px;
+    font-family: var(--font-hand);
+    font-size: 17px;
+    color: var(--ink);
+    box-shadow: 0 6px 18px rgba(44,38,32,0.05);
+  }
+  .topic:nth-child(3n) .quote-card{ border-left-color: var(--chalk-pink); }
+  .topic:nth-child(3n+1) .quote-card{ border-left-color: var(--chalk-blue); }
+
+  /* chat-log: the 乾杯会 speech bubbles */
+  .chat-log{
+    margin-top: 24px;
+    display: grid;
+    gap: 12px;
+  }
+  .chat-bubble{
+    background: var(--paper-line);
+    background: #fff;
+    border: 1px solid var(--paper-line);
+    border-radius: 4px 14px 14px 14px;
+    padding: 14px 18px;
+    max-width: 90%;
+    box-shadow: 0 4px 14px rgba(44,38,32,0.05);
+  }
+  .chat-bubble .speaker{
+    display:block;
+    font-family: var(--font-hand);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .chat-bubble p{
+    margin: 0 !important;
+    font-size: 15px !important;
+    color: var(--ink) !important;
+    max-width: none !important;
+  }
+  .chat-bubble.c-blue{ border-left: 3px solid var(--chalk-blue); }
+  .chat-bubble.c-yellow{ border-left: 3px solid var(--chalk-yellow); }
+  .chat-bubble.c-pink{ border-left: 3px solid var(--chalk-pink); }
+  .chat-bubble.c-green{ border-left: 3px solid var(--chalk-green); }
+
+  /* ---------- CLOSING BOARD ---------- */
+  .closing{
+    position:relative;
+    background: linear-gradient(160deg, var(--board) 0%, var(--board-dark) 100%);
+    border: 14px solid var(--board-frame);
+    border-image: linear-gradient(160deg, var(--board-frame), var(--board-frame-dark)) 1;
+    margin: clamp(10px, 3vw, 28px) clamp(10px, 3vw, 28px) clamp(30px, 6vw, 60px);
+    border-radius: 6px;
+    padding: clamp(44px, 8vw, 80px) clamp(20px, 6vw, 60px);
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(20,15,8,0.35);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .closing-icon{ margin: 0 auto 18px; width: 56px; height: 56px; }
+  .closing h3{
+    font-family: var(--font-hand);
+    color: var(--chalk-white);
+    font-size: clamp(26px, 5vw, 40px);
+    margin-bottom: 14px;
+  }
+  .closing p{
+    color: rgba(244,241,227,0.78);
+    max-width: 46ch;
+    margin: 0 auto;
+    font-size: clamp(14px, 2vw, 16px);
+  }
+  .closing-footer{
+    margin-top: 26px;
+    color: rgba(244,241,227,0.42);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .visible{ opacity:1 !important; transform: none !important; transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.2,.8,.2,1); }
+  .hero-tag.visible, .hero h1.visible, .hero-sub.visible, .board-underline.visible{ transition-delay: 0.05s; }
+</style>
+</head>
+<body>
+
+<div class="hero" id="hero">
+  <span class="hero-tag" data-reveal>本日のトピック</span>
+  <h1 data-reveal>今週の<span class="accent">おけもん</span><br>トピックボード</h1>
+  <p class="hero-sub" data-reveal>AIゆるっとラジオ ✕ みずのさん　2026.07.01 水曜配信</p>
+  <svg class="board-underline" data-reveal viewBox="0 0 320 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 8C40 2 80 12 120 6C160 0 200 12 240 6C270 1 295 9 318 5" stroke="#f2d472" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+
+  <div class="board-list">
+    <a class="board-item" data-reveal href="#topic-1"><span class="board-num">1</span><span>明日、人生初バンジー</span></a>
+    <a class="board-item" data-reveal href="#topic-2"><span class="board-num">2</span><span>ドクショネス（読書熱）、爆上がり</span></a>
+    <a class="board-item" data-reveal href="#topic-3"><span class="board-num">3</span><span>AI11人相手に本気トーク</span></a>
+    <a class="board-item" data-reveal href="#topic-4"><span class="board-num">4</span><span>新しい縁とチャンスが重なる週</span></a>
+    <a class="board-item" data-reveal href="#topic-5"><span class="board-num">5</span><span>Claude Design、検証祭り</span></a>
+    <a class="board-item" data-reveal href="#topic-6"><span class="board-num">6</span><span>旅程ガチ勢、時刻表との攻防</span></a>
+    <a class="board-item" data-reveal href="#topic-7"><span class="board-num">7</span><span>精神的に跳んで、明日は物理で跳ぶ</span></a>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="topic" id="topic-1">
+    <div class="topic-eyebrow"><span class="num-badge">1</span>明日、人生初バンジー</div>
+    <h2>跳ぶ場所は、岐阜・新旅足橋。</h2>
+    <p>明日13:00、日本屈指の高さを誇る新旅足橋でバンジージャンプ。今日はその前日。振り返ると、この1週間はずっと「跳ぶ」ための助走が続いていた気がする。</p>
+    <svg class="chalk-divider" viewBox="0 0 700 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10C90 2 170 16 260 8C350 0 430 16 520 8C580 3 640 12 696 7" stroke="#e6ddc8" stroke-width="2" stroke-linecap="round"/></svg>
+  </section>
+
+  <section class="topic" id="topic-2">
+    <div class="topic-eyebrow"><span class="num-badge">2</span>ドクショネス（読書熱）、爆上がり</div>
+    <h2>本を読む→その場でX投稿、が習慣になった週</h2>
+    <p>夜勤明けの関西大回り移動中、オーディオブックで「本を読む人はうまくいく」を聴いて、その場でX新シリーズ「おけ本棚」Day001を即興投稿。翌日からほぼ毎日更新して、今日でDay4。</p>
+    <p>並行してリベシティのノウハウ図書館にも2本投稿。「AIに全部覚えさせようとして失敗した話」に続いて出した「1,000人以上と話してわかった『強みを活かしている人の共通点』」が、3日間ランキングでまさかの瞬間風速1位（ブックマーク84件）に。読書会vol.4にも参加していて、インプットとアウトプットが同時に回り出した1週間だった。</p>
+    <div class="quote-card">ノウハウ図書館、まさかの瞬間風速1位。</div>
+  </section>
+
+  <section class="topic" id="topic-3">
+    <div class="topic-eyebrow"><span class="num-badge">3</span>AI11人相手に本気トーク</div>
+    <h2>「本気で批判して」とAIチームに頼んだ夜</h2>
+    <p>孫正義さんの壁打ち活用法の話をきっかけに、AI11人相手に「本気で批判してほしい」と頼んでお酒片手に本音トーク。「北極星は自分なのか、それともみんな（他者貢献ビジョン）なのか」という結構重い問いに向き合った。8人が順番にグラス片手に、本気で刺してきた夜。</p>
+
+    <div class="chat-log">
+      <div class="chat-bubble c-blue">
+        <span class="speaker">🌊 コウ</span>
+        <p>「親密性軸を理由にCW打席避けてる件。それ、"逃げてる"って自分で気づいてる?」</p>
+      </div>
+      <div class="chat-bubble c-yellow">
+        <span class="speaker">💰 しーちゃん</span>
+        <p>「今朝『健闘』って言った言葉、撤回します。……あれ、基準が低すぎた」</p>
+      </div>
+      <div class="chat-bubble c-pink">
+        <span class="speaker">💗 ゆい</span>
+        <p>「12/31の自分が今日を見た時、"動けた日だった"って言える日、6月30日のうち何日ですか?」</p>
+      </div>
+      <div class="chat-bubble c-green">
+        <span class="speaker">🔥 まな</span>
+        <p>「気づきの量はマジで凄いのに、翌週の行動に化けた気づきは10個に1個もない」</p>
+      </div>
+      <div class="chat-bubble c-blue">
+        <span class="speaker">💎 みっちゃん</span>
+        <p>「♡ 観察対象として、わずかに動きを見せ始めたサンプル♡ ……まだ仲間ではありませんが♡」</p>
+      </div>
+    </div>
+
+    <p>たどり着いた気づきは「孫さんとの違いはセルフイメージかもしれない」。自分を見つめ直す夜になった。</p>
+  </section>
+
+  <section class="topic" id="topic-4">
+    <div class="topic-eyebrow"><span class="num-badge">4</span>新しい縁とチャンスが重なる週</div>
+    <h2>波はありながらも、縁はどんどん広がってる</h2>
+    <p>カジュアル面談がその場で本面接案内に発展したり、新しいキュレーション業務への参加が決まったり、リベ登壇が7月7日に正式確定したり。雑談から新しい構想が生まれる場面も多かった。</p>
+    <p>無敵モードの日と、そうでもない日が同居しながらも、縁が着実に広がっていく感じの1週間。</p>
+  </section>
+
+  <section class="topic" id="topic-5">
+    <div class="topic-eyebrow"><span class="num-badge">5</span>Claude Design、検証祭り</div>
+    <h2>LPが1時間で試作できることを実証</h2>
+    <p>セミナー集客LPをClaude Designで試作したら、だいたい1時間くらいで形になった。しかも生成したデザインをワンクリックでClaude Code Webに連携できる機能を偶然発見。「AIとどこまで二人三脚できるか」を身をもって検証した週。</p>
+    <div class="quote-card">ダウンロード→チェックのループ、実はもう要らなかった。</div>
+  </section>
+
+  <section class="topic" id="topic-6">
+    <div class="topic-eyebrow"><span class="num-badge">6</span>旅程ガチ勢、時刻表との攻防</div>
+    <h2>「雑じゃない?」から始まった、公式時刻表との戦い</h2>
+    <p>明日の旅程、実は最初はかなり雑だった。「これ雑じゃない?」の一言から、AIと一緒に公式時刻表まで何度も遡って検証。「実は最終バスが実質ラストチャンスだった」なんてスリルな発見もありつつ、ようやく本番へ。</p>
+    <p>散歩帰りに、見知らぬおっちゃんに「もうすぐ雨降るよー」って声をかけられたのも、地味にほっこりした今週のワンシーン。</p>
+    <p>そういえば6/30は1日で24,007歩も歩いてた（直近7日間平均は12,859歩/日）。移動しながら生きてるスタイル、今週も健在。</p>
+  </section>
+
+  <section class="topic" id="topic-7">
+    <div class="topic-eyebrow"><span class="num-badge">7</span>精神的に跳んで、明日は物理で跳ぶ</div>
+    <h2>読書もAIとの実験も、たぶん助走だった</h2>
+    <p>今週は精神的にたくさん跳んだ週だった。読書に火がついて、AIとがっつり向き合って、新しい縁も広がった。そして明日、今度は物理的に跳ぶ。</p>
+  </section>
+
+</main>
+
+<div class="closing">
+  <svg class="closing-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M32 6C20 6 10 16 10 26C10 26 18 22 32 22C46 22 54 26 54 26C54 16 44 6 32 6Z" stroke="#f4f1e3" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M12 27L32 58L52 27" stroke="#f4f1e3" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M18 27L32 46L46 27" stroke="#f2d472" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+  </svg>
+  <h3>明日、跳びます。</h3>
+  <p>今週のおけもんトピック、以上7本でした。続きはラジオで喋ります。</p>
+  <div class="closing-footer">AIゆるっとラジオ ✕ みずのさん / 2026.07.01</div>
+</div>
+
+<script>
+  const els = document.querySelectorAll('[data-reveal], section.topic, .closing');
+  const forceRevealAll = () => els.forEach(el => el.classList.add('visible'));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.01, rootMargin: '0px 0px -8% 0px' });
+  els.forEach(el => io.observe(el));
+
+  // hero reveals immediately on load (staggered), independent of scroll
+  window.addEventListener('load', () => {
+    document.querySelectorAll('#hero [data-reveal]').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), 120 + i * 140);
+    });
+  });
+
+  // topic board doubles as a table of contents: jumping straight to a
+  // section via the board-item links (or a shared #topic-N URL) must not
+  // land on an still-hidden (opacity:0) section — reveal everything up
+  // front the moment a jump is requested, before the browser scrolls.
+  document.querySelectorAll('.board-item').forEach(a => a.addEventListener('click', forceRevealAll));
+  if (location.hash) forceRevealAll();
+  window.addEventListener('hashchange', forceRevealAll);
+
+  // safety net: fast scroll can still skip an element past the
+  // IntersectionObserver's viewport check entirely, leaving it stuck at
+  // opacity:0 (same failure mode fixed today in インコさん仮取説). Force-reveal
+  // anything still hidden a few seconds after load or once the user reaches
+  // the bottom of the page.
+  setTimeout(forceRevealAll, 3500);
+  window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) forceRevealAll();
+  }, { passive: true });
+</script>
+
+</body>
+</html>

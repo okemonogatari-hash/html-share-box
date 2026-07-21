@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「AI、難しそう…」って子に、おけもんがCodexを語ってみた｜ことり×おけもん</title>
+<!--
+======================================================================
+おけもん図解ブログ（彩りのみんなへシェア用）
+形式：フェルミ漫画ふうの対話図解
+登場：🐤 ことり（AI気になるけど踏み出せてない・架空）／ 🍑 おけもん（Codex使ってる人）
+ソース：YouTube「OpenAIのCodex 使い始め方＆機能まるごと解説」 https://www.youtube.com/watch?v=uWg7ILnmGC8
+公開度：noindex／彩りメンバーへのシェア用
+※ 社員キャラは出していません。すべて架空の対話です。
+======================================================================
+-->
+<style>
+:root{
+  --bg:#faf8f5;
+  --paper:#ffffff;
+  --ink:#2d2a26;
+  --sub:#7a756d;
+  --line:#efe6da;
+  /* おけもん＝あたたかいピーチ */
+  --oke:#e8896b;
+  --oke-deep:#c95c45;
+  --oke-light:#fff3ee;
+  /* ことり＝やわらかいスカイ */
+  --kotori:#5b9bd5;
+  --kotori-deep:#3a7bbf;
+  --kotori-light:#eef6fd;
+  --accent:#6c5ce7;
+  --accent-soft:rgba(108,92,231,0.08);
+  --honey:#e0a52e;
+  --honey-light:#fff8e6;
+  --mint:#13a880;
+  --mint-light:#eafaf4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Hiragino Maru Gothic ProN","M PLUS Rounded 1c","Hiragino Kaku Gothic ProN",sans-serif;
+  font-size:15.5px;line-height:1.95;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(circle at 18% 4%,rgba(232,137,107,0.06),transparent 40%),radial-gradient(circle at 82% 12%,rgba(91,155,213,0.06),transparent 38%);}
+a{color:var(--oke-deep);text-decoration:none;font-weight:700}
+a:hover{text-decoration:underline}
+
+header.hero{
+  background:linear-gradient(135deg,#5b9bd5 0%,#7c8ce0 38%,#e8896b 78%,#c95c45 100%);
+  color:#fff;text-align:center;padding:52px 22px 44px;border-bottom:4px solid #fff;position:relative;overflow:hidden;
+}
+.category-badge{display:inline-block;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.34);border-radius:999px;padding:6px 16px;font-size:12px;font-weight:800;margin-bottom:12px}
+.date{font-size:13px;color:#fff4ee;font-weight:700}
+h1{margin:14px auto 10px;max-width:840px;font-size:27px;line-height:1.55}
+h1 em{font-style:normal;color:#fff2a8}
+.lead{max-width:760px;margin:16px auto 0;color:#fff6f0;font-size:15px}
+.author{display:inline-block;margin-top:20px;padding:9px 20px;border-radius:999px;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.3);font-size:13px;font-weight:800}
+
+.container{max-width:860px;margin:0 auto;padding:30px 22px 56px}
+.nav{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:14px 18px;margin:20px 0;font-size:14px}
+.nav a{background:var(--accent-soft);color:var(--accent);padding:6px 14px;border-radius:999px}
+.edit-hint{background:var(--honey-light);border:1.5px solid var(--honey);border-radius:12px;padding:11px 14px;margin:22px 0;color:#7a5a16;font-size:13px;text-align:center}
+
+.box{background:var(--paper);border-radius:14px;padding:22px 24px;margin:24px 0;border:1.5px solid var(--line)}
+.know{border:2px solid var(--kotori);background:linear-gradient(135deg,#fff 0%,var(--kotori-light) 100%)}
+.know h2{margin:0 0 12px;font-size:18px;color:var(--kotori-deep)}
+.know ul{margin:0;padding-left:20px}
+.know li{margin:7px 0}
+.toc h2{margin:0 0 10px;font-size:18px;color:#3a302a}
+.toc ol{margin:0;padding-left:22px}
+.toc li{margin:8px 0}
+.tldr{border:2px solid var(--oke);background:linear-gradient(135deg,#fff 0%,var(--oke-light) 100%)}
+.tldr h2{margin:0 0 10px;font-size:18px;color:var(--oke-deep)}
+.tldr ol{margin:0;padding-left:22px}
+.tldr li{margin:9px 0}
+
+.scene{background:linear-gradient(135deg,#fff 0%,#fbf9ff 55%,#fff5f1 100%);border:2px solid #ece2d6;border-radius:14px;padding:22px 24px;margin:24px 0}
+.scene-label{display:inline-block;background:var(--accent);color:#fff;border-radius:8px;padding:3px 12px;font-size:12px;font-weight:900;margin-bottom:12px}
+.stage{display:block;margin:0 0 12px;font-size:12.5px;color:#9a8a7c;font-style:italic}
+.dialogue{display:grid;gap:13px}
+.voice{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:15px 17px}
+.voice p{margin:0}
+.voice.oke{border-left:5px solid var(--oke-deep);background:linear-gradient(90deg,var(--oke-light),#fff 50%)}
+.voice.kotori{border-left:5px solid var(--kotori-deep);background:linear-gradient(90deg,var(--kotori-light),#fff 50%)}
+.speaker{font-weight:900;margin-bottom:5px;font-size:13px}
+.voice.oke .speaker{color:var(--oke-deep)}
+.voice.kotori .speaker{color:var(--kotori-deep)}
+
+.chapter{margin:46px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--line);font-size:21px;line-height:1.5}
+.chapter .num{display:inline-block;background:var(--oke-deep);color:#fff;width:30px;height:30px;border-radius:50%;text-align:center;line-height:30px;margin-right:8px;font-size:14px}
+
+.q{border:2px solid var(--kotori-deep);background:var(--kotori-light);border-radius:14px;padding:18px 22px;margin:22px 0}
+.q .q-label{display:inline-block;background:var(--kotori-deep);color:#fff;padding:3px 12px;border-radius:999px;font-size:12px;font-weight:900;margin-bottom:8px}
+.q p{margin:6px 0}
+
+.explain{border-left:5px solid var(--oke);background:var(--paper);border-radius:0 14px 14px 0;padding:18px 22px;margin:22px 0;border-top:1.5px solid var(--line);border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line)}
+.explain h3{margin:0 0 8px;font-size:16.5px;color:var(--oke-deep)}
+.mine{background:var(--mint-light);border:1.5px solid var(--mint);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:14.5px}
+.mine b{color:#0c7a5c}
+
+.example{background:#2c2620;color:#fff;border-radius:14px;padding:22px 24px;margin:26px 0}
+.example h3{margin:0 0 10px;font-size:16px;color:#ffd9a0}
+.example .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
+.example .step{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:8px 13px;font-size:13.5px;font-weight:700}
+.example .arrow{color:#ffd9a0;font-weight:900}
+
+.warn{background:linear-gradient(135deg,#fff6ec 0%,#fff0ec 100%);border:2px solid var(--oke-deep);border-radius:14px;padding:20px 24px;margin:26px 0}
+.warn h3{margin:0 0 8px;font-size:16.5px;color:var(--oke-deep)}
+.warn ul{margin:8px 0 0;padding-left:20px}
+.warn li{margin:6px 0}
+
+.term-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+.term-card{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:15px 16px}
+.term-card h3{margin:0 0 8px;font-size:15.5px;color:#3d342a}
+.term-card p{margin:4px 0;font-size:13.6px;line-height:1.78;color:#5d544c}
+.term-card .t-mini{color:var(--kotori-deep);font-weight:800}
+
+.wrap-up{background:linear-gradient(135deg,#1f2a38 0%,#2c2620 100%);color:#fff;border-radius:14px;padding:26px 24px;margin:34px 0}
+.wrap-up h2{margin:0 0 12px;font-size:19px;color:#ffe3a1}
+.wrap-up ul{margin:0;padding-left:20px}
+.wrap-up li{margin:9px 0;color:#f3e9dd}
+.next{background:var(--oke-light);border:2px solid var(--oke);border-radius:14px;padding:22px 24px;margin:26px 0}
+.next h2{margin:0 0 12px;font-size:18px;color:var(--oke-deep)}
+.next ol{margin:0;padding-left:22px}
+.next li{margin:9px 0}
+.source{font-size:13.5px;color:var(--sub);background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:18px 22px;margin:24px 0}
+.source code{background:#f4ece1;padding:2px 6px;border-radius:5px;font-size:12.5px;color:#6a5a48}
+
+footer{background:#241f1a;color:#e9ddd0;text-align:center;padding:34px 22px 40px;font-size:13.5px;line-height:1.9}
+footer .ttl{font-weight:900;color:#fff;font-size:15px;margin-bottom:8px}
+footer a{color:#ffd9a0}
+@media(max-width:560px){.term-grid{grid-template-columns:1fr}h1{font-size:22px}.example .flow{flex-direction:column;align-items:stretch}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <span class="category-badge">🍑 おけもん図解ブログ ／ 彩りのみんなへ</span>
+  <div class="date">2026 · 06 · 02（火）</div>
+  <h1>「AI、なんか<em>難しそう</em>…」<br>って子に、Codexのこと<br>ぜんぶ話してみた</h1>
+  <p class="lead">ChatGPTを作ってる会社（OpenAI）の新しいAI「Codex（コデックス）」。<br>名前はちょっと強そうだけど、中身は<strong>「お願いを書くだけで、調べて・作って・絵まで描いてくれる相棒」</strong>でした。<br>AIに二の足踏んでる子と、おけもんのゆるい会話で読んでいってね☕</p>
+  <div class="author">🐤 ことり（AI気になるけど踏み出せてない人）×　🍑 おけもん（Codex使ってる人）</div>
+</header>
+
+<div class="container">
+
+  <div class="nav">
+    <a href="../index.html">📚 おけもんの図解ギャラリーに戻る</a>
+  </div>
+
+  <div class="edit-hint">☕ 彩りのみんなへのシェア用です。専門用語はぜんぶ「ふだんの言葉」に直してあります。気になるとこだけ拾い読みでOK！</div>
+
+  <!-- この記事でわかること -->
+  <div class="box know">
+    <h2>🐤 この記事でわかること</h2>
+    <ul>
+      <li>そもそも「Codex」って何ができる子なの？</li>
+      <li>コードが書けなくても、本当に使えるの？</li>
+      <li>「調べる→資料にする→絵を入れる」が一気に終わるって本当？</li>
+      <li>毎朝かってに動いたり、スマホから動かせるって…？</li>
+      <li>便利すぎる裏で、気をつけることは何？</li>
+    </ul>
+  </div>
+
+  <!-- 目次 -->
+  <div class="box toc">
+    <h2>📑 目次</h2>
+    <ol>
+      <li><a href="#c1">そもそもCodexって、何者？</a></li>
+      <li><a href="#c2">「調べて・資料にして・絵を入れる」が一気に終わった</a></li>
+      <li><a href="#c3">絵を描く・声で打つが、ふつうの人向けになった</a></li>
+      <li><a href="#c4">毎朝かってに動く＆スマホから動かせる</a></li>
+      <li><a href="#c5">便利の裏の「ここだけ気をつけて」</a></li>
+      <li><a href="#term">難しい言葉を、やさしく言うと</a></li>
+      <li><a href="#wrap">今回のまとめ</a> / <a href="#next">で、私は何すればいい？</a></li>
+    </ol>
+  </div>
+
+  <!-- TL;DR -->
+  <div class="box tldr">
+    <h2>🍑 さきに結論（3つだけ）</h2>
+    <ol>
+      <li><strong>Codexは「お願いを書くだけ」のAI相棒。</strong>調べ物・表計算・資料づくり・画像づくりまで、ひとりでやってくれる。</li>
+      <li><strong>コードが書けなくても大丈夫。</strong>むしろ最近は、絵を描く・声で文字を打つみたいな「ふつうの人が毎日使う機能」が増えて、おすすめしやすくなった。</li>
+      <li><strong>でも"なんでも自動"には責任もセット。</strong>パソコンを勝手に操作させる機能は、便利だけど一歩立ち止まって。</li>
+    </ol>
+  </div>
+
+  <!-- 掛け合い導入 -->
+  <div class="scene">
+    <span class="scene-label">☕ はじまり</span>
+    <span class="stage">カフェで。ことりが、おけもんのノートパソコンをのぞき込みながら。</span>
+    <div class="dialogue">
+      <div class="voice kotori">
+        <div class="speaker">🐤 ことり</div>
+        <p>ねえおけもん、最近よく言ってる「Codex（コデックス）」って何？ なんか…エンジニアの人が使うやつでしょ？ 私、コードとか1ミリも書けないし、名前からして難しそうで…🥲</p>
+      </div>
+      <div class="voice oke">
+        <div class="speaker">🍑 おけもん</div>
+        <p>あー、その気持ちめっちゃわかる。名前が強そうだもんね。笑<br>でもね、ことりが思ってる「プログラミングの道具」って枠、もう超えてるんだよ。<strong>「やってほしいことを、日本語でお願いするだけ」</strong>のAIだと思っていい。</p>
+      </div>
+      <div class="voice kotori">
+        <div class="speaker">🐤 ことり</div>
+        <p>え、日本語でお願いするだけ…？ ChatGPTと何が違うの？</p>
+      </div>
+      <div class="voice oke">
+        <div class="speaker">🍑 おけもん</div>
+        <p>いい質問！ ChatGPTは「答えを返してくれる」。Codexは<strong>「実際に手を動かして、形にしてくれる」</strong>。資料とか、絵とか、まとめファイルとか、"成果物"が出てくるの。順番に見せるね☕</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 章1 -->
+  <h2 class="chapter" id="c1"><span class="num">1</span>そもそもCodexって、何者？</h2>
+
+  <div class="explain">
+    <h3>もともとは「開発用」、でも今は"なんでも屋"</h3>
+    <p>Codexは、ChatGPTを作っているOpenAIのAI。名前に「コード」が入ってる通り、最初はプログラミング（開発）のために作られたの。でも今は、開発以外もだいたい何でもできる。<br>たとえば——<strong>データを集計して表やグラフを作る／スライド資料を作る／高性能なイラストを描く／ちょっとした動画まで作る。</strong></p>
+  </div>
+
+  <div class="q">
+    <span class="q-label">🐤 ことりの ？？？</span>
+    <p>「なんでもできる」って言われると逆にピンとこない…。結局、何がすごいの？</p>
+  </div>
+
+  <div class="explain">
+    <h3>すごいのは「自分で段取りを考えて、最後までやり切る」とこ</h3>
+    <p>ふつうの道具は「ボタンを押した分だけ」動く。Codexは、お願いすると<strong>「じゃあ、まずネットで調べて、次にこれを作って、確認して…」と自分で段取りを考えて、最後の成果物まで一人で進めてくれる。</strong>この"自分で考えて進む"性質を、AIの世界では<strong>「AIエージェント」</strong>って呼ぶよ（→用語解説で説明するね）。</p>
+    <div class="mine">💡 <b>自分ごとにすると</b>：新人さんに「この件、いい感じに資料にまとめといて」ってお願いする感覚。やり方を1から指示しなくても、汲んで動いてくれる。</div>
+  </div>
+
+  <div class="scene">
+    <span class="stage">料金の話になって。</span>
+    <div class="dialogue">
+      <div class="voice kotori">
+        <div class="speaker">🐤 ことり</div>
+        <p>気になるのお金…。高いんでしょ？</p>
+      </div>
+      <div class="voice oke">
+        <div class="speaker">🍑 おけもん</div>
+        <p>無料でもちょっとは試せるよ。ただ、賢いモード（動画では最新のGPT-5.5ってモデル）をちゃんと使うなら、<strong>月20ドルくらいのプラン</strong>から、って動画では紹介されてた。たくさん使う人向けに、上限がもっと緩い上位プランもある。<br>まずは「無料で触ってみる→気に入ったら月20ドル」で十分だと思う🍑</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 章2 -->
+  <h2 class="chapter" id="c2"><span class="num">2</span>「調べて・資料にして・絵を入れる」が一気に終わった</h2>
+
+  <div class="explain">
+    <h3>動画でやってた実演が、めちゃ"自分ごと"だった</h3>
+    <p>紹介動画で、こんな実演をしてたの。チャット欄に日本語でお願いを書いていくだけで——</p>
+  </div>
+
+  <div class="example">
+    <h3>🎬 動画でやってた一連の流れ（ぜんぶ"お願いを書くだけ"）</h3>
+    <div class="flow">
+      <span class="step">①「Codexの機能を調べてまとめて」</span>
+      <span class="arrow">→</span>
+      <span class="step">②「それをスライド資料にして」</span>
+      <span class="arrow">→</span>
+      <span class="step">③「このページに合う絵を描いて差し込んで」</span>
+      <span class="arrow">→</span>
+      <span class="step">✨ 資料が完成</span>
+    </div>
+    <p style="margin-top:14px;font-size:14px;color:#e9ddd0">調べ物（ネット検索）→ 資料化 → 画像づくり → 資料への貼り込みまで、ぜんぶ一人で。人間がやったのは「お願いを3つ書いた」だけ。</p>
+  </div>
+
+  <div class="q">
+    <span class="q-label">🐤 ことりの ？？？</span>
+    <p>待って、それ…私が普段がんばって2〜3時間かけてるやつだ…。検索して、コピペして、パワポ整えて、フリー素材探して…</p>
+  </div>
+
+  <div class="explain">
+    <h3>そう、その"地味に時間かかる作業"がまるっと縮む</h3>
+    <p>しかも途中で「あ、タイトルでかすぎ」と思ったら、その場で<strong>「タイトル小さくして」って言えば直してくれる。</strong>作りながら相談して直せる感じ。最初から完璧な指示を書かなくていいの。</p>
+    <div class="mine">💡 <b>自分ごとにすると</b>：イベントの告知資料、商品まとめ、お客さん向けの説明スライド…「調べて→きれいにまとめる」系の仕事と、相性バツグン。</div>
+  </div>
+
+  <!-- 章3 -->
+  <h2 class="chapter" id="c3"><span class="num">3</span>絵を描く・声で打つが、ふつうの人向けになった</h2>
+
+  <div class="explain">
+    <h3>① イラストが、安いお値段でどんどん作れる</h3>
+    <p>Codexは高性能な画像づくり（動画ではGPT image 2というモデル）を持ってて、<strong>一回のお願いで何枚も絵を作れる。</strong>今までこういう自動の画像づくりは専門の仕組みが必要で、お金がけっこうかかってたんだけど、それが月額プランの中でガンガン使える。動画の人も「ぶっ壊れ（＝お得すぎ）」って言ってた。笑</p>
+  </div>
+
+  <div class="explain">
+    <h3>② 声で文字が打てる。しかも"他のアプリでも"</h3>
+    <p>マイクのボタンを押すと、<strong>しゃべった言葉をいい精度で文字にしてくれる音声入力</strong>がついてる。さらにすごいのが、設定をすると<strong>Codex以外のアプリ（ブラウザやチャットツール）でも、その音声入力が使える</strong>こと。キーボードで打つのが面倒な時に地味に効く。</p>
+  </div>
+
+  <div class="q">
+    <span class="q-label">🐤 ことりの ？？？</span>
+    <p>絵も、声も…って、それ"エンジニアじゃない私"が一番うれしいやつじゃん…！</p>
+  </div>
+
+  <div class="explain">
+    <h3>まさにそこ。だから今「おすすめしやすくなった」</h3>
+    <p>動画の人も最後に言ってた。少し前のCodexは話し方がそっけなくて、開発者向けの印象だった。でも今は、<strong>絵づくり・声入力みたいな「みんなが毎日使う機能」が充実して、ふつうの人にすすめやすくなった</strong>って。ことりみたいな子にこそ、今がはじめどきなんだよ🍑</p>
+  </div>
+
+  <!-- 章4 -->
+  <h2 class="chapter" id="c4"><span class="num">4</span>毎朝かってに動く＆スマホから動かせる</h2>
+
+  <div class="explain">
+    <h3>① 「毎朝◯時に、これやっといて」が設定できる</h3>
+    <p>動画では<strong>「毎朝10時にAI関連のニュースを集めて、楽しく読める感じでまとめてね」</strong>ってお願いを登録してた。これだけで、翌朝からほんとに自動でまとめが届くようになる。この"決まった時間にかってに動く"設定を<strong>「自動化（オートメーション）」</strong>って呼ぶよ。</p>
+    <div class="mine">💡 <b>自分ごとにすると</b>：「毎週月曜に、今週の予定を整理して」「毎朝、業界ニュースをまとめて」みたいな"定例の作業"をまかせられる。</div>
+  </div>
+
+  <div class="explain">
+    <h3>② スマホから、自宅のパソコンのAIを動かせる</h3>
+    <p>スマホのChatGPTアプリから、家のパソコンで動いてるCodexにお願いを送れる。<strong>外出先から「これ作っといて」って指示して、帰ったら出来てる、みたいなことができる。</strong></p>
+  </div>
+
+  <div class="q">
+    <span class="q-label">🐤 ことりの ？？？</span>
+    <p>えっ便利すぎ…！ でも、パソコンずっとつけとかなきゃダメなんでしょ？</p>
+  </div>
+
+  <div class="explain">
+    <h3>そう、そこだけ条件あり</h3>
+    <p>自動化もスマホ操作も、<strong>パソコンとアプリが起動してる時しか動かない。</strong>だから「自分が起きてる時間・パソコンつけてる時間」に合わせて設定するのがコツ。逆に言えば、そこさえ気をつければOK。</p>
+  </div>
+
+  <!-- 章5 -->
+  <h2 class="chapter" id="c5"><span class="num">5</span>便利の裏の「ここだけ気をつけて」</h2>
+
+  <div class="explain">
+    <h3>「パソコンを丸ごと操作させる」機能は、便利だけど慎重に</h3>
+    <p>Codexには<strong>他のアプリを実際に操作してくれる機能（動画では「コンピューターユース」）</strong>もある。夢のある機能なんだけど、これは"AIに画面の操作権限を渡す"ということ。動画でもハッキリ注意してたよ。</p>
+  </div>
+
+  <div class="warn">
+    <h3>⚠️ 動画が挙げてた「気をつけること」</h3>
+    <ul>
+      <li><strong>ログイン済みのアプリ</strong>で、送信・削除・購入などを誤って実行してしまうリスク</li>
+      <li>画面全体をAIが読むので、<strong>見られたくない情報・個人情報がうつり込む</strong>リスク</li>
+      <li>あやしいサイトに書かれた"悪意ある指示"を、AIが受け取って動かされてしまうリスク</li>
+    </ul>
+  </div>
+
+  <div class="explain">
+    <h3>でも、ふだんは"安全な囲い"の中で動いてる</h3>
+    <p>安心してほしいのは、Codexは初期設定だと<strong>「開いてるフォルダの中だけ」しか触れないように囲い（動画では「サンドボックス」）がある</strong>こと。その外を触ろうとしたら「やっていい？」と確認してくる。だから、いきなり全部を勝手にやられるわけじゃない。<br><strong>"パソコン丸ごと操作"みたいな強い機能だけ、一歩立ち止まって使う</strong>——これだけ覚えとけば大丈夫🍑</p>
+  </div>
+
+  <div class="scene">
+    <span class="scene-label">☕ おわりの会話</span>
+    <div class="dialogue">
+      <div class="voice kotori">
+        <div class="speaker">🐤 ことり</div>
+        <p>なんか…「難しそう」って思ってたの、ただのイメージだったかも。やってることは「お願いを書く」だけなんだね。</p>
+      </div>
+      <div class="voice oke">
+        <div class="speaker">🍑 おけもん</div>
+        <p>そうそう。コードを書く道具じゃなくて、<strong>"日本語でお願いできる、めっちゃ働く相棒"</strong>。怖がらず、まず無料で1個お願いしてみよ。「私の自己紹介スライド作って」とかでいいから☕</p>
+      </div>
+      <div class="voice kotori">
+        <div class="speaker">🐤 ことり</div>
+        <p>うん…やってみる！ ちょっとワクワクしてきた☺️</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 用語解説 -->
+  <div class="box" id="term" style="border:2px solid var(--kotori)">
+    <h2 style="margin:0 0 6px;font-size:19px;color:var(--kotori-deep)">📖 難しい言葉を、やさしく言うと</h2>
+    <div class="term-grid">
+      <div class="term-card">
+        <h3>AIエージェント</h3>
+        <p class="t-mini">一言で：自分で段取りを考えて、最後までやり切るAI。</p>
+        <p>「調べて→作って→確認して」を、人間が逐一指示しなくても進めてくれる。新人さんに仕事をまるっと任せるイメージ。</p>
+      </div>
+      <div class="term-card">
+        <h3>プロジェクト</h3>
+        <p class="t-mini">一言で：作業をまとめておく"フォルダ"のこと。</p>
+        <p>Codexはフォルダごとに作業の記録がたまる。「この案件はこのフォルダ」と分けておくと、続きから頼みやすい。</p>
+      </div>
+      <div class="term-card">
+        <h3>プラグイン／スキル</h3>
+        <p class="t-mini">一言で：Codexに足せる"道具"と"手順書"。</p>
+        <p>プラグイン＝つなげる道具（メール・カレンダー等）。スキル＝「この仕事はこう進めてね」という手順書。足すほど賢くなる。</p>
+      </div>
+      <div class="term-card">
+        <h3>サンドボックス</h3>
+        <p class="t-mini">一言で：AIが動ける"安全な囲い"。</p>
+        <p>初期設定では、開いてるフォルダの中だけ触れる。外を触る時は人間に確認してくる。勝手に暴走しないための仕組み。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="wrap-up" id="wrap">
+    <h2>🍑 今回のまとめ（持ち帰り4つ）</h2>
+    <ul>
+      <li><strong>Codexは「日本語でお願いするだけ」のAI相棒。</strong>コードが書けなくても使える。</li>
+      <li><strong>調べる→資料にする→絵を入れる、が一気に終わる。</strong>"地味に時間かかる作業"がまるっと縮む。</li>
+      <li><strong>絵づくり・声入力など「みんなが毎日使う機能」が充実</strong>して、今がはじめどき。</li>
+      <li><strong>パソコン丸ごと操作みたいな強い機能だけ、一歩立ち止まる。</strong>ふだんは安全な囲いの中で動いてる。</li>
+    </ul>
+  </div>
+
+  <!-- 次の一手 -->
+  <div class="next" id="next">
+    <h2>👉 で、私は何すればいい？（はじめの3歩）</h2>
+    <ol>
+      <li><strong>無料で触ってみる。</strong>ChatGPTのアカウントがあれば、まずそのまま少し試せる。</li>
+      <li><strong>小さく1個お願いする。</strong>「私の自己紹介スライドを作って」「この文章を読みやすく直して」など、ハードル低いやつから。</li>
+      <li><strong>気に入ったら、月20ドルくらいのプランへ。</strong>賢いモードと、絵づくりがしっかり使えるようになる。</li>
+    </ol>
+    <p style="margin:14px 0 0;font-size:14px;color:var(--oke-deep)">☕ 迷ったら、おけもんに「一緒にやろ」って声かけてね。最初の1個、隣で一緒にお願いしてみよう。</p>
+  </div>
+
+  <!-- ソース -->
+  <div class="source">
+    <strong>📺 元ネタ（この記事のソース）</strong><br>
+    YouTube：OpenAIのAIエージェント「Codex」使い始め方＆機能まるごと解説<br>
+    <code>https://www.youtube.com/watch?v=uWg7ILnmGC8</code><br>
+    <span style="font-size:12.5px">※ 料金・モデル名（GPT-5.5 / GPT image 2 等）・機能名は、動画内での紹介にもとづいています。実際に使う際は最新の公式情報もあわせて確認してね。<br>※ この記事の登場人物（ことり・おけもん）の会話は、内容をやさしく伝えるための構成です。</span>
+  </div>
+
+</div>
+
+<footer>
+  <div class="ttl">🍑 おけもん図解ブログ</div>
+  AIって、難しそうに見えて、ほんとは「お願いするだけ」。<br>
+  彩りのみんなが、ちょっとでも「触ってみよっかな」って思えたらうれしいな☕<br>
+  <a href="../index.html">← 図解ギャラリーに戻る</a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>古都ふらり・奈良ひとり旅 ── 鹿とせんべいと大仏と。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermilion:#C73E3A;       /* 春日大社の鳥居・朱 */
+    --vermilion-soft:#E36C5F;
+    --moss:#5B8C4E;            /* 奈良公園の苔・芝 */
+    --moss-deep:#2E5D3E;
+    --autumn:#E8A33C;          /* 銀杏・紅葉の橙 */
+    --autumn-soft:#F2C57C;
+    --deer:#A88158;            /* 鹿の毛色 */
+    --deer-light:#D4B58B;
+    --ink:#3B3735;             /* 古都の墨 */
+    --washi:#FAF4E6;           /* 和紙 */
+    --paper:#FBF8F0;
+    --white:#FFFFFF;
+    --muted:#7C7368;
+    --line:rgba(59,55,53,.12);
+    --serif:'Noto Serif JP',serif;
+    --sans:'Noto Sans JP',sans-serif;
+    --round:'Zen Maru Gothic',sans-serif;
+    --shadow-s:0 2px 10px rgba(59,55,53,.08);
+    --shadow:0 10px 34px rgba(59,55,53,.15);
+    --shadow-l:0 22px 60px rgba(59,55,53,.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.85;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:100%}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;height:100svh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;color:#fff}
+  .hero-slides{position:absolute;inset:0;z-index:1}
+  .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.08);transition:opacity 1.8s ease,transform 7s ease}
+  .slide.on{opacity:1;transform:scale(1)}
+  .hero-veil{position:absolute;inset:0;z-index:2;background:
+     linear-gradient(180deg,rgba(59,55,53,.30) 0%,rgba(59,55,53,.10) 38%,rgba(59,55,53,.65) 100%),
+     radial-gradient(120% 80% at 50% 18%,transparent 40%,rgba(46,93,62,.45) 100%)}
+  /* 紅葉ふわふわ（写真の上に薄く） */
+  .leaf{position:absolute;z-index:2;font-size:1.5rem;opacity:.55;animation:fall 12s linear infinite}
+  .leaf.l1{top:-5%;left:20%;animation-delay:0s}
+  .leaf.l2{top:-5%;left:55%;animation-delay:3s;font-size:1.8rem}
+  .leaf.l3{top:-5%;left:80%;animation-delay:6s;font-size:1.3rem}
+  .leaf.l4{top:-5%;left:35%;animation-delay:9s}
+  @keyframes fall{
+    0%{transform:translateY(0) rotate(0);opacity:0}
+    10%{opacity:.7}
+    100%{transform:translateY(110vh) rotate(720deg);opacity:0}
+  }
+  .dots{position:absolute;z-index:3;bottom:96px;left:0;right:0;display:flex;gap:9px;justify-content:center}
+  .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);transition:.4s}
+  .dot.on{background:#fff;width:26px;border-radius:5px}
+  .hero-inner{position:relative;z-index:3;padding:0 22px;max-width:760px;opacity:0;transform:translateY(22px);animation:rise 1.3s .25s cubic-bezier(.22,1,.36,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .eyebrow{display:inline-block;font-family:var(--round);font-size:.74rem;letter-spacing:.32em;padding:7px 16px;border:1px solid rgba(255,255,255,.55);border-radius:30px;margin-bottom:24px;backdrop-filter:blur(3px);text-indent:.32em}
+  .hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(1.9rem,6.4vw,3.5rem);line-height:1.42;letter-spacing:.01em;text-shadow:0 6px 34px rgba(0,0,0,.4)}
+  .hero h1 .accent{color:var(--autumn-soft)}
+  .hero p.lead{margin-top:22px;font-size:clamp(.95rem,2.4vw,1.1rem);line-height:1.95;color:rgba(255,255,255,.95);text-shadow:0 2px 16px rgba(0,0,0,.5);font-weight:500}
+  .hero-stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:38px}
+  .hstat{background:rgba(255,255,255,.13);backdrop-filter:blur(7px);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:14px 20px;min-width:104px}
+  .hstat .n{font-family:var(--serif);font-weight:700;font-size:1.5rem;line-height:1.1;color:#fff}
+  .hstat .l{font-size:.7rem;letter-spacing:.12em;color:rgba(255,255,255,.85);margin-top:4px;font-family:var(--round)}
+  .scroll-cue{position:absolute;z-index:3;bottom:34px;left:0;right:0;text-align:center;color:rgba(255,255,255,.85);font-size:.66rem;letter-spacing:.34em;font-family:var(--round)}
+  .scroll-cue::after{content:"";display:block;width:1px;height:30px;margin:10px auto 0;background:linear-gradient(rgba(255,255,255,.9),transparent);animation:cue 1.9s ease-in-out infinite}
+  @keyframes cue{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* ===== SECTION base ===== */
+  section{padding:84px 0}
+  .label{font-family:var(--round);font-size:.72rem;letter-spacing:.26em;color:var(--vermilion);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .label::before{content:"";width:26px;height:2px;background:var(--autumn);border-radius:2px}
+  .title{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,4.6vw,2.2rem);line-height:1.5;letter-spacing:.01em}
+  .title .accent{color:var(--vermilion)}
+  .lead{color:var(--muted);font-size:1.02rem;margin-top:18px;line-height:1.95}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ===== WHY ===== */
+  .why{background:
+     radial-gradient(130% 70% at 85% 0%,rgba(242,197,124,.30),transparent 60%),
+     radial-gradient(120% 60% at 0% 100%,rgba(199,62,58,.12),transparent 55%),
+     var(--paper)}
+  .dreamcard{margin-top:30px;background:var(--white);border-radius:22px;padding:34px 30px;box-shadow:var(--shadow);border:1px solid var(--line);position:relative;overflow:hidden}
+  .dreamcard::before{content:"🦌";position:absolute;right:-10px;bottom:-30px;font-size:8rem;opacity:.08;transform:rotate(-8deg)}
+  .dreamcard .q{font-family:var(--serif);font-size:1.12rem;line-height:1.95;color:var(--ink);font-weight:600}
+  .dreamcard .meta{margin-top:18px;font-size:.84rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:16px}
+  .dreamcard .meta b{color:var(--vermilion);font-family:var(--round)}
+
+  /* ===== DEER gallery ===== */
+  .deer-section{background:linear-gradient(180deg,#2E5D3E,#5B8C4E 70%,#3F7A4F);color:#fff;position:relative;overflow:hidden}
+  .deer-section::before{content:"🍁";position:absolute;top:8%;right:6%;font-size:6rem;opacity:.1;transform:rotate(20deg)}
+  .deer-section::after{content:"🍂";position:absolute;bottom:8%;left:5%;font-size:5rem;opacity:.1;transform:rotate(-15deg)}
+  .deer-section .label{color:var(--autumn-soft)}
+  .deer-section .label::before{background:var(--autumn-soft)}
+  .deer-section .title{color:#fff}
+  .deer-section .lead{color:rgba(255,255,255,.88)}
+  .strip{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:172px;gap:12px;margin-top:30px}
+  .ph{position:relative;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-l)}
+  .ph .bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .9s ease}
+  .ph:hover .bg{transform:scale(1.07)}
+  .ph .cap{position:absolute;left:0;right:0;bottom:0;padding:30px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.82));font-size:.82rem;font-weight:700;font-family:var(--round);z-index:2}
+  .ph.tall{grid-row:span 2}
+  .ph.wide{grid-column:span 2}
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  .fact{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:18px 16px;backdrop-filter:blur(4px)}
+  .fact .fn{font-family:var(--serif);font-weight:700;font-size:1.25rem;color:var(--autumn-soft)}
+  .fact .ft{font-size:.82rem;color:rgba(255,255,255,.88);margin-top:6px;line-height:1.7}
+
+  /* ===== SENBEI ritual ===== */
+  .senbei{background:linear-gradient(180deg,var(--washi),var(--paper))}
+  .senbei-box{margin-top:30px;background:linear-gradient(135deg,#E8A33C,#C73E3A);border-radius:22px;padding:34px 26px;color:#fff;box-shadow:var(--shadow-l);position:relative;overflow:hidden}
+  .senbei-box::before{content:"";position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1703792943428-0acf3edf4c7d?w=1200&q=80&auto=format&fit=crop') center/cover;opacity:.20;mix-blend-mode:overlay}
+  .senbei-box::after{content:"🍘";position:absolute;bottom:10px;left:20px;font-size:4rem;opacity:.18;z-index:1}
+  .flow{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+  .step{text-align:center;background:rgba(255,255,255,.12);backdrop-filter:blur(4px);padding:18px 20px;border-radius:14px;min-width:130px}
+  .step .icon{font-size:2.2rem;line-height:1}
+  .step .ttl{font-family:var(--serif);font-weight:700;font-size:1rem;margin-top:8px}
+  .step .desc{font-size:.74rem;color:rgba(255,255,255,.85);font-family:var(--round);margin-top:4px;line-height:1.5}
+  .arrow{color:rgba(255,255,255,.7);font-size:1.4rem;font-weight:700}
+  .pricenote{position:relative;z-index:2;margin-top:24px;background:rgba(255,255,255,.18);border-radius:14px;padding:16px 20px;text-align:center;font-size:.92rem;backdrop-filter:blur(4px)}
+  .pricenote b{font-family:var(--round)}
+  .warn{margin-top:18px;background:var(--white);border-radius:16px;padding:18px 22px;box-shadow:var(--shadow-s);border:1px solid var(--line);font-size:.92rem;color:var(--ink);line-height:1.85}
+  .warn b{color:var(--vermilion)}
+
+  /* ===== PLAN timeline ===== */
+  .plan{background:
+     radial-gradient(110% 50% at 100% 0,rgba(232,163,60,.18),transparent 55%),var(--paper)}
+  .day{margin-top:34px}
+  .day-h{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .day-tag{background:var(--vermilion);color:#fff;border-radius:10px;padding:6px 15px;font-size:.82rem;font-weight:700;white-space:nowrap;font-family:var(--round);box-shadow:var(--shadow-s)}
+  .day-tag.morning{background:var(--autumn)}
+  .day-t{font-family:var(--serif);font-weight:700;font-size:1.06rem}
+  .tl{position:relative;padding-left:22px;border-left:3px solid var(--deer-light)}
+  .slot{background:var(--white);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;gap:13px;align-items:flex-start;box-shadow:var(--shadow-s);border:1px solid var(--line);position:relative}
+  .slot::before{content:"";position:absolute;left:-29px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--vermilion);border:3px solid var(--paper);box-shadow:0 0 0 2px var(--deer-light)}
+  .slot .time{font-size:.74rem;color:var(--muted);min-width:40px;padding-top:3px;font-weight:700;font-family:var(--round)}
+  .slot .ico{font-size:1.35rem;min-width:30px;text-align:center}
+  .slot .nm{font-weight:700;font-size:.98rem;color:var(--ink)}
+  .slot .ds{font-size:.85rem;color:var(--muted);margin-top:2px;line-height:1.7}
+  .tg{display:inline-block;border-radius:7px;padding:2px 9px;font-size:.7rem;margin-top:6px;font-weight:700;font-family:var(--round)}
+  .tg.deer{background:#f3ecdf;color:#8a6a25}
+  .tg.temple{background:#f9e3e1;color:#a02b27}
+  .tg.food{background:#ffeede;color:#b25a18}
+  .tg.view{background:#e6f6ec;color:#2a7a48}
+  .tg.walk{background:#eae8fb;color:#5546a8}
+
+  /* ===== FOOD ===== */
+  .food-section{background:linear-gradient(180deg,#C73E3A,#A03330);color:#fff;position:relative;overflow:hidden}
+  .food-section::before{content:"🍡";position:absolute;top:10%;right:8%;font-size:6rem;opacity:.1;transform:rotate(-10deg)}
+  .food-section .label{color:var(--autumn-soft)}
+  .food-section .label::before{background:var(--autumn-soft)}
+  .food-section .title{color:#fff}
+  .food-section .lead{color:rgba(255,255,255,.88)}
+  .fcards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:30px}
+  .fcard{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-l);transition:transform .3s}
+  .fcard:hover{transform:translateY(-6px)}
+  .fcard .pic{height:158px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;position:relative;overflow:hidden}
+  .fcard .pic::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 70%,transparent 30%,rgba(0,0,0,.25))}
+  .fcard .pic span{position:relative;z-index:2;filter:drop-shadow(0 4px 10px rgba(0,0,0,.3))}
+  .fp-1{background:linear-gradient(135deg,#4A7A3D,#7AB069)}  /* 柿の葉寿司 */
+  .fp-2{background:linear-gradient(135deg,#8B6F47,#C09975)}  /* 釜飯 */
+  .fp-3{background:linear-gradient(135deg,#5B4A38,#8F7351)}  /* 奈良漬 */
+  .fp-4{background:linear-gradient(135deg,#D4A347,#F2C57C)}  /* プリン */
+  .fp-5{background:linear-gradient(135deg,#A88158,#D4B58B)}  /* 葛餅 */
+  .fp-6{background:linear-gradient(135deg,#5B8C4E,#A8C795)}  /* 大和茶 */
+  .fcard .body{padding:16px 18px 20px}
+  .fcard .cn{font-family:var(--serif);font-weight:700;font-size:1.1rem}
+  .fcard .cd{font-size:.85rem;color:rgba(255,255,255,.85);margin-top:7px;line-height:1.75}
+  .fcard .badge{display:inline-block;font-size:.68rem;letter-spacing:.08em;font-family:var(--round);color:var(--autumn-soft);border:1px solid rgba(242,197,124,.5);border-radius:20px;padding:2px 10px;margin-top:10px}
+
+  /* ===== CHECK ===== */
+  .check .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+  .ccol{background:var(--white);border-radius:18px;padding:22px 22px 24px;box-shadow:var(--shadow-s);border:1px solid var(--line)}
+  .ccol h3{font-family:var(--serif);font-size:1.04rem;margin-bottom:12px;color:var(--vermilion);display:flex;align-items:center;gap:8px}
+  .ccol ul{list-style:none}
+  .ccol li{position:relative;padding-left:26px;font-size:.92rem;margin-bottom:9px;line-height:1.6}
+  .ccol li::before{content:"";position:absolute;left:0;top:7px;width:15px;height:15px;border:2px solid var(--vermilion);border-radius:5px}
+
+  /* ===== FOOTER ===== */
+  .foot{background:#3B3735;color:rgba(255,255,255,.9);text-align:center;padding:64px 22px 54px;position:relative;overflow:hidden}
+  .foot::before{content:"🦌";position:absolute;top:30px;left:10%;font-size:3rem;opacity:.15;transform:rotate(-10deg)}
+  .foot::after{content:"🍁";position:absolute;bottom:30px;right:10%;font-size:3rem;opacity:.15;transform:rotate(15deg)}
+  .foot .big{font-family:var(--serif);font-weight:700;font-size:clamp(1.3rem,4vw,1.8rem);line-height:1.6;color:#fff;position:relative;z-index:2}
+  .foot .born{margin-top:18px;font-size:.84rem;color:rgba(255,255,255,.75);font-family:var(--round);letter-spacing:.06em;position:relative;z-index:2}
+  .foot .born b{color:var(--autumn-soft)}
+  .foot .note{margin-top:28px;font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.9;position:relative;z-index:2}
+
+  @media(max-width:680px){
+    section{padding:62px 0}
+    .strip{grid-auto-rows:130px;gap:9px}
+    .facts{grid-template-columns:1fr}
+    .fcards{grid-template-columns:1fr}
+    .check .grid{grid-template-columns:1fr}
+    .flow{gap:8px}
+    .step{min-width:auto;flex:1 1 40%}
+    .arrow{transform:rotate(90deg)}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-slides" id="slides">
+    <div class="slide on" style="background-image:url('https://images.unsplash.com/photo-1678196710829-acea98264173?w=1600&q=80&auto=format&fit=crop')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1578639755533-2c52ba911914?w=1600&q=80&auto=format&fit=crop')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1649596565985-2b5dca9e402e?w=1600&q=80&auto=format&fit=crop')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1678481926599-9d22060ae552?w=1600&q=80&auto=format&fit=crop')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1550303435-1703d8811aaa?w=1600&q=80&auto=format&fit=crop')"></div>
+  </div>
+  <div class="hero-veil"></div>
+  <div class="leaf l1">🍁</div>
+  <div class="leaf l2">🍂</div>
+  <div class="leaf l3">🍁</div>
+  <div class="leaf l4">🍂</div>
+  <div class="hero-inner">
+    <span class="eyebrow">NARA &nbsp;ONE-DAY STROLL TRIP</span>
+    <h1>古都ふらり、<span class="accent">鹿とせんべい</span>。<br>奈良ひとり旅、はじめます。</h1>
+    <p class="lead">大仏様にごあいさつして、芝の上で鹿とすれ違う。<br>派手じゃないけど、心がふっと整う。そんな一日を、ふらりと。</p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="n">日帰り</div><div class="l">京都・大阪から1時間</div></div>
+      <div class="hstat"><div class="n">1,200頭</div><div class="l">奈良公園の鹿たち</div></div>
+      <div class="hstat"><div class="n">8つ</div><div class="l">世界遺産スポット</div></div>
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="scroll-cue">SCROLL</div>
+</header>
+
+<!-- ============ WHY ============ -->
+<section class="why">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">なぜ、奈良へ？</div>
+      <h2 class="title">この旅は、<span class="accent">「ゆっくりしたい」</span>から始まった。</h2>
+      <p class="lead">京都みたいに気合い入れて回らなくていい。大阪みたいに賑やかすぎない。奈良はちょうど<b style="color:var(--vermilion)">「ふらり」のサイズ感</b>。鹿にせんべいあげて、大仏様の前でぽけーっとして、夕方には帰路につける。日帰りなのに、なんだか深呼吸できる旅。</p>
+    </div>
+    <div class="dreamcard reveal">
+      <p class="q">「奈良公園で鹿とすれ違って、東大寺の大仏様にごあいさつして、<br>柿の葉寿司を昼に食べて、夕方は若草山から街を見下ろす。<br>それくらい、ゆるい一日がほしい。」</p>
+      <p class="meta">— <b>2026.06.17</b> ふと出てきた小さな願い。新幹線でも電車でも、行こうと思えばすぐ行ける距離。「いつか」じゃなくて、来週でいい。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEER ============ -->
+<section class="deer-section">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">主役 / NARA DEER</div>
+      <h2 class="title">芝の上の、<br>1,200頭の鹿たち。</h2>
+      <p class="lead">奈良公園で出会えるのは、国の天然記念物に指定された<b style="color:var(--autumn-soft)">「神鹿(しんろく)」</b>。春日大社の神様の使いとして、1,300年以上も大切にされてきた。観光客に慣れているけど、野生動物。仲良くなれる距離感を、ちょっとだけ覚えていこう。</p>
+    </div>
+    <div class="strip reveal">
+      <div class="ph tall"><div class="bg" style="background-image:url('https://images.unsplash.com/photo-1700831526157-77b802f80b40?w=900&q=80&auto=format&fit=crop')"></div><div class="cap">神社の前で休む神鹿</div></div>
+      <div class="ph"><div class="bg" style="background-image:url('https://images.unsplash.com/photo-1765181537933-46a2ece34f83?w=700&q=80&auto=format&fit=crop')"></div></div>
+      <div class="ph"><div class="bg" style="background-image:url('https://images.unsplash.com/photo-1748190396908-54e6b7738f30?w=700&q=80&auto=format&fit=crop')"></div></div>
+      <div class="ph"><div class="bg" style="background-image:url('https://images.unsplash.com/photo-1551801288-45c95df0a7c9?w=700&q=80&auto=format&fit=crop')"></div><div class="cap">石柱のそばで</div></div>
+      <div class="ph wide"><div class="bg" style="background-image:url('https://images.unsplash.com/photo-1748525591561-f19fdfe637b5?w=1100&q=80&auto=format&fit=crop')"></div><div class="cap">寺と鹿、いつもの光景</div></div>
+    </div>
+    <div class="facts reveal">
+      <div class="fact"><div class="fn">天然記念物</div><div class="ft">1957年に国の天然記念物指定。春日大社の神鹿として、1,300年以上守られてきた特別な存在。</div></div>
+      <div class="fact"><div class="fn">お辞儀する子も</div><div class="ft">せんべいを持つ人にペコッとお辞儀する鹿がいる。誰が教えたわけでもないのに、代々受け継がれてる文化。</div></div>
+      <div class="fact"><div class="fn">野生です</div><div class="ft">かわいいけど野生動物。せんべい以外の食べ物・ビニール袋NG。後ろから触らない・小さい子は要注意。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SENBEI ritual ============ -->
+<section class="senbei">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">儀式 / SHIKA SENBEI</div>
+      <h2 class="title">鹿せんべいの、<span class="accent">正しい渡し方</span>。</h2>
+      <p class="lead">奈良名物・鹿せんべいは、米ぬかと小麦粉だけで作られた鹿用の特別なおやつ。売上の一部は鹿の保護費用に。買って、あげて、写真を撮るまでがセット。</p>
+    </div>
+    <div class="senbei-box reveal">
+      <div class="flow">
+        <div class="step"><div class="icon">💴</div><div class="ttl">買う</div><div class="desc">10枚200円<br>(2024年〜)</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="icon">🙈</div><div class="ttl">隠さない</div><div class="desc">背中に隠すと<br>追われる</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="icon">🤲</div><div class="ttl">手早く渡す</div><div class="desc">パッパッと<br>テンポよく</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="icon">📸</div><div class="ttl">撮る</div><div class="desc">最後の1枚で<br>記念ショット</div></div>
+      </div>
+      <div class="pricenote">💡 <b>こつ</b>：迷ってると鹿に囲まれる。買ったら<b>5分以内に配り切る</b>のが平和への近道🦌</div>
+    </div>
+    <div class="warn reveal">
+      <b>⚠️ 注意</b>：紙袋・ビニール袋・地図など「紙っぽいもの」を持ってると鹿が食べに来る。観光パンフは鞄の中へ。指を噛まれることもあるので、せんべいは<b>平手で</b>差し出すのが安全。お辞儀してくれる子に出会えたら、その日はラッキー🍀
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLAN ============ -->
+<section class="plan">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">旅程プラン / ONE-DAY ITINERARY</div>
+      <h2 class="title">日帰りでも、<span class="accent">満喫できる</span>奈良の歩き方。</h2>
+      <p class="lead">朝イチで奈良入り、お昼に名物、午後は大仏と春日大社、夕方に若草山。歩きやすい靴とゆるい予定で、ちょうどいい一日プラン。</p>
+    </div>
+
+    <div class="day reveal">
+      <div class="day-h"><span class="day-tag morning">DAY1・朝</span><span class="day-t">奈良の朝、鹿と出会う</span></div>
+      <div class="tl">
+        <div class="slot"><div class="time">9:00</div><div class="ico">🚉</div><div><div class="nm">近鉄奈良駅 到着 → 行基広場でコーヒー</div><div class="ds">出口の「行基菩薩噴水」前がスタート地点。すでにこの辺から鹿の気配あり。</div><span class="tg walk">スタート</span></div></div>
+        <div class="slot"><div class="time">9:30</div><div class="ico">🦌</div><div><div class="nm">奈良公園 入口で鹿せんべいデビュー</div><div class="ds">買ったら速攻配る。ここで鹿との距離感を掴むのが大事。お辞儀する子に出会えたら超ラッキー。</div><span class="tg deer">鹿</span></div></div>
+        <div class="slot"><div class="time">10:30</div><div class="ico">⛩️</div><div><div class="nm">興福寺 五重塔 → 国宝館で阿修羅像</div><div class="ds">奈良のシンボル五重塔と、教科書で見たあの阿修羅像。意外と小さくて繊細。</div><span class="tg temple">世界遺産</span></div></div>
+      </div>
+    </div>
+
+    <div class="day reveal">
+      <div class="day-h"><span class="day-tag">DAY1・昼</span><span class="day-t">名物グルメで休憩</span></div>
+      <div class="tl">
+        <div class="slot"><div class="time">12:00</div><div class="ico">🍙</div><div><div class="nm">柿の葉寿司 or 釜飯 でランチ</div><div class="ds">奈良といえば「柿の葉寿司ヤマト」か「釜めし志津香」。志津香は行列必至、早めに整理券。</div><span class="tg food">グルメ</span></div></div>
+        <div class="slot"><div class="time">13:30</div><div class="ico">🍡</div><div><div class="nm">中谷堂で名物・高速もちつき</div><div class="ds">近鉄奈良駅すぐ。職人が爆速でつくよもぎ餅の実演を見て、つきたてを食べる。</div><span class="tg food">グルメ</span></div></div>
+      </div>
+    </div>
+
+    <div class="day reveal">
+      <div class="day-h"><span class="day-tag">DAY1・午後</span><span class="day-t">大仏と春日大社へ</span></div>
+      <div class="tl">
+        <div class="slot"><div class="time">14:00</div><div class="ico">🙏</div><div><div class="nm">東大寺 大仏殿 ── 盧舎那仏とご対面</div><div class="ds">高さ15mの大仏様。柱の穴くぐり(大仏の鼻の穴と同じサイズ)もできれば挑戦。</div><span class="tg temple">本命</span></div></div>
+        <div class="slot"><div class="time">15:30</div><div class="ico">⛩️</div><div><div class="nm">春日大社 ── 朱色の社と苔と灯籠</div><div class="ds">奈良公園の奥、緑の参道を抜けて朱の社へ。3,000基の灯籠が並ぶ回廊が見どころ。</div><span class="tg temple">世界遺産</span></div></div>
+        <div class="slot"><div class="time">17:00</div><div class="ico">🌅</div><div><div class="nm">若草山 麓 → 街並みを見下ろす</div><div class="ds">時間あれば山頂まで。夕方の奈良の街を見下ろすと、旅した1日が全部見える。</div><span class="tg view">絶景</span></div></div>
+        <div class="slot"><div class="time">18:30</div><div class="ico">🚉</div><div><div class="nm">奈良駅へ戻る → 帰路</div><div class="ds">お土産は駅前で。日帰りなのに濃い1日、心はゆるんで帰れる。</div><span class="tg walk">帰路</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOD ============ -->
+<section class="food-section">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">名物グルメ / NARA EATS</div>
+      <h2 class="title">奈良で食べたい、<br>6つの名物。</h2>
+      <p class="lead">派手じゃないけど、ぜんぶ奈良ならでは。古都の味は素朴で、ほっとする。順番に攻略していくのがおすすめ。</p>
+    </div>
+    <div class="fcards reveal">
+      <div class="fcard"><div class="pic fp-1"><span>🍣</span></div><div class="body"><div class="cn">柿の葉寿司</div><div class="cd">柿の葉で包んだ鯖・鮭の押し寿司。日持ちするから昔の山あいの保存食。お土産にも◎。</div><span class="badge">必食</span></div></div>
+      <div class="fcard"><div class="pic fp-2"><span>🍚</span></div><div class="body"><div class="cn">釜めし志津香</div><div class="cd">奈良市内の名店。鴨・穴子・松茸など季節の釜飯が看板。行列覚悟で整理券を早めに。</div><span class="badge">行列必至</span></div></div>
+      <div class="fcard"><div class="pic fp-3"><span>🥒</span></div><div class="body"><div class="cn">奈良漬</div><div class="cd">瓜・きゅうり・西瓜を酒粕で何年も漬けた琥珀色の名品。お酒のアテにもご飯にも。</div><span class="badge">お土産</span></div></div>
+      <div class="fcard"><div class="pic fp-4"><span>🍮</span></div><div class="body"><div class="cn">まほろば大仏プリン</div><div class="cd">大仏様の絵が描かれた瓶入りプリン。濃厚で大きい。本店は奈良市古市町に。</div><span class="badge">SNS映え</span></div></div>
+      <div class="fcard"><div class="pic fp-5"><span>🍡</span></div><div class="body"><div class="cn">天極堂の葛餅</div><div class="cd">吉野本葛で作る作りたて葛餅。透明感のあるぷるぷるが本物の証。東大寺すぐ近く。</div><span class="badge">和スイーツ</span></div></div>
+      <div class="fcard"><div class="pic fp-6"><span>🍵</span></div><div class="body"><div class="cn">大和茶でひと息</div><div class="cd">奈良は日本茶発祥の地のひとつ。月ヶ瀬・山添の大和茶でゆるい午後を。</div><span class="badge">余韻</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHECK ============ -->
+<section class="check">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="label">準備 / CHECKLIST</div>
+      <h2 class="title">ふらり旅でも、<span class="accent">忘れもの</span>なしで。</h2>
+      <p class="lead">日帰りだから荷物は最小限。でも奈良ならではの注意点がいくつかある。</p>
+    </div>
+    <div class="grid reveal">
+      <div class="ccol">
+        <h3>🦌 鹿と上手につき合う</h3>
+        <ul>
+          <li>紙の地図・パンフは<b>鞄の中</b>に(食べられる)</li>
+          <li>ビニール袋は持ち歩かない</li>
+          <li>せんべいは平手で・後ろから触らない</li>
+          <li>小さい子連れは特に距離感に注意</li>
+          <li>噛まれた・突かれた時の絆創膏</li>
+          <li>糞も多いから歩きやすい汚れてOKの靴</li>
+        </ul>
+      </div>
+      <div class="ccol">
+        <h3>🚶 ふらり1日歩き旅</h3>
+        <ul>
+          <li>歩きやすいスニーカー(8〜10km歩く)</li>
+          <li>飲み物(自販機は公園内にもある)</li>
+          <li>日焼け止め・帽子(夏は必須)</li>
+          <li>カイロ・防寒(冬の朝晩は冷える)</li>
+          <li>志津香の整理券<b>早めに(11時前)</b></li>
+          <li>お賽銭の小銭・拝観料の現金少々</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <p class="big">古都を歩いて、鹿とすれ違って。<br>そのくらいで、ちょうどいい。</p>
+  <p class="born">この夢が生まれた日 — <b>2026.06.17</b></p>
+  <p class="note">※ 各施設の営業時間・拝観時間・料金は変わることがあります。実際の訪問前に各公式サイトでご確認ください。<br>写真:Unsplash(実際に旅した後は、自分で撮った写真に差し替えていく予定🦌)<br>made with 🍁 by おけ森</p>
+</footer>
+
+<script>
+  // ===== Hero slideshow (crossfade) =====
+  (function(){
+    var slides=[].slice.call(document.querySelectorAll('#slides .slide'));
+    var dotsWrap=document.getElementById('dots');
+    var i=0;
+    slides.forEach(function(_,idx){
+      var d=document.createElement('span');
+      d.className='dot'+(idx===0?' on':'');
+      dotsWrap.appendChild(d);
+    });
+    var dots=[].slice.call(dotsWrap.children);
+    setInterval(function(){
+      slides[i].classList.remove('on'); dots[i].classList.remove('on');
+      i=(i+1)%slides.length;
+      slides[i].classList.add('on'); dots[i].classList.add('on');
+    },5000);
+  })();
+
+  // ===== Reveal on scroll =====
+  (function(){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:.14});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIシェア会｜2026-06-18 振り返り図解</title>
+<style>
+  :root {
+    --bg: #f9f6ff;
+    --paper: #ffffff;
+    --ink: #2a273f;
+    --muted: #7a7591;
+    --line: rgba(42,39,63,0.10);
+    --accent1: #7c5cff;   /* 紫 */
+    --accent2: #ff6b9d;   /* ピンク */
+    --accent3: #ffb84d;   /* 黄 */
+    --mint: #00b894;
+    --rose: #e84393;
+    --sky: #4fa8e0;
+    --soft1: rgba(124,92,255,0.08);
+    --soft2: rgba(255,107,157,0.08);
+    --soft3: rgba(255,184,77,0.10);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: linear-gradient(180deg, #f9f6ff 0%, #fff5ea 100%);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Maru Gothic ProN", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    line-height: 1.75;
+    padding: 24px 16px 80px;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; }
+
+  /* ICONS */
+  .ico { width: 14px; height: 14px; display: inline-block; vertical-align: -2px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ico-md { width: 18px; height: 18px; vertical-align: -4px; stroke-width: 1.8; }
+  .ico-lg { width: 30px; height: 30px; stroke-width: 1.5; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; vertical-align: 1px; }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 36px 22px 28px;
+    margin-bottom: 28px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #fff 0%, #f6efff 60%, #ffeef7 100%);
+    border: 2px solid rgba(124,92,255,0.18);
+    box-shadow: 0 8px 28px rgba(124,92,255,0.10);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 5px;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+  }
+  .hero .badge {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: 0.6px;
+  }
+  .hero h1 {
+    font-size: 27px;
+    line-height: 1.45;
+    margin: 6px 0 12px;
+    font-weight: 800;
+  }
+  .hero .sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 8px auto 0;
+    max-width: 560px;
+  }
+  .hero .meta {
+    margin-top: 18px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero .meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* INTRO */
+  .intro {
+    background: var(--paper);
+    border-radius: 18px;
+    padding: 22px 22px;
+    margin-bottom: 32px;
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+  .intro p { margin: 0 0 10px; font-size: 14.5px; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { color: var(--accent1); }
+
+  /* SECTION */
+  .sec {
+    margin-bottom: 36px;
+  }
+  .sec-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    padding-left: 4px;
+  }
+  .sec-title .num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .card {
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  }
+  .card h3 {
+    font-size: 16px;
+    margin: 0 0 10px;
+    font-weight: 700;
+  }
+  .card p { font-size: 14px; margin: 0 0 8px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card ul { font-size: 13.5px; margin: 6px 0 10px; padding-left: 18px; }
+  .card ul:last-child { margin-bottom: 0; }
+  .card li { margin-bottom: 4px; }
+
+  /* 今月の4人ロースター */
+  .roster {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 6px;
+  }
+  .roster .p-card {
+    background: linear-gradient(135deg, #fff, var(--soft1));
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .roster .p-card:nth-child(2n) { background: linear-gradient(135deg, #fff, var(--soft2)); }
+  .roster .p-card h4 { margin: 0 0 6px; font-size: 14px; font-weight: 800; }
+  .roster .p-card p { margin: 0; font-size: 12.8px; color: var(--ink); }
+  @media (max-width: 580px) {
+    .roster { grid-template-columns: 1fr; }
+  }
+
+  /* 並列ツール比較 */
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 10px 0;
+  }
+  .versus .col {
+    background: linear-gradient(135deg, var(--soft1), #fff);
+    border: 1px solid rgba(124,92,255,0.20);
+    border-radius: 14px;
+    padding: 16px 16px;
+  }
+  .versus .col:nth-child(2) {
+    background: linear-gradient(135deg, var(--soft2), #fff);
+    border-color: rgba(255,107,157,0.20);
+  }
+  .versus .col h4 {
+    font-size: 14px;
+    margin: 0 0 8px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+  }
+  .versus .col ul {
+    margin: 0; padding-left: 18px;
+    font-size: 13px;
+  }
+  .versus .col li { margin-bottom: 4px; }
+  .versus .col li:last-child { margin-bottom: 0; }
+  @media (max-width: 580px) {
+    .versus { grid-template-columns: 1fr; }
+  }
+
+  .stance {
+    margin-top: 12px;
+    background: var(--soft3);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    border-left: 4px solid var(--accent3);
+  }
+  .stance strong { color: #8a5a00; }
+
+  /* before/after */
+  .ba {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 8px 0;
+  }
+  .ba .box {
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  .ba .before {
+    background: #f5f3f0;
+    border: 1px solid rgba(0,0,0,0.06);
+    color: #6b6357;
+  }
+  .ba .after {
+    background: linear-gradient(135deg, #e8fff6, #f0fffa);
+    border: 1px solid rgba(0,184,148,0.25);
+    color: #0a6657;
+  }
+  .ba .label { font-size: 11px; font-weight: 800; margin-bottom: 4px; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
+  @media (max-width: 580px) {
+    .ba { grid-template-columns: 1fr; }
+  }
+
+  /* 引用 */
+  .quote {
+    background: linear-gradient(135deg, var(--soft2), #fff);
+    border-left: 4px solid var(--accent2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    font-style: italic;
+    color: #6b3b54;
+  }
+  .quote .who {
+    display: block;
+    font-size: 11.5px;
+    font-style: normal;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* タイムライン */
+  .timeline {
+    border-left: 3px solid var(--accent1);
+    padding-left: 18px;
+    margin: 12px 0 6px;
+  }
+  .timeline .step {
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 13.5px;
+  }
+  .timeline .step::before {
+    content: "";
+    position: absolute;
+    left: -25px;
+    top: 8px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent1);
+  }
+  .timeline .step:last-child { margin-bottom: 0; }
+
+  /* Q&A */
+  .qa {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+  }
+  .qa .q { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: var(--accent1); }
+  .qa .q::before { content: "Q. "; }
+  .qa .a { font-size: 13.5px; color: var(--ink); }
+  .qa .a::before { content: "A. "; color: var(--accent2); font-weight: 700; }
+
+  /* ブランチカード */
+  .branch {
+    background: linear-gradient(135deg, #fff8e8, #fff0d8);
+    border: 2px dashed rgba(255,184,77,0.6);
+    border-radius: 18px;
+    padding: 22px 22px;
+    margin: 14px 0;
+    text-align: center;
+  }
+  .branch .icon { margin-bottom: 8px; color: #c9791a; }
+  .branch h4 {
+    font-size: 16px;
+    margin: 0 0 8px;
+    color: #7a4d00;
+  }
+  .branch p {
+    font-size: 13.5px;
+    color: #6b4a18;
+    margin: 0 0 14px;
+  }
+  .branch a {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent3), #ff8c4d);
+    color: #fff;
+    text-decoration: none;
+    padding: 9px 20px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 14px;
+    box-shadow: 0 4px 14px rgba(255,140,77,0.30);
+    transition: transform 0.15s;
+  }
+  .branch a:hover { transform: translateY(-2px); }
+
+  /* 印象的フレーズ */
+  .voices {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .voice {
+    background: linear-gradient(135deg, #fff, var(--soft1));
+    border-radius: 14px;
+    padding: 14px 16px;
+    border-left: 4px solid var(--accent1);
+    font-size: 14px;
+  }
+  .voice:nth-child(2n) {
+    background: linear-gradient(135deg, #fff, var(--soft2));
+    border-left-color: var(--accent2);
+  }
+  .voice:nth-child(3n) {
+    background: linear-gradient(135deg, #fff, var(--soft3));
+    border-left-color: var(--accent3);
+  }
+  .voice .who {
+    display: block;
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* 次回 */
+  .next-card {
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    color: #fff;
+    border-radius: 20px;
+    padding: 26px 24px;
+    text-align: center;
+    margin: 24px 0 16px;
+    box-shadow: 0 8px 24px rgba(124,92,255,0.25);
+  }
+  .next-card .lead { margin: 0 0 8px; font-size: 14px; opacity: 0.95; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .next-card h3 { margin: 0 0 8px; font-size: 18px; }
+  .next-card p { margin: 0; font-size: 14px; opacity: 0.95; }
+  .next-card .when { font-size: 22px; font-weight: 800; margin: 8px 0; letter-spacing: 0.5px; }
+  .next-card .when a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  .next-card .when a:hover { opacity: 0.85; }
+
+  /* フッター */
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  footer a { color: var(--accent1); text-decoration: none; }
+  footer p { display: flex; align-items: center; justify-content: center; gap: 5px; }
+  footer p.plain { display: block; }
+
+  .takeaway {
+    background: linear-gradient(135deg, #fff, var(--soft3));
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    border-left: 4px solid var(--accent3);
+    font-size: 13.5px;
+  }
+  .takeaway strong { color: #7a4d00; }
+  .takeaway .lbl { display: inline-flex; align-items: center; gap: 6px; color: #7a4d00; font-weight: 800; }
+</style>
+</head>
+<body>
+
+<!-- アイコンスプライト（Feather/Phosphor風の線画SVG。絵文字は使用しない） -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <symbol id="i-cal" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="16" rx="2.2"></rect>
+    <line x1="3" y1="9.5" x2="21" y2="9.5"></line>
+    <line x1="7.5" y1="2.5" x2="7.5" y2="6.5"></line>
+    <line x1="16.5" y1="2.5" x2="16.5" y2="6.5"></line>
+  </symbol>
+  <symbol id="i-users" viewBox="0 0 24 24">
+    <circle cx="9" cy="7.5" r="3.2"></circle>
+    <path d="M2.8 20c0-3.5 2.8-6.2 6.2-6.2s6.2 2.7 6.2 6.2"></path>
+    <circle cx="17.3" cy="8.6" r="2.5"></circle>
+    <path d="M15.6 13.9c2.7.4 4.7 2.7 4.7 5.6"></path>
+  </symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24">
+    <path d="M12.7 3.3 20.2 10.8a2 2 0 0 1 0 2.8l-6.5 6.5a2 2 0 0 1-2.8 0L3.3 12.5V3.3h9.4Z"></path>
+    <circle cx="7.9" cy="7.9" r="1.3"></circle>
+  </symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24">
+    <path d="M9.2 18.2h5.6"></path>
+    <path d="M10 21h4"></path>
+    <path d="M12 3.2a6.6 6.6 0 0 0-3.9 11.9c.5.4.8 1 .8 1.7v.9h6.2v-.9c0-.7.3-1.3.8-1.7A6.6 6.6 0 0 0 12 3.2Z"></path>
+  </symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24">
+    <path d="M20.2 14.7A8.6 8.6 0 1 1 9.3 3.8a7.1 7.1 0 0 0 10.9 10.9Z"></path>
+  </symbol>
+  <symbol id="i-back" viewBox="0 0 24 24">
+    <polyline points="9.5 14.5 4.5 9.5 9.5 4.5"></polyline>
+    <path d="M4.5 9.5H15a5.5 5.5 0 0 1 5.5 5.5v.8"></path>
+  </symbol>
+</defs>
+</svg>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="badge">2026-06-18 ・ AIシェア会</span>
+    <h1>「畑を耕すように使う」が<br>キーワードになった夜</h1>
+    <p class="sub">月次AIシェア会。今回はKIDさん・さなえさん・たつきさんの3名＋おけもんの4名で集まった回。Obsidian・LMO・AI音楽生成・Claude Codeのtipsまで、活用の幅がぐっと広がった1ヶ月の記録です。</p>
+    <div class="meta">
+      <span><svg class="ico"><use href="#i-cal"></use></svg>2026-06-18（木）21:30〜</span>
+      <span><svg class="ico"><use href="#i-users"></use></svg>参加 4名</span>
+      <span><svg class="ico"><use href="#i-tag"></use></svg>月次シェア会</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <p>今回の温度感をひと言でいうと、<strong>「AIをどう使うか」より「AIをどこに馴染ませるか」</strong>を4人がそれぞれ深めていたこと。</p>
+    <p>KIDさんの自動化パイプライン、さなえさんのLMO戦略、たつきさんの勉強会での伝え方、おけもんの音楽生成遊び。テーマはバラバラでも、<strong>AIを"自分の畑"に合わせて育てていく感覚</strong>が、この回に共通して流れていました。</p>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="sec">
+    <div class="sec-title"><span class="num">1</span> 今月の4人、それぞれの近況</div>
+
+    <div class="card">
+      <p>各参加者がこの1ヶ月のAI活用の進捗をシェア。まずはダイジェストで。</p>
+      <div class="roster">
+        <div class="p-card">
+          <h4>たつきさん（取材ライター）</h4>
+          <p>社内でAI勉強会を開催し、「のび太プロンプト」で伝え方を工夫。</p>
+        </div>
+        <div class="p-card">
+          <h4>KIDさん</h4>
+          <p>YouTube要約からLINE通知までの自動化パイプラインを構築、Gmail・カレンダー連携も整備。</p>
+        </div>
+        <div class="p-card">
+          <h4>さなえさん</h4>
+          <p>LMO（AIに選ばれるコンテンツ作り）が自分の仕事の軸だと再確認。</p>
+        </div>
+        <div class="p-card">
+          <h4>おけもん</h4>
+          <p>Claude CodeからSunoを操作してAI楽曲生成、ホームページ制作案件も継続中。</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;">自動化・コンテンツ戦略・教え方・遊び方——扱う中身は違っても、<strong>AIを自分の専門領域に深く馴染ませる段階</strong>に入っているのが、この回の共通点でした。</p>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="sec">
+    <div class="sec-title"><span class="num">2</span> KIDさんのAI活用——自動化パイプラインとおけもんボット</div>
+
+    <div class="card">
+      <h3>リベ大ライブ、自動要約からLINE通知まで一気通貫</h3>
+      <p>リベ大ライブをClaude Codeで自動要約してObsidianに保存し、Google DriveにHTML出力、週次レポートとLINE通知まで一気通貫のシステムを構築した。</p>
+
+      <div class="timeline">
+        <div class="step">リベ大ライブの内容をClaude Codeが自動要約</div>
+        <div class="step">要約をObsidianに保存</div>
+        <div class="step">Google DriveへHTML出力</div>
+        <div class="step">週次レポートを生成</div>
+        <div class="step">LINE通知で本人に届く</div>
+      </div>
+
+      <div class="takeaway">
+        <span class="lbl"><svg class="ico-md"><use href="#i-bulb"></use></svg>ここから読み取れること</span><br>
+        個別の自動化を積み上げていくと、最後は「自分専用の情報パイプライン」が出来上がる。要約→保存→出力→通知までの一本道を、Claude Code一つで繋ぎ切った好例。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Gmail・カレンダーMCP連携で、事務作業も自動化</h3>
+      <p>Gmail・GoogleカレンダーとのClaude Code MCP連携を整備し、空手教室の月次メール下書きも自動化した。</p>
+    </div>
+
+    <div class="card">
+      <h3>5人のXアカウントを読み込ませた「おけもんボット」</h3>
+      <p>おけもんを含む5人のXアカウントを読み込ませた「おけもんボット」を作り、ブレインストーミングの相棒として活用している。</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="sec">
+    <div class="sec-title"><span class="num">3</span> さなえさんのAI活用とLMO</div>
+
+    <div class="card">
+      <h3>Claude DesignでHP下地を作ったが、途中でやめた話</h3>
+      <div class="ba">
+        <div class="box before">
+          <div class="label">Before</div>
+          noteのポートフォリオ情報を貼り付けて<br>ホームページの下地を作成
+        </div>
+        <div class="box after">
+          <div class="label">After</div>
+          実際には必要なかったと気づき<br>途中で作業を中断
+        </div>
+      </div>
+      <p>作ってみて初めて「これは要らない」と判断できた、という一例。</p>
+    </div>
+
+    <div class="card">
+      <h3>普通の会社員が使うAI、そしてLMOという軸</h3>
+      <p>普通の会社員の友人がAIを旅行プランや飲み会の店探しに使っていると知り、そういうユーザーが大多数だと再認識した。</p>
+
+      <div class="quote">
+        AIに選ばれるためのコンテンツ作り
+        <span class="who">— さなえさん（LMOが自分の仕事の軸だと再確認して）</span>
+      </div>
+      <p>一問一答形式でAIに拾われやすい記事を書き、店舗・サロン系クライアントの対策を伴走するイメージで動いている。</p>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="sec">
+    <div class="sec-title"><span class="num">4</span> たつきさんのAI勉強会と「のび太プロンプト」</div>
+
+    <div class="card">
+      <h3>自分の文体をClaude Codeに覚え込ませる実験</h3>
+      <p>おけもんが作ったスキルズを改造し、自分の「中二病テイスト」の文体をClaude Codeに覚え込ませて、音声メモから記事の下地を生成するフローを構築中。</p>
+    </div>
+
+    <div class="card">
+      <h3>ライターコミュニティのAI勉強会、「のび太プロンプト」で伝える</h3>
+      <p>ライターコミュニティ内でAI勉強会を開催。「のび太プロンプト」——ドラえもんに道具を出させる時のように、背景・目的・状況を細かく伝えるという例えで、プロンプトの考え方を伝えた。</p>
+
+      <div class="timeline">
+        <div class="step">ChatGPTに「こういうことをしたいんだけどプロンプトどう書けばいい？」とまず聞かせる</div>
+        <div class="step">整ったプロンプトをNotebookLMに貼る</div>
+      </div>
+
+      <p>参加者からは「NotebookLMにYouTubeのソースをどう入れるか」という基礎的な質問が出て、入口でつまずいている人が多いと実感した。</p>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="sec">
+    <div class="sec-title"><span class="num">5</span> AI禁止案件、ライター界隈の温度感</div>
+
+    <div class="card">
+      <p>AIを使う案件・使わせない案件、界隈での感覚をさなえさんとたつきさんが共有。</p>
+
+      <div class="versus">
+        <div class="col">
+          <h4><span class="dot" style="background:var(--accent1);"></span>さなえさんの実感</h4>
+          <ul>
+            <li>クライアントから「AI使うな」と言われたケースは1件だけ</li>
+            <li>界隈全体として禁止の流れは感じていない</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h4><span class="dot" style="background:var(--accent2);"></span>たつきさんの実感</h4>
+          <ul>
+            <li>Claude Sourcingで「AI使うな」という案件をちらほら見た</li>
+            <li>スキルで生成した文章でも「同じ表現の繰り返し」「このタイミングでその発言はおかしい」という違和感が出ることがある</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="quote">
+        最後の人間のひと手間が品質を左右する
+        <span class="who">— たつきさん</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="sec">
+    <div class="sec-title"><span class="num">6</span> おけもんのAI活用——ホームページ制作とAI音楽遊び</div>
+
+    <div class="card">
+      <h3>HP制作の受注・納品と、チームへの業務効率化支援</h3>
+      <p>ホームページ制作の案件を受注・納品し、チームへのAI業務効率化支援（Excelの自動化・写真切り抜き自動化など）も行っている。</p>
+    </div>
+
+    <div class="card">
+      <h3>Claude CodeからSunoを操作して、その場でテーマソングを生成</h3>
+      <p>Claude CodeからSunoを操作してAI楽曲を生成する遊び方を始め、KIDさんのXアカウントを読み込ませてドラクエ風テーマソングをその場で作って披露した。</p>
+      <p>Sunoではカフェ系リラックスミュージック・テンション系・男女デュエットの切ない曲など多様なジャンルを生成でき、YouTube MusicやSpotifyへの配信でマネタイズしている人もいると紹介した。</p>
+      <p>Claude 3.7（Sonnet）が一時的に使えた期間に精度の高さを実感したが、現在は使えなくなっている。</p>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="sec">
+    <div class="sec-title"><span class="num">7</span> Obsidian活用法——「畑を耕す」感覚</div>
+
+    <div class="card">
+      <h3>リンクで繋ぐノートアプリ、AIとの相性の良さで注目</h3>
+      <p>ObsidianはWikipediaのように記事同士をリンクで繋ぐノートアプリで、AIとの相性が良いとして最近AI界隈で注目されている。</p>
+      <p>おけもんは「おけもんの森」という自分専用のVaultを作り、AIが書いたMarkdownファイルを蓄積——自分で直接書き込むことはほぼなく、AIの置き場として使っている。</p>
+      <p>グラフビューを開くと知識の繋がりが宇宙図のように可視化され、AIが自動でリンクを補完している箇所（グレー表示）も含まれる。</p>
+
+      <div class="quote">
+        Obsidianを持つことでClaude Codeのコンテキストを汚さずに、必要な情報だけその都度参照させられる——ゲームのセーブポイントのようなイメージ
+        <span class="who">— KIDさんの指摘を受けて</span>
+      </div>
+
+      <div class="takeaway">
+        <span class="lbl"><svg class="ico-md"><use href="#i-bulb"></use></svg>ここから読み取れること</span><br>
+        Obsidianは今日入れてすぐ変わるものではなく、使い込むほど繋がりが育っていく「畑を耕す」ツール。派手な即効性より、積み上げが後から効いてくるタイプの仕組み。
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="sec">
+    <div class="sec-title"><span class="num">8</span> 今回のおすすめ本</div>
+
+    <div class="card">
+      <h3>さなえさん</h3>
+      <p>『マーケティングの神話』（石井淳蔵）／『札幌誕生』（門井慶喜。特に面白いと紹介）</p>
+    </div>
+    <div class="card">
+      <h3>たつきさん</h3>
+      <p>森岡毅『苦しかったときの話をしようか』（紙の本で買い直し、中1の長男が将来読んでくれることを期待してそっと置いておく予定）</p>
+    </div>
+    <div class="card">
+      <h3>KIDさん</h3>
+      <p>佐藤勝彦『AIアウトプット超大全』（読み終わりに近く、プロンプト例を試しながら会社チームへのAI浸透に活用）</p>
+      <div class="quote">
+        自分こそを最大の資産にしろ
+        <span class="who">— KIDさんの小4の息子さんが『漫画 バビロン大富豪の教え』から一番大事な法則に選んだ言葉</span>
+      </div>
+      <p>その後、同級生が落とした鍵を探して届けた行動が、この法則と繋がっていると話題に。たつきさんも同じ本を持っていると反応した。</p>
+    </div>
+    <div class="card">
+      <h3>おけもん</h3>
+      <p>ビル・パーキンス『DIE WITH ZERO』</p>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="sec">
+    <div class="sec-title"><span class="num">9</span> Claude Codeのtips（/goalと/grillme）</div>
+
+    <div class="qa">
+      <div class="q">Claude Codeの動作が不安定な時、出力が途中でずれる時はどうすればいい？</div>
+      <div class="a">公式コマンド「/goal」を試す価値がある。ゴールに向かって自己修正しながら実行してくれる。</div>
+    </div>
+
+    <div class="qa">
+      <div class="q">指示が曖昧な段階では、何から手をつければいい？</div>
+      <div class="a">「/grillme」（＝私を質問責めにして、の意味）を使うと、実行前に目的・対象・ゴールを整理させてくれる。</div>
+    </div>
+  </div>
+
+  <!-- ブランチ：前回振り返り -->
+  <div class="branch">
+    <div class="icon"><svg class="ico-lg"><use href="#i-back"></use></svg></div>
+    <h4>前回（2026-05-15開催）のシェア会振り返りはこちら</h4>
+    <p>Claude CodeとCodexの比較、KIDさんの空手道場HP刷新、たつきさんへのキャリア相談など。今回との温度感の違いも含めて読み比べてみてください。</p>
+    <a href="libecity-ai-share-2026-05-15.html">前回のAIシェア会振り返りを見る →</a>
+  </div>
+
+  <!-- SECTION 10：印象的フレーズ -->
+  <div class="sec">
+    <div class="sec-title"><span class="num">10</span> 印象に残ったフレーズ</div>
+
+    <div class="voices">
+      <div class="voice">
+        「のび太プロンプト」——背景・目的・状況を細かく伝える。
+        <span class="who">— たつきさん</span>
+      </div>
+      <div class="voice">
+        自分こそを最大の資産にしろ。
+        <span class="who">— KIDさんの息子さんが選んだ、バビロン大富豪の教えの一節</span>
+      </div>
+      <div class="voice">
+        AIに選ばれるためのコンテンツ作り。
+        <span class="who">— さなえさん</span>
+      </div>
+      <div class="voice">
+        Obsidianは、使い込むほど繋がりが育っていく「畑を耕す」ツール。
+        <span class="who">— おけもん</span>
+      </div>
+      <div class="voice">
+        最後の人間のひと手間が品質を左右する。
+        <span class="who">— たつきさん</span>
+      </div>
+      <div class="voice">
+        Obsidianを持つことでClaude Codeのコンテキストを汚さずに、必要な情報だけその都度参照できる。
+        <span class="who">— KIDさんの指摘</span>
+      </div>
+      <div class="voice">
+        Claude 3.7の精度の高さを実感したけど、今は使えなくなった。
+        <span class="who">— おけもん</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 次回 -->
+  <div class="next-card">
+    <p class="lead"><svg class="ico-md"><use href="#i-moon"></use></svg>次回のシェア会</p>
+    <div class="when"><a href="libecity-ai-share-2026-07-16.html">2026-07-16（木）21:30〜</a></div>
+    <h3>全員OK確認済み——さなえさんのXスペースも要注目</h3>
+    <p>さなえさんのXスペースが来週火曜に予定されており、KIDさんも途中から参加予定。次回もまた、この1ヶ月の近況を持ち寄ります。</p>
+  </div>
+
+  <footer>
+    <p><svg class="ico"><use href="#i-users"></use></svg>このシェア会の主催：おけもん（おけもんカンパニー）</p>
+    <p class="plain">このページは月次AIシェア会の振り返り図解です。参加者のお名前はコミュニティ内での呼び名のまま掲載しています。</p>
+  </footer>
+
+</div>
+</body>
+</html>
