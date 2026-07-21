@@ -724,7 +724,6 @@
       opacity = Math.max(0, Math.min(1, opacity));
       layer.style.opacity = opacity;
       layer.style.transform = `translate(-50%,-50%) translateZ(${z}px)`;
-      layer.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none';
 
       if (z > -700 && z < 300) {
         layer.classList.add('active');
@@ -755,6 +754,11 @@
     const ratio = Math.min(1, sc / (maxDepth / PX_PER_DEPTH));
     progress.style.width = (ratio * 100) + '%';
     depthLabel.textContent = '森のふかさ ' + Math.round(targetZ / 100) + 'm';
+    // クリック透過はアニメーションを待たず即時切替（リンク吸い込み事故防止）
+    layers.forEach(layer => {
+      const z = Number(layer.dataset.z) + targetZ;
+      layer.style.pointerEvents = (z > -600 && z < 200) ? 'auto' : 'none';
+    });
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
