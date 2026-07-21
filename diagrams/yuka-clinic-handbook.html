@@ -1,853 +1,679 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>プロジェクト ハンドブック｜健康管理支援室 御中</title>
-<meta name="robots" content="noindex,nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="健康管理支援室さま向け AI研修・人材開発支援助成金プロジェクトの最新進捗と、次に必要な確認をまとめた共有ハンドブックです。">
+  <title>最新進捗ハンドブック｜健康管理支援室さま AI研修プロジェクト</title>
+  <style>
+    :root {
+      --rose: #b95679;
+      --rose-dark: #8f3f5d;
+      --rose-soft: #f8e7ed;
+      --mint: #4f8a69;
+      --mint-soft: #e7f3eb;
+      --amber: #9b6a20;
+      --amber-soft: #fff3d9;
+      --blue: #446c8f;
+      --blue-soft: #eaf2f8;
+      --ink: #342c30;
+      --ink-soft: #675b60;
+      --muted: #8d8085;
+      --paper: #fffdfb;
+      --cream: #fbf7f2;
+      --line: #eadde2;
+      --shadow: 0 14px 36px rgba(73, 50, 60, .08);
+      --radius: 20px;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 4%, rgba(185, 86, 121, .11), transparent 30%),
+        radial-gradient(circle at 94% 30%, rgba(79, 138, 105, .09), transparent 27%),
+        var(--cream);
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
 
-<style>
-  :root {
-    --primary: #C8688A;
-    --primary-soft: #F0D9DE;
-    --primary-light: #FBE9EC;
-    --accent: #B89878;
-    --accent-light: #E8D9C2;
-    --mint: #A7CDB5;
-    --mint-soft: #E0EFE3;
-    --cream: #FBF7F2;
-    --cream-deep: #F5EFE6;
-    --ink: #3A2E33;
-    --ink-soft: #6B5A60;
-    --muted: #9C8C90;
-    --line: rgba(200, 104, 138, 0.12);
-    --shadow-soft: 0 8px 28px rgba(58, 46, 51, 0.06);
-    --shadow-warm: 0 14px 38px rgba(184, 152, 120, 0.14);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Noto Sans JP', sans-serif;
-    color: var(--ink);
-    background: var(--cream);
-    line-height: 1.85;
-    overflow-x: hidden;
-  }
-  h1, h2, h3, h4 { font-family: 'Noto Serif JP', serif; font-weight: 500; letter-spacing: 0.02em; }
-  .label-en { font-family: 'Inter', sans-serif; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; font-size: 11px; color: var(--primary); }
-  a { color: inherit; text-decoration: none; }
+    a { color: inherit; }
+    strong { color: var(--rose-dark); }
+    .wrap { width: min(1080px, calc(100% - 40px)); margin-inline: auto; }
 
-  /* breadcrumb */
-  .breadcrumb {
-    background: white;
-    padding: 14px 22px;
-    border-radius: 12px;
-    margin: 24px auto 0;
-    max-width: 980px;
-    font-size: 13px;
-    color: var(--muted);
-    box-shadow: var(--shadow-soft);
-    border: 1px solid var(--line);
-  }
-  .breadcrumb a { color: var(--primary); font-weight: 600; }
-  .breadcrumb a:hover { text-decoration: underline; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 253, 251, .94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(185, 86, 121, .14);
+    }
+    .topbar-inner {
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--rose-dark);
+    }
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--rose), #d88ca4);
+      box-shadow: 0 7px 18px rgba(185, 86, 121, .22);
+    }
+    .nav {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-block: 9px;
+    }
+    .nav::-webkit-scrollbar { display: none; }
+    .nav a {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+    .nav a:hover, .nav a:focus-visible { color: var(--rose-dark); border-color: #deb4c3; }
 
-  /* HERO */
-  .hero {
-    background-image:
-      linear-gradient(180deg, rgba(58,46,51,0.5) 0%, rgba(200,104,138,0.3) 60%, rgba(251,247,242,0.92) 100%),
-      url('https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1800&q=80');
-    background-size: cover;
-    background-position: center;
-    padding: 100px 24px 110px;
-    text-align: center;
-    position: relative;
-    margin-top: 16px;
-  }
-  .hero h1 {
-    color: white;
-    font-size: clamp(28px, 4.5vw, 42px);
-    line-height: 1.5;
-    margin: 16px 0 18px;
-    text-shadow: 0 2px 16px rgba(58, 46, 51, 0.3);
-  }
-  .hero .greeting { color: rgba(255,255,255,0.95); font-size: 12px; letter-spacing: 0.3em; }
-  .hero .lead { color: rgba(255,255,255,0.92); max-width: 640px; margin: 0 auto; font-size: 15px; }
-  .hero-meta { display: inline-flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; justify-content: center; }
-  .hero-meta .pill { padding: 7px 16px; background: rgba(255,255,255,0.9); border-radius: 999px; color: var(--primary); font-size: 12px; font-weight: 600; }
+    .hero { padding: 72px 0 42px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+    .hero-copy, .hero-status {
+      border: 1px solid rgba(185, 86, 121, .15);
+      box-shadow: var(--shadow);
+    }
+    .hero-copy {
+      padding: clamp(30px, 5vw, 58px);
+      border-radius: 30px;
+      color: white;
+      background: linear-gradient(145deg, #9f4768, #c66d8d 58%, #b88b76);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-copy::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -80px;
+      bottom: -110px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.12);
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      opacity: .88;
+    }
+    h1, h2, h3 { margin-top: 0; line-height: 1.4; }
+    h1 { margin-bottom: 18px; font-size: clamp(28px, 4vw, 46px); letter-spacing: -.03em; }
+    .hero-copy .lead { margin: 0; max-width: 690px; color: rgba(255,255,255,.93); font-size: clamp(14px, 2vw, 17px); }
+    .updated {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 26px;
+      padding: 8px 13px;
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .hero-status {
+      padding: 30px;
+      border-radius: 30px;
+      background: var(--paper);
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      color: var(--amber);
+      background: var(--amber-soft);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .hero-status h2 { margin: 18px 0 10px; font-size: 24px; }
+    .hero-status p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+    .mini-list { display: grid; gap: 10px; margin-top: 22px; }
+    .mini {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--cream);
+      font-size: 13px;
+    }
+    .mini i { font-style: normal; }
 
-  /* SECTION */
-  section { padding: 56px 24px; }
-  .container { max-width: 980px; margin: 0 auto; }
-  .section-head { text-align: center; margin-bottom: 28px; }
-  .section-head h2 { font-size: clamp(22px, 3vw, 30px); margin: 12px 0 12px; line-height: 1.5; }
-  .section-head .lead { color: var(--ink-soft); font-size: 14px; max-width: 620px; margin: 0 auto; }
-  .section-head h2::after {
-    content: ''; display: block; width: 0; height: 1px; background: var(--accent);
-    margin: 16px auto 0; transition: width 0.7s ease 0.3s;
-  }
-  .is-visible .section-head h2::after { width: 40px; }
+    section { padding: 58px 0; scroll-margin-top: 74px; }
+    .section-head { max-width: 760px; margin-bottom: 26px; }
+    .section-kicker {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: var(--rose);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .section-head h2 { margin-bottom: 10px; font-size: clamp(25px, 4vw, 36px); }
+    .section-head p { margin: 0; color: var(--ink-soft); font-size: 14px; }
 
-  /* MTG ハイライト */
-  .meeting-section { background: var(--cream); }
-  .agree-grid { display: grid; gap: 14px; margin-top: 20px; }
-  .agree-row {
-    display: grid; grid-template-columns: 32px 1fr; gap: 14px;
-    background: white; padding: 18px 22px; border-radius: 14px;
-    border-left: 4px solid var(--mint);
-    box-shadow: var(--shadow-soft);
-  }
-  .agree-row .check { color: var(--mint); font-size: 18px; }
-  .agree-row .body { font-size: 14px; color: var(--ink); }
-  .agree-row .body strong { color: var(--primary); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card {
+      padding: 24px;
+      border-radius: var(--radius);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: 14px;
+      font-size: 21px;
+    }
+    .done .card-icon { background: var(--mint-soft); }
+    .waiting .card-icon { background: var(--amber-soft); }
+    .fix .card-icon { background: var(--rose-soft); }
+    .card h3 { margin-bottom: 9px; font-size: 17px; }
+    .card p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+    .card ul { margin: 14px 0 0; padding-left: 1.25em; color: var(--ink-soft); font-size: 14px; }
 
-  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 24px; }
-  @media (max-width: 720px) { .quote-grid { grid-template-columns: 1fr; } }
-  .quote-box {
-    background: linear-gradient(135deg, var(--primary-light), white);
-    border-left: 4px solid var(--primary);
-    padding: 20px 22px; border-radius: 12px;
-    box-shadow: var(--shadow-soft);
-  }
-  .quote-box .who { color: var(--primary); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px; }
-  .quote-box .text { font-family: 'Noto Serif JP', serif; font-size: 14px; color: var(--ink); line-height: 1.9; font-style: italic; }
+    .timeline { position: relative; display: grid; gap: 16px; }
+    .step {
+      display: grid;
+      grid-template-columns: 58px 1fr auto;
+      gap: 18px;
+      align-items: center;
+      padding: 20px 22px;
+      border-radius: 18px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .step-num {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      color: white;
+      background: linear-gradient(135deg, var(--rose), #cf7897);
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .step h3 { margin-bottom: 4px; font-size: 16px; }
+    .step p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+    .owner {
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .owner.us { color: var(--rose-dark); background: var(--rose-soft); }
+    .owner.them { color: var(--mint); background: var(--mint-soft); }
+    .owner.both { color: var(--blue); background: var(--blue-soft); }
 
-  /* SCHEDULE */
-  .schedule-section { background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%); }
-  .schedule-list { display: grid; gap: 16px; margin-top: 20px; }
-  .sch-item {
-    display: grid; grid-template-columns: 130px 1fr; gap: 22px;
-    background: white; padding: 22px 26px; border-radius: 16px;
-    box-shadow: var(--shadow-soft); border: 1px solid var(--line);
-    align-items: flex-start;
-  }
-  .sch-item .date {
-    font-family: 'Inter', sans-serif; font-weight: 600;
-    color: var(--primary); font-size: 14px; letter-spacing: 0.05em;
-    padding-top: 4px; text-align: left;
-  }
-  .sch-item.done .date { color: var(--mint); }
-  .sch-item.future .date { color: var(--accent); }
-  .sch-item .body h4 { font-size: 16px; margin-bottom: 6px; color: var(--ink); }
-  .sch-item .body p { font-size: 13px; color: var(--ink-soft); line-height: 1.8; }
-  @media (max-width: 640px) { .sch-item { grid-template-columns: 1fr; } }
+    .plain-box {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 22px;
+      padding: clamp(24px, 5vw, 40px);
+      border-radius: 26px;
+      color: white;
+      background: linear-gradient(135deg, #3f6f55, #6c9a79);
+      box-shadow: 0 18px 46px rgba(46, 96, 67, .16);
+    }
+    .plain-box h2 { margin-bottom: 10px; font-size: clamp(23px, 4vw, 34px); }
+    .plain-box p { margin: 0; color: rgba(255,255,255,.9); font-size: 14px; }
+    .plain-points { display: grid; gap: 12px; }
+    .plain-point {
+      padding: 15px 17px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 15px;
+      background: rgba(255,255,255,.11);
+      font-size: 14px;
+    }
+    .plain-point b { display: block; margin-bottom: 3px; }
 
-  /* 12ステップ */
-  .steps-section { background: var(--cream); }
-  .step-row {
-    display: grid; grid-template-columns: 40px 1fr 100px; gap: 16px;
-    background: white; padding: 18px 22px; border-radius: 14px;
-    margin-bottom: 12px; box-shadow: var(--shadow-soft); border: 1px solid var(--line);
-    align-items: center;
-  }
-  .step-row .num {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--primary));
-    color: white; display: flex; align-items: center; justify-content: center;
-    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px;
-  }
-  .step-row .body h4 { font-size: 14px; color: var(--ink); margin-bottom: 4px; }
-  .step-row .body p { font-size: 12px; color: var(--ink-soft); line-height: 1.7; }
-  .step-row .owner {
-    padding: 6px 12px; background: var(--cream-deep); color: var(--ink-soft);
-    border-radius: 999px; font-size: 11px; font-weight: 600; text-align: center;
-  }
-  .step-row.us .owner { background: var(--primary-light); color: var(--primary); }
-  .step-row.them .owner { background: var(--mint-soft); color: var(--mint); }
-  .step-row.both .owner { background: var(--accent-light); color: var(--accent); }
-  @media (max-width: 720px) { .step-row { grid-template-columns: 40px 1fr; } .step-row .owner { grid-column: 2; margin-top: 8px; } }
+    .docs { display: grid; gap: 10px; }
+    .doc-row {
+      display: grid;
+      grid-template-columns: 46px minmax(220px, 1.2fr) minmax(220px, 1fr) 108px;
+      gap: 14px;
+      align-items: center;
+      padding: 15px 18px;
+      border-radius: 15px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+    }
+    .doc-no { color: var(--muted); font-size: 12px; font-weight: 800; }
+    .doc-name { font-size: 14px; font-weight: 800; }
+    .doc-note { color: var(--ink-soft); font-size: 14px; }
+    .tag { justify-self: end; padding: 6px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; text-align: center; }
+    .tag.ready { color: var(--mint); background: var(--mint-soft); }
+    .tag.wait { color: var(--amber); background: var(--amber-soft); }
+    .tag.update { color: var(--rose-dark); background: var(--rose-soft); }
 
-  /* 補助金概要 */
-  .subsidy-section { background: linear-gradient(180deg, var(--cream-deep) 0%, var(--cream) 100%); }
-  .subsidy-hero {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    color: white; padding: 36px 40px; border-radius: 24px;
-    box-shadow: var(--shadow-warm); margin-bottom: 30px;
-  }
-  .subsidy-hero h3 { font-size: 22px; color: white; margin-bottom: 14px; }
-  .subsidy-hero p { font-size: 14px; line-height: 2.0; opacity: 0.95; }
-  .subsidy-points { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 20px; }
-  .pt-card { background: white; border-radius: 16px; padding: 22px 24px; box-shadow: var(--shadow-soft); border-top: 4px solid var(--primary); }
-  .pt-card .label-en { display: block; margin-bottom: 6px; }
-  .pt-card h4 { font-size: 15px; color: var(--ink); margin-bottom: 6px; }
-  .pt-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.8; }
+    .share-diagram {
+      display: grid;
+      grid-template-columns: 1fr 52px 1fr 52px 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    .share-card {
+      padding: 24px;
+      border-radius: 20px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .share-card .num {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 13px;
+      border-radius: 11px;
+      color: white;
+      background: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .share-card h3 { margin-bottom: 7px; font-size: 16px; }
+    .share-card p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+    .arrow { display: grid; place-items: center; color: var(--rose); font-size: 26px; font-weight: 800; }
+    .privacy {
+      margin-top: 20px;
+      padding: 18px 20px;
+      border-left: 5px solid var(--amber);
+      border-radius: 14px;
+      color: #6d4b18;
+      background: var(--amber-soft);
+      font-size: 14px;
+    }
 
-  /* SIM CARD */
-  .sim-card {
-    background: white; border-radius: 22px; padding: 36px 40px;
-    box-shadow: var(--shadow-warm); border: 2px solid var(--primary-soft);
-    margin-top: 30px;
-  }
-  .sim-card h3 { text-align: center; font-size: 18px; color: var(--primary); margin-bottom: 24px; }
-  .sim-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--line); font-size: 14px; }
-  .sim-row.minus { color: var(--mint); }
-  .sim-row .label { color: var(--ink); }
-  .sim-row .num { font-family: 'Inter', sans-serif; font-weight: 600; }
-  .sim-row.total {
-    background: var(--primary-light); margin: 12px -10px -10px;
-    padding: 18px 20px; border-radius: 12px; border: none;
-    color: var(--primary); font-weight: 700; font-size: 16px;
-  }
+    .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .fact {
+      padding: 22px;
+      border-radius: 18px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+    }
+    .fact h3 { margin-bottom: 7px; font-size: 16px; }
+    .fact p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+    .fact a { color: var(--rose-dark); font-weight: 800; }
 
-  /* DOCUMENTS */
-  .docs-section { background: var(--cream); }
-  .doc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 28px; }
-  @media (max-width: 720px) { .doc-cols { grid-template-columns: 1fr; } }
-  .doc-col {
-    background: white; border-radius: 18px; padding: 28px 30px;
-    box-shadow: var(--shadow-soft); border-top: 4px solid;
-  }
-  .doc-col.pre { border-top-color: var(--mint); }
-  .doc-col.post { border-top-color: var(--accent); }
-  .doc-col h4 { font-size: 15px; margin-bottom: 4px; }
-  .doc-col.pre h4 { color: var(--mint); }
-  .doc-col.post h4 { color: var(--accent); }
-  .doc-col .when { font-size: 11px; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 16px; }
-  .doc-col ul { list-style: none; }
-  .doc-col li {
-    font-size: 13px; padding: 9px 0; border-bottom: 1px dashed var(--line);
-    color: var(--ink); display: flex; align-items: flex-start; gap: 10px;
-  }
-  .doc-col li:last-child { border-bottom: none; }
-  .doc-col li i { color: var(--accent); margin-top: 4px; font-size: 11px; flex-shrink: 0; }
+    .calc {
+      margin-top: 20px;
+      padding: 24px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--rose-soft), #fff);
+      border: 1px solid #e6bccb;
+    }
+    .calc h3 { margin-bottom: 12px; font-size: 17px; }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .calc-cell { padding: 14px; border-radius: 13px; background: rgba(255,255,255,.75); }
+    .calc-cell small { display: block; color: var(--muted); font-size: 10px; }
+    .calc-cell b { display: block; margin-top: 3px; color: var(--ink); font-size: 15px; }
+    .calc-note { margin: 12px 0 0; color: var(--ink-soft); font-size: 14px; }
 
-  /* MONEY FLOW */
-  .money-section { background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%); }
-  .money-flow {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px;
-    position: relative;
-  }
-  @media (max-width: 720px) { .money-flow { grid-template-columns: 1fr; } }
-  .money-step {
-    background: white; padding: 24px 24px; border-radius: 16px;
-    box-shadow: var(--shadow-soft); border: 1px solid var(--line);
-    position: relative;
-  }
-  .money-step .num {
-    position: absolute; top: -14px; left: 20px;
-    width: 32px; height: 32px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--primary));
-    color: white; display: flex; align-items: center; justify-content: center;
-    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px;
-  }
-  .money-step h4 { font-size: 15px; color: var(--ink); margin: 12px 0 8px; }
-  .money-step p { font-size: 13px; color: var(--ink-soft); line-height: 1.8; }
-  .money-step .amount { display: inline-block; margin-top: 10px; padding: 4px 14px; background: var(--primary-light); color: var(--primary); border-radius: 999px; font-size: 12px; font-weight: 600; }
+    .notice {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 14px;
+      background: rgba(255,255,255,.14);
+      color: #34536d;
+      background: var(--blue-soft);
+      border-color: #c7ddec;
+      font-size: 13px;
+    }
+    .reply-template {
+      max-width: 720px;
+      margin: 20px auto 0;
+      padding: 18px 20px;
+      border-radius: 16px;
+      text-align: left;
+      color: var(--ink);
+      background: var(--cream);
+      border: 1px solid var(--line);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+    .reply-template b { color: var(--rose-dark); }
+    .scope-note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-left: 5px solid var(--blue);
+      border-radius: 14px;
+      color: #34536d;
+      background: var(--blue-soft);
+      font-size: 14px;
+    }
+    .detail-panel {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .detail-panel summary {
+      position: relative;
+      padding: 24px 64px 24px 26px;
+      cursor: pointer;
+      list-style: none;
+    }
+    .detail-panel summary::-webkit-details-marker { display: none; }
+    .detail-panel summary::after {
+      content: "＋";
+      position: absolute;
+      top: 50%;
+      right: 26px;
+      transform: translateY(-50%);
+      color: var(--rose-dark);
+      font-size: 26px;
+      font-weight: 800;
+    }
+    .detail-panel[open] summary::after { content: "−"; }
+    .detail-panel[open] summary { border-bottom: 1px solid var(--line); }
+    .detail-panel summary h2 { margin: 3px 0 5px; font-size: clamp(21px, 3vw, 28px); }
+    .detail-panel summary p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+    .detail-body { padding: 24px 26px 28px; }
+    .hero-status .reply-template { margin-top: 16px; padding: 14px 16px; font-size: 13px; }
 
-  /* SLACK CTA */
-  .slack-cta {
-    background-image:
-      linear-gradient(135deg, rgba(251,247,242,0.92), rgba(232,217,194,0.85)),
-      url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=80');
-    background-size: cover;
-  }
-  .slack-card {
-    background: white; border-radius: 22px; padding: 36px 40px;
-    text-align: center; max-width: 720px; margin: 0 auto;
-    box-shadow: var(--shadow-warm); border: 1px solid var(--line);
-  }
-  .slack-card .icon {
-    width: 64px; height: 64px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    border-radius: 16px; display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 26px; margin: 0 auto 18px;
-  }
-  .slack-card h3 { font-size: 20px; margin-bottom: 12px; }
-  .slack-card p { color: var(--ink-soft); font-size: 14px; line-height: 2.0; margin-bottom: 12px; }
-  .slack-card .channel-name { display: inline-block; font-family: 'Inter', monospace; background: var(--cream-deep); color: var(--primary); padding: 8px 18px; border-radius: 12px; font-size: 13px; font-weight: 600; }
+    .cta {
+      padding: clamp(28px, 5vw, 44px);
+      border-radius: 26px;
+      text-align: center;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .cta h2 { margin-bottom: 10px; font-size: clamp(24px, 4vw, 34px); }
+    .cta p { margin: 0 auto 20px; max-width: 700px; color: var(--ink-soft); font-size: 14px; }
+    .cta a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 13px;
+      color: white;
+      background: var(--rose);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+    }
 
-  /* nav bottom */
-  .nav-bottom {
-    background: white; border-radius: 14px;
-    padding: 18px 24px; margin-top: 30px;
-    box-shadow: var(--shadow-soft); border: 1px solid var(--line);
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 12px;
-  }
-  .nav-bottom a { color: var(--primary); font-weight: 600; font-size: 13px; }
-  .nav-bottom .center { color: var(--mint); background: var(--mint-soft); padding: 6px 16px; border-radius: 999px; }
+    footer { padding: 28px 20px 46px; text-align: center; color: var(--muted); font-size: 13px; }
 
-  /* footer */
-  footer { text-align: center; padding: 30px 12px 14px; color: var(--muted); font-size: 12px; }
-  footer .heart { color: var(--primary); }
-  footer .org { color: var(--ink); font-weight: 500; margin-top: 6px; font-size: 13px; }
+    @media (min-width: 901px) and (max-width: 1100px) {
+      h1 { font-size: 38px; }
+      .hero-grid { grid-template-columns: 1fr 1fr; }
+    }
 
-  /* fade-in : 情報重視ページにつきアニメ無効・即表示 */
-  .fade-in, .stagger { opacity: 1; transform: none; }
-  .stagger > * { opacity: 1; transform: none; }
-  /* 関連資料ナビ */
-  .related-nav {
-    background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
-    padding: 40px 24px 60px;
-  }
-  .related-nav .label-en { display: block; text-align: center; margin-bottom: 8px; }
-  .related-nav h2 { text-align: center; font-size: 20px; margin-bottom: 22px; }
-  .related-nav .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; max-width: 980px; margin: 0 auto; }
-  .related-nav .nav-card {
-    background: white; padding: 16px 14px; border-radius: 12px;
-    box-shadow: var(--shadow-soft); border: 1px solid var(--line);
-    text-align: center; font-size: 13px; color: var(--ink);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .related-nav .nav-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-warm); }
-  .related-nav .nav-card .ic { font-size: 22px; display: block; margin-bottom: 6px; color: var(--primary); }
-  .related-nav .nav-card.current { background: var(--primary-light); border-color: var(--primary); pointer-events: none; opacity: 0.7; }
-  .related-nav .nav-card .lbl { font-weight: 600; }
-  .related-nav .nav-card .meta { display: block; font-size: 10px; color: var(--muted); margin-top: 3px; }
-</style>
+    @media (max-width: 900px) {
+      .hero-grid, .plain-box { grid-template-columns: 1fr; }
+      .hero-status { order: -1; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .share-diagram { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); min-height: 38px; }
+      .calc-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 720px) {
+      .wrap { width: min(100% - 28px, 1080px); }
+      .topbar-inner { align-items: flex-start; flex-direction: column; gap: 0; padding-top: 8px; }
+      .brand { min-height: 36px; }
+      .nav { width: 100%; gap: 8px; }
+      .nav a { min-height: 44px; display: inline-flex; align-items: center; font-size: 14px; }
+      .hero { padding-top: 36px; }
+      .hero-copy, .hero-status { border-radius: 22px; }
+      section { padding: 44px 0; }
+      .step { grid-template-columns: 48px 1fr; }
+      .owner { grid-column: 2; justify-self: start; }
+      .doc-row { grid-template-columns: 36px 1fr auto; }
+      .doc-note { grid-column: 2 / -1; }
+      .facts { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 430px) {
+      h1 { font-size: 26px; }
+      .hero-copy, .hero-status, .card, .plain-box, .share-card, .fact, .cta { padding: 22px; }
+      .calc-grid { grid-template-columns: 1fr; }
+      .doc-row { grid-template-columns: 30px 1fr; }
+      .tag { grid-column: 2; justify-self: start; }
+    }
+  </style>
 </head>
 <body>
-<!-- STICKY TOP NAV（全ページ追従ナビ） -->
-<nav id="yuka-sticky-nav" style="position:sticky; top:0; z-index:1000; background:rgba(253,250,247,0.94); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid rgba(200,104,138,0.15); box-shadow:0 2px 10px rgba(58,46,51,0.05); font-family:'Hiragino Sans','Yu Gothic',sans-serif;">
-  <div style="max-width:1100px; margin:0 auto; padding:10px 16px; display:flex; gap:6px; overflow-x:auto; align-items:center; scrollbar-width:none; -ms-overflow-style:none; -webkit-overflow-scrolling:touch;">
-    <span style="font-family:'Inter',sans-serif; font-size:10px; letter-spacing:0.15em; color:#C8688A; font-weight:600; flex-shrink:0; padding-right:8px; border-right:1px solid rgba(200,104,138,0.2); margin-right:4px;">健康管理支援室</span>
-    <a href="./yuka-clinic-index.html" style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; border-radius:999px; background:rgba(200,104,138,0.08); color:#3A2E33; font-size:12px; font-weight:500; text-decoration:none; white-space:nowrap; flex-shrink:0; transition:background .2s;" onmouseover="this.style.background='rgba(200,104,138,0.18)'" onmouseout="this.style.background='rgba(200,104,138,0.08)'"><span style="font-size:14px;">🏠</span>PJ</a><a href="./yuka-clinic-handbook.html" style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; border-radius:999px; background:#C8688A; color:white; font-size:12px; font-weight:600; text-decoration:none; white-space:nowrap; flex-shrink:0;"><span style="font-size:14px;">📘</span>ハンドブック</a><a href="./2026-05-23_yuka-clinic-subsidy-hub.html" style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; border-radius:999px; background:rgba(200,104,138,0.08); color:#3A2E33; font-size:12px; font-weight:500; text-decoration:none; white-space:nowrap; flex-shrink:0; transition:background .2s;" onmouseover="this.style.background='rgba(200,104,138,0.18)'" onmouseout="this.style.background='rgba(200,104,138,0.08)'"><span style="font-size:14px;">💴</span>補助金ハブ</a><a href="./2026-05-22_yuka-clinic-meeting-minutes.html" style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; border-radius:999px; background:rgba(200,104,138,0.08); color:#3A2E33; font-size:12px; font-weight:500; text-decoration:none; white-space:nowrap; flex-shrink:0; transition:background .2s;" onmouseover="this.style.background='rgba(200,104,138,0.18)'" onmouseout="this.style.background='rgba(200,104,138,0.08)'"><span style="font-size:14px;">📒</span>議事録</a><a href="./2026-05-22_yuka-clinic-2nd-visit-roadmap.html" style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; border-radius:999px; background:rgba(200,104,138,0.08); color:#3A2E33; font-size:12px; font-weight:500; text-decoration:none; white-space:nowrap; flex-shrink:0; transition:background .2s;" onmouseover="this.style.background='rgba(200,104,138,0.18)'" onmouseout="this.style.background='rgba(200,104,138,0.08)'"><span style="font-size:14px;">📋</span>提案編</a><a href="./2026-05-14_yuka-clinic-grant-10h-plan.html" style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; border-radius:999px; background:rgba(200,104,138,0.08); color:#3A2E33; font-size:12px; font-weight:500; text-decoration:none; white-space:nowrap; flex-shrink:0; transition:background .2s;" onmouseover="this.style.background='rgba(200,104,138,0.18)'" onmouseout="this.style.background='rgba(200,104,138,0.08)'"><span style="font-size:14px;">💰</span>補助金10h</a><a href="./2026-05-14_yuka-clinic-ai-thanks.html" style="display:inline-flex; align-items:center; gap:5px; padding:7px 12px; border-radius:999px; background:rgba(200,104,138,0.08); color:#3A2E33; font-size:12px; font-weight:500; text-decoration:none; white-space:nowrap; flex-shrink:0; transition:background .2s;" onmouseover="this.style.background='rgba(200,104,138,0.18)'" onmouseout="this.style.background='rgba(200,104,138,0.08)'"><span style="font-size:14px;">🌸</span>1回目</a>
-  </div>
-  <style>#yuka-sticky-nav div::-webkit-scrollbar{display:none}</style>
-</nav>
-
-
-
-<!-- breadcrumb -->
-<div class="breadcrumb">
-  <a href="./yuka-clinic-index.html"><i class="fas fa-arrow-left"></i> &nbsp;PJダッシュボードへ戻る</a>
-  &nbsp;&nbsp;＞&nbsp;&nbsp;
-  <strong style="color:var(--ink);">📘 プロジェクト ハンドブック</strong>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <p class="greeting">Project Handbook</p>
-  <h1>プロジェクト ハンドブック 📘</h1>
-  <p class="lead">5/22のお話し内容・全体スケジュール・補助金の進め方を、1ページに集約しました。<br>「これ、どうだったっけ？」をこのページで全部解決できる、安心の見開き図です。</p>
-  <div class="hero-meta">
-    <span class="pill"><i class="fas fa-calendar-alt"></i> &nbsp;2026.09.01 本格スタート予定</span>
-    <span class="pill"><i class="fas fa-yen-sign"></i> &nbsp;補助金30万円ミニマム</span>
-    <span class="pill"><i class="fas fa-handshake"></i> &nbsp;チーム4名 ×AI</span>
-  </div>
-</section>
-
-<section class="fade-in" style="padding: 28px 24px 0;">
-  <div class="container">
-    <div style="background: white; border-left: 5px solid var(--primary); border-radius: 16px; padding: 18px 22px; box-shadow: var(--shadow-soft);">
-      <p style="font-size: 12px; color: var(--primary); font-weight: 700; letter-spacing: 0.08em; margin-bottom: 6px;">最新更新：2026.06.25</p>
-      <p style="font-size: 14px; color: var(--ink); line-height: 1.85;">
-        補助金スケジュールは、先方の社内稟議確認にあわせて <strong style="color: var(--primary);">1か月後ろ倒し</strong> になりました。現在は <strong>8/1までに計画届提出、9/1研修開始</strong> の前提で進めています。
-      </p>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand"><span class="brand-mark">AI</span><span>AI研修・助成金申請｜進捗共有</span></div>
+      <nav class="nav" aria-label="ページ内ナビゲーション">
+        <a href="#now">お願い</a>
+        <a href="#next">進め方</a>
+        <a href="#documents">書類</a>
+        <a href="#share">共同編集</a>
+      </nav>
     </div>
-  </div>
-</section>
+  </header>
 
-<!-- 5/22 MTG ハイライト -->
-<section class="meeting-section fade-in">
-  <div class="container">
-    <div class="section-head">
-      <span class="label-en">May 22 Meeting</span>
-      <h2>5/22 ご訪問でお話したこと</h2>
-      <p class="lead">90分のお打ち合わせで合意した6点と、印象に残ったご発言をまとめています。</p>
-    </div>
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">進捗共有資料</p>
+          <h1>AI研修・助成金申請<br>現在の進捗とお願い</h1>
+          <p class="lead">このページは申請書や支給決定通知ではなく、準備状況を分かりやすく共有するための資料です。おけ森は研修内容・日程・講師・見積に関する事実と記入例を用意し、申請内容の判断・入力・署名・提出は申請法人さまに行っていただきます。</p>
+          <span class="updated">● 最終更新 2026年7月22日</span>
+        </div>
+        <aside class="hero-status" aria-label="現在の進捗">
+          <span class="status-badge">7/24（金）までにご返信希望</span>
+          <h2>今は、この2点だけご返信ください</h2>
+          <p>分からない場合は「おすすめを案内してほしい」で大丈夫です。</p>
+          <div class="mini-list">
+            <div class="mini"><i>1</i><span><strong>初回：</strong>9/7 12:30〜14:30 ／ 9/18 午前</span></div>
+            <div class="mini"><i>2</i><span><strong>申請方法：</strong>電子 ／ 紙 ／ おすすめを案内してほしい</span></div>
+            <div class="mini"><i>🔒</i><span>個人情報はSlackへ送らず、後日ご案内する限定ファイルへ</span></div>
+          </div>
+          <div class="reply-template"><strong>返信用テンプレ</strong>（選んだ1つだけ残してください）<br>初回希望：［9/7 12:30〜14:30・9/18 午前］<br>申請方法：［電子・紙・おすすめを案内してほしい］</div>
+        </aside>
+      </div>
+    </section>
 
-    <div class="agree-grid stagger">
-      <div class="agree-row">
-        <div class="check"><i class="fas fa-check-circle"></i></div>
-        <div class="body">現在の開始予定は<strong>2026年9月1日</strong>。5/22時点の開始想定から、6/25に先方稟議に合わせて<strong>1か月後ろ倒し</strong>へ更新済み</div>
+    <section id="now">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-kicker">Your Reply</span>
+          <h2>まずは2点だけ、できれば7/24（金）までにご返信ください</h2>
+          <p>分からない項目は「不明」で大丈夫です。個人情報はSlackでお送りいただく必要はありません。</p>
+        </div>
+        <div class="grid-3">
+          <article class="card waiting">
+            <div class="card-icon">1</div>
+            <h3>初回日程のご希望</h3>
+            <p>次のどちらかをお選びください。</p>
+            <ul>
+              <li>9/7（月）12:30〜14:30</li>
+              <li>9/18（金）午前</li>
+            </ul>
+          </article>
+          <article class="card waiting">
+            <div class="card-icon">2</div>
+            <h3>ご希望の申請方法</h3>
+            <p>分からない場合は、おすすめの案内をご希望いただけます。</p>
+            <ul>
+              <li>電子申請を希望</li>
+              <li>紙での提出を希望</li>
+              <li>おすすめを案内してほしい</li>
+            </ul>
+          </article>
+          <article class="card fix">
+            <div class="card-icon">🔒</div>
+            <h3>個人情報は後日、限定ファイルへ</h3>
+            <p>おけ森が入力用ひな形を用意し、ご相談のうえ申請法人さま管理のDriveへ配置します。</p>
+            <ul>
+              <li>雇用保険適用事業所番号</li>
+              <li>受講者氏名・雇用保険被保険者番号</li>
+              <li>マイナンバー・健康情報は不要です</li>
+            </ul>
+          </article>
+        </div>
+        <div class="reply-template"><strong>返信用テンプレ</strong>（選んだ1つだけ残してください）<br>初回希望：［9/7 12:30〜14:30・9/18 午前］<br>申請方法：［電子申請・紙で提出・おすすめを案内してほしい］<br><small>電子申請をご希望の場合だけ、GビズIDが「あり／なし／不明」か、分かる範囲で添えてください。</small></div>
       </div>
-      <div class="agree-row">
-        <div class="check"><i class="fas fa-check-circle"></i></div>
-        <div class="body"><strong>補助金30万円ミニマムプラン</strong>（人材開発支援助成金）を活用する想定で進める</div>
-      </div>
-      <div class="agree-row">
-        <div class="check"><i class="fas fa-check-circle"></i></div>
-        <div class="body"><strong>8/1までに計画届提出</strong>へ更新。社内稟議回答後、法人情報・受講者2名・研修場所を最終確認する流れ</div>
-      </div>
-      <div class="agree-row">
-        <div class="check"><i class="fas fa-check-circle"></i></div>
-        <div class="body">使用ツールは <strong>ChatGPT Business（月¥3,800/人）</strong> を軸に検討（学習除外がデフォルトの法人プラン）</div>
-      </div>
-      <div class="agree-row">
-        <div class="check"><i class="fas fa-check-circle"></i></div>
-        <div class="body">業務は <strong>顧客管理・請求書・訪問リマインドの一元自動化</strong> ＋ Googleカレンダー連動の方向</div>
-      </div>
-      <div class="agree-row">
-        <div class="check"><i class="fas fa-check-circle"></i></div>
-        <div class="body"><strong>上長確認用PDF提案書（A4 裏表1枚）</strong>を5/22 17:51にリベシティDMでお送り済み</div>
-      </div>
-    </div>
+    </section>
 
-    <div class="quote-grid">
-      <div class="quote-box">
-        <div class="who">健康管理支援室 様</div>
-        <div class="text">「理事長自体がAIにすごく興味があって進めている。補助金もあるし、想像していたよりずっと少ない金額で実現できるとわかったので、現実的に進めていけそうです」</div>
+    <section id="next">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-kicker">Next Actions</span>
+          <h2>ご返信後は、この順で進みます</h2>
+          <p>法人さまにしか判断できない箇所以外は、おけ森側で説明と記入例を用意します。</p>
+        </div>
+        <div class="timeline">
+          <div class="step">
+            <div class="step-num">01</div>
+            <div><h3>初回日程と申請方法をご返信</h3><p>まずは上の2点だけです。個人情報は限定ファイルの準備後に入力していただきます。</p></div>
+            <span class="owner them">申請法人さま</span>
+          </div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <div><h3>研修側の事実と記入例を更新</h3><p>ご返信後1営業日を目安に、研修内容・日程・講師・見積を整えます。残りの研修日は、おけ森が候補案をまとめ、健康管理支援室さまには可否のみ確認いただきます。</p></div>
+            <span class="owner us">おけ森</span>
+          </div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <div><h3>法人情報・事前確認書を確認し、申請</h3><p>申請法人さまが法人・従業員情報を入力し、様式第11号を確認したうえで、申請内容を決定・署名・提出します。</p></div>
+            <span class="owner them">申請法人さま</span>
+          </div>
+        </div>
+        <div class="scope-note"><strong>役割の線引き：</strong>おけ森が研修側情報と記入例を反映した作業版を用意します。申請法人さまには、法人しか確認できない内容の確認・必要箇所の入力・署名・提出をお願いします。助成金申請の代行は行いません。</div>
       </div>
-      <div class="quote-box">
-        <div class="who">健康管理支援室 様</div>
-        <div class="text">「業務的にはもう、全部AIに読ませたいんですよ。カレンダーも、訪問日を入れるんじゃなく、見に行ってもらってやってほしいんです」</div>
-      </div>
-      <div class="quote-box">
-        <div class="who">健康管理支援室 様</div>
-        <div class="text">「過去の面談の記録を読ませて、まとめておいてもらったら、先生らもそれ見たらわかるもんね」</div>
-      </div>
-      <div class="quote-box">
-        <div class="who">健康管理支援室 様</div>
-        <div class="text">「保健師みんなで、よりスキルアップしていきたいんです。チームで使えるようになりたい」</div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- スケジュール -->
-<section class="schedule-section fade-in">
-  <div class="container">
-    <div class="section-head">
-      <span class="label-en">Schedule</span>
-      <h2>これまでの歩み、これからの予定</h2>
-      <p class="lead">プロジェクト全体の流れを、節目ごとに整理しました。</p>
-    </div>
+    <section aria-labelledby="easy-title">
+      <div class="wrap plain-box">
+        <div>
+          <p class="eyebrow">Plain Language</p>
+          <h2 id="easy-title">分かりにくい言葉は、説明を添えます</h2>
+          <p>用語だけで判断をお願いせず、ファイル・確認箇所・選択肢をセットでご案内します。</p>
+        </div>
+        <div class="plain-points">
+          <div class="plain-point"><b>📄 事前確認書（様式第11号）</b>訓練推進者の選任、社内計画、従業員への周知、賃金・費用負担などを、申請法人さま自身が確認する公式書類です。説明付き確認版は、おけ森が7/27（月）までに用意します。</div>
+          <div class="plain-point"><b>🔑 GビズID</b>国の電子申請に使う法人用アカウントです。電子申請を選ぶ場合のみ必要で、「不明」でも構いません。</div>
+          <div class="plain-point"><b>🏢 紙で提出する場合</b>管轄労働局への窓口提出・郵送も選べます。ハローワークで受け付けるかは都道府県により異なるため、提出先を確認します。</div>
+        </div>
+      </div>
+    </section>
 
-    <div class="schedule-list stagger">
-      <div class="sch-item done">
-        <div class="date"><i class="fas fa-check"></i> &nbsp;2026.05.14</div>
-        <div class="body">
-          <h4>初回ヒアリング・11業務の整理</h4>
-          <p>事務所にてお話を伺い、現場の11業務を俯瞰。最優先2つ（請求書／訪問リマインド）の方向性を共有。</p>
-        </div>
+    <section id="documents">
+      <div class="wrap">
+        <details class="detail-panel">
+          <summary><span class="section-kicker">Documents</span><h2>詳しく見る：作業中の書類7点</h2><p>すべて申請前の作業版です。</p></summary>
+          <div class="detail-body docs">
+          <div class="doc-row"><span class="doc-no">01</span><span class="doc-name">職業訓練実施計画届</span><span class="doc-note">法人情報・申請方法・日程を申請法人さまが決定・入力</span><span class="tag wait">法人確認</span></div>
+          <div class="doc-row"><span class="doc-no">02</span><span class="doc-name">事業展開等実施計画</span><span class="doc-note">おけ森がDX研修の原案を提示し、申請法人さまが内容を決定</span><span class="tag wait">法人判断</span></div>
+          <div class="doc-row"><span class="doc-no">03</span><span class="doc-name">対象労働者一覧</span><span class="doc-note">申請法人さまが限定ファイルへ対象者情報を入力</span><span class="tag wait">法人入力</span></div>
+          <div class="doc-row"><span class="doc-no">04</span><span class="doc-name">OFF-JT講師要件確認書</span><span class="doc-note">講師・研修提供者側の事実資料を準備済み</span><span class="tag ready">研修側資料</span></div>
+          <div class="doc-row"><span class="doc-no">05</span><span class="doc-name">事前確認書（様式第11号）</span><span class="doc-note">申請法人さま自身が各項目を確認・チェック</span><span class="tag wait">法人確認</span></div>
+          <div class="doc-row"><span class="doc-no">06</span><span class="doc-name">カリキュラム別紙</span><span class="doc-note">日程確定後、おけ森が研修内容・時間を更新</span><span class="tag update">日程確定後</span></div>
+          <div class="doc-row"><span class="doc-no">07</span><span class="doc-name">見積書</span><span class="doc-note">日程・研修内容の確定後、おけ森が再発行</span><span class="tag update">日程確定後</span></div>
+          </div>
+        </details>
       </div>
-      <div class="sch-item done">
-        <div class="date"><i class="fas fa-check"></i> &nbsp;2026.05.18</div>
-        <div class="body">
-          <h4>本番リマインドメール 自動稼働開始</h4>
-          <p>架空3社のサンプルデータで、Googleサーバーから自動で朝9時にリマインドメールを送信する試運転を実施。</p>
-        </div>
-      </div>
-      <div class="sch-item done">
-        <div class="date"><i class="fas fa-check"></i> &nbsp;2026.05.22</div>
-        <div class="body">
-          <h4>2回目ご訪問・PDF提案書送付</h4>
-          <p>ダミースプシで業務一元管理の絵を共有。補助金30万円ミニマムプランで合意し、上長確認用PDF送付完了。開始時期は後日、9/1予定へ更新済み。</p>
-        </div>
-      </div>
-      <div class="sch-item done">
-        <div class="date"><i class="fas fa-check"></i> &nbsp;2026.06.20-22</div>
-        <div class="body">
-          <h4>補助金書類のたたき台作成・確認依頼送付</h4>
-          <p>12時間カリキュラム、日程案、見積書、受講案内、講師情報、計画届テンプレートを当方で準備。法人情報・受講者2名・研修場所に絞って確認依頼を送付しました。</p>
-        </div>
-      </div>
-      <div class="sch-item done">
-        <div class="date"><i class="fas fa-check"></i> &nbsp;2026.06.25</div>
-        <div class="body">
-          <h4>スケジュールを1か月後ろ倒し</h4>
-          <p>健康管理支援室さま側の社内稟議回答待ちに合わせて、計画届提出は8/1まで、研修開始は9/1予定へ更新しました。</p>
-        </div>
-      </div>
-      <div class="sch-item future">
-        <div class="date"><i class="fas fa-handshake"></i> &nbsp;2026.07月中</div>
-        <div class="body">
-          <h4>社内稟議回答・不足情報の最終確認</h4>
-          <p>先方の稟議回答を待ちつつ、法人情報・受講者2名・研修場所・カリキュラム最終案を確認します。必要に応じて労働局や社労士へ確認します。</p>
-        </div>
-      </div>
-      <div class="sch-item future">
-        <div class="date"><i class="fas fa-flag"></i> &nbsp;〜2026.08.01</div>
-        <div class="body">
-          <h4>計画届を労働局へ正式提出（最重要マイルストーン）</h4>
-          <p>研修開始前のマスト書類。<strong>9月スタートの絶対条件</strong>です。提出前に研修を始めると助成対象外になります。</p>
-        </div>
-      </div>
-      <div class="sch-item future">
-        <div class="date"><i class="fas fa-comments"></i> &nbsp;2026.08月中</div>
-        <div class="body">
-          <h4>確認・補正依頼があれば対応</h4>
-          <p>労働局から記載内容の確認や追加資料の依頼があれば、双方で分担して対応します。</p>
-        </div>
-      </div>
-      <div class="sch-item future">
-        <div class="date"><i class="fas fa-rocket"></i> &nbsp;2026.09.01〜</div>
-        <div class="body">
-          <h4>研修・本格スタート</h4>
-          <p>半年パックの研修を開始。出席簿、実施記録、受講時間、請求書・支払い記録を残しながら進める。</p>
-        </div>
-      </div>
-      <div class="sch-item future">
-        <div class="date"><i class="fas fa-flag-checkered"></i> &nbsp;2027.03-04</div>
-        <div class="body">
-          <h4>半年パック終了・支給申請</h4>
-          <p>終了日の翌日から2か月以内に、賃金台帳・出勤簿・請求書・振込明細などを添付して支給申請を提出。</p>
-        </div>
-      </div>
-      <div class="sch-item future">
-        <div class="date"><i class="fas fa-coins"></i> &nbsp;2027.04-06</div>
-        <div class="body">
-          <h4>助成金入金見込み</h4>
-          <p>労働局の審査後、法人へ助成金が入金される予定（時期は審査状況により前後）。</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- 12ステップ進行表 -->
-<section class="steps-section fade-in">
-  <div class="container">
-    <div class="section-head">
-      <span class="label-en">12 Steps</span>
-      <h2>補助金申請 12ステップ進行表</h2>
-      <p class="lead">どのステップを誰がやるか、すべて整理しました。</p>
-    </div>
+    <section id="share">
+      <div class="wrap">
+        <details class="detail-panel">
+          <summary><span class="section-kicker">Shared Editing</span><h2>詳しく見る：共同編集の導入案</h2><p>正式Excelを崩さず、権限の違う3ファイルに分けます。</p></summary>
+          <div class="detail-body">
+            <div class="share-diagram">
+          <div class="share-card"><span class="num">1</span><h3>進捗共有シート</h3><p>進捗・日程・確認結果だけを双方で更新します。個人情報は載せません。</p></div>
+          <div class="arrow">→</div>
+          <div class="share-card"><span class="num">2</span><h3>法人管理の限定ファイル</h3><p>おけ森が7/27（月）までに入力用ひな形を用意し、ご相談のうえ申請法人さま管理のDriveへ配置します。指定アカウントだけが閲覧できる場所に、事業所番号・受講者氏名・雇用保険被保険者番号を入力します。</p></div>
+          <div class="arrow">→</div>
+          <div class="share-card"><span class="num">3</span><h3>申請法人管理の正式Excel</h3><p>申請法人さまが申請用の正本として管理します。おけ森は研修側の事実と記入例を提供します。</p></div>
+            </div>
+            <div class="privacy"><strong>情報管理：</strong>3つは同じ権限のタブではなく、権限の異なる別ファイルにします。限定ファイルは申請法人さまを所有者とし、必要な担当者だけに権限を付与。マイナンバー・健康情報は収集せず、完了後に権限と保管要否を見直します。</div>
+          </div>
+        </details>
+      </div>
+    </section>
 
-    <div class="stagger">
-      <div class="step-row us">
-        <div class="num">1</div>
-        <div class="body">
-          <h4>申請に必要な確認項目を山本さまへお送りする</h4>
-          <p>法人情報、受講者、雇用保険、GビズID、社労士確認の有無を確認していただく</p>
-        </div>
-        <div class="owner">おけもん</div>
+    <section id="facts">
+      <div class="wrap">
+        <details class="detail-panel">
+          <summary><span class="section-kicker">Official Facts</span><h2>詳しく見る：制度上の大切な線引き</h2><p>2026年7月22日時点の厚生労働省資料で確認しています。</p></summary>
+          <div class="detail-body">
+            <div class="facts">
+          <article class="fact"><h3>📅 当案件は8/1までの提出が目標</h3><p>紙提出を選ぶ場合は7/31（金）までの窓口提出または労働局到達、電子申請を選ぶ場合は8/1（土）までの送信完了を目標にします。制度上の原則期限は訓練開始1か月前までで、9/7開始なら8/7、9/18開始なら8/18が目安です。<br><a href="https://www.mhlw.go.jp/content/11800000/001705831.pdf" target="_blank" rel="noopener noreferrer">厚労省 詳細版パンフレット</a></p></article>
+          <article class="fact"><h3>📄 様式第11号は法人が確認</h3><p>事業展開等リスキリング支援コースの計画届に必要な公式書類です。申請法人さま自身が内容を読み、確認します。<br><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/38819_00010.html" target="_blank" rel="noopener noreferrer">厚労省 2026年5月14日以降の様式一覧</a></p></article>
+          <article class="fact"><h3>🔑 GビズIDは電子申請時のみ</h3><p>電子申請を選ぶ場合は法人のGビズIDが必要です。持っていない場合は紙での申請も選べます。<br><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/index_00060.html" target="_blank" rel="noopener noreferrer">厚労省 雇用関係助成金の電子申請</a></p></article>
+          <article class="fact"><h3>👥 対象者と研修時間は申請前に確認</h3><p>対象者は申請事業主が雇用する雇用保険被保険者です。研修案は合計12時間ですが、休憩や対象外時間を除いた実訓練時間が10時間以上か、申請前に確認します。</p></article>
+            </div>
+            <div class="notice"><strong>助成額について：</strong>対象経費や支給可否は労働局の審査で決まるため、このページでは見込額を表示していません。申請前に管轄労働局へ確認します。</div>
+          </div>
+        </details>
       </div>
-      <div class="step-row them">
-        <div class="num">2</div>
-        <div class="body">
-          <h4>法人情報と受講者を確認</h4>
-          <p>法人名、所在地、雇用保険適用事業所番号、常時雇用労働者数、受講候補者2名以上</p>
-        </div>
-        <div class="owner">皆さま側</div>
-      </div>
-      <div class="step-row us">
-        <div class="num">3</div>
-        <div class="body">
-          <h4>研修資料を固める</h4>
-          <p>12時間カリキュラム、日程案、見積書、受講案内、講師情報、個人情報を使わない演習題材</p>
-        </div>
-        <div class="owner">おけもん</div>
-      </div>
-      <div class="step-row both">
-        <div class="num">4</div>
-        <div class="body">
-          <h4>社労士または労働局へ事前確認</h4>
-          <p>研修内容が対象になり得るか、必要添付書類、他補助金との重複有無を確認</p>
-        </div>
-        <div class="owner">双方</div>
-      </div>
-      <div class="step-row both">
-        <div class="num">5</div>
-        <div class="body">
-          <h4>計画届一式を記入</h4>
-          <p>職業訓練実施計画届、事業展開等実施計画、対象労働者一覧、事前確認書、添付資料を揃える</p>
-        </div>
-        <div class="owner">双方</div>
-      </div>
-      <div class="step-row them">
-        <div class="num">6</div>
-        <div class="body">
-          <h4>計画届を提出（〜8/1まで）</h4>
-          <p>研修開始前の提出。提出前に研修を始めると助成対象外になり得る。最重要の節目</p>
-        </div>
-        <div class="owner">法人側</div>
-      </div>
-      <div class="step-row both">
-        <div class="num">7</div>
-        <div class="body">
-          <h4>確認・補正依頼に対応</h4>
-          <p>提出後、労働局から記載内容の確認や追加資料の依頼があれば、社労士・おけもんで分担して対応</p>
-        </div>
-        <div class="owner">双方</div>
-      </div>
-      <div class="step-row both">
-        <div class="num">8</div>
-        <div class="body">
-          <h4>研修開始（2026/9/1〜）</h4>
-          <p>出席簿、実施記録、受講時間、請求書・支払い記録を残しながら進行</p>
-        </div>
-        <div class="owner">双方</div>
-      </div>
-      <div class="step-row both">
-        <div class="num">9</div>
-        <div class="body">
-          <h4>半年パック終了</h4>
-          <p>終了日を基準に、翌日から2か月以内に支給申請を出す</p>
-        </div>
-        <div class="owner">双方</div>
-      </div>
-      <div class="step-row them">
-        <div class="num">10</div>
-        <div class="body">
-          <h4>支給申請を提出</h4>
-          <p>研修後の申請。賃金台帳、出勤簿、請求書、領収書、振込明細などを添付</p>
-        </div>
-        <div class="owner">法人側</div>
-      </div>
-      <div class="step-row">
-        <div class="num">11</div>
-        <div class="body">
-          <h4>労働局審査</h4>
-          <p>提出された書類に基づき、対象期間・受講内容の妥当性を審査</p>
-        </div>
-        <div class="owner">労働局</div>
-      </div>
-      <div class="step-row">
-        <div class="num">12</div>
-        <div class="body">
-          <h4>助成金入金</h4>
-          <p>支給決定後に法人へ入金。審査期間は固定ではないため、ここは仮予定として進める</p>
-        </div>
-        <div class="owner">労働局</div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- 補助金概要 -->
-<section class="subsidy-section fade-in">
-  <div class="container">
-    <div class="section-head">
-      <span class="label-en">Subsidy Overview</span>
-      <h2>使う補助金について</h2>
-      <p class="lead">人材開発支援助成金（事業展開等リスキリング支援コース）の全体像です。</p>
-    </div>
-
-    <div class="subsidy-hero">
-      <span class="label-en" style="color: rgba(255,255,255,0.85);">Ministry of Health, Labour and Welfare</span>
-      <h3>人材開発支援助成金<br>（事業展開等リスキリング支援コース）</h3>
-      <p>新規事業展開や、新たな分野の事業に必要となる知識・技能を労働者が習得するための職業訓練を、事業主が計画的に実施した場合、研修費の <strong>最大75%</strong> ＋受講時間ごとに <strong>賃金助成¥1,000/時間</strong> が支給される厚生労働省の助成金です。</p>
-    </div>
-
-    <div class="subsidy-points stagger">
-      <div class="pt-card">
-        <span class="label-en">Eligibility</span>
-        <h4>受講対象</h4>
-        <p>雇用保険被保険者の方が対象。正社員に限らず、雇用保険加入のパートさんもOK。業務委託の方は対象外。</p>
+    <section>
+      <div class="wrap cta">
+        <span class="section-kicker">Communication</span>
+        <h2>いまのご返信は2行だけで大丈夫です</h2>
+        <p>上の返信例を使い、「初回希望」と「申請方法」をいつものSlackへお送りください。個人情報は、限定ファイルの準備後にご案内します。</p>
+        <div class="reply-template"><strong>返信用テンプレ</strong>（選んだ1つだけ残してください）<br>初回希望：［9/7 12:30〜14:30・9/18 午前］<br>申請方法：［電子申請・紙で提出・おすすめを案内してほしい］</div>
       </div>
-      <div class="pt-card">
-        <span class="label-en">Reimbursement</span>
-        <h4>経費助成</h4>
-        <p>研修費用の <strong style="color:var(--primary);">75%</strong> が助成対象。30万円の研修なら22.5万円が法人へ後日支給される構造。</p>
-      </div>
-      <div class="pt-card">
-        <span class="label-en">Wage Support</span>
-        <h4>賃金助成</h4>
-        <p>受講中の勤務時間に対して <strong style="color:var(--primary);">¥1,000/時間</strong>。10時間×2名=¥20,000の助成。</p>
-      </div>
-      <div class="pt-card">
-        <span class="label-en">Minimum Line</span>
-        <h4>0→1ライン</h4>
-        <p>雇用保険被保険者が <strong style="color:var(--primary);">2名以上</strong> 受講で申請成立イメージ。</p>
-      </div>
-    </div>
+    </section>
+  </main>
 
-    <!-- 確度の見方 -->
-    <div style="background: white; border-radius: 18px; padding: 28px 32px; margin-top: 28px; box-shadow: var(--shadow-soft); border: 1px solid var(--line);">
-      <h3 style="font-size: 17px; color: var(--primary); margin-bottom: 16px; text-align: center;">📊 補助金の「見通し」が立つ流れ</h3>
-      <p style="font-size: 13px; color: var(--ink-soft); text-align: center; margin-bottom: 22px; line-height: 1.9;">
-        補助金は「2段階のチェックポイント」を経て、見通しがどんどん明確になっていきます。
-      </p>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
-        <div style="background: var(--mint-soft); border-left: 4px solid var(--mint); border-radius: 12px; padding: 16px 18px;">
-          <p style="font-size: 11px; color: var(--mint); font-weight: 700; letter-spacing: 0.05em; margin-bottom: 6px;">STEP 1 ・ 6〜7月の事前確認</p>
-          <p style="font-size: 13px; color: var(--ink); line-height: 1.85;">社内稟議・法人情報・受講者2名・研修場所を確認し、必要に応じて労働局や社労士へ確認 → <strong style="color: var(--primary);">「対象になり得る」と見通しが立つ</strong>段階です。</p>
-        </div>
-        <div style="background: var(--primary-light); border-left: 4px solid var(--primary); border-radius: 12px; padding: 16px 18px;">
-          <p style="font-size: 11px; color: var(--primary); font-weight: 700; letter-spacing: 0.05em; margin-bottom: 6px;">STEP 2 ・ 8/1までの計画届</p>
-          <p style="font-size: 13px; color: var(--ink); line-height: 1.85;">計画届を労働局へ提出 → 受理されれば<strong style="color: var(--primary);">「制度の土俵に乗る」</strong>。ここを越えれば、研修をきちんと実施すれば <strong>申請が通る見通しはかなり立ちやすく</strong>なります。</p>
-        </div>
-      </div>
-      <p style="font-size: 12px; color: var(--muted); margin-top: 18px; line-height: 1.8; padding: 12px 16px; background: var(--cream-deep); border-radius: 10px;">
-        💡 <strong>大事な前提：</strong>計画届の受理は支給決定ではありません。研修後の出席簿・賃金台帳・実施記録などをきちんと残すことが、最終審査での安心材料になります。<strong>記録の取り方も当方でテンプレートをご用意します</strong>のでご安心ください 🌱
-      </p>
-    </div>
-
-    <!-- シミュレーション -->
-    <div class="sim-card">
-      <h3>💴 30万円プラン 実質負担シミュレーション</h3>
-      <div class="sim-row">
-        <div class="label">研修費（おけもん提供）</div>
-        <div class="num">¥300,000</div>
-      </div>
-      <div class="sim-row minus">
-        <div class="label">経費助成（75%）</div>
-        <div class="num">− ¥225,000</div>
-      </div>
-      <div class="sim-row minus">
-        <div class="label">賃金助成（2名×12時間×¥1,000）</div>
-        <div class="num">− ¥24,000</div>
-      </div>
-      <div class="sim-row total">
-        <div class="label">法人 実質ご負担額</div>
-        <div class="num">¥51,000</div>
-      </div>
-      <p style="font-size:12px; color:var(--muted); text-align:center; margin-top:14px;">※ 補助金は法人さまが後日受給される構造です。研修費は通常通り当方にお支払いいただきます。</p>
-    </div>
-  </div>
-</section>
-
-<!-- 書類リスト -->
-<section class="docs-section fade-in">
-  <div class="container">
-    <div class="section-head">
-      <span class="label-en">Documents</span>
-      <h2>使う書類リスト</h2>
-      <p class="lead">補助金申請に必要な書類を、提出タイミング別に整理しています。</p>
-    </div>
-
-    <div class="doc-cols">
-      <div class="doc-col pre">
-        <h4>📅 開始前に出す書類</h4>
-        <p class="when">2026/8/1頃まで・労働局へ提出</p>
-        <ul>
-          <li><i class="fas fa-file-alt"></i> 職業訓練実施計画届</li>
-          <li><i class="fas fa-file-alt"></i> 事業展開等実施計画</li>
-          <li><i class="fas fa-file-alt"></i> 対象労働者一覧</li>
-          <li><i class="fas fa-file-alt"></i> 事前確認書</li>
-          <li><i class="fas fa-file-alt"></i> 受講案内・カリキュラム</li>
-          <li><i class="fas fa-file-alt"></i> 講師情報・経歴書</li>
-          <li><i class="fas fa-file-alt"></i> 研修見積書（おけもん発行）</li>
-          <li><i class="fas fa-file-alt"></i> 雇用保険適用事業所番号証明</li>
-        </ul>
-      </div>
-      <div class="doc-col post">
-        <h4>📅 研修後に出す書類</h4>
-        <p class="when">2027/3-4月・終了から2か月以内</p>
-        <ul>
-          <li><i class="fas fa-file-alt"></i> 支給申請書</li>
-          <li><i class="fas fa-file-alt"></i> 出席簿（受講者の出席記録）</li>
-          <li><i class="fas fa-file-alt"></i> 実施記録（カリキュラム実施結果）</li>
-          <li><i class="fas fa-file-alt"></i> 賃金台帳（受講者分）</li>
-          <li><i class="fas fa-file-alt"></i> 出勤簿（受講期間分）</li>
-          <li><i class="fas fa-file-alt"></i> 請求書・領収書</li>
-          <li><i class="fas fa-file-alt"></i> 振込明細（研修費支払い証明）</li>
-          <li><i class="fas fa-file-alt"></i> 受講修了書類</li>
-        </ul>
-      </div>
-    </div>
-
-    <p style="text-align:center; margin-top:24px; font-size:13px; color:var(--ink-soft);">
-      📘 詳細手順は <a href="./2026-05-23_yuka-clinic-subsidy-hub.html" style="color:var(--primary); font-weight:600;">補助金申請サポートハブ</a> をご参照ください。
-    </p>
-  </div>
-</section>
-
-<!-- お金の流れ -->
-<section class="money-section fade-in">
-  <div class="container">
-    <div class="section-head">
-      <span class="label-en">Money Flow</span>
-      <h2>お金の流れ</h2>
-      <p class="lead">研修費のお支払いから補助金入金までの3ステップ。</p>
-    </div>
-
-    <div class="money-flow stagger">
-      <div class="money-step">
-        <div class="num">1</div>
-        <h4>研修費をお支払い</h4>
-        <p>研修開始時（または分割で）、法人さまから当方へ通常通りお支払いいただきます。</p>
-        <span class="amount">¥300,000</span>
-      </div>
-      <div class="money-step">
-        <div class="num">2</div>
-        <h4>研修後に支給申請</h4>
-        <p>半年パック終了後、賃金台帳・領収書・振込明細などを添付して労働局へ支給申請を提出。</p>
-        <span class="amount">2027/3-4月</span>
-      </div>
-      <div class="money-step">
-        <div class="num">3</div>
-        <h4>助成金が法人へ入金</h4>
-        <p>労働局の審査後、経費助成¥225,000＋賃金助成¥24,000=計¥249,000が法人さまへ入金。</p>
-        <span class="amount">+ ¥249,000</span>
-      </div>
-    </div>
-
-    <p style="text-align:center; margin-top:36px; font-family:'Noto Serif JP', serif; font-size:16px; color:var(--primary); font-weight:500;">
-      → 実質ご負担額：<strong style="font-size:22px;">¥51,000</strong>
-    </p>
-  </div>
-</section>
-
-<!-- Slack CTA -->
-<section class="slack-cta fade-in">
-  <div class="container">
-    <div class="section-head">
-      <span class="label-en">Communication</span>
-      <h2>進捗共有・ご質問はこちらで</h2>
-    </div>
-    <div class="slack-card">
-      <div class="icon"><i class="fab fa-slack"></i></div>
-      <h3>Slack「山本さん情報交換」ワークスペース</h3>
-      <p>「ここってどうだったっけ？」「これってAIでできない？」など、<br>気になることをいつでも気軽にお寄せください。</p>
-      <p>双方向で、温かく、軽やかに進められる距離感を大切にしています🌷</p>
-      <div class="channel-name">#all-山本さん情報交換</div>
-    </div>
-  </div>
-</section>
-
-<!-- 関連資料ナビ（全ページへの行き来） -->
-<section class="related-nav">
-  <span class="label-en">All Documents</span>
-  <h2>📚 ご一緒した資料すべて</h2>
-  <div class="nav-grid">
-    <a href="./yuka-clinic-index.html" class="nav-card">
-      <span class="ic"><i class="fas fa-home"></i></span>
-      <span class="lbl">PJダッシュボード</span>
-      <span class="meta">トップページ</span>
-    </a>
-    <a href="./yuka-clinic-handbook.html" class="nav-card current">
-      <span class="ic"><i class="fas fa-book"></i></span>
-      <span class="lbl">📘 ハンドブック</span>
-      <span class="meta">いまここ</span>
-    </a>
-    <a href="./2026-05-23_yuka-clinic-subsidy-hub.html" class="nav-card">
-      <span class="ic"><i class="fas fa-yen-sign"></i></span>
-      <span class="lbl">補助金申請ハブ</span>
-      <span class="meta">2026.05.23</span>
-    </a>
-    <a href="./2026-05-22_yuka-clinic-meeting-minutes.html" class="nav-card">
-      <span class="ic"><i class="fas fa-clipboard-list"></i></span>
-      <span class="lbl">2回目 議事録</span>
-      <span class="meta">2026.05.22</span>
-    </a>
-    <a href="./2026-05-22_yuka-clinic-2nd-visit-roadmap.html" class="nav-card">
-      <span class="ic"><i class="fas fa-map"></i></span>
-      <span class="lbl">提案編</span>
-      <span class="meta">2026.05.22</span>
-    </a>
-    <a href="./2026-05-14_yuka-clinic-grant-10h-plan.html" class="nav-card">
-      <span class="ic"><i class="fas fa-piggy-bank"></i></span>
-      <span class="lbl">補助金10hプラン</span>
-      <span class="meta">2026.05.14</span>
-    </a>
-    <a href="./2026-05-14_yuka-clinic-ai-thanks.html" class="nav-card">
-      <span class="ic"><i class="fas fa-seedling"></i></span>
-      <span class="lbl">1回目 訪問まとめ</span>
-      <span class="meta">2026.05.14</span>
-    </a>
-  </div>
-</section>
-
-<footer>
-  <p>このページは2026年5月25日に作成されました <span class="heart">♥</span></p>
-  <p class="org">健康管理支援室 御中 AI業務改善 プロジェクト ハンドブック</p>
-  <p style="font-size:11px; margin-top:8px;">※ 限定URLでお渡ししています</p>
-</footer>
-
-<script>
-  const animEls = document.querySelectorAll('.fade-in, .stagger');
-  const animObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); animObs.unobserve(e.target); } });
-  }, { threshold: 0.05, rootMargin: '0px 0px -10% 0px' });
-  animEls.forEach(el => {
-    const r = el.getBoundingClientRect();
-    if (r.top < window.innerHeight * 1.2 && r.bottom > -100) el.classList.add('is-visible');
-    else animObs.observe(el);
-  });
-  // safety net: after 2s, force-show anything still hidden
-  setTimeout(() => {
-    document.querySelectorAll('.fade-in:not(.is-visible), .stagger:not(.is-visible)').forEach(el => {
-      const r = el.getBoundingClientRect();
-      if (r.top < window.innerHeight * 2.5) el.classList.add('is-visible');
-    });
-  }, 2000);
-</script>
-
+  <footer>
+    <p>健康管理支援室さま AI研修・助成金申請プロジェクト｜進捗共有</p>
+    <p>作成・更新：おけ森（研修提供者）｜申請内容の判断・入力・署名・提出は申請法人さまが行います。</p>
+    <p>個人情報は掲載していません。関係者内でのみお取り扱いください。</p>
+  </footer>
 </body>
 </html>
