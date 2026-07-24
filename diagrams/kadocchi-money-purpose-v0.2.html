@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>おかねの目的タイプ診断</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#24343a; --ink-soft:#6b7c84; --cream:#f4f7f6; --peach:#e8f0ee;
+  --sakura:#2f8f84; --sakura-deep:#1f6f68; --sun:#c4a35a;
+  --leaf:#3a9b8f; --line:#d5e3df; --card:#ffffff;
+  --axis-a:#1f6f68; --axis-b:#c4a35a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Zen Maru Gothic',sans-serif; color:var(--ink);
+  background:
+    radial-gradient(1100px 560px at 6% -8%, #d7ebe6 0%, transparent 58%),
+    radial-gradient(900px 520px at 108% 4%, #efe6c9 0%, transparent 52%),
+    radial-gradient(700px 480px at 50% 120%, #dfece8 0%, transparent 58%),
+    var(--cream);
+  min-height:100vh; display:flex; flex-direction:column; line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+.kaisei{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900}
+.topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(6px);
+  background:rgba(244,247,246,.88);border-bottom:1px solid var(--line)}
+.bar-track{height:6px;background:var(--peach)}
+.bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--sakura),var(--sun));
+  transition:width .4s cubic-bezier(.4,0,.2,1);border-radius:0 4px 4px 0}
+.bar-meta{max-width:680px;margin:0 auto;padding:8px 20px;display:flex;
+  align-items:center;justify-content:space-between;gap:10px;font-size:13px}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;
+  padding:3px 12px;color:var(--ink-soft);font-weight:600;white-space:nowrap}
+.count{color:var(--ink-soft);font-size:12px}
+.wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:28px 18px 56px}
+.card{width:100%;max-width:620px;background:var(--card);border:1px solid var(--line);
+  border-radius:24px;padding:36px 34px;box-shadow:0 18px 50px -26px rgba(31,111,104,.28);
+  animation:pop .45s cubic-bezier(.34,1.4,.64,1)}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+.brand{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;letter-spacing:.08em;
+  font-size:13px;color:var(--sakura-deep)}
+.uline{width:56px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--sakura),var(--sun));margin:12px auto 2px}
+.section-tag{display:inline-block;font-size:12px;color:var(--sakura-deep);font-weight:700;margin-bottom:8px}
+h1.q{font-family:'Zen Kaku Gothic New',sans-serif;font-size:23px;font-weight:700;line-height:1.5;margin-bottom:8px}
+h1.q::after{content:"";display:block;width:34px;height:3px;border-radius:3px;
+  background:linear-gradient(90deg,var(--sakura),var(--sun));margin-top:10px}
+.hint{font-size:14px;color:var(--ink-soft);margin:8px 0 18px;white-space:pre-wrap}
+.choice-list{display:flex;flex-direction:column;gap:10px}
+.choice{font-family:inherit;font-size:15px;cursor:pointer;border:1.5px solid var(--line);
+  background:#fbfefd;border-radius:16px;padding:14px 16px;color:var(--ink);text-align:left;
+  transition:.18s;display:flex;align-items:center;gap:12px}
+.choice:hover{border-color:var(--sakura);transform:translateY(-1px)}
+.choice.on{background:linear-gradient(120deg,#d9ebe6,#efe6c9);border-color:var(--sakura);
+  color:#1f6f68;font-weight:700;box-shadow:0 4px 14px -8px rgba(31,111,104,.55)}
+.choice .mark{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);
+  display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:800;color:var(--ink-soft)}
+.choice.on .mark{border-color:var(--sakura-deep);background:var(--sakura-deep);color:#fff}
+.nav{display:flex;gap:12px;margin-top:26px;align-items:center}
+.btn{font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;border:none;
+  border-radius:14px;padding:14px 24px;transition:.18s;display:inline-flex;align-items:center;justify-content:center}
+.btn-primary{background:linear-gradient(120deg,var(--sakura),#3a9b8f);color:#fff;flex:1;
+  box-shadow:0 8px 20px -10px rgba(31,111,104,.75)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line)}
+.btn-ghost:hover{background:var(--peach)}
+.btn-accent{background:linear-gradient(120deg,#c4a35a,#d6b86e);color:#24343a;flex:1}
+.btn-skip{background:none;border:none;color:var(--ink-soft);text-decoration:underline;
+  cursor:pointer;font-family:inherit;font-size:13px}
+.center{text-align:center}
+.logo{font-size:52px;margin:4px 0 8px}
+.break-card{text-align:center;border-left:6px solid var(--sakura)}
+.break-card .big{font-size:44px;margin-bottom:8px}
+.type-hero{border-radius:20px;padding:22px 18px;margin:10px 0 16px;
+  background:linear-gradient(145deg,#e7f4f1 0%, #fff 55%, #f7f0dc 100%);
+  border:1px solid var(--line)}
+.type-code{display:inline-block;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;
+  letter-spacing:.12em;font-size:13px;color:#fff;background:var(--sakura-deep);
+  border-radius:999px;padding:4px 12px;margin-bottom:8px}
+.type-name{font-family:'Zen Kaku Gothic New',sans-serif;font-size:28px;font-weight:900;line-height:1.35;margin:4px 0}
+.type-one{font-size:15px;color:var(--sakura-deep);font-weight:700;margin-top:4px}
+.axes{display:grid;gap:12px;margin:16px 0}
+.axis{background:var(--cream);border-radius:14px;padding:12px 14px;border:1px solid var(--line)}
+.axis-head{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-soft);margin-bottom:6px;font-weight:700}
+.axis-track{height:10px;background:#dde8e5;border-radius:99px;overflow:hidden;position:relative}
+.axis-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--axis-a),var(--axis-b));width:50%;transition:width .6s ease}
+.bullets{text-align:left;margin:8px 0 16px;padding:14px 16px;background:var(--cream);border-radius:16px;border:1px solid var(--line)}
+.bullets h3{font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;margin-bottom:8px;color:var(--sakura-deep)}
+.bullets li{margin:6px 0 6px 1.1em;font-size:14px}
+.cta-box{border:1.5px solid var(--line);border-radius:18px;padding:16px;margin:10px 0;text-align:left}
+.cta-box.rec{border-color:var(--sakura);background:linear-gradient(180deg,#f7fbfa,#fff);box-shadow:0 10px 28px -18px rgba(31,111,104,.55)}
+.cta-box .rec-label{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:var(--sakura-deep);
+  border-radius:999px;padding:3px 10px;margin-bottom:8px}
+.cta-box h3{font-family:'Zen Kaku Gothic New',sans-serif;font-size:17px;margin-bottom:4px}
+.cta-box p{font-size:13px;color:var(--ink-soft);margin-bottom:12px}
+.res-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 4px}
+.res-actions .btn{flex:1;min-width:140px;font-size:15px;padding:12px 16px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#fff;padding:12px 22px;border-radius:99px;font-size:14px;
+  opacity:0;pointer-events:none;transition:.3s;z-index:50;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.saved-note{font-size:12px;color:var(--leaf);text-align:center;margin-top:12px}
+.mock-note{font-size:12px;color:var(--ink-soft);margin-top:10px}
+.types-teaser{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 8px;text-align:left}
+.types-teaser span{font-size:12px;background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+@media(max-width:520px){
+  .card{padding:28px 20px}
+  h1.q{font-size:20px}
+  .type-name{font-size:24px}
+  .types-teaser{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="bar-track"><div class="bar-fill" id="bar"></div></div>
+  <div class="bar-meta">
+    <span class="pill" id="secTag">タイプ診断</span>
+    <span class="count" id="count"></span>
+  </div>
+</div>
+
+<div class="wrap"><div id="stage"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   おかねの目的タイプ診断 v0.2（2026-07-24）
+   MBTI的カテゴライズ体験／手段対決なし／目的フォーカス
+   2軸×4タイプ：安心↔成長 × はっきり↔きづき中
+   ========================================================= */
+
+const QUESTIONS = [
+  {id:"q1", tag:"いまの感覚", q:"お金の話になると、どっちに近い？",
+    opts:[
+      {t:"ちょっと身構える・守りたくなる", a:{safe:2}},
+      {t:"どちらかというとワクワクする", a:{grow:2}},
+      {t:"場面による（半々）", a:{safe:1,grow:1}}
+    ]},
+  {id:"q2", tag:"いま欲しいもの", q:"いまいちばん欲しいのは？",
+    opts:[
+      {t:"安心して眠れる感覚", a:{safe:2}},
+      {t:"増やせてる手応え", a:{grow:2}},
+      {t:"いまを楽しむ余裕", a:{grow:1,safe:1}},
+      {t:"ごちゃつきを整えたい", a:{safe:1,fog:1}}
+    ]},
+  {id:"q3", tag:"目的の解像度", q:"「何のためのお金か」、いま言える？",
+    opts:[
+      {t:"だいたい言える", a:{clear:2}},
+      {t:"ぼんやりある", a:{clear:1,fog:1}},
+      {t:"まだうまく言えない", a:{fog:2}}
+    ]},
+  {id:"q4", tag:"景色", q:"お金でいちばん叶えたい景色は？",
+    opts:[
+      {t:"家族や自分の安心", a:{safe:2,scene:"安心"}},
+      {t:"時間や自由の余白", a:{grow:1,clear:1,scene:"自由"}},
+      {t:"学び・挑戦・事業の余力", a:{grow:2,scene:"挑戦"}},
+      {t:"旅行・体験を増やしたい", a:{grow:1,scene:"体験"}},
+      {t:"まだ景色がふわっとしてる", a:{fog:2,scene:"未定"}}
+    ]},
+  {id:"q5", tag:"時間軸", q:"その景色の時期感は？",
+    opts:[
+      {t:"1〜3年くらいで見たい", a:{clear:1,grow:1}},
+      {t:"5〜10年、もっと先", a:{grow:1}},
+      {t:"時期より、まず安心が先", a:{safe:2}},
+      {t:"まだ時期まで考えてない", a:{fog:1}}
+    ]},
+  {id:"q6", tag:"貯め時／かかり時", q:"いまの自分はどっち寄り？",
+    opts:[
+      {t:"貯め時（積み上げシーズン）", a:{grow:1,clear:1}},
+      {t:"かかり時（使う・整える季節）", a:{safe:1}},
+      {t:"わからない／混ざってる", a:{fog:1}}
+    ]},
+  {id:"q7", tag:"お金の置き方", q:"目的別に、お金を分けてる？",
+    opts:[
+      {t:"分けてる（生活／備え／将来など）", a:{clear:2}},
+      {t:"一部だけ", a:{clear:1}},
+      {t:"分けてない／わからない", a:{fog:2,safe:1}}
+    ]},
+  {id:"q8", tag:"次の一歩", q:"次に進むなら、ついやりたくなるのは？",
+    opts:[
+      {t:"まず学べる場で全体像を掴む", a:{cta:"seminar",fog:1}},
+      {t:"30分だけ誰かに壁打ちしたい", a:{cta:"consult",clear:1}},
+      {t:"もう少し自分で考えてから", a:{cta:"self",fog:1}}
+    ]},
+];
+
+const TYPES = {
+  safe_clear: {
+    code:"SC型",
+    name:"あんしん番長",
+    emoji:"🛡️",
+    one:"守りながら、目的はちゃんと持ってる人",
+    blurb:"安心が先。でも「何のための安心か」は言えるタイプ。焦って手段を選ぶより、守り方と景色をセットで整えると強い。",
+    aruaru:["不安を減らす話の方が刺さる","いきなり増やす話は少し重い","家族や将来の安全が頭にある","ちゃんと分かってから動きたい"],
+    next:"守り方の全体像を学んでから、30分で自分の景色を言葉にすると前に進みやすい。"
+  },
+  grow_clear: {
+    code:"GC型",
+    name:"みらい設計士",
+    emoji:"🗺️",
+    one:"景色が見えてて、育てるフェーズの人",
+    blurb:"目的の輪郭がある。あとは手段じゃなく「順番」を設計すると伸びるタイプ。誰かに短時間壁打ちすると加速しやすい。",
+    aruaru:["なんとなく増やしたい、だけでは満足しない","期限や景色があると動ける","情報収集は得意寄り","一人で考えすぎて止まることも"],
+    next:"学べる場で型を見たあと、30分相談で自分の設計図を一点に絞ると速い。"
+  },
+  safe_fog: {
+    code:"SF型",
+    name:"ととのえ職人",
+    emoji:"🧹",
+    one:"まず整えたい。景色はこれから言葉にする人",
+    blurb:"不安やごちゃつきが先に立つタイプ。目的診断の前に「置き場」を整えると、景色が自然と言葉になる。",
+    aruaru:["家計や口座が気になると手が止まる","投資の話より見える化が欲しい","完璧にしてから動きたい衝動","安心できる土台があると一気に進む"],
+    next:"まずは学べる場でお金の置き場の型を知る。整ったあと景色の話が一気に楽になる。"
+  },
+  grow_fog: {
+    code:"GF型",
+    name:"きづき冒険家",
+    emoji:"🌱",
+    one:"伸ばしたい気持ちはある。目的はこれから育つ人",
+    blurb:"成長意欲はあるのに、目的がまだふわっとしてるタイプ。手段の前に「景色の種」を見つけると迷子になりにくい。",
+    aruaru:["増やしたい気持ちが先に立つ","何から聞けばいいか迷う","比較しすぎて疲れることがある","ワクワクする話には乗りやすい"],
+    next:"セミナーで全体像→自分の景色を1つ選ぶ、の順が合ってる。焦って商品比較しなくてOK。"
+  }
+};
+
+let idx=0, answers={}, scores={safe:0,grow:0,clear:0,fog:0}, scene="", ctaPref="";
+const KEY="kadocchi_money_type_diag_v2";
+const stage=document.getElementById('stage');
+const bar=document.getElementById('bar');
+const secTag=document.getElementById('secTag');
+const count=document.getElementById('count');
+
+function save(){localStorage.setItem(KEY,JSON.stringify({answers,idx,scores,scene,ctaPref}));}
+function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function recompute(){
+  scores={safe:0,grow:0,clear:0,fog:0}; scene=""; ctaPref="";
+  QUESTIONS.forEach(q=>{
+    const pick=answers[q.id]; if(pick==null) return;
+    const opt=q.opts[pick]; if(!opt) return;
+    Object.keys(opt.a).forEach(k=>{
+      if(k==='scene') scene=opt.a.scene;
+      else if(k==='cta') ctaPref=opt.a.cta;
+      else scores[k]=(scores[k]||0)+opt.a[k];
+    });
+  });
+}
+
+function diagnose(){
+  recompute();
+  const axisSafeGrow = scores.safe>=scores.grow ? 'safe' : 'grow';
+  const axisClearFog = scores.clear>=scores.fog ? 'clear' : 'fog';
+  const key = axisSafeGrow + '_' + axisClearFog;
+  const type = TYPES[key];
+  const totalSG = Math.max(1, scores.safe+scores.grow);
+  const totalCF = Math.max(1, scores.clear+scores.fog);
+  const pctGrow = Math.round(scores.grow/totalSG*100);
+  const pctClear = Math.round(scores.clear/totalCF*100);
+  let recommend = ctaPref==='consult' ? 'consult' : 'seminar';
+  if(ctaPref==='self') recommend = axisClearFog==='fog' ? 'seminar' : 'consult';
+  if(key==='grow_clear') recommend = ctaPref==='seminar' ? 'seminar' : 'consult';
+  if(key==='safe_fog' || key==='grow_fog') recommend = 'seminar';
+  if(key==='safe_clear' && ctaPref==='consult') recommend = 'consult';
+  return {key,type,pctGrow,pctClear,recommend,axisSafeGrow,axisClearFog};
+}
+
+function render(){
+  const total=QUESTIONS.length;
+  const cur=QUESTIONS[idx];
+  const pct = !cur ? 100 : Math.round(idx/total*100);
+  bar.style.width=pct+"%";
+  if(!cur){renderResult();return;}
+  secTag.textContent=cur.tag;
+  count.textContent=`診断 ${idx+1} / ${total}`;
+  const selected=answers[cur.id];
+  const letters="ABCDEFGH";
+  stage.innerHTML=`<div class="card">
+    <span class="section-tag">${esc(cur.tag)}</span>
+    <h1 class="q">${esc(cur.q)}</h1>
+    <p class="hint">直感でOK。正解のない診断だよ</p>
+    <div class="choice-list" id="f">
+      ${cur.opts.map((o,i)=>`<button type="button" class="choice ${selected===i?'on':''}" data-i="${i}" onclick="pick(${i})">
+        <span class="mark">${letters[i]}</span><span>${esc(o.t)}</span>
+      </button>`).join('')}
+    </div>
+    <div class="nav">
+      ${idx>0?`<button class="btn btn-ghost" onclick="prev()">← 戻る</button>`:''}
+      <button class="btn btn-primary" onclick="next()">${idx===total-1?'タイプを見る ✨':'次へ →'}</button>
+    </div>
+    <div class="saved-note">途中保存されます。あとで続きから診断できます</div>
+  </div>`;
+}
+
+function pick(i){
+  answers[QUESTIONS[idx].id]=i;
+  save();
+  // auto-advance after short beat for "ついやりたくなる" pace
+  document.querySelectorAll('.choice').forEach(el=>el.classList.remove('on'));
+  const el=document.querySelector(`.choice[data-i="${i}"]`);
+  if(el) el.classList.add('on');
+  setTimeout(()=>{ next(true); }, 220);
+}
+
+function next(fromAuto){
+  if(answers[QUESTIONS[idx].id]==null){
+    toast("ひとつ選んでね");
+    return;
+  }
+  idx++; save();
+  if(idx===4 && !fromAuto){ /* no forced break */ }
+  if(idx===4 && fromAuto){
+    // tiny interstitial once after Q4
+    showBreak();
+    return;
+  }
+  if(idx>=QUESTIONS.length){renderResult();return;}
+  render();
+}
+
+function showBreak(){
+  secTag.textContent="診断中";
+  count.textContent="もう少し";
+  bar.style.width="50%";
+  stage.innerHTML=`<div class="card break-card">
+    <div class="big">🔍</div>
+    <p class="kaisei" style="font-size:22px;margin-bottom:8px">タイプ、もう少しで出るよ</p>
+    <p class="hint" style="margin:0 auto 8px;max-width:26em">景色の種は拾えた。次は「いまの土台」を見て、あなた専用のラベルをつけるね。</p>
+    <div class="nav"><button class="btn btn-primary" onclick="render()">つづける →</button></div>
+  </div>`;
+}
+
+function prev(){if(idx<=0)return; idx--; save(); render();}
+
+function intro(){
+  stage.innerHTML=`<div class="card center">
+    <div class="brand">MONEY PURPOSE TYPE</div>
+    <div class="logo">🧭</div>
+    <h1 class="kaisei" style="font-size:28px;line-height:1.35;margin:0">おかねの目的<br>タイプ診断</h1>
+    <div class="uline"></div>
+    <p class="hint" style="margin:14px auto 0;max-width:28em;text-align:left">全8問・約2分。<b>アンケートじゃなくタイプ診断</b>。<br>
+    商品や制度の対決はしません。<br>
+    「目的を持って資産形成できてる？」を、4タイプに分類します。</p>
+    <div class="types-teaser">
+      <span>🛡️ あんしん番長（SC）</span>
+      <span>🗺️ みらい設計士（GC）</span>
+      <span>🧹 ととのえ職人（SF）</span>
+      <span>🌱 きづき冒険家（GF）</span>
+    </div>
+    <div class="nav" style="margin-top:18px">
+      <button class="btn btn-primary" onclick="start()">診断する →</button>
+    </div>
+    <p class="mock-note">モック版：結果の共有用テキストあり／予約リンクは未接続</p>
+  </div>`;
+  secTag.textContent="タイプ診断"; count.textContent="全8問"; bar.style.width="0%";
+}
+
+function resumeScreen(){
+  stage.innerHTML=`<div class="card center">
+    <div class="logo">🌿</div>
+    <h1 class="kaisei" style="font-size:22px;margin-bottom:8px">診断の続きがあるよ</h1>
+    <p class="hint">前回の途中から再開できます</p>
+    <div class="nav" style="flex-direction:column">
+      <button class="btn btn-primary" onclick="continueSaved()">続きから診断 →</button>
+      <button class="btn btn-ghost" onclick="resetAll()" style="margin-top:4px">最初からやり直す</button>
+    </div>
+  </div>`;
+}
+
+function start(){idx=0;answers={};scores={safe:0,grow:0,clear:0,fog:0};scene="";ctaPref="";save();render();}
+function continueSaved(){
+  const s=load()||{}; answers=s.answers||{}; idx=Math.min(s.idx||0,QUESTIONS.length); scene=s.scene||""; ctaPref=s.ctaPref||"";
+  if(idx>=QUESTIONS.length) renderResult(); else render();
+}
+function resetAll(){localStorage.removeItem(KEY); answers={}; idx=0; intro();}
+
+function renderResult(){
+  const d=diagnose();
+  const t=d.type;
+  bar.style.width="100%"; secTag.textContent="あなたのタイプ"; count.textContent="診断完了";
+  const seminarRec = d.recommend==='seminar';
+  const seminarBox = `<div class="cta-box ${seminarRec?'rec':''}" id="cta-seminar">
+    ${seminarRec?'<span class="rec-label">このタイプへのおすすめ</span>':''}
+    <h3>まずは学べる場（セミナー）</h3>
+    <p>タイプの地図を先に持つと、個別の話が軽くなる人向け。</p>
+    <button type="button" class="btn ${seminarRec?'btn-primary':'btn-ghost'}" style="width:100%" onclick="mockCta('seminar')">セミナーを見る（モック）</button>
+  </div>`;
+  const consultBox = `<div class="cta-box ${!seminarRec?'rec':''}" id="cta-consult">
+    ${!seminarRec?'<span class="rec-label">このタイプへのおすすめ</span>':''}
+    <h3>30分の個別相談</h3>
+    <p>タイプを前提に、景色と次の一手だけ壁打ちしたい人向け。</p>
+    <button type="button" class="btn ${!seminarRec?'btn-accent':'btn-ghost'}" style="width:100%" onclick="mockCta('consult')">30分相談を予約（モック）</button>
+  </div>`;
+
+  stage.innerHTML=`<div class="card center">
+    <div class="brand">YOUR MONEY PURPOSE TYPE</div>
+    <div class="type-hero">
+      <div class="type-code">${esc(t.code)}</div>
+      <div style="font-size:40px;line-height:1">${t.emoji}</div>
+      <div class="type-name">${esc(t.name)}</div>
+      <div class="type-one">${esc(t.one)}</div>
+    </div>
+    <p class="hint" style="text-align:left;margin-top:0">${esc(t.blurb)}</p>
+    <div class="axes">
+      <div class="axis">
+        <div class="axis-head"><span>安心</span><span>成長 ${d.pctGrow}%</span></div>
+        <div class="axis-track"><div class="axis-fill" style="width:${d.pctGrow}%"></div></div>
+      </div>
+      <div class="axis">
+        <div class="axis-head"><span>きづき中</span><span>はっきり ${d.pctClear}%</span></div>
+        <div class="axis-track"><div class="axis-fill" style="width:${d.pctClear}%"></div></div>
+      </div>
+    </div>
+    <div class="bullets">
+      <h3>このタイプのあるある</h3>
+      <ul>${t.aruaru.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+    </div>
+    <div class="bullets">
+      <h3>向いてる次の一手</h3>
+      <p style="font-size:14px;margin:0">${esc(t.next)}${scene?`（いまの景色キーワード：${esc(scene)}）`:''}</p>
+    </div>
+    ${seminarRec ? seminarBox+consultBox : consultBox+seminarBox}
+    <div class="res-actions">
+      <button class="btn btn-ghost" onclick="copyResult()">結果をコピー</button>
+      <button class="btn btn-ghost" onclick="idx=QUESTIONS.length-1;render()">← 答えを見直す</button>
+    </div>
+    <div class="nav"><button class="btn-skip" onclick="resetAll()" style="margin:8px auto 0">もう一度診断する</button></div>
+    <p class="mock-note">モック：手段名・商品名は出しません。リンク接続は本番で。</p>
+  </div>`;
+}
+
+function copyResult(){
+  const d=diagnose(); const t=d.type;
+  const text = [
+    `【おかねの目的タイプ診断】`,
+    `${t.emoji} ${t.name}（${t.code}）`,
+    t.one,
+    ``,
+    `安心 ${100-d.pctGrow}% / 成長 ${d.pctGrow}%`,
+    `きづき中 ${100-d.pctClear}% / はっきり ${d.pctClear}%`,
+    ``,
+    `あるある：`,
+    ...t.aruaru.map(x=>`・${x}`),
+    ``,
+    `次の一手：${t.next}`,
+    scene?`景色キーワード：${scene}`:'',
+    `おすすめ：${d.recommend==='seminar'?'セミナー':'30分相談'}`,
+  ].filter(Boolean).join('\n');
+  const fallback=()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}document.body.removeChild(ta);toast(ok?'コピーしたよ（シェアしてね）':'コピーできなかった…');};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>toast('コピーしたよ（シェアしてね）')).catch(fallback);}
+  else fallback();
+}
+function mockCta(kind){
+  toast(kind==='seminar'
+    ? "モックのため未接続。本番ではセミナー案内へ繋ぎます"
+    : "モックのため未接続。本番では30分相談の予約へ繋ぎます");
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+const saved=load();
+if(saved&&saved.answers&&Object.keys(saved.answers).length){resumeScreen();}else{intro();}
+</script>
+</body>
+</html>
