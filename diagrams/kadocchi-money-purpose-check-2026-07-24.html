@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>おかねの目的チェック</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* === おかねの目的チェック — 深いティール＋やわらかいサンド（モック）=== */
+:root{
+  --ink:#24343a; --ink-soft:#6b7c84; --cream:#f4f7f6; --peach:#e8f0ee;
+  --skyblue:#d9ebe6; --sakura:#2f8f84; --sakura-deep:#1f6f68; --sun:#c4a35a;
+  --leaf:#3a9b8f; --line:#d5e3df; --card:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Zen Maru Gothic',sans-serif; color:var(--ink);
+  background:
+    radial-gradient(1100px 560px at 6% -8%, #d7ebe6 0%, transparent 58%),
+    radial-gradient(900px 520px at 108% 4%, #efe6c9 0%, transparent 52%),
+    radial-gradient(700px 480px at 50% 120%, #dfece8 0%, transparent 58%),
+    var(--cream);
+  min-height:100vh; display:flex; flex-direction:column; line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+.kaisei{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900}
+.tegaki{font-family:'Zen Maru Gothic',sans-serif}
+
+.topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(6px);
+  background:rgba(244,247,246,.86);border-bottom:1px solid var(--line)}
+.bar-track{height:6px;background:var(--peach)}
+.bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--sakura),var(--sun));
+  transition:width .45s cubic-bezier(.4,0,.2,1);border-radius:0 4px 4px 0}
+.bar-meta{max-width:680px;margin:0 auto;padding:8px 20px;display:flex;
+  align-items:center;justify-content:space-between;gap:10px;font-size:13px}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;
+  padding:3px 12px;color:var(--ink-soft);font-weight:500;white-space:nowrap}
+.count{color:var(--ink-soft);font-size:12px}
+
+.wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 18px 60px}
+.card{width:100%;max-width:620px;background:var(--card);border:1px solid var(--line);
+  border-radius:24px;padding:40px 38px;box-shadow:0 18px 50px -26px rgba(31,111,104,.28);
+  position:relative;animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.qmark{font-size:34px;line-height:1;margin-bottom:14px}
+.section-tag{display:inline-block;font-size:12px;color:var(--sakura-deep);
+  font-weight:700;letter-spacing:.04em;margin-bottom:10px}
+h1.q{font-family:'Zen Kaku Gothic New',sans-serif;font-size:24px;font-weight:700;
+  line-height:1.55;margin-bottom:6px}
+h1.q::after{content:"";display:block;width:34px;height:3px;border-radius:3px;
+  background:linear-gradient(90deg,var(--sakura),var(--sun));margin-top:11px}
+.brand-mark{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;letter-spacing:.08em;
+  font-size:15px;color:var(--sakura-deep);display:inline-flex;align-items:center;gap:7px;margin-bottom:4px}
+.uline{width:62px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--sakura),var(--sun));margin:12px auto 2px}
+.hint{font-size:14px;color:var(--ink-soft);margin:10px 0 22px;white-space:pre-wrap}
+.hint a{color:var(--sakura-deep)}
+.why-box{margin-top:16px;background:var(--cream);border:1.5px dashed var(--sakura);border-radius:14px;padding:14px}
+.why-lead{font-size:13.5px;color:var(--ink);margin-bottom:8px}
+.why-box textarea{min-height:64px}
+.why-escape{display:block;margin:8px auto 0;font-size:13px}
+.optional{font-size:12px;color:var(--leaf);font-weight:700;margin-left:6px}
+
+input[type=text],textarea,input[type=url],input[type=email]{
+  width:100%;font-family:inherit;font-size:16px;color:var(--ink);
+  background:#fbfefd;border:1.5px solid var(--line);border-radius:14px;
+  padding:14px 16px;transition:.2s;resize:vertical}
+textarea{min-height:120px;line-height:1.7}
+input:focus,textarea:focus{outline:none;border-color:var(--sakura);
+  box-shadow:0 0 0 4px rgba(47,143,132,.18)}
+::placeholder{color:#a8b8b4}
+
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{font-family:inherit;font-size:14px;cursor:pointer;border:1.5px solid var(--line);
+  background:#fbfefd;border-radius:999px;padding:9px 15px;color:var(--ink);transition:.18s}
+.chip:hover{border-color:var(--sakura)}
+.chip.on{background:linear-gradient(120deg,#d9ebe6,#efe6c9);border-color:var(--sakura);
+  color:#1f6f68;font-weight:700;box-shadow:0 3px 10px -5px rgba(31,111,104,.55)}
+
+.presets{margin:2px 0 12px}
+.presets-lead{display:block;font-size:12.5px;color:var(--leaf);font-weight:700;margin-bottom:8px}
+.preset-chips{display:flex;flex-wrap:wrap;gap:8px}
+.pchip{font-family:inherit;font-size:13.5px;cursor:pointer;border:1.5px dashed var(--line);
+  background:#fbfefd;border-radius:999px;padding:8px 14px;color:var(--ink-soft);transition:.18s}
+.pchip:hover{border-color:var(--sakura);color:#1f6f68}
+.pchip.used{background:linear-gradient(120deg,#d9ebe6,#efe6c9);border-style:solid;border-color:var(--sakura);
+  color:#1f6f68;font-weight:700;box-shadow:0 3px 10px -5px rgba(31,111,104,.55)}
+
+.scale{margin:6px 0 4px}
+.scale-row{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:6px}
+input[type=range]{width:100%;-webkit-appearance:none;height:8px;border-radius:99px;
+  background:linear-gradient(90deg,var(--sakura),var(--sun));outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;
+  border-radius:50%;background:#fff;border:3px solid var(--sakura-deep);cursor:pointer;
+  box-shadow:0 3px 8px -2px rgba(0,0,0,.25)}
+.scale-val{text-align:center;font-family:'Zen Kaku Gothic New',sans-serif;font-size:32px;margin-top:10px;color:var(--sakura-deep)}
+.scale-face{font-size:24px}
+
+.nav{display:flex;gap:12px;margin-top:30px;align-items:center}
+.btn{font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;border:none;
+  border-radius:14px;padding:14px 26px;transition:.18s;text-decoration:none;display:inline-flex;
+  align-items:center;justify-content:center;text-align:center}
+.btn-primary{background:linear-gradient(120deg,var(--sakura),#3a9b8f);color:#fff;
+  flex:1;box-shadow:0 8px 20px -10px rgba(31,111,104,.75)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 24px -10px rgba(31,111,104,.9)}
+.btn-ghost{background:transparent;color:var(--ink-soft);border:1.5px solid var(--line)}
+.btn-ghost:hover{background:var(--peach)}
+.btn-skip{background:none;border:none;color:var(--ink-soft);text-decoration:underline;
+  cursor:pointer;font-family:inherit;font-size:13px}
+.btn-accent{background:linear-gradient(120deg,#c4a35a,#d6b86e);color:#24343a;
+  flex:1;box-shadow:0 8px 20px -10px rgba(196,163,90,.7)}
+.btn-accent:hover{transform:translateY(-2px)}
+
+.center{text-align:center}
+.logo{font-size:54px;margin-bottom:8px}
+.break-card{text-align:center;border-left:6px solid var(--sakura)}
+.break-card .big{font-size:46px;margin-bottom:10px}
+
+.result h1{font-family:'Zen Kaku Gothic New',sans-serif;font-size:26px;margin-bottom:6px}
+.type-badge{display:inline-block;margin:8px 0 14px;padding:8px 16px;border-radius:999px;
+  background:linear-gradient(120deg,#d9ebe6,#efe6c9);color:var(--sakura-deep);
+  font-family:'Zen Kaku Gothic New',sans-serif;font-weight:800;font-size:15px}
+.summary-box{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:8px 0 18px;text-align:left}
+.summary-box li{margin:6px 0 6px 1.1em;color:var(--ink)}
+.cta-box{border:1.5px solid var(--line);border-radius:18px;padding:18px;margin:12px 0;text-align:left}
+.cta-box.rec{border-color:var(--sakura);background:linear-gradient(180deg,#f7fbfa,#fff);box-shadow:0 10px 28px -18px rgba(31,111,104,.55)}
+.cta-box .rec-label{display:inline-block;font-size:12px;font-weight:800;color:#fff;background:var(--sakura-deep);
+  border-radius:999px;padding:3px 10px;margin-bottom:8px}
+.cta-box h3{font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;margin-bottom:6px}
+.cta-box p{font-size:14px;color:var(--ink-soft);margin-bottom:14px}
+.res-actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.res-actions .btn{flex:1;min-width:140px;font-size:15px;padding:13px 18px}
+.sheet{margin-top:8px;border-top:1px dashed var(--line);padding-top:16px}
+.sheet .grp{font-family:'Zen Kaku Gothic New',sans-serif;color:var(--sakura-deep);font-weight:700;
+  margin:18px 0 6px;font-size:15px}
+.sheet .qa{padding:10px 0;border-bottom:1px solid #e4eeeb}
+.sheet .qa .qt{font-size:13px;color:var(--ink-soft)}
+.sheet .qa .at{font-size:15px;white-space:pre-wrap}
+.sheet .qa .empty{color:#a8b8b4;font-style:italic}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#fff;padding:12px 22px;border-radius:99px;font-size:14px;
+  opacity:0;pointer-events:none;transition:.3s;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.saved-note{font-size:12px;color:var(--leaf);text-align:center;margin-top:14px}
+.mock-note{font-size:12px;color:var(--ink-soft);margin-top:10px}
+@media(max-width:520px){.card{padding:30px 22px}h1.q{font-size:21px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="bar-track"><div class="bar-fill" id="bar"></div></div>
+  <div class="bar-meta">
+    <span class="pill" id="secTag">はじめに</span>
+    <span class="count" id="count"></span>
+  </div>
+</div>
+
+<div class="wrap"><div id="stage"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   おかねの目的チェック — 金融教育アンケート モック v0.1（2026-07-24）
+   ベースUI: IRODORIじぶんシート v0.8
+   方針: 手段対決なし／目的フォーカス／セミナー or 30分相談へ誘導
+   送信・GAS・本番URLなし（localStorageのみ）
+   ========================================================= */
+
+const SHEET = [
+  {grp:"いまのあなた", icon:"🌱"},
+  {id:"consult_type", type:"choices", q:"いま、いちばん近いのはどれ？", hint:"正解はないよ。今日の気持ちに近いものを1つ選んでね", multi:false, opts:[
+    "安心したい","整えたい","使いたい","増やしたい","まだ整理前"]},
+  {id:"money_feel", type:"scale", q:"お金のことを考えると、いまどんな気持ち？", hint:"1=ちょっとモヤモヤ … 10=わりと落ち着いてる。スライドで教えてね", min:1, max:10},
+  {id:"purpose_clarity", type:"choices", q:"「何のためのお金か」は、言葉にできてる？", hint:"手段（口座や制度）の話じゃなくて、目的の話だよ", multi:false, needWhy:true, opts:[
+    "できてる","ぼんやり","ほぼできてない"]},
+
+  {grp:"お金で叶えたい景色", icon:"🌄", brk:"ここからは「目的」の話。\n商品や制度の名前は出さなくて大丈夫。\nあなたの景色を、そのまま言葉にしてみよう。"},
+  {id:"scene", type:"choices", q:"お金で叶えたい景色は？（複数OK）", hint:"いまピンとくるものを選んで。あとで理由をひとことだけ", multi:true, needWhy:true, opts:[
+    "家族の安心","自分の時間","学び・挑戦","住まい","老後の自由度","旅行・体験","事業の余力","まだわからない"]},
+  {id:"horizon", type:"choices", q:"その景色、だいたいいつごろをイメージしてる？", multi:false, opts:[
+    "1年以内","3年くらい","5〜10年","もっと先","時期より安心が先"]},
+  {id:"priority", type:"choices", q:"いま大切にしたい順番に近いのは？", multi:false, opts:[
+    "守る","育てる","今を楽しむ","バランス"]},
+  {id:"store_spend", type:"choices", q:"いまの自分は「貯め時」と「かかり時」、どっちに近い？", hint:"ライフプランでよく使う見方。どちらでも正解", multi:false, needWhy:true, opts:[
+    "貯め時に近い","かかり時に近い","どちらとも言えない","わからない"]},
+
+  {grp:"生活と備え", icon:"🧭", brk:"景色が見えたら、次は「いまの土台」。\n細かい家計表はいらなくて、感覚でOK。"},
+  {id:"separate", type:"choices", q:"目的別に、お金を分けてる？", hint:"生活／防衛／特別費／将来、みたいな分け方", multi:false, opts:[
+    "分けてる","一部だけ","分けてない","わからない"]},
+  {id:"heaviest", type:"choices", q:"いちばん重いのはどれに近い？", hint:"支出のクセをざっくりつかむ問い", multi:false, opts:[
+    "毎月の固定費","毎月のバラつき","年に数回の大きめ支出","突発の出費"]},
+  {id:"want_now", type:"choices", q:"投資や制度の話の前に、いま欲しいのは？", multi:false, opts:[
+    "目的の整理","家計の見える化","増やし方の知識","誰かに壁打ち"]},
+
+  {grp:"次の一手", icon:"✨"},
+  {id:"stuck", type:"textarea", q:"いま一番聞きたいこと・引っかかってることは？", hint:"小さなモヤモヤでもOK。空欄でも進められるよ", optional:true, presets:[
+    "何から手をつければいいかわからない","目的がふわっとしてる","家計を見える化したい","増やし方の前に守り方を知りたい","誰かに壁打ちしたい","特にない"]},
+  {id:"next_step", type:"choices", q:"次に進むなら、いまの気分に近いのは？", multi:false, opts:[
+    "まず学べる場","30分で壁打ち","まだ自分で考えたい"]},
+];
+
+let items=[], idx=0, answers={};
+const KEY="kadocchi_money_purpose_mock_v1";
+
+const stage=document.getElementById('stage');
+const bar=document.getElementById('bar');
+const secTag=document.getElementById('secTag');
+const count=document.getElementById('count');
+
+function buildItems(){
+  let curGrp="", curIcon="", out=[];
+  SHEET.forEach(r=>{
+    if(r.grp){curGrp=r.grp;curIcon=r.icon||"";
+      if(r.brk){out.push({type:"break",grp:curGrp,icon:curIcon,brk:r.brk});}
+      return;}
+    out.push({...r,grp:curGrp,icon:curIcon});
+  });
+  return out;
+}
+
+function save(){localStorage.setItem(KEY,JSON.stringify({answers,idx}));}
+function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
+
+function choiceParts(v){
+  const raw=Array.isArray(v)?v:[];
+  return {
+    sel: raw.filter(x=>!String(x).startsWith('（理由）')),
+    why: (raw.find(x=>String(x).startsWith('（理由）'))||'').replace(/^（理由）/,'')
+  };
+}
+function firstChoice(id){
+  const {sel}=choiceParts(answers[id]);
+  return sel[0]||'';
+}
+
+function render(){
+  const qItems=items.filter(i=>i.type!=='break');
+  const done=items.slice(0,idx).filter(i=>i.type!=='break').length;
+  const total=qItems.length;
+  const cur=items[idx];
+  const pct = total? Math.round(done/total*100):0;
+  bar.style.width=(!cur?100:pct)+"%";
+  if(cur&&cur.grp){secTag.textContent=(cur.icon||"")+" "+cur.grp;}
+  count.textContent = cur? `Q ${Math.min(done+1,total)} / ${total}`:"完成";
+
+  if(!cur){renderResult();return;}
+  if(cur.type==='break'){
+    stage.innerHTML=`<div class="card break-card">
+      <div class="big">${cur.icon||"☕"}</div>
+      <p class="tegaki" style="font-size:18px;white-space:pre-wrap;color:var(--ink)">${cur.brk}</p>
+      <div class="nav"><button class="btn btn-primary" onclick="next()">つづける →</button></div>
+    </div>`;return;
+  }
+  const v=answers[cur.id];
+  let field="";
+  if(cur.type==='text'||cur.type==='url'||cur.type==='email'){
+    const inputType=cur.type==='url'?'url':(cur.type==='email'?'email':'text');
+    field=`<input type="${inputType}" id="f" value="${esc(v||'')}" placeholder="ここに入力…" oninput="autosave()">`;
+  }else if(cur.type==='textarea'){
+    const pre=cur.presets?`<div class="presets"><span class="presets-lead">タップで入れられます（そのまま自由に書き足せます）</span><div class="preset-chips">`+cur.presets.map(o=>`<button type="button" class="pchip${(v||'').includes(o)?' used':''}" data-o="${esc(o)}" onclick="addPreset(this)">＋ ${o}</button>`).join('')+`</div></div>`:'';
+    field=pre+`<textarea id="f" placeholder="ここに入力…" oninput="autosave()">${esc(v||'')}</textarea>`;
+  }else if(cur.type==='choices'){
+    const {sel,why}=choiceParts(v);
+    field=`<div class="chips" id="f">`+cur.opts.map(o=>
+      `<button type="button" class="chip ${sel.includes(o)?'on':''}" data-o="${esc(o)}" onclick="toggleChip(this)">${o}</button>`).join('')+`</div>`;
+    if(cur.needWhy){
+      field+=`<div class="why-box">
+        <p class="why-lead">それを選んだ理由・いまの気持ちをひとこと（選んだらここだけは書いてね）</p>
+        <textarea id="why" placeholder="例）なんとなく不安／家族のことを考えると… など" oninput="autosave()">${esc(why)}</textarea>
+        <button type="button" class="btn-skip why-escape" onclick="whyEscape()">うまく言葉にできない…あとで相談する</button>
+      </div>`;
+    }
+  }else if(cur.type==='scale'){
+    const touched=(v!==undefined&&v!==null&&v!=='');
+    const val=touched?v:Math.round((cur.min+cur.max)/2);
+    field=`<div class="scale">
+      <div class="scale-row"><span>${cur.min} モヤモヤ</span><span>落ち着き ${cur.max}</span></div>
+      <input type="range" id="f" min="${cur.min}" max="${cur.max}" value="${val}" data-touched="${touched?'1':'0'}" oninput="this.dataset.touched='1';document.getElementById('sval').textContent=this.value;document.getElementById('sface').textContent=face(this.value,${cur.min},${cur.max});autosave()">
+      <div class="scale-val">${touched
+        ?`<span class="scale-face" id="sface">${face(val,cur.min,cur.max)}</span> <span id="sval">${val}</span>`
+        :`<span class="scale-face" id="sface">👆</span> <span id="sval" style="font-size:15px;color:var(--ink-soft)">スライドして教えてね</span>`}</div>
+    </div>`;
+  }
+  const opt=cur.optional?`<span class="optional">任意</span>`:"";
+  stage.innerHTML=`<div class="card">
+    <div class="qmark">${cur.icon||"📝"}</div>
+    <span class="section-tag">${cur.grp||""}</span>
+    <h1 class="q">${cur.q}${opt}</h1>
+    ${cur.hint?`<p class="hint">${linkify(cur.hint)}</p>`:`<div style="height:8px"></div>`}
+    ${field}
+    <div class="nav">
+      ${idx>0?`<button class="btn btn-ghost" onclick="prev()">← 戻る</button>`:""}
+      <button class="btn btn-primary" onclick="next()">${isLast()?"結果を見る":"次へ →"}</button>
+    </div>
+    ${cur.optional?`<div style="text-align:center;margin-top:12px"><button class="btn-skip" onclick="skip()">スキップする</button></div>`:""}
+    <div class="saved-note">入力は自動保存されます。途中で閉じても続きから書けます</div>
+  </div>`;
+  const f=document.getElementById('f'); if(f&&(cur.type==='text'||cur.type==='url'||cur.type==='textarea'||cur.type==='email'))f.focus();
+}
+
+function isLast(){for(let j=idx+1;j<items.length;j++){if(items[j].type!=='break')return false;}return true;}
+function face(v,min,max){const r=(v-min)/(max-min);return r<.25?"😟":r<.5?"🙂":r<.75?"😊":"😆";}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function linkify(s){return esc(s).replace(/(https?:\/\/[^\s]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');}
+
+function grab(){
+  const cur=items[idx]; if(!cur||cur.type==='break')return;
+  const f=document.getElementById('f'); if(!f)return;
+  if(cur.type==='choices'){
+    const picked=[...f.querySelectorAll('.chip.on')].map(c=>c.dataset.o);
+    const w=document.getElementById('why');
+    answers[cur.id]=(w&&w.value.trim())?[...picked,'（理由）'+w.value.trim()]:picked;
+  }
+  else if(cur.type==='scale'){answers[cur.id]= f.dataset.touched==='1' ? f.value : (answers[cur.id]||'');}
+  else{answers[cur.id]=f.value;}
+}
+function autosave(){grab();save();}
+function toggleChip(el){
+  const cur=items[idx];
+  const box=document.getElementById('f');
+  if(cur&&cur.multi===false){
+    box.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+    el.classList.add('on');
+  }else{
+    el.classList.toggle('on');
+  }
+  autosave();
+}
+function addPreset(el){
+  const f=document.getElementById('f'); if(!f)return;
+  const t=el.dataset.o;
+  if(el.classList.contains('used')){
+    f.value=f.value.split('\n').filter(l=>l.trim()!==t).join('\n').replace(/^\n+/,'');
+    el.classList.remove('used');
+  }else{
+    const cur=f.value;const sep=cur.trim()===''?'':(cur.endsWith('\n')?'':'\n');
+    f.value=cur+sep+t;el.classList.add('used');
+  }
+  autosave();f.focus();
+}
+function next(){
+  grab();
+  const cur=items[idx];
+  if(cur&&cur.type==='choices'){
+    const raw=Array.isArray(answers[cur.id])?answers[cur.id]:[];
+    const hasChoice=raw.some(x=>!String(x).startsWith('（理由）'));
+    const hasWhy=raw.some(x=>String(x).startsWith('（理由）'));
+    if(!hasChoice && !cur.optional){
+      toast("ひとつ選んでから進んでね");
+      return;
+    }
+    if(cur.needWhy && hasChoice && !hasWhy){
+      toast("選んだ理由をひとことだけお願い。難しければ下のボタンでOK");
+      const w=document.getElementById('why'); if(w)w.focus();
+      return;
+    }
+  }
+  if(cur&&cur.type==='scale' && !cur.optional){
+    const f=document.getElementById('f');
+    if(f && f.dataset.touched!=='1' && (answers[cur.id]===undefined||answers[cur.id]==='')){
+      toast("スライドして、いまの気持ちを教えてね");
+      return;
+    }
+  }
+  idx++;save();if(idx>=items.length){renderResult();return;}render();
+}
+function whyEscape(){
+  const w=document.getElementById('why'); if(!w)return;
+  w.value="うまく言葉にできないので、あとで相談したい";
+  autosave();
+  toast("OK。あとで一緒に言葉にしよう。「次へ」で進めるよ");
+}
+function prev(){grab();do{idx--;}while(idx>0&&items[idx].type==='break');if(idx<0)idx=0;save();render();}
+function skip(){const cur=items[idx];if(cur){answers[cur.id]=(cur.type==='choices')?[]:'';}idx++;save();if(idx>=items.length){renderResult();return;}render();}
+
+function intro(){
+  stage.innerHTML=`<div class="card center">
+    <div class="brand-mark">MONEY PURPOSE CHECK</div>
+    <h1 class="kaisei" style="font-size:28px;margin:6px 0 0">おかねの目的チェック</h1>
+    <div class="uline"></div>
+    <p class="tegaki" style="font-size:16px;color:var(--sakura-deep);margin:12px 0 18px">〜 売り込みじゃなく、目的を言葉にするシート 〜</p>
+    <p class="hint" style="text-align:left">セミナーや個別相談の前に、<b>自分の現在地と「何のためのお金か」</b>を確認するための約10分のシートです。<br><br>
+    ・商品名や制度名の対決はしません<br>
+    ・正解を当てるテストでもありません<br>
+    ・1問ずつ、難しいところはスキップOK<br>
+    ・途中で閉じても続きから書けます</p>
+    <div class="nav" style="margin-top:24px">
+      <button class="btn btn-primary" onclick="start()">はじめる →</button>
+    </div>
+    <p class="mock-note">モック版：送信機能なし／CTAリンクはプレースホルダ</p>
+  </div>`;
+  secTag.textContent="はじめに";count.textContent="";bar.style.width="0%";
+}
+function resumeScreen(){
+  stage.innerHTML=`<div class="card center">
+    <div class="logo">🌿</div>
+    <h1 class="kaisei" style="font-size:23px;margin-bottom:10px">おかえりなさい</h1>
+    <p class="hint">前回の続きから書けます</p>
+    <div class="nav" style="flex-direction:column">
+      <button class="btn btn-primary" onclick="continueSaved()">続きから書く →</button>
+      <button class="btn btn-ghost" onclick="resetAll()" style="margin-top:4px">最初からやり直す</button>
+    </div>
+  </div>`;
+}
+function start(){items=buildItems();idx=0;answers={};save();render();}
+function continueSaved(){const s=load();answers=s.answers||{};items=buildItems();idx=Math.min(s.idx||0,items.length);render();}
+function resetAll(){localStorage.removeItem(KEY);answers={};idx=0;intro();}
+
+function scoreCTA(){
+  let seminar=0, consult=0;
+  const t=firstChoice('consult_type');
+  const clarity=firstChoice('purpose_clarity');
+  const want=firstChoice('want_now');
+  const next=firstChoice('next_step');
+  const feel=Number(answers.money_feel||0);
+
+  if(t==='安心したい'||t==='まだ整理前') seminar+=2;
+  if(t==='整えたい') {seminar+=1; consult+=1;}
+  if(t==='増やしたい'||t==='使いたい') consult+=1;
+
+  if(clarity==='ほぼできてない'||clarity==='ぼんやり') seminar+=2;
+  if(clarity==='できてる') consult+=2;
+
+  if(want==='増やし方の知識'||want==='目的の整理'||want==='家計の見える化') seminar+=2;
+  if(want==='誰かに壁打ち') consult+=3;
+
+  if(next==='まず学べる場') seminar+=3;
+  if(next==='30分で壁打ち') consult+=3;
+  if(next==='まだ自分で考えたい') seminar+=1;
+
+  if(feel && feel<=4) seminar+=1;
+  if(feel && feel>=7 && clarity==='できてる') consult+=1;
+
+  const recommend = consult>seminar ? 'consult' : 'seminar';
+  return {seminar, consult, recommend};
+}
+
+function purposeType(){
+  const t=firstChoice('consult_type');
+  const clarity=firstChoice('purpose_clarity');
+  const want=firstChoice('want_now');
+  const next=firstChoice('next_step');
+  const scene=choiceParts(answers.scene).sel;
+
+  if(t==='安心したい' || firstChoice('horizon')==='時期より安心が先'){
+    return {label:"安心づくり型", blurb:"まずは土台と安心感を整えるフェーズ。焦って手段を選ぶより、守り方と目的の言葉化が先。"};
+  }
+  if(want==='家計の見える化' || firstChoice('separate')==='分けてない' || firstChoice('separate')==='わからない'){
+    return {label:"整え直し型", blurb:"景色の前に、いまのお金の置き場を整えると前に進みやすいタイプ。"};
+  }
+  if(clarity==='できてる' && (next==='30分で壁打ち' || want==='誰かに壁打ち')){
+    return {label:"景色づくり型", blurb:"目的の輪郭は見えている。次は具体の一手を、短時間で壁打ちすると加速しやすい。"};
+  }
+  if(scene.includes('まだわからない') || clarity==='ほぼできてない' || next==='まず学べる場'){
+    return {label:"学び始め型", blurb:"目的も手段も、まだ言葉の途中。まずは学べる場で全体像を掴むのがちょうどいい。"};
+  }
+  return {label:"景色づくり型", blurb:"目的に沿って資産形成を考える入口に立てている。次の一歩をひとつに絞ろう。"};
+}
+
+function renderResult(){
+  bar.style.width="100%";secTag.textContent="結果";count.textContent="完成";
+  const type=purposeType();
+  const scores=scoreCTA();
+  const scene=choiceParts(answers.scene).sel.join(' / ') || '（未記入）';
+  const consultType=firstChoice('consult_type')||'（未記入）';
+  const next=firstChoice('next_step')||'（未記入）';
+
+  const seminarRec = scores.recommend==='seminar';
+  const seminarBox = `<div class="cta-box ${seminarRec?'rec':''}" id="cta-seminar">
+    ${seminarRec?'<span class="rec-label">あなたへのおすすめ</span>':''}
+    <h3>まずは学べる場（セミナー）</h3>
+    <p>目的や全体像を、ひとりで急がなくていい形で掴みたい人向け。いきなり個別より軽い入口。</p>
+    <button type="button" class="btn ${seminarRec?'btn-primary':'btn-ghost'}" onclick="mockCta('seminar')">セミナーを見る（モック）</button>
+  </div>`;
+  const consultBox = `<div class="cta-box ${!seminarRec?'rec':''}" id="cta-consult">
+    ${!seminarRec?'<span class="rec-label">あなたへのおすすめ</span>':''}
+    <h3>30分の個別相談</h3>
+    <p>いまの景色と引っかかりを、短時間で壁打ちしたい人向け。売り込み前提ではなく整理の時間。</p>
+    <button type="button" class="btn ${!seminarRec?'btn-accent':'btn-ghost'}" onclick="mockCta('consult')">30分相談を予約（モック）</button>
+  </div>`;
+
+  let groups={},order=[];
+  items.forEach(it=>{if(it.type==='break')return;
+    if(!groups[it.grp]){groups[it.grp]=[];order.push(it.grp);}groups[it.grp].push(it);});
+  let sheet="";
+  order.forEach(g=>{
+    sheet+=`<div class="grp">${g}</div>`;
+    groups[g].forEach(it=>{
+      let a=answers[it.id]; if(Array.isArray(a))a=a.join(' / ');
+      const empty=!a||!String(a).trim();
+      sheet+=`<div class="qa"><div class="qt">${esc(it.q)}</div>
+        <div class="at ${empty?'empty':''}">${empty?'（未記入）':esc(a)}</div></div>`;
+    });
+  });
+
+  stage.innerHTML=`<div class="card result">
+    <div class="center">
+      <div class="brand-mark" style="justify-content:center">MONEY PURPOSE CHECK</div>
+      <div class="logo" style="margin-top:4px;font-size:42px">✨</div>
+      <h1 class="kaisei">あなたの現在地</h1>
+      <div class="type-badge">${esc(type.label)}</div>
+      <p class="hint" style="margin-top:0">${esc(type.blurb)}</p>
+    </div>
+    <ul class="summary-box">
+      <li><b>いまの相談タイプ</b>：${esc(consultType)}</li>
+      <li><b>叶えたい景色</b>：${esc(scene)}</li>
+      <li><b>次の一手の気分</b>：${esc(next)}</li>
+    </ul>
+    ${seminarRec ? seminarBox+consultBox : consultBox+seminarBox}
+    <p class="mock-note">※このモックではリンク先は仮です。本番ではセミナー案内／予約ページに接続します。</p>
+    <div class="res-actions">
+      <button class="btn btn-ghost" onclick="copyMD()">回答をコピー</button>
+      <button class="btn btn-ghost" onclick="(()=>{idx=items.length-1;while(items[idx]&&items[idx].type==='break')idx--;render()})()">← 修正する</button>
+    </div>
+    <div class="sheet">${sheet}</div>
+    <div class="nav"><button class="btn-skip" onclick="resetAll()" style="margin:14px auto 0">最初からやり直す</button></div>
+  </div>`;
+}
+
+function toMD(){
+  const type=purposeType();
+  const scores=scoreCTA();
+  let groups={},order=[];
+  items.forEach(it=>{if(it.type==='break')return;
+    if(!groups[it.grp]){groups[it.grp]=[];order.push(it.grp);}groups[it.grp].push(it);});
+  let md=`# おかねの目的チェック\n\n`;
+  md+=`- タイプ: ${type.label}\n`;
+  md+=`- おすすめCTA: ${scores.recommend==='seminar'?'セミナー':'30分個別相談'}\n`;
+  md+=`- seminarScore: ${scores.seminar} / consultScore: ${scores.consult}\n\n`;
+  order.forEach(g=>{md+=`## ${g}\n\n`;groups[g].forEach(it=>{
+    let a=answers[it.id];if(Array.isArray(a))a=a.join(' / ');
+    md+=`**${it.q}**\n${a&&String(a).trim()?a:'（未記入）'}\n\n`;});});
+  return md;
+}
+function copyMD(){
+  const md=toMD();
+  const fallback=()=>{const ta=document.createElement('textarea');ta.value=md;ta.style.position='fixed';ta.style.top='0';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}document.body.removeChild(ta);toast(ok?"コピーしたよ":"コピーできなかった…");};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(md).then(()=>toast("コピーしたよ")).catch(fallback);}
+  else{fallback();}
+}
+function mockCta(kind){
+  toast(kind==='seminar'
+    ? "モックのため未接続。本番ではセミナー案内URLに繋ぎます"
+    : "モックのため未接続。本番では30分相談の予約URLに繋ぎます");
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+document.addEventListener('keydown',e=>{
+  const cur=items[idx];if(!cur)return;
+  if(e.key==='Enter'){
+    if(cur.type==='text'||cur.type==='url'||cur.type==='break'||cur.type==='choices'){e.preventDefault();next();}
+    else if(cur.type==='textarea'&&(e.ctrlKey||e.metaKey)){e.preventDefault();next();}
+  }
+});
+
+const saved=load();
+if(saved&&saved.answers&&Object.keys(saved.answers).length){resumeScreen();}else{intro();}
+</script>
+</body>
+</html>
