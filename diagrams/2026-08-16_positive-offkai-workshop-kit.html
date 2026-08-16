@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>ポジティブオフ会｜ワークと考え方の引き出し</title>
+<!--
+  図鑑：パターン8 図解HTML。見本は 2026-08-15_positive-offkai-workshops.html（紙色×テラコッタ）。
+  新技：進行表ではなく、場の温度で1枚引き抜く資料集。
+-->
+<style>
+:root{
+  --paper:#f4f0e8;
+  --paper-deep:#ebe4d6;
+  --card:#fffdf8;
+  --ink:#28313a;
+  --muted:#6b7278;
+  --faint:#8a9198;
+  --line:rgba(40,49,58,.18);
+  --terra:#c0644a;
+  --terra-tint:rgba(192,100,74,.14);
+  --moss:#4c6b4f;
+  --moss-tint:rgba(76,107,79,.12);
+  --brown:#8b5e3c;
+  --font-display:"Hiragino Mincho ProN","Yu Mincho","YuMincho","Hiragino Mincho","Noto Serif JP",serif;
+  --font-body:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","YuGothic","Noto Sans JP",sans-serif;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  font-family:var(--font-body);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.8;
+  font-size:15.5px;
+  -webkit-font-smoothing:antialiased;
+}
+svg{ display:block; flex:none; }
+.wrap{ max-width:820px; margin:0 auto; padding:0 clamp(16px,4vw,36px) 72px; }
+h1,h2,h3{ font-family:var(--font-display); font-weight:700; text-wrap:balance; margin:0; }
+p{ margin:0; }
+a{ color:var(--terra); }
+button,summary{ font-family:inherit; }
+::selection{ background:var(--terra); color:#fff; }
+
+.hero{
+  background:#2a241c;
+  color:var(--paper);
+  padding:clamp(36px,7vw,64px) clamp(16px,4vw,36px) clamp(28px,5vw,44px);
+}
+.hero-inner{ max-width:820px; margin:0 auto; }
+.hero-eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:.78rem; letter-spacing:.14em; color:#e3d6bf;
+}
+.hero h1{
+  margin-top:12px;
+  font-size:clamp(26px,5vw,40px);
+  line-height:1.45;
+  color:#fbf6ea;
+}
+.hero h1 .mark{
+  background-image:linear-gradient(transparent 64%, rgba(192,100,74,.55) 64%);
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+.hero-sub{
+  margin-top:14px; max-width:42em;
+  color:rgba(251,246,234,.82);
+  font-size:clamp(13.5px,1.7vw,15.5px);
+}
+.hero-meta{ margin-top:18px; display:flex; flex-wrap:wrap; gap:8px; }
+.meta-chip{
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  color:#fbf6ea; padding:5px 12px; border-radius:999px; font-size:.78rem;
+}
+.meta-chip i{
+  width:6px; height:6px; border-radius:50%; background:var(--terra); display:inline-block;
+}
+.hero-agenda{ margin-top:22px; display:flex; flex-wrap:wrap; gap:8px; }
+.agenda-chip{
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fbf6ea; padding:5px 12px; border-radius:999px; font-size:.76rem;
+  text-decoration:none;
+}
+.agenda-chip .n{
+  font-family:var(--font-display); font-variant-numeric:tabular-nums;
+  color:#e8c896; font-size:.72rem;
+}
+
+section{ padding-top:clamp(32px,5vw,52px); scroll-margin-top:72px; }
+.sec-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:8px; }
+.sec-head .num{
+  font-family:var(--font-display); font-size:1.45rem; color:var(--faint);
+  font-variant-numeric:tabular-nums;
+}
+.sec-head h2{ font-size:clamp(18px,2.4vw,24px); }
+.sec-lead{ font-size:.9rem; color:var(--muted); margin:0 0 20px 42px; max-width:42em; }
+
+.filters{
+  position:sticky; top:0; z-index:20;
+  background:rgba(244,240,232,.94);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:10px 0 12px;
+}
+.filter-inner{ max-width:820px; margin:0 auto; padding:0 clamp(16px,4vw,36px); }
+.filter-label{
+  font-size:.72rem; letter-spacing:.08em; color:var(--faint); margin-bottom:8px;
+}
+.frow{ display:flex; flex-wrap:wrap; gap:8px; }
+.fbtn{
+  appearance:none; border:1px solid var(--line); background:var(--card);
+  color:var(--ink); padding:6px 12px; border-radius:999px; font-size:.78rem;
+  cursor:pointer; line-height:1.4;
+}
+.fbtn.on{ background:#2a241c; color:#fbf6ea; border-color:#2a241c; }
+
+.pick-grid, .idea-grid, .work-grid{
+  display:grid; gap:12px; grid-template-columns:1fr;
+}
+@media (min-width:720px){
+  .pick-grid{ grid-template-columns:1fr 1fr; }
+  .idea-grid{ grid-template-columns:1fr 1fr; }
+}
+.pick{
+  display:block; width:100%; text-align:left; cursor:pointer;
+  background:var(--card); border:1px solid var(--line); border-radius:4px;
+  padding:16px 16px 14px; border-left:3px solid var(--terra);
+  color:inherit;
+}
+.pick:nth-child(2){ border-left-color:var(--moss); }
+.pick:nth-child(3){ border-left-color:var(--brown); }
+.pick:nth-child(4){ border-left-color:#6b7c9c; }
+.pick:nth-child(5){ border-left-color:var(--terra); }
+.pick b{ display:block; font-family:var(--font-display); font-size:1.02rem; margin-bottom:4px; }
+.pick span{ display:block; font-size:.86rem; color:var(--muted); }
+
+.idea{
+  background:var(--card); border:1px solid var(--line); border-radius:4px;
+  padding:18px 18px 16px;
+}
+.idea h3{ font-size:1.05rem; margin-bottom:6px; }
+.idea p{ font-size:.88rem; color:var(--muted); }
+.idea .aka{ font-size:.72rem; color:var(--faint); margin-top:10px; letter-spacing:.02em; }
+.caution{
+  background:#2a241c; color:#fbf6ea; border:0;
+  grid-column:1 / -1;
+}
+.caution h3{ color:#e8c896; }
+.caution p{ color:rgba(251,246,234,.82); }
+
+.shelf{ margin-top:28px; }
+.shelf h3{
+  font-size:1.08rem; margin-bottom:4px;
+}
+.shelf-lead{ font-size:.86rem; color:var(--muted); margin-bottom:12px; }
+.shelf.is-hide, .wcard.is-hide{ display:none; }
+
+.wcard{
+  background:var(--card); border:1px solid var(--line); border-radius:4px;
+  overflow:hidden;
+}
+.wcard + .wcard{ margin-top:10px; }
+.wcard summary{
+  list-style:none; cursor:pointer; padding:16px 18px 14px;
+  display:grid; gap:6px;
+}
+.wcard summary::-webkit-details-marker{ display:none; }
+.wtop{ display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 12px; }
+.wtop h3{ font-size:1.08rem; }
+.mins{
+  font-size:.72rem; color:var(--terra); border:1px solid var(--terra-tint);
+  background:var(--terra-tint); padding:2px 8px; border-radius:999px;
+}
+.grow{
+  font-size:.72rem; color:var(--moss); border:1px solid var(--moss-tint);
+  background:var(--moss-tint); padding:2px 8px; border-radius:999px;
+}
+.wcard summary p{ font-size:.88rem; color:var(--muted); }
+.wbody{
+  border-top:1px solid var(--line);
+  padding:14px 18px 18px;
+  display:grid; gap:12px;
+}
+.block h4{
+  font-size:.72rem; letter-spacing:.1em; color:var(--faint);
+  font-family:var(--font-body); font-weight:700; margin-bottom:4px;
+}
+.block p, .block li{ font-size:.9rem; }
+.block ol{ margin:0; padding-left:1.2em; }
+.say{
+  background:var(--paper-deep); border-left:3px solid var(--moss);
+  padding:10px 12px; font-size:.9rem;
+}
+.say b{ display:block; font-size:.72rem; letter-spacing:.08em; color:var(--moss); margin-bottom:4px; }
+.ng{
+  font-size:.86rem; color:var(--muted);
+}
+.take{
+  font-size:.9rem;
+}
+.take b{ font-family:var(--font-display); }
+
+.pack{
+  background:var(--card); border:1px solid var(--line); border-radius:4px;
+  padding:20px 18px; display:grid; gap:10px;
+}
+.pack a.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:#2a241c; color:#fbf6ea; text-decoration:none;
+  padding:10px 16px; border-radius:999px; font-size:.88rem; width:fit-content;
+}
+.rules-grid{
+  display:grid; gap:12px; grid-template-columns:1fr;
+}
+@media (min-width:720px){
+  .rules-grid{ grid-template-columns:1fr 1fr; }
+}
+.rule-card{
+  background:var(--card); border:1px solid var(--line); border-radius:4px;
+  padding:16px;
+}
+.rule-card h3{ font-size:1rem; margin-bottom:6px; }
+.rule-card p{ font-size:.86rem; color:var(--muted); }
+
+footer{
+  margin-top:48px; padding-top:18px; border-top:1px solid var(--line);
+  display:flex; flex-wrap:wrap; gap:8px 18px;
+  font-size:.78rem; color:var(--faint);
+}
+.note-src{ font-size:.78rem; color:var(--faint); margin-top:18px; max-width:46em; }
+
+@media print{
+  .filters{ position:static; }
+  .wcard{ break-inside:avoid; }
+  .wcard:not([open]){ border-color:var(--line); }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="hero-eyebrow">ポジティブオフ会　資料集</span>
+    <h1>進行表じゃない。<span class="mark">1枚、抜く。</span></h1>
+    <p class="hero-sub">オフ会でもセミナーでも、全部やらなくていい。場の温度を見て、合うワークを1つ取り出すための引き出し。</p>
+    <div class="hero-meta">
+      <span class="meta-chip"><i></i>必要な分だけ使う</span>
+      <span class="meta-chip"><i></i>90分コースは別紙</span>
+      <span class="meta-chip"><i></i>生傷は出さない</span>
+    </div>
+    <div class="hero-agenda">
+      <a class="agenda-chip" href="#pick"><span class="n">01</span>今の場で選ぶ</a>
+      <a class="agenda-chip" href="#ideas"><span class="n">02</span>考え方</a>
+      <a class="agenda-chip" href="#works"><span class="n">03</span>ワーク</a>
+      <a class="agenda-chip" href="#pack"><span class="n">04</span>90分パック</a>
+    </div>
+  </div>
+</div>
+
+<div class="filters" id="filterbar">
+  <div class="filter-inner">
+    <div class="filter-label">引き出しを絞る</div>
+    <div class="frow">
+      <button type="button" class="fbtn on" data-key="all">全部</button>
+      <button type="button" class="fbtn" data-key="ice">場がまだ固い</button>
+      <button type="button" class="fbtn" data-key="accept">苦手を認めたい</button>
+      <button type="button" class="fbtn" data-key="worth">自分を受け取りたい</button>
+      <button type="button" class="fbtn" data-key="agency">動けた自分を見たい</button>
+      <button type="button" class="fbtn" data-key="close">締めたい</button>
+      <button type="button" class="fbtn" data-key="short">5〜10分</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section id="pick">
+    <div class="sec-head">
+      <span class="num">01</span>
+      <h2>今の場で、どれを抜く？</h2>
+    </div>
+    <p class="sec-lead">迷ったらここ。押すと、下のワークがそれに合うものだけ残ります。</p>
+    <div class="pick-grid">
+      <button type="button" class="pick" data-key="ice"><b>まだ空気が硬い</b><span>うっかり話、よかったこと3つ、色の話。深い自己紹介は後回し。</span></button>
+      <button type="button" class="pick" data-key="accept"><b>弱みが出てきた</b><span>コインの裏表、ポンコツ出し合い。直さない。裏返すか、笑う。</span></button>
+      <button type="button" class="pick" data-key="worth"><b>自分を下げている</b><span>褒め褒め、大事にしていること。評価会にしない。受け取らせる。</span></button>
+      <button type="button" class="pick" data-key="agency"><b>動けた跡を見たい</b><span>今日やったこと、昔しんどかったときに自分がやったこと。計画会にしない。</span></button>
+      <button type="button" class="pick" data-key="close"><b>帰り際に残したい</b><span>褒め褒めと、持ち帰り1行。解説を足すより、受け取って終わる。</span></button>
+    </div>
+  </section>
+
+  <section id="ideas">
+    <div class="sec-head">
+      <span class="num">02</span>
+      <h2>考え方の棚。ワークの前に、これだけ</h2>
+    </div>
+    <p class="sec-lead">横文字は後回し。場で使うなら、右の日本語で十分。</p>
+    <div class="idea-grid">
+      <article class="idea">
+        <h3>自己受容</h3>
+        <p>下手な自分、苦手な自分も、消さなくていい。「直してから出ておいで」を外す。</p>
+        <p class="aka">コインの裏表　／　ポンコツ出し合い　／　自分にかける言葉</p>
+      </article>
+      <article class="idea">
+        <h3>自己肯定</h3>
+        <p>成果の前に、自分の価値を置く。自分では見つけられないことが多いので、隣の目を借りる。</p>
+        <p class="aka">褒め褒めシャワー会　／　大事にしていること</p>
+      </article>
+      <article class="idea">
+        <h3>自己決定</h3>
+        <p>誰かに決められた感じを、自分で選んだ痕跡に戻す。朝ごはんでも、この部屋に来たことでもいい。</p>
+        <p class="aka">今日、決めてやってきたこと　／　人生の動詞版</p>
+      </article>
+      <article class="idea">
+        <h3>自己効力感</h3>
+        <p>「自分は乗り越えられる」は気合いじゃない。自分がやった跡を、自分の口で言うと育つ。</p>
+        <p class="aka">自分がやったこと　／　今日、決めてやってきたこと</p>
+      </article>
+      <article class="idea caution">
+        <h3>ポジティブに捉えよう、は使わない</h3>
+        <p>悪いことを良いと思わせない。隣が「あれも学びだね」と言うと、場が嘘になる。拾うのは感情の上書きじゃなく、その人がやったこと。</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="works">
+    <div class="sec-head">
+      <span class="num">03</span>
+      <h2>ワークの棚。開いた1枚だけ、その場で使う</h2>
+    </div>
+    <p class="sec-lead">見出しを読めば足りる。進行が要るときだけ開く。全部つなげる必要はない。</p>
+
+    <div class="shelf" data-shelf="warm">
+      <h3>場をあたためる</h3>
+      <p class="shelf-lead">まだ固いとき。自己紹介の深掘りより先。</p>
+
+      <details class="wcard" id="w-color" data-tags="ice short">
+        <summary>
+          <div class="wtop">
+            <h3>今、気になる色</h3>
+            <span class="mins">5分</span>
+            <span class="grow">入口</span>
+          </div>
+          <p>好きな色じゃなく、今パッと目に入った色。今大事にしたいことを、ゆるく言葉にする。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「好きな色じゃなくていいです。今、目に入った色。その色が、いまの自分に何を言ってる気がするか、一言だけ。」</div>
+          <div class="block">
+            <h4>流れ</h4>
+            <ol>
+              <li>各自10秒で色を1つ。</li>
+              <li>1人20秒。「今この色が気になる。なんとなく＿＿だから。」</li>
+              <li>深掘りしない。正解も探さない。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　性格診断に落とす。配色の知識を教える。</p>
+          <p class="take"><b>持ち帰り</b>　今、気になった色は＿＿。それが指してるのは＿＿。</p>
+        </div>
+      </details>
+
+      <details class="wcard" id="w-three" data-tags="ice worth short">
+        <summary>
+          <div class="wtop">
+            <h3>よかったこと3つ</h3>
+            <span class="mins">5分</span>
+            <span class="grow">自己肯定の入口</span>
+          </div>
+          <p>今日か昨日、小さくていい。うまくいったこと、ほっとしたこと。自分がそれにどう関わったかまで。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「すごい成果じゃなくていいです。電車に乗れた、返信した、ここに来た。3つ書いて、そのうち1つだけ『自分がやった跡』を一言。」</div>
+          <div class="block">
+            <h4>流れ</h4>
+            <ol>
+              <li>2分で3つ書く。</li>
+              <li>隣に1つだけ読む。聞き手は「いいね」で受け取る。</li>
+              <li>全体共有は希望者1〜2人まで。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　もっと良くするには、に行く。比較する。</p>
+          <p class="take"><b>持ち帰り</b>　今日よかったことの中で、自分が手を動かしたのは＿＿。</p>
+        </div>
+      </details>
+
+      <details class="wcard" id="w-ponkotsu" data-tags="ice accept">
+        <summary>
+          <div class="wtop">
+            <h3>ポンコツ出し合い</h3>
+            <span class="mins">15〜18分</span>
+            <span class="grow">自己受容</span>
+          </div>
+          <p>今は笑えるうっかりを出す。自分では一生の秘密が、隣から見たら大したことなかった、がゴール。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「今からポンコツエピソード。この場なら出していい。まだ生傷の話は出さなくていい。直さなくていい。受け取って、笑う。」</div>
+          <div class="block">
+            <h4>流れ</h4>
+            <ol>
+              <li>範囲を先に置く。今は笑える話だけ。</li>
+              <li>司会が先に1本出す。</li>
+              <li>1人1エピソード。聞き手は「あるある」を1回。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>話してよい</b>　駅で降りそこねた、名前を噛んだ。<b>話さない</b>　まだ痛い話、誰かを特定できる失敗。</p>
+          <p class="take"><b>持ち帰り</b>　自分では秘密でも、こっちから見たら大したことなかった話。</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="shelf" data-shelf="accept">
+      <h3>苦手ごとを、消さない</h3>
+      <p class="shelf-lead">弱みが出てきたとき。直し会にしない。</p>
+
+      <details class="wcard" id="w-coin" data-tags="accept">
+        <summary>
+          <div class="wtop">
+            <h3>コインの裏表</h3>
+            <span class="mins">15〜18分</span>
+            <span class="grow">自己受容</span>
+          </div>
+          <p>嫌だと思っている自分を消すんじゃない。裏返す。苛立ちは、大事にしていることの合図。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「あなたが嫌だと思ってることを、コインの裏表にしてみましょう。深い話は出さなくていい。パスも参加です。」</div>
+          <div class="block">
+            <h4>流れ</h4>
+            <ol>
+              <li>司会が先に1個出す。「つい気遣いすぎる」くらいの温度。</li>
+              <li>3分で1つ書く。性格診断じゃなく、最近やったこと。</li>
+              <li>隣が返す。「あなたは○○な人」禁止。「さっき／普段、こうしてましたよね」から始める。</li>
+              <li>裏返しは本人の口で言ってもらう。無理に才能に変換しない。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　資質名を貼る。向いている仕事を決める。しんどいことを才能だと言い切る。</p>
+          <p class="take"><b>持ち帰り</b>　裏返しでもらった言葉　＿＿。</p>
+        </div>
+      </details>
+
+      <details class="wcard" id="w-kind" data-tags="accept short">
+        <summary>
+          <div class="wtop">
+            <h3>自分にかける言葉</h3>
+            <span class="mins">5分</span>
+            <span class="grow">自己受容</span>
+          </div>
+          <p>「私はすごい」じゃなく、「私もしんどかった。それでいい」。声に出さなくていい。紙に3行。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「隣に読まなくていいです。今ちょっとしんどいこと、誰にでもある一言、親友にかけるなら何て言うか。3行だけ。」</div>
+          <div class="block">
+            <h4>3行</h4>
+            <ol>
+              <li>いま、ちょっとしんどいのは＿＿。</li>
+              <li>これ、自分だけじゃない。＿＿な人もいる。</li>
+              <li>親友が同じだったら、自分はこう言う。＿＿。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　全体で発表させる。励まし大会にする。気合いに翻訳する。</p>
+          <p class="take"><b>持ち帰り</b>　親友にかける言葉を、今夜の自分にも1回使う。</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="shelf" data-shelf="agency">
+      <h3>自分が動いた痕跡</h3>
+      <p class="shelf-lead">計画会にしない。もうやったことを拾う。</p>
+
+      <details class="wcard" id="w-today" data-tags="agency">
+        <summary>
+          <div class="wtop">
+            <h3>今日、決めてやってきたこと</h3>
+            <span class="mins">15〜18分</span>
+            <span class="grow">自己決定</span>
+          </div>
+          <p>「まだ何も決めてない」で来た人が、もう手を動かしている自分に気づく。強みは何か、と聞かない。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「これは計画会じゃないです。今日、すでに決めて動いた痕跡。朝食でも、どの電車かでも、ここに来たことでもいい。」</div>
+          <div class="block">
+            <h4>流れ</h4>
+            <ol>
+              <li>朝起きてから今までを、動詞で8〜12個。</li>
+              <li>気づいたら時間が経っていた／頼まれなくてもやっていた、に丸。</li>
+              <li>1人1文。「私は今日、＿＿と決めて、＿＿した。」次はどうする、は聞かない。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　職業名に落とす。適職を決める。もっと良くするには、に行く。</p>
+          <p class="take"><b>持ち帰り</b>　私は今日、＿＿と決めて、＿＿した。</p>
+        </div>
+      </details>
+
+      <details class="wcard" id="w-did" data-tags="agency">
+        <summary>
+          <div class="wtop">
+            <h3>自分がやったこと</h3>
+            <span class="mins">15〜20分</span>
+            <span class="grow">自己効力感</span>
+          </div>
+          <p>昔しんどかったとき、自分がやったことを1つ。上手くいった話じゃなくていい。逃げた、休んだ、誰かに言った、も乗り越え。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「今は話せる範囲でいいです。昔ちょっとしんどかったとき、自分でやったこと、1つだけ。上手くいった話じゃなくていい。逃げた、休んだ、誰かに言った、も乗り越えです。」</div>
+          <div class="block">
+            <h4>3段だけ</h4>
+            <ol>
+              <li>しんどかった状況（短く。傷の描写はしない）</li>
+              <li>自分がやったこと1つ（誰かのおかげ、だけにしない）</li>
+              <li>今に残っているもの1つ（痛みの否定はしない）</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　「あれも良い経験だったね」。アドバイス。まだ生傷。比較。司会が意味づけを先にやる。</p>
+          <p class="take"><b>持ち帰り</b>　私はあのとき、＿＿した。今の自分に残っているのは、＿＿。</p>
+        </div>
+      </details>
+
+      <details class="wcard" id="w-verb" data-tags="agency">
+        <summary>
+          <div class="wtop">
+            <h3>人生の動詞版</h3>
+            <span class="mins">15分</span>
+            <span class="grow">自己決定</span>
+          </div>
+          <p>仕事やバイトを1つ選んで、やっていたことを動詞で細かく出す。嫌いな業務の中にも、赤い動作がある。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「職種名はラベルです。探すのは動作。嫌いな仕事の中にも、つい手が動いていた部分がある。」</div>
+          <div class="block">
+            <h4>流れ</h4>
+            <ol>
+              <li>仕事・手伝い・役割を1つ選ぶ。</li>
+              <li>やっていたことを動詞でほぐす。</li>
+              <li>赤い動作（時間が溶ける／頼まれなくてもやる）に丸。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　向いている仕事を決める。嫌いな業務を消す会議にする。</p>
+          <p class="take"><b>持ち帰り</b>　職種名じゃなく、赤い動作は＿＿。</p>
+        </div>
+      </details>
+
+      <details class="wcard" id="w-habits" data-tags="ice agency short">
+        <summary>
+          <div class="wtop">
+            <h3>ついやっちゃうことリスト</h3>
+            <span class="mins">10分</span>
+            <span class="grow">入口</span>
+          </div>
+          <p>「あなたの中で当たり前のこと、何ですか？」が出ない人用。直感でチェックして、代表を3つ。隣と見せ合うだけ。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「得意なこと、じゃなくていい。ついやっちゃうこと。歯を磨くみたいに、考えなくても手が動くやつ。」</div>
+          <div class="block">
+            <h4>流れ</h4>
+            <ol>
+              <li>2分で、思いつくだけ書く。</li>
+              <li>代表を3つ丸。</li>
+              <li>隣と見せ合う。資質名は振らない。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　才能ラベルを貼る。順位をつける。</p>
+          <p class="take"><b>持ち帰り</b>　ついやっちゃうこと、代表は＿＿。</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="shelf" data-shelf="worth">
+      <h3>受け取って、閉じる</h3>
+      <p class="shelf-lead">自分では見つけられない価値は、隣の目を借りる。</p>
+
+      <details class="wcard" id="w-values" data-tags="worth short">
+        <summary>
+          <div class="wtop">
+            <h3>大事にしていること</h3>
+            <span class="mins">8〜10分</span>
+            <span class="grow">自己肯定の土台</span>
+          </div>
+          <p>仕事の成果じゃなく、自分が大事にしていることを1つ。すごい自分を探す時間じゃない。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「昨日うまくいったこと、じゃなくていい。自分が大事にしていること。家族でも、静かな時間でも、正直でいることでも。」</div>
+          <div class="block">
+            <h4>流れ</h4>
+            <ol>
+              <li>大事にしていることを3つ書く。</li>
+              <li>1つ選んで、なぜそれが大事か1行。</li>
+              <li>隣に30秒。聞き手はアドバイスしない。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　目標に変換する。人生の目的を決めさせる。他人の価値観で採点する。</p>
+          <p class="take"><b>持ち帰り</b>　いま大事にしているのは＿＿。だから自分は＿＿を大切にしていい。</p>
+        </div>
+      </details>
+
+      <details class="wcard" id="w-shower" data-tags="worth close">
+        <summary>
+          <div class="wtop">
+            <h3>褒め褒めシャワー会</h3>
+            <span class="mins">10〜15分</span>
+            <span class="grow">自己肯定</span>
+          </div>
+          <p>その人のいいところを、徹底的に届ける。返すのは性格診断じゃなく、今日この場で見たこと。受け手は打ち消さない。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「今から1人30秒、今日この場で見えたことを返します。評価会じゃないです。受け手は『そんなことない』『いえいえ』、今日禁止。言えるのは『ありがとう』だけ。」</div>
+          <div class="block">
+            <h4>流れ</h4>
+            <ol>
+              <li>最初の受け手は司会。</li>
+              <li>「さっき、こういう場面でこうしてましたよね。」抽象の「優しい」だけはやり直し。</li>
+              <li>受け手はうなずきと「ありがとう」だけ。お返し褒めはしない。</li>
+              <li>公平は、全員が1回は受け手になることで取る。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　容姿、比較、からかい、内輪ネタ。誰か1人も言葉が届かない人を作る。</p>
+          <p class="take"><b>持ち帰り</b>　浴びた褒め（ありがとう、だけで受け取る）。</p>
+        </div>
+      </details>
+
+      <details class="wcard" id="w-listen" data-tags="ice close short">
+        <summary>
+          <div class="wtop">
+            <h3>隣の話の受け取り方</h3>
+            <span class="mins">3分で宣言</span>
+            <span class="grow">聞き手</span>
+          </div>
+          <p>ワークそのものというより、場の約束。どのワークの前に1回言うと、温度が落ちない。</p>
+        </summary>
+        <div class="wbody">
+          <div class="say"><b>司会の一言</b>「聞く側の仕事は、直すことじゃないです。乗っかる。質問は1つまで。私ならこうする、は置いておく。」</div>
+          <div class="block">
+            <h4>聞き手の3つ</h4>
+            <ol>
+              <li>最後まで聞く。途中で解決しない。</li>
+              <li>似た体験は、求められてから。</li>
+              <li>返すなら「今の話で、＿＿が残った」。</li>
+            </ol>
+          </div>
+          <p class="ng"><b>やらない</b>　助言が出たら「今のは一旦置きます」で止める。</p>
+          <p class="take"><b>持ち帰り</b>　今日、直さずに受け取った話が1つある。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="guard">
+    <div class="sec-head">
+      <span class="num">04</span>
+      <h2>どのワークでも、ここだけ守る</h2>
+    </div>
+    <p class="sec-lead">上手い進行より、場の温度。満足度は、参加者がいかに自由に話しやすいかで決まる。</p>
+    <div class="rules-grid">
+      <article class="rule-card">
+        <h3>司会が先に出す</h3>
+        <p>参加者に先に振らない。聞き専は、最初から歓迎と口に出す。沈黙が3秒続いたら、自分がもう1個出す。</p>
+      </article>
+      <article class="rule-card">
+        <h3>パスは参加</h3>
+        <p>パスされたらお礼だけ言って次へ。後から振らない。深い話をしなくて、今日は成功。</p>
+      </article>
+      <article class="rule-card">
+        <h3>直さない、救わない</h3>
+        <p>「私なら」「こうすべき」は置いておく。助言が出たら「今のは一旦置きます」で止める。</p>
+      </article>
+      <article class="rule-card">
+        <h3>ここは相談室じゃない</h3>
+        <p>重くなりかけたら、「今日はそこまで持たなくて大丈夫」。録音・SNSは本人の許可がなければやらない。</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="pack">
+    <div class="sec-head">
+      <span class="num">05</span>
+      <h2>全部つなげる日は、進行1枚へ</h2>
+    </div>
+    <p class="sec-lead">4〜6人で90分、本編3つ＋褒め褒めまで決め打ちしたいときだけ。</p>
+    <div class="pack">
+      <p>コインの裏表 → ポンコツ出し合い → 決めてやってきたこと → 褒め褒めシャワー会。時間割つき。</p>
+      <a class="btn" href="./2026-08-15_positive-offkai-workshops.html">進行1枚を開く</a>
+    </div>
+    <p class="note-src">考え方の背景は、自己効力感（自分がやった痕跡）、自己決定（自分で選んだ感覚）、自己受容、自己肯定、心的外傷後成長（痛みは残したまま、あとから増えたものを拾う）。場ではこの名前を出さなくていい。</p>
+  </section>
+
+  <footer>
+    <span>ポジティブオフ会　ワークと考え方の引き出し　2026.08.16</span>
+    <span>診断でも、セラピーでも、適職決めでもない。話したくないことは、話さなくていい。</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var buttons = document.querySelectorAll('.fbtn, .pick');
+  var cards = document.querySelectorAll('.wcard');
+  var shelves = document.querySelectorAll('.shelf');
+  function apply(key){
+    document.querySelectorAll('.fbtn').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-key') === key);
+    });
+    cards.forEach(function(c){
+      var tags = (c.getAttribute('data-tags') || '').split(/\s+/);
+      var show = key === 'all' || tags.indexOf(key) !== -1;
+      c.classList.toggle('is-hide', !show);
+      if(!show && c.open) c.open = false;
+    });
+    shelves.forEach(function(s){
+      var any = false;
+      s.querySelectorAll('.wcard').forEach(function(c){
+        if(!c.classList.contains('is-hide')) any = true;
+      });
+      s.classList.toggle('is-hide', !any);
+    });
+    if(key !== 'all'){
+      var works = document.getElementById('works');
+      if(works) works.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+  buttons.forEach(function(b){
+    b.addEventListener('click', function(){
+      apply(b.getAttribute('data-key'));
+    });
+  });
+})();
+</script>
+</body>
+</html>
