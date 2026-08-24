@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<title>定時で上がるための提案</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Old+Mincho:wght@400;600;700&display=swap">
+
+<style>
+/* ============================================================
+   提案書｜社会福祉法人 門真共生福祉会 御中
+   v3（2026-08-24）
+     v1＝制度の解説書（基準割れ0だが変化が描けていない・おけちゃん指摘）
+     v2＝個別支援計画のBefore/Afterへ
+     v3＝主役を「管理者が定時で上がれるか」へ
+     v4＝おけちゃんが御法人の元職員と判明 → 冒頭を「元職員が書いた資料」に。
+        業務を7つへ（個別支援計画／会議録／シフト作成／メール／日々の記録／
+        実績入力／請求）。転記3回の章を追加
+
+   テーマの持ち方：単一テーマ（ライト固定）。分岐を持たない。
+     理由＝配布物であり、読み手が自分でテーマ設定を持たない（doc-gate Step 1 ②）
+   実測正本：あおいCDO/【正本】良い資料とは_ドキュメント設計の外部実測_2026-08-21
+     本文16px ／ 行送り1.95（基準1.75-2.12）／ 本文幅42em（基準38-44em）
+   地の上の文字は4系統：ink / ink-soft / navy / bronze
+     金茶 #9a7a37 は地の上で比3.51 → 線のみ。文字はブロンズ #8a5a2b（比5.12）
+   濃紺帯の中は帯専用トークンだけを使う（band-fg / band-fg-soft / band-accent / band-muted）
+     v2で帯の中に ink-soft と bronze を使い7件割れた（doc-gate 落とし穴7）
+   ============================================================ */
+:root{
+  --paper:#f4efe4;
+  --card:#fbf8f1;
+  --card-2:#f0e9db;
+  --before-bg:#ece5d6;
+
+  --ink:#2a2b28;        /* 本文       対 paper 12.42 */
+  --ink-soft:#5f5c52;   /* 補助       対 paper  5.83 */
+  --navy:#1e2b43;       /* 見出し     対 paper 12.36 */
+  --bronze:#8a5a2b;     /* アクセント 対 paper  5.12 */
+
+  --band-bg:#1e2b43;
+  --band-fg:#ffffff;      /* 対 band-bg 14.17 */
+  --band-fg-soft:#e8dcc0; /* 対 band-bg 10.41 */
+  --band-accent:#d8bd85;  /* 対 band-bg  7.79 */
+  --band-muted:#a5a196;   /* 対 band-bg  5.49 */
+
+  --line:#e0d6c2;
+  --line-soft:#ebe3d4;
+  --rule-gold:#9a7a37;
+
+  --mincho:"Zen Old Mincho","Yu Mincho","YuMincho","Hiragino Mincho ProN",serif;
+  --gothic:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+
+  --w-text:42em;
+  --w-wide:58em;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--gothic);font-size:16px;line-height:1.95;
+  font-feature-settings:"palt" 1;
+}
+:focus-visible{outline:3px solid var(--bronze);outline-offset:3px;}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+
+/* ---------- 骨格 ---------- */
+.wrap{max-width:var(--w-wide);margin:0 auto;padding:0 22px;}
+/* flex列の中では左右autoマージンが stretch を打ち消し、短い段落だけ幅が縮む
+   （実測：1段落だけ592px＝37em で基準38-44em割れ）。width:100% で本文幅を固定する */
+.col{max-width:var(--w-text);width:100%;margin-left:auto;margin-right:auto;}
+/* wrap と col が同一要素に付くと wrap の左右padding分だけ本文が痩せる（v1で35.1em＝基準割れ） */
+.wrap.col{max-width:calc(var(--w-text) + 44px);}
+section{padding:56px 0;border-top:1px solid var(--line);}
+.stack{display:flex;flex-direction:column;gap:1.1em;}
+.stack-lg{display:flex;flex-direction:column;gap:2em;}
+
+/* ---------- 表紙 ---------- */
+.cover{background:var(--band-bg);color:var(--band-fg);padding:52px 0 46px;border-top:0;}
+.eyebrow{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--band-accent);margin:0 0 18px;font-weight:500;}
+.cover h1{
+  font-family:var(--mincho);font-weight:600;
+  font-size:clamp(26px,5.8vw,42px);line-height:1.45;margin:0 0 14px;
+  text-wrap:balance;color:var(--band-fg);
+}
+.cover .sub{font-family:var(--mincho);font-size:clamp(16px,2.7vw,21px);color:var(--band-accent);margin:0 0 30px;line-height:1.7;}
+.addressee{border-top:1px solid rgba(216,189,133,.45);border-bottom:1px solid rgba(216,189,133,.45);padding:18px 0;margin:0 0 26px;}
+.addressee .to{font-family:var(--mincho);font-size:clamp(18px,3.4vw,23px);color:var(--band-fg);line-height:1.5;}
+.cover .meta{display:flex;flex-wrap:wrap;gap:6px 28px;font-size:14px;color:var(--band-fg-soft);line-height:1.8;}
+.cover .meta b{color:var(--band-fg);font-weight:500;}
+
+/* ---------- 見出し ---------- */
+h2{font-family:var(--mincho);font-weight:600;color:var(--navy);font-size:clamp(21px,3.9vw,29px);line-height:1.55;margin:0 0 .2em;text-wrap:balance;}
+h2 .n{display:block;font-family:var(--gothic);font-size:12.5px;font-weight:500;letter-spacing:.2em;color:var(--bronze);margin-bottom:.7em;}
+h3{font-family:var(--gothic);font-weight:700;color:var(--navy);font-size:17px;line-height:1.7;margin:0 0 .35em;text-wrap:balance;}
+.lead{font-size:17px;line-height:1.95;margin:0;}
+p{margin:0;}
+strong{font-weight:700;color:var(--navy);}
+em{font-style:normal;color:var(--bronze);font-weight:700;}
+a{color:var(--bronze);text-underline-offset:3px;}
+small{font-size:12.5px;line-height:1.8;color:var(--ink-soft);display:block;}
+.note{font-size:13.5px;line-height:1.85;color:var(--ink-soft);}
+
+.thesis{font-family:var(--mincho);font-size:clamp(20px,4.3vw,30px);line-height:1.65;color:var(--navy);text-wrap:balance;margin:0;}
+.thesis em{color:var(--bronze);}
+.band .thesis{color:var(--band-fg);}
+.band .thesis em{color:var(--band-accent);}
+
+/* ---------- 1日のタイムライン ---------- */
+.day{display:flex;flex-direction:column;gap:22px;}
+.day-scale{display:flex;justify-content:space-between;font-size:12.5px;color:var(--band-fg-soft);letter-spacing:.04em;}
+.day-row{display:flex;flex-direction:column;gap:7px;}
+.day-name{font-size:13.5px;letter-spacing:.06em;}
+.day-row.now .day-name{color:var(--band-muted);}
+.day-row.next .day-name{color:var(--band-accent);font-weight:700;}
+.day-bar{position:relative;height:34px;display:flex;border:1px solid rgba(232,220,192,.32);}
+.seg{display:flex;align-items:center;justify-content:center;font-size:12.5px;line-height:1.3;text-align:center;overflow:hidden;padding:0 4px;}
+.seg.work{background:rgba(232,220,192,.16);color:var(--band-fg-soft);}
+.seg.over{background:var(--band-muted);color:#1e2b43;font-weight:700;}
+.seg.free{background:transparent;color:var(--band-accent);font-weight:700;}
+.day-mark{font-size:12.5px;color:var(--band-accent);letter-spacing:.04em;}
+
+/* ---------- 役割別カード ---------- */
+.personas{display:grid;gap:14px;}
+@media (min-width:720px){.personas{grid-template-columns:1fr 1fr;}}
+.persona{border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;}
+.persona .role{
+  font-family:var(--mincho);font-size:18px;font-weight:600;color:var(--navy);
+  padding:14px 20px;border-bottom:1px solid var(--line);line-height:1.5;
+}
+.persona .role span{display:block;font-family:var(--gothic);font-size:12.5px;font-weight:400;color:var(--ink-soft);letter-spacing:.04em;}
+.persona .now,.persona .next{padding:15px 20px;display:flex;flex-direction:column;gap:.25em;}
+.persona .now{background:var(--before-bg);}
+.persona .now .k{font-size:12.5px;letter-spacing:.08em;color:var(--ink-soft);font-weight:700;}
+.persona .next .k{font-size:12.5px;letter-spacing:.08em;color:var(--bronze);font-weight:700;}
+.persona p{font-size:14.5px;line-height:1.8;}
+
+/* ---------- 業務カード ---------- */
+.jobs{display:flex;flex-direction:column;gap:18px;}
+.job{border:1px solid var(--line);background:var(--card);}
+.job-head{
+  background:var(--band-bg);color:var(--band-fg);padding:13px 20px;
+  font-family:var(--mincho);font-size:19px;font-weight:600;line-height:1.5;
+}
+.job-head span{font-family:var(--gothic);font-size:12.5px;font-weight:400;color:var(--band-accent);margin-left:8px;letter-spacing:.04em;}
+.job-body{display:grid;}
+@media (min-width:760px){.job-body{grid-template-columns:1fr 1fr 1fr;}}
+.cellrow{padding:16px 20px;border-top:1px solid var(--line-soft);display:flex;flex-direction:column;gap:.3em;}
+@media (min-width:760px){
+  .cellrow{border-top:0;border-left:1px solid var(--line-soft);}
+  .cellrow:first-child{border-left:0;}
+}
+.cellrow .k{font-size:12.5px;letter-spacing:.08em;color:var(--bronze);font-weight:700;}
+.cellrow p{font-size:14.5px;line-height:1.8;}
+.cellrow.b{background:var(--before-bg);}
+.cellrow.b .k{color:var(--ink-soft);}
+.cellrow.h{background:var(--card-2);}
+
+/* ---------- 60日タイムライン ---------- */
+.tl{display:flex;flex-direction:column;gap:26px;}
+.tl-scale{display:flex;justify-content:space-between;font-size:12.5px;color:var(--band-fg-soft);letter-spacing:.04em;}
+.tl-row{display:flex;flex-direction:column;gap:8px;}
+.tl-name{font-size:13.5px;letter-spacing:.06em;}
+.tl-row.now .tl-name{color:var(--band-muted);}
+.tl-row.next .tl-name{color:var(--band-accent);font-weight:700;}
+.tl-track{position:relative;height:44px;}
+.tl-track::before{content:"";position:absolute;left:0;right:0;top:29px;height:2px;background:rgba(232,220,192,.28);}
+.tl-dot{position:absolute;top:24px;width:12px;height:12px;border-radius:50%;transform:translateX(-50%);}
+.now .tl-dot{background:var(--band-muted);}
+.next .tl-dot{background:var(--band-accent);}
+.tl-flag{position:absolute;top:0;transform:translateX(-50%);font-size:12.5px;line-height:1.5;white-space:nowrap;letter-spacing:.02em;}
+.now .tl-flag{color:var(--band-muted);}
+.next .tl-flag{color:var(--band-accent);font-weight:700;}
+.tl-deadline{position:absolute;right:0;top:14px;bottom:0;width:2px;background:var(--band-accent);}
+
+/* ---------- 数字 ---------- */
+.figs{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);}
+@media (min-width:680px){.figs{grid-template-columns:repeat(3,1fr);}}
+.fig{background:var(--card);padding:24px 20px;display:flex;flex-direction:column;gap:.2em;}
+.fig .v{font-family:var(--mincho);font-weight:700;color:var(--navy);font-size:clamp(30px,6.4vw,42px);line-height:1.25;font-variant-numeric:tabular-nums;}
+.fig .v span{font-size:.45em;font-weight:400;margin-left:.15em;color:var(--bronze);}
+.fig .k{font-size:13.5px;color:var(--ink-soft);line-height:1.75;}
+
+/* ---------- カード ---------- */
+.card{background:var(--card);border:1px solid var(--line);padding:24px 22px;display:flex;flex-direction:column;gap:.7em;}
+.grid{display:grid;gap:14px;}
+@media (min-width:680px){.grid.g2{grid-template-columns:repeat(2,1fr);}}
+
+/* ---------- 表 ---------- */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);background:var(--card);}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px;line-height:1.75;}
+caption{caption-side:top;text-align:left;padding:14px 16px 0;font-size:13.5px;color:var(--ink-soft);}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+thead th{background:var(--card-2);color:var(--navy);font-weight:700;font-size:13.5px;letter-spacing:.04em;border-bottom:1px solid var(--line);}
+tbody tr:last-child td{border-bottom:0;}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap;}
+.price td:last-child{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--navy);font-weight:700;}
+
+/* ---------- 手順 ---------- */
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;counter-reset:s;}
+ol.steps li{counter-increment:s;position:relative;padding:20px 0 20px 54px;border-bottom:1px solid var(--line);}
+ol.steps li:last-child{border-bottom:0;}
+ol.steps li::before{
+  content:counter(s);position:absolute;left:0;top:20px;width:34px;height:34px;
+  border:1px solid var(--rule-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mincho);font-size:15px;color:var(--bronze);font-variant-numeric:tabular-nums;
+}
+.when{font-size:12.5px;color:var(--bronze);letter-spacing:.04em;}
+.gain{font-size:13.5px;color:var(--ink-soft);line-height:1.8;margin-top:.4em;}
+.gain b{color:var(--bronze);font-weight:700;}
+
+/* ---------- リスト ---------- */
+ul.line{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;}
+ul.line li{padding-left:26px;position:relative;}
+ul.line li::before{content:"";position:absolute;left:4px;top:.72em;width:10px;height:10px;border:2px solid var(--bronze);border-radius:50%;}
+ul.plain{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+ul.plain li{padding-left:20px;position:relative;}
+ul.plain li::before{content:"—";position:absolute;left:0;color:var(--bronze);}
+
+/* ---------- 帯 ---------- */
+.band{background:var(--band-bg);color:var(--band-fg);border-top:0;}
+.band h2{color:var(--band-fg);}
+.band h2 .n{color:var(--band-accent);}
+.band .lead,.band p,.band li{color:var(--band-fg-soft);}
+.band strong{color:var(--band-fg);}
+.band em{color:var(--band-accent);}
+.band ul.line li::before{border-color:var(--band-accent);}
+.band .card{background:rgba(255,255,255,.06);border-color:rgba(216,189,133,.4);}
+.band .card h3{color:var(--band-fg);}
+.band .card p{color:var(--band-fg-soft);}
+.band a{color:var(--band-accent);}
+.band small{color:var(--band-muted);}
+
+/* ---------- 出典 ---------- */
+.src{font-size:13.5px;line-height:1.8;}
+.src li{margin-bottom:10px;}
+.prompt{background:var(--card-2);border:1px dashed var(--rule-gold);padding:18px;font-size:13.5px;line-height:1.85;color:var(--ink);white-space:pre-wrap;word-break:break-word;}
+
+footer{padding:32px 0 60px;border-top:1px solid var(--line);}
+footer .who{font-family:var(--mincho);font-size:18px;color:var(--navy);}
+</style>
+
+</head>
+<body>
+<header class="cover">
+  <div class="wrap">
+    <p class="eyebrow">Proposal &middot; 2026</p>
+    <div class="addressee">
+      <div class="to">社会福祉法人 門真共生福祉会 御中</div>
+    </div>
+    <h1>定時のあとに、<br>もうひとつの仕事が始まっている。</h1>
+    <p class="sub">日中は現場に立ち、パソコンを開くのは定時を過ぎてから。<br>その時間を、なくすためのご提案です。</p>
+    <div class="meta">
+      <span><b>提案日</b>　2026年8月24日</span>
+      <span><b>提案者</b>　おけもんカンパニー</span>
+      <span><b>ご提案の範囲</b>　業務棚卸し／導入伴走／職員研修</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap col stack-lg">
+    <p class="thesis">現場は、人にしかできません。<br>でも、<em>その前後についてくる事務</em>は、そうではありません。</p>
+    <div class="stack">
+      <p><strong>私は以前、御法人で働いておりました。</strong></p>
+      <p>ですのでこの資料に並べた「夜の作業」は、外から想像して書いたものではありません。<em>私自身がやっていたことと、当時いっしょに働いた方々が夜まで残ってやっていたこと</em>です。日中はご利用者と職員に時間を使い、書類は全部あとまわしになって、定時を過ぎてからパソコンを開く——その順番を、私もやっていました。</p>
+      <p>福祉・介護の現場には通算16年おりました。うち<strong>障害福祉のグループホーム管理者を12年</strong>。そのあと、AI活用の伴走を仕事にしています。</p>
+      <p>あのころ「どうにもならない」と思っていた作業のいくつかは、<strong>いま道具のほうが追いついています。</strong>それをお持ちしたくて、この資料を書きました。</p>
+      <p>ですので、このご提案では<strong>「支援の質を上げましょう」とは申し上げません</strong>。支援は、当時から現場のみなさまのものです。私がお手伝いするのは、<em>その周りにくっついている、夜の作業のほう</em>だけです。</p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap col stack-lg">
+    <div class="stack">
+      <h2><span class="n">Before / After</span>管理者の1日が、こう変わります</h2>
+      <p class="lead">日中の仕事の量は変えません。<strong>変えるのは、日中に「事務が終わっているかどうか」だけ</strong>です。</p>
+    </div>
+
+    <div class="day">
+      <div class="day-scale"><span>9:00</span><span>13:00</span><span>17:30 定時</span><span>20:00</span></div>
+
+      <div class="day-row now">
+        <div class="day-name">BEFORE</div>
+        <div class="day-bar">
+          <div class="seg work" style="flex:0 0 68%;">現場に出て、面談、電話、来客</div>
+          <div class="seg over" style="flex:0 0 32%;">PC作業</div>
+        </div>
+        <div class="day-mark" style="color:var(--band-muted);">日中に手をつけられなかったものが、全部ここに集まる</div>
+      </div>
+
+      <div class="day-row next">
+        <div class="day-name">AFTER</div>
+        <div class="day-bar">
+          <div class="seg work" style="flex:0 0 68%;">現場に出て、面談、電話、来客＋すきま5分の確認</div>
+          <div class="seg free" style="flex:0 0 32%;">帰る</div>
+        </div>
+        <div class="day-mark">下ごしらえが済んでいるので、残るのは「確認して確定する」だけ</div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <p><em>これはAIが書類を作る話ではありません。</em>下書きが先にできていて、管理者がやることが「ゼロから作る」から「見て直して決める」に変わる、という話です。</p>
+      <p>ゼロから作る仕事はまとまった時間が要るので、夜にしかできません。<strong>見て直して決める仕事は、5分あればできます。</strong>だから日中の隙間に収まります。ここが、定時で上がれるかどうかの分かれ目です。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack-lg">
+    <div class="col stack">
+      <h2><span class="n">誰に、どう効くか</span>楽になるのは、管理者だけではありません</h2>
+      <p class="lead">この資料は回覧されると思いますので、<strong>読んだ方それぞれに何が起きるか</strong>を先に書いておきます。ご自分の役割の欄をご覧ください。</p>
+    </div>
+
+    <div class="personas">
+
+      <div class="persona">
+        <div class="role">管理者・施設長<span>決裁と、全部の締切が集まる人</span></div>
+        <div class="now"><span class="k">いま</span><p>日中は現場に出て、そこへ面談が入り、電話と来客で埋まる。事務は全部あとまわしになり、定時を過ぎてからパソコンを開く。<strong>シフトも実績も締切も、すべて自分のところに集まってくる。</strong></p></div>
+        <div class="next"><span class="k">こうなる</span><p>期限と抜けが一覧で見える。夜にやっていた「ゼロから作る」が<strong>「見て直して決める」</strong>に変わるので、日中の5分の隙間で片づく。<em>定時で閉じられる。</em></p></div>
+      </div>
+
+      <div class="persona">
+        <div class="role">サービス管理責任者・児童発達支援管理責任者<span>計画をつくる人</span></div>
+        <div class="now"><span class="k">いま</span><p>期限に気づくのが締切2週間前。前回の計画とモニタリング記録を探すところから始まる。担当者会議の日程が最後まで埋まらない。</p></div>
+        <div class="next"><span class="k">こうなる</span><p>60日前に気づく。前回分が1画面に揃う。会議はテレビ電話で開ける（条文で明記）。<strong>出す前に日付の順序を機械が検算する</strong>ので、指摘される前に自分で気づける。</p></div>
+      </div>
+
+      <div class="persona">
+        <div class="role">生活支援員・世話人<span>ご利用者のいちばん近くにいる人</span></div>
+        <div class="now"><span class="k">いま</span><p>支援の最中は手が空かず、メモが取れない。夕方に思い出して書くので細部が落ちる。急ぐと「支援しました」で終わる。担当者会議では、何を言えばいいのか分からないまま座っている。</p></div>
+        <div class="next"><span class="k">こうなる</span><p>移動中の音声メモが、その日の記録の形になる。<strong>まだ書けていないご利用者を名指ししてくれる。</strong>会議では原案の該当箇所が先に示されるので、<em>意見が出しやすくなる</em>。</p></div>
+      </div>
+
+      <div class="persona">
+        <div class="role">事務・請求担当<span>月初がいちばん重い人</span></div>
+        <div class="now"><span class="k">いま</span><p>エクセルに入った実績を見ながら、国保連のソフトに<strong>もう一度打ち込む</strong>。同じ数字を二度手で書き写すので、ずれが入る余地がある。返戻が出るたびに理由を調べ直す。月初に全部が重なる。</p></div>
+        <div class="next"><span class="k">こうなる</span><p>打ち込む前に検算が済んでいて、<strong>ずれている行と、算定漏れだけが名指しされる</strong>。返戻理由も過去分と並ぶ。<em>「打つ人」から「確かめる人」に変わります。</em>※ 国保連ソフトへの入力と提出は、これまで通り人の手に残します。</p></div>
+      </div>
+
+      <div class="persona">
+        <div class="role">相談支援専門員<span>計画を受け取り、地域につなぐ人</span></div>
+        <div class="now"><span class="k">いま</span><p>事業所から届く個別支援計画の形式がそろっていない。サービス等利用計画のモニタリング期限も、自分の頭とカレンダーで管理している。</p></div>
+        <div class="next"><span class="k">こうなる</span><p>交付のかたちを<strong>法人の中だけで決めてそろえられる</strong>（御法人には出す側と受け取る側の両方があります）。同じ期限の仕組みが、サービス等利用計画にもそのまま使えます。</p></div>
+      </div>
+
+      <div class="persona">
+        <div class="role">ご利用者・ご家族<span>いちばん最後に、いちばん大きく効く</span></div>
+        <div class="now"><span class="k">いま</span><p>面接や会議の日程が、事業所の締切都合で決まりがちになる。職員が夜まで事務に追われている分、日中に話しかけられる余白が減る。</p></div>
+        <div class="next"><span class="k">こうなる</span><p>60日の余裕ができるので、<strong>ご本人のご都合で日程を決められる。</strong>そして職員が定時で帰れるぶん、<em>日中の関わりに使える時間が戻ります。</em></p></div>
+      </div>
+
+    </div>
+
+    <div class="col">
+      <p class="note">御法人が掲げておられる「自分らしく」「地域で」「共に生きる」に、いちばん直接効くのは最後の1枚だと思っています。<strong>職員の夜を短くすることは、ご利用者と過ごす昼を長くすること</strong>だからです。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack-lg">
+    <div class="col stack">
+      <h2><span class="n">7つの業務</span>夜に残っているものを、1つずつ</h2>
+      <p class="lead">左が、いま夜にやっていること。真ん中が、AIに肩代わりさせること。<strong>右は、これからも人が必ずやることです。ここは減らしません。</strong></p>
+    </div>
+
+    <div class="jobs">
+
+      <div class="job">
+        <div class="job-head">個別支援計画</div>
+        <div class="job-body">
+          <div class="cellrow b">
+            <span class="k">いま、夜にやっていること</span>
+            <p>期限を思い出すのが締切2週間前。前回の計画・モニタリング記録・担当者の所見を探し集め、白紙から書き始める。前回どう書いたか思い出せない。</p>
+          </div>
+          <div class="cellrow">
+            <span class="k">AIが肩代わりすること</span>
+            <p>同意日から逆算した期限を、60日前・30日前・14日前に一覧で出す。前回分を1画面に揃える。面接メモを入れると、省令の必須項目に振り分けた下書きが出て、<strong>空欄だけが赤く残る</strong>。</p>
+          </div>
+          <div class="cellrow h">
+            <span class="k">人が必ずやること</span>
+            <p>ご利用者との面接。アセスメントとモニタリングへの同席。説明と同意。<strong>達成／未達の判断と、支援方針の決定。</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-head">会議録</div>
+        <div class="job-body">
+          <div class="cellrow b">
+            <span class="k">いま、夜にやっていること</span>
+            <p>会議中は司会をしているのでメモが取れない。夜に思い出しながら清書する。誰が何を言ったか曖昧になり、結局「意見交換を行った」の一行で終わる。</p>
+          </div>
+          <div class="cellrow">
+            <span class="k">AIが肩代わりすること</span>
+            <p>録音から、決定事項・発言者・宿題（誰がいつまでに）を型どおりに起こす。個別支援計画の担当者会議は、<strong>開催日／参加者と職種／誰がどの項目に何を言ったか／修正の有無</strong>の4項目で固定する。</p>
+          </div>
+          <div class="cellrow h">
+            <span class="k">人が必ずやること</span>
+            <p>会議をひらくこと。司会。<strong>決めること。</strong>記録を確認して確定すること。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-head">シフト作成<span>（1人動くと全部崩れる工程）</span></div>
+        <div class="job-body">
+          <div class="cellrow b">
+            <span class="k">いま、夜にやっていること</span>
+            <p>希望休・資格要件・夜勤明け・常勤換算・行事を全部頭に入れて、エクセルで組む。<strong>1人ぶん動かすと、そのあと全部が崩れる。</strong>急な欠勤の穴埋めは電話で探す。組み終わるのは、たいてい夜。</p>
+          </div>
+          <div class="cellrow">
+            <span class="k">AIが肩代わりすること</span>
+            <p>必要人数・資格・希望休・連続勤務の上限を条件として渡すと、候補を出す。そして<strong>変更が入ったとき、どこに影響が出るかを即座に返す</strong>。人員配置が足りているかも、その場で検算する。</p>
+          </div>
+          <div class="cellrow h">
+            <span class="k">人が必ずやること</span>
+            <p><strong>最終決定。誰と誰を組ませるかという、相性と育成の判断。</strong>本人への説明。——ここはAIには絶対にできません。シフトは表の形をしていますが、中身は人間関係だからです。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-head">メールのやり取り</div>
+        <div class="job-body">
+          <div class="cellrow b">
+            <span class="k">いま、夜にやっていること</span>
+            <p>同じ趣旨の文面を毎回ゼロから書く。失礼がないよう丁寧に書こうとして、1通に15分かかる。日中は開く時間がないので、夜にまとめて返す。</p>
+          </div>
+          <div class="cellrow">
+            <span class="k">AIが肩代わりすること</span>
+            <p>用件を一行入れると、法人の言い回しで下書きが出る。長いやり取りは要点と「返事が必要な箇所」を先に出す。よく使う文面は型として貯める。</p>
+          </div>
+          <div class="cellrow h">
+            <span class="k">人が必ずやること</span>
+            <p>宛先と内容の最終確認。<strong>送信ボタンを押すこと。</strong>込み入った話を、電話や対面に切り替える判断。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-head">日々の記録</div>
+        <div class="job-body">
+          <div class="cellrow b">
+            <span class="k">いま、夜にやっていること</span>
+            <p>支援の最中は手が空かないのでメモが取れない。夕方に思い出して書くため、細部が落ちる。急ぐと「支援しました」で終わり、<strong>具体的な支援内容として不十分</strong>と指摘される形になる。</p>
+          </div>
+          <div class="cellrow">
+            <span class="k">AIが肩代わりすること</span>
+            <p>移動中などの音声の走り書きを、その日の記録の形に整える。<strong>まだ記録が書かれていないご利用者を名指し</strong>する。「支援しました」で止まっている記録を見つけて指摘する。</p>
+          </div>
+          <div class="cellrow h">
+            <span class="k">人が必ずやること</span>
+            <p>その日に何が起きたかという<strong>事実そのもの。</strong>ご利用者本人の確認。書くと決める判断。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-head">実績入力<span>（同じ数字を2回打っている工程）</span></div>
+        <div class="job-body">
+          <div class="cellrow b">
+            <span class="k">いま、夜にやっていること</span>
+            <p>日々のデータを見ながらエクセルに打ち込む。それを事務員さんが国保連のソフトに<strong>もう一度打ち込む</strong>。同じ数字が二度、手で書き写される。月初に全部が重なる。</p>
+          </div>
+          <div class="cellrow">
+            <span class="k">AIが肩代わりすること</span>
+            <p>日々の記録から<strong>エクセルの列がそのまま埋まる形</strong>にする。そして国保連のソフトへ入れる前に検算し、日数の不整合や<strong>算定できるのに漏れている行</strong>を名指しする。</p>
+          </div>
+          <div class="cellrow h">
+            <span class="k">人が必ずやること</span>
+            <p>実績の事実確認。ご利用者本人の確認。<strong>国保連ソフトへの入力と伝送。</strong>ここは人の手のままにします。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="job-head">請求・返戻</div>
+        <div class="job-body">
+          <div class="cellrow b">
+            <span class="k">いま、夜にやっていること</span>
+            <p>実績記録と請求内容を目で突き合わせ、ずれを探す。返戻が出るたびに理由を調べ直す。人数が多いほど、確認そのものが長時間になる。</p>
+          </div>
+          <div class="cellrow">
+            <span class="k">AIが肩代わりすること</span>
+            <p><strong>請求そのものは置き換えません。</strong>AIは検算役に徹します——<strong>ずれている行だけを名指し</strong>し、返戻理由を過去分と並べて整理します。</p>
+          </div>
+          <div class="cellrow h">
+            <span class="k">人が必ずやること</span>
+            <p>金額の確定。国保連への提出。<strong>返戻への対応判断。</strong>お金が動く操作は、すべて人の手に残します。</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col">
+      <p class="note">削減できる時間は、御法人の実際の流れを見るまでお約束しません。<strong>「◯時間減ります」と最初に言う相手を、私は信用しないほうがいいと思っています。</strong>いまお約束できるのは、上の真ん中の列が「夜にやらなくてよくなる」ことです。時間の数字は、訪問して実測してからお出しします。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack-lg">
+    <div class="col stack">
+      <h2><span class="n">いちばん重い一手</span>同じ数字が、3回書かれています</h2>
+      <p class="lead">日々のデータをエクセルに打ち込み、それを事務員さんが国保連のソフトに入れておられるとうかがいました。<strong>ここが7つのうちで、いちばん人手のかかっている場所</strong>だと思います。</p>
+    </div>
+
+    <div class="figs">
+      <div class="fig"><div class="v">3<span>回</span></div><div class="k">いま、同じ数字が書かれる回数（日々の記録 → エクセル → 国保連ソフト）</div></div>
+      <div class="fig"><div class="v">2<span>回</span></div><div class="k">そのうち、すでにある数字を見ながらの「打ち直し」</div></div>
+      <div class="fig"><div class="v">0<span>回</span></div><div class="k">これから、人が打ち直す回数</div></div>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>工程</th><th>いま</th><th>これから</th></tr></thead>
+        <tbody>
+          <tr><td><strong>① 支援の現場</strong></td><td>手が空かず、あとで思い出して書く</td><td>音声の走り書きが、その日の記録の形になる</td></tr>
+          <tr><td><strong>② 手元の記録</strong></td><td>紙・ノート・各自の書式</td><td>記録が、そのままエクセルの列に対応する形で残る</td></tr>
+          <tr><td><strong>③ エクセル</strong></td><td>記録を見ながら<strong>打ち直す</strong></td><td>記録から埋まる。人は<strong>確かめるだけ</strong></td></tr>
+          <tr><td><strong>④ 国保連ソフト</strong></td><td>エクセルを見ながら、事務員さんが<strong>また打ち直す</strong></td><td>入力の前に検算。日数のズレと算定漏れを名指し</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col stack">
+      <h3>先に見るのは「AIで自動化できるか」ではありません</h3>
+      <p>まず見るのは<em>そもそも2回打つ必要があるか</em>です。転記が1回減るだけで、ミスの入り口が1つ消えます。AIを足す前に、これを確かめます。</p>
+      <p>そして、実績入力の正確さは<strong>そのまま報酬に直結します</strong>。たとえば送迎や欠席時の対応のように、条件を満たしているのに算定されないまま月が締まると、それは誰にも気づかれない減収になります。検算役のAIは、返戻を減らすだけでなく、<strong>この「気づかれない取りこぼし」も見ます。</strong></p>
+      <p class="note">※ 国保連への請求ソフトは、製品によって取り込み・書き出しのできる範囲が違います。<strong>「連携できます」と申し上げる前に、御法人でお使いのソフトの実物を画面で見せていただきます。</strong>できないと分かったら、その手前までで組み直します。</p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap col stack-lg">
+    <div class="stack">
+      <h2><span class="n">紙・押印・対面について</span>変えていいと、制度のほうが先に言っています</h2>
+      <p class="lead">長く続いている手順は、たいてい理由があって始まっています。<strong>当時のやり方を否定したいのではありません。私自身、そのやり方で回していました。</strong>ただ、根拠のほうがすでに変わっているものがあります。</p>
+
+      <ul class="line">
+        <li><strong>書面の記録は、電磁的記録に代えられます。</strong>交付・説明・同意も、相手方の承諾を得たうえで電磁的方法で行えます（指定障害福祉サービス基準 第224条）</li>
+        <li><strong>担当者会議は、テレビ電話装置等を使って開けます。</strong>これは通知ではなく、条文そのものに書かれています（同 第58条第6項）</li>
+      </ul>
+
+      <p>つまり「紙に印刷して回覧し、押印をもらい、全員が同じ部屋に集まる」——この3つは、<em>制度上はもう必須ではありません</em>。変えるのに新しい許可は要らず、必要なのは法人の中での合意だけです。</p>
+      <p>そして<strong>会議のために全員の予定を合わせる</strong>という一点が、実は計画更新がいつも締切ぎりぎりになる最大の原因です。ここが外れると、夜の作業が大きく減ります。</p>
+      <small>※ この2点は、そちらでも検算できるよう最後に原文URLを載せています。</small>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack-lg">
+    <div class="col stack">
+      <h2><span class="n">法定の期限がある1つ</span>個別支援計画だけは、遅れると報酬が下がります</h2>
+      <p class="lead">7つのうち個別支援計画だけは、期限が法令で決まっていて、遅れると<strong>その事業所の全利用者</strong>の基本報酬が下がります。ですので最初に手をつける先として、いちばん向いています。</p>
+    </div>
+
+    <div class="col stack">
+      <p>そして指摘されるのは、計画の書きぶりではありません。<strong>順序と、その証跡</strong>です。</p>
+    </div>
+
+    <div class="grid g2" style="max-width:var(--w-wide);margin:0 auto;">
+      <div class="card">
+        <h3>減算の重さ</h3>
+        <ul class="plain">
+          <li>未作成月から3か月未満 … <em>30％減算</em></li>
+          <li>連続3か月以上 … <em>50％減算</em></li>
+        </ul>
+        <small>出典：岡崎市「個別支援計画未作成減算について」（2026年8月24日 確認）</small>
+      </div>
+      <div class="card">
+        <h3>実際に指摘されている5つ</h3>
+        <ul class="plain">
+          <li>会議の記録が確認できない</li>
+          <li>サビ管・児発管が<strong>アセスメントやモニタリングに同席していない</strong></li>
+          <li>会議に<strong>直接支援を行う担当者が参加していない</strong></li>
+          <li>同意を得ない状態でサービスを提供している</li>
+          <li>アセスメントより<strong>先に</strong>原案を作っている</li>
+        </ul>
+        <small>出典：同上。運営指導での実例として列挙されています</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap col stack-lg">
+    <div class="stack">
+      <h2><span class="n">締切との距離</span>作業は減りません。位置が前に動きます</h2>
+      <p class="lead">同じ5つの工程を、締切前の2週間に押し込むのか、60日かけて置いていくのか。<strong>下の2本は、どちらも仕事量は同じです。</strong></p>
+    </div>
+
+    <div class="tl">
+      <div class="tl-scale"><span>60日前</span><span>30日前</span><span>締切</span></div>
+
+      <div class="tl-row now">
+        <div class="tl-name">BEFORE</div>
+        <div class="tl-track">
+          <span class="tl-flag" style="left:77%;">気づく</span>
+          <span class="tl-dot" style="left:77%;"></span>
+          <span class="tl-dot" style="left:82%;"></span>
+          <span class="tl-dot" style="left:87%;"></span>
+          <span class="tl-dot" style="left:92%;"></span>
+          <span class="tl-dot" style="left:97%;"></span>
+          <span class="tl-deadline"></span>
+        </div>
+      </div>
+
+      <div class="tl-row next">
+        <div class="tl-name">AFTER</div>
+        <div class="tl-track">
+          <span class="tl-flag" style="left:8%;">気づく</span>
+          <span class="tl-dot" style="left:8%;"></span>
+          <span class="tl-dot" style="left:30%;"></span>
+          <span class="tl-dot" style="left:50%;"></span>
+          <span class="tl-dot" style="left:68%;"></span>
+          <span class="tl-dot" style="left:85%;"></span>
+          <span class="tl-deadline"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <p>点は左から、モニタリング面接／原案作成／担当者会議／説明と同意／交付です。<em>減らしているのは仕事ではなく、締切との距離</em>です。</p>
+      <p>締切2週間前に気づく仕事は「追われる仕事」ですが、60日前に気づく仕事は<strong>「段取りする仕事」</strong>です。追われる仕事は夜に来ますが、段取りする仕事は日中に収まります。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack-lg">
+    <div class="col stack">
+      <h2><span class="n">御法人の規模</span>この夜の作業が、年に何回来るか</h2>
+      <p class="lead">ご訪問前ですので、公式サイトで公表されている定員だけで数えました。<strong>推測は入れていません。</strong></p>
+    </div>
+
+    <div class="figs">
+      <div class="fig"><div class="v">124<span>名</span></div><div class="k">公表定員から確認できる、個別支援計画の対象者数</div></div>
+      <div class="fig"><div class="v">248<span>回</span></div><div class="k">年間の更新サイクル（6か月に1回以上 × 124名）</div></div>
+      <div class="fig"><div class="v">1,240<span>工程</span></div><div class="k">年間の実務工程（1サイクル＝面接／原案／会議／同意／交付 の5工程）</div></div>
+    </div>
+
+    <div class="col">
+      <p class="note">※ 共同生活援助は法人概要に「計9ヵ所」と記載があり、定員が公開されているのは1ヵ所のみです。<strong>実際の対象人数は、この数字を上回ります。</strong>訪問時に実数で引き直します。日々の記録・請求・メールは、これとは別に毎日・毎月来ます。</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <caption>出典：門真共生福祉会 公式サイト「事業所一覧」「法人概要」（2026年8月24日 確認）</caption>
+        <thead><tr><th>事業所</th><th>サービス</th><th>定員</th><th>計画をつくる人</th><th>周期</th></tr></thead>
+        <tbody>
+          <tr><td>ジェイ・エス ステージ</td><td>生活介護</td><td class="num">40名</td><td>サービス管理責任者</td><td class="num">6か月</td></tr>
+          <tr><td>第２ジェイ・エス ステージ</td><td>生活介護</td><td class="num">40名</td><td>サービス管理責任者</td><td class="num">6か月</td></tr>
+          <tr><td>ジェイ・エス ステージ B</td><td>就労継続支援B型</td><td class="num">20名</td><td>サービス管理責任者</td><td class="num">6か月</td></tr>
+          <tr><td>エリアサポート ジェイ・エス</td><td>共同生活援助</td><td class="num">男女7名ずつ</td><td>サービス管理責任者</td><td class="num">6か月</td></tr>
+          <tr><td>ジェイ・エス ステージ ジュニア</td><td>放課後等デイサービス</td><td class="num">10名</td><td>児童発達支援管理責任者</td><td class="num">6か月</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col stack">
+      <h3>1事業所で通れば、そのまま横に広がります</h3>
+      <p>御法人は16種類の事業を運営されています。<strong>居宅介護・移動支援・行動援護・重度訪問介護・同行援護</strong>ではサービス提供責任者が居宅介護計画等を、<strong>相談支援センター ジェイ・エス</strong>では相談支援専門員がサービス等利用計画とモニタリングを回しておられます。制度は別ですが、<em>期限・会議・同意・交付・記録・請求という骨格は同じ</em>です。</p>
+      <p>さらに令和6年度の改定で、個別支援計画を<strong>相談支援事業者へ交付すること</strong>が義務になりました。御法人には交付する側と受け取る側が<em>どちらも法人内にあります</em>。他法人では合意に何か月もかかることが、御法人では会議1回で決まります。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap col stack-lg">
+    <div class="stack">
+      <h2><span class="n">進め方</span>夜が短くなる順に並べています</h2>
+      <p class="lead">文章を書く速さから上げたくなりますが、順序は逆です。<strong>書く速さを上げても、期限に気づくのが遅ければ、結局まとめて夜に来ます。</strong></p>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <div class="when">初回90分・オンライン可</div>
+        <h3>夜に何が残っているかをうかがう</h3>
+        <p>管理者の方が定時後に開いているファイルを、そのまま画面で見せていただきます。<strong>実績のエクセル・シフト表・国保連の請求ソフト</strong>の3つは、できれば実物を拝見したいです。7つのうちどれが一番重いかを、その場で決めます。</p>
+        <p class="gain"><b>この時点で変わること：</b>夜に残っている作業が、名前のついたリストになります。</p>
+      </li>
+      <li>
+        <div class="when">1〜2週間</div>
+        <h3>期限の一覧を1枚だけ作る</h3>
+        <p>対象者の同意日を1枚の表に入れて終わりです。氏名も障害特性も持たないので、<strong>個人情報を外に出さずに始められます</strong>。</p>
+        <p class="gain"><b>この時点で変わること：</b>期限に気づくのが、2週間前から60日前になります。</p>
+      </li>
+      <li>
+        <div class="when">2〜4週間</div>
+        <h3>いちばん重い1つを、実際に肩代わりさせる</h3>
+        <p>会議録か日々の記録か、そちらで決めていただいた1つを実装し、使い方の説明までやります。</p>
+        <p class="gain"><b>この時点で変わること：</b>その業務が、夜から日中へ移ります。</p>
+      </li>
+      <li>
+        <div class="when">月1回〜</div>
+        <h3>残り、そして他の事業所へ</h3>
+        <p>1つ通ると、職員のみなさまが次を自分で選べるようになります。そこからは横展開です。</p>
+        <p class="gain"><b>この時点で変わること：</b>私がいなくても増やせる状態になります。</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap col stack-lg">
+    <div class="stack">
+      <h2><span class="n">お約束</span>AIに渡さないもの</h2>
+      <p class="lead">御法人のロゴマークは、紙飛行機をそっと空へ送り出す手を表していると、公式サイトに書かれています。紙飛行機はご利用者、手は職員のみなさま。<strong>私がご提案するAIは、紙飛行機に触れません。</strong></p>
+      <ul class="line">
+        <li><strong>ご利用者との面接そのもの</strong>（省令上の義務。代行も同席もしません）</li>
+        <li><strong>アセスメント・モニタリングへのサビ管の同席</strong>（不同席は現に指摘事例です）</li>
+        <li><strong>説明と同意をいただく場</strong></li>
+        <li><strong>達成／未達の判断と、支援方針の決定</strong></li>
+        <li><strong>お金が動く操作</strong>（請求の確定、国保連ソフトへの入力と提出。AIは検算役までです）</li>
+        <li><strong>シフトの最終決定</strong>（誰と誰を組ませるかという相性と育成の判断）</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>個人情報の扱いについて</h3>
+      <p>個別支援計画も日々の記録も、要配慮個人情報そのものです。着手前に、①御法人の個人情報保護規程と利用契約の同意範囲に外部サービスへの入力が収まるか、②使うAIが<strong>入力データを学習に使わない契約形態か</strong>——この2点をご一緒に確認します。</p>
+      <p>それが固まるまでは<strong>期限の一覧と、出す前の検算だけ</strong>を動かします。これらは利用者IDと日付しか扱わないため、個人情報を一切外に出さずに始められます。<em>これが、進め方をこの順番にしている本当の理由です。</em></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack-lg">
+    <div class="col stack">
+      <h2><span class="n">料金</span>ご提案の目安</h2>
+      <p class="lead">まず1事業所・1業務から始めていただく想定です。全事業所への同時展開はおすすめしません。</p>
+    </div>
+
+    <div class="scroll">
+      <table class="price">
+        <thead><tr><th>内容</th><th>含まれるもの</th><th>料金（税込）</th></tr></thead>
+        <tbody>
+          <tr><td><strong>現場AI活用相談</strong><br><small>90分・オンライン可</small></td><td>夜に残っている作業の棚卸しと、着手する順番の決定</td><td>15,000円</td></tr>
+          <tr><td><strong>業務棚卸しパッケージ</strong><br><small>1事業所</small></td><td>現場ヒアリング＋優先順位表＋職員向け説明文のたたき台</td><td>50,000円〜</td></tr>
+          <tr><td><strong>スモールスタート導入</strong><br><small>1業務</small></td><td>7つのうち1つを実装し、使い方の説明まで</td><td>30,000円〜</td></tr>
+          <tr><td><strong>職員向けAI研修</strong></td><td>回数・人数・実施形態に応じて設計します</td><td>別途お見積り</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <p class="note">御法人は行動援護従業者養成研修をご自身で運営しておられるので、研修の設計・記録・出席管理の作法はすでにお持ちだと拝察します。職員向けAI研修は<strong>人材開発支援助成金の対象となる場合があります</strong>。ただし制度ごとに要件が異なり、私は<strong>申請の代行も、採択の保証もいたしません</strong>。要件の確認先と必要書類の整理までをお手伝いし、申請主体は法人さまとなります。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap col stack-lg">
+    <div class="stack">
+      <h2><span class="n">確認のお願い</span>この資料の制度の話は、そちらで検算できます</h2>
+      <p class="lead">制度の話は、書き写した時点でずれます。ですので<strong>出典の原文URLと、私が確認した日</strong>をすべて載せました。下の文をそのまま御法人のAIに貼っていただければ、ご自身で検算できます。</p>
+    </div>
+
+    <div class="prompt">次のURLの原文を読んで、下の4点が正しいか確認してください。誤りがあれば、どこがどう違うかを原文の該当箇所とともに教えてください。
+
+https://laws.e-gov.go.jp/law/418M60000100171
+
+1. 第58条第4項は、アセスメントを利用者に面接して行うことを求めているか
+2. 第58条第6項は、担当者会議にテレビ電話装置等を活用できると定めているか
+3. 第58条第9項の見直し頻度は「少なくとも6月に1回以上」か
+4. 第224条は、書面に代えて電磁的記録によることや、相手方の承諾を得て電磁的方法で交付・説明・同意を行うことを認めているか</div>
+
+    <div class="stack">
+      <h3>出典一覧（すべて2026年8月24日 確認）</h3>
+      <ul class="src plain">
+        <li>指定障害福祉サービス基準（平成18年厚生労働省令第171号）第58条・第224条ほか — <a href="https://laws.e-gov.go.jp/law/418M60000100171">e-Gov法令検索</a></li>
+        <li>個別支援計画未作成減算について（減算率・運営指導での指摘事例） — <a href="https://www.city.okazaki.lg.jp/_res/projects/default_project/_page_/001/014/809/shidoukansa.pdf">岡崎市</a></li>
+        <li>第1回 個別支援計画の作成（作成サイクル、サービス提供記録の書き方） — <a href="https://www.city.kobe.lg.jp/documents/52815/1kai.pdf">神戸市</a></li>
+        <li>令和6年度障害福祉サービス等報酬改定における主な改定内容 — <a href="https://www.mhlw.go.jp/content/12201000/001217865.pdf">厚生労働省</a></li>
+        <li>障害福祉サービスの利用等にあたっての意思決定支援ガイドライン — <a href="https://www.mhlw.go.jp/file/06-Seisakujouhou-12200000-Shakaiengokyokushougaihokenfukushibu/0000159854.pdf">厚生労働省</a></li>
+        <li>令和8年度障害福祉サービス等報酬改定（就労継続支援B型の基本報酬見直しを含む臨時の改定が予定されています。適用内容は必ず公式ページでご確認ください） — <a href="https://www.cfa.go.jp/policies/shougaijishien/shisaku/r8hoshukaitei">こども家庭庁</a></li>
+        <li>事業所・定員・法人概要・ブランド・研修のご案内 — <a href="http://www.kadomakyousei.jp/">社会福祉法人 門真共生福祉会 公式サイト</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap col stack">
+    <p class="eyebrow">Next step</p>
+    <p class="thesis">まずは90分、定時のあとに開いているファイルを見せてください。</p>
+    <p>資料をご用意いただく必要はありません。いつも夜に開いているものを、そのまま画面で見せていただくのが一番早いです。1事業所ぶんで構いません。オンラインでも、桑才新町へうかがう形でも承ります。<strong>その場で、御法人の中身に置き換えたBefore / Afterをお作りします。</strong></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap col stack">
+    <div class="who">おけもんカンパニー</div>
+    <small>福祉・介護の現場16年（うち障害福祉グループホーム管理者12年）／非エンジニア向けAI勉強会 通算40回以上・勉強会/交流会 通算100回以上 主催／CliftonStrengths（旧ストレングスファインダー）認定コーチ</small>
+    <small>本書は 社会福祉法人 門真共生福祉会 さま向けに作成したご提案書です（2026年8月24日）。記載の制度内容は同日時点で公表されている原文にもとづきます。料金は内容に応じて事前にお見積りいたします。</small>
+  </div>
+</footer>
+</body>
+</html>
