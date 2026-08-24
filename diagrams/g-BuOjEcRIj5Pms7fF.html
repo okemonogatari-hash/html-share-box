@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="福命会様向け。パスワードを別送せずに資料を共有する方法と、AIエージェントを組み合わせた運用案。">
+  <title>資料共有の選び方とAI活用｜福命会様</title>
+  <style>
+    :root {
+      --ink: #182230;
+      --muted: #5f6c7b;
+      --line: #d8e0e8;
+      --blue: #1459a6;
+      --blue-soft: #edf5ff;
+      --green: #176b4c;
+      --green-soft: #eef9f3;
+      --amber: #7a5600;
+      --amber-soft: #fff8e6;
+      --paper: #ffffff;
+      --page: #f4f6f8;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      font-family: "BIZ UDGothic", "Yu Gothic", "Hiragino Sans", Meiryo, sans-serif;
+      line-height: 1.8;
+    }
+
+    main {
+      width: min(920px, calc(100% - 32px));
+      margin: 32px auto;
+      padding: 56px clamp(24px, 6vw, 72px) 64px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+    }
+
+    header {
+      padding-bottom: 28px;
+      border-bottom: 3px solid var(--blue);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    h1 {
+      margin: 0;
+      color: #173f67;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.3;
+      letter-spacing: -.03em;
+    }
+
+    .subtitle {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    section { margin-top: 48px; }
+
+    h2 {
+      margin: 0 0 14px;
+      color: #173f67;
+      font-size: 1.55rem;
+      line-height: 1.45;
+    }
+
+    h3 {
+      margin: 30px 0 8px;
+      color: var(--blue);
+      font-size: 1.13rem;
+    }
+
+    p { margin: 0 0 14px; }
+
+    .lead {
+      margin-top: 28px;
+      font-size: 1.08rem;
+    }
+
+    .note {
+      margin: 24px 0 0;
+      padding: 18px 20px;
+      border-left: 5px solid var(--green);
+      background: var(--green-soft);
+    }
+
+    .note strong,
+    .warning strong { display: block; margin-bottom: 4px; }
+
+    .warning {
+      margin: 24px 0 0;
+      padding: 18px 20px;
+      border-left: 5px solid #b78000;
+      background: var(--amber-soft);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 22px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      font-size: .92rem;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #173f67;
+      background: var(--blue-soft);
+      font-weight: 700;
+    }
+
+    ol,
+    ul { margin: 12px 0 0; padding-left: 1.4em; }
+    li { margin: 8px 0; padding-left: .2em; }
+
+    .flow {
+      margin: 22px 0 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .flow li {
+      position: relative;
+      margin: 0;
+      padding: 0 0 22px 48px;
+    }
+
+    .flow li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 1px;
+      display: grid;
+      place-items: center;
+      width: 31px;
+      height: 31px;
+      color: #fff;
+      background: var(--blue);
+      border-radius: 50%;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .flow li:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 34px;
+      bottom: 2px;
+      width: 1px;
+      background: var(--line);
+    }
+
+    .flow strong { display: block; color: #173f67; }
+
+    .tool-pattern {
+      padding: 22px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .tool-pattern:last-of-type { border-bottom: 1px solid var(--line); }
+
+    .tool-pattern h3 { margin-top: 0; }
+
+    .tool-name {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: .92rem;
+      font-weight: 700;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checklist li {
+      position: relative;
+      margin: 0;
+      padding: 11px 12px 11px 42px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .checklist li::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 15px;
+      width: 17px;
+      height: 17px;
+      border: 2px solid var(--blue);
+    }
+
+    .sources {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .sources a { color: var(--blue); overflow-wrap: anywhere; }
+
+    @media (max-width: 640px) {
+      main {
+        width: 100%;
+        margin: 0;
+        padding: 36px 20px 48px;
+        border: 0;
+      }
+
+      section { margin-top: 38px; }
+      .meta { display: block; }
+      .meta span { display: block; margin-top: 4px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      main { width: 100%; margin: 0; border: 0; padding: 18mm; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">福命会様｜9月7日 導入オリエン補足資料</p>
+      <h1>パスワードを渡さずに<br>資料を共有するには</h1>
+      <p class="subtitle">Dropbox・Microsoft 365・Google Workspaceの選び方と、AIを入れる場所</p>
+      <div class="meta">
+        <span>対象：医療法人 福命会 健康管理支援室 御中</span>
+        <span>確認日：2026年8月24日</span>
+        <span>オリエン：9月7日 12:30〜14:30</span>
+      </div>
+    </header>
+
+    <p class="lead">毎回パスワードを別のメールやチャットで送るのは、やっぱり手間です。しかも、送り間違いの心配まで増えます。仕組みを選べば、この作業はかなり減らせます。</p>
+
+    <div class="note">
+      <strong>福命会様で最初に試す方法</strong>
+      今あるDropboxを会社ファイルの正本として残し、継続する取引先は共有フォルダへメール招待します。Dropbox Transferは、完成資料を一度だけ渡す場面に残す。この分け方なら、大きな移行をせずに始められます。
+    </div>
+
+    <section>
+      <h2>Transferのパスワードは必須ではありません</h2>
+      <p>パスワードを付ければ、相手へ別の方法で知らせる作業が残ります。付けなければ受取は楽ですが、リンクを転送された時の防御は弱くなります。</p>
+      <p>相手をきちんと特定したいなら、リンク用パスワードより、メール招待やメール確認コードを使う方が分かりやすいです。</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>方法</th>
+              <th>相手の操作</th>
+              <th>こちらからパスワードを伝えるか</th>
+              <th>向いている場面</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dropbox Transfer</td>
+              <td>リンクから受取。アカウント不要</td>
+              <td>任意。設定した時だけ別送</td>
+              <td>完成資料を一度だけ渡す</td>
+            </tr>
+            <tr>
+              <td>Dropbox共有フォルダ</td>
+              <td>招待メールから参加し、Dropboxで本人確認</td>
+              <td>資料を置くたびには不要</td>
+              <td>同じ取引先と継続して使う</td>
+            </tr>
+            <tr>
+              <td>SharePoint／OneDrive</td>
+              <td>Microsoftが相手のメールへ確認コードを送る</td>
+              <td>こちらからは伝えない</td>
+              <td>相手を限定した社外共有</td>
+            </tr>
+            <tr>
+              <td>Google Drive訪問者共有</td>
+              <td>Googleが相手のメールへPINを送る</td>
+              <td>こちらからは伝えない</td>
+              <td>Googleアカウントがない相手との共有</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warning">
+        <strong>個人情報・健康情報を扱う時</strong>
+        リンクだけで見られる方法は避けます。相手の本人確認、閲覧権限、期限、案件終了時に誰が解除するかまで決めてから共有します。
+      </div>
+    </section>
+
+    <section>
+      <h2>福命会様では、取引先別の「共通の箱」から</h2>
+      <p>新しいサービスへ一気に移る必要はありません。Dropboxの中に、取引先ごとの共有フォルダを作ります。相手は確認済みの会社メールアドレスで直接招待。見るだけなら閲覧権限、共同作業が必要な人だけ編集可にします。</p>
+      <p>案件が終わったら外部アクセスを解除し、社内の保管場所へ移します。月に一度、誰が入っているかを確認するだけでも、共有しっぱなしを減らせます。</p>
+
+      <h3>Transferを使うのは、完成品を一度だけ渡す時</h3>
+      <p>個人を特定できない集計資料や完成パンフレットなどが候補です。パスワードなしで送るなら、リンクが転送されても問題がない内容かを先に確認します。</p>
+    </section>
+
+    <section>
+      <h2>AIは、共有の前後に入れます</h2>
+      <p>AIに公開範囲を決めさせるのは危険です。人が決めたルールに沿って、送付前の確認と、送ったあとの記録を任せます。</p>
+
+      <ol class="flow">
+        <li><strong>完成ファイルを「送付前」フォルダへ置く</strong>作業途中の版は入れません。</li>
+        <li><strong>AIがファイル名と中身を点検する</strong>宛先、日付、版の違い、個人名の混入を確認します。</li>
+        <li><strong>共有方法を提案する</strong>単発送付、継続共有、本人確認が必要な資料に分けます。</li>
+        <li><strong>送付文とファイル一覧を作る</strong>メールやチャットへ貼れる下書きまで用意します。</li>
+        <li><strong>人が宛先と資料を照合する</strong>権限と期限も確認し、ここで初めて外部共有を許可します。</li>
+        <li><strong>送付履歴を残し、期限後の解除を知らせる</strong>未受領や共有しっぱなしも見つけやすくなります。</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>よくある組み合わせ</h2>
+      <p>AIの名前から選ぶより、今ある契約と、取引先が何を使っているかで決める方が失敗しません。</p>
+
+      <article class="tool-pattern">
+        <h3>Dropboxをそのまま使う</h3>
+        <p class="tool-name">Dropbox ＋ ChatGPT Business ＋ Make／Zapier／n8n</p>
+        <p>移行が少なく、今のファイル正本を保てます。Dropboxの自動フォルダでは、名前変更、PDF変換、分類も可能。AIは整理、送付文、記録を担当します。共有リンクやTransferをどこまで自動で扱えるかは、契約プランと接続方法を実機で確認します。</p>
+      </article>
+
+      <article class="tool-pattern">
+        <h3>Microsoft 365へ寄せる</h3>
+        <p class="tool-name">SharePoint／OneDrive ＋ Power Automate ＋ Copilot Studio</p>
+        <p>メールのワンタイムコードで、社外の相手を本人確認できます。Copilot StudioはSharePointの権限を引き継ぎ、本人が見られない資料を回答に出さない設計が可能です。Microsoft 365をすでに契約している会社と相性がいい方法です。</p>
+      </article>
+
+      <article class="tool-pattern">
+        <h3>Google Workspaceへ寄せる</h3>
+        <p class="tool-name">Google Drive ＋ Gemini ＋ Apps Script</p>
+        <p>Googleアカウントがない相手にも訪問者共有が使えます。確認PINはGoogleから自動送信。GeminiはDrive内の文書やフォルダを探し、要約する作業に向いています。</p>
+      </article>
+
+      <div class="note">
+        <strong>今の提案</strong>
+        福命会様では、Dropboxを残した小さな試運転が先です。Microsoft 365やGoogle Workspaceは、現在の契約状況と相手先の環境を見てから比べます。
+      </div>
+    </section>
+
+    <section>
+      <h2>9月7日に持ち寄るもの</h2>
+      <p>この日は契約を決めきる日ではありません。実際の画面を見て、どの方法なら無理なく続けられるかを確かめます。</p>
+
+      <ul class="checklist">
+        <li>今使っているデータ送信サービスの名称、料金、便利な点、面倒な点</li>
+        <li>Dropboxの契約プランが分かる画面か請求書</li>
+        <li>よく送る取引先が、Dropbox・Microsoft・Googleのどれを使っているか</li>
+        <li>資料の種類が分かるメモ（個人情報や健康情報があるか、集計済みか、一般資料か）</li>
+        <li>単発送付が多いか、同じ相手との継続共有が多いか</li>
+        <li>招待、権限確認、案件終了時の解除を担当する人</li>
+        <li>個人情報を含まないテスト用PDF 1点</li>
+        <li>社外側の見え方を確認できる受取テスト用メールアドレス</li>
+      </ul>
+
+      <div class="note">
+        <strong>この日の着地点</strong>
+        継続相手の共有方法、単発送付の扱い、人が確認する場所。この3つが決まれば、AIを入れても運用が崩れません。
+      </div>
+    </section>
+
+    <footer class="sources">
+      <p>公式確認先（2026年8月24日）</p>
+      <ul>
+        <li><a href="https://help.dropbox.com/share/dropbox-transfer">Dropbox Transfer</a></li>
+        <li><a href="https://help.dropbox.com/share/share-file-or-folder">Dropboxの共有方法</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/entra/external-id/one-time-passcode">Microsoft メールワンタイムコード</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-add-sharepoint">SharePointとCopilot Studio</a></li>
+        <li><a href="https://support.google.com/drive/answer/9195194?hl=ja">Google Drive訪問者共有</a></li>
+        <li><a href="https://workspace.google.com/products/drive/ai/">Gemini in Google Drive</a></li>
+      </ul>
+    </footer>
+  </main>
+</body>
+</html>
