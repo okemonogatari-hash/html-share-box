@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><title>ショート再生数 分析報告</title>
+<style>
+  :root{
+    --paper:#F7F8F6;
+    --panel:#FFFFFF;
+    --panel-line:#E4E1D9;
+    --ink:#23272B;
+    --ink-soft:#4B5157;
+    --ink-faint:#6B7278;
+    --accent:#B0491F;
+    --accent-soft:#8A5A2B;
+    --ok:#2B6B4A;
+    --measure:40em;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{
+    max-width:840px;
+    margin:0 auto;
+    padding:0 20px 64px;
+  }
+  header.hero{
+    padding:40px 20px 28px;
+    border-bottom:1px solid var(--panel-line);
+    margin-bottom:32px;
+  }
+  header.hero .kicker{
+    font-size:.82rem;
+    letter-spacing:.06em;
+    color:var(--ink-faint);
+    margin:0 0 10px;
+  }
+  header.hero h1{
+    font-size:1.55rem;
+    line-height:1.5;
+    margin:0 0 12px;
+    font-weight:700;
+  }
+  header.hero .meta{
+    font-size:.85rem;
+    color:var(--ink-faint);
+    margin:0;
+  }
+  .col{
+    width:100%;
+    max-width:var(--measure);
+    margin-left:auto;
+    margin-right:auto;
+  }
+  section{
+    margin:0 auto 44px;
+    max-width:840px;
+  }
+  section .col{padding:0 0;}
+  h2{
+    font-size:1.18rem;
+    line-height:1.6;
+    margin:0 0 18px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  h2 .num{
+    flex:none;
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--panel);
+    background:var(--accent);
+    border-radius:999px;
+    width:26px;height:26px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+  }
+  h3{
+    font-size:1rem;
+    color:var(--ink-soft);
+    margin:26px 0 10px;
+    font-weight:700;
+  }
+  p{margin:0 0 16px;}
+  .lead{color:var(--ink-soft);}
+  strong{color:var(--ink);font-weight:700;}
+  .accent-num{
+    color:var(--accent);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* サマリーボックス */
+  .summary{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+    padding:22px 22px 6px;
+  }
+  .summary ol{
+    margin:0;
+    padding-left:1.3em;
+  }
+  .summary li{
+    margin-bottom:16px;
+    line-height:1.85;
+  }
+  .summary li b{color:var(--accent-soft);}
+
+  /* 表 */
+  .tablewrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    background:var(--panel);
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:520px;
+    font-size:.92rem;
+  }
+  th,td{
+    text-align:left;
+    padding:10px 12px;
+    border-bottom:1px solid var(--panel-line);
+    white-space:nowrap;
+  }
+  th{
+    color:var(--ink-faint);
+    font-weight:700;
+    font-size:.78rem;
+    letter-spacing:.02em;
+    background:#FAFAF7;
+  }
+  td.num{
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+  tr:last-child td{border-bottom:none;}
+  tr.self td{
+    background:#FBF1EC;
+    font-weight:700;
+  }
+  tr.base td{color:var(--ink-faint);}
+  .tablecap{
+    font-size:.82rem;
+    color:var(--ink-faint);
+    margin:8px 0 0;
+  }
+
+  /* 折れ線ミニグラフ */
+  .trend{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    padding:20px 18px 14px;
+  }
+  .trend-bars{
+    display:flex;
+    align-items:flex-end;
+    gap:14px;
+    height:140px;
+    margin-bottom:10px;
+  }
+  .trend-bars .bar{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+    height:100%;
+  }
+  .trend-bars .bar .fill{
+    width:100%;
+    max-width:44px;
+    background:var(--accent-soft);
+    border-radius:4px 4px 0 0;
+  }
+  .trend-bars .bar.peak .fill{background:var(--accent);}
+  .trend-bars .bar .val{
+    font-size:.8rem;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+    font-variant-numeric:tabular-nums;
+  }
+  .trend-bars .bar .day{
+    font-size:.8rem;
+    color:var(--ink-faint);
+    margin-top:8px;
+  }
+
+  .twocol{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin:18px 0 8px;
+  }
+  @media (max-width:520px){
+    .twocol{grid-template-columns:1fr;}
+  }
+  .miniblock{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    padding:16px 18px;
+  }
+  .miniblock .label{
+    font-size:.78rem;
+    color:var(--ink-faint);
+    margin:0 0 6px;
+  }
+  .miniblock .big{
+    font-size:1.2rem;
+    font-weight:700;
+    color:var(--ink);
+    margin:0;
+  }
+
+  /* 棄却リスト */
+  .rejected{
+    list-style:none;
+    margin:0;
+    padding:0;
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .rejected li{
+    display:flex;
+    gap:10px;
+    padding:13px 16px;
+    border-bottom:1px solid var(--panel-line);
+    font-size:.92rem;
+    line-height:1.7;
+  }
+  .rejected li:last-child{border-bottom:none;}
+  .rejected .mark{
+    flex:none;
+    color:var(--ok);
+    font-weight:700;
+  }
+  .rejected .why{color:var(--ink-faint);font-size:.85rem;display:block;margin-top:2px;}
+
+  /* 2択カード */
+  .choices{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin:16px 0;
+  }
+  .choice{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-left:4px solid var(--accent-soft);
+    border-radius:8px;
+    padding:14px 16px;
+  }
+  .choice .tag{
+    font-size:.8rem;
+    color:var(--accent-soft);
+    font-weight:700;
+    margin:0 0 4px;
+  }
+
+  .callout{
+    background:#F2F5F1;
+    border:1px solid #DCE3D9;
+    border-radius:10px;
+    padding:16px 18px;
+    font-size:.92rem;
+    color:var(--ink-soft);
+  }
+  .callout b{color:var(--ok);}
+
+  footer{
+    max-width:840px;
+    margin:0 auto;
+    padding:0 20px;
+    border-top:1px solid var(--panel-line);
+    padding-top:20px;
+    font-size:.78rem;
+    color:var(--ink-faint);
+    line-height:1.8;
+  }
+
+  small{font-size:12.5px;}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap" style="padding:0;">
+    <p class="kicker">カドッチさんへ ｜ 分析報告</p>
+    <h1>再生数が伸びない理由、ここまで2つに絞れました</h1>
+    <p class="meta">2026年8月25日作成 ／ 実測データ：2026年8月24日 20:47〜22時台</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="col">
+      <h2><span class="num">1</span>結論</h2>
+      <div class="summary">
+        <ol>
+          <li><b>テーマ・尺・型は、競合の伸びている動画と一致しています。</b>「作り方が間違っている」ことを示すデータは今のところありません。ただし中身の最終判定は、下記のインプレッション実数が届いてからになります。</li>
+          <li><b>新作はごく小さいテスト配信で止まり、そこから広がっていません。</b>配信の入口自体は生きていますが、量が伸びる前に頭打ちになっています。</li>
+          <li><b>原因はここまで2つの可能性に絞り込めました。</b>あと1つのデータ（インプレッション実数）が揃えば、どちらかに決着します。8/25以降に届き始めます。</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <h2><span class="num">2</span>いま何が起きているか</h2>
+      <p class="lead">チャンネル全体の1日あたり再生数は、8月16日の <span class="accent-num">8,081</span> をピークに、その後は減り続けています。</p>
+
+      <div class="trend">
+        <div class="trend-bars">
+          <div class="bar"><span class="val">1,969</span><div class="fill" style="height:24%"></div><span class="day">8/11</span></div>
+          <div class="bar peak"><span class="val">8,081</span><div class="fill" style="height:100%"></div><span class="day">8/16</span></div>
+          <div class="bar"><span class="val">1,507</span><div class="fill" style="height:19%"></div><span class="day">8/19</span></div>
+          <div class="bar"><span class="val">404</span><div class="fill" style="height:6%"></div><span class="day">8/20</span></div>
+          <div class="bar"><span class="val">141</span><div class="fill" style="height:3%"></div><span class="day">8/21</span></div>
+        </div>
+        <p class="tablecap">チャンネル日次合計再生数（Analytics API実測・SHORTS比率は全期間94〜99%で安定）</p>
+      </div>
+
+      <p style="margin-top:20px;">この減衰は、実は2つの別々の現象が重なって起きています。分けて見る必要があります。</p>
+
+      <div class="twocol">
+        <div class="miniblock">
+          <p class="label">現象①　初週組の寿命切れ</p>
+          <p class="big" style="font-size:1rem;font-weight:400;line-height:1.7;">8月前半に公開した動画（K0〜K6）が、ショート特有の「公開24〜72時間でピーク→その後は下がる」寿命カーブどおりに落ちてきています。これ自体は動画の寿命であり、想定内の動きです。</p>
+        </div>
+        <div class="miniblock">
+          <p class="label">現象②　新作が広がらない</p>
+          <p class="big" style="font-size:1rem;font-weight:400;line-height:1.7;">初週組の後を継ぐはずの新作（K13以降）が、寿命カーブに乗る前の「ごく小さいテスト配信」で止まっています。ここが今回のいちばんの論点です。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <h2><span class="num">3</span>いちばん強い証拠：同じ日に並べてみる</h2>
+      <p class="lead">8月24日、競合4チャンネルが同じ日に公開した新作7本と、うちの新作K17を、経過時間が短い順ではなく「同じ物差し」で並べました。</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>チャンネル</th><th>公開時刻</th><th>経過時間</th><th class="num">再生数</th></tr>
+          </thead>
+          <tbody>
+            <tr class="base"><td>こころとからだの処方箋</td><td>18:00</td><td>2.8時間</td><td class="num">13,491</td></tr>
+            <tr class="base"><td>シニアの手帖</td><td>18:00</td><td>2.9時間</td><td class="num">1,766</td></tr>
+            <tr class="base"><td>魂の羅針盤</td><td>17:06</td><td>3.8時間</td><td class="num">929</td></tr>
+            <tr class="base"><td>魂の羅針盤</td><td>17:05</td><td>3.8時間</td><td class="num">833</td></tr>
+            <tr class="base"><td>シニアの知恵掲示板</td><td>18:00</td><td>2.9時間</td><td class="num">905</td></tr>
+            <tr class="base"><td>シニアの知恵掲示板</td><td>15:00</td><td>5.9時間</td><td class="num">1,136</td></tr>
+            <tr class="base"><td>シニアの知恵掲示板</td><td>12:00</td><td>8.9時間</td><td class="num">1,445</td></tr>
+            <tr class="self"><td>うちのチャンネル（K17）</td><td>7:00</td><td>13.8時間</td><td class="num">5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tablecap">2026年8月24日 20:47〜20:51実測（yt-dlp・公開面）。K17は他の7本より経過時間が長いのに、再生数は3桁も少ない状態です。</p>
+
+      <p style="margin-top:18px;">この4チャンネルのうち2つは、うちと同じくらい新しいチャンネルです（知恵掲示板は開設24日・羅針盤は23日、うちは13日）。それでも新作は即座に配信されています。<strong>「チャンネルが新しいから」では説明がつきません。</strong></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <h2><span class="num">4</span>配信の入口は生きている（流入内訳の実測）</h2>
+      <p class="lead">「締め出されているのでは」という見立てを検証するため、直近5本のトラフィックソースをYouTube Analytics APIで実測しました。</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>動画</th><th class="num">総再生</th><th class="num">SHORTS経由</th><th class="num">比率</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>K13（8/20公開）</td><td class="num">7</td><td class="num">4</td><td class="num">57.1%</td></tr>
+            <tr><td>K14（8/21公開）</td><td class="num">9</td><td class="num">7</td><td class="num">77.8%</td></tr>
+            <tr><td>K15（8/22公開）</td><td class="num">1</td><td class="num">1</td><td class="num">100%</td></tr>
+            <tr class="base"><td>K5（比較・健全組）</td><td class="num">8,619</td><td class="num">8,510</td><td class="num">98.7%</td></tr>
+            <tr class="base"><td>K6（比較・健全組）</td><td class="num">13,235</td><td class="num">13,070</td><td class="num">98.8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tablecap">2026年8月24日21時台実測（Analytics API・所有者権限）。K16・K17は集計ラグで未反映。</p>
+
+      <div class="callout" style="margin-top:16px;">
+        <b>K13〜K15はSHORTSのフィード経由で流入があります。</b>経路そのものが閉じているわけではありません。<br>
+        違うのは<strong>絶対量</strong>です。同じくらいの経過日数で比べると、健全組の<strong>1000分の1程度</strong>にとどまっています。
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <h2><span class="num">5</span>もう疑わなくていいこと</h2>
+      <p class="lead">これまでの調査で、原因になり得た候補を実測ベースで一つずつ確認してきました。以下はすべて「原因ではない」と確認済みです。</p>
+
+      <ul class="rejected">
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            著作権クレーム
+            <span class="why">動画ごとのクレーム画面を目視確認。申し立てゼロ。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            アップロード時の設定不備
+            <span class="why">公開範囲・審査状況・年齢制限などをAPIで全数確認。異常なし。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            投稿の頻度が足りない
+            <span class="why">うちは1日1.3本ペース。伸びている競合チャンネルも1.1本／日とほぼ同水準。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            投稿の間隔が短すぎる
+            <span class="why">公式ヘルプ・先人の実測データと照らし合わせて根拠が弱いことを確認。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            チャンネルが新設だから
+            <span class="why">同時期に立ち上がった競合2チャンネルは、即座に新作が配信されています。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            チャンネルごと締め出されている
+            <span class="why">SHORTSのフィード比率は全期間94〜99%を維持。経路自体は生きています。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            テーマ・尺・訴求の「選び方」
+            <span class="why">当たっているテーマ・尺は競合と一致していることを個別に確認済みです。※「最初の数十人に見せた時の反応」だけは可能性Aとしてまだ残しています（次の章）。</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <h2><span class="num">6</span>残る2つの可能性と、決着のつけ方</h2>
+      <p class="lead">疑わしいものを削っていった結果、残っているのはこの2つです。</p>
+
+      <div class="choices">
+        <div class="choice">
+          <p class="tag">可能性 A</p>
+          <p style="margin:0;">最初の小さなテスト配信での反応（スワイプ率・視聴維持率など）が、そこから先に広げてもらえる基準に届いていない。</p>
+        </div>
+        <div class="choice">
+          <p class="tag">可能性 B</p>
+          <p style="margin:0;">このチャンネルに割り当てられる新規配信の枠そのものが、8月16日以降絞られている。</p>
+        </div>
+      </div>
+
+      <p>この2つを見分けるには、テスト配信の段階でどれだけ表示されたか（インプレッション数）が必要です。これまで使っていたデータには含まれておらず、8月24日にレポート機能を新しく有効化しました。<strong>初回のデータは8月25日以降に届き始めます。</strong>届き次第、AかBかを数字で判定します。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <h2><span class="num">7</span>次の一手（9/1のMTGまで）</h2>
+      <p class="lead">BGMを新しい音源に差し替え済みのストック4本（K18〜K21）を、8月25日から1日1本ずつ出していきます。</p>
+
+      <div class="callout">
+        <b>K18〜K21を出し切ると、公開本数は21本になります。</b>もともと「20〜30本たまったら一度分析する」という約束と合流するタイミングです。ここまでの実測結果とインプレッション実数をあわせて、9月1日のMTGで今後の戦略を決めましょう。
+      </div>
+
+      <p style="margin-top:18px;">当日は「何を作るか」の前に、「なぜ新作が広がらないか」を数字で確定させるところから話せる状態にしておきます。</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>本資料の数値はYouTube Data API／Analytics API／公開面実測（yt-dlp）のライブデータに基づきます。実測日時は各表に記載のとおりです。</p>
+</footer>
+
+</body>
+</html>
