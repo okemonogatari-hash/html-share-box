@@ -199,7 +199,7 @@
   <header class="wrap">
     <nav class="nav" aria-label="ページ内ナビゲーション">
       <div class="brand"><span class="brand-mark">N</span><span>Notta面談メモ</span></div>
-      <div class="nav-meta">Delivery mock · 2026-08-24</div>
+      <div class="nav-meta">Delivery mock · 2026-08-27</div>
     </nav>
 
     <div class="hero">
@@ -220,7 +220,12 @@
             <div class="status-icon ok">✓</div>
             <div><strong>Nottaの文字起こしから面談メモを作れます</strong><small>Codexが本文を取得し、会社テンプレートの下書きへ整理します</small></div>
           </div>
+          <div class="status-row">
+            <div class="status-icon ok">✓</div>
+            <div><strong>面談フェーズを分けて表示します</strong><small>OI・FF・PC・Nを、到達した段階まで個別にチェックします</small></div>
+          </div>
         </div>
+        <div class="mini-proof"><b>OI ☑　FF ☑　PC ☑　N ☐</b><span>「OI〜PC」とまとめず、4段階を見える形で出力</span></div>
       </aside>
     </div>
   </header>
@@ -257,7 +262,7 @@
               </div>
               <div class="step">
                 <div><strong>この文をCodexへ送る</strong><p>CodexがDownloadsのZIPを探し、自分で展開してセットアップします。</p>
-                  <div class="command"><code id="setupPrompt">ダウンロードフォルダにある irodori-notta-meeting-memo-skill.zip を探し、SHA-256が 4855caf21e0b4753d492d97995fcb6c6ddb25da997e8682b4d286d3b1b25f24a と完全一致することを確認してください。一致しなければ展開せず停止してください。一致したZIPだけを一時フォルダへ展開し、中の START_HERE.md を読み、その指示どおりSkillを安全にセットアップして、Notta CLI・認証・会社テンプレート・過去実例の有無と整合性まで確認してください。あわせて、Salesforceを使っている場合は、設定変更や書き込みをせず、このPCのCodexから利用できる公式MCP・API・CLI・ログイン済みChromeの接続経路を読み取りで診断してください。同名候補が複数なら推測で選ばず、各ファイル名とSHA-256を示して止めてください。私にターミナル操作やZIPの展開は求めず、ソフトウェア導入の許可と公式OAuthでの本人操作だけ、必要な時に案内してください。外部送信・共有はしないでください。</code><button class="copy" data-copy-target="setupPrompt">Codexへの依頼文をコピー</button></div>
+                  <div class="command"><code id="setupPrompt">ダウンロードフォルダにある irodori-notta-meeting-memo-skill.zip を探し、SHA-256が 5639a5f3a92acca9f656a60a071acb4ca1202912b9c1c24783072a6eb6863a72 と完全一致することを確認してください。一致しなければ展開せず停止してください。一致したZIPだけを一時フォルダへ展開し、中の START_HERE.md を読み、その指示どおりSkillを安全にセットアップして、Notta CLI・認証・会社テンプレート・過去実例の有無と整合性まで確認してください。あわせて、Salesforceを使っている場合は、設定変更や書き込みをせず、このPCのCodexから利用できる公式MCP・API・CLI・ログイン済みChromeの接続経路を読み取りで診断してください。同名候補が複数なら推測で選ばず、各ファイル名とSHA-256を示して止めてください。私にターミナル操作やZIPの展開は求めず、ソフトウェア導入の許可と公式OAuthでの本人操作だけ、必要な時に案内してください。外部送信・共有はしないでください。</code><button class="copy" data-copy-target="setupPrompt">Codexへの依頼文をコピー</button></div>
                 </div>
               </div>
               <div class="step">
@@ -287,7 +292,7 @@
         <div class="invoke">
           <div class="prompt-box">
             <p>Codexへ送る文</p>
-            <div class="prompt" id="runPrompt">$irodori-notta-meeting-memo Notta CLI・認証・会社テンプレートの状態を自分で確認し、今日のZoom面談を会社テンプレートの下書きにしてください。利用者へターミナル操作を求めず、必要な本人操作だけ案内してください。外部共有はしないでください。</div>
+            <div class="prompt" id="runPrompt">$irodori-notta-meeting-memo Notta CLI・認証・会社テンプレートの状態を自分で確認し、今日のZoom面談を会社テンプレートの下書きにしてください。商談フェーズはOI・FF・PC・Nを個別に表示してください。利用者へターミナル操作を求めず、必要な本人操作だけ案内してください。外部共有はしないでください。</div>
             <button class="button secondary" data-copy-target="runPrompt">起動文をコピー</button>
           </div>
           <div class="guard-box">
@@ -299,6 +304,7 @@
               <li>複数候補からの推測選択</li>
               <li>メール・チャット送信、共有、公開</li>
               <li>会話にない数字・担当・期限の補完</li>
+              <li>商談フェーズの範囲表記や、根拠のない先の段階へのチェック</li>
             </ul>
           </div>
         </div>
@@ -337,8 +343,8 @@
         <div class="pending">
           <div class="icon">!</div>
           <div>
-            <h3>過去実例は受入に使い、現行テンプレートを確認します</h3>
-            <p>2026年7月に作成した面談メモ2件と、当時の会社テンプレート構造は回収済みです。窪田さん本人限定の非公開パックには実例を入れ、公開GitHubや公開Pagesには載せません。当時の原本は2024年11月版のため、現在使っている空テンプレートと比較し、項目・条件分岐・出力形式を確認してから本番版にします。</p>
+            <h3>フェーズ表示は修正済み。現行テンプレート全体は初回導入時に確認します</h3>
+            <p>面談フェーズは、OI（初回）・FF（財産確認）・PC（提案）・N（契約）を4行で表示する仕様へ修正しました。2026年7月の過去実例2件は受入に使いますが、顧客情報は公開GitHubや公開Pagesへ載せません。残りの項目は、現在使っている空テンプレートと照合して本番版にします。</p>
           </div>
         </div>
       </div>
@@ -347,8 +353,8 @@
 
   <footer>
     <div class="wrap footer-row">
-      <div>Notta面談メモSkill · Draft v0.5.1</div>
-      <div>外部公開・送信・共有は未実施</div>
+      <div>Notta面談メモSkill · Draft v0.6.0</div>
+      <div>導入ガイド公開中 · 顧客データは非掲載</div>
     </div>
   </footer>
 
