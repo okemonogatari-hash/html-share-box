@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>2026/8/28 ゆるっと読書会 vol.6 📚 | おけもんカンパニー</title>
+  <meta name="description" content="2026年8月28日『ゆるっと読書会 vol.6』。ちーちゃん主催・oVice開催。凪良ゆうの作家読みから、確率で考える経営者の話、脳の自由エネルギー原理、水墨画の物語まで、5人が持ち寄った一冊たちの記録。">
+
+  <!-- OGP -->
+  <meta property="og:title" content="2026/8/28 ゆるっと読書会 vol.6 📚 本が、本を連れてきた夜">
+  <meta property="og:description" content="ちーちゃん主催のoVice読書会。5人が持ち寄った一冊たちと、なぜ本を読むのかをめぐる夜のログ。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://okemonogatari-hash.github.io/html-share-box/diagrams/book-club-2026-08-28-tarui.jpg">
+
+  <!-- Fonts（vol.5と同じ組み：Shippori Mincho＋Noto＋Inter） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* ── vol.5正本のトークン（シリーズの顔・そのまま継承） ── */
+      --color-primary: #4A3F5C;
+      --color-primary-dark: #35304A;
+      --color-accent: #C4915E;
+      --color-accent-light: #D4A574;
+      --color-pink: #E4A5AE;
+      --color-blue: #6B8FB5;
+      --color-bg: #FBF6EE;
+      --color-bg-warm: #F5EDE0;
+      --color-text: #2D2738;
+      --color-text-light: #6D6278;
+      --color-border: #E8DDC8;
+      --color-wood: #B8926A;
+      --color-wood-dark: #7A5E42;
+      --color-star: #E6B54A;
+
+      /* ── ここだけ今回の実測で足した1本（実測台帳§8と同じ現象がvol.5自身にもあった） ──
+         白～クリーム地に --color-accent を「文字」として直接使うと比2.58〜2.78で4.5を割る
+         （vol.5本体を8/28に実測して確認：.book-num/.award/.series-date等）。
+         色の系統・温度は変えず、文字として読ませる時だけこの濃い版を使う。 */
+      --color-accent-text: #8A5A2B;
+
+      --shadow-sm: 0 4px 12px rgba(74, 63, 92, 0.06);
+      --shadow-md: 0 10px 30px rgba(74, 63, 92, 0.09);
+      --shadow-book: 0 20px 40px rgba(74, 63, 92, 0.15);
+
+      --font-serif: 'Shippori Mincho', 'Noto Serif JP', serif;
+      --font-sans: 'Noto Sans JP', sans-serif;
+      --font-inter: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.8;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    small { font-size: 12.5px; } /* ブラウザ既定は親の約83%に縮む。日本語12.4px下限を明示で守る */
+    h1, h2, h3, .hero-sub, .book-title { text-wrap: balance; }
+
+    /* ============ HERO（vol.5と同じ光グラデ・同じ骨格） ============ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      padding: 80px 24px 120px;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at top right, rgba(228, 165, 174, 0.25), transparent 60%),
+        radial-gradient(ellipse at bottom left, rgba(107, 143, 181, 0.18), transparent 60%),
+        linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-warm) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .hero-date {
+      font-family: var(--font-inter);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      color: var(--color-accent-text);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 0.8s 0.2s forwards;
+    }
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(34px, 6vw, 62px);
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1.3;
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: slideUp 0.9s 0.4s forwards;
+    }
+    .hero-title .accent {
+      /* 下線は疑似要素(position:relative+::after)ではなくtext-decorationで引く。
+         inline-block+position:relativeは同一行内でもRange.getClientRects()に
+         別行として誤認識させ、折り返し孤児検出を偽陽性にする（2026-08-28実測で発覚）。 */
+      color: var(--color-primary);
+      text-decoration-line: underline;
+      text-decoration-color: var(--color-pink);
+      text-decoration-thickness: 4px;
+      text-underline-offset: 6px;
+      text-decoration-skip-ink: none;
+    }
+    .hero-tagline {
+      font-family: var(--font-serif);
+      font-size: clamp(17px, 2.6vw, 26px);
+      font-weight: 500;
+      margin: 10px 0 20px;
+      color: var(--color-text);
+      opacity: 0;
+      animation: slideUp 0.9s 0.45s forwards;
+    }
+    .hero-sub {
+      font-family: var(--font-serif);
+      font-size: clamp(15px, 2vw, 18px);
+      font-weight: 500;
+      color: var(--color-text-light);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      letter-spacing: 0.04em;
+      line-height: 2;
+      opacity: 0;
+      animation: slideUp 0.9s 0.6s forwards;
+    }
+    .hero-with {
+      display: inline-block;
+      margin-bottom: 28px;
+      padding: 10px 22px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      font-family: var(--font-inter);
+      font-size: 12.5px;
+      letter-spacing: 0.06em;
+      color: var(--color-primary);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      animation: slideUp 0.9s 0.5s forwards;
+    }
+    .hero-stats {
+      display: inline-flex;
+      gap: 32px;
+      padding: 22px 38px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-sm);
+      opacity: 0;
+      animation: slideUp 0.9s 0.8s forwards;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-num {
+      font-family: var(--font-inter);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .hero-stat-num span { font-size: 13px; font-weight: 500; margin-left: 2px; }
+    .hero-stat-label { font-size: 10.5px; color: var(--color-text-light); letter-spacing: 0.12em; }
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px; left: 50%; transform: translateX(-50%);
+      font-family: var(--font-inter);
+      font-size: 12.5px; letter-spacing: 0.3em;
+      color: var(--color-text-light);
+      opacity: 0;
+      animation: fadeIn 1s 1.2s forwards;
+    }
+    .hero-scroll .arrow { display: block; margin-top: 8px; animation: bounce 2s infinite; }
+    .hero-decor { position: absolute; pointer-events: none; opacity: 0.15; }
+    .hero-decor-1 { top: 10%; left: 6%; font-size: 76px; transform: rotate(-15deg); }
+    .hero-decor-2 { bottom: 18%; right: 8%; font-size: 66px; transform: rotate(12deg); }
+
+    /* ============ INTRO ============ */
+    .intro { padding: 100px 24px 60px; max-width: 720px; margin: 0 auto; text-align: center; }
+    .intro-label {
+      font-family: var(--font-inter); font-size: 12.5px; font-weight: 600;
+      letter-spacing: 0.3em; color: var(--color-accent-text); margin-bottom: 16px;
+    }
+    .intro h2 {
+      font-family: var(--font-serif); font-size: clamp(23px, 3.2vw, 30px); font-weight: 700;
+      color: var(--color-primary); margin-bottom: 28px; line-height: 1.55; letter-spacing: 0.03em;
+    }
+    .intro p { font-size: 16px; color: var(--color-text-light); line-height: 2; margin-bottom: 14px; }
+    .intro-quote {
+      margin: 28px auto; max-width: 560px; padding: 20px 24px;
+      background: rgba(255,255,255,0.6); border: 1px solid var(--color-border); border-radius: 12px;
+      font-family: var(--font-serif); font-size: 15.5px; color: var(--color-text); line-height: 1.95;
+    }
+    .intro-quote small { display: block; margin-top: 10px; font-family: var(--font-sans); font-size: 12.5px; color: var(--color-text-light); }
+    .intro-divider { margin: 40px auto 0; width: 60px; height: 2px; background: var(--color-accent); border-radius: 2px; }
+
+    /* ============ 章見出し（CSSカウンター＝今夜の内容の形に合わせた工夫） ============ */
+    main { counter-reset: sec; max-width: 880px; margin: 0 auto; padding: 20px 24px 0; }
+    section.numbered { counter-increment: sec; padding-top: 56px; }
+    .sec-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 18px; }
+    .sec-head::before {
+      content: counter(sec, decimal-leading-zero);
+      font-family: var(--font-inter); font-size: 13px; font-weight: 700;
+      letter-spacing: 0.1em; color: var(--color-accent-text);
+      padding: 3px 9px; border: 1px solid var(--color-border); border-radius: 999px;
+      background: rgba(255,255,255,0.6);
+    }
+    .sec-head h2 { font-family: var(--font-serif); font-size: clamp(19px, 2.8vw, 24px); font-weight: 700; color: var(--color-primary); letter-spacing: 0.03em; }
+    .sec-note { margin: -6px 0 16px; font-size: 13px; color: var(--color-text-light); }
+    .lede { font-size: 15.5px; color: var(--color-text); line-height: 1.95; }
+    .lede + .lede { margin-top: 12px; }
+
+    /* ============ 本カード（vol.5の型：表紙＋情報の2カラム） ============ */
+    .book {
+      display: grid; grid-template-columns: 148px 1fr; gap: 26px;
+      padding: 26px 0; border-bottom: 1px solid var(--color-border);
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.7s, transform 0.7s;
+    }
+    .book.is-visible { opacity: 1; transform: translateY(0); }
+    section.numbered .book:last-of-type { border-bottom: none; padding-bottom: 6px; }
+    .book-cover-wrap { position: relative; }
+    .book-cover {
+      position: relative; border-radius: 6px; overflow: hidden;
+      box-shadow: var(--shadow-book); aspect-ratio: 3 / 4.3;
+      background: linear-gradient(135deg, #e8d5b8 0%, #c9a577 100%);
+      transition: transform 0.4s ease;
+    }
+    .book:hover .book-cover { transform: translateY(-4px) rotate(-1deg); }
+    .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .book-cover-fallback {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      padding: 14px; text-align: center; font-family: var(--font-serif); font-size: 14px; font-weight: 700;
+      color: var(--color-primary-dark); background: linear-gradient(135deg, #e8d5b8, #c9a577); opacity: 0; pointer-events: none;
+    }
+    .book-cover img:not([src]) + .book-cover-fallback, .book-cover img[src=""] + .book-cover-fallback { opacity: 1; }
+    .book-num {
+      font-family: var(--font-inter); font-size: 12.5px; font-weight: 600;
+      letter-spacing: 0.12em; color: var(--color-accent-text); margin-bottom: 10px;
+    }
+    .book-title {
+      font-family: var(--font-serif); font-size: clamp(18px, 2.4vw, 21px); font-weight: 700;
+      color: var(--color-primary); line-height: 1.4; margin-bottom: 8px; letter-spacing: 0.02em;
+    }
+    .book-subtitle { font-size: 13px; font-weight: 500; color: var(--color-text-light); margin: -4px 0 12px; text-wrap: balance; }
+    .book-meta {
+      display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12.5px; color: var(--color-text-light);
+      margin-bottom: 14px; font-family: var(--font-inter); letter-spacing: 0.01em;
+    }
+    .book-meta span::after { content: '•'; margin-left: 12px; color: var(--color-border); }
+    .book-meta span:last-child::after { display: none; }
+    .book-desc { font-size: 14.5px; color: var(--color-text-light); line-height: 1.95; margin-bottom: 14px; }
+    .book-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .book-link {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px;
+      font-family: var(--font-inter); font-size: 12.5px; font-weight: 700; letter-spacing: 0.03em;
+      background: #232F3E; color: #FFA41C; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .book-link:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+    .badge {
+      font-size: 12.5px; font-weight: 700; letter-spacing: 0.03em; padding: 3px 10px; border-radius: 999px;
+      background: rgba(196, 145, 94, 0.12); color: var(--color-accent-text); border: 1px solid rgba(196, 145, 94, 0.28);
+    }
+    .badge-new { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+
+    /* ============ 声パネル（vol.5の recommender の型：ピンクのライン＋斜体） ============ */
+    .voice {
+      margin-top: 14px; padding: 16px 20px; border-radius: 8px;
+      background: linear-gradient(135deg, rgba(228, 165, 174, 0.12) 0%, rgba(196, 145, 94, 0.07) 100%);
+      border-left: 3px solid var(--color-pink);
+    }
+    .voice-name {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-serif); font-weight: 700; font-size: 15px; color: var(--color-primary); margin-bottom: 8px;
+    }
+    .voice-body { font-size: 14.5px; color: var(--color-text); line-height: 1.95; font-style: italic; }
+    .voice-body strong { color: var(--color-primary); font-style: normal; font-weight: 700; }
+    .voice + .voice { margin-top: 10px; }
+
+    /* ============ 名言引用 ============ */
+    .quote {
+      margin: 16px 0; padding: 6px 0 6px 18px; border-left: 3px solid var(--color-accent);
+      font-family: var(--font-serif); font-size: 16px; color: var(--color-text); line-height: 1.85;
+    }
+    .quote small { display: block; margin-top: 6px; font-family: var(--font-sans); font-size: 12.5px; color: var(--color-text-light); }
+
+    /* ============ おけもんパートへの導線（vol.5の branch-link-box の型＋今回は表紙つき） ============ */
+    .branch {
+      display: flex; gap: 22px; align-items: flex-start;
+      margin-top: 8px; padding: 26px 24px;
+      background: linear-gradient(135deg, rgba(196, 145, 94, 0.10) 0%, rgba(228, 165, 174, 0.06) 100%);
+      border: 2px dashed var(--color-accent); border-radius: 12px;
+    }
+    .branch-cover { flex: none; width: 104px; border-radius: 5px; box-shadow: var(--shadow-book); aspect-ratio: 3/4.3; overflow: hidden; }
+    .branch-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .branch-body { min-width: 0; }
+    .branch-label {
+      font-family: var(--font-inter); font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em;
+      color: var(--color-accent-text); margin-bottom: 10px;
+    }
+    .branch h3 { font-family: var(--font-serif); font-size: clamp(17px, 2.6vw, 20px); font-weight: 700; color: var(--color-primary); margin-bottom: 8px; }
+    .branch p { font-size: 14.5px; color: var(--color-text); line-height: 1.9; }
+    .branch-btn {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 11px 24px;
+      background: var(--color-primary); color: #fff; font-family: var(--font-serif); font-weight: 700; font-size: 14.5px;
+      border-radius: 30px; box-shadow: var(--shadow-md); transition: transform 0.2s;
+    }
+    .branch-btn:hover { transform: translateY(-2px); }
+    @media (max-width: 480px) { .branch { flex-direction: column; } .branch-cover { width: 120px; } }
+
+    /* ============ 小さな一幕（ブルー系＝AI/裏側の話、と色分け） ============ */
+    .moment {
+      margin-top: 16px; padding: 18px 22px; border-radius: 10px;
+      background: linear-gradient(135deg, rgba(107, 143, 181, 0.10) 0%, rgba(107, 143, 181, 0.04) 100%);
+      border-left: 3px solid var(--color-blue);
+    }
+    .moment-label { font-family: var(--font-inter); font-size: 12.5px; font-weight: 700; letter-spacing: 0.12em; color: #3F5E80; margin-bottom: 8px; }
+    .moment p { font-size: 14px; color: var(--color-text); line-height: 1.9; }
+
+    /* ============ Q&A（今回新設：既存の声パネルの語彙で組む） ============ */
+    .qa-q {
+      font-family: var(--font-serif); font-size: 17px; color: var(--color-text); line-height: 1.9;
+      padding: 8px 0 8px 20px; border-left: 3px solid var(--color-accent);
+    }
+    .qa-q small { display: block; margin-top: 8px; font-family: var(--font-sans); font-size: 12.5px; color: var(--color-text-light); }
+    .qa-answers { margin-top: 18px; display: grid; gap: 12px; }
+
+    /* ============ 参加者チップ（vol.5の att-chip の型） ============ */
+    .attendees-row { margin-top: 8px; }
+    .attendees-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .att-chip {
+      display: inline-block; padding: 6px 14px; background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--color-border); border-radius: 999px; font-size: 13px; color: var(--color-primary); letter-spacing: 0.02em;
+    }
+
+    /* ============ おすすめボックス（branch と同系統・画像つき） ============ */
+    .route {
+      margin-top: 22px; padding: 26px 24px; border-radius: 12px;
+      background: var(--color-bg-warm); border: 1px solid var(--color-border);
+    }
+    .route-flex { display: flex; gap: 22px; align-items: flex-start; }
+    .route-cover { flex: none; width: 104px; border-radius: 5px; box-shadow: var(--shadow-book); aspect-ratio: 3/4.3; overflow: hidden; }
+    .route-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .route h3 { font-family: var(--font-serif); font-size: 17px; font-weight: 700; color: var(--color-primary); margin-bottom: 10px; }
+    .route p { font-size: 14.5px; color: var(--color-text); line-height: 1.9; }
+    @media (max-width: 480px) { .route-flex { flex-direction: column; } .route-cover { width: 120px; } }
+
+    /* ============ シリーズナビ（vol.5の型） ============ */
+    .series-nav { padding: 70px 0 20px; text-align: center; }
+    .series-nav-label { font-family: var(--font-inter); font-size: 12.5px; font-weight: 700; letter-spacing: 0.3em; color: var(--color-accent-text); margin-bottom: 14px; }
+    .series-nav-title { font-family: var(--font-serif); font-size: clamp(21px, 2.6vw, 26px); font-weight: 700; color: var(--color-primary); margin-bottom: 12px; }
+    .series-nav-lead { font-size: 14px; color: var(--color-text-light); line-height: 1.9; margin-bottom: 32px; }
+    .series-nav-lead a { color: var(--color-accent-text); text-decoration: underline; }
+    .series-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; text-align: left; }
+    .series-card { display: block; padding: 20px 18px; background: #fff; border: 1px solid var(--color-border); border-radius: 12px; transition: transform 0.25s, box-shadow 0.25s; }
+    .series-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .series-card.current { background: linear-gradient(135deg, rgba(196, 145, 94, 0.12) 0%, rgba(228, 165, 174, 0.08) 100%); border: 2px solid var(--color-accent); }
+    .series-date { font-family: var(--font-inter); font-size: 12.5px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-text); margin-bottom: 8px; }
+    .series-name { font-family: var(--font-serif); font-size: 14.5px; font-weight: 700; color: var(--color-primary); line-height: 1.5; }
+    .series-card.current::after {
+      content: "📍 表示中"; display: inline-block; margin-top: 10px; padding: 3px 10px;
+      background: var(--color-accent); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; border-radius: 999px;
+    }
+    @media (max-width: 640px) { .series-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 400px) { .series-grid { grid-template-columns: 1fr; } }
+
+    /* ============ OUTRO（vol.5の型） ============ */
+    .outro { padding: 90px 24px; text-align: center; background: var(--color-bg-warm); margin-top: 20px; }
+    .outro-inner { max-width: 600px; margin: 0 auto; }
+    .outro-label { font-family: var(--font-inter); font-size: 12.5px; font-weight: 600; letter-spacing: 0.3em; color: var(--color-accent-text); margin-bottom: 16px; }
+    .outro h2 { font-family: var(--font-serif); font-size: clamp(22px, 3vw, 28px); font-weight: 700; color: var(--color-primary); margin-bottom: 22px; line-height: 1.6; }
+    .outro p { font-size: 15.5px; color: var(--color-text-light); line-height: 2; margin-bottom: 12px; }
+    .outro-signature {
+      margin-top: 32px; display: inline-flex; align-items: center; gap: 10px; padding: 13px 26px;
+      background: #fff; border-radius: 30px; box-shadow: var(--shadow-sm);
+      font-family: var(--font-serif); font-size: 14px; font-weight: 600; color: var(--color-primary);
+    }
+
+    /* ============ FOOTER ============ */
+    footer { padding: 30px 24px; text-align: center; background: var(--color-bg); border-top: 1px solid var(--color-border); }
+    footer .nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; margin-bottom: 14px; font-size: 13px; }
+    footer .nav a { color: var(--color-accent-text); }
+    footer small { display: block; max-width: 640px; margin: 0 auto; color: var(--color-text-light); line-height: 1.8; }
+
+    /* ============ ANIMATIONS ============ */
+    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 640px) {
+      .hero { padding: 60px 20px 100px; min-height: auto; }
+      .hero-stats { flex-wrap: wrap; gap: 18px; padding: 18px 22px; }
+      .book { grid-template-columns: 1fr; gap: 18px; }
+      .book-cover-wrap { max-width: 180px; margin: 0 auto; }
+      .book-num, .book-title, .book-meta { text-align: center; }
+      .book-meta { justify-content: center; }
+      .book-links { justify-content: center; }
+      .hero-decor-1, .hero-decor-2 { font-size: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="hero-decor hero-decor-1">📖</span>
+  <span class="hero-decor hero-decor-2">✨</span>
+
+  <p class="hero-date">📅 2026.08.28 &nbsp;FRIDAY · 夜</p>
+  <h1 class="hero-title">ゆるっと<span class="accent">読書会</span> vol.6</h1>
+  <p class="hero-tagline">本が、本を連れてきた夜。</p>
+  <p class="hero-with">💗 共催 ちーちゃん × おけもん｜with ちりめんさん・ジューンさん・ここなさん 他</p>
+  <p class="hero-sub">
+    ちーちゃんが合流するまでの数分は、おけもんが場をつないだ。確率で考える経営者の話、脳が暗闇の中で世界を予測している話、水墨画で心を取り戻す話——気づけば1時間、本棚がまたひとつ増えていた。
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">7<span>名</span></div><div class="hero-stat-label">参加メンバー</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">12<span>冊</span></div><div class="hero-stat-label">名前が挙がった本</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">約1<span>時間</span></div><div class="hero-stat-label">今夜のシェア会</div></div>
+  </div>
+  <p class="hero-scroll">SCROLL<span class="arrow">↓</span></p>
+</header>
+
+<!-- INTRO -->
+<section class="intro">
+  <p class="intro-label">ABOUT TONIGHT</p>
+  <h2>遅れてくる真打ちを、おけもんがつないで待った夜。</h2>
+  <p>
+    「早いですね、もう先月シェアしてから1ヶ月経ってるんですね」——<br>
+    ちーちゃんが合流するまでの数分は、おけもんが場をつないで開幕した。
+  </p>
+  <div class="intro-quote">
+    「もしよければ面白かったよ、というのをシェアしていただけたら。喋るの難しい方はチャットでも、聞き専でも全然大丈夫です」
+    <small>── 開幕の呼びかけより</small>
+  </div>
+  <p>
+    月1回のこの会は、しゃべりたい人はしゃべる、聞き専はチャットだけでもいい、そのゆるさが売り。<br>
+    ちーちゃんの自己紹介では、今日はじめて「実は絶対音感があります」が公開に。
+  </p>
+  <div class="intro-divider"></div>
+</section>
+
+<main>
+
+  <section class="numbered">
+    <div class="sec-head"><h2>今月は、まるごと一人の作家を</h2></div>
+    <p class="lede">本の話は、まずおけもんから。今回だけ特別に5冊まとめて。凪良ゆうの新作『多類婚姻譚』が出たのをきっかけに、気づけば代表作を一気読みしていた。詳しい紹介は特集ページにまとめてある。</p>
+
+    <div class="branch" style="margin-top: 20px;">
+      <div class="branch-cover"><img src="book-club-2026-08-28-tarui.jpg" alt="『多類婚姻譚』の表紙" loading="lazy"></div>
+      <div class="branch-body">
+        <p class="branch-label">今夜のおけもんパート・特集ページ</p>
+        <h3>凪良ゆうの5冊。</h3>
+        <p>『流浪の月』『滅びの前のシャングリラ』『汝、星のごとく』『星を編む』、そして読了ほやほやの新作『多類婚姻譚』まで。1冊ずつの紹介と、どこから読むかのおすすめルートつき。</p>
+        <a class="branch-btn" href="book-club-2026-08-28-nagirayu.html">特集ページを読む →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="numbered">
+    <div class="sec-head"><h2>同じ棚に、もう一人</h2></div>
+    <p class="lede">続いてはここなさん。実は持ってきていた本が、おけもんと同じ凪良ゆう作品でかぶった。</p>
+    <div class="voice">
+      <p class="voice-name">ここなさん</p>
+      <p class="voice-body">「スラスラ読めるのに、人間心理の本質を突いてくる」——今夜だけで2人が同じ作家に吸い込まれていたことになる。読み終わったここなさんは、次は別の作家読みに移っていく予定とのこと。</p>
+    </div>
+  </section>
+
+  <section class="numbered">
+    <div class="sec-head"><h2>感情ではなく、確率で考える</h2></div>
+
+    <article class="book">
+      <div class="book-cover-wrap">
+        <div class="book-cover">
+          <img src="book-club-2026-08-28-nayamanai.jpg" alt="『「悩まない人」の考え方』の表紙" loading="lazy">
+          <div class="book-cover-fallback">「悩まない人」<br>の考え方</div>
+        </div>
+      </div>
+      <div class="book-info">
+        <div class="badges"><span class="badge">ちーちゃん 紹介</span></div>
+        <h3 class="book-title">「悩まない人」の考え方</h3>
+        <div class="book-meta"><span>木下勝寿</span><span>ダイヤモンド社</span></div>
+        <p class="book-desc">友人がYouTubeで勧めていたのがきっかけ。フリーランスとして日々ぽんぽん出てくる悩みに効くかもと手に取った一冊。</p>
+        <div class="voice">
+          <p class="voice-name">ちーちゃんが刺さったところ</p>
+          <p class="voice-body">本の中の例え話――ある社長が「1000万円の利益が見込める施策」を検討中、法務から訴訟リスクを理由に待ったがかかる。そこで社長は「損害賠償額は最大いくら？」「訴訟になる確率は？」「勝てる確率は？」と数字で刻んでいく。計算していくと施策の期待値はプラス800万円。だから実行しない理由がない、という思考の流れ。著者本人はこの考え方でもう何十年も悩んでいないそう。<strong>「ポジティブシンキングの人ほど心が折れやすい、常にリスクを想定しておく人のほうが強い」</strong>という一文にも、ちーちゃんは唸っていた。</p>
+        </div>
+        <p class="book-desc" style="margin-top:12px;">ちーちゃん自身は感情で動くタイプで、数日前も「地震が来たらどうしよう」と言っては皆に笑われていたばかり。「自分と正反対の思考回路を仕入れるのが面白い」——事業の壁打ち相手も、あえて自分とは違う考え方をする人を選んでいるそうだ。</p>
+        <div class="book-links"><a class="book-link" href="https://amzn.asia/d/0e9XBTUf" target="_blank" rel="noopener">Amazonで見る</a></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="numbered">
+    <div class="sec-head"><h2>脳は、暗闇の中で予測している</h2></div>
+
+    <article class="book">
+      <div class="book-cover-wrap">
+        <div class="book-cover">
+          <img src="book-club-2026-08-28-nou.jpg" alt="『脳の大統一理論』の表紙" loading="lazy">
+          <div class="book-cover-fallback">脳の大統一理論</div>
+        </div>
+      </div>
+      <div class="book-info">
+        <div class="badges"><span class="badge">せいやさん 紹介</span></div>
+        <h3 class="book-title">脳の大統一理論</h3>
+        <p class="book-subtitle">自由エネルギー原理とはなにか</p>
+        <div class="book-meta"><span>乾敏郎・阪口豊</span><span>岩波科学ライブラリー299</span><span>岩波書店</span></div>
+        <p class="book-desc">脳の働き方を、たった一つの理論――「予測誤差を最小化するために脳は働いている」――で説明しようという本。初心者にも噛み砕いて教えてくれる入門書。</p>
+        <div class="voice">
+          <p class="voice-name">せいやさんの解説から</p>
+          <p class="voice-body">自閉症や統合失調症は、脳内の「予測モデル」と「外からの感覚刺激」のどちらを優先するかのバランスが崩れた状態として説明できる、という話。そして印象的だったのが、頭蓋骨の中は暗闇で、脳が受け取れるのは神経からの頼りないパルス信号だけという捉え方。感情さえも体の状態から作られていて、周りにいる人の感情に引きずられやすい（注射で高揚物質を与えられた被験者が、周囲の反応次第で感じ方まで変わる実験の紹介つき）——<strong>「自分が理性で動いてると思いきや、実は結構驚かされている」</strong>という話に、場がどよめいた。</p>
+        </div>
+        <p class="book-desc" style="margin-top:12px;">せいやさん自身は「AIも次にくる言葉を予測して答えているという意味で近いかも」と、話しながら気づいた様子。おけもんは「自分もADHDだから、脳の仕組みがどうなってるのか気になって調べている」と反応。類書として、ラマチャンドラン『脳の中の幽霊』にも話が広がった。</p>
+        <div class="book-links"><a class="book-link" href="https://amzn.asia/d/0ijgOBXd" target="_blank" rel="noopener">Amazonで見る</a></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="numbered">
+    <div class="sec-head"><h2>医療のリアルと、男女のリアル</h2></div>
+    <p class="sec-note">バンスラさんの読書歴はまだ1年ほど。それでもすでにかなりの量を読んでいる、という自己紹介から始まった。</p>
+
+    <article class="book">
+      <div class="book-cover-wrap">
+        <div class="book-cover">
+          <img src="book-club-2026-08-28-spinoza.jpg" alt="『スピノザの診察室』の表紙" loading="lazy">
+          <div class="book-cover-fallback">スピノザの診察室</div>
+        </div>
+      </div>
+      <div class="book-info">
+        <div class="badges"><span class="badge">バンスラさん 紹介</span><span class="badge">シリーズ</span></div>
+        <h3 class="book-title">スピノザの診察室</h3>
+        <div class="book-meta"><span>夏川草介</span><span>雄町哲郎シリーズ</span></div>
+        <p class="book-desc">静かで寡黙な医師・雄町哲郎が主人公。医療現場のリアルな内面を、飾らずに描くシリーズ。</p>
+        <div class="quote">
+          「医療では人は救えないんだよ」
+          <small>── 作中のセリフより。バンスラさんが印象に残った一言として紹介</small>
+        </div>
+        <div class="book-links"><a class="book-link" href="https://amzn.asia/d/03SZ2hjl" target="_blank" rel="noopener">Amazonで見る</a></div>
+      </div>
+    </article>
+
+    <article class="book">
+      <div class="book-cover-wrap">
+        <div class="book-cover">
+          <img src="book-club-2026-08-28-usotsuki.jpg" alt="『嘘つき男と泣き虫女』の表紙" loading="lazy">
+          <div class="book-cover-fallback">嘘つき男と<br>泣き虫女</div>
+        </div>
+      </div>
+      <div class="book-info">
+        <div class="badges"><span class="badge">バンスラさん 紹介</span><span class="badge">続編</span></div>
+        <h3 class="book-title">嘘つき男と泣き虫女</h3>
+        <p class="book-subtitle">『話を聞かない男、地図が読めない女』続編</p>
+        <div class="book-meta"><span>アラン・ピーズ＆バーバラ・ピーズ</span></div>
+        <p class="book-desc">男は「穴にこもって自分で解決したくなる」、女は「共有して聞いてほしい」——男女の思考回路の違いを描く定番シリーズの一冊。「うちでは相談してくれる？」「せえへんせえへん」というやりとりに、場がどっと笑いに包まれた。</p>
+        <div class="book-links"><a class="book-link" href="https://amzn.asia/d/004QovW1" target="_blank" rel="noopener">Amazonで見る</a></div>
+      </div>
+    </article>
+
+    <div class="moment">
+      <p class="moment-label">今夜の小さな一幕</p>
+      <p>「続編知らない、知りたい！」というジューンさんの一言に、9分後には『嘘つき男と泣き虫女』のリンクがチャットに流れていた。裏では、おけもんがAIに「この本の続編ってわかる？」とその場で調べてもらっていたそう。仕入れてから配るまでが数分——今夜らしい一コマだった。</p>
+    </div>
+  </section>
+
+  <section class="numbered">
+    <div class="sec-head"><h2>半年前のおすすめが、ちゃんと読まれていた</h2></div>
+    <p class="sec-note">ジューンさんは前回vol.5にも登場（『全員悪人』『放課後ミステリクラブ』を紹介）。今夜はチャットで2冊教えてくれた。</p>
+
+    <article class="book">
+      <div class="book-cover-wrap">
+        <div class="book-cover">
+          <img src="book-club-2026-08-28-hajimeru.jpg" alt="『はじめる力』の表紙" loading="lazy">
+          <div class="book-cover-fallback">はじめる力</div>
+        </div>
+      </div>
+      <div class="book-info">
+        <div class="badges"><span class="badge badge-new">vol.4からの継続</span></div>
+        <h3 class="book-title">はじめる力</h3>
+        <div class="book-meta"><span>安野貴博</span></div>
+        <p class="book-desc">おけもんが以前すすめた一冊を、ジューンさんがようやく読了。「すごく良かった」と報告してくれた。国や大きな視点の話だけでなく、自分たちの日常で何かを始めるときの考え方としても役立つ、という感想つき。</p>
+        <div class="book-links"><a class="book-link" href="https://amzn.asia/d/0iQuzJeD" target="_blank" rel="noopener">Amazonで見る</a></div>
+      </div>
+    </article>
+
+    <article class="book">
+      <div class="book-cover-wrap">
+        <div class="book-cover">
+          <img src="book-club-2026-08-28-sen.jpg" alt="『線は、僕を描く』の表紙" loading="lazy">
+          <div class="book-cover-fallback">線は、僕を描く</div>
+        </div>
+      </div>
+      <div class="book-info">
+        <div class="badges"><span class="badge">映画化</span></div>
+        <h3 class="book-title">線は、僕を描く</h3>
+        <div class="book-meta"><span>砥上裕將</span></div>
+        <p class="book-desc">水墨画をめぐる物語。心を病んだ大学生が、絵を描くことを通して自分を取り戻していく話。2019年刊行と少し前の本だが「今読んでもすごく良かった」とのこと。横浜流星主演で映画化もされ、週刊少年マガジンでコミカライズもされている。</p>
+        <div class="book-links"><a class="book-link" href="https://amzn.asia/d/0ig6DGK0" target="_blank" rel="noopener">Amazonで見る</a></div>
+      </div>
+    </article>
+
+    <div class="voice">
+      <p class="voice-name">ジューンさんの読み方</p>
+      <p class="voice-body">実はジューンさん、自分の読書記録をAIでまとめる仕組みを自作して持ってきていた。「私もやろうと思って作りました」。気に入った本を読み終えたら、AIに「次は何を読んだらいいか」を聞いて連鎖的に広げていく読み方がお気に入りだそう。おけもんいわく<strong>「誰にも見せるわけじゃなくても、積み重ねがあるとモチベーションになる」</strong>——航海日記のような読書ログの話で、二人で盛り上がっていた。</p>
+    </div>
+  </section>
+
+  <section class="numbered">
+    <div class="sec-head"><h2>なぜ、本を読むのか</h2></div>
+    <div class="qa-q">
+      「本を読む目的は何なんでしょうか。読むことも大切ですが、行動に移すことのほうが大切だと思っていて……皆さんの考えを聞いてみたいです」
+      <small>── バンスラさんからチャットで投げかけられた問い</small>
+    </div>
+
+    <div class="qa-answers">
+      <div class="voice">
+        <p class="voice-name">おけもんの答え</p>
+        <p class="voice-body">自分の知らない体験を追体験できること。ビジネス書でも小説でも、自分の中でまだ言葉になっていなかったものを、誰かに言葉にしてもらえる瞬間がある。それに、本は情報を自分で取りに行く分、YouTubeやAIからただ受け取るのとは違う「濃さ」があると思っている、と話していた。</p>
+      </div>
+      <div class="voice">
+        <p class="voice-name">ちーちゃんの答え</p>
+        <p class="voice-body">贅沢な時間。子育てで一時ぜんぶ読めなくなった時期があったけれど、子どもの頃に読んだ本を大人になって読み返すと、また違う発見がある。自分と違う価値観の人からの学びも、本の中でなら感情を挟まず、情報として受け取れるところがいい、とのこと。</p>
+      </div>
+      <div class="voice">
+        <p class="voice-name">参加者から</p>
+        <p class="voice-body">45歳くらいから本を読み始めたという参加者からは、「読んで学ぼうとする人と、そうでない人とでは、話を理解する層が違うことに最近気づいた」という声も。読書量そのものより、読みながら考える習慣が効いてくる、という実感だった。</p>
+      </div>
+    </div>
+
+    <div class="route">
+      <div class="route-flex">
+        <div class="route-cover"><img src="book-club-2026-08-28-babylon.jpg" alt="『まんが バビロン大富豪の教え』の表紙" loading="lazy"></div>
+        <div>
+          <h3>バンスラさんが選ぶ、この1冊なら</h3>
+          <p>「まんが バビロン大富豪の教え」。過去と現在のストーリーを行き来しながら、お金を稼ぐ理由を学べる構成がいい、とのこと。「人生、詰んだなって思う瞬間が誰にでもあると思う。それが主人公として出てきて、改善のために努力していく」——原作は長いけれど、まんが版はぐっと縮めてあるので入りやすいそうだ。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="numbered">
+    <div class="sec-head"><h2>今夜集まったメンバー</h2></div>
+    <p class="lede" style="color:var(--color-text-light);">主催のちーちゃんと、場を開いたおけもん、そして5人。聞き専の方もチャットで賑やかしてくれた。</p>
+    <div class="attendees-row">
+      <div class="attendees-list">
+        <span class="att-chip">💬 ちーちゃん（主催）</span>
+        <span class="att-chip">🎤 おけもん（場開き）</span>
+        <span class="att-chip">📖 ちりめんさん</span>
+        <span class="att-chip">📖 ジューンさん</span>
+        <span class="att-chip">📖 ここなさん</span>
+        <span class="att-chip">📖 せいやさん</span>
+        <span class="att-chip">📖 バンスラさん</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERIES NAV -->
+  <section class="series-nav">
+    <p class="series-nav-label">📚 リベ読書LOG📕 本棚アーカイブ</p>
+    <h3 class="series-nav-title">これまでの本棚</h3>
+    <p class="series-nav-lead"><a href="../libe-reading-log-archive.html">本棚アーカイブ（全回まとめ）</a>から、時系列でぜんぶ辿れます。</p>
+    <div class="series-grid">
+      <a href="https://okemonogatari-hash.github.io/portfolio-seikotsuin-lp/book-club-2026-04-17.html" class="series-card" target="_blank" rel="noopener">
+        <p class="series-date">2026.04.17</p><p class="series-name">過去回の本棚</p>
+      </a>
+      <a href="book-club-2026-05-25.html" class="series-card">
+        <p class="series-date">2026.05.25</p><p class="series-name">過去回の本棚</p>
+      </a>
+      <a href="book-club-2026-06-27.html" class="series-card">
+        <p class="series-date">2026.06.27</p><p class="series-name">vol.4 “はじめる力”を語る朝</p>
+      </a>
+      <a href="book-club-2026-07-18.html" class="series-card">
+        <p class="series-date">2026.07.18</p><p class="series-name">vol.5 “視点”がそろった朝</p>
+      </a>
+      <a href="book-club-2026-08-28.html" class="series-card current">
+        <p class="series-date">2026.08.28</p><p class="series-name">今回 vol.6 本が本を連れてきた夜</p>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- OUTRO -->
+<section class="outro">
+  <div class="outro-inner">
+    <p class="outro-label">TONIGHT</p>
+    <h2>本が、本を連れてくる。<br>それだけの夜でよかった。</h2>
+    <p>誰かの一冊が、次の誰かの一冊を連れてくる。<br>凪良ゆうが2人に、はじめる力が半年越しに、続編がAI経由で9分後に。</p>
+    <p style="color: var(--color-primary); font-weight: 500;">来月も、また誰かの本棚を借りにいく。</p>
+    <div class="outro-signature">💗 おけもんカンパニー × ちーちゃん</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="nav">
+    <a href="book-club-2026-08-28-nagirayu.html">📚 凪良ゆう特集ページへ</a>
+    <a href="book-club-2026-07-18.html">← 前回 vol.5（2026/7/18）</a>
+    <a href="../libe-reading-log-archive.html">本棚アーカイブ</a>
+  </div>
+  <small>ゆるっと読書会 vol.6（2026年8月28日・oVice／主催：ちーちゃん）のログです。会の音声記録とチャットログをもとに構成しました。書名・著者・出版社は各出版社の商品ページ等で確認（確認日: 2026-08-28）。参加者名はリベシティ表示名、プライベートな話題は掲載していません。</small>
+</footer>
+
+<script>
+  document.querySelectorAll('.book-cover img').forEach(img => {
+    img.addEventListener('error', () => {
+      img.style.display = 'none';
+      const fb = img.nextElementSibling;
+      if (fb && fb.classList.contains('book-cover-fallback')) fb.style.opacity = '1';
+    });
+  });
+  const books = document.querySelectorAll('.book');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  books.forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+    else obs.observe(el);
+  });
+</script>
+
+</body>
+</html>
