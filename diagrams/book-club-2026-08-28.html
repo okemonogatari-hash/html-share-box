@@ -220,6 +220,14 @@
       background: rgba(255,255,255,0.6);
     }
     .sec-head h2 { font-family: var(--font-serif); font-size: clamp(19px, 2.8vw, 24px); font-weight: 700; color: var(--color-primary); letter-spacing: 0.03em; }
+    /* マーカー見出し（JS未発火時は最初から全幅＝常に可視。JSが生きている時だけ左から塗る演出を足す） */
+    .sec-head h2 .mk { position: relative; display: inline-block; }
+    .sec-head h2 .mk::before {
+      content: ""; position: absolute; left: -3px; right: -3px; bottom: .06em; height: .38em;
+      z-index: -1; width: 100%; background: rgba(201,165,119,.38);
+    }
+    html.js-ready .sec-head h2 .mk::before { width: 0; transition: width .9s cubic-bezier(.22,1,.36,1) .1s; }
+    html.js-ready .sec-head.is-visible h2 .mk::before { width: calc(100% + 6px); }
     .sec-note { margin: -6px 0 16px; font-size: 13px; color: var(--color-text-light); }
     .lede { font-size: 18px; color: var(--color-text); line-height: 1.95; max-width: 40em; }
     .lede + .lede { margin-top: 12px; }
@@ -228,17 +236,16 @@
     .book {
       display: grid; grid-template-columns: 148px 1fr; gap: 26px;
       padding: 26px 0; border-bottom: 1px solid var(--color-border);
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.7s, transform 0.7s;
     }
-    .book.is-visible { opacity: 1; transform: translateY(0); }
+    html.js-ready .book { opacity: 0; transform: translateY(20px); transition: opacity 0.7s, transform 0.7s; }
+    html.js-ready .book.is-visible { opacity: 1; transform: translateY(0); }
     section.numbered .book:last-of-type { border-bottom: none; padding-bottom: 6px; }
     .book-cover-wrap { position: relative; }
     .book-cover {
       position: relative; border-radius: 6px; overflow: hidden;
       box-shadow: var(--shadow-book); aspect-ratio: 3 / 4.3;
       background: linear-gradient(135deg, #e8d5b8 0%, #c9a577 100%);
-      transition: transform 0.4s ease;
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
     }
     .book:hover .book-cover { transform: translateY(-4px) rotate(-1deg); }
     .book-cover img { width: 100%; height: 100%; object-fit: cover; }
@@ -469,7 +476,7 @@
 <main>
 
   <section class="numbered">
-    <div class="sec-head"><h2>今月は、まるごと一人の作家を</h2></div>
+    <div class="sec-head"><h2>今月は、<span class="mk">まるごと一人の作家</span>を</h2></div>
     <p class="lede">本の話は、まずおけもんから。今回だけ特別に5冊まとめて。凪良ゆうの新作『多類婚姻譚』が出たのをきっかけに、気づけば代表作を一気読みしていた。詳しい紹介は特集ページにまとめてある。</p>
 
     <div class="branch" style="margin-top: 20px;">
@@ -485,7 +492,7 @@
   </section>
 
   <section class="numbered">
-    <div class="sec-head"><h2>感情ではなく、確率で考える</h2></div>
+    <div class="sec-head"><h2>感情ではなく、<span class="mk">確率で考える</span></h2></div>
 
     <article class="book">
       <div class="book-cover-wrap">
@@ -512,7 +519,7 @@
   </section>
 
   <section class="numbered">
-    <div class="sec-head"><h2>脳は、暗闇の中で予測している</h2></div>
+    <div class="sec-head"><h2>脳は、<span class="mk">暗闇の中で予測している</span></h2></div>
 
     <article class="book">
       <div class="book-cover-wrap">
@@ -543,17 +550,17 @@
   </section>
 
   <section class="numbered">
-    <div class="sec-head"><h2>同じ棚に、もう一人</h2></div>
+    <div class="sec-head"><h2>同じ棚に、<span class="mk">もう一人</span></h2></div>
     <p class="lede">続いてはここなさん。実は持ってきていた本が、おけもんと同じ凪良ゆう作品でかぶった。</p>
     <div class="voice">
       <p class="voice-name">ここなさん</p>
       <p class="voice-body">「スラスラ読めるのに、人間心理の本質を突いてくる」——今夜だけで2人が同じ作家に吸い込まれていたことになる。</p>
-      <p class="beat">読み終わったここなさんは、次は別の作家読みに移っていく予定とのこと。</p>
+      <p class="beat">読み終わったここなさんは、次は凪良ゆうさんの作家読みに移っていく予定とのこと。</p>
     </div>
   </section>
 
   <section class="numbered">
-    <div class="sec-head"><h2>医療のリアルと、男女のリアル</h2></div>
+    <div class="sec-head"><h2><span class="mk">医療のリアル</span>と、男女のリアル</h2></div>
     <p class="sec-note">バンスラさんの読書歴はまだ1年ほど。それでもすでにかなりの量を読んでいる、という自己紹介から始まった。</p>
 
     <article class="book">
@@ -607,7 +614,7 @@
   </section>
 
   <section class="numbered">
-    <div class="sec-head"><h2>2ヶ月前のおすすめが、ちゃんと読まれていた</h2></div>
+    <div class="sec-head"><h2>2ヶ月前のおすすめが、<span class="mk">ちゃんと読まれていた</span></h2></div>
     <p class="sec-note">ジューンさんは前回vol.5にも登場（『全員悪人』『放課後ミステリクラブ』を紹介）。今夜はチャットで2冊教えてくれた。</p>
 
     <article class="book">
@@ -655,7 +662,7 @@
   </section>
 
   <section class="numbered">
-    <div class="sec-head"><h2>なぜ、本を読むのか</h2></div>
+    <div class="sec-head"><h2>なぜ、<span class="mk">本を読むのか</span></h2></div>
     <div class="qa-q">
       「本を読む目的は何なんでしょうか。読むことも大切ですが、行動に移すことのほうが大切だと思っていて……皆さんの考えを聞いてみたいです」
       <small>── バンスラさんからチャットで投げかけられた問い</small>
@@ -759,6 +766,7 @@
 </footer>
 
 <script>
+  document.documentElement.classList.add('js-ready');
   document.querySelectorAll('.book-cover img').forEach(img => {
     img.addEventListener('error', () => {
       img.style.display = 'none';
@@ -767,10 +775,16 @@
     });
   });
   const books = document.querySelectorAll('.book');
+  const secHeads = document.querySelectorAll('.sec-head');
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.1 });
   books.forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+    else obs.observe(el);
+  });
+  secHeads.forEach(el => {
     const r = el.getBoundingClientRect();
     if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
     else obs.observe(el);
