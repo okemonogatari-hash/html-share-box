@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta name="description" content="福命会様向け。パスワードを別送せずに資料を共有する方法と、AIエージェントを組み合わせた運用案。">
-  <title>資料共有の選び方とAI活用｜福命会様</title>
+  <meta name="description" content="福命会様向け。4人で始めるChatGPT Businessと、データ移送のやり方（Dropbox活用／Cloudflareでのパスワード共有）の2本だけに絞った資料。">
+  <title>ChatGPT Businessとデータ移送のやり方｜福命会様</title>
   <style>
     :root {
       --ink: #182230;
-      --muted: #5f6c7b;
+      --muted: #52606f;
       --line: #d8e0e8;
       --blue: #1459a6;
       --blue-soft: #edf5ff;
@@ -30,11 +30,12 @@
       color: var(--ink);
       background: var(--page);
       font-family: "BIZ UDGothic", "Yu Gothic", "Hiragino Sans", Meiryo, sans-serif;
-      line-height: 1.8;
+      font-size: 18px;
+      line-height: 1.9;
     }
 
     main {
-      width: min(920px, calc(100% - 32px));
+      width: min(880px, calc(100% - 32px));
       margin: 32px auto;
       padding: 56px clamp(24px, 6vw, 72px) 64px;
       background: var(--paper);
@@ -57,15 +58,15 @@
     h1 {
       margin: 0;
       color: #173f67;
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      line-height: 1.3;
-      letter-spacing: -.03em;
+      font-size: clamp(1.8rem, 4.6vw, 2.7rem);
+      line-height: 1.35;
+      letter-spacing: -.02em;
     }
 
     .subtitle {
       margin: 12px 0 0;
       color: var(--muted);
-      font-size: 1.05rem;
+      font-size: 1rem;
     }
 
     .meta {
@@ -74,29 +75,54 @@
       gap: 8px 20px;
       margin-top: 22px;
       color: var(--muted);
-      font-size: .88rem;
+      font-size: .85rem;
     }
 
-    section { margin-top: 48px; }
+    section { margin-top: 52px; }
 
     h2 {
-      margin: 0 0 14px;
+      margin: 0 0 8px;
       color: #173f67;
-      font-size: 1.55rem;
-      line-height: 1.45;
+      font-size: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .section-lead {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: .96rem;
     }
 
     h3 {
-      margin: 30px 0 8px;
+      margin: 0 0 4px;
       color: var(--blue);
-      font-size: 1.13rem;
+      font-size: 1.08rem;
+      text-wrap: balance;
     }
 
-    p { margin: 0 0 14px; }
+    h1, h2 { text-wrap: balance; }
 
-    .lead {
-      margin-top: 28px;
-      font-size: 1.08rem;
+    .col { width: 100%; }
+
+    p { margin: 0 0 16px; }
+
+    .card {
+      margin-top: 24px;
+      padding: 24px clamp(18px, 4vw, 28px);
+      border: 1px solid var(--line);
+    }
+
+    .card + .card { margin-top: 20px; }
+
+    .card-who {
+      display: inline-block;
+      margin-top: 4px;
+      margin-bottom: 16px;
+      padding: 3px 10px;
+      color: var(--blue);
+      background: var(--blue-soft);
+      font-size: .85rem;
+      font-weight: 700;
     }
 
     .note {
@@ -107,23 +133,139 @@
     }
 
     .note strong,
-    .warning strong { display: block; margin-bottom: 4px; }
+    .warning strong,
+    .price strong { display: block; margin-bottom: 4px; }
 
     .warning {
-      margin: 24px 0 0;
-      padding: 18px 20px;
+      margin: 20px 0 0;
+      padding: 16px 18px;
       border-left: 5px solid #b78000;
       background: var(--amber-soft);
+      font-size: .95rem;
     }
+
+    .price {
+      margin: 20px 0 0;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      background: var(--page);
+    }
+
+    .price ul { margin: 10px 0 0; padding-left: 1.3em; }
+    .price li { margin: 4px 0; }
+    .price .fine {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .business-map {
+      display: grid;
+      grid-template-columns: 1fr 46px 1.15fr 46px 1fr;
+      align-items: stretch;
+      gap: 8px;
+      margin: 22px 0 26px;
+    }
+
+    .business-map-node {
+      display: grid;
+      align-content: center;
+      min-height: 126px;
+      padding: 16px;
+      border: 1px solid #bdd1e7;
+      background: var(--blue-soft);
+      text-align: center;
+    }
+
+    .business-map-node.main {
+      color: #fff;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .business-map-node strong {
+      display: block;
+      font-size: 1.02rem;
+      line-height: 1.45;
+    }
+
+    .business-map-node small {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: .8rem;
+      line-height: 1.55;
+    }
+
+    .business-map-node.main small { color: #e7f1fb; }
+
+    .business-map-arrow {
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+      font-size: 1.55rem;
+      font-weight: 700;
+    }
+
+    .official-figure {
+      margin: 24px 0 0;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #121212;
+    }
+
+    .official-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .official-figure figcaption {
+      margin-top: 10px;
+      color: #dbe4ed;
+      font-size: .8rem;
+      line-height: 1.6;
+    }
+
+    .action-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .action-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 64px;
+      padding: 14px 16px;
+      color: #fff;
+      background: var(--blue);
+      border: 2px solid var(--blue);
+      font-weight: 700;
+      line-height: 1.45;
+      text-decoration: none;
+    }
+
+    .action-link.secondary {
+      color: var(--blue);
+      background: #fff;
+    }
+
+    .action-link span:last-child { flex: none; font-size: 1.2rem; }
+    .action-link:hover { filter: brightness(.96); }
 
     .table-wrap {
       overflow-x: auto;
       margin-top: 22px;
+      border: 1px solid var(--line);
     }
 
     table {
       width: 100%;
-      min-width: 720px;
+      min-width: 640px;
       border-collapse: collapse;
       font-size: .92rem;
     }
@@ -147,7 +289,7 @@
     li { margin: 8px 0; padding-left: .2em; }
 
     .flow {
-      margin: 22px 0 0;
+      margin: 16px 0 0;
       padding: 0;
       list-style: none;
       counter-reset: step;
@@ -156,7 +298,7 @@
     .flow li {
       position: relative;
       margin: 0;
-      padding: 0 0 22px 48px;
+      padding: 0 0 20px 44px;
     }
 
     .flow li::before {
@@ -167,20 +309,21 @@
       top: 1px;
       display: grid;
       place-items: center;
-      width: 31px;
-      height: 31px;
+      width: 29px;
+      height: 29px;
       color: #fff;
       background: var(--blue);
       border-radius: 50%;
       font-weight: 700;
+      font-size: .92rem;
       line-height: 1;
     }
 
     .flow li:not(:last-child)::after {
       content: "";
       position: absolute;
-      left: 15px;
-      top: 34px;
+      left: 14px;
+      top: 32px;
       bottom: 2px;
       width: 1px;
       background: var(--line);
@@ -188,26 +331,10 @@
 
     .flow strong { display: block; color: #173f67; }
 
-    .tool-pattern {
-      padding: 22px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .tool-pattern:last-of-type { border-bottom: 1px solid var(--line); }
-
-    .tool-pattern h3 { margin-top: 0; }
-
-    .tool-name {
-      margin: 0 0 8px;
-      color: var(--muted);
-      font-size: .92rem;
-      font-weight: 700;
-    }
-
     .checklist {
       display: grid;
       gap: 10px;
-      margin-top: 18px;
+      margin-top: 8px;
       padding: 0;
       list-style: none;
     }
@@ -230,7 +357,7 @@
     }
 
     .sources {
-      margin-top: 48px;
+      margin-top: 52px;
       padding-top: 24px;
       border-top: 1px solid var(--line);
       color: var(--muted);
@@ -238,6 +365,90 @@
     }
 
     .sources a { color: var(--blue); overflow-wrap: anywhere; }
+
+    .state-flow {
+      margin-top: 24px;
+      padding: 20px;
+      background: var(--page);
+      border: 1px solid var(--line);
+    }
+
+    .state-flow-stage {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      min-height: 108px;
+      padding: 16px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--blue);
+      transition: border-left-color .25s ease, background .25s ease;
+    }
+
+    .state-flow-stage[data-flow-tint="decide"] { border-left-color: var(--blue); background: var(--blue-soft); }
+    .state-flow-stage[data-flow-tint="send"] { border-left-color: var(--amber); background: var(--amber-soft); }
+    .state-flow-stage[data-flow-tint="view"] { border-left-color: var(--green); background: var(--green-soft); }
+    .state-flow-stage[data-flow-tint="close"] { border-left-color: var(--muted); background: #eef1f4; }
+
+    .state-flow-badge {
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      color: #fff;
+      background: var(--blue);
+      border-radius: 50%;
+      font-weight: 700;
+      transition: background .25s ease;
+    }
+
+    .state-flow-stage[data-flow-tint="send"] .state-flow-badge { background: var(--amber); }
+    .state-flow-stage[data-flow-tint="view"] .state-flow-badge { background: var(--green); }
+    .state-flow-stage[data-flow-tint="close"] .state-flow-badge { background: var(--muted); }
+
+    .state-flow-body strong { display: block; color: #173f67; margin-bottom: 4px; }
+    .state-flow-body p { margin: 0; font-size: .96rem; }
+
+    .state-flow-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .state-flow-dot {
+      width: 11px;
+      height: 11px;
+      padding: 0;
+      border-radius: 50%;
+      border: 1px solid var(--blue);
+      background: var(--paper);
+      cursor: pointer;
+    }
+
+    .state-flow-dot.is-active { background: var(--blue); }
+
+    .state-flow-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .state-flow-btn {
+      padding: 9px 16px;
+      color: var(--blue);
+      background: var(--paper);
+      border: 1px solid var(--blue);
+      cursor: pointer;
+      font-size: .88rem;
+    }
+
+    .state-flow-btn:hover { background: var(--blue-soft); }
+    .state-flow-btn:disabled { opacity: .4; cursor: default; background: var(--paper); }
+
+    .state-flow-print { display: none; }
 
     @media (max-width: 640px) {
       main {
@@ -247,42 +458,201 @@
         border: 0;
       }
 
-      section { margin-top: 38px; }
+      section { margin-top: 40px; }
       .meta { display: block; }
       .meta span { display: block; margin-top: 4px; }
+      .business-map { grid-template-columns: 1fr; }
+      .business-map-arrow { transform: rotate(90deg); min-height: 24px; }
+      .action-links { grid-template-columns: 1fr; }
     }
 
     @media print {
       body { background: #fff; }
       main { width: 100%; margin: 0; border: 0; padding: 18mm; }
       a { color: inherit; text-decoration: none; }
+
+      /* クリック前提の状態遷移図は紙では動かせないため、4ステップを縦に全展開する */
+      .state-flow-stage,
+      .state-flow-dots,
+      .state-flow-nav { display: none; }
+
+      .state-flow-print {
+        display: block;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: pstep;
+      }
+
+      .state-flow-print li {
+        position: relative;
+        margin: 0;
+        padding: 10px 0 10px 40px;
+        border-top: 1px solid var(--line);
+      }
+
+      .state-flow-print li:first-child { border-top: 0; }
+
+      .state-flow-print li::before {
+        counter-increment: pstep;
+        content: counter(pstep);
+        position: absolute;
+        left: 0;
+        top: 10px;
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        color: #fff;
+        background: var(--blue);
+        border-radius: 50%;
+        font-weight: 700;
+        font-size: .85rem;
+      }
+
+      .state-flow-print strong { display: block; color: #173f67; }
     }
   </style>
 </head>
 <body>
   <main>
     <header>
-      <p class="eyebrow">福命会様｜9月7日 導入オリエン補足資料</p>
-      <h1>パスワードを渡さずに<br>資料を共有するには</h1>
-      <p class="subtitle">Dropbox・Microsoft 365・Google Workspaceの選び方と、AIを入れる場所</p>
+      <p class="eyebrow">福命会様｜9月7日 導入オリエン資料</p>
+      <h1>ChatGPT Businessと<br>データ移送のやり方</h1>
+      <p class="subtitle">今回はこの2つだけに絞りました。選択肢を増やすより、まずこの2つを決めます。</p>
       <div class="meta">
         <span>対象：医療法人 福命会 健康管理支援室 御中</span>
-        <span>確認日：2026年8月24日</span>
+        <span>確認日：2026年8月29日</span>
         <span>オリエン：9月7日 12:30〜14:30</span>
       </div>
     </header>
 
-    <p class="lead">毎回パスワードを別のメールやチャットで送るのは、やっぱり手間です。しかも、送り間違いの心配まで増えます。仕組みを選べば、この作業はかなり減らせます。</p>
+    <section class="col">
+      <h2>① ChatGPT Businessの入れ方</h2>
+      <p class="section-lead">会社で1つのBusinessワークスペースを契約し、4人がそれぞれ自分のChatGPTアカウントで参加します。</p>
 
-    <div class="note">
-      <strong>福命会様で最初に試す方法</strong>
-      今あるDropboxを会社ファイルの正本として残し、継続する取引先は共有フォルダへメール招待します。Dropbox Transferは、完成資料を一度だけ渡す場面に残す。この分け方なら、大きな移行をせずに始められます。
-    </div>
+      <div class="card">
+        <h3>何をするか</h3>
+        <span class="card-who">管理者：山田さん（仮）</span>
+        <p>山田さんがChatGPT Businessを4席分まとめて契約し、ご自身が1席を利用。残り3人を業務用メールで招待します。4人が別々にBusinessを契約する形ではありません。</p>
 
-    <section>
-      <h2>Transferのパスワードは必須ではありません</h2>
-      <p>パスワードを付ければ、相手へ別の方法で知らせる作業が残ります。付けなければ受取は楽ですが、リンクを転送された時の防御は弱くなります。</p>
-      <p>相手をきちんと特定したいなら、リンク用パスワードより、メール招待やメール確認コードを使う方が分かりやすいです。</p>
+        <div class="business-map" aria-label="4人で使うChatGPT Businessの関係">
+          <div class="business-map-node">
+            <strong>山田さん</strong>
+            <small>管理者・契約担当<br>ご自身も1席を利用</small>
+          </div>
+          <div class="business-map-arrow" aria-hidden="true">→</div>
+          <div class="business-map-node main">
+            <strong>ChatGPT Business<br>標準シート 4席</strong>
+            <small>会社のワークスペース<br>請求とメンバーを一元管理</small>
+          </div>
+          <div class="business-map-arrow" aria-hidden="true">→</div>
+          <div class="business-map-node">
+            <strong>残り3人</strong>
+            <small>招待メールを受け取り<br>各自のアカウントで参加</small>
+          </div>
+        </div>
+
+        <h3>手順</h3>
+        <ol class="flow">
+          <li><strong>山田さんのChatGPTアカウントで始める</strong>会社で管理を続けられる業務用メールを使います。</li>
+          <li><strong>「標準シート」を4席で申し込む</strong>月払いか年払いを選び、購入前に4席の請求総額と次回更新日を確認します。</li>
+          <li><strong>残り3人をメールで招待する</strong>ワークスペース設定の「メンバー」から、3人それぞれの業務用メールへ送ります。</li>
+          <li><strong>3人が各自のアカウントで参加する</strong>共有IDや共有パスワードは作らず、4人が一人ずつログインします。</li>
+        </ol>
+
+        <div class="price">
+          <strong>標準シート4席の料金（2026年8月29日の公式表示）</strong>
+          <ul>
+            <li>月払い：1席 月額3,850円 × 4席 ＝ 月額15,400円</li>
+            <li>年払い：1席 月額3,050円相当 × 4席 ＝ 月額12,200円相当（年額一括146,400円）</li>
+            <li>ChatGPT・ChatGPT Work・Codexを利用できます</li>
+            <li>Businessのデータは、デフォルトではモデルの学習に使われません</li>
+          </ul>
+          <p class="fine">料金や表示内容は変わる場合があります。<strong>実際に申し込む時は、公式画面に出る4席分の総額を正本にします。</strong></p>
+        </div>
+
+        <figure class="official-figure">
+          <img src="assets/chatgpt-business-2026-08-29/ChatGPT_Business公式料金画面_2026-08-29.png" alt="OpenAI公式のChatGPT Business料金画面。標準シートの年額課金は月額3,050円相当、月額課金は3,850円と表示されている。" width="620" height="260" loading="lazy">
+          <figcaption>OpenAI公式の日本語料金画面（2026年8月29日確認）。契約時は「標準シート」を4席にします。</figcaption>
+        </figure>
+
+        <div class="action-links" aria-label="ChatGPT Businessの公式リンク">
+          <a class="action-link" href="https://chatgpt.com/team-sign-up" target="_blank" rel="noopener"><span>Businessの申込みを始める</span><span aria-hidden="true">↗</span></a>
+          <a class="action-link secondary" href="https://chatgpt.com/ja-JP/pricing/?type=team" target="_blank" rel="noopener"><span>日本語の料金を確認する</span><span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="note">
+          <strong>4人それぞれに必要なもの</strong>
+          自分専用のChatGPTアカウントと業務用メールアドレスです。契約は山田さんがまとめますが、ログインは4人で共有しません。
+        </div>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>② データ移送のやり方</h2>
+      <p class="section-lead">今使っているものを大きく変えず、「続く相手」と「一回だけ渡す資料」で使い分けます。</p>
+
+      <div class="card">
+        <h3>a. Dropbox活用（続く相手・日常のやり取り）</h3>
+        <span class="card-who">担当者</span>
+        <p>今のDropboxを会社ファイルの正本として残し、取引先ごとに共有フォルダを作って招待制で運用します。</p>
+
+        <h3>手順</h3>
+        <ol class="flow">
+          <li><strong>取引先ごとに共有フォルダを作る</strong>案件や部署で分けすぎず、取引先1社につき1つが目安。</li>
+          <li><strong>確認済みの会社メールアドレスで招待する</strong>見るだけなら閲覧権限、共同作業が必要な人だけ編集可に。</li>
+          <li><strong>案件が終わったら招待を解除する</strong>月に一度、誰が入っているかを見直すだけでも共有しっぱなしを減らせます。</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <h3>b. Cloudflareでパスワード共有（一回だけ渡す資料）</h3>
+        <span class="card-who">担当者（下書きはAIが支援）</span>
+        <p>提案書や会議メモなど「見てもらうだけ」の資料を1枚のページにして、Cloudflare Pages（無料枠あり）で公開します。パスワードはメールとは別の経路（電話など）で伝えます。</p>
+
+        <h3>手順</h3>
+        <ol class="flow">
+          <li><strong>完成した資料をページにする</strong>作業途中の版は置かない。</li>
+          <li><strong>Cloudflare Pagesへ公開する</strong>ページ全体にパスワードをかける仕組みを1つ足す。<strong>この仕組みの設置は支援側（AI活用支援）が行います。担当者さまはパスワードを決めるだけ。</strong></li>
+          <li><strong>URLを送る</strong>メールやチャットで送ってよい。</li>
+          <li><strong>パスワードは別の経路で伝える</strong>電話や対面など、URLと同じ経路にしない。</li>
+          <li><strong>使い終わったら消す</strong>ページを削除するかパスワードを変え、URLを知っていても見られない状態にする。</li>
+        </ol>
+
+        <div class="warning">
+          <strong>個人情報・健康情報は載せない</strong>
+          Cloudflare Pagesのパスワードは「リンク＋合言葉」の仕組みで、本人確認の強さはDropboxの招待メールほど高くありません。載せるのは提案書や進め方の説明など、個人が特定できない資料までにします。
+        </div>
+
+        <div class="state-flow" data-state-flow>
+          <p class="card-who" style="margin-bottom:14px;">資料を渡すときの共通の流れ（クリックで1つずつ進みます）</p>
+          <div class="state-flow-stage" data-flow-stage data-flow-tint="decide">
+            <div class="state-flow-badge" data-flow-badge>1</div>
+            <div class="state-flow-body">
+              <strong data-flow-title>置き場所を決める</strong>
+              <p data-flow-desc>続く相手ならDropboxの共有フォルダへ、一回だけならCloudflare Pagesへ完成資料を置く。</p>
+            </div>
+          </div>
+          <div class="state-flow-dots" role="tablist" aria-label="資料を渡すときの4ステップ">
+            <button type="button" class="state-flow-dot is-active" data-flow-dot="0" aria-label="ステップ1 置き場所を決める"></button>
+            <button type="button" class="state-flow-dot" data-flow-dot="1" aria-label="ステップ2 招待またはURLを送る"></button>
+            <button type="button" class="state-flow-dot" data-flow-dot="2" aria-label="ステップ3 相手が見る"></button>
+            <button type="button" class="state-flow-dot" data-flow-dot="3" aria-label="ステップ4 終わったら片付ける"></button>
+          </div>
+          <div class="state-flow-nav">
+            <button type="button" class="state-flow-btn" data-flow-prev>◀ 前へ</button>
+            <button type="button" class="state-flow-btn" data-flow-next>次へ ▶</button>
+          </div>
+
+          <ol class="state-flow-print">
+            <li><strong>置き場所を決める</strong>続く相手ならDropboxの共有フォルダへ、一回だけならCloudflare Pagesへ完成資料を置く。</li>
+            <li><strong>招待またはURLを送る</strong>Dropboxはメール招待。Cloudflareの場合はURLを送り、パスワードは電話など別の経路で伝える。</li>
+            <li><strong>相手が見る</strong>Cloudflare方式は相手のアカウント作成が不要。Dropbox方式はアカウント作成が本人確認を兼ねる。</li>
+            <li><strong>終わったら片付ける</strong>案件が終わったら、Dropboxは招待を解除、Cloudflareはページを削除するかパスワードを変更する。</li>
+          </ol>
+        </div>
+      </div>
 
       <div class="table-wrap">
         <table>
@@ -290,128 +660,118 @@
             <tr>
               <th>方法</th>
               <th>相手の操作</th>
-              <th>こちらからパスワードを伝えるか</th>
               <th>向いている場面</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Dropbox Transfer</td>
-              <td>リンクから受取。アカウント不要</td>
-              <td>任意。設定した時だけ別送</td>
-              <td>完成資料を一度だけ渡す</td>
-            </tr>
-            <tr>
               <td>Dropbox共有フォルダ</td>
               <td>招待メールから参加し、Dropboxで本人確認</td>
-              <td>資料を置くたびには不要</td>
               <td>同じ取引先と継続して使う</td>
             </tr>
             <tr>
-              <td>SharePoint／OneDrive</td>
-              <td>Microsoftが相手のメールへ確認コードを送る</td>
-              <td>こちらからは伝えない</td>
-              <td>相手を限定した社外共有</td>
-            </tr>
-            <tr>
-              <td>Google Drive訪問者共有</td>
-              <td>Googleが相手のメールへPINを送る</td>
-              <td>こちらからは伝えない</td>
-              <td>Googleアカウントがない相手との共有</td>
+              <td>Cloudflare Pages＋パスワード</td>
+              <td>URLを開き、その場でパスワードを入力</td>
+              <td>提案書・議事録などを一度だけ、素早く渡す</td>
             </tr>
           </tbody>
         </table>
       </div>
-
-      <div class="warning">
-        <strong>個人情報・健康情報を扱う時</strong>
-        リンクだけで見られる方法は避けます。相手の本人確認、閲覧権限、期限、案件終了時に誰が解除するかまで決めてから共有します。
-      </div>
     </section>
 
-    <section>
-      <h2>福命会様では、取引先別の「共通の箱」から</h2>
-      <p>新しいサービスへ一気に移る必要はありません。Dropboxの中に、取引先ごとの共有フォルダを作ります。相手は確認済みの会社メールアドレスで直接招待。見るだけなら閲覧権限、共同作業が必要な人だけ編集可にします。</p>
-      <p>案件が終わったら外部アクセスを解除し、社内の保管場所へ移します。月に一度、誰が入っているかを確認するだけでも、共有しっぱなしを減らせます。</p>
-
-      <h3>Transferを使うのは、完成品を一度だけ渡す時</h3>
-      <p>個人を特定できない集計資料や完成パンフレットなどが候補です。パスワードなしで送るなら、リンクが転送されても問題がない内容かを先に確認します。</p>
-    </section>
-
-    <section>
-      <h2>AIは、共有の前後に入れます</h2>
-      <p>AIに公開範囲を決めさせるのは危険です。人が決めたルールに沿って、送付前の確認と、送ったあとの記録を任せます。</p>
-
-      <ol class="flow">
-        <li><strong>完成ファイルを「送付前」フォルダへ置く</strong>作業途中の版は入れません。</li>
-        <li><strong>AIがファイル名と中身を点検する</strong>宛先、日付、版の違い、個人名の混入を確認します。</li>
-        <li><strong>共有方法を提案する</strong>単発送付、継続共有、本人確認が必要な資料に分けます。</li>
-        <li><strong>送付文とファイル一覧を作る</strong>メールやチャットへ貼れる下書きまで用意します。</li>
-        <li><strong>人が宛先と資料を照合する</strong>権限と期限も確認し、ここで初めて外部共有を許可します。</li>
-        <li><strong>送付履歴を残し、期限後の解除を知らせる</strong>未受領や共有しっぱなしも見つけやすくなります。</li>
-      </ol>
-    </section>
-
-    <section>
-      <h2>よくある組み合わせ</h2>
-      <p>AIの名前から選ぶより、今ある契約と、取引先が何を使っているかで決める方が失敗しません。</p>
-
-      <article class="tool-pattern">
-        <h3>Dropboxをそのまま使う</h3>
-        <p class="tool-name">Dropbox ＋ ChatGPT Business ＋ Make／Zapier／n8n</p>
-        <p>移行が少なく、今のファイル正本を保てます。Dropboxの自動フォルダでは、名前変更、PDF変換、分類も可能。AIは整理、送付文、記録を担当します。共有リンクやTransferをどこまで自動で扱えるかは、契約プランと接続方法を実機で確認します。</p>
-      </article>
-
-      <article class="tool-pattern">
-        <h3>Microsoft 365へ寄せる</h3>
-        <p class="tool-name">SharePoint／OneDrive ＋ Power Automate ＋ Copilot Studio</p>
-        <p>メールのワンタイムコードで、社外の相手を本人確認できます。Copilot StudioはSharePointの権限を引き継ぎ、本人が見られない資料を回答に出さない設計が可能です。Microsoft 365をすでに契約している会社と相性がいい方法です。</p>
-      </article>
-
-      <article class="tool-pattern">
-        <h3>Google Workspaceへ寄せる</h3>
-        <p class="tool-name">Google Drive ＋ Gemini ＋ Apps Script</p>
-        <p>Googleアカウントがない相手にも訪問者共有が使えます。確認PINはGoogleから自動送信。GeminiはDrive内の文書やフォルダを探し、要約する作業に向いています。</p>
-      </article>
-
-      <div class="note">
-        <strong>今の提案</strong>
-        福命会様では、Dropboxを残した小さな試運転が先です。Microsoft 365やGoogle Workspaceは、現在の契約状況と相手先の環境を見てから比べます。
-      </div>
-    </section>
-
-    <section>
-      <h2>9月7日に持ち寄るもの</h2>
-      <p>この日は契約を決めきる日ではありません。実際の画面を見て、どの方法なら無理なく続けられるかを確かめます。</p>
+    <section class="col">
+      <h2>9月7日に確認すること</h2>
+      <p class="section-lead">この日は契約を決めきる日ではありません。この2つを次に進められる状態にします。</p>
 
       <ul class="checklist">
-        <li>今使っているデータ送信サービスの名称、料金、便利な点、面倒な点</li>
-        <li>Dropboxの契約プランが分かる画面か請求書</li>
-        <li>よく送る取引先が、Dropbox・Microsoft・Googleのどれを使っているか</li>
-        <li>資料の種類が分かるメモ（個人情報や健康情報があるか、集計済みか、一般資料か）</li>
-        <li>単発送付が多いか、同じ相手との継続共有が多いか</li>
-        <li>招待、権限確認、案件終了時の解除を担当する人</li>
-        <li>個人情報を含まないテスト用PDF 1点</li>
-        <li>社外側の見え方を確認できる受取テスト用メールアドレス</li>
+        <li>ChatGPT Businessの管理者を山田さんにしてよいか</li>
+        <li>標準シート4席を、月払い・年払いのどちらにするか</li>
+        <li>残り3人を招待する業務用メールアドレス</li>
+        <li>Dropboxの取引先フォルダが今どこまで整理されているか</li>
+        <li>一回だけ渡す資料に、Cloudflare Pages＋パスワードを試してみるか</li>
       </ul>
-
-      <div class="note">
-        <strong>この日の着地点</strong>
-        継続相手の共有方法、単発送付の扱い、人が確認する場所。この3つが決まれば、AIを入れても運用が崩れません。
-      </div>
     </section>
 
     <footer class="sources">
-      <p>公式確認先（2026年8月24日）</p>
+      <p>公式確認先（2026年8月29日確認）</p>
       <ul>
-        <li><a href="https://help.dropbox.com/share/dropbox-transfer">Dropbox Transfer</a></li>
+        <li><a href="https://chatgpt.com/team-sign-up">ChatGPT Business 申込み画面（OpenAI公式）</a></li>
+        <li><a href="https://chatgpt.com/ja-JP/pricing/?type=team">ChatGPT Business 日本語料金（OpenAI公式）</a></li>
+        <li><a href="https://chatgpt.com/ja-JP/business/">ChatGPT Business 紹介ページ（OpenAI公式）</a></li>
         <li><a href="https://help.dropbox.com/share/share-file-or-folder">Dropboxの共有方法</a></li>
-        <li><a href="https://learn.microsoft.com/en-us/entra/external-id/one-time-passcode">Microsoft メールワンタイムコード</a></li>
-        <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-add-sharepoint">SharePointとCopilot Studio</a></li>
-        <li><a href="https://support.google.com/drive/answer/9195194?hl=ja">Google Drive訪問者共有</a></li>
-        <li><a href="https://workspace.google.com/products/drive/ai/">Gemini in Google Drive</a></li>
+        <li><a href="https://developers.cloudflare.com/pages/">Cloudflare Pages 公式ドキュメント</a></li>
+        <li><a href="https://developers.cloudflare.com/pages/functions/">Cloudflare Pages Functions（パスワード等の追加機能を作る仕組み）</a></li>
       </ul>
     </footer>
   </main>
+
+  <script>
+    (function () {
+      var flow = document.querySelector('[data-state-flow]');
+      if (!flow) return;
+
+      var steps = [
+        {
+          tint: 'decide',
+          title: '置き場所を決める',
+          desc: '続く相手ならDropboxの共有フォルダへ、一回だけならCloudflare Pagesへ完成資料を置く。'
+        },
+        {
+          tint: 'send',
+          title: '招待またはURLを送る',
+          desc: 'Dropboxはメール招待。Cloudflareの場合はURLを送り、パスワードは電話など別の経路で伝える。'
+        },
+        {
+          tint: 'view',
+          title: '相手が見る',
+          desc: 'Cloudflare方式は相手のアカウント作成が不要。Dropbox方式はアカウント作成が本人確認を兼ねる。'
+        },
+        {
+          tint: 'close',
+          title: '終わったら片付ける',
+          desc: '案件が終わったら、Dropboxは招待を解除、Cloudflareはページを削除するかパスワードを変更する。'
+        }
+      ];
+
+      var stage = flow.querySelector('[data-flow-stage]');
+      var badge = flow.querySelector('[data-flow-badge]');
+      var title = flow.querySelector('[data-flow-title]');
+      var desc = flow.querySelector('[data-flow-desc]');
+      var dots = Array.prototype.slice.call(flow.querySelectorAll('[data-flow-dot]'));
+      var prevBtn = flow.querySelector('[data-flow-prev]');
+      var nextBtn = flow.querySelector('[data-flow-next]');
+      var current = 0;
+
+      function render() {
+        var step = steps[current];
+        stage.setAttribute('data-flow-tint', step.tint);
+        badge.textContent = String(current + 1);
+        title.textContent = step.title;
+        desc.textContent = step.desc;
+        dots.forEach(function (dot, i) {
+          dot.classList.toggle('is-active', i === current);
+        });
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current === steps.length - 1;
+      }
+
+      prevBtn.addEventListener('click', function () {
+        if (current > 0) { current -= 1; render(); }
+      });
+
+      nextBtn.addEventListener('click', function () {
+        if (current < steps.length - 1) { current += 1; render(); }
+      });
+
+      dots.forEach(function (dot, i) {
+        dot.addEventListener('click', function () {
+          current = i;
+          render();
+        });
+      });
+
+      render();
+    })();
+  </script>
 </body>
 </html>
