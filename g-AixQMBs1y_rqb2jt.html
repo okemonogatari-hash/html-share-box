@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><title>チャンネル再スタートのご提案</title>
+<style>
+  :root{
+    --paper:#F7F8F6;
+    --panel:#FFFFFF;
+    --panel-line:#E4E1D9;
+    --ink:#23272B;
+    --ink-soft:#4B5157;
+    --ink-faint:#6B7278;
+    --accent:#B0491F;
+    --accent-soft:#8A5A2B;
+    --ok:#2B6B4A;
+    --measure:40em;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{
+    max-width:840px;
+    margin:0 auto;
+    padding:0 20px 64px;
+    counter-reset:sec;
+  }
+  header.hero{
+    padding:40px 20px 28px;
+    border-bottom:1px solid var(--panel-line);
+    margin-bottom:32px;
+  }
+  header.hero .kicker{
+    font-size:.82rem;
+    letter-spacing:.06em;
+    color:var(--ink-faint);
+    margin:0 0 10px;
+  }
+  header.hero h1{
+    font-size:1.5rem;
+    line-height:1.5;
+    margin:0 0 12px;
+    font-weight:700;
+    text-wrap:balance;
+  }
+  header.hero .meta{
+    font-size:.85rem;
+    color:var(--ink-faint);
+    margin:0;
+  }
+  .col{
+    width:100%;
+    max-width:var(--measure);
+    margin-left:auto;
+    margin-right:auto;
+  }
+  section{
+    margin:0 auto 44px;
+    max-width:840px;
+    counter-increment:sec;
+  }
+  h2{
+    font-size:1.18rem;
+    line-height:1.6;
+    margin:0 0 18px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  h2 span.htxt{text-wrap:balance;line-break:strict;}
+  h2::before{
+    content:counter(sec);
+    flex:none;
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--panel);
+    background:var(--accent);
+    border-radius:999px;
+    width:26px;height:26px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+  }
+  h3{
+    font-size:1rem;
+    color:var(--ink-soft);
+    margin:26px 0 10px;
+    font-weight:700;
+  }
+  p{margin:0 0 16px;}
+  .lead{color:var(--ink-soft);}
+  strong{color:var(--ink);font-weight:700;}
+  a{color:var(--accent-soft);}
+  .accent-num{
+    color:var(--accent);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* 決断の依頼ボックス */
+  .ask{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+    padding:20px 22px;
+    margin:0 0 40px;
+  }
+  .ask .ask-kicker{
+    font-size:.78rem;
+    color:var(--accent-soft);
+    font-weight:700;
+    letter-spacing:.02em;
+    margin:0 0 6px;
+  }
+  .ask .ask-body{
+    font-size:1.05rem;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 8px;
+    line-height:1.7;
+  }
+  .ask .ask-sub{
+    font-size:.9rem;
+    color:var(--ink-soft);
+    margin:0;
+  }
+
+  /* サマリーボックス */
+  .summary{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+    padding:22px 22px 6px;
+  }
+  .summary ol{
+    margin:0;
+    padding-left:1.3em;
+  }
+  .summary li{
+    margin-bottom:16px;
+    line-height:1.85;
+  }
+  .summary li b{color:var(--accent-soft);}
+
+  /* チェックリスト */
+  .checklist{
+    list-style:none;
+    margin:0;
+    padding:0;
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .checklist li{
+    display:flex;
+    gap:12px;
+    padding:15px 18px;
+    border-bottom:1px solid var(--panel-line);
+    font-size:.94rem;
+    line-height:1.75;
+  }
+  .checklist li:last-child{border-bottom:none;}
+  .checklist .mark{
+    flex:none;
+    color:var(--ok);
+    font-weight:700;
+  }
+  .checklist .ttl{font-weight:700;color:var(--ink);display:block;}
+  .checklist .desc{color:var(--ink-soft);font-size:.88rem;display:block;margin-top:2px;}
+
+  /* 統計カード */
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin:0 0 8px;
+  }
+  .stat{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    padding:16px 18px;
+  }
+  @media (max-width:640px){
+    .stat-grid{grid-template-columns:1fr;}
+  }
+  .stat .num{
+    font-size:1.6rem;
+    font-weight:700;
+    color:var(--accent);
+    font-variant-numeric:tabular-nums;
+    line-height:1.3;
+    display:block;
+  }
+  .stat .label{
+    font-size:.85rem;
+    color:var(--ink-soft);
+    display:block;
+    margin-top:4px;
+  }
+
+  /* 表 */
+  .tablewrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    background:var(--panel);
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:480px;
+    font-size:.9rem;
+  }
+  th,td{
+    text-align:left;
+    padding:10px 12px;
+    border-bottom:1px solid var(--panel-line);
+  }
+  th{
+    color:var(--ink-faint);
+    font-weight:700;
+    font-size:.78rem;
+    letter-spacing:.02em;
+    background:#FAFAF7;
+  }
+  td.num{
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+  tr:last-child td{border-bottom:none;}
+  .tablecap{
+    font-size:.82rem;
+    color:var(--ink-faint);
+    margin:8px 0 0;
+  }
+
+  /* 4ステップの流れ（2x2グリッド。番号バッジで順序を示す） */
+  .flow{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin:14px 0 4px;
+  }
+  .flow .step{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:8px;
+    padding:14px 16px;
+    font-size:.85rem;
+    color:var(--ink-soft);
+  }
+  .flow .step .stepnum{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:20px;height:20px;
+    border-radius:999px;
+    background:var(--accent-soft);
+    color:var(--panel);
+    font-size:12.5px;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .flow .step b{display:block;color:var(--ink);font-size:.9rem;margin-bottom:4px;}
+  @media (max-width:480px){
+    .flow{grid-template-columns:1fr;}
+  }
+
+  /* 判断条件カード */
+  .choices{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin:16px 0;
+  }
+  .choice{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-left:4px solid var(--accent-soft);
+    border-radius:8px;
+    padding:16px 18px;
+  }
+  .choice .tag{
+    font-size:.8rem;
+    color:var(--accent-soft);
+    font-weight:700;
+    margin:0 0 6px;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .choice .tag .due{
+    font-weight:400;
+    color:var(--ink-faint);
+    font-size:.78rem;
+  }
+  .choice p{margin:0 0 8px;font-size:.94rem;}
+  .choice p:last-child{margin-bottom:0;}
+
+  /* 移植弾カード */
+  .pioneer{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-bottom:14px;
+  }
+  .pioneer .who{
+    font-size:.95rem;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 4px;
+  }
+  .pioneer .who .role{
+    font-weight:400;
+    color:var(--ink-faint);
+    font-size:.85rem;
+  }
+  .pioneer p{margin:0 0 8px;font-size:.94rem;}
+  .pioneer .src{
+    font-size:.78rem;
+    color:var(--ink-faint);
+  }
+  .pioneer .core{
+    display:inline-block;
+    margin-top:2px;
+    font-size:.82rem;
+    color:var(--accent-soft);
+    font-weight:700;
+  }
+
+  .callout{
+    background:#F2F5F1;
+    border:1px solid #DCE3D9;
+    border-radius:10px;
+    padding:16px 18px;
+    font-size:.92rem;
+    color:var(--ink-soft);
+  }
+  .callout b{color:var(--ok);}
+
+  .callout-warn{
+    background:#FBF4EE;
+    border:1px solid #EAD9C6;
+    border-radius:10px;
+    padding:16px 18px;
+    font-size:.92rem;
+    color:var(--ink-soft);
+  }
+  .callout-warn b{color:var(--accent);}
+
+  footer{
+    max-width:840px;
+    margin:0 auto;
+    padding:0 20px;
+    border-top:1px solid var(--panel-line);
+    padding-top:20px;
+    font-size:.78rem;
+    color:var(--ink-faint);
+    line-height:1.8;
+  }
+
+  small{font-size:12.5px;}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap" style="padding:0;">
+    <p class="kicker">カドッチさんへ ｜ 9月1日11:00 MTGご提案</p>
+    <h1>3週間の検証が出した答えと、次の一手のご提案</h1>
+    <p class="meta">2026年8月31日作成・9月1日更新</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="col">
+      <h2><span class="htxt">3週間の結論（正直にお伝えします）</span></h2>
+      <p class="lead">この3週間で行った2つの実験は、どちらも数字を動かせませんでした。同じ期間で、チャンネルの状態も観測開始以来もっとも悪化しています。</p>
+
+      <div class="stat-grid">
+        <div class="stat">
+          <span class="num">+6</span>
+          <span class="label">8月30日の合計増分。観測開始以来の最低（8/29の+31から1/5、8/25の+62から見て1/10）</span>
+        </div>
+        <div class="stat">
+          <span class="num">83→82</span>
+          <span class="label">登録者数。観測開始以来はじめての減少（8/21以降、8日連続+0のあとの-1）</span>
+        </div>
+        <div class="stat">
+          <span class="num">17/21本</span>
+          <span class="label">公開24時間で再生数が+0だった動画の本数。加えてK6の再生数・K0のいいねが実際に減少に転じました</span>
+        </div>
+      </div>
+
+      <p style="margin-top:8px;">これまでの「伸びが鈍い」という段階から、<strong>数字が実際に減り始める局面</strong>に入ったというのが、今のいちばん正直な現在地です。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <h2><span class="htxt">この3週間で消去できた変数</span></h2>
+      <p class="lead">作り方側で疑わしかったものを、一つずつ実測で潰してきました。</p>
+
+      <ul class="checklist">
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            <span class="ttl">BGM差し替え（EXP-001・判定：8月28日）</span>
+            <span class="desc">カドッチさんご提供のBGMへ差し替え。差し替え後のK18は公開73時間で3再生と、同じ73時間時点の停滞組の中央値（9）を下回り、伸びる材料は出ませんでした（判定＝Hold）。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            <span class="ttl">冒頭の言い回し（EXP-002・判定：8月31日）</span>
+            <span class="desc">結論先出し・反転先出し・呼びかけ型の3パターンを比較。3本とも初速は旧BGM期のbaseline圏内かそれ以下でした（判定＝Hold）。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            <span class="ttl">投稿頻度・間隔</span>
+            <span class="desc">12時間間隔・24時間間隔・1日1本・1日2本の組み合わせを5回比較。伸び・停滞を説明する要因にならないとの検証結果が5回続いています。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            <span class="ttl">動画の設定（尺・BGM音量・字幕形式など）</span>
+            <span class="desc">伸びた動画と停滞した動画のあいだで、設定面の差は見つかりませんでした。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            <span class="ttl">著作権</span>
+            <span class="desc">使用素材の権利面に問題は見つかっていません。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            <span class="ttl">テーマ選定</span>
+            <span class="desc">同じジャンルの競合チャンネルが実際に伸びている実測と矛盾します。テーマの選び方自体が原因という見立ては支持されません。</span>
+          </span>
+        </li>
+        <li>
+          <span class="mark">✓</span>
+          <span>
+            <span class="ttl">「新設チャンネルだから配られない」説</span>
+            <span class="desc">競合2チャンネルの1本目は、現在の累計で千〜1万本単位（この数字は「現在の累計」で、公開当日の初速そのものではない点は留保が要ります）。それでも「新設だから絶対に配られない」と言い切れる材料は無いというのが実測からの結論です。</span>
+          </span>
+        </li>
+      </ul>
+
+      <div class="callout-warn" style="margin-top:16px;">
+        <b>もっとも厳密な実験ですら、通りませんでした。</b> 冒頭の1文だけを変えるという、この3週間でいちばん厳密に条件をそろえた実験（EXP-002）ですら、baselineを超える結果は出ませんでした。個別の言い回しやパーツを直す段階は、実測ベースで一通り終えたと見ています。
+      </div>
+      <p style="margin-top:16px;">個別要因はすべて潰しましたが、「なぜ8/16を境に止まったか」の根本メカニズムは、今も特定できていません。だからこそ個別施策の微調整ではなく、基盤ごと作り直すご提案です。</p>
+    </div>
+  </section>
+
+  <div class="ask">
+    <p class="ask-kicker">今日ご相談したいこと</p>
+    <p class="ask-body">新しいチャンネルで、実証済みの当たりネタから再スタートすること。</p>
+    <p class="ask-sub">作り方側で疑わしいものは、この3週間で一つずつ実測して潰しました。診断はほぼ終わっています。今日は、その中身と、判断に必要な最後の1点をお伝えします。</p>
+  </div>
+
+  <section>
+    <div class="col">
+      <h2><span class="htxt">だから、次の一手をご提案します</span></h2>
+      <p class="lead">3週間の検証結果を踏まえたご提案です。プロであるカドッチさんに判断材料として、選択肢を2つともお見せします。</p>
+
+      <div class="choices">
+        <div class="choice">
+          <p class="tag">本命A：新しいチャンネルで再スタート</p>
+          <p>当たりネタを新しい箱に込め直し、勝ちパターンを1本目から適用します。新設だから配られない、と言い切る材料は無いことは確認済みです。</p>
+        </div>
+        <div class="choice">
+          <p class="tag">対抗B：現チャンネル内での路線総入れ替え<span class="due">参考実測あり</span></p>
+          <p>箱は変えず、投稿するジャンルを丸ごと入れ替える手です。外部実測に回復例があります（詳細は次の項）。</p>
+        </div>
+      </div>
+
+      <div class="pioneer">
+        <p class="who">対抗Bの根拠：同ジャンル内チャンネルの実測 <span class="role">yt-dlpで全68本取得・2026-08-31</span></p>
+        <p>雑学クイズ形式で39本・再生数29〜33,026（3万台止まり）だったチャンネルが、投稿ジャンルをシニア向けストーリー形式へ丸ごと切り替えたところ、以降29本で再生数36〜194,335（万単位〜19万台）まで回復した例があります。</p>
+        <span class="core">読み：この例は「伸び悩み（動画自体はまだ配信され続けていた）」局面での路線転換です。うちの状況は「新規動画がほぼ配信されていない疑いがある（直近21本中17本が公開24時間で+0）」局面で、前提が異なります。配信自体が絞られたままでは、中身をどれだけ変えても土台が動かない可能性があります。</span>
+        <p class="src">出典：yt-dlp実測（2026-08-31取得）</p>
+      </div>
+
+      <h3>本命Aの実行計画</h3>
+      <div class="flow">
+        <div class="step"><span class="stepnum">1</span><b>新設chでも配られる可能性が高い</b>同ジャンルの競合chの1本目は現在の累計で千〜1万本単位。新設だから配られないと決めつける根拠は無いことを確認済みです。</div>
+        <div class="step"><span class="stepnum">2</span><b>当たりネタを込め直す</b>今のチャンネルですでに数千〜1万再生を出した3系統のネタを、新しい箱にリメイクします。</div>
+        <div class="step"><span class="stepnum">3</span><b>勝ちの型を最初から適用</b>当たり動画と競合上位を分析した「勝ちパターン教科書」の3条件を、1本目から組み込みます。</div>
+        <div class="step"><span class="stepnum">4</span><b>台本3本は準備済み</b>自己検査（3条件＋禁止事項）を通過済み。GOが出れば、その日から投稿を再開できます。</div>
+      </div>
+
+      <h3>準備済みの台本3本</h3>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>系統</th><th>タイトル案</th><th>元ネタの実績</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>老後のお金・銀行系</td><td>老後貧乏になる人が銀行の窓口でやりがちなこと1位は</td><td class="num">13,444再生</td></tr>
+            <tr><td>認知症・脳系</td><td>認知症になりやすい人がスマホでやっていること1位は</td><td class="num">8,643再生</td></tr>
+            <tr><td>夫婦関係系</td><td>熟年離婚に近づく夫婦がLINEでやっていること1位は</td><td class="num">7,424再生</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tablecap">元ネタは今のチャンネルの実測当たり動画。同じ再アップではなく、同テーマの新規ネタとして台本を書き下ろし済みです。</p>
+
+      <h3>初動2週間の投稿ペース（外部実測を反映）</h3>
+      <p>新設チャンネルの立ち上がり方について、直近開設の2チャンネルを実測しました。</p>
+      <div class="pioneer">
+        <p class="who">新設シニア系チャンネル2件の実測 <span class="role">開設2ヶ月以内・yt-dlpで全数取得</span></p>
+        <p>いずれも開設初日から1日1〜4本を投稿し、開設1ヶ月時点で1日平均3〜3.5本まで積み増していました。尺は58〜59秒にほぼ固定、テーマは人間関係・年金家計・健康・夫婦などを初月から混合。両chとも初期8本の中に1万〜6万台の「当たり」が混ざっており、初動で当たりが出ないチャンネルではありませんでした。</p>
+        <span class="core">読み：初日から複数本・尺短め・テーマ混合が実測上の標準です。11本連続で当たりが出ない状態は、この2chを含む実測サンプルのどこにも見られないパターンでした。再生数の増加は、そのまま登録者数の増加を意味しません（本数を積んでも登録転換率は別物という実測もあります）。</span>
+        <p class="src">出典：yt-dlp実測（2026-08-31取得）</p>
+      </div>
+      <p>この実測を踏まえ、新チャンネルは開設初日に準備済みの3本を投稿し、以降も複数系統を混ぜながら1日3〜4本ペースへ積み増す計画に改めます。1本ずつ様子を見て積み上げるペースは、今回の実測には見当たりませんでした。</p>
+
+      <h3>新チャンネル開設のリスク（未検証を含む）</h3>
+      <div class="callout-warn">
+        <b>未検証：</b>同一アカウント内に新しいチャンネルを作った場合、既存チャンネルのポリシー上の低評価がアカウント全体（新チャンネルを含む）に及ぶ可能性が一部で言及されています。ただしこの記述は、YouTube公式・海外メディアのいずれでも裏付けが取れていません。念のためリスクとして明記した上でのご提案です。
+      </div>
+
+      <h3>作り直しの判断条件（3つ）</h3>
+      <p class="lead">場当たりで決めないよう、事前に3つの条件を置いています。</p>
+      <div class="choices">
+        <div class="choice">
+          <p class="tag">① チャンネル要因であることが数字で確定している<span class="due">現状：ほぼ確定的</span></p>
+          <p>作り方側で疑わしかったものは、上でご説明したとおりすべて棄却済みです。一次回答はこのあとご説明します。</p>
+        </div>
+        <div class="choice">
+          <p class="tag">② 停滞の解除経路が実務的に無い</p>
+          <p>この3週間、BGM・冒頭という2つの変数で実験を行いましたが、いずれも改善は見られませんでした。</p>
+        </div>
+        <div class="choice">
+          <p class="tag">③ カドッチさんのご同意</p>
+          <p>この3条件のうち、これだけが今日まだ残っている条件です。</p>
+        </div>
+      </div>
+      <p style="font-size:.82rem;color:var(--ink-faint);margin-top:8px;">なお、数値の見切り基準を公開している運用者は、今回の調査でも見つかりませんでした。ここでお示しした3条件は、外部の標準ではなく、私たちが独自に明文化したものです。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <h2><span class="htxt">切り分けの一次回答（今朝の実測）</span></h2>
+      <p class="lead">今朝、YouTube Studio画面の実測が取れました。診断の切り分けに、一次的な回答が出ています。</p>
+      <p>K21（ため息が増えた夫婦がやめたこと1位は・8月30日07:00公開）は、公開から約47時間（9月1日6時台に実測）で再生数2でした。Studio画面のトラフィックソース内訳は「YouTube検索100.0%／直接入力または不明0.0%」とだけ表示され、K19・K20には出ている「ショート フィード」という項目自体が、K21の内訳には存在しません。フィード経由の視聴回数がゼロで、項目そのものが表示から外れていると読めます。</p>
+      <p>K19（18再生）はフィード経由が11.1%（＝2再生相当）、K20（10再生）はフィード経由が50%（＝5再生相当）でした。直近3本とも、フィード経由の再生がほぼ無い状態です。</p>
+      <p style="font-size:.88rem;color:var(--ink-faint);">参考（2026-08-24実測・別指標のため目安）：健全期の比較基準だったK5・K6はSHORTS経由の流入比率が98.7%・98.8%でした（Analytics APIのSHORTS区分による集計で、Studio画面の「ショート フィード」とは集計元が異なります）。</p>
+      <p>この実測は、<strong>「配信自体がほぼ配られていない」を支持する一次回答</strong>です。ただし画面から読めるのは実際に視聴に至った「フィード経由の再生」だけで、「フィードに表示されたが視聴に至らなかった数（インプレッション）」はこの画面からは読めません。最終確定は、9月1日〜2日に到着見込みのYouTube Reporting APIのインプレッション実数で行います。</p>
+      <div class="callout" style="margin-top:8px;">
+        この1点が揃うことで、<b>「型の問題」か「配信の問題」か</b>の最終的な切り分けが完了します。上でお伝えした新チャンネルのご提案は、どちらの結果が出ても変わらない内容として組んでいます。
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <h2><span class="htxt">今のチャンネルの扱い</span></h2>
+      <p class="lead">削除せず、アーカイブとして残すご提案です。</p>
+      <p>実証済みの当たり5本（老後のお金・認知症・夫婦関係など）は、今も生きた実績です。新チャンネルの台本づくりや、今後のFew-shot学習の土台として使い続けます。今のチャンネル自体は非公開・削除にはせず、記録としてそのまま残します。既存の82名の登録者様への告知や誘導は行わず、現チャンネルはそのまま静かに残します（新チャンネルへの直接の引き継ぎ機能はYouTube側に無いため）。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <h3 style="margin-top:0;">補足</h3>
+      <p style="font-size:.88rem;color:var(--ink-soft);">同じ制作の仕組みを使った検証用の動画は、別アカウントでも別途用意しています（チャンネル開設待ちの段階で、詳細は割愛します）。今回のご提案とは別枠の並行検証です。同時並行で走らせている検証用の別チャンネル（2件）でも同種の崖が出た場合は、業界要因の可能性が濃厚と判断し、次の一手を改めてご相談します。</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>自チャンネルの数値はYouTube Data API／Analytics API／Reporting API／YouTube Studio画面実測（2026-09-01朝）／公開面実測（yt-dlp）、およびEXPERIMENT_LEDGER.csv・DECISION_LOG.md・STATE.mdの記録に基づき、実測日時は各項目に記載のとおりです（最終更新2026-09-01）。競合チャンネルの実測は2026-08-25のyt-dlp flat-playlist取得に基づきます。個別のログ・数字の内訳はご希望があればお見せします。</p>
+</footer>
+
+</body>
+</html>
