@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>健幸学 組織セミナーLP の作り方と保守管理</title>
+<style>
+  :root {
+    --paper: #F7F8F6;
+    --panel: #FFFFFF;
+    --ink: #23272B;
+    --ink-soft: #4B5158;
+    --ink-faint: #565C62;
+    --accent: #A8481A;
+    --accent-soft: #FFF1E4;
+    --btn-bg: #A8481A;
+    --btn-fg: #FFFFFF;
+    --line: #DCE0E3;
+    --navy: #14264a;
+    --band-fg: #F4F6FA;
+    --band-accent: #F5A85A;
+    --warn-bg: #FFF1E4;
+    --warn-ink: #7A3812;
+    --measure: 40em;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #1B1F23;
+      --panel: #23282D;
+      --ink: #E9EBED;
+      --ink-soft: #C2C8CD;
+      --ink-faint: #A6AEB5;
+      --accent: #F5A85A;
+      --accent-soft: #3A2C1E;
+      --btn-bg: #B5551F;
+      --btn-fg: #FFFFFF;
+      --line: #3A4046;
+      --navy: #101d38;
+      --band-fg: #F4F6FA;
+      --band-accent: #F5A85A;
+      --warn-bg: #3A2C1E;
+      --warn-ink: #F5C79A;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Zen Kaku Gothic New", "游ゴシック体", "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+    font-size: 16px;
+    line-height: 1.9;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  a { color: var(--accent); }
+
+  .band {
+    background: var(--navy);
+    color: var(--band-fg);
+    padding: 3.2em 1.25em 2.8em;
+  }
+  .band .col { max-width: var(--measure); width: 100%; margin: 0 auto; }
+  .band .eyebrow {
+    color: var(--band-accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    margin: 0 0 0.8em;
+    font-weight: 700;
+  }
+  .band h1 {
+    font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.05rem);
+    line-height: 1.55;
+    margin: 0 0 1em;
+    text-wrap: balance;
+    line-break: strict;
+    font-weight: 700;
+  }
+  .band dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.4em 1em;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  .band dt { color: var(--band-accent); font-weight: 700; }
+  .band dd { margin: 0; }
+
+  main { padding: 0 1.25em 5em; counter-reset: sec; }
+  .col {
+    max-width: var(--measure);
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  section {
+    padding-top: 3em;
+    counter-increment: sec;
+  }
+  section + section {
+    border-top: 1px solid var(--line);
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    margin: 0 0 0.9em;
+    padding-top: 0.1em;
+    text-wrap: balance;
+    line-break: strict;
+  }
+  h2::before {
+    content: counter(sec, decimal-leading-zero);
+    display: inline-block;
+    color: var(--accent);
+    font-size: 0.8rem;
+    line-height: 1;
+    vertical-align: 2px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-right: 0.6em;
+  }
+  h3 {
+    font-size: 1.05rem;
+    margin: 1.6em 0 0.6em;
+  }
+
+  p { margin: 0 0 1.1em; }
+  p:last-child { margin-bottom: 0; }
+
+  .lead { color: var(--ink-soft); }
+
+  ol.steps, ul.plain {
+    margin: 0 0 1.1em;
+    padding-left: 1.4em;
+  }
+  ol.steps li, ul.plain li {
+    margin-bottom: 0.9em;
+  }
+  ol.steps li:last-child, ul.plain li:last-child { margin-bottom: 0; }
+  ol.steps strong, ul.plain strong { color: var(--ink); }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.4em 1.5em;
+    margin: 1.2em 0;
+  }
+
+  .kv {
+    display: grid;
+    grid-template-columns: minmax(7em, auto) 1fr;
+    gap: 0.6em 1em;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  .kv dt { color: var(--ink-faint); }
+  .kv dd { margin: 0; word-break: break-word; }
+
+  /* 縦タイムライン（CSSのみ。装飾ラベルはテキストノードではなくcounterで出す＝孤児誤検出を避ける） */
+  ol.timeline {
+    list-style: none;
+    counter-reset: tl;
+    margin: 1.5em 0 1.6em;
+    padding: 0;
+  }
+  ol.timeline li {
+    counter-increment: tl;
+    position: relative;
+    padding: 0.05em 0 1.8em 2.9em;
+  }
+  ol.timeline li:last-child { padding-bottom: 0; }
+  ol.timeline li::before {
+    content: counter(tl);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.9em;
+    height: 1.9em;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ol.timeline li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 0.9em;
+    top: 2.1em;
+    bottom: -0.15em;
+    width: 2px;
+    background: var(--line);
+  }
+  ol.timeline .t-title {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.25em;
+  }
+  ol.timeline .t-desc {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    margin: 0;
+  }
+
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    margin: 1em 0;
+  }
+  .history-table th, .history-table td {
+    text-align: left;
+    padding: 0.6em 0.8em;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .history-table th {
+    color: var(--ink-faint);
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  .warn {
+    background: var(--warn-bg);
+    color: var(--warn-ink);
+    border-radius: 10px;
+    padding: 1em 1.3em;
+    margin: 1.2em 0;
+    font-size: 0.95rem;
+  }
+  .warn strong { color: inherit; }
+
+  .notes {
+    background: var(--accent-soft);
+    border-radius: 10px;
+    padding: 1.3em 1.5em;
+  }
+  .notes ul { margin: 0; padding-left: 1.3em; }
+  .notes li { margin-bottom: 0.7em; }
+  .notes li:last-child { margin-bottom: 0; }
+
+  footer {
+    padding: 2.5em 1.25em 3.5em;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 0.85rem;
+  }
+
+  small { font-size: 12.8px; }
+</style>
+</head>
+<body>
+
+<header class="band">
+  <div class="col">
+    <p class="eyebrow">資料</p>
+    <h1>健幸学 組織セミナーLP の作り方と保守管理</h1>
+    <dl>
+      <dt>日付</dt><dd>2026年8月31日</dd>
+      <dt>対象</dt><dd>Social Healthcare Design株式会社　亀ヶ谷正信様／田中様</dd>
+      <dt>作成</dt><dd>三又 謙次郎（おけもん）</dd>
+    </dl>
+  </div>
+</header>
+
+<main>
+  <div class="col">
+
+    <section id="about">
+      <h2>この資料について</h2>
+      <p class="lead">このLPを私がどう作ったか、そして今後どう直していけるかを、私自身の復習も兼ねてまとめました。私はこういう風にやっているっていう感じで、そのまま伝わればと思います。</p>
+      <p>読んでいただきたいのは、亀ヶ谷様（今後LP改善をご自身で担当される場合）、田中様、そして未来の私自身です。専門用語には短い説明を添えていますので、技術に詳しくない方でも上から読み流せば全体が分かる作りにしてあります。</p>
+    </section>
+
+    <section id="identity">
+      <h2>このLPの正体</h2>
+      <p class="lead">まず、いま公開しているLPが「何でできていて、どこにあるか」を確認します。</p>
+      <div class="panel">
+        <dl class="kv">
+          <dt>名称</dt>
+          <dd>健幸学 組織セミナーLP（Social Healthcare Design株式会社・亀ヶ谷正信様）</dd>
+          <dt>公開URL</dt>
+          <dd><a href="https://okemonogatari-hash.github.io/html-share-box/diagrams/g-PPZk5KETzsahFsaU.html" target="_blank" rel="noopener">https://okemonogatari-hash.github.io/html-share-box/diagrams/g-PPZk5KETzsahFsaU.html</a><br>初版の公開時からこのURLは変えず、中身だけを更新していく方式です。</dd>
+          <dt>現行版</dt>
+          <dd>v1.5（2026-08-30）</dd>
+          <dt>ファイル形式</dt>
+          <dd>HTML1ファイルで完結。文章・デザイン・画像・アイコンまで全部このファイル1つ（約700KB）に埋め込んであるので、このファイルさえあればどこでも表示できます。外部のファイルには依存していません。</dd>
+          <dt>申し込み導線</dt>
+          <dd>ページ内の申し込みボタン<strong>5箇所</strong>は、すべて<a href="https://peatix.com/event/5157923" target="_blank" rel="noopener">Peatixのイベントページ</a>への直リンクです。ページ内に入力フォームは置いておらず、申し込みの窓口はPeatixに一本化してあります。</dd>
+          <dt>ソースの正本</dt>
+          <dd>田中様に共有いただいているGoogle Driveフォルダに「健幸学組織セミナーLP_ソースコード一式_2026-08-30.html」として保存済みです。<strong>今後の引き継ぎは、このファイルを正本として使ってください。</strong></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="how-made">
+      <h2>どう作ったか</h2>
+      <p class="lead">AI（Claude）とチャットで対話しながら作りました。流れはいつも同じ4ステップの繰り返しです。</p>
+
+      <ol class="timeline">
+        <li>
+          <span class="t-title">言葉で頼む</span>
+          <p class="t-desc">「経営者向けの組織改善セミナーのLPを作って」から始めて、見出し・構成・デザインを言葉で指示します。</p>
+        </li>
+        <li>
+          <span class="t-title">両方の画面幅で見る</span>
+          <p class="t-desc">出てきたHTMLを実際にブラウザで表示して確認します。<strong>スマホ幅とPC幅の両方</strong>を必ず見ます。</p>
+        </li>
+        <li>
+          <span class="t-title">直したい所を言葉で伝える</span>
+          <p class="t-desc">例えば「実績にこの2社を追加して」「申し込みボタンをPeatixに変えて」のように、直したい内容を日本語で伝えて直させます。</p>
+        </li>
+        <li>
+          <span class="t-title">OKになったら公開場所へアップ</span>
+          <p class="t-desc">URLは変えず、中身だけを差し替えます。すでに共有済みのリンクはそのまま生き続けます。</p>
+        </li>
+      </ol>
+
+      <p>このLPは v1（7月初版）→法人版→組織セミナー版→v1.5と姿を変えてきましたが、<strong>全部この4ステップの繰り返し</strong>で作ってきました。一気に完成形を作るのではなく、出来上がったものを見て、直したい所を伝えて、また見る。この往復が制作の実体です。</p>
+    </section>
+
+    <section id="maintenance">
+      <h2>今後の保守管理</h2>
+      <p class="lead">ここからは、亀ヶ谷様がご自身でLPを更新していく場合の手順です。</p>
+
+      <h3>修正の基本フロー</h3>
+      <ol class="timeline">
+        <li>
+          <span class="t-title">Driveの正本HTMLをAIに渡す</span>
+          <p class="t-desc">「健幸学組織セミナーLP_ソースコード一式_2026-08-30.html」を、使っているAIチャットに渡します。</p>
+        </li>
+        <li>
+          <span class="t-title">「ここをこう変えて」と日本語で指示する</span>
+          <p class="t-desc">どこを・どう直したいかを、具体的な日本語で伝えます。</p>
+        </li>
+        <li>
+          <span class="t-title">出てきたHTMLをブラウザで開いて確認する</span>
+          <p class="t-desc"><strong>必ずスマホでも1回見てください。</strong>PCの画面では正しく見えていても、スマホ幅で崩れていることがあります。</p>
+        </li>
+        <li>
+          <span class="t-title">公開場所に反映する</span>
+          <p class="t-desc">確認できたファイルを、公開している場所にアップロードし直します。</p>
+        </li>
+        <li>
+          <span class="t-title">直した後のファイルを日付つきの名前で保存する</span>
+          <p class="t-desc">「〇〇_2026-09-15.html」のように日付を入れて保存しておくと、あとから前の版に戻したい時に困りません（世代管理）。</p>
+        </li>
+      </ol>
+
+      <h3>AIの選び方</h3>
+      <p>ChatGPT・Claude・Geminiなどの普通のチャットAIでも、このLPは1ファイル完結なので「ファイルを添付して修正指示を出す」だけで直せます。</p>
+      <p>Claude Codeのような、AIが自分でファイルを編集して表示確認まで行う「AIエージェント型」のツールを使うと、修正から見た目の確認までを一気にやってくれるので、より確実です。</p>
+
+      <h3>公開場所</h3>
+      <p>現在はおけもん管理のページで公開しています。今後ご自身で運用される場合は、HTMLファイルを表示できる場所であればどこでも構いません（自社サイトのサーバー、WordPressへの格納、無料の静的ホスティングサービスなど）。ファイルをそのまま渡せば、そちらへ移植できます。</p>
+
+      <h3>よくある修正と注意点</h3>
+      <table class="history-table">
+        <thead>
+          <tr><th>修正内容</th><th>やり方</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>開催日程の更新</td>
+            <td>開催概要の日程表と、（あれば）申し込み文言をセットで直します。日程だけ変えて文言を直し忘れると、ページ内に矛盾した情報が残ります。</td>
+          </tr>
+          <tr>
+            <td>申し込み先URLの変更</td>
+            <td>ボタンは<strong>ページ内5箇所</strong>あります。全部差し替えてください。1箇所だけ直すと、他の4箇所に古いリンクが残ったままになります。</td>
+          </tr>
+          <tr>
+            <td>文言の修正</td>
+            <td>「どの見出しの下の、どの文を、こう変える」と具体的に指示すると、意図しない箇所まで書き換わる事故を防げます。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warn">
+        <strong>修正後は、スマホ幅で崩れていないか必ず確認してください。</strong> PCの画面だけで確認を終えると、スマホで見た時だけ文字がはみ出す・ボタンが押しにくいといった不具合に気づけません。
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>困った時</h2>
+      <p>ご不明な点や、うまく直せない箇所があれば、おけもんまでChatworkでご連絡ください。</p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  三又 謙次郎（おけもん） ／ 健幸学 組織セミナーLP の作り方と保守管理 ／ 2026-08-31
+</footer>
+
+</body>
+</html>
