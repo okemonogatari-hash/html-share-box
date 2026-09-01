@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>最近おけもんはこんなことしてるよ｜水曜AIラジオ2026-09-02</title>
+<style>
+  /* ===== reset ===== */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  ul,ol{list-style:none;}
+  button{font:inherit;background:none;border:0;cursor:pointer;color:inherit;}
+  a{color:inherit;}
+
+  /* ===== tokens (single light theme, fixed) ===== */
+  :root{
+    --bg:#FDFCF8;
+    --surface:#FFFFFF;
+    --surface-deep:#F4F1EA;
+    --line:rgba(34,49,43,.12);
+    --line-soft:rgba(34,49,43,.07);
+
+    --ink:#22312B;
+    --ink-soft:#45564E;
+    --ink-faint:#586761;
+
+    --bronze:#8A5A2B;      /* 文字アクセント。白地/明地で比5〜6台・実測済み */
+    --gold:#C4915E;        /* 装飾専用。太線・大きい飾りのみ。文字には使わない（白地で比2.78・実測済み） */
+    --gold-on-dark:#D6A879;/* 濃緑地でのみ文字に使う軽量版。primary-darkと比5.75・実測済み */
+
+    --primary:#2C5F4B;     /* 深緑・主役色 */
+    --primary-dark:#1C3A2E;
+    --primary-light:#E8F0EB;
+
+    --font-serif:"Hiragino Mincho ProN","YuMincho","Yu Mincho",serif;
+    --font-sans:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","YuGothic",Meiryo,sans-serif;
+
+    --shadow-sm:0 4px 16px rgba(34,49,43,.08);
+    --shadow-md:0 14px 36px rgba(34,49,43,.14);
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-sans);
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:var(--font-serif);
+    font-weight:700;
+    color:var(--ink);
+    text-wrap:balance;
+    line-break:strict;
+  }
+
+  small,.fine{font-size:12.5px;}
+
+  .accent{
+    text-decoration-line:underline;
+    text-decoration-color:var(--gold);
+    text-decoration-thickness:4px;
+    text-underline-offset:6px;
+  }
+  .bronze-text{color:var(--bronze);}
+
+  /* ===== app shell / deck mechanics ===== */
+  .app-shell{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .stage-wrap{
+    position:relative;
+    flex:1 1 auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding:28px;
+    min-height:0;
+  }
+
+  .stage{
+    position:relative;
+    width:100%;
+    background:var(--bg);
+    counter-reset:slidenum;
+  }
+  html.js-ready .stage{
+    width:1280px;
+    height:720px;
+    flex-shrink:0;
+    box-shadow:var(--shadow-md);
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--surface);
+  }
+
+  .slide{
+    position:relative;
+    width:100%;
+    counter-increment:slidenum;
+    border-bottom:1px solid var(--line);
+    padding:56px clamp(20px,6vw,64px);
+  }
+  html.js-ready .slide{
+    display:none;
+    position:absolute;
+    inset:0;
+    height:720px;
+    border-bottom:0;
+    padding:0;
+    overflow:hidden;
+  }
+  html.js-ready .slide.is-active{display:block;}
+
+  .slide--tint{background:var(--surface-deep);}
+
+  .slide-inner{
+    max-width:900px;
+    margin:0 auto;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:22px;
+    padding:0;
+  }
+  html.js-ready .slide-inner{padding:64px 64px;}
+
+  .eyebrow{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.16em;
+    color:var(--bronze);
+  }
+
+  .slide-badge{
+    position:absolute;right:22px;bottom:18px;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.04em;
+  }
+  .slide-badge::before{
+    content:counter(slidenum) " / 8";
+    font-size:12.5px;
+    color:var(--ink-faint);
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.04em;
+  }
+  html.js-ready .slide .slide-badge::before{
+    /* counter(slidenum) only increments for boxes that actually generate —
+       in JS mode 9 of 10 .slide elements are display:none, so the CSS
+       counter always resolves to 1 regardless of the real position.
+       JS writes the real "n / 10" text directly instead; see init below. */
+    content:none;
+  }
+
+  /* step reveal — fully visible with no JS; hidden-then-revealed once js-ready */
+  .slide [data-step]{opacity:1;transform:none;}
+  html.js-ready .slide [data-step]{
+    opacity:0;
+    transform:translateY(18px);
+    transition-property:opacity,transform;
+    transition-duration:.55s;
+    transition-timing-function:cubic-bezier(.22,.61,.36,1);
+  }
+  html.js-ready .slide [data-step].is-revealed{opacity:1;transform:translateY(0);}
+
+  /* ===== nav chrome ===== */
+  .deck-nav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    padding:14px 0 22px;
+    flex:0 0 auto;
+  }
+  html:not(.js-ready) .deck-nav{display:none;}
+
+  .nav-btn{
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--shadow-sm);
+    transition-property:background-color,border-color,transform;
+    transition-duration:.2s;
+    transition-timing-function:ease-out;
+  }
+  .nav-btn:hover{border-color:var(--bronze);}
+  .nav-btn:active{transform:scale(.94);}
+  .nav-btn svg{width:14px;height:14px;fill:var(--primary);}
+  .nav-btn:disabled{opacity:.3;cursor:default;}
+
+  .nav-help{
+    font-size:12.5px;
+    color:var(--ink-faint);
+    letter-spacing:.02em;
+  }
+
+  /* ===== presenter mode ===== */
+  .presenter-panel{display:none;}
+  body.presenter-on .app-shell{
+    display:grid;
+    grid-template-columns:minmax(0,1.35fr) minmax(320px,1fr);
+    grid-template-rows:1fr auto;
+    height:100vh;
+  }
+  body.presenter-on .stage-wrap{grid-column:1;grid-row:1;padding:20px;}
+  body.presenter-on .deck-nav{grid-column:1;grid-row:2;}
+  body.presenter-on .presenter-panel{
+    display:flex;
+    flex-direction:column;
+    grid-column:2;
+    grid-row:1 / span 2;
+    background:var(--primary-dark);
+    color:#F3F0E7;
+    padding:22px 22px 16px;
+    gap:16px;
+    overflow:hidden;
+  }
+
+  .pp-top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(243,240,231,.18);
+  }
+  .pp-elapsed{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--font-serif);}
+  .pp-elapsed-label{display:block;font-size:12.5px;color:rgba(243,240,231,.65);}
+  .pp-target{text-align:right;}
+  .pp-target-value{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--gold-on-dark);}
+  .pp-target-label{display:block;font-size:12.5px;color:rgba(243,240,231,.65);}
+
+  .pp-next-label,.pp-script-label{
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.1em;
+    color:rgba(243,240,231,.6);
+    margin-bottom:8px;
+  }
+  .pp-next-thumb{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    background:var(--surface);
+    border-radius:8px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:var(--shadow-sm);
+  }
+  .pp-next-thumb .slide{
+    position:relative !important;
+    display:block !important;
+    inset:auto !important;
+    width:1280px;height:720px;
+    transform-origin:center center;
+    flex:none;
+  }
+  .pp-next-thumb [data-step]{opacity:1 !important;transform:none !important;}
+  .pp-next-empty{font-size:14px;color:var(--ink-faint);text-align:center;padding:0 12px;}
+
+  .pp-script{flex:1;min-height:0;display:flex;flex-direction:column;}
+  .pp-script-text{
+    flex:1;
+    overflow-y:auto;
+    font-size:16px;
+    line-height:1.85;
+    color:#F3F0E7;
+    padding-right:6px;
+  }
+
+  .pp-help{
+    font-size:12.5px;
+    color:rgba(243,240,231,.55);
+    border-top:1px solid rgba(243,240,231,.18);
+    padding-top:12px;
+    letter-spacing:.01em;
+  }
+
+  /* ===== edit mode ===== */
+  body.edit-on [data-editable]{
+    outline:1px dashed rgba(44,95,75,.35);
+    outline-offset:4px;
+    border-radius:4px;
+  }
+  body.edit-on [data-editable]:focus{
+    outline:1px dashed var(--bronze);
+    background:rgba(196,145,94,.08);
+  }
+  .edit-flag{
+    position:fixed;
+    top:14px;left:50%;
+    transform:translateX(-50%);
+    background:var(--bronze);
+    color:#fff;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.06em;
+    padding:6px 16px;
+    border-radius:999px;
+    display:none;
+    z-index:50;
+    box-shadow:var(--shadow-sm);
+  }
+  body.edit-on .edit-flag{display:block;}
+
+  /* ===== generic slide content patterns ===== */
+  .lede{font-size:clamp(20px,2.6vw,26px);color:var(--ink);}
+  h1.title{font-size:clamp(30px,4.4vw,46px);line-height:1.4;}
+  h2.headline{font-size:clamp(24px,3.4vw,34px);line-height:1.5;}
+
+  .meta-line{font-size:15px;color:var(--ink-soft);}
+  .meta-line + .meta-line{margin-top:4px;}
+
+  .quote-block{
+    border-left:4px solid var(--gold);
+    padding-left:22px;
+    font-family:var(--font-serif);
+    font-size:clamp(19px,2.6vw,24px);
+    color:var(--ink);
+  }
+  .quote-block cite{
+    display:block;
+    margin-top:10px;
+    font-family:var(--font-sans);
+    font-style:normal;
+    font-size:14px;
+    color:var(--ink-faint);
+  }
+
+  .step-list{display:flex;flex-direction:column;gap:14px;}
+  .step-list li{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    font-size:17px;
+    color:var(--ink);
+  }
+  .step-list li::before{
+    content:"";
+    flex:none;
+    width:9px;height:9px;
+    margin-top:8px;
+    background:var(--bronze);
+    transform:rotate(45deg);
+  }
+
+  .num-list{display:flex;flex-direction:column;gap:16px;counter-reset:numitem;}
+  .num-list li{
+    display:flex;gap:16px;align-items:flex-start;
+    font-size:17px;color:var(--ink);
+    counter-increment:numitem;
+  }
+  .num-list li::before{
+    content:counter(numitem);
+    flex:none;
+    width:30px;height:30px;
+    border-radius:50%;
+    background:var(--primary-light);
+    color:var(--primary);
+    font-family:var(--font-serif);
+    font-weight:700;
+    font-size:14px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  .flow-row{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;}
+  .flow-box{
+    flex:1 1 200px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:10px;
+    padding:20px 18px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .flow-box .fb-en{font-family:var(--font-serif);font-size:19px;font-weight:700;}
+  .flow-box .fb-ja{font-size:13px;color:rgba(255,255,255,.82);}
+  .flow-arrow{flex:none;display:flex;align-items:center;justify-content:center;width:34px;}
+  .flow-arrow svg{width:20px;height:20px;fill:var(--bronze);}
+
+  .callout{
+    background:var(--surface-deep);
+    border-radius:10px;
+    padding:16px 20px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+
+  .link-box{
+    background:var(--primary);
+    color:#fff;
+    border-radius:12px;
+    padding:20px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .link-box .lb-label{font-size:12.5px;letter-spacing:.1em;color:rgba(255,255,255,.75);}
+  .link-box .lb-url{
+    font-size:clamp(14px,2vw,17px);
+    word-break:break-all;
+    font-weight:700;
+    text-decoration-line:underline;
+    text-decoration-color:var(--gold);
+    text-decoration-thickness:3px;
+    text-underline-offset:4px;
+  }
+
+  .note-line{font-size:13.5px;color:var(--ink-faint);overflow-wrap:anywhere;}
+  .note-line a{color:var(--bronze);text-decoration-line:underline;text-decoration-color:var(--bronze);text-decoration-thickness:1px;overflow-wrap:anywhere;}
+
+  /* ===== S8 workshop / timer ===== */
+  .work-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start;}
+  @media (max-width:820px){.work-grid{grid-template-columns:1fr;}}
+
+  .timer-panel{
+    background:var(--primary-dark);
+    border-radius:14px;
+    padding:24px 22px;
+    color:#F3F0E7;
+    text-align:center;
+  }
+  .timer-display{
+    font-family:var(--font-serif);
+    font-size:clamp(52px,7vw,84px);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+    color:#F3F0E7;
+    transition-property:color;
+    transition-duration:.4s;
+    transition-timing-function:ease-out;
+  }
+  .timer-display.is-warn{color:var(--gold-on-dark);}
+  .timer-done-msg{
+    margin-top:8px;
+    font-size:16px;
+    font-weight:700;
+    color:var(--gold-on-dark);
+    display:none;
+  }
+  .timer-display.is-done + .timer-done-msg{display:block;}
+  .timer-controls{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-top:16px;
+    flex-wrap:wrap;
+  }
+  .timer-btn{
+    padding:9px 16px;
+    border-radius:999px;
+    background:rgba(243,240,231,.1);
+    color:#F3F0E7;
+    font-size:13.5px;
+    font-weight:700;
+    border:1px solid rgba(243,240,231,.28);
+    transition-property:background-color,border-color;
+    transition-duration:.2s;
+    transition-timing-function:ease-out;
+  }
+  .timer-btn:hover{background:rgba(243,240,231,.2);border-color:var(--gold);}
+  .timer-btn.primary{background:var(--gold-on-dark);color:var(--primary-dark);border-color:var(--gold-on-dark);}
+
+  .qa-list{display:flex;flex-direction:column;gap:12px;}
+  .qa-item{background:var(--surface-deep);border-radius:10px;padding:14px 16px;}
+  .qa-item .qa-tag{font-size:12.5px;font-weight:700;letter-spacing:.08em;color:var(--bronze);}
+  .qa-item .qa-q{font-size:15.5px;margin-top:3px;color:var(--ink);}
+
+  .kokoroe{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+  .kokoroe li{font-size:13.5px;color:var(--ink-soft);padding-left:16px;position:relative;}
+  .kokoroe li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--gold);}
+
+  .stage-chrome-label{
+    position:absolute;
+    left:22px;bottom:18px;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    letter-spacing:.02em;
+    z-index:2;
+  }
+  html:not(.js-ready) .stage-chrome-label{display:none;}
+
+  /* ===== print ===== */
+  @media print{
+    @page{size:landscape;margin:0;}
+    body.presenter-on .app-shell{display:block;}
+    .presenter-panel,.deck-nav,.edit-flag,.stage-chrome-label{display:none !important;}
+    .app-shell{display:block !important;height:auto !important;}
+    .stage-wrap{padding:0 !important;overflow:visible !important;display:block !important;}
+    .stage{
+      width:100% !important;height:auto !important;
+      box-shadow:none !important;border-radius:0 !important;
+      transform:none !important;
+    }
+    .slide{
+      display:block !important;
+      position:relative !important;
+      width:100% !important;height:100vh !important;
+      inset:auto !important;
+      page-break-after:always;
+      break-after:page;
+      overflow:hidden !important;
+    }
+    .slide:last-child{page-break-after:auto;}
+    .slide-inner{padding:48px 64px !important;}
+    .slide [data-step]{opacity:1 !important;transform:none !important;}
+  }
+
+  /* ===== S6/S8 flow-row addendum (2026-09-02 水曜AIラジオ deck・追記のみ) =====
+     どちらも既存の .flow-row/.flow-box/.flow-arrow はそのまま、
+     item数がstage幅(772px有効)を超えて不格好に折り返すのを防ぐ
+     nowrap版モディファイアだけを足す。矢印サイズは既存のまま=大きめ維持。 */
+  .flow-row--chain{flex-wrap:nowrap;}
+  .flow-box--chain{flex:1 1 0;min-width:0;}
+
+  .flow-row--tl{flex-wrap:nowrap;gap:6px;}
+  .flow-box--tl{flex:1 1 0;min-width:0;padding:14px 8px;}
+  .flow-box--tl .fb-en{font-size:14px;}
+  .flow-box--tl .fb-ja{font-size:12.5px;line-height:1.4;}
+  .flow-arrow--tl{width:16px;}
+  .flow-arrow--tl svg{width:14px;height:14px;}
+</style>
+</head>
+<body>
+
+  <div class="edit-flag">編集モード中 — E で戻る</div>
+
+  <div class="app-shell" id="appShell">
+    <div class="stage-wrap" id="stageWrap">
+      <div class="stage" id="stage">
+
+        <!-- S1 -->
+        <section class="slide is-active" data-slide data-minutes="目安1分" id="s1">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>水曜AIラジオ</p>
+            <h1 class="title" data-editable>最近おけもんは<br>こんなことしてるよ🍺</h1>
+            <p class="meta-line" data-editable>水曜AIラジオ 2026-09-02 21:00｜おけちゃん × みずのさん</p>
+            <p class="meta-line" data-editable>ゆるLT＋プチブレスト。ツッコミ・コメント歓迎！</p>
+          </div>
+          <p class="script-src" hidden>今日はゆるくLTやります。最近のAI活用こんな感じだよってシェアと、みんなのアイデアも聞きたいのでプチブレストで。ツッコミ歓迎です</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S2 -->
+        <section class="slide" data-slide data-minutes="目安3分" id="s2">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>毎朝、AI役員と経営会議してます🤣</h2>
+            <ul class="step-list">
+              <li data-step="1" data-editable>今朝の朝礼: AI 9体を並列で走らせて、8月ひと月ぶんの記録を約5分で収集</li>
+              <li data-step="2" data-editable>そのままAI役員6人（CEO・技術・商品・営業・経理・マーケ）と9月の作戦会議</li>
+              <li data-step="3" data-editable>そして晩は……AIと乾杯して今日の自分を褒め合う🍺</li>
+            </ul>
+          </div>
+          <p class="script-src" hidden>これ今朝の実話です。9体並列っていうのは、AIに小さい調査を同時に9個やらせる感じ。夜は乾杯して褒め合って終わります。誰も傷つかない経営会議</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S3 -->
+        <section class="slide slide--tint" data-slide data-minutes="目安2分" id="s3">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>ストレングスファインダーのニーズ、高し😳</h2>
+            <ul class="step-list">
+              <li data-step="1" data-editable>8/20 ノアさん登壇の勉強会: 結果を出してる人がSFを激推ししてた</li>
+              <li data-step="2" data-editable>8/23 ニチェさん主催の飲み会: 深掘りされてたら、その場で「今やりたい！」の声</li>
+              <li data-step="3" data-editable>8月はセッション7本。スキルマーケット経由の依頼もじわじわ増加中</li>
+            </ul>
+          </div>
+          <p class="script-src" hidden>ノアさんが勉強会でSFと自己理解をむっちゃ推してくれて、ニチェさんの飲み会では深掘りされてその場で『今やりたい！』の声。結果を出してる人が絶賛してくれるから、自然と声がかかる流れができてるんだよね</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S4 -->
+        <section class="slide" data-slide data-minutes="目安2分" id="s4">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>クロードアカデミー、連載中📚</h2>
+            <ul class="step-list">
+              <li data-step="1" data-editable>Claude Academy連載①〜⑨配信中（公式コース全13回対応）</li>
+              <li data-step="2" data-editable>反応は初回50件！</li>
+              <li data-step="3" data-editable>ストレングスファインダーの勉強会も開催→もっとやりたいね</li>
+            </ul>
+          </div>
+          <p class="script-src" hidden>「AIと一緒に成長する学校『Claude Academy』をやってみよう」を初心者向けに毎日連載してます。いま⑨まで、全13回だからもうすぐ完走。昨日はSF勉強会もやりました。この手の勉強会、増やしたい</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S5 -->
+        <section class="slide slide--tint" data-slide data-minutes="目安2分" id="s5">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>稼げや祭り、何を宣言する？？🤔</h2>
+            <p class="lede" data-step="1" data-editable>考え中・・・（ほんとにまだ白紙🤣）</p>
+            <div class="callout" data-step="2" data-editable>
+              まずおけもんが生贄になります。アイデアあればゆるっとどうぞ🙏
+            </div>
+          </div>
+          <p class="script-src" hidden>ここはガチで考え中。まず私が生贄になって晒すので、聞きながら『それならこうじゃない？』くらいの温度で投げてもらえたら嬉しい。義務じゃないです</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S6 -->
+        <section class="slide" data-slide data-minutes="目安2分" id="s6">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>推し活で倍倍中〜🤣</h2>
+            <div class="flow-row flow-row--chain" data-step="1">
+              <div class="flow-box flow-box--chain" data-editable><span class="fb-en">倍倍ファイト</span></div>
+              <div class="flow-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg></div>
+              <div class="flow-box flow-box--chain" data-editable><span class="fb-en">フルーツジッパー</span></div>
+              <div class="flow-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg></div>
+              <div class="flow-box flow-box--chain" data-editable><span class="fb-en">鈴木愛理</span></div>
+              <div class="flow-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg></div>
+              <div class="flow-box flow-box--chain" data-editable><span class="fb-en">初恋サイダー</span></div>
+            </div>
+            <p class="lede" data-step="2" data-editable>今ここ🤣</p>
+            <p class="note-line" data-step="3" data-editable>※おすすめアルゴリズムに人生を握られてます</p>
+          </div>
+          <p class="script-src" hidden>沼の経路を公開します。入口は倍倍ファイト、そこから動画のおすすめ連鎖でフルーツジッパー→鈴木愛理→初恋サイダーへ流れ着いて、今ここ。おすすめアルゴリズムに人生を握られてます</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S7 -->
+        <section class="slide slide--tint" data-slide data-minutes="目安1分" id="s7">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>今度シャーマンに見てもらうかも・・・</h2>
+            <p class="lede" data-editable>波乗り世界を体験中ー🌊</p>
+          </div>
+          <p class="script-src" hidden>オチ枠です。流れに乗っていくスタイル。詳細はまた今度</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S8 -->
+        <section class="slide" data-slide data-minutes="目安2分" id="s8">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>ちなみにこのスライド、昨日生まれた技です</h2>
+            <div class="flow-row flow-row--tl" data-step="1">
+              <div class="flow-box flow-box--tl" data-editable>
+                <span class="fb-en">8/31 23:45</span>
+                <span class="fb-ja">チャエンさんが<br>Xに投稿</span>
+              </div>
+              <div class="flow-arrow flow-arrow--tl" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg></div>
+              <div class="flow-box flow-box--tl" data-editable>
+                <span class="fb-en">9/1 朝</span>
+                <span class="fb-ja">AIが収集</span>
+              </div>
+              <div class="flow-arrow flow-arrow--tl" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg></div>
+              <div class="flow-box flow-box--tl" data-editable>
+                <span class="fb-en">9/1 昼</span>
+                <span class="fb-ja">スキル化</span>
+              </div>
+              <div class="flow-arrow flow-arrow--tl" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg></div>
+              <div class="flow-box flow-box--tl" data-editable>
+                <span class="fb-en">9/1 夜</span>
+                <span class="fb-ja">SF勉強会で実戦</span>
+              </div>
+              <div class="flow-arrow flow-arrow--tl" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg></div>
+              <div class="flow-box flow-box--tl" data-editable>
+                <span class="fb-en">9/2 夜</span>
+                <span class="fb-ja">このラジオ<br>←今ここ</span>
+              </div>
+            </div>
+            <p class="lede" data-step="2" data-editable>「見た」→「使える」まで1日。AI活用はスピードが味🍺</p>
+          </div>
+          <p class="script-src" hidden>この発表者モード付きスライド自体が、おととい夜チャエンさん（@masahirochaen）の投稿で見た技です。翌日には勉強会で使って、今日ここでも使ってる。こういう速度がAIのいちばん美味しいところ。今日はありがとうございました！</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <div class="stage-chrome-label">水曜AIラジオ ・ 2026-09-02</div>
+      </div>
+    </div>
+
+    <div class="deck-nav">
+      <button class="nav-btn" id="navPrev" type="button" aria-label="前へ">
+        <svg viewBox="0 0 24 24"><path d="M22 11H5.8l6.1-6.1L10 3l-9 9 9 9 1.9-1.9L5.8 13H22z"/></svg>
+      </button>
+      <span class="nav-help">← → / Space で進む・戻る　P 発表者　E 編集　F 全画面</span>
+      <button class="nav-btn" id="navNext" type="button" aria-label="次へ">
+        <svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg>
+      </button>
+    </div>
+
+    <aside class="presenter-panel" id="presenterPanel" aria-hidden="true">
+      <div class="pp-top">
+        <div>
+          <span class="pp-elapsed" id="ppElapsed">00:00</span>
+          <span class="pp-elapsed-label">開始からの経過</span>
+        </div>
+        <div class="pp-target">
+          <span class="pp-target-value" id="ppTarget">目安1分</span>
+          <span class="pp-target-label">このスライドの目安</span>
+        </div>
+      </div>
+      <div>
+        <p class="pp-next-label">次のスライド</p>
+        <div class="pp-next-thumb" id="ppNextThumb"></div>
+      </div>
+      <div class="pp-script">
+        <p class="pp-script-label">台本</p>
+        <div class="pp-script-text" id="ppScriptText"></div>
+      </div>
+      <p class="pp-help">← → 進む / P 発表者 / E 編集 / F フルスクリーン / 印刷 ⌘P</p>
+    </aside>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+  document.documentElement.classList.add('js-ready');
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var currentIndex = 0;
+  var currentStep = 0;
+
+  /* CSS counter(slidenum) only increments for boxes that actually generate;
+     once js-ready hides 9 of 10 .slide elements with display:none, the
+     counter always resolves to 1 no matter which slide is showing. Write
+     the real "n / 10" text directly instead (each slide's number never
+     changes, so this only needs to run once). */
+  slides.forEach(function(s, i){
+    var badge = s.querySelector('.slide-badge');
+    if(badge) badge.textContent = (i + 1) + ' / ' + total;
+  });
+
+  function stepsOf(slide){
+    var nums = Array.prototype.map.call(slide.querySelectorAll('[data-step]'), function(el){
+      return parseInt(el.getAttribute('data-step'), 10) || 0;
+    });
+    return nums.length ? Math.max.apply(null, nums) : 0;
+  }
+
+  function applySteps(slide, step){
+    Array.prototype.forEach.call(slide.querySelectorAll('[data-step]'), function(el){
+      var n = parseInt(el.getAttribute('data-step'), 10) || 0;
+      el.classList.toggle('is-revealed', n <= step);
+    });
+  }
+
+  function renderScript(slide){
+    var src = slide.querySelector('.script-src');
+    var el = document.getElementById('ppScriptText');
+    el.textContent = src ? src.textContent.trim() : '';
+    document.getElementById('ppTarget').textContent = slide.getAttribute('data-minutes') || '';
+  }
+
+  function fitBox(container, inner){
+    if(!container || !inner) return;
+    var cw = container.clientWidth, ch = container.clientHeight;
+    if(!cw || !ch) return;
+    var scale = Math.min(cw/1280, ch/720);
+    inner.style.transform = 'scale(' + scale + ')';
+  }
+
+  function fitStage(){
+    fitBox(document.getElementById('stageWrap'), document.getElementById('stage'));
+  }
+
+  function renderNextThumb(){
+    var host = document.getElementById('ppNextThumb');
+    host.innerHTML = '';
+    if(currentIndex >= total - 1){
+      var empty = document.createElement('p');
+      empty.className = 'pp-next-empty';
+      empty.textContent = 'これで最後のスライドです';
+      host.appendChild(empty);
+      return;
+    }
+    var clone = slides[currentIndex + 1].cloneNode(true);
+    clone.classList.add('is-active');
+    clone.removeAttribute('aria-hidden');
+    Array.prototype.forEach.call(clone.querySelectorAll('[contenteditable]'), function(el){
+      el.removeAttribute('contenteditable');
+    });
+    host.appendChild(clone);
+    fitBox(host, clone);
+  }
+
+  function goTo(index, step){
+    index = Math.max(0, Math.min(total - 1, index));
+    slides.forEach(function(s, i){
+      s.classList.toggle('is-active', i === index);
+      s.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+    });
+    currentIndex = index;
+    currentStep = typeof step === 'number' ? step : 0;
+    applySteps(slides[currentIndex], currentStep);
+    renderScript(slides[currentIndex]);
+    document.getElementById('navPrev').disabled = (currentIndex === 0 && currentStep === 0);
+    document.getElementById('navNext').disabled = (currentIndex === total - 1 && currentStep >= stepsOf(slides[currentIndex]));
+    if(document.body.classList.contains('presenter-on')) renderNextThumb();
+  }
+
+  function advance(){
+    var max = stepsOf(slides[currentIndex]);
+    if(currentStep < max){
+      currentStep++;
+      applySteps(slides[currentIndex], currentStep);
+      document.getElementById('navPrev').disabled = false;
+      document.getElementById('navNext').disabled = (currentIndex === total - 1 && currentStep >= max);
+    } else if(currentIndex < total - 1){
+      goTo(currentIndex + 1, 0);
+    }
+  }
+
+  function back(){
+    if(currentStep > 0){
+      currentStep--;
+      applySteps(slides[currentIndex], currentStep);
+    } else if(currentIndex > 0){
+      goTo(currentIndex - 1, stepsOf(slides[currentIndex - 1]));
+    }
+  }
+
+  document.getElementById('navNext').addEventListener('click', advance);
+  document.getElementById('navPrev').addEventListener('click', back);
+
+  document.getElementById('stageWrap').addEventListener('click', function(e){
+    if(document.body.classList.contains('edit-on')) return;
+    var blocked = e.target.closest('a,button,[contenteditable]');
+    if(blocked) return;
+    advance();
+  });
+
+  function isTypingTarget(el){
+    if(!el) return false;
+    if(el.isContentEditable) return true;
+    var tag = el.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA';
+  }
+
+  function togglePresenter(force){
+    var on = typeof force === 'boolean' ? force : !document.body.classList.contains('presenter-on');
+    document.body.classList.toggle('presenter-on', on);
+    document.getElementById('presenterPanel').setAttribute('aria-hidden', on ? 'false' : 'true');
+    /* Reading clientWidth/Height right after a class toggle is always
+       synchronously correct in a real browser (the browser forces a
+       reflow on demand) — no need to defer to a later frame. The old
+       requestAnimationFrame wrapper here only added a delay before the
+       stage was resized to fit the new (grid, narrower) layout. */
+    fitStage();
+    if(on) renderNextThumb();
+  }
+
+  function toggleEdit(force){
+    var on = typeof force === 'boolean' ? force : !document.body.classList.contains('edit-on');
+    document.body.classList.toggle('edit-on', on);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-editable]'), function(el){
+      if(el.getAttribute('data-editable') === 'false') return;
+      if(on){
+        el.setAttribute('contenteditable', 'true');
+        el.setAttribute('spellcheck', 'false');
+      } else {
+        el.removeAttribute('contenteditable');
+      }
+    });
+  }
+
+  function toggleFullscreen(){
+    if(document.fullscreenElement){
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen().catch(function(){});
+    }
+  }
+
+  window.addEventListener('keydown', function(e){
+    if(isTypingTarget(document.activeElement)) return;
+    switch(e.key){
+      case 'ArrowRight':
+      case ' ':
+        e.preventDefault();
+        advance();
+        break;
+      case 'ArrowLeft':
+        e.preventDefault();
+        back();
+        break;
+      case 'p': case 'P':
+        togglePresenter();
+        break;
+      case 'e': case 'E':
+        toggleEdit();
+        break;
+      case 'f': case 'F':
+        toggleFullscreen();
+        break;
+    }
+  });
+
+  window.addEventListener('resize', function(){
+    fitStage();
+    if(document.body.classList.contains('presenter-on')) renderNextThumb();
+  });
+
+  /* ---- overall elapsed timer (presenter panel) ---- */
+  var startedAt = Date.now();
+  function tickElapsed(){
+    var s = Math.floor((Date.now() - startedAt) / 1000);
+    var mm = Math.floor(s / 60);
+    var ss = s % 60;
+    document.getElementById('ppElapsed').textContent =
+      String(mm).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+  }
+  setInterval(tickElapsed, 1000);
+  tickElapsed();
+
+  /* ---- workshop countdown (S8) ----
+     This deck has no timer-panel slide (spec: no timer work slide), so
+     'timerDisplay' and the timer-btn ids below don't exist in the DOM.
+     Guard on `display` so getElementById('timerStart') etc. are never
+     called on a null result — without this guard the whole IIFE would
+     throw here and abort before reaching goTo(0,0)/fitStage() at the
+     bottom, leaving the deck unrendered. When a timer slide IS present
+     (future decks reusing this template), `display` is truthy and every
+     line below runs exactly as before. */
+  var TOTAL = 25 * 60;
+  var remaining = TOTAL;
+  var running = false;
+  var endAt = null;
+  var timerId = null;
+  var display = document.getElementById('timerDisplay');
+
+  function renderTimer(){
+    var r = Math.max(0, remaining);
+    var mm = Math.floor(r / 60);
+    var ss = r % 60;
+    display.textContent = String(mm).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+    display.classList.toggle('is-warn', r <= 300 && r > 0);
+    display.classList.toggle('is-done', r <= 0);
+  }
+
+  function tickTimer(){
+    if(!running) return;
+    remaining = Math.max(0, Math.round((endAt - Date.now()) / 1000));
+    renderTimer();
+    if(remaining <= 0){
+      running = false;
+      clearInterval(timerId);
+    }
+  }
+
+  function startTimer(){
+    if(remaining <= 0) return;
+    running = true;
+    endAt = Date.now() + remaining * 1000;
+    clearInterval(timerId);
+    timerId = setInterval(tickTimer, 250);
+  }
+  function pauseTimer(){
+    running = false;
+    clearInterval(timerId);
+  }
+  function resetTimer(){
+    running = false;
+    clearInterval(timerId);
+    remaining = TOTAL;
+    renderTimer();
+  }
+  function bumpTimer(deltaSec){
+    remaining = Math.max(0, remaining + deltaSec);
+    if(running) endAt = Date.now() + remaining * 1000;
+    renderTimer();
+  }
+
+  if(display){
+    document.getElementById('timerStart').addEventListener('click', startTimer);
+    document.getElementById('timerPause').addEventListener('click', pauseTimer);
+    document.getElementById('timerReset').addEventListener('click', resetTimer);
+    document.getElementById('timerMinus').addEventListener('click', function(){ bumpTimer(-60); });
+    document.getElementById('timerPlus').addEventListener('click', function(){ bumpTimer(60); });
+    renderTimer();
+  }
+
+  /* ---- init ---- */
+  goTo(0, 0);
+  fitStage();
+})();
+</script>
+</body>
+</html>
