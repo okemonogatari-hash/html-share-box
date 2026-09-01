@@ -19,6 +19,15 @@
     --radius:16px;
     --radius-sm:10px;
     --maxw:640px;
+    /* SF4ドメイン色（意味を持つ色。バッジ・ボーダー・チップの面だけに使う。本文地と文字4トークンは不変） */
+    --dom-exec-bg:#EFEAF6;   /* 実行力＝パープル系 */
+    --dom-exec-ink:#5B4B8A;
+    --dom-infl-bg:#FBEEDD;   /* 影響力＝アンバー系 */
+    --dom-infl-ink:#8F5C00;
+    --dom-rel-bg:#E9F0F8;    /* 人間関係構築力＝ブルー系 */
+    --dom-rel-ink:#3D5E8C;
+    --dom-think-bg:#E1F1F0;  /* 戦略的思考力＝グリーン系（既存primaryとは明度・色相を分離） */
+    --dom-think-ink:#0B6670;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -119,6 +128,7 @@
     font-weight:600;
   }
   .eyebrow.gallup{color:var(--primary);border-color:var(--primary);}
+  .eyebrow.aim{color:var(--dom-exec-ink);border-color:var(--dom-exec-ink);}
   .question{
     font-size:19px;
     font-weight:700;
@@ -193,8 +203,8 @@
   }
   .btn-reset-armed{
     background:transparent;
-    color:var(--bronze);
-    border:1px solid var(--bronze);
+    color:var(--accent-ink);
+    border:1px solid var(--accent-ink);
   }
   .btn-outline{
     background:var(--paper);
@@ -293,15 +303,24 @@
     font-weight:400;
     margin-top:2px;
   }
-  .theme-btn .badge{
+  .badge-chip{
+    display:inline-block;
     font-size:12.5px;
-    color:var(--white);
-    background:var(--muted);
+    font-weight:600;
     border-radius:99px;
-    padding:2px 8px;
+    padding:2px 10px;
     white-space:nowrap;
-    margin-left:8px;
   }
+  .theme-btn .badge-chip{margin-left:8px;}
+  .badge-rank{background:var(--accent-ink);color:var(--white);}
+  .dom-badge.dom-exec{background:var(--dom-exec-bg);color:var(--dom-exec-ink);}
+  .dom-badge.dom-infl{background:var(--dom-infl-bg);color:var(--dom-infl-ink);}
+  .dom-badge.dom-rel{background:var(--dom-rel-bg);color:var(--dom-rel-ink);}
+  .dom-badge.dom-think{background:var(--dom-think-bg);color:var(--dom-think-ink);}
+  .chip.is-active.chip-dom-exec{background:var(--dom-exec-bg);color:var(--dom-exec-ink);border-color:var(--dom-exec-ink);}
+  .chip.is-active.chip-dom-infl{background:var(--dom-infl-bg);color:var(--dom-infl-ink);border-color:var(--dom-infl-ink);}
+  .chip.is-active.chip-dom-rel{background:var(--dom-rel-bg);color:var(--dom-rel-ink);border-color:var(--dom-rel-ink);}
+  .chip.is-active.chip-dom-think{background:var(--dom-think-bg);color:var(--dom-think-ink);border-color:var(--dom-think-ink);}
 
   .pick-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
   .pick-item{
@@ -451,38 +470,67 @@
   .phil-tag.gallup{color:var(--primary);}
   .phil-tag.okemon{color:var(--accent-ink);}
 
-  .theme-detail-block{
-    margin-top:12px;
+  /* 資質解説カード（2層構造を廃止し1枚に統合。pick1・nameit共通） */
+  .theme-guide{
+    margin-top:14px;
     border:1px solid var(--line);
-    border-radius:var(--radius-sm);
-    padding:2px 14px;
+    border-left-width:3px;
+    border-left-style:solid;
+    border-left-color:var(--line);
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    padding:16px;
     background:var(--paper);
   }
-  .theme-detail-block summary{
-    cursor:pointer;
-    padding:10px 0;
-    font-size:13.5px;
-    font-weight:600;
-    color:var(--primary);
+  .theme-guide-header{
     display:flex;
     align-items:center;
     gap:8px;
-    list-style:none;
+    flex-wrap:wrap;
+    margin-bottom:10px;
   }
-  .theme-detail-block summary::-webkit-details-marker{display:none;}
-  .detail-tag{
+  .theme-guide-name{
+    font-size:16px;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .theme-guide-metaphor{
+    font-size:20px;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 6px;
+    text-wrap:balance;
+    line-break:strict;
+  }
+  .theme-guide-catch{
+    font-size:13.5px;
+    color:var(--muted);
+    margin:0 0 12px;
+  }
+  .theme-guide-section-label{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--muted);
+    margin:14px 0 6px;
+  }
+  .theme-guide-section-label:first-of-type{margin-top:0;}
+  .theme-guide-features{
+    margin:0;
+    padding-left:18px;
+    font-size:14px;
+    color:var(--ink);
+  }
+  .theme-guide-features li{margin-bottom:6px;}
+  .theme-guide-joy, .theme-guide-hint{
+    font-size:13.5px;
+    color:var(--muted);
+    margin:0;
+  }
+  .theme-guide-source{
+    display:block;
     font-size:12.5px;
     color:var(--accent-ink);
-    border:1px solid var(--accent-line);
-    border-radius:99px;
-    padding:1px 8px;
-    font-weight:600;
+    margin-top:14px;
   }
-  .theme-detail-inner{padding:2px 0 14px;}
-  .td-metaphor{font-size:14.5px;font-weight:700;color:var(--ink);margin:0 0 8px;}
-  .td-features{margin:0 0 10px;padding-left:18px;font-size:13.5px;color:var(--ink);}
-  .td-features li{margin-bottom:6px;}
-  .td-joy{font-size:13.5px;color:var(--muted);margin:0;}
 
   .import-dropzone{
     border:1px dashed var(--line);
@@ -586,6 +634,7 @@ var THEMES = [
   {name:"戦略性", domain:"戦略的思考力", short:"道筋を見比べて近道を探す。", metaphor:"チェスの名人", features:["複数の選択肢から最適な道を探す力", "複数の選択肢から最適な道を探す人。カーナビのように常に最適ルートを考え、障害を避けながらゴールへの道筋を描く。選択肢や判断が必要な場面で力を発揮する。", "道筋や作戦を考える／答えを見つける。複数の選択肢から最適解を導き出す。チームが迷ったときに、様々な可能性を示して方向性を決められる。"], joy:"選択肢や決断ができる自由がある状況・様々な可能性を考えて計画を立てること・複雑な問題に対して最適解を見つけること・自分の戦略が成功して物事が前進すること", hint:"意思決定や戦略立案の場で役割を担う"}
 ];
 var DOMAIN_LABEL = {"実行力":"実行力","影響力":"影響力","人間関係構築力":"人間関係","戦略的思考力":"思考力"};
+var DOMAIN_CLASS = {"実行力":"dom-exec","影響力":"dom-infl","人間関係構築力":"dom-rel","戦略的思考力":"dom-think"};
 
 /* ============== 記事の正式プロンプト（一字一句そのまま。差し込みは【私の情報】欄のみ） ============== */
 var PROMPT_HEAD =
@@ -874,20 +923,43 @@ function safe(v, fallback){
   var t = (v||"").toString().trim();
   return t.length ? t : (fallback!==undefined?fallback:"（未記入）");
 }
-function renderThemeDetailBlock(themeName){
+function renderThemeGuide(themeName){
+  /* 2層構造（1行callout＋折りたたみ「もっと知る」）を廃止し、資質解説カード1枚に統合。
+     pick1・nameitの両方から呼ばれる共通コンポーネント。データはTHEMESの再編成のみ、創作しない。 */
   var t = findTheme(themeName);
-  if(!t || !t.metaphor) return null;
-  var det = el("details", {class:"theme-detail-block"});
-  det.appendChild(el("summary", {}, ["もっと知る", el("span", {class:"detail-tag"}, ["おけもん式"])]));
-  var featList = el("ul", {class:"td-features"});
-  t.features.forEach(function(f){ featList.appendChild(el("li", {}, [f])); });
-  var inner = el("div", {class:"theme-detail-inner"}, [
-    el("p", {class:"td-metaphor"}, ["たとえるなら「" + t.metaphor + "」"]),
-    featList,
-    el("p", {class:"td-joy"}, ["喜ぶこと：" + t.joy])
+  if(!t) return null;
+  var domCls = DOMAIN_CLASS[t.domain] || "";
+  var guide = el("div", {class:"theme-guide"});
+  if(domCls){ guide.style.borderLeftColor = "var(--" + domCls + "-ink)"; }
+  var header = el("div", {class:"theme-guide-header"}, [
+    el("span", {class:"theme-guide-name"}, [t.name])
   ]);
-  det.appendChild(inner);
-  return det;
+  if(domCls){
+    header.appendChild(el("span", {class:"badge-chip dom-badge " + domCls}, [DOMAIN_LABEL[t.domain]]));
+  }
+  guide.appendChild(header);
+  if(t.metaphor){
+    guide.appendChild(el("p", {class:"theme-guide-metaphor"}, ["たとえるなら「" + t.metaphor + "」"]));
+  }
+  if(t.short){
+    guide.appendChild(el("p", {class:"theme-guide-catch"}, [t.short]));
+  }
+  if(t.features && t.features.length){
+    guide.appendChild(el("p", {class:"theme-guide-section-label"}, ["特徴"]));
+    var featList = el("ul", {class:"theme-guide-features"});
+    t.features.forEach(function(f){ featList.appendChild(el("li", {}, [f])); });
+    guide.appendChild(featList);
+  }
+  if(t.joy){
+    guide.appendChild(el("p", {class:"theme-guide-section-label"}, ["喜ぶこと"]));
+    guide.appendChild(el("p", {class:"theme-guide-joy"}, [t.joy]));
+  }
+  if(t.hint){
+    guide.appendChild(el("p", {class:"theme-guide-section-label"}, ["活かし方のヒント"]));
+    guide.appendChild(el("p", {class:"theme-guide-hint"}, [t.hint]));
+  }
+  guide.appendChild(el("span", {class:"theme-guide-source"}, ["出典：おけもん式の初心者向け解説"]));
+  return guide;
 }
 
 function copyText(text, statusEl, fallbackHolder){
@@ -1159,13 +1231,12 @@ function handleImportFile(file, statusEl, textarea, syncNext){
   }
 }
 
-/* ---- top5 select（検索語・スクロール位置を保ったまま局所更新） ---- */
+/* ---- top5 select（検索語・スクロール位置を保ったまま局所更新／検出済み5枠埋まりは専用の見せ方） ---- */
 function renderTop5(){
   var container = el("div", {});
-  var q = el("div", {class:"question"}, ["TOP5を、順位が上の資質から順に5つ選んでください。"]);
-  var hint = el("p", {class:"hint"}, ["資質名を選ぶと、下の枠に順番に入っていきます。枠をタップすると取り消せます。"]);
-
+  var headerBox = el("div", {});
   var slotRow = el("div", {class:"slot-row"});
+  var confirmBox = el("div", {});
   var searchInput = el("input", {type:"text", class:"search-input", placeholder:"資質名で検索（例：共感性）"});
   searchInput.value = "";
   var chipRow = el("div", {class:"chip-row"});
@@ -1173,6 +1244,27 @@ function renderTop5(){
   var list = el("div", {class:"theme-list"});
   var navRowEl;
 
+  function isDetectedComplete(){
+    return state.entryMethod==="upload" && state.top5.length===5;
+  }
+  function renderHeaderBox(){
+    headerBox.innerHTML = "";
+    if(isDetectedComplete()){
+      headerBox.appendChild(el("div", {class:"question"}, ["読み取った結果から、TOP5をこの順で入れました。"]));
+      headerBox.appendChild(el("p", {class:"hint"}, ["合っていれば、そのまま「この5つで進む」でOK。違うところだけタップして直せます。"]));
+    } else {
+      headerBox.appendChild(el("div", {class:"question"}, ["TOP5を、順位が上の資質から順に5つ選んでください。"]));
+      headerBox.appendChild(el("p", {class:"hint"}, ["資質名を選ぶと、下の枠に順番に入っていきます。枠をタップすると取り消せます。"]));
+    }
+  }
+  function renderConfirmBox(){
+    confirmBox.innerHTML = "";
+    if(isDetectedComplete()){
+      var confirmBtn = el("button", {type:"button", class:"btn btn-primary btn-block"}, ["この5つで進む"]);
+      confirmBtn.addEventListener("click", function(){ goNext(); });
+      confirmBox.appendChild(confirmBtn);
+    }
+  }
   function syncNav(){
     var btn = navRowEl && navRowEl.querySelector(".btn-primary");
     if(!btn) return;
@@ -1189,12 +1281,17 @@ function renderTop5(){
           document.createTextNode(val || "未選択")
         ]);
         if(val){
+          var theme = findTheme(val);
+          var domCls = theme ? DOMAIN_CLASS[theme.domain] : null;
+          if(domCls){
+            slot.style.borderTopWidth = "3px";
+            slot.style.borderTopStyle = "solid";
+            slot.style.borderTopColor = "var(--" + domCls + "-ink)";
+          }
           slot.addEventListener("click", function(){
             state.top5.splice(idx,1);
             saveState();
-            renderSlots();
-            renderList();
-            syncNav();
+            syncAll();
           });
         }
         slotRow.appendChild(slot);
@@ -1218,22 +1315,24 @@ function renderTop5(){
     shown.forEach(function(t){
       var picked = state.top5.indexOf(t.name) > -1;
       var full = state.top5.length>=5 && !picked;
+      var domCls = DOMAIN_CLASS[t.domain];
+      var badgeEl = picked
+        ? el("span", {class:"badge-chip badge-rank"}, ["TOP"+(state.top5.indexOf(t.name)+1)])
+        : el("span", {class:"badge-chip dom-badge " + domCls}, [DOMAIN_LABEL[t.domain]]);
       var btn = el("button", {type:"button", class:"theme-btn" + (picked?" is-picked":"") + (full?" is-disabled":"")}, [
         el("span", {}, [t.name, el("small", {}, [t.short])]),
-        el("span", {class:"badge"}, [picked ? ("TOP"+(state.top5.indexOf(t.name)+1)) : DOMAIN_LABEL[t.domain]])
+        badgeEl
       ]);
       if(!picked && !full){
         btn.addEventListener("click", function(){
           state.top5.push(t.name);
           saveState();
-          renderSlots();
-          renderList();
-          syncNav();
+          syncAll();
         });
       } else if(picked){
         btn.addEventListener("click", function(){
           var i2 = state.top5.indexOf(t.name);
-          if(i2>-1){ state.top5.splice(i2,1); saveState(); renderSlots(); renderList(); syncNav(); }
+          if(i2>-1){ state.top5.splice(i2,1); saveState(); syncAll(); }
         });
       }
       list.appendChild(btn);
@@ -1246,10 +1345,18 @@ function renderTop5(){
       if(d===state.domainFilter) ch.classList.add("is-active"); else ch.classList.remove("is-active");
     });
   }
+  function syncAll(){
+    renderSlots();
+    renderList();
+    syncNav();
+    renderHeaderBox();
+    renderConfirmBox();
+  }
 
   domains.forEach(function(d){
     var label = d==="all" ? "すべて" : DOMAIN_LABEL[d];
-    var chip = el("button", {type:"button", class:"chip" + (state.domainFilter===d?" is-active":"")}, [label]);
+    var domCls = d==="all" ? "" : DOMAIN_CLASS[d];
+    var chip = el("button", {type:"button", class:"chip" + (domCls?" chip-"+domCls:"") + (state.domainFilter===d?" is-active":"")}, [label]);
     chip.addEventListener("click", function(){
       state.domainFilter = d;
       saveState();
@@ -1260,12 +1367,14 @@ function renderTop5(){
   });
   searchInput.addEventListener("input", renderList);
 
+  renderHeaderBox();
   renderSlots();
+  renderConfirmBox();
   renderList();
 
-  container.appendChild(q);
-  container.appendChild(hint);
+  container.appendChild(headerBox);
   container.appendChild(slotRow);
+  container.appendChild(confirmBox);
   container.appendChild(searchInput);
   container.appendChild(chipRow);
   container.appendChild(list);
@@ -1361,15 +1470,8 @@ function renderPick1(){
   container.appendChild(list);
 
   if(state.selectedTheme){
-    var t = findTheme(state.selectedTheme);
-    if(t){
-      container.appendChild(el("div", {class:"desc-box"}, [
-        t.short,
-        el("span", {class:"desc-source"}, ["出典：おけもん式の初心者向け要約"])
-      ]));
-      var detailBlock = renderThemeDetailBlock(state.selectedTheme);
-      if(detailBlock) container.appendChild(detailBlock);
-    }
+    var guide = renderThemeGuide(state.selectedTheme);
+    if(guide) container.appendChild(guide);
   }
   container.appendChild(navRow({nextDisabled: !state.selectedTheme}));
   return card([container]);
@@ -1414,14 +1516,14 @@ function renderNameIt(){
     badgeLabel:"Gallup公式の問い",
     question:"「" + displayName() + "」の説明の中で、強く共感できる説明は何ですか？",
     placeholder:"思い当たるエピソードや、自分の言葉で書いてみてください",
-    hint:"一般的な説明とズレていてもOKです。そのズレの中に自分だけの言葉があります。"
+    hint:"一般的な説明とズレていてもOKです。そのズレの中に自分だけの言葉があります。下の解説カードが、答えを探す材料になります。"
   });
   if(t){
-    var detailBlock = renderThemeDetailBlock(state.selectedTheme);
-    if(detailBlock){
+    var guide = renderThemeGuide(state.selectedTheme);
+    if(guide){
       var questionEl = screen.querySelector(".question");
       if(questionEl && questionEl.parentNode){
-        questionEl.parentNode.insertBefore(detailBlock, questionEl.nextSibling);
+        questionEl.parentNode.insertBefore(guide, questionEl.nextSibling);
       }
     }
   }
@@ -1430,7 +1532,7 @@ function renderNameIt(){
 function renderClaimIt(){
   return textareaScreen({
     field:"claimIt",
-    badge:"gallup",
+    badge:"claim",
     badgeLabel:"Gallup公式の問い",
     question:"「" + displayName() + "」が、過去、あなたの成功に役立ったのはいつですか？",
     placeholder:"具体的な場面を1つ思い出して書いてみてください"
@@ -1460,7 +1562,7 @@ function renderAim(){
   i2.addEventListener("input", function(){ state.aim2 = i2.value; saveState(); syncAimBtn(); });
   row = navRow({nextDisabled: !state.aim1.trim() && !state.aim2.trim()});
   return card([
-    el("span", {class:"eyebrow gallup"}, ["Gallup公式の問い"]),
+    el("span", {class:"eyebrow aim"}, ["Gallup公式の問い"]),
     el("div", {class:"question"}, ["これからもっと意図的に「" + displayName() + "」を利用できる方法を2つ挙げてください。"]),
     el("p", {class:"hint"}, ["［おけもん式の解釈］Name it→Claim it→Aim itは1回で終わりではなく、そのつど足りない段階を確認しながら回していくサイクルです。"]),
     el("div", {class:"field"}, [el("label", {class:"field-label"}, ["方法1"]), i1]),
