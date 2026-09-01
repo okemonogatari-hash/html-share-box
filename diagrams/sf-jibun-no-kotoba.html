@@ -497,6 +497,10 @@
     width:100%;
     margin-bottom:8px;
   }
+  .import-dropzone.is-dragover{
+    border:2px dashed var(--primary);
+    background:#EEF3F0;
+  }
   .import-status{
     font-size:12.5px;
     color:var(--accent-ink);
@@ -1027,7 +1031,7 @@ function renderReportImport(){
   var dropzone = el("div", {class:"import-dropzone"});
   var fileInput = el("input", {type:"file", accept:".pdf,.txt,text/plain,application/pdf"});
   dropzone.appendChild(fileInput);
-  dropzone.appendChild(el("p", {class:"hint", style:"margin:0;"}, ["PDFまたはテキストファイルを選べます。画像スキャンPDFなど文字が取り出せない場合は、下の欄に直接貼り付けてください。"]));
+  dropzone.appendChild(el("p", {class:"hint", style:"margin:0;"}, ["PDFまたはテキストファイルを選ぶか、ここにファイルをドロップしてください。画像スキャンPDFなど文字が取り出せない場合は、下の欄に直接貼り付けてください。"]));
   container.appendChild(dropzone);
 
   var statusEl = el("p", {class:"import-status"}, [""]);
@@ -1071,6 +1075,35 @@ function renderReportImport(){
     if(!f) return;
     handleImportFile(f, statusEl, textarea, syncNext);
   });
+
+  /* ドラッグ＆ドロップでも読み込めるように（ドロップ先はカード全体、目印はdropzone） */
+  ["dragenter","dragover"].forEach(function(ev){
+    dropzone.addEventListener(ev, function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.add("is-dragover");
+    });
+  });
+  ["dragleave","dragend"].forEach(function(ev){
+    dropzone.addEventListener(ev, function(e){
+      e.preventDefault();
+      dropzone.classList.remove("is-dragover");
+    });
+  });
+  dropzone.addEventListener("drop", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    dropzone.classList.remove("is-dragover");
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if(!f){
+      statusEl.textContent = "ファイルを受け取れませんでした。ファイル選択か貼り付けをお使いください。";
+      return;
+    }
+    handleImportFile(f, statusEl, textarea, syncNext);
+  });
+  /* dropzone外に落として画面ごとPDFが開いてしまう事故を防ぐ */
+  container.addEventListener("dragover", function(e){ e.preventDefault(); });
+  container.addEventListener("drop", function(e){ e.preventDefault(); });
 
   return card([container]);
 }
