@@ -555,6 +555,29 @@
     margin:8px 0 14px;
     min-height:1.2em;
   }
+
+  /* 救護トグル（思い浮かばない人向けの呼び水） */
+  .rescue{margin:0 0 16px;}
+  .rescue summary{
+    cursor:pointer;
+    font-size:13px;
+    color:var(--accent-ink);
+    font-weight:600;
+    list-style:none;
+  }
+  .rescue summary::-webkit-details-marker{display:none;}
+  .rescue-body{
+    margin-top:8px;
+    padding:12px 14px;
+    background:var(--paper-deep);
+    border-radius:var(--radius-sm);
+    font-size:13.5px;
+    color:var(--ink);
+  }
+  .rescue-body p{margin:0 0 8px;}
+  .rescue-body p:last-child{margin-bottom:0;}
+  .rescue-body ul{margin:0 0 8px;padding-left:18px;}
+  .rescue-body li{margin-bottom:4px;}
 </style>
 </head>
 <body>
@@ -781,7 +804,9 @@ var defaultState = {
   scene: "",
   customName: "",
   selectedTheme: "",
+  nickname: "",
   reportText: "",
+  includeReportInPrompt: false,
   nameIt: "",
   claimIt: "",
   thanks: "",
@@ -789,10 +814,7 @@ var defaultState = {
   aim2: "",
   expChoice: "",
   expChoiceText: "",
-  expWhen: "",
-  expWhere: "",
-  expWho: "",
-  expSign: "",
+  expNote: "",
   sentencePart1: "",
   sentencePart2: "",
   reflect1: "",
@@ -835,12 +857,9 @@ var STEPS = [
   {id:"nameit"},
   {id:"claimit"},
   {id:"thanks"},
+  {id:"nickname"},
   {id:"aim"},
-  {id:"expchoice"},
-  {id:"expwhen"},
-  {id:"expwhere"},
-  {id:"expwho"},
-  {id:"expsign"},
+  {id:"exp"},
   {id:"done"}
 ];
 
@@ -960,6 +979,36 @@ function renderThemeGuide(themeName){
   }
   guide.appendChild(el("span", {class:"theme-guide-source"}, ["出典：おけもん式の初心者向け解説"]));
   return guide;
+}
+
+function renderRescueToggle(kind){
+  var body = el("div", {class:"rescue-body"});
+  if(kind==="nameit-theme"){
+    var t = findTheme(state.selectedTheme);
+    if(t && t.features && t.features.length){
+      body.appendChild(el("p", {}, ["こういう場面、身に覚えはありませんか？"]));
+      var ul = el("ul", {});
+      t.features.forEach(function(f){ ul.appendChild(el("li", {}, [f])); });
+      body.appendChild(ul);
+    }
+    if(t && t.joy){
+      body.appendChild(el("p", {}, ["こういう時間が好きなら、それも手がかり：" + t.joy]));
+    }
+    body.appendChild(el("p", {}, ["気づいたら自然にやってしまうことは？"]));
+    body.appendChild(el("p", {}, ["人から「ありがとう」「それすごいね」と言われるのはどんな時？"]));
+  } else if(kind==="nameit-custom"){
+    body.appendChild(el("p", {}, ["気づいたら自然にやってしまうことは？"]));
+    body.appendChild(el("p", {}, ["人から「ありがとう」「それすごいね」と言われるのはどんな時？"]));
+  } else if(kind==="claimit"){
+    body.appendChild(el("p", {}, ["自然と惹き込まれて、エネルギーが湧いてくる活動はどれですか？"]));
+    body.appendChild(el("p", {}, ["終わったあと「またやりたい」と思ったのは、どんな時ですか？"]));
+  } else {
+    return null;
+  }
+  var det = el("details", {class:"rescue"});
+  det.appendChild(el("summary", {}, ["思い浮かばない人は"]));
+  det.appendChild(body);
+  return det;
 }
 
 function copyText(text, statusEl, fallbackHolder){
@@ -1501,13 +1550,19 @@ function textareaScreen(opts){
 }
 function renderNameIt(){
   if(state.hasResults===false){
-    return textareaScreen({
+    var screenC = textareaScreen({
       field:"nameIt",
       badge:"okemon",
       badgeLabel:"おけもん流",
       question:"その場面でのあなたの動きの中で、いちばん「自分らしい」と思うのはどこですか？",
       placeholder:"思い当たる動きや、自分の言葉で書いてみてください"
     });
+    var rescueC = renderRescueToggle("nameit-custom");
+    if(rescueC){
+      var fieldC = screenC.querySelector(".field");
+      if(fieldC && fieldC.parentNode) fieldC.parentNode.insertBefore(rescueC, fieldC);
+    }
+    return screenC;
   }
   var t = findTheme(state.selectedTheme);
   var screen = textareaScreen({
@@ -1527,16 +1582,27 @@ function renderNameIt(){
       }
     }
   }
+  var rescue = renderRescueToggle("nameit-theme");
+  if(rescue){
+    var field = screen.querySelector(".field");
+    if(field && field.parentNode) field.parentNode.insertBefore(rescue, field);
+  }
   return screen;
 }
 function renderClaimIt(){
-  return textareaScreen({
+  var screen = textareaScreen({
     field:"claimIt",
     badge:"claim",
     badgeLabel:"Gallup公式の問い",
     question:"「" + displayName() + "」が、過去、あなたの成功に役立ったのはいつですか？",
     placeholder:"具体的な場面を1つ思い出して書いてみてください"
   });
+  var rescue = renderRescueToggle("claimit");
+  if(rescue){
+    var field = screen.querySelector(".field");
+    if(field && field.parentNode) field.parentNode.insertBefore(rescue, field);
+  }
+  return screen;
 }
 function renderThanks(){
   return textareaScreen({
@@ -1545,6 +1611,20 @@ function renderThanks(){
     badgeLabel:"おけもん流",
     question:"「" + displayName() + "」にひとこと感謝を言うとしたら、何に対して言いますか？"
   });
+}
+
+/* ---- nickname（任意・スキップ可） ---- */
+function renderNickname(){
+  var input = el("input", {type:"text", placeholder:"例：仲間ほしいちゃん"});
+  input.value = state.nickname || "";
+  input.addEventListener("input", function(){ state.nickname = input.value; saveState(); });
+  return card([
+    el("span", {class:"eyebrow okemon"}, ["おけもん流"]),
+    el("div", {class:"question"}, ["この資質に、あなただけの呼び名をつけるなら？"]),
+    el("p", {class:"hint"}, ["思いつかなければ、そのまま「つぎへ」でスキップできます（任意）。"]),
+    el("div", {class:"field"}, [input]),
+    navRow({})
+  ]);
 }
 
 /* ---- aim it (2 inputs) ---- */
@@ -1571,21 +1651,12 @@ function renderAim(){
   ]);
 }
 
-/* ---- experiment micro-steps ---- */
-function miniDots(current, total){
-  var row = el("div", {class:"mini-dots"});
-  for(var i=0;i<total;i++){
-    var cls = "mini-dot" + (i<current?" is-done":"") + (i===current?" is-current":"");
-    row.appendChild(el("span", {class:cls}));
-  }
-  return row;
-}
-function renderExpChoice(){
+/* ---- experiment（choice+when/where/who/signを1画面に統合。尋問感の解消） ---- */
+function renderExp(){
   var options = [];
   if(state.aim1.trim()) options.push(state.aim1.trim());
   if(state.aim2.trim()) options.push(state.aim2.trim());
   var container = el("div", {});
-  container.appendChild(miniDots(0,5));
 
   if(options.length<=1){
     var only = options[0] || "";
@@ -1616,65 +1687,28 @@ function renderExpChoice(){
 
   var customInput = el("input", {type:"text", placeholder: options.length<=1 ? "書き直したい場合はここに書けます（任意）" : "それ以外を試す場合はここに書けます（任意）"});
   customInput.value = options.indexOf(state.expChoiceText)>-1 ? "" : state.expChoiceText;
-  var expChoiceRow;
+  var row;
   customInput.addEventListener("input", function(){
     state.expChoiceText = customInput.value;
     saveState();
-    var btn = expChoiceRow && expChoiceRow.querySelector(".btn-primary");
+    var btn = row && row.querySelector(".btn-primary");
     if(btn) btn.disabled = !state.expChoiceText.trim();
   });
   container.appendChild(el("div", {class:"field", style:"margin-top:10px;"}, [customInput]));
-  expChoiceRow = navRow({nextDisabled: !state.expChoiceText.trim()});
-  container.appendChild(expChoiceRow);
-  return card([container]);
-}
-function expMicroScreen(opts, dotIndex){
-  var container = el("div", {});
-  container.appendChild(miniDots(dotIndex,5));
-  container.appendChild(el("div", {class:"question"}, [opts.question]));
-  var input = el("input", {type:"text", placeholder:opts.placeholder||""});
-  input.value = state[opts.field];
-  var row;
-  input.addEventListener("input", function(){
-    state[opts.field] = input.value;
-    saveState();
-    var btn = row && row.querySelector(".btn-primary");
-    if(btn) btn.disabled = !state[opts.field].trim();
-  });
-  container.appendChild(el("div", {class:"field"}, [input]));
-  row = navRow({nextDisabled: !state[opts.field].trim()});
-  container.appendChild(row);
-  return card([container]);
-}
-function renderExpWhen(){
-  return expMicroScreen({field:"expWhen", question:"いつ試しますか？", placeholder:"例：明日の朝礼で"}, 1);
-}
-function renderExpWhere(){
-  return expMicroScreen({field:"expWhere", question:"どこで試しますか？", placeholder:"例：オフィスの自分の席で"}, 2);
-}
-function renderExpWho(){
-  return expMicroScreen({field:"expWho", question:"誰に対して試しますか？", placeholder:"例：後輩のAさんに"}, 3);
-}
-function renderExpSign(){
-  var container = el("div", {});
-  container.appendChild(miniDots(4,5));
-  container.appendChild(el("div", {class:"question"}, ["できたと判断する目印は何ですか？"]));
-  container.appendChild(el("p", {class:"hint"}, ["「これができていたら合格」と言えるくらい具体的だと、あとで振り返りやすくなります。"]));
-  var input = el("input", {type:"text", placeholder:"例：相手が最後まで話し切って、ありがとうと言ってくれたら"});
-  input.value = state.expSign;
-  var expSignRow;
-  input.addEventListener("input", function(){
-    state.expSign = input.value;
-    saveState();
-    var btn = expSignRow && expSignRow.querySelector(".btn-primary");
-    if(btn) btn.disabled = !state.expSign.trim();
-  });
-  container.appendChild(el("div", {class:"field"}, [input]));
-  expSignRow = navRow({
-    nextDisabled: !state.expSign.trim(),
+
+  var noteInput = el("textarea", {placeholder:"例：明日の朝礼で、Aさんに。最後まで話を聞けたら合格"});
+  noteInput.value = state.expNote || "";
+  noteInput.addEventListener("input", function(){ state.expNote = noteInput.value; saveState(); });
+  container.appendChild(el("div", {class:"field", style:"margin-top:16px;"}, [
+    el("label", {class:"field-label"}, ["いつ・どこで・できたと言える目印など、決めておきたければ一言（任意）"]),
+    noteInput
+  ]));
+
+  row = navRow({
+    nextDisabled: !state.expChoiceText.trim(),
     nextLabel:"できあがりを見る"
   });
-  container.appendChild(expSignRow);
+  container.appendChild(row);
   return card([container]);
 }
 
@@ -1692,11 +1726,8 @@ function buildCopyAll(){
   lines.push("【資質】" + displayName());
   lines.push("");
   lines.push("【明日の実験カード】");
-  lines.push("いつ：" + safe(state.expWhen,""));
-  lines.push("どこで：" + safe(state.expWhere,""));
-  lines.push("誰に対して：" + safe(state.expWho,""));
   lines.push("すること：" + safe(state.expChoiceText,""));
-  lines.push("できたと判断する目印：" + safe(state.expSign,""));
+  lines.push("メモ（いつ・どこで・目印など）：" + safe(state.expNote,""));
   lines.push("");
   lines.push("【3行振り返り（明日やってから書く）】");
   lines.push("やったこと：" + (state.reflect1||""));
@@ -1706,10 +1737,13 @@ function buildCopyAll(){
 }
 function buildHonninLine(){
   var report = (state.reportText||"").trim();
-  if(report){
-    return "本人レポート：\n" + report + "\n";
+  if(!report){
+    return PROMPT_HONNIN_LINE;
   }
-  return PROMPT_HONNIN_LINE;
+  if(state.includeReportInPrompt){
+    return "本人レポート：\n" + report.slice(0,4000) + "\n";
+  }
+  return "本人レポート：（手元にあります。必要なら求めてください）\n";
 }
 function buildDeepDivePrompt(){
   var top5Line;
@@ -1719,20 +1753,53 @@ function buildDeepDivePrompt(){
     top5Line = "TOP5：未受験・診断結果なし（今日はこの仮の強みで進めています：" + safe(state.customName, displayName()) + "）\n";
   }
   var progressNote = "今日のワークでName it〜Aim itまで1周済みです。【進め方】①〜⑤は完了しているので、⑥⑦と、出てきた言葉の深掘りから続けてください。最初の自己紹介や資質説明からはやり直さないでください。\n";
+  var nicknameLine = state.nickname && state.nickname.trim() ? ("本人はこの資質を「" + state.nickname.trim() + "」と呼んでいます\n") : "";
   var todayLog =
     "\n【このアプリで先に答えた内容（続きから深掘りしてください）】\n" +
     progressNote +
     "選んだ資質／仮の強み：" + safe(displayName(),"未記入") + "\n" +
+    nicknameLine +
     "Name it（強く共感できた説明）：" + safe(state.nameIt,"未記入") + "\n" +
     "Claim it（過去に役立った場面）：" + safe(state.claimIt,"未記入") + "\n" +
     "感謝のひとこと：" + safe(state.thanks,"未記入") + "\n" +
     "Aim it 案1：" + safe(state.aim1,"未記入") + "\n" +
     "Aim it 案2：" + safe(state.aim2,"未記入") + "\n" +
     "明日試すと決めた案：" + safe(state.expChoiceText,"未記入") + "\n" +
-    "いつ／どこで／誰に対して：" + safe(state.expWhen,"未記入") + "／" + safe(state.expWhere,"未記入") + "／" + safe(state.expWho,"未記入") + "\n" +
-    "できたと判断する目印：" + safe(state.expSign,"未記入") + "\n" +
+    "実験メモ（いつ・どこで・目印など）：" + safe(state.expNote,"未記入") + "\n" +
     "ここまでの答えから組み立てた1文（◯◯は本人がまだ埋めていない箇所）：" + buildSentence() + "\n";
   return PROMPT_HEAD + top5Line + buildHonninLine() + todayLog + PROMPT_TAIL;
+}
+function buildPolishPrompt(){
+  var lines = [];
+  lines.push("次の【今日の私の言葉】だけを材料に、下の1文の◯◯を埋めて、自然な日本語に整えてください。");
+  lines.push("・私が言っていないことを足さない（言い換え・短縮はOK）");
+  lines.push("・埋められない部分は◯◯のまま残す");
+  lines.push("・整えた1文だけを返す（別案があれば1つだけ）");
+  lines.push("");
+  lines.push("【今日の私の言葉】");
+  lines.push("資質名：" + safe(displayName(),"未記入"));
+  if(state.nickname && state.nickname.trim()){ lines.push("呼び名：" + state.nickname.trim()); }
+  lines.push("Name it：" + safe(state.nameIt,"未記入"));
+  lines.push("Claim it：" + safe(state.claimIt,"未記入"));
+  lines.push("感謝：" + safe(state.thanks,"未記入"));
+  var aimLine = safe(state.aim1,"") + (state.aim2 && state.aim2.trim() ? ("／" + state.aim2.trim()) : "");
+  lines.push("Aim it：" + (aimLine.trim() ? aimLine : "未記入"));
+  lines.push("");
+  lines.push("【整える1文】");
+  lines.push(buildSentence());
+  return lines.join("\n");
+}
+function buildImagePrompt(){
+  var t = findTheme(state.selectedTheme);
+  var label = (state.nickname && state.nickname.trim()) ? state.nickname.trim() : displayName();
+  var lines = [];
+  lines.push("次のキャラクターを、かわいいマスコット風のイラストに描いてください。");
+  lines.push("名前:「" + label + "」（ストレングスファインダーの資質「" + safe(displayName(),"—") + "」から生まれたキャラクター）");
+  if(t && t.metaphor){ lines.push("たとえるなら:" + t.metaphor); }
+  lines.push("性格のもと（本人の言葉）:" + safe(state.nameIt,"未記入").slice(0,150));
+  if(t && t.joy){ lines.push("好きなもの:" + t.joy); }
+  lines.push("丸みのあるやさしいデザインで、立ち絵1枚、背景はシンプルに。");
+  return lines.join("\n");
 }
 
 function startNewLap(){
@@ -1759,7 +1826,10 @@ function renderDone(){
   if(state.lapCount && state.lapCount>1){
     container.appendChild(el("span", {class:"eyebrow", style:"margin-left:6px;"}, [state.lapCount + "周目"]));
   }
-  container.appendChild(el("h2", {}, ["今日、資質が「自分の言葉」に変わりました。"]));
+  var headingText = (state.nickname && state.nickname.trim())
+    ? ("今日、「" + safe(displayName(),"この資質") + "」はあなたの中で「" + state.nickname.trim() + "」になりました。")
+    : "今日、資質が「自分の言葉」に変わりました。";
+  container.appendChild(el("h2", {}, [headingText]));
 
   container.appendChild(el("div", {class:"desc-box echo-box"}, [
     el("strong", {}, ["今日、あなたが話した言葉"]),
@@ -1784,12 +1854,10 @@ function renderDone(){
   container.appendChild(el("p", {class:"hint"}, ["空欄のままコピーすると「◯◯」のままコピーされます。あとから書き足しても大丈夫です。"]));
 
   var expCard = el("dl", {class:"exp-card"}, [
-    el("dt", {}, ["いつ／どこで／誰に対して"]),
-    el("dd", {}, [safe(state.expWhen,"（未記入）") + "／" + safe(state.expWhere,"（未記入）") + "／" + safe(state.expWho,"（未記入）")]),
     el("dt", {}, ["すること"]),
     el("dd", {}, [safe(state.expChoiceText,"（未記入）")]),
-    el("dt", {}, ["できたと判断する目印"]),
-    el("dd", {}, [safe(state.expSign,"（未記入）")])
+    el("dt", {}, ["メモ（いつ・どこで・目印など）"]),
+    el("dd", {}, [safe(state.expNote,"（未記入）")])
   ]);
   container.appendChild(el("h3", {style:"font-size:15px;margin-top:20px;"}, ["明日の実験カード"]));
   container.appendChild(expCard);
@@ -1815,19 +1883,45 @@ function renderDone(){
   var fallback1 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
   var fallback2 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
   var fallback3 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
+  var fallback4 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
+  var fallback5 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
 
   var btn1 = el("button", {class:"btn btn-primary btn-block", type:"button"}, ["シェア用に1文だけコピー"]);
   btn1.addEventListener("click", function(){ copyText(buildSentence(), statusEl, fallback1); });
   var btn2 = el("button", {class:"btn btn-outline btn-block", type:"button"}, ["全部コピー（メモ用）"]);
   btn2.addEventListener("click", function(){ copyText(buildCopyAll(), statusEl, fallback2); });
+  var btn4 = el("button", {class:"btn btn-outline btn-block", type:"button"}, ["この1文だけ、AIに整えてもらう（コピー）"]);
+  btn4.addEventListener("click", function(){ copyText(buildPolishPrompt(), statusEl, fallback4); });
+  var btn5label = "「" + ((state.nickname && state.nickname.trim()) ? state.nickname.trim() : safe(displayName(),"この資質")) + "」を画像にする（プロンプトをコピー）";
+  var btn5 = el("button", {class:"btn btn-outline btn-block", type:"button"}, [btn5label]);
+  btn5.addEventListener("click", function(){ copyText(buildImagePrompt(), statusEl, fallback5); });
+
+  var reportCheckWrap = null;
+  if(state.reportText && state.reportText.trim()){
+    var reportCheck = el("input", {type:"checkbox"});
+    reportCheck.checked = !!state.includeReportInPrompt;
+    reportCheck.addEventListener("change", function(){
+      state.includeReportInPrompt = reportCheck.checked;
+      saveState();
+    });
+    var reportLabel = el("label", {style:"display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted);margin-top:12px;"}, [
+      reportCheck,
+      document.createTextNode("レポート本文も含める（長くなります・先頭4,000字まで）")
+    ]);
+    reportCheckWrap = reportLabel;
+  }
+
   var btn3 = el("button", {class:"btn btn-outline btn-block", type:"button"}, ["AIでさらに深掘りする（プロンプトをコピー）"]);
   btn3.addEventListener("click", function(){ copyText(buildDeepDivePrompt(), statusEl, fallback3); });
 
-  container.appendChild(el("div", {class:"btnrow", style:"flex-direction:column;align-items:stretch;margin-top:22px;"}, [btn1, btn2, btn3]));
+  container.appendChild(el("div", {class:"btnrow", style:"flex-direction:column;align-items:stretch;margin-top:22px;"}, [btn1, btn2, btn4, btn5, btn3]));
+  if(reportCheckWrap) container.appendChild(reportCheckWrap);
   container.appendChild(statusEl);
   container.appendChild(fallback1);
   container.appendChild(fallback2);
   container.appendChild(fallback3);
+  container.appendChild(fallback4);
+  container.appendChild(fallback5);
 
   if(state.hasResults===true){
     container.appendChild(el("p", {class:"hint", style:"margin-top:18px;"}, ["［おけもん式の解釈］1つ深掘りしたら、また別の資質で同じサイクルを回してみると、TOP5全体が「自分の言葉」に変わっていきます。"]));
@@ -1863,12 +1957,9 @@ var RENDERERS = {
   nameit: renderNameIt,
   claimit: renderClaimIt,
   thanks: renderThanks,
+  nickname: renderNickname,
   aim: renderAim,
-  expchoice: renderExpChoice,
-  expwhen: renderExpWhen,
-  expwhere: renderExpWhere,
-  expwho: renderExpWho,
-  expsign: renderExpSign,
+  exp: renderExp,
   done: renderDone
 };
 
