@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>自分の言葉ワーク｜読んだだけで終わらせないストレングスファインダー活用会</title>
+<style>
+  :root{
+    --paper:#FBF8F3;
+    --paper-deep:#F5F0E8;
+    --line:#E4DACB;
+    --ink:#1F1B16;
+    --muted:#5F574C;
+    --primary:#2C5F4B;
+    --primary-deep:#20493A;
+    --accent-ink:#8A5A2B;
+    --accent-line:#C4915E;
+    --white:#FFFFFF;
+    --radius:16px;
+    --radius-sm:10px;
+    --maxw:640px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.9;
+    -webkit-text-size-adjust:100%;
+  }
+  h1,h2,h3{
+    text-wrap:balance;
+    line-break:strict;
+    margin:0 0 .5em;
+    color:var(--primary);
+    font-weight:700;
+  }
+  p{margin:0 0 1em;}
+  .noscript-banner{
+    max-width:var(--maxw);
+    margin:24px auto;
+    padding:20px;
+    background:var(--paper-deep);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    color:var(--ink);
+  }
+  .noscript-banner a{color:var(--accent-ink);}
+  #app{display:none;}
+  html.js-ready #app{display:block;}
+  html.js-ready .noscript-only{display:none;}
+
+  .shell{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 0 48px;
+    min-height:100vh;
+  }
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:5;
+    background:var(--paper);
+    padding:14px 20px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:8px;
+  }
+  .brand{
+    font-size:12.5px;
+    color:var(--muted);
+    letter-spacing:.02em;
+  }
+  .privacy-note{
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .progress-track{
+    height:6px;
+    background:var(--paper-deep);
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--primary);
+    border-radius:99px;
+    transition:width .3s ease;
+    width:0%;
+  }
+  .step-label{
+    font-size:12.5px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+  main{padding:24px 20px 8px;}
+  .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 20px;
+    margin-bottom:16px;
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size:12.5px;
+    color:var(--accent-ink);
+    border:1px solid var(--accent-line);
+    border-radius:99px;
+    padding:3px 10px;
+    margin-bottom:12px;
+    font-weight:600;
+  }
+  .eyebrow.gallup{color:var(--primary);border-color:var(--primary);}
+  .question{
+    font-size:19px;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:14px;
+    text-wrap:balance;
+    line-break:strict;
+  }
+  .hint{
+    font-size:13.5px;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  textarea, input[type="text"]{
+    width:100%;
+    font-size:16px;
+    font-family:inherit;
+    color:var(--ink);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:12px 14px;
+    line-height:1.8;
+  }
+  textarea{min-height:110px;resize:vertical;}
+  textarea:focus, input[type="text"]:focus{
+    outline:2px solid var(--primary);
+    outline-offset:1px;
+  }
+  label.field-label{
+    display:block;
+    font-size:13.5px;
+    color:var(--muted);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  .field{margin-bottom:16px;}
+
+  .btnrow{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+    flex-wrap:wrap;
+  }
+  button{
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .btn{
+    appearance:none;
+    border:none;
+    border-radius:99px;
+    padding:13px 22px;
+    font-size:15px;
+    font-weight:700;
+    transition:background-color .15s ease, opacity .15s ease, transform .1s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{
+    background:var(--primary);
+    color:var(--white);
+  }
+  .btn-primary:disabled{
+    background:#A9BDB4;
+    color:var(--ink);
+    cursor:not-allowed;
+  }
+  .btn-ghost{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid var(--line);
+  }
+  .btn-outline{
+    background:var(--paper);
+    color:var(--primary);
+    border:1px solid var(--primary);
+  }
+  .btn-sm{padding:9px 14px;font-size:13.5px;}
+  .btn-block{width:100%;}
+
+  .theme-tools{margin-bottom:14px;}
+  .search-input{margin-bottom:10px;}
+  .chip-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .chip{
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--muted);
+    border-radius:99px;
+    padding:6px 12px;
+    font-size:12.5px;
+  }
+  .chip.is-active{
+    background:var(--primary);
+    color:var(--white);
+    border-color:var(--primary);
+  }
+  .slot-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .slot{
+    flex:1 1 auto;
+    min-width:60px;
+    border:1px dashed var(--line);
+    border-radius:var(--radius-sm);
+    padding:8px 6px;
+    text-align:center;
+    font-size:12.5px;
+    color:var(--muted);
+    background:var(--paper);
+  }
+  .slot.filled{
+    border-style:solid;
+    border-color:var(--primary);
+    background:var(--paper-deep);
+    color:var(--ink);
+    font-weight:700;
+    cursor:pointer;
+  }
+  .slot .slot-rank{
+    display:block;
+    font-size:12.5px;
+    color:var(--accent-ink);
+    font-weight:700;
+    margin-bottom:2px;
+  }
+  .theme-list{
+    max-height:340px;
+    overflow-y:auto;
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:8px;
+  }
+  .theme-btn{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    text-align:left;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:10px 12px;
+    margin-bottom:6px;
+    font-size:14px;
+    color:var(--ink);
+  }
+  .theme-btn:last-child{margin-bottom:0;}
+  .theme-btn.is-picked{
+    background:var(--paper-deep);
+    border-color:var(--primary);
+  }
+  .theme-btn.is-disabled{
+    opacity:.4;
+  }
+  .theme-btn small{
+    display:block;
+    color:var(--muted);
+    font-size:12.5px;
+    font-weight:400;
+    margin-top:2px;
+  }
+  .theme-btn .badge{
+    font-size:12.5px;
+    color:var(--white);
+    background:var(--muted);
+    border-radius:99px;
+    padding:2px 8px;
+    white-space:nowrap;
+    margin-left:8px;
+  }
+
+  .pick-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+  .pick-item{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:12px 14px;
+    font-size:15px;
+    color:var(--ink);
+  }
+  .pick-item.is-selected{
+    background:var(--paper-deep);
+    border-color:var(--primary);
+    font-weight:700;
+  }
+  .pick-item .rank{
+    display:inline-block;
+    font-size:12.5px;
+    color:var(--accent-ink);
+    font-weight:700;
+    margin-right:6px;
+  }
+  .desc-box{
+    background:var(--paper-deep);
+    border-left:3px solid var(--primary);
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    padding:14px 16px;
+    margin-top:12px;
+    font-size:14.5px;
+  }
+  .desc-source{
+    display:block;
+    font-size:12.5px;
+    color:var(--accent-ink);
+    margin-top:8px;
+  }
+
+  .sentence-block{
+    background:var(--paper-deep);
+    border-radius:var(--radius-sm);
+    padding:18px 16px;
+    font-size:17px;
+    line-height:2;
+    margin-bottom:8px;
+  }
+  .sentence-block input[type="text"]{
+    display:inline-block;
+    width:auto;
+    min-width:90px;
+    max-width:100%;
+    font-size:16px;
+    font-weight:700;
+    color:var(--primary);
+    background:var(--white);
+    border:1px solid var(--accent-line);
+    border-radius:6px;
+    padding:4px 8px;
+    margin:2px 2px;
+  }
+  .exp-card, .reflect-card{
+    background:var(--paper-deep);
+    border-radius:var(--radius-sm);
+    padding:16px;
+    margin-bottom:14px;
+    font-size:14.5px;
+  }
+  .exp-card dt{color:var(--muted);font-size:12.5px;margin-top:10px;}
+  .exp-card dt:first-child{margin-top:0;}
+  .exp-card dd{margin:2px 0 0;color:var(--ink);font-weight:600;}
+  .reflect-card label{display:block;color:var(--muted);font-size:12.5px;margin:10px 0 4px;}
+  .reflect-card label:first-child{margin-top:0;}
+  .reflect-card textarea{min-height:56px;}
+
+  .footer-note{
+    font-size:12.5px;
+    color:var(--muted);
+    text-align:center;
+    padding:18px 20px 0;
+  }
+  .article-card{
+    display:block;
+    background:var(--paper-deep);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+    color:var(--ink);
+    text-decoration:none;
+    margin-top:10px;
+  }
+  .article-card strong{color:var(--primary);}
+  .article-card span{
+    display:block;
+    font-size:12.5px;
+    color:var(--accent-ink);
+    margin-top:6px;
+  }
+  .copy-status{
+    font-size:12.5px;
+    color:var(--primary);
+    margin-top:8px;
+    min-height:1.2em;
+  }
+  .fallback-textarea{
+    width:100%;
+    min-height:120px;
+    margin-top:8px;
+    font-size:13px;
+    font-family:ui-monospace,monospace;
+  }
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .mini-dots{
+    display:flex;
+    gap:6px;
+    margin-bottom:14px;
+  }
+  .mini-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--line);
+  }
+  .mini-dot.is-done{background:var(--primary);}
+  .mini-dot.is-current{background:var(--accent-ink);}
+</style>
+</head>
+<body>
+
+<noscript>
+  <div class="noscript-banner">
+    <h1 style="font-size:18px;">このワークはJavaScriptが必要です</h1>
+    <p>お使いのブラウザでJavaScriptがオフになっているため、このアプリは動きません。</p>
+    <p>かわりに、記事のコピペ用プロンプト版をご利用ください。ChatGPTやClaudeに貼り付けると、同じ内容をAIが1問ずつ訊いてくれます。</p>
+    <p><a href="https://library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J" target="_blank" rel="noopener">【受けたけど、読んだだけ・・】認定コーチが伝える、ストレングスファインダーを「使える」に変える15分（記事を開く）</a></p>
+  </div>
+</noscript>
+
+<div id="app">
+  <div class="shell">
+    <div class="topbar">
+      <div class="topbar-row">
+        <span class="brand">読んだだけで終わらせないSF活用会</span>
+        <button type="button" class="btn btn-ghost btn-sm" id="resetBtn">最初からやり直す</button>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="step-label" id="stepLabel"></div>
+    </div>
+    <main id="main"></main>
+    <p class="footer-note">入力内容はこの端末のブラウザだけに保存されます。外部には一切送信されません。</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  document.documentElement.classList.remove('no-js');
+  document.documentElement.classList.add('js-ready');
+})();
+</script>
+<script>
+(function(){
+"use strict";
+
+/* ============== 34資質データ（出典：おけもん式ストレングスホーム #themes を一字一句転記） ============== */
+var THEMES = [
+  {name:"達成欲", domain:"実行力", short:"完了と前進に喜びを感じる。"},
+  {name:"アレンジ", domain:"実行力", short:"状況に合わせて段取りを変える。"},
+  {name:"信念", domain:"実行力", short:"大切なものに沿って動く。"},
+  {name:"公平性", domain:"実行力", short:"一貫性と納得感を大切にする。"},
+  {name:"慎重さ", domain:"実行力", short:"失敗を防ぐために先回りする。"},
+  {name:"規律性", domain:"実行力", short:"秩序と習慣で安定する。"},
+  {name:"目標志向", domain:"実行力", short:"目的地が見えると集中する。"},
+  {name:"責任感", domain:"実行力", short:"引き受けたことを最後まで果たす。"},
+  {name:"回復志向", domain:"実行力", short:"不具合を改善するほど燃える。"},
+  {name:"活発性", domain:"影響力", short:"考えるより始めると動き出す。"},
+  {name:"指令性", domain:"影響力", short:"必要なことをはっきり言う。"},
+  {name:"コミュニケーション", domain:"影響力", short:"伝えることで価値を生む。"},
+  {name:"競争性", domain:"影響力", short:"比較や勝利がエネルギーになる。"},
+  {name:"最上志向", domain:"影響力", short:"良いものをもっと良くする。"},
+  {name:"自己確信", domain:"影響力", short:"自分の判断を信じて進む。"},
+  {name:"自我", domain:"影響力", short:"重要な役割を担うと燃える。"},
+  {name:"社交性", domain:"影響力", short:"初対面や場づくりで力を出す。"},
+  {name:"適応性", domain:"人間関係構築力", short:"変化に合わせて流れをつかむ。"},
+  {name:"運命思考", domain:"人間関係構築力", short:"関係性や意味のつながりを見る。"},
+  {name:"成長促進", domain:"人間関係構築力", short:"人の伸びしろに目が向く。"},
+  {name:"共感性", domain:"人間関係構築力", short:"言葉にならない気持ちに気づく。"},
+  {name:"調和性", domain:"人間関係構築力", short:"衝突より合意点を探す。"},
+  {name:"包含", domain:"人間関係構築力", short:"輪の外にいる人に気づく。"},
+  {name:"個別化", domain:"人間関係構築力", short:"その人らしさに合わせる。"},
+  {name:"ポジティブ", domain:"人間関係構築力", short:"前向きな空気をつくる。"},
+  {name:"親密性", domain:"人間関係構築力", short:"少人数で濃くつながる。"},
+  {name:"分析思考", domain:"戦略的思考力", short:"事実と因果で考える。"},
+  {name:"原点思考", domain:"戦略的思考力", short:"背景や歩みを重視する。"},
+  {name:"未来志向", domain:"戦略的思考力", short:"これからの可能性に惹かれる。"},
+  {name:"着想", domain:"戦略的思考力", short:"新しい見方やアイデアが湧く。"},
+  {name:"収集心", domain:"戦略的思考力", short:"情報や素材を集めるほど満たされる。"},
+  {name:"内省", domain:"戦略的思考力", short:"一人で深く考えるほど整う。"},
+  {name:"学習欲", domain:"戦略的思考力", short:"知らないことを知ると元気になる。"},
+  {name:"戦略性", domain:"戦略的思考力", short:"道筋を見比べて近道を探す。"}
+];
+var DOMAIN_LABEL = {"実行力":"実行力","影響力":"影響力","人間関係構築力":"人間関係","戦略的思考力":"思考力"};
+
+/* ============== 記事の正式プロンプト（一字一句そのまま。差し込みは【私の情報】欄のみ） ============== */
+var PROMPT_HEAD =
+"あなたは、私のストレングスファインダー（CliftonStrengths）の結果を、日常で使える言葉に変える対話コーチです。\n" +
+"目的は、上位資質を1つ公式のコーチングのながれに沿って「自分の言葉」にして、明日1回使える状態にすることです。\n" +
+"【最初に読むページ】\n" +
+"質問を始める前に、できれば次の3か所を先に読んでください。\n" +
+"① 受けた後の歩き方\n" +
+"https://okemonogatari-hash.github.io/okemon-strengths-home/after.html\n" +
+"② そもそもストレングスファインダーとは\n" +
+"https://okemonogatari-hash.github.io/okemon-strengths-home/#foundation\n" +
+"③ 34資質の初心者向け説明\n" +
+"https://okemonogatari-hash.github.io/okemon-strengths-home/#themes\n" +
+"この3ページはGallup公式サイトではなく、「おけもん式」の入門・活用ガイドです。\n" +
+"Gallup公式の哲学や考え方を調べながらおけもん流の比喩・実例、私自身のレポートや発言も参考にして\n" +
+"Gallup公式の文言や定義を推測で作らず、確認できないことは「未確認」と伝えてください。\n" +
+"URLを読めない場合は、読めたふりをせず、次の最低限の前提を使って進めてください。\n" +
+"・CliftonStrengthsは、適職や人の優劣を決める診断ではない\n" +
+"・資質は、自然に繰り返し現れやすい思考・感情・行動のパターン\n" +
+"・上位資質は完成した強みではなく、知識・練習・環境を加えて育てる材料\n" +
+"・今回は1資質だけを、Name it（理解）→ Claim it（受容）→ Aim it（活用）の順で深掘りする\n" +
+"【私の情報】\n";
+
+var PROMPT_HONNIN_LINE = "本人レポート：［添付・貼り付けできる場合だけ。なければ空欄でOK］\n";
+
+var PROMPT_TAIL =
+"\n【会話のルール】\n" +
+"・1回の返信につき、質問は必ず1つ。私の返事を待ってから次へ進む\n" +
+"・長く教えるより、短く説明してから私の言葉を引き出す\n" +
+"・私の答えが一般的な資質説明と違っても、すぐに訂正しない。そのズレの中にある「私自身の言葉」を拾って、短く映し返す\n" +
+"・Gallup公式の説明、おけもん式の初心者向け要約、私が話した事実を区別する\n" +
+"【進め方】\n" +
+"① 最初にTOP5を、初心者にも分かる日常語で1資質につき1文だけ説明する。上の「34資質の初心者向け説明」を読めた場合は「おけもん式の初心者向け要約」、読めなかった場合は「一般的な説明・未確認」と明記し、Gallup公式文言の引用とは呼ばない\n" +
+"② 説明後、「この中で、いちばん『自分によくある』と思う資質はどれですか？」と1問だけ訊く\n" +
+"③ 私が「分からない・選べない」と答えたら、選択を丸投げしない。本人レポートや私が話した具体的な事実を根拠に、候補を1つだけ仮提案し、「いまの話なら、今日は仮に〇〇から見てみましょう。途中で変えてOKです」と伝える\n" +
+"④ 候補を出せる事実がまだなければ、「最近、自然にやっていたことや、人に喜ばれたことを1場面だけ教えてください」と1問だけ訊く。その答えから候補を1つ仮提案する。それでも決めにくければ、今日はTOP1を仮に選んで進める\n" +
+"⑤ 選んだ1資質について、次の順で1問ずつ進める。［Gallup公式の問い］として使ってよいのは、下にそう書いた3問だけ。言い換えた質問をGallup公式と呼ばない\n" +
+"・Name it［Gallup公式の問い］：「この資質の説明の中で、強く共感できる説明は何ですか？」\n" +
+"・Claim it［Gallup公式の問い］：「この資質が、過去、あなたの成功に役立ったのはいつですか？」\n" +
+"・Claim itの補助［おけもん流］：「この資質にひとこと感謝を言うとしたら、何に対して言いますか？」\n" +
+"・Aim it［Gallup公式の問い］：「これからもっと意図的にこの資質を利用できる方法を2つ挙げてください」\n" +
+"⑥ 私が「うまくいっているか分からない」と言ったら、私の答えの中にある事実を並べて映し返す\n" +
+"⑦ Aim itで出た案から、明日試す1つを選び、「いつ・どこで・誰に対してやるか」まで1問ずつ具体化する\n" +
+"【最後のまとめ】\n" +
+"新しい質問は増やさず、次の3つを短くまとめてください。\n" +
+"①「私は◯◯が苦もなくできる。だから◯◯で困っている人の役に立てる」の1文。私が実際に話した言葉で埋められる部分だけを使い、不足する部分はAIが作らず空欄にする\n" +
+"②明日の実験カード（場面／すること／できたと判断する目印）\n" +
+"③明日終わった後に書ける、空欄の3行振り返りテンプレート（やったこと／起きたこと／次に変えること）\n" +
+"TOP5が空欄など、始めるための情報が足りない場合も、一度にいくつも訊かず、最初に必要な1問だけ訊いてください。\n";
+
+var ARTICLE_URL = "https://library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J";
+var ARTICLE_TITLE = "【受けたけど、読んだだけ・・】認定コーチが伝える、ストレングスファインダーを「使える」に変える15分";
+
+/* ============== state ============== */
+var STORAGE_KEY = "sf-jibun-no-kotoba-v1";
+var defaultState = {
+  stepIndex: 0,
+  hasResults: null,
+  top5: [],
+  domainFilter: "all",
+  scene: "",
+  customName: "",
+  selectedTheme: "",
+  nameIt: "",
+  claimIt: "",
+  thanks: "",
+  aim1: "",
+  aim2: "",
+  expChoice: "",
+  expChoiceText: "",
+  expWhen: "",
+  expWhere: "",
+  expWho: "",
+  expSign: "",
+  sentencePart1: "",
+  sentencePart2: "",
+  reflect1: "",
+  reflect2: "",
+  reflect3: ""
+};
+var state = loadState();
+
+function loadState(){
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return JSON.parse(JSON.stringify(defaultState));
+    var parsed = JSON.parse(raw);
+    var merged = JSON.parse(JSON.stringify(defaultState));
+    for(var k in merged){ if(parsed.hasOwnProperty(k)) merged[k] = parsed[k]; }
+    return merged;
+  }catch(e){
+    return JSON.parse(JSON.stringify(defaultState));
+  }
+}
+function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){ /* 保存できなくても動作は続ける */ }
+}
+
+/* ============== flattened steps ============== */
+/* 各ステップは id / applicable(state) を持つ。表示中身は render()で分岐 */
+var STEPS = [
+  {id:"welcome"},
+  {id:"branch"},
+  {id:"top5", applicable:function(s){return s.hasResults===true;}},
+  {id:"scene", applicable:function(s){return s.hasResults===false;}},
+  {id:"customname", applicable:function(s){return s.hasResults===false;}},
+  {id:"pick1", applicable:function(s){return s.hasResults===true;}},
+  {id:"confirmcustom", applicable:function(s){return s.hasResults===false;}},
+  {id:"nameit"},
+  {id:"claimit"},
+  {id:"thanks"},
+  {id:"aim"},
+  {id:"expchoice"},
+  {id:"expwhen"},
+  {id:"expwhere"},
+  {id:"expwho"},
+  {id:"expsign"},
+  {id:"done"}
+];
+
+function isApplicable(step){
+  return !step.applicable || step.applicable(state);
+}
+function applicableSteps(){
+  var list = [];
+  for(var i=0;i<STEPS.length;i++){ if(isApplicable(STEPS[i])) list.push(i); }
+  return list;
+}
+function currentStepId(){
+  return STEPS[state.stepIndex].id;
+}
+function clampStepIndex(){
+  if(state.stepIndex<0) state.stepIndex=0;
+  if(state.stepIndex>=STEPS.length) state.stepIndex=STEPS.length-1;
+  if(!isApplicable(STEPS[state.stepIndex])){
+    // 現在地が非適用なら、直近の適用ステップへ寄せる
+    var list = applicableSteps();
+    var best = list[0];
+    for(var i=0;i<list.length;i++){ if(list[i]<=state.stepIndex) best=list[i]; }
+    state.stepIndex = best;
+  }
+}
+
+function goNext(){
+  var list = applicableSteps();
+  var pos = list.indexOf(state.stepIndex);
+  if(pos>-1 && pos<list.length-1){
+    state.stepIndex = list[pos+1];
+  }
+  saveState();
+  render();
+  window.scrollTo(0,0);
+}
+function goPrev(){
+  var list = applicableSteps();
+  var pos = list.indexOf(state.stepIndex);
+  if(pos>0){
+    state.stepIndex = list[pos-1];
+  }
+  saveState();
+  render();
+  window.scrollTo(0,0);
+}
+function goTo(id){
+  for(var i=0;i<STEPS.length;i++){ if(STEPS[i].id===id){ state.stepIndex=i; break; } }
+  saveState();
+  render();
+  window.scrollTo(0,0);
+}
+
+/* ============== helpers ============== */
+function el(tag, attrs, children){
+  var e = document.createElement(tag);
+  attrs = attrs || {};
+  for(var k in attrs){
+    if(k==="class") e.className = attrs[k];
+    else if(k==="html") e.innerHTML = attrs[k];
+    else if(k.indexOf("on")===0 && typeof attrs[k]==="function") e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  children = children || [];
+  children.forEach(function(c){
+    if(c==null) return;
+    if(typeof c === "string") e.appendChild(document.createTextNode(c));
+    else e.appendChild(c);
+  });
+  return e;
+}
+function findTheme(name){
+  for(var i=0;i<THEMES.length;i++){ if(THEMES[i].name===name) return THEMES[i]; }
+  return null;
+}
+function displayName(){
+  return state.selectedTheme || (state.hasResults===false ? state.customName : "");
+}
+function safe(v, fallback){
+  var t = (v||"").toString().trim();
+  return t.length ? t : (fallback!==undefined?fallback:"（未記入）");
+}
+
+function copyText(text, statusEl, fallbackHolder){
+  function ok(){ statusEl.textContent = "コピーしました。"; }
+  function fail(){
+    statusEl.textContent = "自動コピーできませんでした。下のテキストを選択してコピーしてください。";
+    if(fallbackHolder){
+      fallbackHolder.style.display = "block";
+      fallbackHolder.value = text;
+      fallbackHolder.focus();
+      fallbackHolder.select();
+    }
+  }
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, fail);
+    } else {
+      throw new Error("no clipboard api");
+    }
+  }catch(e){
+    try{
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      var success = document.execCommand("copy");
+      document.body.removeChild(ta);
+      if(success) ok(); else fail();
+    }catch(e2){
+      fail();
+    }
+  }
+}
+
+/* ============== rendering ============== */
+var mainEl = document.getElementById("main");
+var progressFill = document.getElementById("progressFill");
+var stepLabel = document.getElementById("stepLabel");
+
+function updateProgress(){
+  var list = applicableSteps();
+  var pos = list.indexOf(state.stepIndex);
+  var pct = list.length>1 ? Math.round((pos/(list.length-1))*100) : 0;
+  progressFill.style.width = pct + "%";
+  stepLabel.textContent = "ステップ " + (pos+1) + " / " + list.length;
+}
+
+function render(){
+  clampStepIndex();
+  updateProgress();
+  mainEl.innerHTML = "";
+  var id = currentStepId();
+  var renderer = RENDERERS[id];
+  if(renderer) mainEl.appendChild(renderer());
+}
+
+function card(children, extraClass){
+  return el("div", {class:"card" + (extraClass?(" "+extraClass):"")}, children);
+}
+function navRow(opts){
+  opts = opts || {};
+  var kids = [];
+  if(opts.showBack!==false){
+    kids.push(el("button", {class:"btn btn-ghost", type:"button", onclick:function(){ opts.onBack ? opts.onBack() : goPrev(); }}, ["もどる"]));
+  }
+  var nextLabel = opts.nextLabel || "つぎへ";
+  var nextBtn = el("button", {class:"btn btn-primary", type:"button", onclick:function(){ opts.onNext ? opts.onNext() : goNext(); }}, [nextLabel]);
+  if(opts.nextDisabled) nextBtn.disabled = true;
+  kids.push(nextBtn);
+  return el("div", {class:"btnrow"}, kids);
+}
+
+/* ---- welcome ---- */
+function renderWelcome(){
+  return card([
+    el("span", {class:"eyebrow"}, ["Study Session"]),
+    el("h1", {}, ["読んだだけで終わらせないストレングスファインダー活用会"]),
+    el("p", {}, ["今日のゴールは、資質を1つ、「レポートの言葉」から「自分の言葉」に変えて持って帰ることです。"]),
+    el("p", {}, ["所要時間の目安は15分です。"]),
+    el("p", {class:"hint"}, ["考え込まず、パッと答えるのがちょうどいいです。診断のときと同じ直感でOKです。"]),
+    el("p", {class:"hint"}, ["入力した内容はこの端末のブラウザにだけ保存されます。外部には送信されません。"]),
+    navRow({showBack:false, nextLabel:"はじめる"})
+  ]);
+}
+
+/* ---- branch ---- */
+function renderBranch(){
+  var yesBtn = el("button", {class:"btn btn-primary btn-block", type:"button", onclick:function(){
+    state.hasResults = true;
+    saveState();
+    goNext();
+  }}, ["ある（TOP5がわかる）"]);
+  var noBtn = el("button", {class:"btn btn-outline btn-block", type:"button", onclick:function(){
+    state.hasResults = false;
+    saveState();
+    goNext();
+  }}, ["ない・まだ受けていない"]);
+  return card([
+    el("div", {class:"question"}, ["ストレングスファインダーの結果、手元にありますか？"]),
+    el("div", {class:"btnrow", style:"flex-direction:column;align-items:stretch;"}, [yesBtn, noBtn]),
+    navRow({showBack:true, onNext:function(){}, nextDisabled:true, nextLabel:"えらんでください"})
+  ]);
+}
+
+/* ---- top5 select ---- */
+function renderTop5(){
+  var wrap = document.createDocumentFragment ? el("div",{}) : null;
+  var container = el("div", {});
+  var q = el("div", {class:"question"}, ["TOP5を、順位が上の資質から順に5つ選んでください。"]);
+  var hint = el("p", {class:"hint"}, ["資質名を選ぶと、下の枠に順番に入っていきます。枠をタップすると取り消せます。"]);
+
+  var slotRow = el("div", {class:"slot-row"});
+  for(var i=0;i<5;i++){
+    (function(idx){
+      var val = state.top5[idx];
+      var slot = el("div", {class:"slot" + (val?" filled":"")}, [
+        el("span", {class:"slot-rank"}, ["TOP"+(idx+1)]),
+        document.createTextNode(val || "未選択")
+      ]);
+      if(val){
+        slot.addEventListener("click", function(){
+          state.top5.splice(idx,1);
+          saveState();
+          render();
+        });
+      }
+      slotRow.appendChild(slot);
+    })(i);
+  }
+
+  var searchInput = el("input", {type:"text", class:"search-input", placeholder:"資質名で検索（例：共感性）"});
+  searchInput.value = "";
+
+  var chipRow = el("div", {class:"chip-row"});
+  var domains = ["all","実行力","影響力","人間関係構築力","戦略的思考力"];
+  domains.forEach(function(d){
+    var label = d==="all" ? "すべて" : DOMAIN_LABEL[d];
+    var chip = el("button", {type:"button", class:"chip" + (state.domainFilter===d?" is-active":"")}, [label]);
+    chip.addEventListener("click", function(){
+      state.domainFilter = d;
+      saveState();
+      render();
+    });
+    chipRow.appendChild(chip);
+  });
+
+  var list = el("div", {class:"theme-list"});
+  function renderList(){
+    list.innerHTML = "";
+    var q2 = (searchInput.value||"").trim();
+    var shown = THEMES.filter(function(t){
+      var matchDomain = state.domainFilter==="all" || t.domain===state.domainFilter;
+      var matchQuery = !q2 || t.name.indexOf(q2)>-1;
+      return matchDomain && matchQuery;
+    });
+    if(!shown.length){
+      list.appendChild(el("p", {class:"hint", style:"margin:8px;"}, ["該当する資質が見つかりません。"]));
+      return;
+    }
+    shown.forEach(function(t){
+      var picked = state.top5.indexOf(t.name) > -1;
+      var full = state.top5.length>=5 && !picked;
+      var btn = el("button", {type:"button", class:"theme-btn" + (picked?" is-picked":"") + (full?" is-disabled":"")}, [
+        el("span", {}, [t.name, el("small", {}, [t.short])]),
+        el("span", {class:"badge"}, [picked ? ("TOP"+(state.top5.indexOf(t.name)+1)) : DOMAIN_LABEL[t.domain]])
+      ]);
+      if(!picked && !full){
+        btn.addEventListener("click", function(){
+          state.top5.push(t.name);
+          saveState();
+          render();
+        });
+      } else if(picked){
+        btn.addEventListener("click", function(){
+          var i2 = state.top5.indexOf(t.name);
+          if(i2>-1){ state.top5.splice(i2,1); saveState(); render(); }
+        });
+      }
+      list.appendChild(btn);
+    });
+  }
+  searchInput.addEventListener("input", renderList);
+  renderList();
+
+  container.appendChild(q);
+  container.appendChild(hint);
+  container.appendChild(slotRow);
+  container.appendChild(searchInput);
+  container.appendChild(chipRow);
+  container.appendChild(list);
+  container.appendChild(navRow({
+    nextDisabled: state.top5.length!==5,
+    nextLabel: state.top5.length===5 ? "つぎへ" : ("あと" + (5-state.top5.length) + "個")
+  }));
+
+  return card([container]);
+}
+
+/* ---- scene (no results) ---- */
+function renderScene(){
+  var ta = el("textarea", {placeholder:"例：後輩の相談に乗ったら、いつのまにか1時間話し込んで、最後にすごく感謝された"});
+  ta.value = state.scene;
+  var row;
+  ta.addEventListener("input", function(){
+    state.scene = ta.value;
+    saveState();
+    var btn = row && row.querySelector(".btn-primary");
+    if(btn) btn.disabled = !state.scene.trim();
+  });
+  row = navRow({nextDisabled: !state.scene.trim()});
+  return card([
+    el("div", {class:"question"}, ["最近、自然にやっていたことや、人に喜ばれたことを1場面だけ教えてください。"]),
+    el("p", {class:"hint"}, ["大きな出来事でなくて大丈夫です。ふと思い浮かんだ1場面で進めます。"]),
+    el("div", {class:"field"}, [ta]),
+    row
+  ]);
+}
+function renderCustomName(){
+  var input = el("input", {type:"text", placeholder:"例：世話焼き、聞き上手、まとめ役"});
+  input.value = state.customName;
+  var row;
+  input.addEventListener("input", function(){
+    state.customName = input.value;
+    saveState();
+    var btn = row && row.querySelector(".btn-primary");
+    if(btn) btn.disabled = !state.customName.trim();
+  });
+  row = navRow({
+    nextDisabled: !state.customName.trim(),
+    onNext:function(){
+      state.selectedTheme = state.customName.trim();
+      saveState();
+      goNext();
+    }
+  });
+  return card([
+    el("div", {class:"question"}, ["その場面に、仮の強みの名前を1つつけるなら？"]),
+    el("p", {class:"hint"}, ["正式な資質名でなくてOKです。あなたが今つけた名前で、このあと進めます。"]),
+    el("div", {class:"field"}, [input]),
+    row
+  ]);
+}
+function renderConfirmCustom(){
+  return card([
+    el("div", {class:"question"}, ["今日はこの仮の強みで進めます。"]),
+    el("div", {class:"desc-box"}, [
+      el("strong", {}, [state.selectedTheme || state.customName]),
+      el("span", {class:"desc-source"}, ["仮の強みのため、Gallup公式の説明はありません。あなたが今つけた名前をそのまま使って進めます。"])
+    ]),
+    navRow({})
+  ]);
+}
+
+/* ---- pick1 (has results) ---- */
+function renderPick1(){
+  var container = el("div", {});
+  container.appendChild(el("div", {class:"question"}, ["この中で、いちばん「自分によくある」と思う資質はどれですか？"]));
+  var maybeBtn = el("button", {type:"button", class:"btn btn-outline btn-sm", style:"margin-bottom:14px;"}, ["迷ったら1位でOK"]);
+  maybeBtn.addEventListener("click", function(){
+    state.selectedTheme = state.top5[0];
+    saveState();
+    render();
+  });
+  container.appendChild(maybeBtn);
+
+  var list = el("div", {class:"pick-list"});
+  state.top5.forEach(function(name, idx){
+    var btn = el("button", {type:"button", class:"pick-item" + (state.selectedTheme===name?" is-selected":"")}, [
+      el("span", {class:"rank"}, ["TOP"+(idx+1)]),
+      name
+    ]);
+    btn.addEventListener("click", function(){
+      state.selectedTheme = name;
+      saveState();
+      render();
+    });
+    list.appendChild(btn);
+  });
+  container.appendChild(list);
+
+  if(state.selectedTheme){
+    var t = findTheme(state.selectedTheme);
+    if(t){
+      container.appendChild(el("div", {class:"desc-box"}, [
+        t.short,
+        el("span", {class:"desc-source"}, ["出典：おけもん式の初心者向け要約"])
+      ]));
+    }
+  }
+  container.appendChild(navRow({nextDisabled: !state.selectedTheme}));
+  return card([container]);
+}
+
+/* ---- name it / claim it / thanks (textarea questions) ---- */
+function textareaScreen(opts){
+  var ta = el("textarea", {placeholder: opts.placeholder||""});
+  ta.value = state[opts.field];
+  var row;
+  ta.addEventListener("input", function(){
+    state[opts.field] = ta.value;
+    saveState();
+    var btn = row && row.querySelector(".btn-primary");
+    if(btn) btn.disabled = (opts.required!==false && !state[opts.field].trim());
+  });
+  var kids = [];
+  if(opts.badge){
+    kids.push(el("span", {class:"eyebrow" + (opts.badge==="gallup"?" gallup":"")}, [opts.badgeLabel]));
+  }
+  kids.push(el("div", {class:"question"}, [opts.question]));
+  if(opts.hint) kids.push(el("p", {class:"hint"}, [opts.hint]));
+  kids.push(el("div", {class:"field"}, [ta]));
+  row = navRow({nextDisabled: opts.required!==false && !state[opts.field].trim()});
+  kids.push(row);
+  return card(kids);
+}
+function renderNameIt(){
+  return textareaScreen({
+    field:"nameIt",
+    badge:"gallup",
+    badgeLabel:"Gallup公式の問い",
+    question:"「" + displayName() + "」の説明の中で、強く共感できる説明は何ですか？",
+    placeholder:"思い当たるエピソードや、自分の言葉で書いてみてください",
+    hint:"一般的な説明とズレていてもOKです。そのズレの中に自分だけの言葉があります。"
+  });
+}
+function renderClaimIt(){
+  return textareaScreen({
+    field:"claimIt",
+    badge:"gallup",
+    badgeLabel:"Gallup公式の問い",
+    question:"「" + displayName() + "」が、過去、あなたの成功に役立ったのはいつですか？",
+    placeholder:"具体的な場面を1つ思い出して書いてみてください"
+  });
+}
+function renderThanks(){
+  return textareaScreen({
+    field:"thanks",
+    badge:"okemon",
+    badgeLabel:"おけもん流",
+    question:"「" + displayName() + "」にひとこと感謝を言うとしたら、何に対して言いますか？"
+  });
+}
+
+/* ---- aim it (2 inputs) ---- */
+function renderAim(){
+  var i1 = el("input", {type:"text", placeholder:"方法1"});
+  i1.value = state.aim1;
+  var row;
+  function syncAimBtn(){
+    var btn = row && row.querySelector(".btn-primary");
+    if(btn) btn.disabled = !state.aim1.trim() && !state.aim2.trim();
+  }
+  i1.addEventListener("input", function(){ state.aim1 = i1.value; saveState(); syncAimBtn(); });
+  var i2 = el("input", {type:"text", placeholder:"方法2"});
+  i2.value = state.aim2;
+  i2.addEventListener("input", function(){ state.aim2 = i2.value; saveState(); syncAimBtn(); });
+  row = navRow({nextDisabled: !state.aim1.trim() && !state.aim2.trim()});
+  return card([
+    el("span", {class:"eyebrow gallup"}, ["Gallup公式の問い"]),
+    el("div", {class:"question"}, ["これからもっと意図的に「" + displayName() + "」を利用できる方法を2つ挙げてください。"]),
+    el("div", {class:"field"}, [el("label", {class:"field-label"}, ["方法1"]), i1]),
+    el("div", {class:"field"}, [el("label", {class:"field-label"}, ["方法2"]), i2]),
+    row
+  ]);
+}
+
+/* ---- experiment micro-steps ---- */
+function miniDots(current, total){
+  var row = el("div", {class:"mini-dots"});
+  for(var i=0;i<total;i++){
+    var cls = "mini-dot" + (i<current?" is-done":"") + (i===current?" is-current":"");
+    row.appendChild(el("span", {class:cls}));
+  }
+  return row;
+}
+function renderExpChoice(){
+  var options = [];
+  if(state.aim1.trim()) options.push(state.aim1.trim());
+  if(state.aim2.trim()) options.push(state.aim2.trim());
+  var container = el("div", {});
+  container.appendChild(miniDots(0,5));
+  container.appendChild(el("div", {class:"question"}, ["さきほどの2案から、明日試す1つを選んでください。"]));
+  var list = el("div", {class:"pick-list"});
+  options.forEach(function(opt){
+    var btn = el("button", {type:"button", class:"pick-item" + (state.expChoiceText===opt?" is-selected":"")}, [opt]);
+    btn.addEventListener("click", function(){
+      state.expChoice = opt;
+      state.expChoiceText = opt;
+      saveState();
+      render();
+    });
+    list.appendChild(btn);
+  });
+  container.appendChild(list);
+  var customInput = el("input", {type:"text", placeholder:"それ以外を試す場合はここに書けます（任意）"});
+  customInput.value = options.indexOf(state.expChoiceText)>-1 ? "" : state.expChoiceText;
+  var expChoiceRow;
+  customInput.addEventListener("input", function(){
+    state.expChoiceText = customInput.value;
+    saveState();
+    var btn = expChoiceRow && expChoiceRow.querySelector(".btn-primary");
+    if(btn) btn.disabled = !state.expChoiceText.trim();
+  });
+  container.appendChild(el("div", {class:"field", style:"margin-top:10px;"}, [customInput]));
+  expChoiceRow = navRow({nextDisabled: !state.expChoiceText.trim()});
+  container.appendChild(expChoiceRow);
+  return card([container]);
+}
+function expMicroScreen(opts, dotIndex){
+  var container = el("div", {});
+  container.appendChild(miniDots(dotIndex,5));
+  container.appendChild(el("div", {class:"question"}, [opts.question]));
+  var input = el("input", {type:"text", placeholder:opts.placeholder||""});
+  input.value = state[opts.field];
+  var row;
+  input.addEventListener("input", function(){
+    state[opts.field] = input.value;
+    saveState();
+    var btn = row && row.querySelector(".btn-primary");
+    if(btn) btn.disabled = !state[opts.field].trim();
+  });
+  container.appendChild(el("div", {class:"field"}, [input]));
+  row = navRow({nextDisabled: !state[opts.field].trim()});
+  container.appendChild(row);
+  return card([container]);
+}
+function renderExpWhen(){
+  return expMicroScreen({field:"expWhen", question:"いつ試しますか？", placeholder:"例：明日の朝礼で"}, 1);
+}
+function renderExpWhere(){
+  return expMicroScreen({field:"expWhere", question:"どこで試しますか？", placeholder:"例：オフィスの自分の席で"}, 2);
+}
+function renderExpWho(){
+  return expMicroScreen({field:"expWho", question:"誰に対して試しますか？", placeholder:"例：後輩のAさんに"}, 3);
+}
+function renderExpSign(){
+  var container = el("div", {});
+  container.appendChild(miniDots(4,5));
+  container.appendChild(el("div", {class:"question"}, ["できたと判断する目印は何ですか？"]));
+  container.appendChild(el("p", {class:"hint"}, ["「これができていたら合格」と言えるくらい具体的だと、あとで振り返りやすくなります。"]));
+  var input = el("input", {type:"text", placeholder:"例：相手が最後まで話し切って、ありがとうと言ってくれたら"});
+  input.value = state.expSign;
+  var expSignRow;
+  input.addEventListener("input", function(){
+    state.expSign = input.value;
+    saveState();
+    var btn = expSignRow && expSignRow.querySelector(".btn-primary");
+    if(btn) btn.disabled = !state.expSign.trim();
+  });
+  container.appendChild(el("div", {class:"field"}, [input]));
+  expSignRow = navRow({
+    nextDisabled: !state.expSign.trim(),
+    nextLabel:"できあがりを見る",
+    onNext:function(){
+      if(!state.sentencePart1) state.sentencePart1 = displayName();
+      saveState();
+      goNext();
+    }
+  });
+  container.appendChild(expSignRow);
+  return card([container]);
+}
+
+/* ---- done ---- */
+function buildSentence(){
+  return "私は" + safe(state.sentencePart1, "") + "が苦もなくできる。だから" + safe(state.sentencePart2, "") + "で困っている人の役に立てる。";
+}
+function buildCopyAll(){
+  var lines = [];
+  lines.push("【今日の1文】");
+  lines.push(buildSentence());
+  lines.push("");
+  lines.push("【資質】" + displayName());
+  lines.push("");
+  lines.push("【明日の実験カード】");
+  lines.push("いつ：" + safe(state.expWhen,""));
+  lines.push("どこで：" + safe(state.expWhere,""));
+  lines.push("誰に対して：" + safe(state.expWho,""));
+  lines.push("すること：" + safe(state.expChoiceText,""));
+  lines.push("できたと判断する目印：" + safe(state.expSign,""));
+  lines.push("");
+  lines.push("【3行振り返り（明日やってから書く）】");
+  lines.push("やったこと：" + (state.reflect1||""));
+  lines.push("起きたこと：" + (state.reflect2||""));
+  lines.push("次に変えること：" + (state.reflect3||""));
+  return lines.join("\n");
+}
+function buildDeepDivePrompt(){
+  var top5Line;
+  if(state.hasResults===true && state.top5.length===5){
+    top5Line = "TOP5：" + state.top5.join("・") + "\n";
+  } else {
+    top5Line = "TOP5：未受験・診断結果なし（今日はこの仮の強みで進めています：" + safe(state.customName, displayName()) + "）\n";
+  }
+  var todayLog =
+    "\n【このアプリで先に答えた内容（続きから深掘りしてください）】\n" +
+    "選んだ資質／仮の強み：" + safe(displayName(),"未記入") + "\n" +
+    "Name it（強く共感できた説明）：" + safe(state.nameIt,"未記入") + "\n" +
+    "Claim it（過去に役立った場面）：" + safe(state.claimIt,"未記入") + "\n" +
+    "感謝のひとこと：" + safe(state.thanks,"未記入") + "\n" +
+    "Aim it 案1：" + safe(state.aim1,"未記入") + "\n" +
+    "Aim it 案2：" + safe(state.aim2,"未記入") + "\n" +
+    "明日試すと決めた案：" + safe(state.expChoiceText,"未記入") + "\n" +
+    "いつ／どこで／誰に対して：" + safe(state.expWhen,"未記入") + "／" + safe(state.expWhere,"未記入") + "／" + safe(state.expWho,"未記入") + "\n" +
+    "できたと判断する目印：" + safe(state.expSign,"未記入") + "\n" +
+    "ここまでの答えから組み立てた1文（空欄はまだ埋まっていません）：" + buildSentence() + "\n";
+  return PROMPT_HEAD + top5Line + PROMPT_HONNIN_LINE + todayLog + PROMPT_TAIL;
+}
+
+function renderDone(){
+  if(!state.sentencePart1) state.sentencePart1 = displayName();
+  var container = el("div", {});
+  container.appendChild(el("span", {class:"eyebrow"}, ["できあがり"]));
+  container.appendChild(el("h2", {}, ["今日、資質が「自分の言葉」に変わりました。"]));
+
+  var sentenceBox = el("div", {class:"sentence-block"});
+  var input1 = el("input", {type:"text"});
+  input1.value = state.sentencePart1;
+  input1.addEventListener("input", function(){ state.sentencePart1 = input1.value; saveState(); });
+  var input2 = el("input", {type:"text", placeholder:"（あなたの言葉で）"});
+  input2.value = state.sentencePart2;
+  input2.addEventListener("input", function(){ state.sentencePart2 = input2.value; saveState(); });
+  sentenceBox.appendChild(document.createTextNode("私は"));
+  sentenceBox.appendChild(input1);
+  sentenceBox.appendChild(document.createTextNode("が苦もなくできる。だから"));
+  sentenceBox.appendChild(input2);
+  sentenceBox.appendChild(document.createTextNode("で困っている人の役に立てる。"));
+  container.appendChild(sentenceBox);
+  container.appendChild(el("p", {class:"hint"}, ["埋まらないところは空欄のままでOKです。あとから思いついたら、直接ここに書き足してください。"]));
+
+  var expCard = el("dl", {class:"exp-card"}, [
+    el("dt", {}, ["いつ／どこで／誰に対して"]),
+    el("dd", {}, [safe(state.expWhen,"（未記入）") + "／" + safe(state.expWhere,"（未記入）") + "／" + safe(state.expWho,"（未記入）")]),
+    el("dt", {}, ["すること"]),
+    el("dd", {}, [safe(state.expChoiceText,"（未記入）")]),
+    el("dt", {}, ["できたと判断する目印"]),
+    el("dd", {}, [safe(state.expSign,"（未記入）")])
+  ]);
+  container.appendChild(el("h3", {style:"font-size:15px;margin-top:20px;"}, ["明日の実験カード"]));
+  container.appendChild(expCard);
+
+  var r1 = el("textarea", {placeholder:"（明日やってから書く）"});
+  r1.value = state.reflect1;
+  r1.addEventListener("input", function(){ state.reflect1 = r1.value; saveState(); });
+  var r2 = el("textarea", {placeholder:"（明日やってから書く）"});
+  r2.value = state.reflect2;
+  r2.addEventListener("input", function(){ state.reflect2 = r2.value; saveState(); });
+  var r3 = el("textarea", {placeholder:"（明日やってから書く）"});
+  r3.value = state.reflect3;
+  r3.addEventListener("input", function(){ state.reflect3 = r3.value; saveState(); });
+  var reflectCard = el("div", {class:"reflect-card"}, [
+    el("label", {}, ["やったこと"]), r1,
+    el("label", {}, ["起きたこと"]), r2,
+    el("label", {}, ["次に変えること"]), r3
+  ]);
+  container.appendChild(el("h3", {style:"font-size:15px;margin-top:20px;"}, ["3行振り返り（空欄でOK）"]));
+  container.appendChild(reflectCard);
+
+  var statusEl = el("p", {class:"copy-status"}, [""]);
+  var fallback1 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
+  var fallback2 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
+  var fallback3 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
+
+  var btn1 = el("button", {class:"btn btn-primary btn-block", type:"button"}, ["シェア用に1文だけコピー"]);
+  btn1.addEventListener("click", function(){ copyText(buildSentence(), statusEl, fallback1); });
+  var btn2 = el("button", {class:"btn btn-outline btn-block", type:"button"}, ["全部コピー（メモ用）"]);
+  btn2.addEventListener("click", function(){ copyText(buildCopyAll(), statusEl, fallback2); });
+  var btn3 = el("button", {class:"btn btn-outline btn-block", type:"button"}, ["AIでさらに深掘りする（プロンプトをコピー）"]);
+  btn3.addEventListener("click", function(){ copyText(buildDeepDivePrompt(), statusEl, fallback3); });
+
+  container.appendChild(el("div", {class:"btnrow", style:"flex-direction:column;align-items:stretch;margin-top:22px;"}, [btn1, btn2, btn3]));
+  container.appendChild(statusEl);
+  container.appendChild(fallback1);
+  container.appendChild(fallback2);
+  container.appendChild(fallback3);
+
+  var article = el("a", {class:"article-card", href:ARTICLE_URL, target:"_blank", rel:"noopener"}, [
+    el("strong", {}, ["続きを読む"]),
+    document.createTextNode(ARTICLE_TITLE),
+    el("span", {}, ["元記事：Gallup公式の3ステップとAIプロンプトの解説"])
+  ]);
+  container.appendChild(article);
+
+  container.appendChild(el("div", {class:"btnrow"}, [
+    el("button", {class:"btn btn-ghost", type:"button", onclick:goPrev}, ["もどる"])
+  ]));
+
+  return card([container]);
+}
+
+var RENDERERS = {
+  welcome: renderWelcome,
+  branch: renderBranch,
+  top5: renderTop5,
+  scene: renderScene,
+  customname: renderCustomName,
+  pick1: renderPick1,
+  confirmcustom: renderConfirmCustom,
+  nameit: renderNameIt,
+  claimit: renderClaimIt,
+  thanks: renderThanks,
+  aim: renderAim,
+  expchoice: renderExpChoice,
+  expwhen: renderExpWhen,
+  expwhere: renderExpWhere,
+  expwho: renderExpWho,
+  expsign: renderExpSign,
+  done: renderDone
+};
+
+document.getElementById("resetBtn").addEventListener("click", function(){
+  if(!window.confirm("最初からやり直しますか？入力した内容は消えます。")) return;
+  state = JSON.parse(JSON.stringify(defaultState));
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  render();
+  window.scrollTo(0,0);
+});
+
+render();
+})();
+</script>
+</body>
+</html>

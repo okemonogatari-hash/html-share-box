@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>読んだだけで終わらせない ストレングスファインダー活用会</title>
+<style>
+  /* ===== reset ===== */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  ul,ol{list-style:none;}
+  button{font:inherit;background:none;border:0;cursor:pointer;color:inherit;}
+  a{color:inherit;}
+
+  /* ===== tokens (single light theme, fixed) ===== */
+  :root{
+    --bg:#FDFCF8;
+    --surface:#FFFFFF;
+    --surface-deep:#F4F1EA;
+    --line:rgba(34,49,43,.12);
+    --line-soft:rgba(34,49,43,.07);
+
+    --ink:#22312B;
+    --ink-soft:#45564E;
+    --ink-faint:#586761;
+
+    --bronze:#8A5A2B;      /* 文字アクセント。白地/明地で比5〜6台・実測済み */
+    --gold:#C4915E;        /* 装飾専用。太線・大きい飾りのみ。文字には使わない（白地で比2.78・実測済み） */
+    --gold-on-dark:#D6A879;/* 濃緑地でのみ文字に使う軽量版。primary-darkと比5.75・実測済み */
+
+    --primary:#2C5F4B;     /* 深緑・主役色 */
+    --primary-dark:#1C3A2E;
+    --primary-light:#E8F0EB;
+
+    --font-serif:"Hiragino Mincho ProN","YuMincho","Yu Mincho",serif;
+    --font-sans:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","YuGothic",Meiryo,sans-serif;
+
+    --shadow-sm:0 4px 16px rgba(34,49,43,.08);
+    --shadow-md:0 14px 36px rgba(34,49,43,.14);
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-sans);
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:var(--font-serif);
+    font-weight:700;
+    color:var(--ink);
+    text-wrap:balance;
+    line-break:strict;
+  }
+
+  small,.fine{font-size:12.5px;}
+
+  .accent{
+    text-decoration-line:underline;
+    text-decoration-color:var(--gold);
+    text-decoration-thickness:4px;
+    text-underline-offset:6px;
+  }
+  .bronze-text{color:var(--bronze);}
+
+  /* ===== app shell / deck mechanics ===== */
+  .app-shell{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .stage-wrap{
+    position:relative;
+    flex:1 1 auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding:28px;
+    min-height:0;
+  }
+
+  .stage{
+    position:relative;
+    width:100%;
+    background:var(--bg);
+    counter-reset:slidenum;
+  }
+  html.js-ready .stage{
+    width:1280px;
+    height:720px;
+    flex-shrink:0;
+    box-shadow:var(--shadow-md);
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--surface);
+  }
+
+  .slide{
+    position:relative;
+    width:100%;
+    counter-increment:slidenum;
+    border-bottom:1px solid var(--line);
+    padding:56px clamp(20px,6vw,64px);
+  }
+  html.js-ready .slide{
+    display:none;
+    position:absolute;
+    inset:0;
+    height:720px;
+    border-bottom:0;
+    padding:0;
+    overflow:hidden;
+  }
+  html.js-ready .slide.is-active{display:block;}
+
+  .slide--tint{background:var(--surface-deep);}
+
+  .slide-inner{
+    max-width:900px;
+    margin:0 auto;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:22px;
+    padding:0;
+  }
+  html.js-ready .slide-inner{padding:64px 64px;}
+
+  .eyebrow{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.16em;
+    color:var(--bronze);
+  }
+
+  .slide-badge{
+    position:absolute;right:22px;bottom:18px;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.04em;
+  }
+  .slide-badge::before{
+    content:counter(slidenum) " / 10";
+    font-size:12.5px;
+    color:var(--ink-faint);
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.04em;
+  }
+  html.js-ready .slide .slide-badge::before{
+    /* counter(slidenum) only increments for boxes that actually generate —
+       in JS mode 9 of 10 .slide elements are display:none, so the CSS
+       counter always resolves to 1 regardless of the real position.
+       JS writes the real "n / 10" text directly instead; see init below. */
+    content:none;
+  }
+
+  /* step reveal — fully visible with no JS; hidden-then-revealed once js-ready */
+  .slide [data-step]{opacity:1;transform:none;}
+  html.js-ready .slide [data-step]{
+    opacity:0;
+    transform:translateY(18px);
+    transition-property:opacity,transform;
+    transition-duration:.55s;
+    transition-timing-function:cubic-bezier(.22,.61,.36,1);
+  }
+  html.js-ready .slide [data-step].is-revealed{opacity:1;transform:translateY(0);}
+
+  /* ===== nav chrome ===== */
+  .deck-nav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    padding:14px 0 22px;
+    flex:0 0 auto;
+  }
+  html:not(.js-ready) .deck-nav{display:none;}
+
+  .nav-btn{
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--shadow-sm);
+    transition-property:background-color,border-color,transform;
+    transition-duration:.2s;
+    transition-timing-function:ease-out;
+  }
+  .nav-btn:hover{border-color:var(--bronze);}
+  .nav-btn:active{transform:scale(.94);}
+  .nav-btn svg{width:14px;height:14px;fill:var(--primary);}
+  .nav-btn:disabled{opacity:.3;cursor:default;}
+
+  .nav-help{
+    font-size:12.5px;
+    color:var(--ink-faint);
+    letter-spacing:.02em;
+  }
+
+  /* ===== presenter mode ===== */
+  .presenter-panel{display:none;}
+  body.presenter-on .app-shell{
+    display:grid;
+    grid-template-columns:minmax(0,1.35fr) minmax(320px,1fr);
+    grid-template-rows:1fr auto;
+    height:100vh;
+  }
+  body.presenter-on .stage-wrap{grid-column:1;grid-row:1;padding:20px;}
+  body.presenter-on .deck-nav{grid-column:1;grid-row:2;}
+  body.presenter-on .presenter-panel{
+    display:flex;
+    flex-direction:column;
+    grid-column:2;
+    grid-row:1 / span 2;
+    background:var(--primary-dark);
+    color:#F3F0E7;
+    padding:22px 22px 16px;
+    gap:16px;
+    overflow:hidden;
+  }
+
+  .pp-top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(243,240,231,.18);
+  }
+  .pp-elapsed{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--font-serif);}
+  .pp-elapsed-label{display:block;font-size:12.5px;color:rgba(243,240,231,.65);}
+  .pp-target{text-align:right;}
+  .pp-target-value{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--gold-on-dark);}
+  .pp-target-label{display:block;font-size:12.5px;color:rgba(243,240,231,.65);}
+
+  .pp-next-label,.pp-script-label{
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.1em;
+    color:rgba(243,240,231,.6);
+    margin-bottom:8px;
+  }
+  .pp-next-thumb{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    background:var(--surface);
+    border-radius:8px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:var(--shadow-sm);
+  }
+  .pp-next-thumb .slide{
+    position:relative !important;
+    display:block !important;
+    inset:auto !important;
+    width:1280px;height:720px;
+    transform-origin:center center;
+    flex:none;
+  }
+  .pp-next-thumb [data-step]{opacity:1 !important;transform:none !important;}
+  .pp-next-empty{font-size:14px;color:var(--ink-faint);text-align:center;padding:0 12px;}
+
+  .pp-script{flex:1;min-height:0;display:flex;flex-direction:column;}
+  .pp-script-text{
+    flex:1;
+    overflow-y:auto;
+    font-size:16px;
+    line-height:1.85;
+    color:#F3F0E7;
+    padding-right:6px;
+  }
+
+  .pp-help{
+    font-size:12.5px;
+    color:rgba(243,240,231,.55);
+    border-top:1px solid rgba(243,240,231,.18);
+    padding-top:12px;
+    letter-spacing:.01em;
+  }
+
+  /* ===== edit mode ===== */
+  body.edit-on [data-editable]{
+    outline:1px dashed rgba(44,95,75,.35);
+    outline-offset:4px;
+    border-radius:4px;
+  }
+  body.edit-on [data-editable]:focus{
+    outline:1px dashed var(--bronze);
+    background:rgba(196,145,94,.08);
+  }
+  .edit-flag{
+    position:fixed;
+    top:14px;left:50%;
+    transform:translateX(-50%);
+    background:var(--bronze);
+    color:#fff;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.06em;
+    padding:6px 16px;
+    border-radius:999px;
+    display:none;
+    z-index:50;
+    box-shadow:var(--shadow-sm);
+  }
+  body.edit-on .edit-flag{display:block;}
+
+  /* ===== generic slide content patterns ===== */
+  .lede{font-size:clamp(20px,2.6vw,26px);color:var(--ink);}
+  h1.title{font-size:clamp(30px,4.4vw,46px);line-height:1.4;}
+  h2.headline{font-size:clamp(24px,3.4vw,34px);line-height:1.5;}
+
+  .meta-line{font-size:15px;color:var(--ink-soft);}
+  .meta-line + .meta-line{margin-top:4px;}
+
+  .quote-block{
+    border-left:4px solid var(--gold);
+    padding-left:22px;
+    font-family:var(--font-serif);
+    font-size:clamp(19px,2.6vw,24px);
+    color:var(--ink);
+  }
+  .quote-block cite{
+    display:block;
+    margin-top:10px;
+    font-family:var(--font-sans);
+    font-style:normal;
+    font-size:14px;
+    color:var(--ink-faint);
+  }
+
+  .step-list{display:flex;flex-direction:column;gap:14px;}
+  .step-list li{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    font-size:17px;
+    color:var(--ink);
+  }
+  .step-list li::before{
+    content:"";
+    flex:none;
+    width:9px;height:9px;
+    margin-top:8px;
+    background:var(--bronze);
+    transform:rotate(45deg);
+  }
+
+  .num-list{display:flex;flex-direction:column;gap:16px;counter-reset:numitem;}
+  .num-list li{
+    display:flex;gap:16px;align-items:flex-start;
+    font-size:17px;color:var(--ink);
+    counter-increment:numitem;
+  }
+  .num-list li::before{
+    content:counter(numitem);
+    flex:none;
+    width:30px;height:30px;
+    border-radius:50%;
+    background:var(--primary-light);
+    color:var(--primary);
+    font-family:var(--font-serif);
+    font-weight:700;
+    font-size:14px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  .flow-row{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;}
+  .flow-box{
+    flex:1 1 200px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:10px;
+    padding:20px 18px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .flow-box .fb-en{font-family:var(--font-serif);font-size:19px;font-weight:700;}
+  .flow-box .fb-ja{font-size:13px;color:rgba(255,255,255,.82);}
+  .flow-arrow{flex:none;display:flex;align-items:center;justify-content:center;width:34px;}
+  .flow-arrow svg{width:20px;height:20px;fill:var(--bronze);}
+
+  .callout{
+    background:var(--surface-deep);
+    border-radius:10px;
+    padding:16px 20px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+
+  .link-box{
+    background:var(--primary);
+    color:#fff;
+    border-radius:12px;
+    padding:20px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .link-box .lb-label{font-size:12.5px;letter-spacing:.1em;color:rgba(255,255,255,.75);}
+  .link-box .lb-url{
+    font-size:clamp(14px,2vw,17px);
+    word-break:break-all;
+    font-weight:700;
+    text-decoration-line:underline;
+    text-decoration-color:var(--gold);
+    text-decoration-thickness:3px;
+    text-underline-offset:4px;
+  }
+
+  .note-line{font-size:13.5px;color:var(--ink-faint);overflow-wrap:anywhere;}
+  .note-line a{color:var(--bronze);text-decoration-line:underline;text-decoration-color:var(--bronze);text-decoration-thickness:1px;overflow-wrap:anywhere;}
+
+  /* ===== S8 workshop / timer ===== */
+  .work-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start;}
+  @media (max-width:820px){.work-grid{grid-template-columns:1fr;}}
+
+  .timer-panel{
+    background:var(--primary-dark);
+    border-radius:14px;
+    padding:24px 22px;
+    color:#F3F0E7;
+    text-align:center;
+  }
+  .timer-display{
+    font-family:var(--font-serif);
+    font-size:clamp(52px,7vw,84px);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+    color:#F3F0E7;
+    transition-property:color;
+    transition-duration:.4s;
+    transition-timing-function:ease-out;
+  }
+  .timer-display.is-warn{color:var(--gold-on-dark);}
+  .timer-done-msg{
+    margin-top:8px;
+    font-size:16px;
+    font-weight:700;
+    color:var(--gold-on-dark);
+    display:none;
+  }
+  .timer-display.is-done + .timer-done-msg{display:block;}
+  .timer-controls{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-top:16px;
+    flex-wrap:wrap;
+  }
+  .timer-btn{
+    padding:9px 16px;
+    border-radius:999px;
+    background:rgba(243,240,231,.1);
+    color:#F3F0E7;
+    font-size:13.5px;
+    font-weight:700;
+    border:1px solid rgba(243,240,231,.28);
+    transition-property:background-color,border-color;
+    transition-duration:.2s;
+    transition-timing-function:ease-out;
+  }
+  .timer-btn:hover{background:rgba(243,240,231,.2);border-color:var(--gold);}
+  .timer-btn.primary{background:var(--gold-on-dark);color:var(--primary-dark);border-color:var(--gold-on-dark);}
+
+  .qa-list{display:flex;flex-direction:column;gap:12px;}
+  .qa-item{background:var(--surface-deep);border-radius:10px;padding:14px 16px;}
+  .qa-item .qa-tag{font-size:12.5px;font-weight:700;letter-spacing:.08em;color:var(--bronze);}
+  .qa-item .qa-q{font-size:15.5px;margin-top:3px;color:var(--ink);}
+
+  .kokoroe{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+  .kokoroe li{font-size:13.5px;color:var(--ink-soft);padding-left:16px;position:relative;}
+  .kokoroe li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--gold);}
+
+  .stage-chrome-label{
+    position:absolute;
+    left:22px;bottom:18px;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    letter-spacing:.02em;
+    z-index:2;
+  }
+  html:not(.js-ready) .stage-chrome-label{display:none;}
+
+  /* ===== print ===== */
+  @media print{
+    @page{size:landscape;margin:0;}
+    body.presenter-on .app-shell{display:block;}
+    .presenter-panel,.deck-nav,.edit-flag,.stage-chrome-label{display:none !important;}
+    .app-shell{display:block !important;height:auto !important;}
+    .stage-wrap{padding:0 !important;overflow:visible !important;display:block !important;}
+    .stage{
+      width:100% !important;height:auto !important;
+      box-shadow:none !important;border-radius:0 !important;
+      transform:none !important;
+    }
+    .slide{
+      display:block !important;
+      position:relative !important;
+      width:100% !important;height:100vh !important;
+      inset:auto !important;
+      page-break-after:always;
+      break-after:page;
+      overflow:hidden !important;
+    }
+    .slide:last-child{page-break-after:auto;}
+    .slide-inner{padding:48px 64px !important;}
+    .slide [data-step]{opacity:1 !important;transform:none !important;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="edit-flag">編集モード中 — E で戻る</div>
+
+  <div class="app-shell" id="appShell">
+    <div class="stage-wrap" id="stageWrap">
+      <div class="stage" id="stage">
+
+        <!-- S1 -->
+        <section class="slide is-active" data-slide data-minutes="0:00–0:02" id="s1">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>リベシティ勉強会</p>
+            <h1 class="title" data-editable>読んだだけで終わらせない<br>ストレングスファインダー活用会</h1>
+            <p class="meta-line" data-editable>2026年9月1日(火) 21:00–22:00</p>
+            <p class="meta-line" data-editable>おけもん（Gallup認定ストレングスコーチ）</p>
+          </div>
+          <p class="script-src" hidden>「聞くだけ参加OK・カメラオフOK・途中入退出OK」を最初に伝える。目安0:00-0:02</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S2 -->
+        <section class="slide" data-slide data-minutes="0:02–0:05" id="s2">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>「強みがない人には、<span class="accent">会ったことがありません</span>」</h2>
+            <ul class="step-list">
+              <li data-step="1" data-editable>Gallup認定ストレングスコーチ</li>
+              <li data-step="2" data-editable>セッション実績1,000人以上</li>
+              <li data-step="3" data-editable>オフ会主催100回以上</li>
+            </ul>
+          </div>
+          <p class="script-src" hidden>つかみ→自己紹介。目安0:02-0:05</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S3 -->
+        <section class="slide slide--tint" data-slide data-minutes="0:05–0:08" id="s3">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>あるある</p>
+            <blockquote class="quote-block" data-editable>「受けたんですけど……結果を読んで、そのままになってます」</blockquote>
+            <p class="lede" data-step="1" data-editable>「診断結果を見るだけって、右利きのひとに<br>『あなたは右利きですよね』って言われてるようなもの」</p>
+          </div>
+          <p class="script-src" hidden>一番よく聞く言葉。わかりますと共感してから右利きの比喩。目安0:05-0:08</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S4 -->
+        <section class="slide" data-slide data-minutes="0:08–0:12" id="s4">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>意志が弱いからじゃない。<br>止まりやすい場所が、<span class="accent">構造として決まってる</span>だけ</h2>
+            <ol class="num-list">
+              <li data-step="1" data-editable>「へえ、当たってる」で閉じる</li>
+              <li data-step="2" data-editable>資質名を覚えて満足する</li>
+              <li data-step="3" data-editable>34個ぜんぶ扱おうとする</li>
+            </ol>
+          </div>
+          <p class="script-src" hidden>記事の3つの止まり方を紹介。目安0:08-0:12</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S5 -->
+        <section class="slide slide--tint" data-slide data-minutes="0:12–0:15" id="s5">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>Gallup公式の型</p>
+            <div class="flow-row" data-step="1">
+              <div class="flow-box" data-editable>
+                <span class="fb-en">Name it!</span>
+                <span class="fb-ja">理解する</span>
+              </div>
+              <div class="flow-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg>
+              </div>
+              <div class="flow-box" data-editable>
+                <span class="fb-en">Claim it!</span>
+                <span class="fb-ja">受容する</span>
+              </div>
+              <div class="flow-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg>
+              </div>
+              <div class="flow-box" data-editable>
+                <span class="fb-en">Aim it!</span>
+                <span class="fb-ja">活用する</span>
+              </div>
+            </div>
+            <div class="callout" data-step="2" data-editable>
+              <strong>公式ワークシート最初の設問</strong> ——「TOP5のうち、最も自分を説明していると思うものはどれか1つ」
+            </div>
+            <p class="lede" data-step="3" data-editable>1つ選んで、3つの問いを1周。たったこれだけ。</p>
+          </div>
+          <p class="script-src" hidden>開発元Gallup社が受けた後の公式の型を出している、と紹介。34個やらない、1つだけ。目安0:12-0:15</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S6 -->
+        <section class="slide" data-slide data-minutes="0:15–0:18" id="s6">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>なぜ「読む」ではなく<br><span class="accent">「訊かれる」</span>のか</h2>
+            <p class="lede" data-editable>「才能は、無意識に繰り返し現れる思考・感情・行動のパターン」</p>
+            <ul class="step-list">
+              <li data-step="1" data-editable>無意識だから、読んでも「まあ、そうかもね」で流れる</li>
+              <li data-step="2" data-editable>人に訊かれると、エピソードとして言葉になる</li>
+              <li data-step="3" data-editable>コーチングの原則「教えるな、訊け」</li>
+            </ul>
+          </div>
+          <p class="script-src" hidden>ひとりでやると高確率で止まる。だから今日は訊かれる側になってもらう。目安0:15-0:18</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S7 -->
+        <section class="slide slide--tint" data-slide data-minutes="0:18–0:20" id="s7">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>今日は「訊いてくれるコーチ」を<br>アプリにしました</h2>
+            <ol class="num-list">
+              <li data-step="1" data-editable>チャットのリンクからアプリを開く</li>
+              <li data-step="2" data-editable>TOP5を手元に用意（未受験の人もアプリが案内します）</li>
+              <li data-step="3" data-editable>1問ずつ、パッと答える</li>
+            </ol>
+            <div class="link-box" data-step="4">
+              <span class="lb-label">今日のアプリ</span>
+              <span class="lb-url" data-editable>https://okemonogatari-hash.github.io/html-share-box/diagrams/sf-jibun-no-kotoba.html</span>
+            </div>
+            <p class="note-line" data-step="4">じっくりAIと対話したい人は記事のプロンプト版もあります　<a href="https://library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J" target="_blank" rel="noopener">library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J</a></p>
+          </div>
+          <p class="script-src" hidden>アプリURLをチャットに貼る。TOP5が手元にない人への声かけ。目安0:18-0:20</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S8 -->
+        <section class="slide" data-slide data-minutes="0:20–0:45" id="s8">
+          <div class="slide-inner">
+            <div class="work-grid">
+              <div class="timer-panel">
+                <div class="timer-display" id="timerDisplay" data-editable="false">25:00</div>
+                <p class="timer-done-msg">シェアタイムへ</p>
+                <div class="timer-controls">
+                  <button class="timer-btn" id="timerMinus" type="button">−1分</button>
+                  <button class="timer-btn primary" id="timerStart" type="button">開始</button>
+                  <button class="timer-btn" id="timerPause" type="button">一時停止</button>
+                  <button class="timer-btn" id="timerReset" type="button">リセット</button>
+                  <button class="timer-btn" id="timerPlus" type="button">＋1分</button>
+                </div>
+              </div>
+              <div>
+                <div class="qa-list">
+                  <div class="qa-item"><p class="qa-tag">Name it</p><p class="qa-q" data-editable>強く共感できる説明は？</p></div>
+                  <div class="qa-item"><p class="qa-tag">Claim it</p><p class="qa-q" data-editable>過去、成功に役立ったのはいつ？</p></div>
+                  <div class="qa-item"><p class="qa-tag">Aim it</p><p class="qa-q" data-editable>意図的に使う方法を2つ</p></div>
+                </div>
+                <ul class="kokoroe">
+                  <li data-editable>迷ったらTOP1でOK</li>
+                  <li data-editable>説明と違う、は自分だけの言葉が出てきたサイン</li>
+                  <li data-editable>考え込まず、パッと答える</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="script-src" hidden>巡回して声かけ。つまずいた人のフォロー。目安0:20-0:45</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S9 -->
+        <section class="slide slide--tint" data-slide data-minutes="0:45–0:55" id="s9">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>出てきた「自分の言葉」の1文を、<br>チャットに書き込んでください</h2>
+            <p class="lede" data-step="1" data-editable>発表してくれる方、大歓迎</p>
+          </div>
+          <p class="script-src" hidden>拾って承認する。資質名の暗記ではなく本人の言葉を褒める。目安0:45-0:55</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S10 -->
+        <section class="slide" data-slide data-minutes="0:55–1:00" id="s10">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>小さくても良いので、<span class="accent">必ず行動する</span></h2>
+            <p class="lede" data-step="1" data-editable>出てきた言葉は、必ずどこかに残す。それが次にAIと話す時の、あなた専用の素材になる。</p>
+            <div class="callout" data-step="2">
+              <strong>ノウハウ図書館</strong> ——『ストレングスファインダーを「使える」に変える15分』<br>
+              <a class="note-line" href="https://library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J" target="_blank" rel="noopener">https://library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J</a>
+            </div>
+            <p class="lede" data-step="3" data-editable>あなたの1文、よかったらレビューやDMで教えてください。</p>
+          </div>
+          <p class="script-src" hidden>振り返り投稿を後で出すこと、次回の場の予告。目安0:55-1:00</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <div class="stage-chrome-label">ストレングスファインダー活用会 ・ 2026-09-01</div>
+      </div>
+    </div>
+
+    <div class="deck-nav">
+      <button class="nav-btn" id="navPrev" type="button" aria-label="前へ">
+        <svg viewBox="0 0 24 24"><path d="M22 11H5.8l6.1-6.1L10 3l-9 9 9 9 1.9-1.9L5.8 13H22z"/></svg>
+      </button>
+      <span class="nav-help">← → / Space で進む・戻る　P 発表者　E 編集　F 全画面</span>
+      <button class="nav-btn" id="navNext" type="button" aria-label="次へ">
+        <svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg>
+      </button>
+    </div>
+
+    <aside class="presenter-panel" id="presenterPanel" aria-hidden="true">
+      <div class="pp-top">
+        <div>
+          <span class="pp-elapsed" id="ppElapsed">00:00</span>
+          <span class="pp-elapsed-label">開始からの経過</span>
+        </div>
+        <div class="pp-target">
+          <span class="pp-target-value" id="ppTarget">0:00–0:02</span>
+          <span class="pp-target-label">このスライドの目安</span>
+        </div>
+      </div>
+      <div>
+        <p class="pp-next-label">次のスライド</p>
+        <div class="pp-next-thumb" id="ppNextThumb"></div>
+      </div>
+      <div class="pp-script">
+        <p class="pp-script-label">台本</p>
+        <div class="pp-script-text" id="ppScriptText"></div>
+      </div>
+      <p class="pp-help">← → 進む / P 発表者 / E 編集 / F フルスクリーン / 印刷 ⌘P</p>
+    </aside>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+  document.documentElement.classList.add('js-ready');
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var currentIndex = 0;
+  var currentStep = 0;
+
+  /* CSS counter(slidenum) only increments for boxes that actually generate;
+     once js-ready hides 9 of 10 .slide elements with display:none, the
+     counter always resolves to 1 no matter which slide is showing. Write
+     the real "n / 10" text directly instead (each slide's number never
+     changes, so this only needs to run once). */
+  slides.forEach(function(s, i){
+    var badge = s.querySelector('.slide-badge');
+    if(badge) badge.textContent = (i + 1) + ' / ' + total;
+  });
+
+  function stepsOf(slide){
+    var nums = Array.prototype.map.call(slide.querySelectorAll('[data-step]'), function(el){
+      return parseInt(el.getAttribute('data-step'), 10) || 0;
+    });
+    return nums.length ? Math.max.apply(null, nums) : 0;
+  }
+
+  function applySteps(slide, step){
+    Array.prototype.forEach.call(slide.querySelectorAll('[data-step]'), function(el){
+      var n = parseInt(el.getAttribute('data-step'), 10) || 0;
+      el.classList.toggle('is-revealed', n <= step);
+    });
+  }
+
+  function renderScript(slide){
+    var src = slide.querySelector('.script-src');
+    var el = document.getElementById('ppScriptText');
+    el.textContent = src ? src.textContent.trim() : '';
+    document.getElementById('ppTarget').textContent = slide.getAttribute('data-minutes') || '';
+  }
+
+  function fitBox(container, inner){
+    if(!container || !inner) return;
+    var cw = container.clientWidth, ch = container.clientHeight;
+    if(!cw || !ch) return;
+    var scale = Math.min(cw/1280, ch/720);
+    inner.style.transform = 'scale(' + scale + ')';
+  }
+
+  function fitStage(){
+    fitBox(document.getElementById('stageWrap'), document.getElementById('stage'));
+  }
+
+  function renderNextThumb(){
+    var host = document.getElementById('ppNextThumb');
+    host.innerHTML = '';
+    if(currentIndex >= total - 1){
+      var empty = document.createElement('p');
+      empty.className = 'pp-next-empty';
+      empty.textContent = 'これで最後のスライドです';
+      host.appendChild(empty);
+      return;
+    }
+    var clone = slides[currentIndex + 1].cloneNode(true);
+    clone.classList.add('is-active');
+    clone.removeAttribute('aria-hidden');
+    Array.prototype.forEach.call(clone.querySelectorAll('[contenteditable]'), function(el){
+      el.removeAttribute('contenteditable');
+    });
+    host.appendChild(clone);
+    fitBox(host, clone);
+  }
+
+  function goTo(index, step){
+    index = Math.max(0, Math.min(total - 1, index));
+    slides.forEach(function(s, i){
+      s.classList.toggle('is-active', i === index);
+      s.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+    });
+    currentIndex = index;
+    currentStep = typeof step === 'number' ? step : 0;
+    applySteps(slides[currentIndex], currentStep);
+    renderScript(slides[currentIndex]);
+    document.getElementById('navPrev').disabled = (currentIndex === 0 && currentStep === 0);
+    document.getElementById('navNext').disabled = (currentIndex === total - 1 && currentStep >= stepsOf(slides[currentIndex]));
+    if(document.body.classList.contains('presenter-on')) renderNextThumb();
+  }
+
+  function advance(){
+    var max = stepsOf(slides[currentIndex]);
+    if(currentStep < max){
+      currentStep++;
+      applySteps(slides[currentIndex], currentStep);
+      document.getElementById('navPrev').disabled = false;
+    } else if(currentIndex < total - 1){
+      goTo(currentIndex + 1, 0);
+    }
+  }
+
+  function back(){
+    if(currentStep > 0){
+      currentStep--;
+      applySteps(slides[currentIndex], currentStep);
+    } else if(currentIndex > 0){
+      goTo(currentIndex - 1, stepsOf(slides[currentIndex - 1]));
+    }
+  }
+
+  document.getElementById('navNext').addEventListener('click', advance);
+  document.getElementById('navPrev').addEventListener('click', back);
+
+  document.getElementById('stageWrap').addEventListener('click', function(e){
+    if(document.body.classList.contains('edit-on')) return;
+    var blocked = e.target.closest('a,button,[contenteditable]');
+    if(blocked) return;
+    advance();
+  });
+
+  function isTypingTarget(el){
+    if(!el) return false;
+    if(el.isContentEditable) return true;
+    var tag = el.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA';
+  }
+
+  function togglePresenter(force){
+    var on = typeof force === 'boolean' ? force : !document.body.classList.contains('presenter-on');
+    document.body.classList.toggle('presenter-on', on);
+    document.getElementById('presenterPanel').setAttribute('aria-hidden', on ? 'false' : 'true');
+    /* Reading clientWidth/Height right after a class toggle is always
+       synchronously correct in a real browser (the browser forces a
+       reflow on demand) — no need to defer to a later frame. The old
+       requestAnimationFrame wrapper here only added a delay before the
+       stage was resized to fit the new (grid, narrower) layout. */
+    fitStage();
+    if(on) renderNextThumb();
+  }
+
+  function toggleEdit(force){
+    var on = typeof force === 'boolean' ? force : !document.body.classList.contains('edit-on');
+    document.body.classList.toggle('edit-on', on);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-editable]'), function(el){
+      if(el.getAttribute('data-editable') === 'false') return;
+      if(on){
+        el.setAttribute('contenteditable', 'true');
+        el.setAttribute('spellcheck', 'false');
+      } else {
+        el.removeAttribute('contenteditable');
+      }
+    });
+  }
+
+  function toggleFullscreen(){
+    if(document.fullscreenElement){
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen().catch(function(){});
+    }
+  }
+
+  window.addEventListener('keydown', function(e){
+    if(isTypingTarget(document.activeElement)) return;
+    switch(e.key){
+      case 'ArrowRight':
+      case ' ':
+        e.preventDefault();
+        advance();
+        break;
+      case 'ArrowLeft':
+        e.preventDefault();
+        back();
+        break;
+      case 'p': case 'P':
+        togglePresenter();
+        break;
+      case 'e': case 'E':
+        toggleEdit();
+        break;
+      case 'f': case 'F':
+        toggleFullscreen();
+        break;
+    }
+  });
+
+  window.addEventListener('resize', function(){
+    fitStage();
+    if(document.body.classList.contains('presenter-on')) renderNextThumb();
+  });
+
+  /* ---- overall elapsed timer (presenter panel) ---- */
+  var startedAt = Date.now();
+  function tickElapsed(){
+    var s = Math.floor((Date.now() - startedAt) / 1000);
+    var mm = Math.floor(s / 60);
+    var ss = s % 60;
+    document.getElementById('ppElapsed').textContent =
+      String(mm).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+  }
+  setInterval(tickElapsed, 1000);
+  tickElapsed();
+
+  /* ---- workshop countdown (S8) ---- */
+  var TOTAL = 25 * 60;
+  var remaining = TOTAL;
+  var running = false;
+  var endAt = null;
+  var timerId = null;
+  var display = document.getElementById('timerDisplay');
+
+  function renderTimer(){
+    var r = Math.max(0, remaining);
+    var mm = Math.floor(r / 60);
+    var ss = r % 60;
+    display.textContent = String(mm).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+    display.classList.toggle('is-warn', r <= 300 && r > 0);
+    display.classList.toggle('is-done', r <= 0);
+  }
+
+  function tickTimer(){
+    if(!running) return;
+    remaining = Math.max(0, Math.round((endAt - Date.now()) / 1000));
+    renderTimer();
+    if(remaining <= 0){
+      running = false;
+      clearInterval(timerId);
+    }
+  }
+
+  function startTimer(){
+    if(remaining <= 0) return;
+    running = true;
+    endAt = Date.now() + remaining * 1000;
+    clearInterval(timerId);
+    timerId = setInterval(tickTimer, 250);
+  }
+  function pauseTimer(){
+    running = false;
+    clearInterval(timerId);
+  }
+  function resetTimer(){
+    running = false;
+    clearInterval(timerId);
+    remaining = TOTAL;
+    renderTimer();
+  }
+  function bumpTimer(deltaSec){
+    remaining = Math.max(0, remaining + deltaSec);
+    if(running) endAt = Date.now() + remaining * 1000;
+    renderTimer();
+  }
+
+  document.getElementById('timerStart').addEventListener('click', startTimer);
+  document.getElementById('timerPause').addEventListener('click', pauseTimer);
+  document.getElementById('timerReset').addEventListener('click', resetTimer);
+  document.getElementById('timerMinus').addEventListener('click', function(){ bumpTimer(-60); });
+  document.getElementById('timerPlus').addEventListener('click', function(){ bumpTimer(60); });
+
+  renderTimer();
+
+  /* ---- init ---- */
+  goTo(0, 0);
+  fitStage();
+})();
+</script>
+</body>
+</html>
