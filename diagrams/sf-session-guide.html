@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>セッションを受けるにあたって</title>
+<style>
+  :root{
+    --paper:      #FBF8F3;
+    --paper-deep: #F1EAE0;
+    --line:       rgba(31,27,22,0.12);
+    --line-soft:  rgba(31,27,22,0.07);
+
+    /* 文字色トークン（4系統まで） */
+    --ink:        #211B15; /* 本文 */
+    --muted:      #6E665C; /* 補足・キャプション */
+    --primary:    #2C5F4B; /* 深緑＝見出し・主役 */
+    --accent-ink: #8A5A2B; /* ブロンズ＝文字アクセント */
+
+    --gold:       #C4915E; /* ゴールドは線だけに使う */
+
+    --shadow-sm: 0 4px 16px rgba(31,27,22,0.06);
+    --shadow-md: 0 10px 30px rgba(31,27,22,0.08);
+    --radius:    14px;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+
+  html{
+    background:var(--paper);
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Yu Gothic",system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  img,svg{ max-width:100%; display:block; }
+
+  .page{
+    max-width:40em;
+    margin:0 auto;
+    padding:0 20px 64px;
+    width:100%;
+  }
+
+  /* ── ヘッダー ───────────────────────── */
+
+  header.hero{
+    padding:52px 0 34px;
+    text-align:center;
+  }
+
+  .eyebrow{
+    display:inline-block;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    color:var(--accent-ink);
+    border:1px solid var(--gold);
+    border-radius:999px;
+    padding:5px 14px;
+    margin-bottom:20px;
+    background:var(--paper-deep);
+  }
+
+  h1{
+    margin:0 0 18px;
+    font-size:clamp(24px,6vw,32px);
+    line-height:1.5;
+    color:var(--primary);
+    font-weight:700;
+    text-wrap:balance;
+    line-break:strict;
+  }
+
+  .lead{
+    margin:0 auto;
+    max-width:32em;
+    font-size:16px;
+    line-height:1.9;
+    color:var(--ink);
+  }
+
+  .lead strong{
+    color:var(--accent-ink);
+    font-weight:600;
+  }
+
+  /* ── セクション共通 ───────────────────── */
+
+  main{ counter-reset:sec; }
+
+  section{
+    counter-increment:sec;
+    padding:40px 0;
+    border-top:1px solid var(--line);
+  }
+
+  section.hero-section{ border-top:none; padding-top:8px; }
+
+  h2{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin:0 0 22px;
+    font-size:19px;
+    line-height:1.6;
+    color:var(--primary);
+    font-weight:700;
+    text-wrap:balance;
+    line-break:strict;
+  }
+
+  h2::before{
+    content:counter(sec,decimal-leading-zero);
+    flex:0 0 auto;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.06em;
+    color:var(--accent-ink);
+    background:var(--paper-deep);
+    border:1px solid var(--gold);
+    border-radius:8px;
+    padding:3px 8px;
+  }
+
+  p{ margin:0 0 16px; color:var(--ink); }
+  p:last-child{ margin-bottom:0; }
+
+  .muted{ color:var(--muted); font-size:14.5px; }
+
+  .hl{
+    color:var(--accent-ink);
+    text-decoration-line:underline;
+    text-decoration-color:var(--gold);
+    text-decoration-thickness:2px;
+    text-underline-offset:3px;
+  }
+
+  /* ── 準備2つ（主役カード） ─────────────── */
+
+  .prep-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin:0 0 22px;
+  }
+
+  .prep-card{
+    background:var(--paper-deep);
+    border:1px solid var(--line);
+    border-left:4px solid var(--primary);
+    border-radius:var(--radius);
+    padding:22px 20px;
+    box-shadow:var(--shadow-sm);
+  }
+
+  .prep-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--primary);
+    color:var(--paper);
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:12px;
+  }
+
+  .prep-card h3{
+    margin:0 0 8px;
+    font-size:17px;
+    line-height:1.6;
+    color:var(--ink);
+    font-weight:700;
+    text-wrap:balance;
+    line-break:strict;
+  }
+
+  .prep-card p{ font-size:15px; }
+
+  .prep-card .note{
+    margin-top:10px;
+    font-size:13.5px;
+    color:var(--muted);
+    border-top:1px dashed var(--line);
+    padding-top:10px;
+  }
+
+  blockquote{
+    margin:20px 0 0;
+    padding:16px 18px;
+    background:var(--paper);
+    border:1px solid var(--gold);
+    border-radius:var(--radius);
+    font-size:14.5px;
+    line-height:1.8;
+    color:var(--accent-ink);
+  }
+
+  blockquote p{ margin:0 0 6px; color:inherit; }
+  blockquote cite{
+    display:block;
+    font-style:normal;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+
+  /* ── 期待値リスト ─────────────────────── */
+
+  .expect-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .expect-list li{
+    padding-left:22px;
+    position:relative;
+  }
+
+  .expect-list li::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:9px;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--gold);
+  }
+
+  .expect-list h3{
+    margin:0 0 6px;
+    font-size:15.5px;
+    color:var(--ink);
+    font-weight:700;
+    text-wrap:balance;
+    line-break:strict;
+  }
+
+  .expect-list p{ font-size:14.5px; margin-bottom:8px; }
+
+  /* ── 当日の流れ（図解） ───────────────── */
+
+  .flow{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    margin:8px 0 20px;
+  }
+
+  .flow-step{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:14px 0;
+  }
+
+  .flow-icon{
+    flex:0 0 auto;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:var(--paper-deep);
+    border:2px solid var(--primary);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .flow-icon svg{ width:20px; height:20px; }
+
+  .flow-connector{
+    width:2px;
+    height:20px;
+    background:var(--gold);
+    margin-left:21px;
+  }
+
+  .flow-body h3{
+    margin:2px 0 4px;
+    font-size:15.5px;
+    color:var(--primary);
+    font-weight:700;
+    text-wrap:balance;
+    line-break:strict;
+  }
+
+  .flow-body .en{
+    font-size:12.5px;
+    color:var(--muted);
+    letter-spacing:.04em;
+  }
+
+  .flow-body p{ font-size:14.5px; margin:6px 0 0; }
+
+  .flow-note{
+    margin-top:6px;
+    background:var(--paper-deep);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--ink);
+    border:1px solid var(--line);
+  }
+
+  /* ── おすすめ環境 ─────────────────────── */
+
+  .disclaimer{
+    display:inline-block;
+    font-size:12.5px;
+    color:var(--accent-ink);
+    background:var(--paper-deep);
+    border:1px solid var(--gold);
+    border-radius:8px;
+    padding:4px 10px;
+    margin-bottom:16px;
+  }
+
+  .env-grid{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .env-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:12px 14px;
+    background:var(--paper-deep);
+    border-radius:var(--radius);
+    border:1px solid var(--line);
+  }
+
+  .env-icon{
+    flex:0 0 auto;
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    background:var(--paper);
+    border:1px solid var(--gold);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .env-icon svg{ width:18px; height:18px; }
+
+  .env-item p{ margin:0; font-size:14.5px; }
+
+  /* ── セッションのあと ─────────────────── */
+
+  .after-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .after-list li{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    font-size:14.5px;
+  }
+
+  .after-check{
+    flex:0 0 auto;
+    width:22px;
+    height:22px;
+    margin-top:2px;
+  }
+
+  /* ── 出典 ─────────────────────────────── */
+
+  .sources{
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.8;
+  }
+
+  .sources ol{ margin:10px 0 0; padding-left:1.2em; }
+  .sources li{ margin-bottom:8px; word-break:break-all; }
+
+  .sources a{
+    color:var(--accent-ink);
+    text-decoration-line:underline;
+    text-decoration-color:var(--line);
+    text-decoration-thickness:1px;
+    transition:text-decoration-color .2s ease, color .2s ease;
+  }
+
+  .sources a:hover{
+    color:var(--primary);
+    text-decoration-color:var(--gold);
+  }
+
+  footer{
+    text-align:center;
+    padding-top:40px;
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  footer .heart{ color:var(--accent-ink); }
+
+  @media (min-width:640px){
+    .flow-step{ align-items:center; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <span class="eyebrow">SESSION GUIDE</span>
+    <h1>セッションを受けるにあたって</h1>
+    <p class="lead">
+      お申し込みありがとうございます。当日を<strong>最高の時間</strong>にするために、
+      これだけ読んできてもらえたら嬉しいです。<br>
+      <span class="muted">（3分で読めます）</span>
+    </p>
+  </header>
+
+  <main>
+
+    <section class="hero-section">
+      <h2>お願いしたい準備は、2つだけ</h2>
+
+      <div class="prep-list">
+        <div class="prep-card">
+          <span class="prep-num">1</span>
+          <h3>結果レポートを、一度読んでおいてください</h3>
+          <p>TOP5だけで大丈夫です。もし余裕があれば、読みながら<span class="hl">「自分らしいな」と思う言葉</span>に下線を引いてみてください。それだけで、当日の話の始まりがぐっと早くなります。</p>
+          <p class="note">下線を引いて、いちばん自分らしい1つを選ぶ——ここはGallup公式のセッションが実際にたどる進め方の型です。</p>
+        </div>
+
+        <div class="prep-card">
+          <span class="prep-num">2</span>
+          <h3>「この1時間で達成したいこと」を、1つ言葉にしておいてください</h3>
+          <p>どんなに小さくても大丈夫です。「モヤモヤを言葉にしたい」でも、「次の一歩を決めたい」でも。ここが決まっているだけで、当日の1時間の密度がまるで変わります。</p>
+        </div>
+      </div>
+
+      <blockquote>
+        <p>「意図を持つことが、すべてを変える」</p>
+        <cite>— Gallup公式</cite>
+      </blockquote>
+    </section>
+
+    <section>
+      <h2>先に知っておいてほしいこと</h2>
+      <ul class="expect-list">
+        <li>
+          <h3>診断は、「正解」をくれません</h3>
+          <p>CliftonStrengthsは「あなたはこの仕事をすべき」というような答えを教えてくれるものではありません。もしそう謳う診断があれば、むしろ疑ってください——Gallup公式自身がそう述べています。</p>
+          <blockquote>
+            <p>"Again, CliftonStrengths won't tell you what job you should have. Be suspicious of any assessment that does."</p>
+            <cite>— Gallup公式</cite>
+          </blockquote>
+        </li>
+        <li>
+          <h3>資質に優劣や良し悪しはありません</h3>
+          <p>順位が低い資質も、弱みとは限りません。単に、自然には出てこないだけです。TOP10であなたの行動のおよそ9割が説明できると言われているので、まずはそこだけ見れば十分です。</p>
+        </li>
+        <li>
+          <h3>わたし（コーチ）は、教えるのではなく訊きます</h3>
+          <p>主役は、あなたの中から出てくる言葉です。こちらから資質を決めつけたり、ラベルを貼ったりすることはしません。訊かれて、自分の言葉で答える——その時間そのものがセッションです。</p>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>当日の流れ</h2>
+      <p class="muted" style="margin-bottom:20px;">ざっくりで大丈夫です。こんな順番で進みます。</p>
+
+      <div class="flow">
+        <div class="flow-step">
+          <span class="flow-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2C5F4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="#2C5F4B"/></svg>
+          </span>
+          <div class="flow-body">
+            <h3>資質を1つ選ぶ</h3>
+            <p>下線を引いた中から、いちばん自分らしい1つを選びます。</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+
+        <div class="flow-step">
+          <span class="flow-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2C5F4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l7-5 7 5"/></svg>
+          </span>
+          <div class="flow-body">
+            <h3>理解する <span class="en">Name it</span></h3>
+            <p>その資質が、実際の場面でどう働いているかを確かめます。</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+
+        <div class="flow-step">
+          <span class="flow-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2C5F4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+          <div class="flow-body">
+            <h3>受容する <span class="en">Claim it</span></h3>
+            <p>過去にその資質が働いた成功に、あらためて感謝します。</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+
+        <div class="flow-step">
+          <span class="flow-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2C5F4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+          <div class="flow-body">
+            <h3>活用する <span class="en">Aim it</span></h3>
+            <p>「明日から、こう使う」を1つだけ決めて、宣言します。</p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+
+        <div class="flow-step">
+          <span class="flow-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2C5F4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg>
+          </span>
+          <div class="flow-body">
+            <h3>才能開発プランに書き残す</h3>
+            <p>理解する・受容する・活用するの3つを、手元に残る形にします。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-note">解説だけで終わらせず、必ず「明日の行動」まで一緒に行きます。</div>
+    </section>
+
+    <section>
+      <h2>当日の環境のおすすめ</h2>
+      <span class="disclaimer">※ 公式の規定ではなく、おけもん式のおすすめです</span>
+
+      <div class="env-grid">
+        <div class="env-item">
+          <span class="env-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8A5A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6M3 18a2 2 0 002 2h1v-6H3v4zm18 0a2 2 0 01-2 2h-1v-6h3v4z"/></svg>
+          </span>
+          <p>静かに話せる場所を選んでおいてください</p>
+        </div>
+        <div class="env-item">
+          <span class="env-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8A5A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v3M16 2v3M6 8h12l-1 12a2 2 0 01-2 2H9a2 2 0 01-2-2L6 8z"/></svg>
+          </span>
+          <p>お好きな飲み物を、手元に用意しておいてください</p>
+        </div>
+        <div class="env-item">
+          <span class="env-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#8A5A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+          </span>
+          <p>終了後、10分ほど予定を空けておくと理想的です</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>セッションのあと</h2>
+      <ul class="after-list">
+        <li>
+          <svg class="after-check" viewBox="0 0 24 24" fill="none" stroke="#2C5F4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <p>出てきた言葉は、どこかに残しておいてください</p>
+        </li>
+        <li>
+          <svg class="after-check" viewBox="0 0 24 24" fill="none" stroke="#2C5F4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <p>小さくても、行動してみてください</p>
+        </li>
+        <li>
+          <svg class="after-check" viewBox="0 0 24 24" fill="none" stroke="#2C5F4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <p>強みの話は、何度でも立ち返ってかまいません</p>
+        </li>
+      </ul>
+      <blockquote style="margin-top:20px;">
+        <p>"Don't be afraid to revisit the topic of strengths over and over again with the people closest to you."<br>（身近な人たちと、強みの話題に何度でも立ち返ることを恐れないで）</p>
+        <cite>— Gallup公式</cite>
+      </blockquote>
+    </section>
+
+    <section class="sources">
+      <h2 style="font-size:14.5px;">出典</h2>
+      <p>本文中の引用は、以下のGallup公式（gallup.com）を出典としています。</p>
+      <ol>
+        <li>Gallup, Called to Coach「Conducting Insightful Strengths Feedback Sessions, Part 1」<br><a href="https://www.gallup.com/cliftonstrengths/en/354662/conducting-insightful-strengths-feedback-sessions-1.aspx" target="_blank" rel="noopener">gallup.com/cliftonstrengths/.../conducting-insightful-strengths-feedback-sessions-1.aspx</a></li>
+        <li>Gallup, Called to Coach「Conducting Insightful Strengths Feedback Sessions, Part 2」<br><a href="https://www.gallup.com/cliftonstrengths/en/356813/conducting-insightful-strengths-feedback-sessions-2.aspx" target="_blank" rel="noopener">gallup.com/cliftonstrengths/.../conducting-insightful-strengths-feedback-sessions-2.aspx</a></li>
+        <li>Gallup公式コラム「'What Career Is Best for Me?' Isn't the Question You Should Be Asking」<br><a href="https://www.gallup.com/cliftonstrengths/en/305063/career-right-isn-question-asking.aspx" target="_blank" rel="noopener">gallup.com/cliftonstrengths/.../career-right-isn-question-asking.aspx</a></li>
+        <li>Gallup「What Is Strengths-Based Development? How to Have Strengths Conversations」<br><a href="https://www.gallup.com/cliftonstrengths/en/511253/strengths-based-development.aspx" target="_blank" rel="noopener">gallup.com/cliftonstrengths/.../strengths-based-development.aspx</a></li>
+      </ol>
+      <p>確認日：2026年9月1日</p>
+    </section>
+
+  </main>
+
+  <footer>
+    当日、お会いできるのを楽しみにしています <span class="heart">◎</span>
+  </footer>
+
+</div>
+</body>
+</html>
