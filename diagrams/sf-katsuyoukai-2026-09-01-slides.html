@@ -234,8 +234,22 @@
     padding-bottom:14px;
     border-bottom:1px solid rgba(243,240,231,.18);
   }
+  .pp-elapsed-row{display:flex;align-items:baseline;gap:10px;}
   .pp-elapsed{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--font-serif);}
   .pp-elapsed-label{display:block;font-size:12.5px;color:rgba(243,240,231,.65);}
+  .pp-elapsed-reset{
+    padding:4px 12px;
+    border-radius:999px;
+    background:rgba(243,240,231,.1);
+    border:1px solid rgba(243,240,231,.28);
+    color:#F3F0E7;
+    font-size:12.5px;
+    font-weight:700;
+    transition-property:background-color,border-color;
+    transition-duration:.2s;
+    transition-timing-function:ease-out;
+  }
+  .pp-elapsed-reset:hover{background:rgba(243,240,231,.2);border-color:var(--gold-on-dark);}
   .pp-target{text-align:right;}
   .pp-target-value{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--gold-on-dark);}
   .pp-target-label{display:block;font-size:12.5px;color:rgba(243,240,231,.65);}
@@ -419,7 +433,10 @@
   }
 
   .note-line{font-size:13.5px;color:var(--ink-faint);overflow-wrap:anywhere;}
-  .note-line a{color:var(--bronze);text-decoration-line:underline;text-decoration-color:var(--bronze);text-decoration-thickness:1px;overflow-wrap:anywhere;}
+  /* a.note-line covers S10, where the link itself carries this class
+     (no separate wrapping element to be the "a" descendant of);
+     .note-line a still covers S7, where the link sits inside a <p class="note-line">. */
+  .note-line a,a.note-line{color:var(--bronze);text-decoration-line:underline;text-decoration-color:var(--bronze);text-decoration-thickness:1px;overflow-wrap:anywhere;}
 
   /* ===== S8 workshop / timer ===== */
   .work-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start;}
@@ -640,14 +657,14 @@
               <span class="lb-label">今日のアプリ</span>
               <span class="lb-url" data-editable>https://okemonogatari-hash.github.io/html-share-box/diagrams/sf-jibun-no-kotoba.html</span>
             </div>
-            <p class="note-line" data-step="4">じっくりAIと対話したい人は記事のプロンプト版もあります　<a href="https://library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J" target="_blank" rel="noopener">library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J</a></p>
+            <p class="note-line" data-step="4" data-editable>じっくりAIと対話したい人は記事のプロンプト版もあります　<a href="https://library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J" target="_blank" rel="noopener">library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J</a></p>
           </div>
           <p class="script-src" hidden>アプリURLをチャットに貼る。TOP5が手元にない人への声かけ。目安0:18-0:20</p>
           <div class="slide-badge"></div>
         </section>
 
         <!-- S8 -->
-        <section class="slide" data-slide data-minutes="0:20–0:45" id="s8">
+        <section class="slide" data-slide data-minutes="0:20–0:45" id="s8" data-lock-advance>
           <div class="slide-inner">
             <div class="work-grid">
               <div class="timer-panel">
@@ -694,7 +711,7 @@
           <div class="slide-inner">
             <h2 class="headline" data-editable>小さくても良いので、<span class="accent">必ず行動する</span></h2>
             <p class="lede" data-step="1" data-editable>出てきた言葉は、必ずどこかに残す。それが次にAIと話す時の、あなた専用の素材になる。</p>
-            <div class="callout" data-step="2">
+            <div class="callout" data-step="2" data-editable>
               <strong>ノウハウ図書館</strong> ——『ストレングスファインダーを「使える」に変える15分』<br>
               <a class="note-line" href="https://library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J" target="_blank" rel="noopener">https://library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J</a>
             </div>
@@ -721,7 +738,10 @@
     <aside class="presenter-panel" id="presenterPanel" aria-hidden="true">
       <div class="pp-top">
         <div>
-          <span class="pp-elapsed" id="ppElapsed">00:00</span>
+          <div class="pp-elapsed-row">
+            <span class="pp-elapsed" id="ppElapsed">00:00</span>
+            <button class="pp-elapsed-reset" id="ppElapsedReset" type="button" aria-label="経過時間をリセット">リセット</button>
+          </div>
           <span class="pp-elapsed-label">開始からの経過</span>
         </div>
         <div class="pp-target">
@@ -737,7 +757,7 @@
         <p class="pp-script-label">台本</p>
         <div class="pp-script-text" id="ppScriptText"></div>
       </div>
-      <p class="pp-help">← → 進む / P 発表者 / E 編集 / F フルスクリーン / 印刷 ⌘P</p>
+      <p class="pp-help">← → 進む / P 発表者 / E 編集 / F フルスクリーン / 印刷 ⌘P<br>画面共有はウィンドウ指定で（全画面共有だと台本が映ります）</p>
     </aside>
   </div>
 
@@ -829,11 +849,19 @@
     if(document.body.classList.contains('presenter-on')) renderNextThumb();
   }
 
-  function advance(){
-    var max = stepsOf(slides[currentIndex]);
+  function advance(allowLocked){
+    var slide = slides[currentIndex];
+    /* data-lock-advance (S8, the 25分ワークタイマー) means only the physical
+       ArrowRight key may move the deck forward — a stray click on the stage
+       or a Space bar press must not fire S9 in front of the room. Callers
+       that are the ArrowRight keydown pass allowLocked===true explicitly;
+       every other caller (stage click, Space, the on-screen ▶ button) calls
+       advance() with no argument and is blocked while this slide is active. */
+    if(allowLocked !== true && slide.hasAttribute('data-lock-advance')) return;
+    var max = stepsOf(slide);
     if(currentStep < max){
       currentStep++;
-      applySteps(slides[currentIndex], currentStep);
+      applySteps(slide, currentStep);
       document.getElementById('navPrev').disabled = false;
     } else if(currentIndex < total - 1){
       goTo(currentIndex + 1, 0);
@@ -849,7 +877,7 @@
     }
   }
 
-  document.getElementById('navNext').addEventListener('click', advance);
+  document.getElementById('navNext').addEventListener('click', function(){ advance(); });
   document.getElementById('navPrev').addEventListener('click', back);
 
   document.getElementById('stageWrap').addEventListener('click', function(e){
@@ -905,6 +933,9 @@
     if(isTypingTarget(document.activeElement)) return;
     switch(e.key){
       case 'ArrowRight':
+        e.preventDefault();
+        advance(true); /* the one input that still works on a locked slide */
+        break;
       case ' ':
         e.preventDefault();
         advance();
@@ -941,6 +972,10 @@
   }
   setInterval(tickElapsed, 1000);
   tickElapsed();
+  document.getElementById('ppElapsedReset').addEventListener('click', function(){
+    startedAt = Date.now();
+    tickElapsed();
+  });
 
   /* ---- workshop countdown (S8) ---- */
   var TOTAL = 25 * 60;
