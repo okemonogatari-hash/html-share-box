@@ -1002,6 +1002,19 @@ function renderRescueToggle(kind){
   } else if(kind==="claimit"){
     body.appendChild(el("p", {}, ["自然と惹き込まれて、エネルギーが湧いてくる活動はどれですか？"]));
     body.appendChild(el("p", {}, ["終わったあと「またやりたい」と思ったのは、どんな時ですか？"]));
+  } else if(kind==="aim"){
+    var ta2 = findTheme(state.selectedTheme);
+    if(ta2 && ta2.hint){
+      body.appendChild(el("p", {}, ["たとえばこの資質は——" + ta2.hint]));
+    }
+    body.appendChild(el("p", {}, ["明日すでにある予定に、この資質を1つ乗せるなら？（例：ミーティングで、買い物で、家族との時間で）"]));
+    if(ta2 && ta2.joy){
+      body.appendChild(el("p", {}, ["この資質が喜ぶ時間（" + ta2.joy + "）を、明日どこかに10分つくるなら？"]));
+    } else {
+      body.appendChild(el("p", {}, ["この強みが喜ぶ時間を、明日どこかに10分つくるなら？"]));
+    }
+    body.appendChild(el("p", {}, ["誰かのために使うなら、誰に・何をしますか？"]));
+    body.appendChild(el("p", {class:"rescue-note"}, ["大きなことでなくて大丈夫。さっき話した過去の成功を、もう1回だけ意図的にやるのも立派な1つです。"]));
   } else {
     return null;
   }
@@ -1645,6 +1658,7 @@ function renderAim(){
     el("span", {class:"eyebrow aim"}, ["Gallup公式の問い"]),
     el("div", {class:"question"}, ["これからもっと意図的に「" + displayName() + "」を利用できる方法を2つ挙げてください。"]),
     el("p", {class:"hint"}, ["［おけもん式の解釈］Name it→Claim it→Aim itは1回で終わりではなく、そのつど足りない段階を確認しながら回していくサイクルです。"]),
+    renderRescueToggle("aim"),
     el("div", {class:"field"}, [el("label", {class:"field-label"}, ["方法1"]), i1]),
     el("div", {class:"field"}, [el("label", {class:"field-label"}, ["方法2"]), i2]),
     row
