@@ -191,6 +191,11 @@
     color:var(--muted);
     border:1px solid var(--line);
   }
+  .btn-reset-armed{
+    background:transparent;
+    color:var(--bronze);
+    border:1px solid var(--bronze);
+  }
   .btn-outline{
     background:var(--paper);
     color:var(--primary);
@@ -1732,13 +1737,32 @@ var RENDERERS = {
   done: renderDone
 };
 
-document.getElementById("resetBtn").addEventListener("click", function(){
-  if(!window.confirm("最初からやり直しますか？入力した内容は消えます。")) return;
-  state = JSON.parse(JSON.stringify(defaultState));
-  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
-  render();
-  window.scrollTo(0,0);
-});
+/* window.confirm はアプリ内ブラウザで無効化されることがあるため、2度押し方式にする */
+(function(){
+  var resetBtnEl = document.getElementById("resetBtn");
+  var resetArmed = false;
+  var resetTimer = null;
+  function disarmReset(){
+    resetArmed = false;
+    if(resetTimer){ clearTimeout(resetTimer); resetTimer = null; }
+    resetBtnEl.textContent = "最初からやり直す";
+    resetBtnEl.classList.remove("btn-reset-armed");
+  }
+  resetBtnEl.addEventListener("click", function(){
+    if(!resetArmed){
+      resetArmed = true;
+      resetBtnEl.textContent = "ほんとに消す？";
+      resetBtnEl.classList.add("btn-reset-armed");
+      resetTimer = setTimeout(disarmReset, 4000);
+      return;
+    }
+    disarmReset();
+    state = JSON.parse(JSON.stringify(defaultState));
+    try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+    render();
+    window.scrollTo(0,0);
+  });
+})();
 
 render();
 })();
