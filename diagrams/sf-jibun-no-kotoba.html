@@ -336,6 +336,8 @@
     color:var(--accent-ink);
     margin-top:8px;
   }
+  .echo-box p{margin:6px 0 0;font-size:13.5px;}
+  .echo-box p:first-child{margin-top:8px;}
 
   .sentence-block{
     background:var(--paper-deep);
@@ -425,6 +427,77 @@
   }
   .mini-dot.is-done{background:var(--primary);}
   .mini-dot.is-current{background:var(--accent-ink);}
+
+  /* ===== v2 追加分 ===== */
+  .phil-line{
+    font-size:13.5px;
+    color:var(--ink);
+    background:var(--paper-deep);
+    border-radius:var(--radius-sm);
+    padding:10px 12px;
+    margin-bottom:10px;
+  }
+  .phil-tag{
+    display:inline-block;
+    font-size:12.5px;
+    font-weight:700;
+    margin-right:6px;
+  }
+  .phil-tag.gallup{color:var(--primary);}
+  .phil-tag.okemon{color:var(--accent-ink);}
+
+  .theme-detail-block{
+    margin-top:12px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:2px 14px;
+    background:var(--paper);
+  }
+  .theme-detail-block summary{
+    cursor:pointer;
+    padding:10px 0;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    list-style:none;
+  }
+  .theme-detail-block summary::-webkit-details-marker{display:none;}
+  .detail-tag{
+    font-size:12.5px;
+    color:var(--accent-ink);
+    border:1px solid var(--accent-line);
+    border-radius:99px;
+    padding:1px 8px;
+    font-weight:600;
+  }
+  .theme-detail-inner{padding:2px 0 14px;}
+  .td-metaphor{font-size:14.5px;font-weight:700;color:var(--ink);margin:0 0 8px;}
+  .td-features{margin:0 0 10px;padding-left:18px;font-size:13.5px;color:var(--ink);}
+  .td-features li{margin-bottom:6px;}
+  .td-joy{font-size:13.5px;color:var(--muted);margin:0;}
+
+  .import-dropzone{
+    border:1px dashed var(--line);
+    border-radius:var(--radius-sm);
+    padding:16px;
+    margin-bottom:12px;
+    background:var(--paper);
+  }
+  .import-dropzone input[type="file"]{
+    font-size:13.5px;
+    color:var(--muted);
+    width:100%;
+    margin-bottom:8px;
+  }
+  .import-status{
+    font-size:12.5px;
+    color:var(--accent-ink);
+    margin:8px 0 14px;
+    min-height:1.2em;
+  }
 </style>
 </head>
 <body>
@@ -463,42 +536,45 @@
 (function(){
 "use strict";
 
-/* ============== 34資質データ（出典：おけもん式ストレングスホーム #themes を一字一句転記） ============== */
+/* ============== 34資質データ ==============
+   short: おけもん式ストレングスホーム #themes を一字一句転記（v1採用分）
+   metaphor / features / joy / hint: sf-app-v2-data.md §C（PDF自作教材の図解ガイドより）を採用
+*/
 var THEMES = [
-  {name:"達成欲", domain:"実行力", short:"完了と前進に喜びを感じる。"},
-  {name:"アレンジ", domain:"実行力", short:"状況に合わせて段取りを変える。"},
-  {name:"信念", domain:"実行力", short:"大切なものに沿って動く。"},
-  {name:"公平性", domain:"実行力", short:"一貫性と納得感を大切にする。"},
-  {name:"慎重さ", domain:"実行力", short:"失敗を防ぐために先回りする。"},
-  {name:"規律性", domain:"実行力", short:"秩序と習慣で安定する。"},
-  {name:"目標志向", domain:"実行力", short:"目的地が見えると集中する。"},
-  {name:"責任感", domain:"実行力", short:"引き受けたことを最後まで果たす。"},
-  {name:"回復志向", domain:"実行力", short:"不具合を改善するほど燃える。"},
-  {name:"活発性", domain:"影響力", short:"考えるより始めると動き出す。"},
-  {name:"指令性", domain:"影響力", short:"必要なことをはっきり言う。"},
-  {name:"コミュニケーション", domain:"影響力", short:"伝えることで価値を生む。"},
-  {name:"競争性", domain:"影響力", short:"比較や勝利がエネルギーになる。"},
-  {name:"最上志向", domain:"影響力", short:"良いものをもっと良くする。"},
-  {name:"自己確信", domain:"影響力", short:"自分の判断を信じて進む。"},
-  {name:"自我", domain:"影響力", short:"重要な役割を担うと燃える。"},
-  {name:"社交性", domain:"影響力", short:"初対面や場づくりで力を出す。"},
-  {name:"適応性", domain:"人間関係構築力", short:"変化に合わせて流れをつかむ。"},
-  {name:"運命思考", domain:"人間関係構築力", short:"関係性や意味のつながりを見る。"},
-  {name:"成長促進", domain:"人間関係構築力", short:"人の伸びしろに目が向く。"},
-  {name:"共感性", domain:"人間関係構築力", short:"言葉にならない気持ちに気づく。"},
-  {name:"調和性", domain:"人間関係構築力", short:"衝突より合意点を探す。"},
-  {name:"包含", domain:"人間関係構築力", short:"輪の外にいる人に気づく。"},
-  {name:"個別化", domain:"人間関係構築力", short:"その人らしさに合わせる。"},
-  {name:"ポジティブ", domain:"人間関係構築力", short:"前向きな空気をつくる。"},
-  {name:"親密性", domain:"人間関係構築力", short:"少人数で濃くつながる。"},
-  {name:"分析思考", domain:"戦略的思考力", short:"事実と因果で考える。"},
-  {name:"原点思考", domain:"戦略的思考力", short:"背景や歩みを重視する。"},
-  {name:"未来志向", domain:"戦略的思考力", short:"これからの可能性に惹かれる。"},
-  {name:"着想", domain:"戦略的思考力", short:"新しい見方やアイデアが湧く。"},
-  {name:"収集心", domain:"戦略的思考力", short:"情報や素材を集めるほど満たされる。"},
-  {name:"内省", domain:"戦略的思考力", short:"一人で深く考えるほど整う。"},
-  {name:"学習欲", domain:"戦略的思考力", short:"知らないことを知ると元気になる。"},
-  {name:"戦略性", domain:"戦略的思考力", short:"道筋を見比べて近道を探す。"}
+  {name:"達成欲", domain:"実行力", short:"完了と前進に喜びを感じる。", metaphor:"マラソンランナー", features:["並外れたスタミナで目標に向かって走り続ける", "長い距離も諦めずにやり遂げる力がある。働き者で、常に生産性を高めるペースを設定する。一日の終わりに何かを成し遂げたという実感がないと満足できない。", "常に前進し続ける継続力があり、チームを引っ張る持続力を持つ。目標達成に向けて着実に歩み続け、「やり遂げる」ことに価値を見出す。完了することに大きな喜びを感じる。"], joy:"仕事を完遂すること成し遂げた実感・ゴールや成果の積み重ね・生産性の高い一日を過ごすこと・目に見える成果が出ること", hint:"目標やタスクを小さく分割し、達成感を増やす"},
+  {name:"アレンジ", domain:"実行力", short:"状況に合わせて段取りを変える。", metaphor:"オーケストラの指揮者", features:["複数のことを整理して組織化し、柔軟に対応する", "動かせるパーツがたくさんあると心地よい。様々な要素を最適に組み合わせることで、最高の成果を出すことを楽しむ人。異なる資源や人を柔軟に組み合わせるのが得意。", "物事に効率よく対処し、成果を上げる。柔軟に、いろんな方向から対処できる。マルチタスクが得意で、様々なリソースを最適配置して生産性を高める。"], joy:"環境が動的であること・必要な変化を起こして対応すること・複数の要素やプロジェクトを同時に進める・効率化や生産性向上のための工夫", hint:"変化自体が目的にならないよう、成果を意識する"},
+  {name:"信念", domain:"実行力", short:"大切なものに沿って動く。", metaphor:"灯台", features:["大切な価値観を絶対に守り抜く強さ", "大切な価値観には強いこだわりがあり、絶対に妥協しません。人生の意味や目的を見つけることに重きを置き、その信念に基づいて行動します。", "大切なことのためなら、多少の犠牲もいとわない姿勢を持っています。安定感や明確な方向性、確かな信念を周囲にもたらします。"], joy:"他者のために尽くすこと・自分の信念に沿った行動ができること・人生の意味や目的を感じられること・自分の価値観と合った環境で働くこと", hint:"自分の価値観を明文化してみる"},
+  {name:"公平性", domain:"実行力", short:"一貫性と納得感を大切にする。", metaphor:"天秤", features:["すべての人を平等に扱う・明確なルールで安心を作る", "個人の要望よりも、グループ全体のニーズに関心がある。公平性を重視し、誰に対しても同じ基準で接する人。明確なルールや手順があると安心する。", "違いをなくして、みんな同じ状況を作り出すことに努める。規則や方針を決めて、予測しやすい職場や環境を作ることが得意。平等な扱いで信頼を得る。"], joy:"仕事の手順がしっかりと定まっていること・同じ方法で物事を繰り返すこと・誰もが従える明確なルールがあること・みんなが平等に扱われる環境", hint:"公平性と効率性のバランスを取る"},
+  {name:"慎重さ", domain:"実行力", short:"失敗を防ぐために先回りする。", metaphor:"石橋を叩く探検家", features:["リスクを丁寧に見極め、細心の注意を払う力", "潜在的なリスクに常に警戒し、決定する前に細心の注意を払います。安全を確保するために十分な準備と確認を行い、慎重に判断を下す人。", "真っ先に危険や課題を考え、リスク評価と事前準備を徹底します。深い配慮と計画性で周囲に安全な環境と安心感を提供します。"], joy:"安全が確保された状態で行動すること・計画通りに物事が進むこと・リスクを事前に防ぐこと・十分な情報と準備の時間があること", hint:"リスクの説明や懸念点を具体的に共有する"},
+  {name:"規律性", domain:"実行力", short:"秩序と習慣で安定する。", metaphor:"時計", features:["計画的・いつも同じリズムで整える", "計画的で秩序を大切にする人。スケジュールを遵守し、整理整頓が得意。安定した日常や誰もが従える明確なルールや手順を求める。", "ルール・スケジュール順守で混乱を防止する。計画を立てて効率よく管理し、周囲に一貫性と安定感を提供する。"], joy:"毎日同じリズムで安定していること・整理整頓された環境・明確な手順やマニュアルがあること・混乱のない状態で進められること", hint:"ルールや目的を明文化して共有する"},
+  {name:"目標志向", domain:"実行力", short:"目的地が見えると集中する。", metaphor:"矢", features:["明確なゴールにまっすぐ進む／迷いが少ない", "一つのことに打ち込む。明確な目標があると集中できて力を発揮する。何かするときは「そのゴール/目的は何か？」を意識する人。", "優先順位と目的を明確化して効率的に行動する。迷いの時に方向性を示し、周囲を目標に向かって導くことができる。"], joy:"ゴールイメージから開始すること・ゴールや進捗が一目でわかること・明確なゴールと期限がある状況・目的が明確で意味のある作業", hint:"進捗確認や目標振り返りを定期的に行う"},
+  {name:"責任感", domain:"実行力", short:"引き受けたことを最後まで果たす。", metaphor:"約束を守る武士", features:["頼られたことを最後までやり抜く・約束を守る", "他者から信頼される人。決めたことに強い責任感を持ち、誠実さや正直さを大切にする。「頼まれたことは必ずやる」という心構えの持ち主。", "約束を守りやり抜く姿勢で周囲に安心感を与える。信頼と行動の倫理観でチームに貢献。「自分が引き受けた」という自覚が強く、最後までやり切る。"], joy:"他者から尊重され、信頼されること・約束どおりに物事が進むこと・明確な期待値や役割があること・自分の言葉に責任を持てること", hint:"NOのテンプレートを作成し、適切に断る練習をする"},
+  {name:"回復志向", domain:"実行力", short:"不具合を改善するほど燃える。", metaphor:"お医者さん", features:["問題・トラブルを見つけて治す力", "問題発見・解決が得意。痛みを恐れず課題解決に取り組む人。困難な状況に立ち向かい、物事を改善することにやりがいを感じる。", "真っ先に問題点を見つけ、根本原因を究明する。困難に切り込み、チームの問題解決役として頼られる。解決策を教え、周囲に貢献する。"], joy:"問題を解決できた時の達成感・問題点の発見原因究明のプロセス・「あなたのおかげで解決した」と言われること・困難な状況を改善する取り組み", hint:"問題解決プロセスの知見を記録・共有する"},
+  {name:"活発性", domain:"影響力", short:"考えるより始めると動き出す。", metaphor:"エンジン", features:["アイデアをすぐに行動に移し、結果を出す力", "何もしていないことに我慢できない人。話しているだけではなく、すぐに行動に移したくなる。「やってみよう！」が口癖。", "周囲の迷いを見抜き、率先して動く。プレッシャーの中でも前進し、周囲に動きとアクションをもたらす。誰かの背中を押す\"無言の信頼感\"。"], joy:"始めること、人を動かせること・自由に動ける環境・議論よりも行動・「それ、よくやったね」と言われること", hint:"会議の最後にアクションを促す役割を担う"},
+  {name:"指令性", domain:"影響力", short:"必要なことをはっきり言う。", metaphor:"船長", features:["自分の意見をはっきり示し、率先してリードする", "リーダータイプと呼ばれることが多く、物事をはっきり言える。相手が気づいていない課題をズバッと指摘でき、怖がらずに意見をぶつけられる人。", "YES/NOをハッキリ伝え、リーダー不在だと自然に仕切り役になる。決断力があり、混乱した場を引き締め、曖昧な状況をはっきりさせて物事を前に進める。"], joy:"リーダーシップを発揮すること・率直な意見交換や議論・決断の場修羅場混乱を収める場面・自分の力で場を動かすこと", hint:"言葉の強さを意識し、時に和らげる"},
+  {name:"コミュニケーション", domain:"影響力", short:"伝えることで価値を生む。", metaphor:"通訳", features:["感じたことを言葉にして伝えるのが得意", "自分の考えを言葉に表すことが簡単にできる人。話術に優れ、物事を印象的に説明するのが上手。言葉を通じて人とつながることで満足感を得る。", "相手の考えや感情に合った言葉で、他人とつながる。重要なメッセージに注意を払わせ、抽象的な概念を分かりやすく言語化できる。ストーリーテリングで聴衆を惹きつける。"], joy:"話を聞いてくれる聴衆がいること・ストーリーを話す機会があること・自分の言葉に反応が返ってくること・他の人がアイデアや感情を言葉にするのを手助けできること", hint:"聴衆の声に耳を傾け、関心を引いた部分を特定する"},
+  {name:"競争性", domain:"影響力", short:"比較や勝利がエネルギーになる。", metaphor:"レーサー", features:["一番になりたい・勝つために全力を尽くす", "勝負事になると本気になる。ランキングや成果が見えるとやる気が出る。トップを目指すことが自然で、ライバルを見つけると一気に燃え上がる。", "「誰よりも上に行きたい」と思い、本番で実力を発揮する。勝敗や結果にこだわり、チームに勢いを与え、周囲の基準を引き上げる推進力になる。"], joy:"勝負事（ゲーム、ランキング、コンテスト）・1位になること表彰されること・実力勝負自分の成長が数字で見えること・強いライバルと競い合うこと", hint:"「勝つ」を自分らしく定義してみる"},
+  {name:"最上志向", domain:"影響力", short:"良いものをもっと良くする。", metaphor:"職人", features:["より良い・最高を求める、強みに着目する", "卓越したものにコミットする。「良い」で満足せず「最高」を追求する。強みを見出し、それを磨き上げるのが得意。質と効率にこだわり、常に改善の余地を探している。", "強みに集中し、弱みにうまく対処する。質へのこだわりを持ち、個人や集団の卓越性を高め、効果を最大化するための手段を常に追求する。"], joy:"投資効果の最大化・効率化・最高一流のものに触れる機会・強みを活かせる環境・量だけでなく質も重視してくれる環境", hint:"自分が熱中できるものを見つける"},
+  {name:"自己確信", domain:"影響力", short:"自分の判断を信じて進む。", metaphor:"羅針盤", features:["内なる声と直感を信じて行動する", "\"ブレない軸\"がある人。他人の意見に左右されず、自分の信じる道を迷いなく進む力がある。責任を取る覚悟と、自分の判断に自信を持てる芯の強さが特徴。", "周囲の迷いを見抜き率先して動く。\"自分を信じる姿\"が周囲に安心感を与える。プレッシャーの中でも冷静に判断し、周囲に勇気と自信を与える\"内なるリーダー\"。"], joy:"一人で決めて、一人でやり遂げること・「それ、よく決断したね」と言われること・自分を信じることで誰かの力になれること・自分で選べる裁量や自由度のある環境", hint:"「なぜ自分はこれが正しいと思うのか？」を言語化する"},
+  {name:"自我", domain:"影響力", short:"重要な役割を担うと燃える。", metaphor:"舞台の主役", features:["重要な存在でありたい・影響を与えたい", "「あなたがいてくれて良かった！」と言われると最高に嬉しい人。注目されることでモチベーションが高まり、社会や周囲に貢献したいという強い気持ちがある。", "「前例がない」「誰もやっていない」ことに挑戦したくなる。周囲を鼓舞し、大きな目標に向かって突き進むエネルギーを与える。"], joy:"大きな目標を持ち、それを達成するプロセス・影響力を発揮できる舞台（SNS、スピーチなど）・自分の実績を誇れる仕事や活動・「あなたのおかげで」と言われること", hint:"「自分が成し遂げたいこと」を明確にする"},
+  {name:"社交性", domain:"影響力", short:"初対面や場づくりで力を出す。", metaphor:"パーティーの司会者", features:["知らない人と出会い、自分を好きになってもらうのが好き", "付き合いが広く交際好き。人と打ち解けて親しくなることに満足感を覚える。初対面の人にも気軽に声をかけられ、すぐに打ち解ける。", "自分から積極的に声をかけ、場を盛り上げる。初対面の人ともすぐに関係を築き、大規模なネットワークを構築・維持する。多様な人と交流し、視野を広げる。"], joy:"今まで会ったことがない人に会うこと・多様性のある交流の場・人々を繋げる架け橋になること・社交の場で人間関係を広げること", hint:"多くの知らない人との出会いがある場に自ら身を置く"},
+  {name:"適応性", domain:"人間関係構築力", short:"変化に合わせて流れをつかむ。", metaphor:"川の流れ", features:["変化や予測不可能にも柔軟に対応する力", "「今ここ」を大切にする人。変化や予測不可能な状況に柔軟に対応でき、緊急事態にもすぐ対応できる。流れに身を任せながら状況に合わせて動くことが得意。", "状況に合わせて素早く動く。変化を受け入れ、迅速に対処することで周囲に安心感を与える。予期せぬ出来事にも柔軟に対応し、チームの安定に貢献する。"], joy:"自由自分で選べる裁量がある環境・「今」に集中できること・変化ある環境や多様な状況・自発的に取り組める課題", hint:"変化のある環境や役割を選ぶ"},
+  {name:"運命思考", domain:"人間関係構築力", short:"関係性や意味のつながりを見る。", metaphor:"糸", features:["すべてはどこかでつながっていると感じる力", "人類や世界がつながっていると感じる。様々な出来事や人々の間に意味ある関連性を見出し、「私たちはみな同じもの」という意識を持つ。", "つながりを説明し安心を与える。広い視野でモノゴトを捉え、細部だけでなく全体像を考慮する。チームや組織に一体感をもたらす。"], joy:"生命の環とつながりを感じられること・全体感や一体感のある環境・偶然の出会いや不思議な縁・人と人をつなぐ役割", hint:"「つながり」や「意味」を言葉にして共有する"},
+  {name:"成長促進", domain:"人間関係構築力", short:"人の伸びしろに目が向く。", metaphor:"コーチ", features:["人の成長や変化を見守りサポートする力", "未経験者にも忍耐強く、人の可能性を信じる人。小さな進歩や成長を見逃さず、相手の成長を自分のことのように喜ぶ。人が力を発揮する瞬間に立ち会うことが好き。", "人の潜在能力を見つけて引き出す。学びや挑戦を応援し、小さな成長も見逃さず褒める。相手が主役で自分は裏方に徹し、成長のプロセスを大切にしながら支援する。"], joy:"誰かの成長や変化に立ち会うこと・人の「できた！」という瞬間を見ること・教える育てるサポートする役割・赤ちゃんの成長を見守るような忍耐", hint:"メンター・研修係・育成担当の役割を引き受ける"},
+  {name:"共感性", domain:"人間関係構築力", short:"言葉にならない気持ちに気づく。", metaphor:"心の温度計", features:["他人の感情を察し柔軟に対応できる力", "場の空気や人の気持ちに敏感で、感情豊か。他者の感情や状況を察知するアンテナを持ち、周りの感情の変化に自然と反応できる人。", "相手の感情をよく察して対応を変える。言葉にされていない気持ちを汲み取り、寄り添うことで他者との信頼関係を構築できる。"], joy:"素直な感情表現ができる環境・感情や心情を大切にする場・人の気持ちを考慮した丁寧なコミュニケーション・感情的なつながりを感じられる関係性", hint:"感情表現を大切にする環境づくりをする"},
+  {name:"調和性", domain:"人間関係構築力", short:"衝突より合意点を探す。", metaphor:"平和の使者", features:["衝突や争いを静かにまとめる・合意点を探す力", "穏やかな人。対立よりも合意点を探そうとする。全員が納得できる道を見つけることに満足感を覚える。争いごとを避け、調和のとれた環境を好む。", "逆立った羽を滑らかにするように、異なる意見を調整し平和的な問題解決をもたらす。対立を避け、共通点を見出すことで協力関係を強化する。"], joy:"合意点が見つかる場面全員の同意・穏やかな雰囲気調和のとれた環境・みんなが協力し合える場・対立を回避できる解決策", hint:"対話・交渉・意見調整の経験を積む"},
+  {name:"包含", domain:"人間関係構築力", short:"輪の外にいる人に気づく。", metaphor:"大きな木", features:["みんなを仲間に迎え入れる・誰も取り残さない", "除外への感度が高く、誰かが仲間はずれになっていないか常に気にする。多様な人を受け入れ、誰も取り残されないよう気を配る人。", "孤立した人を見つけて輪に入れる。誰もが参加できる環境を整え、新しいメンバーを温かく迎え入れる。メンバー全体を巻き込むリーダー役になる。"], joy:"皆を受け入れる開かれた環境・誰とでも打ち解けられる場・多様な人との交流の機会・新しい人を迎え入れる役割", hint:"多様性を尊重する環境づくりを担当する"},
+  {name:"個別化", domain:"人間関係構築力", short:"その人らしさに合わせる。", metaphor:"庭師", features:["一人ひとりの違いに目を向け、それぞれの個性を大切にする", "一人ひとりの個性や特徴に興味を持ち、それぞれに合わせたアプローチをする。「カスタマイズ」が好きで、画一的な方法より個別対応の方が自然。", "適材適所を考え、一人ひとりに丁寧に接する。その人の強みを見つけ、活かせる場所に配置できる。公平に機会を提供し、本来の力を発揮できる環境づくりができる。"], joy:"個性が認められること・個々の特徴や強みについて話を聞くこと・その人に合わせた対応ができる自由度・多様性のある環境チーム", hint:"役割分担や個別フィードバックの担当になる"},
+  {name:"ポジティブ", domain:"人間関係構築力", short:"前向きな空気をつくる。", metaphor:"太陽", features:["周囲を明るく元気にする前向きな力", "楽観的で周囲を明るくする人。熱意と明るさを持ち、その前向きさが人に伝染する。どんな状況でも良い面を見つけ出し、ポジティブなエネルギーを発散する。", "場を盛り上げ、能動的に周囲を元気づける。明るさを伝染させ、チームに活気とエネルギーを与える。暗い雰囲気を一変させる力がある。"], joy:"楽しく精一杯生きること・笑顔や前向きな雰囲気・人々の気持ちを高める活動・明るいイベントや集まり", hint:"チームのムードメーカーとして役割を担う"},
+  {name:"親密性", domain:"人間関係構築力", short:"少人数で濃くつながる。", metaphor:"親友", features:["深い信頼関係や身近な絆を大切にする", "誠実で信頼される人柄。限られた人との深いつながりを大切にし、お互いの本音や価値観を共有することで満足感を得る。一度信頼関係を築いたら長く続く絆を持つ。", "1対1の関係を大切にし、相手の内面まで深く理解しようとする。強い信頼関係を基盤に目標達成に向けて協力し、チームに安定感と一体感をもたらす。"], joy:"家族のような親しい関係・本音で話せる仲間と過ごす時間・長期的な関係の中で互いに成長すること・信頼を深める1対1の対話", hint:"少人数グループのサポート役を担当する"},
+  {name:"分析思考", domain:"戦略的思考力", short:"事実と因果で考える。", metaphor:"探偵", features:["物事の理由や原因を知りたい・仮説と検証", "論理的・客観的思考を好み、物事の理由や原因を徹底的に追究したい人。証拠と事実に基づいて考えることを大切にし、曖昧さを嫌います。", "客観的に比較や分析を行い、本質的な事実を見抜きます。公平な判断と裏付けを重視し、チームに客観性をもたらします。"], joy:"データ事実論理・物事を深く掘り下げて調査すること・証拠に基づいた議論や会話・複雑な問題を要素に分解して分析する", hint:"根拠づくりや資料チェック役を担う"},
+  {name:"原点思考", domain:"戦略的思考力", short:"背景や歩みを重視する。", metaphor:"歴史家", features:["過去や経緯に学び、未来へ活かす力", "過去や歴史を大切にする人。前任者の経験や歴史的背景を理解することで、現在の状況をより深く理解できると考える。「なぜそうなったのか」という経緯に強い関心がある。", "歴史や体験談を調べる。過去の知識や経験を活用して現在の問題解決に役立てる。組織の中で「なぜそうなったのか」を説明し、過去から学んだ教訓を伝える。"], joy:"歴史や過去の資料に触れること・根拠やルーツが分かること・経験から学び、知恵として活かすこと・歴史的なつながりや経緯を理解すること", hint:"過去の知恵を今に活かすアドバイザー役を担う"},
+  {name:"未来志向", domain:"戦略的思考力", short:"これからの可能性に惹かれる。", metaphor:"望遠鏡", features:["未来を想像しワクワクする・先を見通す力", "未来に思いを馳せるのが好きで、明日のことを考えるとワクワクする。可能性を見出し、「あんな未来があったらいいな」と夢見ることが得意。現状に満足せず、常に先を見ている。", "先を見通して計画や提案を行う。未来の展望を提示することでチームに方向性を与え、周囲にひらめきやエネルギーをもたらす。ビジョンを描き、それを魅力的に伝える。"], joy:"夢や希望、ビジョンについて話し合うこと・新しいアイデアや将来のプロジェクトを考えること・未来を見据えた計画を立てること・夢見ることでひらめきを得ること", hint:"夢リスト・ビジョンボードを作り、目に見える形にする"},
+  {name:"着想", domain:"戦略的思考力", short:"新しい見方やアイデアが湧く。", metaphor:"発明家", features:["新しいアイデアを生み出すのが楽しい・概念を結びつける", "既成概念に捉われず、常に新しい視点やアイデアを考えるのが好きな人。異なる分野の知識を結びつけて独創的な発想ができる。", "既存の枠を越え自由な発想をする。革新的なソリューションを提供し、チームに新しい視点をもたらす。物事を違った角度から見ることができる。"], joy:"斬新な発見や提案をすること・まったく新しいことに挑戦すること・アイデアをひらめいた瞬間の興奮・異なる概念を結びつけて考えること", hint:"思いついたアイデアはすぐにメモや記録に残す"},
+  {name:"収集心", domain:"戦略的思考力", short:"情報や素材を集めるほど満たされる。", metaphor:"図書館", features:["気になった情報やモノをとにかく集める力", "実用本位のリソースコレクター。情報や資料、モノなどが増えていくと幸せを感じる人。集めたものが誰かの役に立つと喜びを感じる。", "データや資料が日々増えていき、必要に応じて活用する。情報・ツール提供役として、チームに価値ある知識やリソースを共有できる。"], joy:"新しい情報やモノを集めること・ストックしたものが役立った時・自分のコレクションを整理分類すること・誰かが知りたいことに答えられること", hint:"定期的に情報整理・分類する時間を設ける"},
+  {name:"内省", domain:"戦略的思考力", short:"一人で深く考えるほど整う。", metaphor:"哲学者", features:["じっくり深く考えるのが好き", "一人で考え深堀りするのが好きな人。静かに思索し、アイデアを熟成させるプロセスが心地よい。知的活動を好み、深い議論を好む。", "自分の内面に向き合い、セルフコーチングができる。物事の本質を見抜き、チームに新たな視点や深い思考を提供できる。"], joy:"考える時間や環境が与えられること・理論的な議論や哲学的な問いかけ・一人でじっくりアイデアを練る機会・知的な本や深い対話", hint:"思考を形にするためにアウトプットする習慣をつける"},
+  {name:"学習欲", domain:"戦略的思考力", short:"知らないことを知ると元気になる。", metaphor:"スポンジ", features:["知らないことにワクワクし新しいことに挑戦", "興味のある分野を深く探求し、常に新しい知識や発見を求め続ける人。学ぶプロセス自体に喜びを感じ、好奇心が旺盛。", "好奇心の赴くまま情報収集し、新しい領域に挑戦。学んだことを共有することでチームや周囲の人の成長にも貢献する。"], joy:"新しい知識や発見に出会うこと・学びのプロセスそのもの・未知の分野に足を踏み入れる冒険・学んだことを活かせる機会", hint:"学びのゴールを設定し、目的意識を持つ"},
+  {name:"戦略性", domain:"戦略的思考力", short:"道筋を見比べて近道を探す。", metaphor:"チェスの名人", features:["複数の選択肢から最適な道を探す力", "複数の選択肢から最適な道を探す人。カーナビのように常に最適ルートを考え、障害を避けながらゴールへの道筋を描く。選択肢や判断が必要な場面で力を発揮する。", "道筋や作戦を考える／答えを見つける。複数の選択肢から最適解を導き出す。チームが迷ったときに、様々な可能性を示して方向性を決められる。"], joy:"選択肢や決断ができる自由がある状況・様々な可能性を考えて計画を立てること・複雑な問題に対して最適解を見つけること・自分の戦略が成功して物事が前進すること", hint:"意思決定や戦略立案の場で役割を担う"}
 ];
 var DOMAIN_LABEL = {"実行力":"実行力","影響力":"影響力","人間関係構築力":"人間関係","戦略的思考力":"思考力"};
 
@@ -554,16 +630,100 @@ var PROMPT_TAIL =
 var ARTICLE_URL = "https://library.libecity.com/articles/01M13PRT7HV6ZHFD7GM7WS975J";
 var ARTICLE_TITLE = "【受けたけど、読んだだけ・・】認定コーチが伝える、ストレングスファインダーを「使える」に変える15分";
 
+/* ============== pdf.js（CDN・PDF選択時のみ遅延ロード） ============== */
+var PDFJS_SCRIPT_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js";
+var PDFJS_WORKER_URL = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js";
+var pdfJsLoadState = "idle"; /* idle | loading | ready | error */
+var pdfJsCallbacks = [];
+function loadPdfJsThen(onReady, onError){
+  if(pdfJsLoadState==="ready" && window.pdfjsLib){ onReady(); return; }
+  if(pdfJsLoadState==="error"){ onError(new Error("pdfjs load failed previously")); return; }
+  pdfJsCallbacks.push({ok:onReady, err:onError});
+  if(pdfJsLoadState==="loading") return;
+  pdfJsLoadState = "loading";
+  try{
+    var s = document.createElement("script");
+    s.src = PDFJS_SCRIPT_URL;
+    s.onload = function(){
+      try{
+        if(window.pdfjsLib){
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
+          pdfJsLoadState = "ready";
+          var cbs = pdfJsCallbacks; pdfJsCallbacks = [];
+          cbs.forEach(function(cb){ cb.ok(); });
+        } else {
+          throw new Error("pdfjsLib not found after load");
+        }
+      }catch(e){
+        pdfJsLoadState = "error";
+        var cbs2 = pdfJsCallbacks; pdfJsCallbacks = [];
+        cbs2.forEach(function(cb){ cb.err(e); });
+      }
+    };
+    s.onerror = function(e){
+      pdfJsLoadState = "error";
+      var cbs3 = pdfJsCallbacks; pdfJsCallbacks = [];
+      cbs3.forEach(function(cb){ cb.err(e); });
+    };
+    document.head.appendChild(s);
+  }catch(e){
+    pdfJsLoadState = "error";
+    var cbs4 = pdfJsCallbacks; pdfJsCallbacks = [];
+    cbs4.forEach(function(cb){ cb.err(e); });
+  }
+}
+function extractPdfText(arrayBuffer){
+  return new Promise(function(resolve, reject){
+    try{
+      var loadingTask = window.pdfjsLib.getDocument({data:arrayBuffer});
+      loadingTask.promise.then(function(pdf){
+        var pagePromises = [];
+        for(var i=1;i<=pdf.numPages;i++){
+          (function(pageNum){
+            pagePromises.push(
+              pdf.getPage(pageNum).then(function(page){
+                return page.getTextContent().then(function(content){
+                  return content.items.map(function(it){ return it.str; }).join(" ");
+                });
+              })
+            );
+          })(i);
+        }
+        Promise.all(pagePromises).then(function(pageTexts){
+          resolve(pageTexts.join("\n"));
+        }, reject);
+      }, reject);
+    }catch(e){
+      reject(e);
+    }
+  });
+}
+function detectTop5FromText(text){
+  var found = [];
+  THEMES.forEach(function(t){
+    var idx = text.indexOf(t.name);
+    if(idx > -1){ found.push({name:t.name, idx:idx}); }
+  });
+  found.sort(function(a,b){ return a.idx - b.idx; });
+  var names = [];
+  found.forEach(function(f){
+    if(names.indexOf(f.name)===-1 && names.length<5) names.push(f.name);
+  });
+  return names;
+}
+
 /* ============== state ============== */
 var STORAGE_KEY = "sf-jibun-no-kotoba-v1";
 var defaultState = {
   stepIndex: 0,
   hasResults: null,
+  entryMethod: null,
   top5: [],
   domainFilter: "all",
   scene: "",
   customName: "",
   selectedTheme: "",
+  reportText: "",
   nameIt: "",
   claimIt: "",
   thanks: "",
@@ -579,7 +739,8 @@ var defaultState = {
   sentencePart2: "",
   reflect1: "",
   reflect2: "",
-  reflect3: ""
+  reflect3: "",
+  lapCount: 1
 };
 var state = loadState();
 
@@ -606,6 +767,8 @@ function saveState(){
 var STEPS = [
   {id:"welcome"},
   {id:"branch"},
+  {id:"top5entry", applicable:function(s){return s.hasResults===true;}},
+  {id:"reportimport", applicable:function(s){return s.hasResults===true && s.entryMethod==="upload";}},
   {id:"top5", applicable:function(s){return s.hasResults===true;}},
   {id:"scene", applicable:function(s){return s.hasResults===false;}},
   {id:"customname", applicable:function(s){return s.hasResults===false;}},
@@ -702,6 +865,21 @@ function safe(v, fallback){
   var t = (v||"").toString().trim();
   return t.length ? t : (fallback!==undefined?fallback:"（未記入）");
 }
+function renderThemeDetailBlock(themeName){
+  var t = findTheme(themeName);
+  if(!t || !t.metaphor) return null;
+  var det = el("details", {class:"theme-detail-block"});
+  det.appendChild(el("summary", {}, ["もっと知る", el("span", {class:"detail-tag"}, ["おけもん式"])]));
+  var featList = el("ul", {class:"td-features"});
+  t.features.forEach(function(f){ featList.appendChild(el("li", {}, [f])); });
+  var inner = el("div", {class:"theme-detail-inner"}, [
+    el("p", {class:"td-metaphor"}, ["たとえるなら「" + t.metaphor + "」"]),
+    featList,
+    el("p", {class:"td-joy"}, ["喜ぶこと：" + t.joy])
+  ]);
+  det.appendChild(inner);
+  return det;
+}
 
 function copyText(text, statusEl, fallbackHolder){
   function ok(){ statusEl.textContent = "コピーしました。"; }
@@ -745,6 +923,12 @@ var stepLabel = document.getElementById("stepLabel");
 function updateProgress(){
   var list = applicableSteps();
   var pos = list.indexOf(state.stepIndex);
+  /* 分岐前（hasResultsが未確定）は分母が定まらないので数字を出さない */
+  if(state.hasResults===null){
+    progressFill.style.width = "6%";
+    stepLabel.textContent = "はじめに";
+    return;
+  }
   var pct = list.length>1 ? Math.round((pos/(list.length-1))*100) : 0;
   progressFill.style.width = pct + "%";
   stepLabel.textContent = "ステップ " + (pos+1) + " / " + list.length;
@@ -782,6 +966,8 @@ function renderWelcome(){
     el("h1", {}, ["読んだだけで終わらせないストレングスファインダー活用会"]),
     el("p", {}, ["今日のゴールは、資質を1つ、「レポートの言葉」から「自分の言葉」に変えて持って帰ることです。"]),
     el("p", {}, ["所要時間の目安は15分です。"]),
+    el("div", {class:"phil-line"}, [el("span", {class:"phil-tag gallup"}, ["[Gallup公式]"]), "結果を保存して終わる診断ではなく、才能を意識的に使い、練習・知識・技能への投資を通じて強みへ育てる開発ツールです。"]),
+    el("div", {class:"phil-line"}, [el("span", {class:"phil-tag okemon"}, ["[おけもん式]"]), "テストで分かるのは、あなた特有の34資質の並び順。上位資質は完成品ではなく、まず知ることから始まる出発点として扱います。"]),
     el("p", {class:"hint"}, ["考え込まず、パッと答えるのがちょうどいいです。診断のときと同じ直感でOKです。"]),
     el("p", {class:"hint"}, ["入力した内容はこの端末のブラウザにだけ保存されます。外部には送信されません。"]),
     navRow({showBack:false, nextLabel:"はじめる"})
@@ -803,54 +989,182 @@ function renderBranch(){
   return card([
     el("div", {class:"question"}, ["ストレングスファインダーの結果、手元にありますか？"]),
     el("div", {class:"btnrow", style:"flex-direction:column;align-items:stretch;"}, [yesBtn, noBtn]),
-    navRow({showBack:true, onNext:function(){}, nextDisabled:true, nextLabel:"えらんでください"})
+    el("div", {class:"btnrow"}, [el("button", {class:"btn btn-ghost", type:"button", onclick:goPrev}, ["もどる"])])
   ]);
 }
 
-/* ---- top5 select ---- */
+/* ---- top5entry: 読み込み方法の選択（「ある」側の新しい入口） ---- */
+function renderTop5Entry(){
+  var uploadBtn = el("button", {class:"btn btn-primary btn-block", type:"button", onclick:function(){
+    state.entryMethod = "upload";
+    saveState();
+    goNext();
+  }}, ["ファイル/貼り付けで読み込む"]);
+  var manualBtn = el("button", {class:"btn btn-outline btn-block", type:"button", onclick:function(){
+    state.entryMethod = "manual";
+    saveState();
+    goNext();
+  }}, ["自分でTOP5を選ぶ"]);
+  return card([
+    el("div", {class:"question"}, ["TOP5の入れ方を選んでください。"]),
+    el("p", {class:"hint"}, ["レポートのPDFやテキストがあれば読み込むと、TOP5候補が自動で並びます（自動確定はしません。次の画面で必ず確認・修正できます）。"]),
+    el("div", {class:"btnrow", style:"flex-direction:column;align-items:stretch;"}, [uploadBtn, manualBtn]),
+    el("div", {class:"btnrow"}, [el("button", {class:"btn btn-ghost", type:"button", onclick:goPrev}, ["もどる"])])
+  ]);
+}
+
+/* ---- reportimport: PDF/テキストの読み込み ---- */
+function renderReportImport(){
+  var container = el("div", {});
+  container.appendChild(el("div", {class:"question"}, ["結果のPDF、またはテキストを読み込みます。"]));
+  container.appendChild(el("p", {class:"hint"}, ["ファイルは端末の中だけで処理されます。どこにも送信されません。"]));
+
+  var dropzone = el("div", {class:"import-dropzone"});
+  var fileInput = el("input", {type:"file", accept:".pdf,.txt,text/plain,application/pdf"});
+  dropzone.appendChild(fileInput);
+  dropzone.appendChild(el("p", {class:"hint", style:"margin:0;"}, ["PDFまたはテキストファイルを選べます。画像スキャンPDFなど文字が取り出せない場合は、下の欄に直接貼り付けてください。"]));
+  container.appendChild(dropzone);
+
+  var statusEl = el("p", {class:"import-status"}, [""]);
+  container.appendChild(statusEl);
+
+  var textarea = el("textarea", {placeholder:"ここに直接貼り付けることもできます。PDFを開いて全選択コピー→貼り付けでもOKです。"});
+  textarea.value = state.reportText || "";
+  container.appendChild(el("div", {class:"field"}, [textarea]));
+
+  var row;
+  function syncNext(){
+    var btn = row && row.querySelector(".btn-primary");
+    if(btn) btn.disabled = !textarea.value.trim();
+  }
+  textarea.addEventListener("input", syncNext);
+
+  row = navRow({
+    nextDisabled: !textarea.value.trim(),
+    nextLabel:"資質を検出してTOP5へ",
+    onNext:function(){
+      var text = textarea.value || "";
+      state.reportText = text.slice(0,15000);
+      var detected = detectTop5FromText(text);
+      if(detected.length){ state.top5 = detected; }
+      saveState();
+      goNext();
+    }
+  });
+  container.appendChild(row);
+
+  var skipBtn = el("button", {type:"button", class:"btn btn-ghost btn-sm", style:"margin-top:4px;"}, ["読み込まずに自分でTOP5を選ぶ"]);
+  skipBtn.addEventListener("click", function(){
+    state.entryMethod = "manual";
+    saveState();
+    goTo("top5");
+  });
+  container.appendChild(skipBtn);
+
+  fileInput.addEventListener("change", function(){
+    var f = fileInput.files && fileInput.files[0];
+    if(!f) return;
+    handleImportFile(f, statusEl, textarea, syncNext);
+  });
+
+  return card([container]);
+}
+
+function handleImportFile(file, statusEl, textarea, syncNext){
+  statusEl.textContent = "読み込み中…";
+  var isPdf = /\.pdf$/i.test(file.name||"") || file.type === "application/pdf";
+  try{
+    var reader = new FileReader();
+    reader.onerror = function(){
+      statusEl.textContent = "ファイルを読み込めませんでした。下の欄に直接貼り付けてください。";
+    };
+    if(isPdf){
+      reader.onload = function(){
+        try{
+          var arrayBuffer = reader.result;
+          loadPdfJsThen(function(){
+            extractPdfText(arrayBuffer).then(function(text){
+              if(!text || !text.trim()){
+                statusEl.textContent = "このPDFからは文字を取り出せませんでした（画像スキャンPDFの可能性）。PDFを開いて全選択コピーし、下の欄に貼り付けてください。";
+                return;
+              }
+              textarea.value = text;
+              try{ state.reportText = text.slice(0,15000); saveState(); }catch(e){}
+              syncNext();
+              statusEl.textContent = "PDFからテキストを読み取りました。内容を確認してください。";
+            }, function(){
+              statusEl.textContent = "PDFの読み取りに失敗しました。PDFを開いて全選択コピーし、下の欄に貼り付けてください。";
+            });
+          }, function(){
+            statusEl.textContent = "PDF読み取り機能を読み込めませんでした（オフラインの可能性）。PDFを開いて全選択コピーし、下の欄に貼り付けてください。";
+          });
+        }catch(e){
+          statusEl.textContent = "PDFの読み取り中にエラーが発生しました。PDFを開いて全選択コピーし、下の欄に貼り付けてください。";
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      reader.onload = function(){
+        try{
+          textarea.value = reader.result || "";
+          try{ state.reportText = textarea.value.slice(0,15000); saveState(); }catch(e){}
+          syncNext();
+          statusEl.textContent = "テキストを読み込みました。内容を確認してください。";
+        }catch(e){
+          statusEl.textContent = "ファイルの内容を読み取れませんでした。下の欄に直接貼り付けてください。";
+        }
+      };
+      reader.readAsText(file);
+    }
+  }catch(e){
+    statusEl.textContent = "ファイルを読み込めませんでした。下の欄に直接貼り付けてください。";
+  }
+}
+
+/* ---- top5 select（検索語・スクロール位置を保ったまま局所更新） ---- */
 function renderTop5(){
-  var wrap = document.createDocumentFragment ? el("div",{}) : null;
   var container = el("div", {});
   var q = el("div", {class:"question"}, ["TOP5を、順位が上の資質から順に5つ選んでください。"]);
   var hint = el("p", {class:"hint"}, ["資質名を選ぶと、下の枠に順番に入っていきます。枠をタップすると取り消せます。"]);
 
   var slotRow = el("div", {class:"slot-row"});
-  for(var i=0;i<5;i++){
-    (function(idx){
-      var val = state.top5[idx];
-      var slot = el("div", {class:"slot" + (val?" filled":"")}, [
-        el("span", {class:"slot-rank"}, ["TOP"+(idx+1)]),
-        document.createTextNode(val || "未選択")
-      ]);
-      if(val){
-        slot.addEventListener("click", function(){
-          state.top5.splice(idx,1);
-          saveState();
-          render();
-        });
-      }
-      slotRow.appendChild(slot);
-    })(i);
-  }
-
   var searchInput = el("input", {type:"text", class:"search-input", placeholder:"資質名で検索（例：共感性）"});
   searchInput.value = "";
-
   var chipRow = el("div", {class:"chip-row"});
   var domains = ["all","実行力","影響力","人間関係構築力","戦略的思考力"];
-  domains.forEach(function(d){
-    var label = d==="all" ? "すべて" : DOMAIN_LABEL[d];
-    var chip = el("button", {type:"button", class:"chip" + (state.domainFilter===d?" is-active":"")}, [label]);
-    chip.addEventListener("click", function(){
-      state.domainFilter = d;
-      saveState();
-      render();
-    });
-    chipRow.appendChild(chip);
-  });
-
   var list = el("div", {class:"theme-list"});
+  var navRowEl;
+
+  function syncNav(){
+    var btn = navRowEl && navRowEl.querySelector(".btn-primary");
+    if(!btn) return;
+    btn.disabled = state.top5.length!==5;
+    btn.textContent = state.top5.length===5 ? "つぎへ" : ("あと" + (5-state.top5.length) + "個");
+  }
+  function renderSlots(){
+    slotRow.innerHTML = "";
+    for(var i=0;i<5;i++){
+      (function(idx){
+        var val = state.top5[idx];
+        var slot = el("div", {class:"slot" + (val?" filled":"")}, [
+          el("span", {class:"slot-rank"}, ["TOP"+(idx+1)]),
+          document.createTextNode(val || "未選択")
+        ]);
+        if(val){
+          slot.addEventListener("click", function(){
+            state.top5.splice(idx,1);
+            saveState();
+            renderSlots();
+            renderList();
+            syncNav();
+          });
+        }
+        slotRow.appendChild(slot);
+      })(i);
+    }
+  }
   function renderList(){
+    var scrollTop = list.scrollTop;
     list.innerHTML = "";
     var q2 = (searchInput.value||"").trim();
     var shown = THEMES.filter(function(t){
@@ -860,6 +1174,7 @@ function renderTop5(){
     });
     if(!shown.length){
       list.appendChild(el("p", {class:"hint", style:"margin:8px;"}, ["該当する資質が見つかりません。"]));
+      list.scrollTop = scrollTop;
       return;
     }
     shown.forEach(function(t){
@@ -873,18 +1188,41 @@ function renderTop5(){
         btn.addEventListener("click", function(){
           state.top5.push(t.name);
           saveState();
-          render();
+          renderSlots();
+          renderList();
+          syncNav();
         });
       } else if(picked){
         btn.addEventListener("click", function(){
           var i2 = state.top5.indexOf(t.name);
-          if(i2>-1){ state.top5.splice(i2,1); saveState(); render(); }
+          if(i2>-1){ state.top5.splice(i2,1); saveState(); renderSlots(); renderList(); syncNav(); }
         });
       }
       list.appendChild(btn);
     });
+    list.scrollTop = scrollTop;
   }
+  function updateChipActive(){
+    Array.prototype.forEach.call(chipRow.children, function(ch, idx){
+      var d = domains[idx];
+      if(d===state.domainFilter) ch.classList.add("is-active"); else ch.classList.remove("is-active");
+    });
+  }
+
+  domains.forEach(function(d){
+    var label = d==="all" ? "すべて" : DOMAIN_LABEL[d];
+    var chip = el("button", {type:"button", class:"chip" + (state.domainFilter===d?" is-active":"")}, [label]);
+    chip.addEventListener("click", function(){
+      state.domainFilter = d;
+      saveState();
+      updateChipActive();
+      renderList();
+    });
+    chipRow.appendChild(chip);
+  });
   searchInput.addEventListener("input", renderList);
+
+  renderSlots();
   renderList();
 
   container.appendChild(q);
@@ -893,10 +1231,11 @@ function renderTop5(){
   container.appendChild(searchInput);
   container.appendChild(chipRow);
   container.appendChild(list);
-  container.appendChild(navRow({
+  navRowEl = navRow({
     nextDisabled: state.top5.length!==5,
     nextLabel: state.top5.length===5 ? "つぎへ" : ("あと" + (5-state.top5.length) + "個")
-  }));
+  });
+  container.appendChild(navRowEl);
 
   return card([container]);
 }
@@ -990,6 +1329,8 @@ function renderPick1(){
         t.short,
         el("span", {class:"desc-source"}, ["出典：おけもん式の初心者向け要約"])
       ]));
+      var detailBlock = renderThemeDetailBlock(state.selectedTheme);
+      if(detailBlock) container.appendChild(detailBlock);
     }
   }
   container.appendChild(navRow({nextDisabled: !state.selectedTheme}));
@@ -1019,7 +1360,17 @@ function textareaScreen(opts){
   return card(kids);
 }
 function renderNameIt(){
-  return textareaScreen({
+  if(state.hasResults===false){
+    return textareaScreen({
+      field:"nameIt",
+      badge:"okemon",
+      badgeLabel:"おけもん流",
+      question:"その場面でのあなたの動きの中で、いちばん「自分らしい」と思うのはどこですか？",
+      placeholder:"思い当たる動きや、自分の言葉で書いてみてください"
+    });
+  }
+  var t = findTheme(state.selectedTheme);
+  var screen = textareaScreen({
     field:"nameIt",
     badge:"gallup",
     badgeLabel:"Gallup公式の問い",
@@ -1027,6 +1378,16 @@ function renderNameIt(){
     placeholder:"思い当たるエピソードや、自分の言葉で書いてみてください",
     hint:"一般的な説明とズレていてもOKです。そのズレの中に自分だけの言葉があります。"
   });
+  if(t){
+    var detailBlock = renderThemeDetailBlock(state.selectedTheme);
+    if(detailBlock){
+      var questionEl = screen.querySelector(".question");
+      if(questionEl && questionEl.parentNode){
+        questionEl.parentNode.insertBefore(detailBlock, questionEl.nextSibling);
+      }
+    }
+  }
+  return screen;
 }
 function renderClaimIt(){
   return textareaScreen({
@@ -1063,6 +1424,7 @@ function renderAim(){
   return card([
     el("span", {class:"eyebrow gallup"}, ["Gallup公式の問い"]),
     el("div", {class:"question"}, ["これからもっと意図的に「" + displayName() + "」を利用できる方法を2つ挙げてください。"]),
+    el("p", {class:"hint"}, ["［おけもん式の解釈］Name it→Claim it→Aim itは1回で終わりではなく、そのつど足りない段階を確認しながら回していくサイクルです。"]),
     el("div", {class:"field"}, [el("label", {class:"field-label"}, ["方法1"]), i1]),
     el("div", {class:"field"}, [el("label", {class:"field-label"}, ["方法2"]), i2]),
     row
@@ -1084,20 +1446,35 @@ function renderExpChoice(){
   if(state.aim2.trim()) options.push(state.aim2.trim());
   var container = el("div", {});
   container.appendChild(miniDots(0,5));
-  container.appendChild(el("div", {class:"question"}, ["さきほどの2案から、明日試す1つを選んでください。"]));
-  var list = el("div", {class:"pick-list"});
-  options.forEach(function(opt){
-    var btn = el("button", {type:"button", class:"pick-item" + (state.expChoiceText===opt?" is-selected":"")}, [opt]);
-    btn.addEventListener("click", function(){
-      state.expChoice = opt;
-      state.expChoiceText = opt;
+
+  if(options.length<=1){
+    var only = options[0] || "";
+    if(only && !state.expChoiceText){
+      state.expChoiceText = only;
+      state.expChoice = only;
       saveState();
-      render();
+    }
+    container.appendChild(el("div", {class:"question"}, ["さきほどの案を、明日試してみましょう。"]));
+    if(only){
+      container.appendChild(el("div", {class:"desc-box"}, [only]));
+    }
+  } else {
+    container.appendChild(el("div", {class:"question"}, ["さきほどの2案から、明日試す1つを選んでください。"]));
+    var list = el("div", {class:"pick-list"});
+    options.forEach(function(opt){
+      var btn = el("button", {type:"button", class:"pick-item" + (state.expChoiceText===opt?" is-selected":"")}, [opt]);
+      btn.addEventListener("click", function(){
+        state.expChoice = opt;
+        state.expChoiceText = opt;
+        saveState();
+        render();
+      });
+      list.appendChild(btn);
     });
-    list.appendChild(btn);
-  });
-  container.appendChild(list);
-  var customInput = el("input", {type:"text", placeholder:"それ以外を試す場合はここに書けます（任意）"});
+    container.appendChild(list);
+  }
+
+  var customInput = el("input", {type:"text", placeholder: options.length<=1 ? "書き直したい場合はここに書けます（任意）" : "それ以外を試す場合はここに書けます（任意）"});
   customInput.value = options.indexOf(state.expChoiceText)>-1 ? "" : state.expChoiceText;
   var expChoiceRow;
   customInput.addEventListener("input", function(){
@@ -1155,12 +1532,7 @@ function renderExpSign(){
   container.appendChild(el("div", {class:"field"}, [input]));
   expSignRow = navRow({
     nextDisabled: !state.expSign.trim(),
-    nextLabel:"できあがりを見る",
-    onNext:function(){
-      if(!state.sentencePart1) state.sentencePart1 = displayName();
-      saveState();
-      goNext();
-    }
+    nextLabel:"できあがりを見る"
   });
   container.appendChild(expSignRow);
   return card([container]);
@@ -1168,7 +1540,9 @@ function renderExpSign(){
 
 /* ---- done ---- */
 function buildSentence(){
-  return "私は" + safe(state.sentencePart1, "") + "が苦もなくできる。だから" + safe(state.sentencePart2, "") + "で困っている人の役に立てる。";
+  var p1 = (state.sentencePart1||"").trim();
+  var p2 = (state.sentencePart2||"").trim();
+  return "私は" + (p1 || "◯◯") + "が苦もなくできる。だから" + (p2 || "◯◯") + "で困っている人の役に立てる。";
 }
 function buildCopyAll(){
   var lines = [];
@@ -1190,6 +1564,13 @@ function buildCopyAll(){
   lines.push("次に変えること：" + (state.reflect3||""));
   return lines.join("\n");
 }
+function buildHonninLine(){
+  var report = (state.reportText||"").trim();
+  if(report){
+    return "本人レポート：\n" + report + "\n";
+  }
+  return PROMPT_HONNIN_LINE;
+}
 function buildDeepDivePrompt(){
   var top5Line;
   if(state.hasResults===true && state.top5.length===5){
@@ -1197,8 +1578,10 @@ function buildDeepDivePrompt(){
   } else {
     top5Line = "TOP5：未受験・診断結果なし（今日はこの仮の強みで進めています：" + safe(state.customName, displayName()) + "）\n";
   }
+  var progressNote = "今日のワークでName it〜Aim itまで1周済みです。【進め方】①〜⑤は完了しているので、⑥⑦と、出てきた言葉の深掘りから続けてください。最初の自己紹介や資質説明からはやり直さないでください。\n";
   var todayLog =
     "\n【このアプリで先に答えた内容（続きから深掘りしてください）】\n" +
+    progressNote +
     "選んだ資質／仮の強み：" + safe(displayName(),"未記入") + "\n" +
     "Name it（強く共感できた説明）：" + safe(state.nameIt,"未記入") + "\n" +
     "Claim it（過去に役立った場面）：" + safe(state.claimIt,"未記入") + "\n" +
@@ -1208,21 +1591,48 @@ function buildDeepDivePrompt(){
     "明日試すと決めた案：" + safe(state.expChoiceText,"未記入") + "\n" +
     "いつ／どこで／誰に対して：" + safe(state.expWhen,"未記入") + "／" + safe(state.expWhere,"未記入") + "／" + safe(state.expWho,"未記入") + "\n" +
     "できたと判断する目印：" + safe(state.expSign,"未記入") + "\n" +
-    "ここまでの答えから組み立てた1文（空欄はまだ埋まっていません）：" + buildSentence() + "\n";
-  return PROMPT_HEAD + top5Line + PROMPT_HONNIN_LINE + todayLog + PROMPT_TAIL;
+    "ここまでの答えから組み立てた1文（◯◯は本人がまだ埋めていない箇所）：" + buildSentence() + "\n";
+  return PROMPT_HEAD + top5Line + buildHonninLine() + todayLog + PROMPT_TAIL;
+}
+
+function startNewLap(){
+  var keep = {
+    top5: state.top5.slice(),
+    scene: state.scene,
+    customName: state.customName,
+    hasResults: state.hasResults,
+    entryMethod: state.entryMethod,
+    reportText: state.reportText,
+    domainFilter: state.domainFilter,
+    lapCount: (state.lapCount||1) + 1
+  };
+  var fresh = JSON.parse(JSON.stringify(defaultState));
+  for(var k in keep){ fresh[k] = keep[k]; }
+  state = fresh;
+  saveState();
+  goTo("pick1");
 }
 
 function renderDone(){
-  if(!state.sentencePart1) state.sentencePart1 = displayName();
   var container = el("div", {});
   container.appendChild(el("span", {class:"eyebrow"}, ["できあがり"]));
+  if(state.lapCount && state.lapCount>1){
+    container.appendChild(el("span", {class:"eyebrow", style:"margin-left:6px;"}, [state.lapCount + "周目"]));
+  }
   container.appendChild(el("h2", {}, ["今日、資質が「自分の言葉」に変わりました。"]));
 
+  container.appendChild(el("div", {class:"desc-box echo-box"}, [
+    el("strong", {}, ["今日、あなたが話した言葉"]),
+    el("p", {}, ["Name it：" + safe(state.nameIt, "（まだ書いていません）")]),
+    el("p", {}, ["Claim it：" + safe(state.claimIt, "（まだ書いていません）")])
+  ]));
+  container.appendChild(el("p", {class:"hint"}, ["この中の言葉を、そのまま下の空欄に当てはめてみてください。埋まらないところは空欄のままでOKです。"]));
+
   var sentenceBox = el("div", {class:"sentence-block"});
-  var input1 = el("input", {type:"text"});
+  var input1 = el("input", {type:"text", placeholder:"（ここに書く）"});
   input1.value = state.sentencePart1;
   input1.addEventListener("input", function(){ state.sentencePart1 = input1.value; saveState(); });
-  var input2 = el("input", {type:"text", placeholder:"（あなたの言葉で）"});
+  var input2 = el("input", {type:"text", placeholder:"（ここに書く）"});
   input2.value = state.sentencePart2;
   input2.addEventListener("input", function(){ state.sentencePart2 = input2.value; saveState(); });
   sentenceBox.appendChild(document.createTextNode("私は"));
@@ -1231,7 +1641,7 @@ function renderDone(){
   sentenceBox.appendChild(input2);
   sentenceBox.appendChild(document.createTextNode("で困っている人の役に立てる。"));
   container.appendChild(sentenceBox);
-  container.appendChild(el("p", {class:"hint"}, ["埋まらないところは空欄のままでOKです。あとから思いついたら、直接ここに書き足してください。"]));
+  container.appendChild(el("p", {class:"hint"}, ["空欄のままコピーすると「◯◯」のままコピーされます。あとから書き足しても大丈夫です。"]));
 
   var expCard = el("dl", {class:"exp-card"}, [
     el("dt", {}, ["いつ／どこで／誰に対して"]),
@@ -1279,6 +1689,13 @@ function renderDone(){
   container.appendChild(fallback2);
   container.appendChild(fallback3);
 
+  if(state.hasResults===true){
+    container.appendChild(el("p", {class:"hint", style:"margin-top:18px;"}, ["［おけもん式の解釈］1つ深掘りしたら、また別の資質で同じサイクルを回してみると、TOP5全体が「自分の言葉」に変わっていきます。"]));
+    var lapBtn = el("button", {class:"btn btn-outline btn-block", type:"button"}, ["別の資質でもう1周する"]);
+    lapBtn.addEventListener("click", function(){ startNewLap(); });
+    container.appendChild(lapBtn);
+  }
+
   var article = el("a", {class:"article-card", href:ARTICLE_URL, target:"_blank", rel:"noopener"}, [
     el("strong", {}, ["続きを読む"]),
     document.createTextNode(ARTICLE_TITLE),
@@ -1296,6 +1713,8 @@ function renderDone(){
 var RENDERERS = {
   welcome: renderWelcome,
   branch: renderBranch,
+  top5entry: renderTop5Entry,
+  reportimport: renderReportImport,
   top5: renderTop5,
   scene: renderScene,
   customname: renderCustomName,
