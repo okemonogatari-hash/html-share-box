@@ -795,6 +795,8 @@ function detectTop5FromText(text){
 
 /* ============== state ============== */
 var STORAGE_KEY = "sf-jibun-no-kotoba-v1";
+var BACKUP_KEY = "sf-jibun-no-kotoba-backup-v1";
+var justReset = false; /* リセット直後のwelcome画面にだけ「消しました」通知を出すための一時フラグ（永続化しない） */
 var defaultState = {
   stepIndex: 0,
   hasResults: null,
@@ -840,6 +842,57 @@ function saveState(){
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }catch(e){ /* 保存できなくても動作は続ける */ }
+}
+
+/* ============== リセット前バックアップ（消しても戻せる。世代は1つだけ） ============== */
+function saveBackup(snapshot){
+  try{
+    localStorage.setItem(BACKUP_KEY, JSON.stringify({savedAt: new Date().toISOString(), state: snapshot}));
+  }catch(e){ /* 保存できなくても消去自体は続行する */ }
+}
+function loadBackup(){
+  try{
+    var raw = localStorage.getItem(BACKUP_KEY);
+    if(!raw) return null;
+    var parsed = JSON.parse(raw);
+    if(!parsed || !parsed.state) return null;
+    return parsed;
+  }catch(e){
+    return null;
+  }
+}
+function backupHasContent(s){
+  if(!s) return false;
+  if(s.stepIndex && s.stepIndex > 0) return true;
+  if(s.hasResults===true || s.hasResults===false) return true;
+  if(s.top5 && s.top5.length) return true;
+  var textFields = ["scene","customName","nickname","reportText","nameIt","claimIt","thanks","aim1","aim2","expChoiceText","expNote","sentencePart1","sentencePart2","reflect1","reflect2","reflect3"];
+  for(var i=0;i<textFields.length;i++){
+    var v = s[textFields[i]];
+    if(v && String(v).trim()) return true;
+  }
+  return false;
+}
+function minutesAgoText(iso){
+  try{
+    var then = new Date(iso).getTime();
+    if(isNaN(then)) return "";
+    var diffMin = Math.max(0, Math.round((Date.now()-then)/60000));
+    if(diffMin < 1) return "たった今";
+    return diffMin + "分前";
+  }catch(e){
+    return "";
+  }
+}
+function restoreFromBackup(){
+  var b = loadBackup();
+  if(!b || !b.state) return;
+  var restored = JSON.parse(JSON.stringify(defaultState));
+  for(var k in restored){ if(b.state.hasOwnProperty(k)) restored[k] = b.state[k]; }
+  state = restored;
+  saveState();
+  render();
+  window.scrollTo(0,0);
 }
 
 /* ============== flattened steps ============== */
@@ -1104,17 +1157,44 @@ function navRow(opts){
 
 /* ---- welcome ---- */
 function renderWelcome(){
-  return card([
-    el("span", {class:"eyebrow"}, ["Study Session"]),
-    el("h1", {}, ["読んだだけで終わらせないストレングスファインダー活用会"]),
-    el("p", {}, ["今日のゴールは、資質を1つ、「レポートの言葉」から「自分の言葉」に変えて持って帰ることです。"]),
-    el("p", {}, ["所要時間の目安は15分です。"]),
-    el("div", {class:"phil-line"}, [el("span", {class:"phil-tag gallup"}, ["[Gallup公式]"]), "結果を保存して終わる診断ではなく、才能を意識的に使い、練習・知識・技能への投資を通じて強みへ育てる開発ツールです。"]),
-    el("div", {class:"phil-line"}, [el("span", {class:"phil-tag okemon"}, ["[おけもん式]"]), "テストで分かるのは、あなた特有の34資質の並び順。上位資質は完成品ではなく、まず知ることから始まる出発点として扱います。"]),
-    el("p", {class:"hint"}, ["考え込まず、パッと答えるのがちょうどいいです。診断のときと同じ直感でOKです。"]),
-    el("p", {class:"hint"}, ["入力した内容はこの端末のブラウザにだけ保存されます。外部には送信されません。"]),
-    navRow({showBack:false, nextLabel:"はじめる"})
-  ]);
+  var kids = [];
+
+  var wasJustReset = justReset;
+  justReset = false; /* 一度出したら消費する。次のrenderでは出さない */
+
+  var backup = loadBackup();
+  var showResume = backup && backupHasContent(backup.state);
+
+  if(wasJustReset){
+    kids.push(el("p", {class:"hint", style:"color:var(--accent-ink);"}, [
+      "消しました。まちがえた場合は" + (showResume ? "下の" : "") + "「続きから再開する」で戻せます。"
+    ]));
+  }
+
+  if(showResume){
+    var resumeBox = el("div", {class:"desc-box"}, [
+      el("strong", {}, ["さっきまでの続きがあります（" + minutesAgoText(backup.savedAt) + "）"])
+    ]);
+    var resumeBtn = el("button", {type:"button", class:"btn btn-primary btn-block", style:"margin-top:12px;"}, ["続きから再開する"]);
+    resumeBtn.addEventListener("click", restoreFromBackup);
+    var freshBtn = el("button", {type:"button", class:"btn btn-outline btn-block", style:"margin-top:8px;"}, ["新しくはじめる"]);
+    freshBtn.addEventListener("click", function(){ goNext(); });
+    resumeBox.appendChild(resumeBtn);
+    resumeBox.appendChild(freshBtn);
+    kids.push(resumeBox);
+  }
+
+  kids.push(el("span", {class:"eyebrow"}, ["Study Session"]));
+  kids.push(el("h1", {}, ["読んだだけで終わらせないストレングスファインダー活用会"]));
+  kids.push(el("p", {}, ["今日のゴールは、資質を1つ、「レポートの言葉」から「自分の言葉」に変えて持って帰ることです。"]));
+  kids.push(el("p", {}, ["所要時間の目安は15分です。"]));
+  kids.push(el("div", {class:"phil-line"}, [el("span", {class:"phil-tag gallup"}, ["[Gallup公式]"]), "結果を保存して終わる診断ではなく、才能を意識的に使い、練習・知識・技能への投資を通じて強みへ育てる開発ツールです。"]));
+  kids.push(el("div", {class:"phil-line"}, [el("span", {class:"phil-tag okemon"}, ["[おけもん式]"]), "テストで分かるのは、あなた特有の34資質の並び順。上位資質は完成品ではなく、まず知ることから始まる出発点として扱います。"]));
+  kids.push(el("p", {class:"hint"}, ["考え込まず、パッと答えるのがちょうどいいです。診断のときと同じ直感でOKです。"]));
+  kids.push(el("p", {class:"hint"}, ["入力した内容はこの端末のブラウザにだけ保存されます。外部には送信されません。"]));
+  kids.push(navRow({showBack:false, nextLabel:"はじめる"}));
+
+  return card(kids);
 }
 
 /* ---- branch ---- */
@@ -1977,7 +2057,9 @@ var RENDERERS = {
   done: renderDone
 };
 
-/* window.confirm はアプリ内ブラウザで無効化されることがあるため、2度押し方式にする */
+/* window.confirm はアプリ内ブラウザで無効化されることがあるため、2度押し方式にする。
+   誤タップ対策で待ち時間6秒・文言明示・armed中に他所をタップしたら解除。
+   消去そのものはバックアップを取ってから行うので、誤って消しても「続きから再開する」で戻せる。 */
 (function(){
   var resetBtnEl = document.getElementById("resetBtn");
   var resetArmed = false;
@@ -1991,16 +2073,23 @@ var RENDERERS = {
   resetBtnEl.addEventListener("click", function(){
     if(!resetArmed){
       resetArmed = true;
-      resetBtnEl.textContent = "ほんとに消す？";
+      resetBtnEl.textContent = "ほんとに消す？（もう一度押すと消えます）";
       resetBtnEl.classList.add("btn-reset-armed");
-      resetTimer = setTimeout(disarmReset, 4000);
+      resetTimer = setTimeout(disarmReset, 6000);
       return;
     }
     disarmReset();
+    saveBackup(state);
+    justReset = true;
     state = JSON.parse(JSON.stringify(defaultState));
     try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
     render();
     window.scrollTo(0,0);
+  });
+  document.addEventListener("click", function(e){
+    if(resetArmed && e.target !== resetBtnEl){
+      disarmReset();
+    }
   });
 })();
 
