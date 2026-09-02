@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex, nofollow">
+<title>申し送り1分デモ</title>
+<style>
+  :root{
+    --bg:#f7f5f0;
+    --card:#ffffff;
+    --ink:#2b2926;
+    --sub:#8a8378;
+    --line:#e7e2d8;
+    --before:#efe9de;
+    --before-ink:#7a6f5c;
+    --after:#e8f3ec;
+    --after-ink:#2f6b4f;
+    --accent:#d9772e;
+    --accent-ink:#ffffff;
+    --field-label:#a99a78;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{background:var(--bg);color:var(--ink);color-scheme:light only;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    padding:28px 18px 60px;
+    max-width:480px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.7;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.14em;
+    color:var(--sub);
+    text-align:center;
+    margin-bottom:10px;
+  }
+  h1{
+    font-size:21px;
+    line-height:1.55;
+    text-align:center;
+    margin:0 0 26px;
+    font-weight:700;
+  }
+  .ba-row{
+    display:flex;
+    gap:10px;
+    align-items:stretch;
+    margin-bottom:8px;
+  }
+  .ba-card{
+    flex:1;
+    background:var(--before);
+    border-radius:14px;
+    padding:14px 12px;
+    text-align:center;
+  }
+  .ba-card.after{background:var(--after);}
+  .ba-tag{
+    font-size:11px;
+    font-weight:700;
+    color:var(--before-ink);
+    margin-bottom:6px;
+  }
+  .after .ba-tag{color:var(--after-ink);}
+  .ba-scene{
+    font-size:26px;
+    line-height:1.2;
+    margin-bottom:6px;
+  }
+  .ba-text{
+    font-size:12.5px;
+    color:var(--ink);
+  }
+  .ba-arrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--sub);
+    font-size:18px;
+    width:18px;
+  }
+  .after-detail{
+    text-align:center;
+    font-size:11.5px;
+    color:var(--sub);
+    margin-bottom:34px;
+  }
+
+  .mic-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-bottom:10px;
+  }
+  #micBtn{
+    width:116px;
+    height:116px;
+    border-radius:50%;
+    border:none;
+    background:var(--accent);
+    color:var(--accent-ink);
+    font-size:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 20px rgba(217,119,46,.28);
+    transition:transform .15s ease, box-shadow .15s ease, background .2s ease;
+  }
+  #micBtn:active{transform:scale(.96);}
+  #micBtn.listening{
+    background:#c85f22;
+    animation:pulse 1.1s infinite;
+  }
+  #micBtn.done{
+    background:var(--after-ink);
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(200,95,34,.45);}
+    70%{box-shadow:0 0 0 18px rgba(200,95,34,0);}
+    100%{box-shadow:0 0 0 0 rgba(200,95,34,0);}
+  }
+  #micLabel{
+    margin-top:14px;
+    font-size:14px;
+    color:var(--sub);
+    text-align:center;
+    min-height:20px;
+  }
+
+  html.js-ready #fallbackWrap{display:none;margin-top:6px;}
+  #fallbackWrap textarea{
+    width:100%;
+    min-height:88px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px;
+    font-size:15px;
+    font-family:inherit;
+    background:var(--card);
+    color:var(--ink);
+    resize:vertical;
+  }
+  #fallbackBtn{
+    margin-top:10px;
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    background:var(--accent);
+    color:var(--accent-ink);
+    font-size:15px;
+    font-weight:700;
+  }
+
+  html.js-ready #resultWrap{
+    display:none;
+    margin-top:30px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px 16px 14px;
+    box-shadow:0 4px 14px rgba(0,0,0,.04);
+  }
+  html.js-ready #resultWrap.show{display:block;animation:fadein .35s ease;}
+  @keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .result-head{
+    font-size:12px;
+    color:var(--sub);
+    margin-bottom:12px;
+    text-align:center;
+  }
+  .field{
+    margin-bottom:12px;
+    padding-bottom:12px;
+    border-bottom:1px dashed var(--line);
+  }
+  .field:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .field-label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--field-label);
+    letter-spacing:.06em;
+    margin-bottom:4px;
+  }
+  .field-value{
+    font-size:15px;
+    color:var(--ink);
+  }
+  .field-value[contenteditable="true"]{outline:none;}
+  .field-value[contenteditable="true"]:focus{
+    background:#fbf6ec;
+    border-radius:6px;
+    padding:2px 4px;
+    margin:-2px -4px;
+  }
+  .redo{
+    display:block;
+    margin:16px auto 0;
+    background:none;
+    border:none;
+    color:var(--sub);
+    font-size:13px;
+    text-decoration:underline;
+    padding:6px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="eyebrow">1分デモ</div>
+  <h1>夜勤明けの申し送り、<br>廊下で喋って終わってるやつ、見る？</h1>
+
+  <div class="ba-row">
+    <div class="ba-card">
+      <div class="ba-tag">いつも</div>
+      <div class="ba-scene">🖥️</div>
+      <div class="ba-text">8:30<br>詰所でパソコンの前<br>15分</div>
+    </div>
+    <div class="ba-arrow">→</div>
+    <div class="ba-card after">
+      <div class="ba-tag">これから</div>
+      <div class="ba-scene">🚶‍♀️</div>
+      <div class="ba-text">8:30<br>廊下でスマホに1分<br>喋るだけ</div>
+    </div>
+  </div>
+  <div class="after-detail">詰所に着いたら、下書きがもう画面にある。読んで直して2分。</div>
+
+  <div class="mic-wrap">
+    <button id="micBtn" aria-label="喋る">🎙️</button>
+    <div id="micLabel">ボタンを押して、いつも通り喋ってみて</div>
+  </div>
+
+  <div id="fallbackWrap">
+    <textarea id="fallbackText" placeholder="例：Aさん、夜中2時に転倒。様子見て安静にしてもらって、検温したら37度台。膝に少し腫れあり。次の勤務者は経過観察お願いします。"></textarea>
+    <button id="fallbackBtn">これで作る</button>
+  </div>
+
+  <div id="resultWrap">
+    <div class="result-head">下書き（そのまま直せます）</div>
+    <div class="field"><div class="field-label">利用者</div><div class="field-value" id="f-name" contenteditable="true"></div></div>
+    <div class="field"><div class="field-label">時間</div><div class="field-value" id="f-time" contenteditable="true"></div></div>
+    <div class="field"><div class="field-label">出来事</div><div class="field-value" id="f-event" contenteditable="true"></div></div>
+    <div class="field"><div class="field-label">対応</div><div class="field-value" id="f-action" contenteditable="true"></div></div>
+    <div class="field"><div class="field-label">次の勤務者へ</div><div class="field-value" id="f-next" contenteditable="true"></div></div>
+    <button class="redo" id="redoBtn">もう一回喋る</button>
+  </div>
+
+<script>
+(function(){
+  var micBtn = document.getElementById('micBtn');
+  var micLabel = document.getElementById('micLabel');
+  document.documentElement.classList.add('js-ready');
+  var fallbackWrap = document.getElementById('fallbackWrap');
+  var fallbackText = document.getElementById('fallbackText');
+  var fallbackBtn = document.getElementById('fallbackBtn');
+  var resultWrap = document.getElementById('resultWrap');
+  var redoBtn = document.getElementById('redoBtn');
+
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  function resetResult(){
+    resultWrap.classList.remove('show');
+    micBtn.classList.remove('done','listening');
+    micLabel.textContent = SR ? 'ボタンを押して、いつも通り喋ってみて' : '下に書いて「これで作る」を押してみて';
+  }
+
+  // ---- 決定的ルールで5枠へ振り分け（LLM不使用） ----
+  function buildDraft(raw){
+    var text = (raw || '').trim();
+    if(!text){
+      return { name:'（未検出）', time:'（未検出）', event:'（聞き取れませんでした。もう一度）', action:'', next:'' };
+    }
+
+    // 文を区切る（句点・読点・接続助詞のあたりでチャンク化）
+    var chunks = text
+      .replace(/、/g, '。')
+      .replace(/(ので|から|ため)/g, '$1。')
+      .split('。')
+      .map(function(s){ return s.trim(); })
+      .filter(Boolean);
+
+    var name = null, time = null;
+    var eventParts = [], actionParts = [], nextParts = [];
+
+    var nameRe = /([ぁ-んァ-ヶ一-龥A-Zａ-ｚＡ-Ｚ]{1,6}さん)/;
+    var timeRe = /(\d{1,2}\s*[:：時]\s*\d{0,2}\s*分?|朝|夜中|深夜|未明|夕方|昼過ぎ|午前中|午後)/;
+
+    var actionKeywords = ['様子見','経過観察','対応した','対応しました','検温','報告','連絡','臥床','安静','巡視','確認した','声かけ','受診','記録した'];
+    var nextKeywords = ['お願いします','注意して','見てください','確認してください','引き継ぎ','よろしく','お願い致します'];
+
+    chunks.forEach(function(chunk){
+      var isAction = actionKeywords.some(function(k){ return chunk.indexOf(k) !== -1; });
+      var isNext = nextKeywords.some(function(k){ return chunk.indexOf(k) !== -1; });
+
+      var nm = chunk.match(nameRe);
+      if(nm && !name) name = nm[1];
+      var tm = chunk.match(timeRe);
+      if(tm && !time) time = tm[1];
+
+      if(isNext){
+        nextParts.push(chunk);
+      } else if(isAction){
+        actionParts.push(chunk);
+      } else {
+        eventParts.push(chunk);
+      }
+    });
+
+    // 出来事チャンクの先頭に名前・時間がまるごと入っているだけなら整理
+    var eventText = eventParts.join('。');
+    var actionText = actionParts.join('。');
+    var nextText = nextParts.join('。');
+
+    return {
+      name: name || 'Aさん',
+      time: time || '（時間の言及なし・記入して）',
+      event: eventText || '（出来事の言及なし・記入して）',
+      action: actionText || '（対応の言及なし・記入して）',
+      next: nextText || '次の勤務者へ：とくに変わりなければ通常通りで大丈夫です'
+    };
+  }
+
+  function showDraft(raw){
+    var d = buildDraft(raw);
+    document.getElementById('f-name').textContent = d.name;
+    document.getElementById('f-time').textContent = d.time;
+    document.getElementById('f-event').textContent = d.event;
+    document.getElementById('f-action').textContent = d.action;
+    document.getElementById('f-next').textContent = d.next;
+    resultWrap.classList.add('show');
+    micBtn.classList.remove('listening');
+    micBtn.classList.add('done');
+    micLabel.textContent = 'できました。あとは読んで直すだけ';
+    resultWrap.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  if(SR){
+    var recog = new SR();
+    recog.lang = 'ja-JP';
+    recog.interimResults = false;
+    recog.maxAlternatives = 1;
+
+    var listening = false;
+
+    micBtn.addEventListener('click', function(){
+      if(listening) return;
+      listening = true;
+      micBtn.classList.add('listening');
+      micBtn.classList.remove('done');
+      micLabel.textContent = '聞いてます…（いつも通り喋って）';
+      resultWrap.classList.remove('show');
+      try{ recog.start(); }catch(e){ /* 連打対策 */ }
+    });
+
+    recog.onresult = function(e){
+      var transcript = e.results[0][0].transcript;
+      showDraft(transcript);
+    };
+    recog.onerror = function(){
+      listening = false;
+      micBtn.classList.remove('listening');
+      micLabel.textContent = 'うまく聞き取れませんでした。もう一度押して';
+    };
+    recog.onend = function(){
+      listening = false;
+    };
+  } else {
+    micBtn.style.display = 'none';
+    fallbackWrap.style.display = 'block';
+    micLabel.textContent = 'このブラウザは音声入力なし。下に書いてみて';
+
+    fallbackBtn.addEventListener('click', function(){
+      showDraft(fallbackText.value);
+    });
+  }
+
+  redoBtn.addEventListener('click', resetResult);
+})();
+</script>
+</body>
+</html>
