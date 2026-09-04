@@ -31,6 +31,7 @@
     max-width:840px;
     margin:0 auto;
     padding:0 20px 64px;
+    counter-reset:sec;
   }
   header.hero{
     padding:40px 20px 28px;
@@ -61,10 +62,10 @@
     margin-left:auto;
     margin-right:auto;
   }
-  .wrap{counter-reset:sec;}
   section{
     margin:0 auto 44px;
     max-width:840px;
+    scroll-margin-top:16px;
   }
   section.step{
     counter-increment:sec;
@@ -72,7 +73,7 @@
   h2{
     font-size:1.18rem;
     line-height:1.6;
-    margin:0 0 18px;
+    margin:0 0 16px;
     display:flex;
     align-items:baseline;
     gap:10px;
@@ -107,22 +108,95 @@
   a{color:var(--accent-soft);}
   small{font-size:12.5px;}
 
-  /* ひとことの答え */
-  .answer{
+  /* つまり、3行で */
+  .tsumari{
     background:var(--panel);
     border:1px solid var(--panel-line);
     border-left:4px solid var(--ok);
     border-radius:10px;
-    padding:22px 22px;
+    padding:22px;
+    margin-bottom:20px;
   }
-  .answer .big{
-    font-size:1.12rem;
+  .tsumari .ttl{
+    font-size:.8rem;
+    font-weight:700;
+    letter-spacing:.04em;
+    color:var(--ok);
+    margin:0 0 12px;
+  }
+  .tsumari ol{
+    list-style:none;
+    margin:0;
+    padding:0;
+    counter-reset:ts;
+  }
+  .tsumari li{
+    counter-increment:ts;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:11px 0;
+    border-bottom:1px solid var(--panel-line);
+    font-size:.98rem;
+    line-height:1.75;
+  }
+  .tsumari li:last-child{border-bottom:none;}
+  .tsumari li::before{
+    content:counter(ts);
+    flex:none;
+    width:22px;height:22px;
+    border-radius:999px;
+    background:var(--ok);
+    color:var(--panel);
+    font-size:.76rem;
+    font-weight:700;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .tsumari li .txt{flex:1 1 auto;}
+  .tsumari li a{
+    flex:none;
+    font-size:.85rem;
+    font-weight:700;
+    white-space:nowrap;
+  }
+
+  /* 目次 */
+  .toc{
+    background:#FAFAF7;
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    padding:16px 20px;
+    margin-bottom:36px;
+  }
+  .toc .ttl{
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.04em;
+    color:var(--ink-faint);
+    margin:0 0 8px;
+  }
+  .toc ol{
+    margin:0;
+    padding-left:1.3em;
+  }
+  .toc li{
+    font-size:.92rem;
+    line-height:1.9;
+  }
+  .toc a{
+    color:var(--ink);
+    font-weight:700;
+    text-decoration:none;
+  }
+  .toc a:hover,.toc a:focus{text-decoration:underline;}
+
+  .kicker-sec{
     font-weight:700;
     color:var(--ink);
-    margin:0 0 8px;
-    line-height:1.7;
+    margin:0 0 16px;
   }
-  .answer p:last-child{margin-bottom:0;}
 
   /* 表 */
   .tablewrap{
@@ -287,22 +361,36 @@
 <header class="hero">
   <div class="col">
     <p class="kicker">カドッチさんへ・2026-09-04</p>
-    <h1>動画の背景映像、どこから来ているかをまとめました</h1>
+    <h1>動画の素材はどこから来ていて、費用はいくらか、をまとめました</h1>
     <p class="meta">9/4のLINEでいただいたご質問「フリー素材はどこのものか」「お金はトークン使用料が一番か」への回答です。</p>
   </div>
 </header>
 
 <div class="wrap">
 
-  <section>
-    <div class="col answer">
-      <p class="big">買っていません。すべて、商用利用OKの無料素材と、AIの無料枠で作っています。</p>
-      <p>背景映像はMixkitという海外のフリー素材サイトから、ナレーションはFish Audioという音声AIの無料プランから、それぞれ商用利用が認められた形で持ってきています。BGMだけは、カドッチさんからいただいたUNL1433をそのまま使わせていただいています。お金がかかっているのは、動画そのものを組み立てているAIエージェント（Claude Code）の月額利用料だけです。</p>
-    </div>
-  </section>
+  <div class="col tsumari">
+    <p class="ttl">つまり、3行で</p>
+    <ol>
+      <li><span class="txt">素材は買っていません。背景はMixkitの無料素材（商用OK）、声は無料枠、BGMはカドッチさんからいただいたものです。</span><a href="#zairyo">くわしく→</a></li>
+      <li><span class="txt">費用はAIエージェントの月額だけです。ざっくり月1万円前後、1本500円くらい（型を作り直す週は倍くらい）。</span><a href="#hiyou">くわしく→</a></li>
+      <li><span class="txt">1本は7つの工程で作り、作った担当とは別のAIが必ず検品しています。</span><a href="#koutei">くわしく→</a></li>
+    </ol>
+  </div>
 
-  <section class="step">
+  <nav class="col toc" aria-label="目次">
+    <p class="ttl">目次</p>
+    <ol>
+      <li><a href="#zairyo">素材はどこから来ているか</a></li>
+      <li><a href="#hiyou">費用は月1万円前後です</a></li>
+      <li><a href="#koutei">1本ができるまで</a></li>
+      <li><a href="#hinshitsu">品質はこう守っています</a></li>
+      <li><a href="#sanko">参考にした一次情報はこちらです</a></li>
+    </ol>
+  </nav>
+
+  <section id="zairyo" class="step">
     <h2><span class="htxt">素材はどこから来ているか</span></h2>
+    <p class="kicker-sec">つまり、映像も声もBGMも、一つも買っていません。</p>
     <div class="tablewrap">
       <table>
         <thead>
@@ -330,12 +418,21 @@
         </tbody>
       </table>
     </div>
-    <p class="tablecap">Mixkitの公式ライセンスページ（2026-09-04 確認）には「Free License下の素材は、商用・非商用のプロジェクトで無料で使用でき、ダウンロード・複製・改変・配布・上演・放送が許可される。権利は非独占的・世界的・サブライセンス可能で、クレジット表記は必須ではないが可能であれば歓迎する」と明記されています。原文はこちらから読めます（利用条件の詳細はMixkitのUser Termsにも定めがあります）。</p>
+    <p class="tablecap">Mixkitの公式ライセンス（2026-09-04確認）は「商用・非商用のプロジェクトで無料で使用でき、クレジット表記は必須ではない」としています。条文の全文は下の参考リンクから読めます。</p>
     <p>たとえば、動画に映る夕暮れの湖、夕日の海を上から飛ぶ映像、ひまわり畑は、すべてこのMixkitで探した映像です。同じ組み合わせを二度使わないよう、公開する動画ごとに違う3本を選んでいます。</p>
   </section>
 
-  <section class="step">
+  <section id="hiyou" class="step">
+    <h2><span class="htxt">費用は月1万円前後です</span></h2>
+    <p class="kicker-sec">つまり、かかっているのはAIエージェントの月額利用料だけです。</p>
+    <div class="col money">
+      <p>ざっくり出すと月1万円前後、1本あたり500円くらいの費用感です。新しい型を立ち上げる週（今回のように7本まとめて作り直した週）はその倍くらいになります。素材・声・BGMは無料枠のままで、追加費用はありません。</p>
+    </div>
+  </section>
+
+  <section id="koutei" class="step">
     <h2><span class="htxt">1本ができるまで</span></h2>
+    <p class="kicker-sec">つまり、台本から入稿まで7つの工程を、人とAIと機械で分担しています。</p>
     <ol class="flow">
       <li>
         <span class="ttl">台本を書く</span>
@@ -368,47 +465,41 @@
     </ol>
   </section>
 
-  <section class="step">
+  <section id="hinshitsu" class="step">
     <h2><span class="htxt">品質はこう守っています</span></h2>
+    <p class="kicker-sec">つまり、書いた本人には検品させない仕組みです。</p>
     <ul class="checklist">
       <li>
         <span class="mark">✓</span>
         <span>
           <span class="ttl">作った担当とは別のAIの担当が確認します</span>
-          <span class="desc">台本を作った担当がそのまま検品すると見落とします。文字数や整合のチェックは、台本を作った担当とは別に立てたAIの担当が行います。</span>
+          <span class="desc">台本を作った担当がそのまま検品すると見落とします。文字数や整合のチェックは、別に立てたAIの担当が行います。</span>
         </span>
       </li>
       <li>
         <span class="mark">✓</span>
         <span>
           <span class="ttl">聞き取りにくい発話は複数の音声認識で照合しています</span>
-          <span class="desc">1つの認識ツールだけで判定せず、2種類（whisperとGemini）で聞き比え、両方が一致するまで読み方を直しています。</span>
+          <span class="desc">1つの認識ツールだけで判定せず、2種類（whisperとGemini）で聞き比べ、両方が一致するまで読み方を直しています。</span>
         </span>
       </li>
       <li>
         <span class="mark">✓</span>
         <span>
           <span class="ttl">毎回、前回のうまくいった作り方と1対1で比較しています</span>
-          <span class="desc">尺・フックの秒数・順位の見せ方など、直近で伸びた動画の構造をそのまま踏襲し、変えた点だけを記録に残しています。</span>
+          <span class="desc">尺やフックの秒数、順位の見せ方など、直近で伸びた動画の構造をそのまま踏襲し、変えた点だけを記録に残しています。</span>
         </span>
       </li>
     </ul>
-    <p>例えば、9/4公開分の動画では「使途のわからない通帳」というセリフのAI音声が「すきとの」と聞こえる誤読を起こしました。表示される字幕は正しい表記のままにしつつ、AIに読ませる音のほうだけをひらがなに直して再収録し、直った読みを確認してから公開しています。</p>
+    <p>例えば、9/4公開分の動画では「使途のわからない通帳」というセリフのAI音声が「すきとの」と聞こえる誤読を起こしました。表示字幕は正しい表記のまま、AIに読ませる音のほうだけをひらがなに直して再収録し、直った読みを確認してから公開しています。</p>
   </section>
 
-  <section class="step">
-    <h2><span class="htxt">お金がかかっているのはここです</span></h2>
-    <div class="col money">
-      <p>背景映像・ナレーション音声・BGMには、費用がかかっていません。すべて無料枠か、カドッチさんからいただいた素材を使っています。かかっているのはAIエージェント（Claude Code）の月額利用料だけです。この動画づくりに使っているぶんをざっくり出すと、月1万円前後、1本あたり500円くらいの費用感です。新しい型を立ち上げる週（今回のように7本まとめて作り直した週）はその倍くらいになります。素材・声・BGMはすべて無料枠で、追加費用はありません。</p>
-    </div>
-  </section>
-
-  <section class="step">
+  <section id="sanko" class="step">
     <h2><span class="htxt">参考にした一次情報はこちらです</span></h2>
     <ul class="linklist">
       <li>
         <span class="lttl"><a href="https://mixkit.co/license/" target="_blank" rel="noopener">Mixkit License（公式）</a></span>
-        <span class="lnote">背景映像のライセンス条文。Free Licenseの条件はこのページの「Stock Video Free License」欄から確認できます</span>
+        <span class="lnote">背景映像のライセンス条文。「Stock Video Free License」欄から全文が読めます（利用条件の詳細はUser Termsにも定めがあります）</span>
       </li>
       <li>
         <span class="lttl"><a href="https://www.fish.audio/" target="_blank" rel="noopener">Fish Audio（公式）</a></span>
