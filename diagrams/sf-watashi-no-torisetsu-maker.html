@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="ja" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>わたしのトリセツ画像メーカー｜ストレングス初心者オフ会</title>
+<style>
+  /* ---------------------------------------------------------------
+     配色は明るい紙の1本だけ。OS追従の分岐は持たない（持てば両方測る必要が出るし、
+     端末が暗い設定の人に明るい姿を一度も見せられなくなる）。
+     文字の色は --ink / --muted / --primary / --accent-ink の4つ、
+     加えて濃い面に乗る時だけ --white。ワークシートの8色は「面」にだけ通す。
+     --------------------------------------------------------------- */
+  :root{
+    --paper:#FBF8F3;
+    --paper-deep:#F5F0E8;
+    --line:#E4DACB;
+    --line-soft:#EFE8DC;
+    --ink:#1F1B16;
+    --muted:#5F574C;
+    --primary:#2C5F4B;
+    --primary-deep:#20493A;
+    --primary-tint:#E6EFEA;
+    --accent-ink:#8A5A2B;
+    --accent-line:#C4915E;
+    --white:#FFFFFF;
+    --radius:16px;
+    --radius-sm:11px;
+    --maxw:640px;
+
+    /* SF4ドメイン色（上位5資質チップの面）。姉妹アプリのトークンをそのまま使う */
+    --dom-exec-bg:#EFEAF6;   --dom-exec-ink:#5B4B8A;   --dom-exec-line:#B9A9D8;
+    --dom-infl-bg:#FBEEDD;   --dom-infl-ink:#8F5C00;   --dom-infl-line:#DDB980;
+    --dom-rel-bg:#E9F0F8;    --dom-rel-ink:#3D5E8C;    --dom-rel-line:#A9C0DC;
+    --dom-think-bg:#E1F1F0;  --dom-think-ink:#0B6670;  --dom-think-line:#8FC2C4;
+  }
+
+  /* 紙のワークシートと同じ8色。--face=丸バッジと左の帯、--tint=カードの地、
+     --deep=線画アイコンの線。文字はどこも --ink のまま。 */
+  .w1{--face:#F0A050;--tint:#FCEEE0;--deep:#9E6A35;}
+  .w2{--face:#4FA37A;--tint:#DFEEE7;--deep:#3E8160;}
+  .w3{--face:#E58A9C;--tint:#FAEAED;--deep:#A3626F;}
+  .w4{--face:#F2D25A;--tint:#FDF7E1;--deep:#857331;}
+  .w5{--face:#5FB3D0;--tint:#E2F1F7;--deep:#427C90;}
+  .w6{--face:#9B7CC0;--tint:#EDE7F4;--deep:#8469A3;}
+  .w7{--face:#F07A3A;--tint:#FCE7DC;--deep:#B45C2C;}
+  .w8{--face:#2C6B5A;--tint:#D9E4E1;--deep:#2C6B5A;}
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.85;
+    -webkit-text-size-adjust:100%;
+  }
+  h1,h2,h3{
+    margin:0 0 .5em;
+    font-weight:700;
+    text-wrap:balance;
+    line-break:strict;
+    word-break:auto-phrase;
+  }
+  p{margin:0 0 1em;}
+  ul{margin:0 0 1em;padding-left:1.15em;}
+  li{margin-bottom:.35em;}
+  img{max-width:100%;}
+
+  /* ---- JSが無い時 ---- */
+  .noscript-banner{
+    max-width:var(--maxw);
+    margin:24px auto;
+    padding:20px;
+    background:var(--paper-deep);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    color:var(--ink);
+  }
+  .noscript-banner h1{font-size:19px;color:var(--primary);}
+  #app{display:none;}
+  html.js-ready #app{display:block;}
+
+  /* ---- 骨格 ---- */
+  .shell{max-width:var(--maxw);margin:0 auto;padding:0 0 56px;min-height:100vh;}
+  .topbar{
+    position:sticky;top:0;z-index:5;
+    background:var(--paper);
+    padding:12px 20px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
+  .brand{font-size:12.5px;color:var(--muted);letter-spacing:.02em;min-width:0;}
+  .progress-track{height:6px;background:var(--paper-deep);border-radius:99px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--primary);border-radius:99px;width:0%;transition:width .3s ease;}
+  .step-label{font-size:12.5px;color:var(--muted);margin-top:6px;}
+  main{padding:22px 20px 8px;}
+  .footer-note{
+    max-width:var(--maxw);margin:0 auto;padding:0 20px;
+    font-size:12.5px;color:var(--muted);line-height:1.75;
+  }
+
+  /* ---- カード ---- */
+  .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 20px;
+    margin-bottom:16px;
+  }
+  .card-quiet{background:var(--paper-deep);border-color:var(--line-soft);}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:12.5px;font-weight:700;
+    color:var(--accent-ink);
+    border:1px solid var(--accent-line);
+    border-radius:99px;
+    padding:2px 11px;margin-bottom:12px;
+  }
+  h1{font-size:23px;color:var(--primary);line-height:1.55;}
+  .question{font-size:19px;color:var(--ink);margin-bottom:10px;line-height:1.6;word-break:auto-phrase;}
+  h3{font-size:16.5px;color:var(--primary);}
+  .lead-sm{font-size:14.5px;color:var(--muted);margin-bottom:14px;word-break:auto-phrase;}
+  .hint{font-size:13.5px;color:var(--muted);margin:8px 0 0;}
+  .body{font-size:15.5px;}
+
+  /* ---- ボタン ---- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    min-height:46px;padding:10px 18px;
+    border-radius:999px;
+    font-size:15.5px;font-weight:700;font-family:inherit;line-height:1.5;
+    border:1.5px solid transparent;
+    cursor:pointer;text-decoration:none;
+    transition:transform .12s ease,border-color .18s ease,box-shadow .18s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--primary);color:var(--white);}
+  .btn-primary:hover{box-shadow:0 2px 10px rgba(32,73,58,.22);}
+  .btn-ghost{background:var(--white);color:var(--ink);border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--accent-line);}
+  .btn-sm{min-height:34px;padding:5px 13px;font-size:13px;}
+  .btn[disabled]{background:var(--paper-deep);color:var(--muted);border-color:var(--line);cursor:not-allowed;}
+  .btn:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{
+    outline:2.5px solid var(--primary);outline-offset:2px;
+  }
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+  .btnrow .btn{flex:1 1 auto;}
+  .btnrow-stack{flex-direction:column;}
+  .btnrow-stack .btn{width:100%;}
+
+  /* ---- 線画アイコン（絵文字は使わない） ---- */
+  .ico{display:inline-flex;align-items:center;justify-content:center;flex:none;}
+  .ico svg{width:20px;height:20px;display:block;}
+  .ico-lg svg{width:26px;height:26px;}
+  .ico-sm svg{width:16px;height:16px;}
+
+  /* ---- 入力 ---- */
+  label{display:block;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+  input[type=text],textarea{
+    width:100%;
+    font-family:inherit;font-size:15.5px;line-height:1.75;
+    color:var(--ink);background:var(--white);
+    border:1.5px solid var(--line);border-radius:var(--radius-sm);
+    padding:9px 12px;
+    transition:border-color .18s ease,box-shadow .18s ease;
+  }
+  input[type=text]:focus,textarea:focus{border-color:var(--primary);}
+  textarea{resize:vertical;min-height:74px;}
+  ::placeholder{color:var(--muted);opacity:1;}
+  .field{margin-bottom:16px;}
+  .field:last-child{margin-bottom:0;}
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;
+    overflow:hidden;clip-path:inset(50%);white-space:nowrap;
+  }
+
+  /* ---- チップ（選択肢はカード並びにしない） ---- */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:inherit;font-size:14.5px;font-weight:600;line-height:1.5;
+    color:var(--ink);background:var(--white);
+    border:1.5px solid var(--line);border-radius:999px;
+    padding:7px 14px;min-height:38px;
+    cursor:pointer;
+    transition:border-color .18s ease,box-shadow .18s ease,transform .12s ease;
+  }
+  .chip:hover{border-color:var(--accent-line);}
+  .chip:active{transform:translateY(1px);}
+  .chip.on{border-color:var(--primary);border-width:2px;background:var(--primary-tint);padding:6px 13px;}
+  .chip .ico{color:var(--primary);}
+  .chip-word{
+    font-size:13.5px;font-weight:600;
+    background:var(--paper-deep);border-color:var(--line-soft);
+    min-height:33px;padding:4px 12px;
+  }
+  .bank{margin-top:10px;}
+  .bank-label{font-size:12.5px;color:var(--muted);margin:0 0 6px;}
+
+  /* ---- 上位5資質 ---- */
+  .top5-grid{display:flex;flex-direction:column;gap:9px;}
+  .top5-row{display:flex;align-items:center;gap:9px;}
+  .top5-no{
+    flex:none;width:26px;height:26px;border-radius:50%;
+    background:var(--paper-deep);color:var(--muted);
+    font-size:12.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .dom-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+  .dom-chip{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:13.5px;font-weight:700;color:var(--ink);
+    border:1.5px solid var(--line);border-radius:999px;
+    padding:4px 12px;background:var(--paper-deep);
+  }
+  .dom-chip .dot{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none;}
+  .dom-exec{background:var(--dom-exec-bg);border-color:var(--dom-exec-line);}
+  .dom-exec .dot{background:var(--dom-exec-ink);}
+  .dom-infl{background:var(--dom-infl-bg);border-color:var(--dom-infl-line);}
+  .dom-infl .dot{background:var(--dom-infl-ink);}
+  .dom-rel{background:var(--dom-rel-bg);border-color:var(--dom-rel-line);}
+  .dom-rel .dot{background:var(--dom-rel-ink);}
+  .dom-think{background:var(--dom-think-bg);border-color:var(--dom-think-line);}
+  .dom-think .dot{background:var(--dom-think-ink);}
+  .dom-legend{font-size:12.5px;color:var(--muted);margin-top:9px;}
+
+  /* ---- トリセツ7項目＋ギフト（紙と同じ色を面に通す） ---- */
+  .item{
+    background:var(--tint);
+    border:1px solid var(--line-soft);
+    border-left:5px solid var(--face);
+    border-radius:var(--radius-sm);
+    padding:15px 15px 16px;
+    margin-bottom:13px;
+  }
+  .item-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+  .badge{
+    flex:none;width:25px;height:25px;border-radius:50%;
+    background:var(--face);color:var(--ink);
+    font-size:13px;font-weight:700;line-height:25px;text-align:center;
+  }
+  .badge-star{display:flex;align-items:center;justify-content:center;color:var(--white);}
+  .item-title{font-size:16px;color:var(--ink);margin:0;flex:1 1 auto;min-width:0;word-break:auto-phrase;}
+  .item-head .ico{color:var(--deep);}
+  .item-lead{font-size:14px;color:var(--muted);margin:0 0 9px;line-height:1.7;word-break:auto-phrase;}
+  .item textarea{border-color:var(--line-soft);}
+  .item textarea:focus{border-color:var(--deep);}
+
+  /* ---- 第一稿OKの知らせ ---- */
+  .ok-note{
+    display:flex;align-items:flex-start;gap:10px;
+    background:var(--primary-tint);
+    border:1px solid #B9D2C6;
+    border-radius:var(--radius-sm);
+    padding:12px 14px;margin-bottom:16px;
+  }
+  .ok-note .ico{color:var(--primary);margin-top:3px;}
+  .ok-note p{margin:0;font-size:14.5px;color:var(--ink);line-height:1.7;}
+
+  /* ---- 画像まわり ---- */
+  .ref-figure{margin:0 0 14px;}
+  .ref-figure img{
+    width:100%;height:auto;display:block;
+    border:1px solid var(--line);border-radius:var(--radius-sm);
+    background:var(--white);
+  }
+  .ref-cap{font-size:12.5px;color:var(--muted);margin-top:7px;}
+  .worksheet-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px;}
+  .worksheet-row img{
+    width:96px;height:auto;flex:none;display:block;
+    border:1px solid var(--line);border-radius:8px;
+  }
+  .worksheet-row p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.7;}
+
+  .caution{
+    background:var(--paper-deep);
+    border:1px solid var(--accent-line);
+    border-radius:var(--radius-sm);
+    padding:14px 15px;
+  }
+  .caution p{margin:0 0 .6em;font-size:14.5px;line-height:1.8;}
+  .caution p:last-child{margin-bottom:0;}
+  .caution strong{color:var(--accent-ink);}
+
+  /* ---- アイコン投入 ---- */
+  .drop{
+    display:block;position:relative;
+    border:2px dashed var(--accent-line);
+    border-radius:var(--radius);
+    background:var(--paper-deep);
+    padding:26px 18px;text-align:center;cursor:pointer;
+    transition:border-color .18s ease,box-shadow .18s ease;
+  }
+  .drop:hover{border-color:var(--primary);}
+  .drop .ico{color:var(--accent-ink);margin-bottom:6px;}
+  .drop-title{font-size:16px;font-weight:700;color:var(--ink);margin:0 0 4px;}
+  .drop-sub{font-size:13px;color:var(--muted);margin:0;}
+  .preview-row{display:flex;align-items:center;gap:14px;margin-top:16px;}
+  .preview-row img{
+    width:88px;height:88px;flex:none;
+    object-fit:cover;border-radius:14px;
+    border:1px solid var(--line);background:var(--white);
+  }
+  .preview-meta{font-size:13.5px;color:var(--muted);line-height:1.7;min-width:0;word-break:break-all;}
+
+  /* ---- 確認・完成 ---- */
+  .sum-row{
+    border-bottom:1px solid var(--line-soft);
+    padding:11px 0;
+  }
+  .sum-row:last-child{border-bottom:0;}
+  .sum-key{font-size:12.5px;color:var(--muted);margin:0 0 2px;}
+  .sum-val{font-size:15px;color:var(--ink);margin:0;line-height:1.75;}
+  .sum-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+  .sum-head h3{flex:1 1 11em;min-width:0;margin:0;}
+  .sum-head .btn{flex:none;white-space:nowrap;}
+  .prompt-box{
+    background:var(--paper-deep);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:14px 15px;
+    margin:0;
+    font-family:inherit;
+    font-size:13.5px;line-height:1.85;color:var(--ink);
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+  }
+  .status{font-size:13.5px;color:var(--accent-ink);margin:8px 0 0;min-height:1.2em;}
+  .set-list{list-style:none;margin:0;padding:0;}
+  .set-list li{
+    display:flex;align-items:flex-start;gap:10px;
+    font-size:15px;line-height:1.75;
+    padding:9px 0;border-bottom:1px solid var(--line-soft);
+  }
+  .set-list li:last-child{border-bottom:0;}
+  .set-no{
+    flex:none;width:24px;height:24px;border-radius:50%;
+    background:var(--primary);color:var(--white);
+    font-size:12.5px;font-weight:700;line-height:24px;text-align:center;
+  }
+  .fallback-ta{display:none;margin-top:10px;font-size:13px;min-height:120px;}
+  details{
+    border:1px solid var(--line);border-radius:var(--radius-sm);
+    background:var(--white);padding:10px 14px;margin-top:12px;
+  }
+  summary{cursor:pointer;font-size:14.5px;font-weight:700;color:var(--primary);}
+  details p,details li{font-size:14px;color:var(--ink);}
+
+  /* 実際にプロンプトへ入る文を、書いた本人に見せる */
+  .assembled{
+    margin:8px 0 0;
+    font-size:13.5px;line-height:1.7;color:var(--muted);
+    background:var(--white);
+    border:1px dashed var(--line);
+    border-radius:9px;
+    padding:7px 10px;
+    word-break:auto-phrase;
+  }
+  .assembled b{color:var(--ink);font-weight:700;}
+  .assembled-note{font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.7;}
+
+  /* STEP 2 の下部固定バー。3つ目を書いた瞬間に、その場で状態が変わる。
+     いちばん上にいる間は貼りつかない——最初の画面で上位5資質のチップを
+     バーが覆っていた（doc_check の隠れテキスト検出で発覚）。指が動いたら出す。 */
+  .stickybar{
+    position:static;z-index:4;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius) var(--radius) 0 0;
+    box-shadow:0 -4px 14px rgba(31,27,22,.07);
+    padding:10px 14px 12px;
+    margin-top:8px;
+  }
+  .stickybar.is-stuck{position:sticky;bottom:0;}
+  .stickybar .btnrow{margin-top:8px;}
+  .stickybar-status{
+    display:flex;align-items:flex-start;gap:8px;
+    margin:0;font-size:13.5px;line-height:1.65;color:var(--muted);
+  }
+  .stickybar-status .ico{color:var(--primary);margin-top:2px;}
+  .stickybar-status.ready{color:var(--ink);}
+  .sticky-spacer{height:8px;}
+
+  /* 見えない file input のフォーカスを、枠の側で見せる */
+  .drop:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-tint);}
+  .file-error{font-size:13.5px;color:var(--accent-ink);margin:10px 0 0;line-height:1.7;}
+
+  /* STEP 0：同じ仕組みで、こう変わる（外部画像は使わない。SVGとCSSだけ） */
+  .samples{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0 0;}
+  .sample{min-width:0;}
+  .sample-art{
+    background:var(--s4);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 8px 9px;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    min-height:112px;
+  }
+  .sample-art .ico{color:var(--s1);}
+  .sample-title{
+    font-size:12.5px;font-weight:700;color:var(--ink);
+    text-align:center;line-height:1.5;word-break:auto-phrase;
+  }
+  .sample-bars{display:flex;gap:4px;margin-top:auto;}
+  .sample-bars i{display:block;width:14px;height:6px;border-radius:99px;}
+  .sample-bars i:nth-child(1){background:var(--s1);}
+  .sample-bars i:nth-child(2){background:var(--s2);}
+  .sample-bars i:nth-child(3){background:var(--s3);}
+  .sample-cap{font-size:12.5px;color:var(--muted);margin:6px 0 0;text-align:center;line-height:1.5;}
+  .sm-city{--s1:#1E2A44;--s2:#3E5C86;--s3:#93A7C4;--s4:#DDE4EE;}
+  .sm-pop{--s1:#C6412A;--s2:#E0A21A;--s3:#2E8CA8;--s4:#FBEBD8;}
+  .sm-book{--s1:#4F7A3A;--s2:#C08A3E;--s3:#B45E51;--s4:#F4EDDE;}
+
+  @media (min-width:700px){
+    main{padding:28px 24px 8px;}
+    .card{padding:26px 24px;}
+    h1{font-size:26px;}
+    .btnrow .btn{flex:0 1 auto;min-width:160px;}
+  }
+</style>
+</head>
+<body>
+
+<noscript>
+  <div class="noscript-banner">
+    <h1>このページはJavaScriptが必要です</h1>
+    <p>お使いのブラウザでJavaScriptがオフになっているため、入力画面を出せません。設定でJavaScriptをオンにして、もう一度開いてください。</p>
+    <p>入力した内容や画像は、このページ内でのみ扱い、MVPではサーバーへ送信しません。</p>
+  </div>
+</noscript>
+
+<div id="app">
+  <div class="shell">
+    <div class="topbar">
+      <div class="topbar-row">
+        <span class="brand">わたしのトリセツ画像メーカー</span>
+        <button type="button" class="btn btn-ghost btn-sm" id="resetBtn">最初からやり直す</button>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="step-label" id="stepLabel"></div>
+    </div>
+    <main id="main"></main>
+    <p class="footer-note">入力した内容や画像は、このページ内でのみ扱い、MVPではサーバーへ送信しません。</p>
+  </div>
+</div>
+
+<datalist id="themes"></datalist>
+
+<script>
+(function(){
+  document.documentElement.classList.remove('no-js');
+  document.documentElement.classList.add('js-ready');
+})();
+</script>
+<script>
+(function(){
+"use strict";
+
+/* ==========================================================================
+   わたしのトリセツ画像メーカー（MVP）
+   ストレングス初心者オフ会で書いた「わたしのトリセツ 第一稿」を、
+   ヒアリング → 専用プロンプト生成 → AIへ渡す3点セット、まで運ぶ。
+   外部への通信はゼロ。ライブラリもフォントも読み込まない。
+   ========================================================================== */
+
+var STORAGE_KEY = "torisetsu-maker:v1";
+
+/* ---- 34資質とドメイン（上位5資質チップの色分けに使う） ---- */
+var DOMAINS = [
+  {key:"exec",  name:"実行力",         cls:"dom-exec",
+   list:["達成欲","アレンジ","信念","公平性","慎重さ","規律性","目標志向","責任感","回復志向"]},
+  {key:"infl",  name:"影響力",         cls:"dom-infl",
+   list:["活発性","指令性","コミュニケーション","競争性","最上志向","自己確信","自我","社交性"]},
+  {key:"rel",   name:"人間関係構築力", cls:"dom-rel",
+   list:["適応性","運命思考","成長促進","共感性","調和性","包含","個別化","ポジティブ","親密性"]},
+  {key:"think", name:"戦略的思考力",   cls:"dom-think",
+   list:["分析思考","原点思考","未来志向","着想","収集心","内省","学習欲","戦略性"]}
+];
+function domainOf(name){
+  var n = (name||"").trim();
+  for(var i=0;i<DOMAINS.length;i++){
+    if(DOMAINS[i].list.indexOf(n) > -1) return DOMAINS[i];
+  }
+  return null;
+}
+
+/* ---- 線画アイコン。絵文字は1文字も使わない ---- */
+var ICONS = {
+  sun:'<circle cx="12" cy="12" r="4.2"/><path d="M12 2.2v2.3M12 19.5v2.3M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.2 12h2.3M19.5 12h2.3M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/>',
+  loop:'<path d="M20.5 11.5a8.5 8.5 0 1 1-2.6-6.1"/><path d="M20.8 3.6v5.2h-5.2"/>',
+  gift:'<rect x="3.2" y="9.6" width="17.6" height="11.2" rx="1.8"/><path d="M3.2 13.6h17.6M12 9.6v11.2"/><path d="M12 9.6C10.6 6.6 9.4 5 7.9 5a2.3 2.3 0 0 0 0 4.6h4.1zM12 9.6c1.4-3 2.6-4.6 4.1-4.6a2.3 2.3 0 0 1 0 4.6H12z"/>',
+  alert:'<path d="M12 4.2 2.9 19.4h18.2z"/><path d="M12 9.8v4.6"/><circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none"/>',
+  revive:'<path d="M12 3.4v7.2"/><path d="M6.8 6.4a7.6 7.6 0 1 0 10.4 0"/>',
+  ripple:'<circle cx="12" cy="12" r="2.1"/><path d="M7.6 7.6a6.2 6.2 0 0 0 0 8.8M16.4 16.4a6.2 6.2 0 0 0 0-8.8"/><path d="M4.6 4.6a10.4 10.4 0 0 0 0 14.8M19.4 19.4a10.4 10.4 0 0 0 0-14.8"/>',
+  calendar:'<rect x="3.4" y="5.2" width="17.2" height="15.4" rx="2"/><path d="M3.4 10h17.2M8.2 3.4v3.6M15.8 3.4v3.6"/><path d="M7.6 14h2.4M13.9 14h2.5M7.6 17.4h2.4"/>',
+  star:'<path d="m12 3.6 2.6 5.4 5.9.8-4.3 4.2 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.8l5.9-.8z"/>',
+  sprout:'<path d="M12 20.6v-7.2"/><path d="M12 13.4C12 9.9 9.3 7.2 5.8 7.2c0 3.5 2.7 6.2 6.2 6.2z"/><path d="M12 13.4c0-3 2.3-5.4 5.3-5.4 0 3-2.3 5.4-5.3 5.4z"/>',
+  upload:'<path d="M12 15.8V4.4"/><path d="m7.4 8.8 4.6-4.4 4.6 4.4"/><path d="M4.2 15v3.4a2 2 0 0 0 2 2h11.6a2 2 0 0 0 2-2V15"/>',
+  check:'<path d="m4.6 12.4 4.8 4.8 10-10.4"/>',
+  copy:'<rect x="8.6" y="3.6" width="11.8" height="13.6" rx="2"/><path d="M15.4 20.4H5.6a2 2 0 0 1-2-2V7.6"/>',
+  download:'<path d="M12 3.6v11.6"/><path d="m7.4 10.8 4.6 4.4 4.6-4.4"/><path d="M4.2 15.4v3a2 2 0 0 0 2 2h11.6a2 2 0 0 0 2-2v-3"/>',
+  external:'<path d="M14 4.2h5.8V10"/><path d="M19.8 4.2 11 13"/><path d="M18.2 14.4v4.4a2 2 0 0 1-2 2H5.4a2 2 0 0 1-2-2V8.2a2 2 0 0 1 2-2h4.4"/>',
+  heart:'<path d="M12 20.4S3.6 15.2 3.6 9.4a4.4 4.4 0 0 1 8.4-1.8 4.4 4.4 0 0 1 8.4 1.8c0 5.8-8.4 11-8.4 11z"/>',
+  palette:'<path d="M12 3.4a8.6 8.6 0 0 0 0 17.2c1.3 0 1.9-.9 1.9-1.8 0-1.1-.9-1.6-.9-2.5 0-.8.7-1.4 1.6-1.4h1.8a4.2 4.2 0 0 0 4.2-4.2c0-4-3.9-7.3-8.6-7.3z"/><circle cx="7.6" cy="11.8" r="1" fill="currentColor" stroke="none"/><circle cx="10.6" cy="7.9" r="1" fill="currentColor" stroke="none"/><circle cx="15.2" cy="8.5" r="1" fill="currentColor" stroke="none"/>',
+  droplet:'<path d="M12 3.4c3 3.6 5.4 6.5 5.4 9.4a5.4 5.4 0 0 1-10.8 0c0-2.9 2.4-5.8 5.4-9.4z"/>',
+  shapes:'<circle cx="7.4" cy="7.4" r="3.3"/><rect x="13.6" y="13.2" width="7" height="7" rx="1.4"/><path d="m7.4 13.2 4 7h-8z"/>',
+  phone:'<rect x="6.6" y="2.8" width="10.8" height="18.4" rx="2.4"/><path d="M10.4 5.6h3.2M11 18.4h2"/>',
+  bubble:'<path d="M20.4 13.2a3.2 3.2 0 0 1-3.2 3.2H9.6l-4.4 3.4v-3.4a3.2 3.2 0 0 1-1.6-2.8V6.8a3.2 3.2 0 0 1 3.2-3.2h10.4a3.2 3.2 0 0 1 3.2 3.2z"/>',
+  leaf:'<path d="M4.6 19.4c0-8 5.2-13 14.8-13.6.6 9.6-4.4 15.2-12.4 15.2a5 5 0 0 1-2.4-.6z"/><path d="M4.6 19.4c3-3.6 6.6-6.4 11-8.4"/>',
+  image:'<rect x="3.4" y="4.6" width="17.2" height="14.8" rx="2"/><circle cx="8.6" cy="9.6" r="1.7"/><path d="m4.4 17.4 4.9-5 4 3.6 3-2.6 3.9 4"/>',
+  pen:'<path d="M4.2 19.8h4l10-10a2.3 2.3 0 0 0-3.2-3.2l-10 10z"/><path d="m13.6 7.4 3 3"/>',
+  back:'<path d="M19 12H5.4"/><path d="m10.6 6.4-5.2 5.6 5.2 5.6"/>',
+  next:'<path d="M5 12h13.6"/><path d="m13.4 6.4 5.2 5.6-5.2 5.6"/>'
+};
+function icon(name, extraClass){
+  var span = document.createElement("span");
+  span.className = "ico" + (extraClass ? " " + extraClass : "");
+  span.setAttribute("aria-hidden","true");
+  span.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICONS[name] + "</svg>";
+  return span;
+}
+
+/* ---- 穴埋め文のつなぎ ----
+   ワークシートは穴埋めだが、実際には「散歩する」「一人の時間」のように文や名詞で書く人が多い。
+   下の「言葉を借りる」チップも動詞の形で入る。テンプレートをそのまま当てると
+   「散歩するすると戻りやすい。」「一人の時間な時に」になるので、重なった分だけ落とす。
+   足りない言葉を足すことはしない（空欄はそのまま空欄で扱う）。
+
+   規則は保守的に。
+   ① 本人の文に、その型の固定尾（力が出やすい／している／嬉しい／暴走しやすい／
+      戻りやすい／起きやすい）がすでに入っていたら、何も足さずそのまま通す。
+   ② 機械が外すことは必ずあるので、STEP 2 と STEP 5 で「こう入ります：」と
+      組み立てた文をそのまま見せる。本人が見て文ごと書き直せる。 */
+var VERB_END = "るうくぐすつぬぶむただ";
+function tidyJoin(v){
+  return String(v == null ? "" : v).replace(/\s+/g," ").replace(/[。、．，]+$/,"").trim();
+}
+function tidyRaw(v){
+  return String(v == null ? "" : v).trim();
+}
+function endsWithAny(s, list){
+  for(var i=0;i<list.length;i++){ if(s.slice(-list[i].length) === list[i]) return true; }
+  return false;
+}
+function isVerbEnd(s){ return VERB_END.indexOf(s.slice(-1)) > -1; }
+function isAdjEnd(s){ return s.slice(-1) === "い"; }
+/* 型の固定尾がもう入っている＝本人が文で書いている。触らない */
+function alreadyWhole(s, tail){ return s.indexOf(tail) > -1; }
+
+/* ---- トリセツ7項目＋ギフト。ラベルも穴埋め文もワークシートの現物どおり ---- */
+var ITEMS = [
+  {key:"happy",   no:"1", cls:"w1", ico:"sun",
+   title:"ごきげんスイッチ",       lead:"私は、＿＿＿＿な時に力が出やすい。",
+   sentence:function(v){
+     var s = tidyJoin(v);
+     if(!s) return "";
+     if(alreadyWhole(s, "力が出やすい")) return s + "。";
+     if(s.slice(-1) === "時")  return "私は、" + s + "に力が出やすい。";
+     if(s.slice(-1) === "な")  return "私は、" + s + "時に力が出やすい。";
+     if(isAdjEnd(s) || isVerbEnd(s)) return "私は、" + s + "時に力が出やすい。";
+     return "私は、" + s + "には力が出やすい。";   /* 名詞句。「一人の時間には力が出やすい。」 */
+   }},
+  {key:"habit",   no:"2", cls:"w2", ico:"loop",
+   title:"ついやっちゃうこと",     lead:"気づくと、＿＿＿＿している。",
+   sentence:function(v){
+     var s = tidyJoin(v);
+     if(!s) return "";
+     if(alreadyWhole(s, "している")) return s.slice(-4) === "している" ? "気づくと、" + s + "。" : s + "。";
+     if(endsWithAny(s, ["いる","てる"])) return "気づくと、" + s + "。";
+     if(endsWithAny(s, ["て","で"]))     return "気づくと、" + s + "いる。";
+     if(isVerbEnd(s))                    return "気づくと、" + s + "。";
+     return "気づくと、" + s + "している。";
+   },
+   /* チップは辞書形をやめて、ている形をそのまま持つ（「聞くしている」を作らないため） */
+   bank:{label:"言葉を借りる（自然な動き）",
+         words:["聞いている","つないでいる","整えている","比べている","深めている","始めている","守っている","伝えている","改善している","見通している"]}},
+  {key:"glad",    no:"3", cls:"w3", ico:"gift",
+   title:"こうしてもらえると嬉しい", lead:"＿＿＿＿してもらえると嬉しい。",
+   sentence:function(v){
+     var s = tidyJoin(v);
+     if(!s) return "";
+     if(alreadyWhole(s, "嬉しい")) return s + "。";
+     if(endsWithAny(s, ["もらえる"])) return s + "と嬉しい。";
+     if(isVerbEnd(s))                 return s + "と嬉しい。";   /* 「ちゃんと見てくれる」→「…くれると嬉しい。」 */
+     if(endsWithAny(s, ["て","で"]))  return s + "もらえると嬉しい。";
+     return s + "してもらえると嬉しい。";
+   }},
+  {key:"warning", no:"4", cls:"w4", ico:"alert",
+   title:"取扱注意",               lead:"＿＿＿＿すると、ちょっと暴走しやすい。",
+   sentence:function(v){
+     var s = tidyJoin(v);
+     if(!s) return "";
+     if(alreadyWhole(s, "暴走しやすい")) return s + "。";
+     var to = (endsWithAny(s, ["する"]) || isVerbEnd(s)) ? "と" : "すると";
+     return s + to + "、ちょっと暴走しやすい。";
+   },
+   bank:{label:"言葉を借りる（取扱注意）",
+         words:["考えすぎる","急ぎすぎる","抱えすぎる","人に合わせすぎる","理想を上げすぎる","広げすぎる","決めきれない"]}},
+  {key:"recover", no:"5", cls:"w5", ico:"revive",
+   title:"復活ボタン",             lead:"困った時は、＿＿＿＿すると戻りやすい。",
+   sentence:function(v){
+     var s = tidyJoin(v);
+     if(!s) return "";
+     if(alreadyWhole(s, "戻りやすい")) return s + "。";
+     var to = (endsWithAny(s, ["する"]) || isVerbEnd(s)) ? "と" : "すると";
+     return "困った時は、" + s + to + "戻りやすい。";
+   },
+   bank:{label:"言葉を借りる（復活ボタン）",
+         words:["誰かと話す","歩く","一人になる","休む","見える化する","小さく始める","頼る","締切を置く","好きな場所へ行く"]}},
+  {key:"impact",  no:"6", cls:"w6", ico:"ripple",
+   title:"私がいると起きがち",     lead:"私がいると、＿＿＿＿が起きやすい。",
+   sentence:function(v){
+     var s = tidyJoin(v);
+     if(!s) return "";
+     if(alreadyWhole(s, "起きやすい")) return s + "。";
+     if(s.slice(-1) === "が") return "私がいると、" + s + "起きやすい。";
+     if(isVerbEnd(s))         return "私がいると、" + s + "。";
+     return "私がいると、" + s + "が起きやすい。";
+   }},
+  {key:"weekly",  no:"7", cls:"w7", ico:"calendar",
+   title:"今週のわたしの使い方",   lead:"今週、いつ・どこで・誰と・何をする？",
+   raw:true,
+   sentence:function(v){ return tidyRaw(v); }}
+];
+var GIFT = {key:"gift", no:"★", cls:"w8", ico:"star",
+  title:"ペアからもらったギフトの言葉",
+  lead:"「あなたの＿＿＿＿が素敵だなと思いました」",
+  raw:true,
+  sentence:function(v){ return tidyRaw(v); }};
+
+/* ---- 世界観の質問（仕様書 STEP 3 の Q1〜Q5。1問1画面） ---- */
+var Q1_MOOD = ["かわいい","かっこいい","やさしい","元気が出る","安心する","ワクワクする","大人っぽい","シンプル","ユーモア","自分らしい"];
+var Q2_WORLD = ["絵本 / 手描き / 水彩","ポップ / カラフル","シンプル / 余白多め / 北欧","都会的 / スタイリッシュ","ファンタジー / 魔法 / 宇宙","和風 / レトロ","自然 / 森 / 海 / 空","カフェ / 文房具 / ノート","ゲーム / 漫画 / アニメ系","仕事でも使える落ち着いた雰囲気","アイコンに合わせておまかせ"];
+var Q3_COLOR_WORDS = ["白","ベージュ","ネイビー","シルバー","パステル","くすみカラー","モノトーン","ビビッド","暖色","寒色"];
+var Q4_MOTIF = ["動物","花 / 植物","星 / 月 / 宇宙","本 / ノート / 文房具","コーヒー / 食べ物","音楽","PC / 仕事道具","旅 / 電車 / 海","ハート / リボン","特になし","アイコンからおまかせ"];
+var Q5_USE = ["スマホで保存","SNS投稿","プロフィール紹介","印刷","家族・仕事仲間へ見せる","PC壁紙","その他"];
+var RATIO = {
+  "スマホで保存":"4:5 縦",
+  "SNS投稿":"4:5 縦",
+  "プロフィール紹介":"1:1",
+  "印刷":"A4 縦（1:1.414）",
+  "家族・仕事仲間へ見せる":"4:5 縦",
+  "PC壁紙":"16:9 横",
+  "その他":"4:5 縦"
+};
+var ICON_USE = [
+  {v:"なるべくそのまま使いたい",               line:"アイコンはなるべくそのままの形で使ってください。"},
+  {v:"特徴を残して世界観に合わせて描き直したい", line:"アイコンの特徴を残したまま、希望する世界観に合わせて描き直してください。"},
+  {v:"ワンポイントとして使いたい",             line:"アイコンはワンポイントとして小さく添えてください。"},
+  {v:"おまかせ",                               line:"アイコンの使い方はおまかせします。"}
+];
+var PHOTO_USE = [
+  {v:"写真をそのまま使う",             line:"写真の場合は、そのまま使ってください。"},
+  {v:"イラスト化する",                 line:"写真の場合は、イラストに描き起こしてください。"},
+  {v:"顔そのものより雰囲気だけ反映する", line:"写真の場合は、顔そのものではなく雰囲気だけを反映してください。"}
+];
+
+/* ==========================================================================
+   state
+   ========================================================================== */
+var defaultState = {
+  stepIndex:0,
+  name:"",
+  top5:["","","","",""],
+  happy:"", habit:"", glad:"", warning:"", recover:"", impact:"", weekly:"", gift:"",
+  worksheetName:"",
+  iconData:"", iconName:"",
+  iconUse:"", photoUse:"",
+  mood:[], moodOther:"",
+  world:[], worldOther:"",
+  colors:"", avoidColors:"",
+  motifs:[], motifOther:"", avoidMotifs:"",
+  useCase:"", useCaseOther:"",
+  tagline:""
+};
+var state = loadState();
+
+function loadState(){
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return JSON.parse(JSON.stringify(defaultState));
+    var parsed = JSON.parse(raw);
+    var merged = JSON.parse(JSON.stringify(defaultState));
+    for(var k in merged){ if(Object.prototype.hasOwnProperty.call(parsed,k)) merged[k] = parsed[k]; }
+    if(!merged.top5 || merged.top5.length !== 5) merged.top5 = ["","","","",""];
+    return merged;
+  }catch(e){
+    return JSON.parse(JSON.stringify(defaultState));
+  }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch(e){ /* 保存できなくても入力は続けられる */ }
+}
+function resetAll(){
+  if(!window.confirm("入力した内容とアイコンを、すべて消します。よろしいですか？")) return;
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  state = JSON.parse(JSON.stringify(defaultState));
+  saveState();
+  render();
+  window.scrollTo(0,0);
+}
+
+/* ==========================================================================
+   ステップ
+   ========================================================================== */
+var STEPS = [
+  {id:"welcome",   label:"はじめに"},
+  {id:"icon",      label:"アイコン"},
+  {id:"torisetsu", label:"トリセツの中身"},
+  {id:"q1",        label:"世界観 1/5"},
+  {id:"q2",        label:"世界観 2/5"},
+  {id:"q3",        label:"世界観 3/5"},
+  {id:"q4",        label:"世界観 4/5"},
+  {id:"q5",        label:"世界観 5/5"},
+  {id:"intro",     label:"短い紹介文"},
+  {id:"confirm",   label:"確認"},
+  {id:"done",      label:"AIへ渡す"}
+];
+function clampStepIndex(){
+  if(!(state.stepIndex >= 0)) state.stepIndex = 0;
+  if(state.stepIndex >= STEPS.length) state.stepIndex = STEPS.length - 1;
+}
+function goNext(){
+  var nextIndex = Math.min(STEPS.length-1, state.stepIndex+1);
+  /* 確認 → 完成 だけは、条件を満たすまで進まない */
+  if(STEPS[nextIndex].id === "done" && !canBuild()){ render(); return; }
+  state.stepIndex = nextIndex; saveState(); render(); window.scrollTo(0,0);
+}
+function goPrev(){ state.stepIndex = Math.max(0, state.stepIndex-1); saveState(); render(); window.scrollTo(0,0); }
+function goTo(id){
+  for(var i=0;i<STEPS.length;i++){ if(STEPS[i].id === id){ state.stepIndex = i; break; } }
+  saveState(); render(); window.scrollTo(0,0);
+}
+
+/* 画面ごとに品質を測るための入り口。
+   ?step=3 でも <html data-step="3"> でも同じ画面が開く
+   （測定コマンドがクエリ付きURLを受け取れないので、属性側も見る）。 */
+function forcedStep(){
+  var q = null;
+  try{ q = new URLSearchParams(window.location.search).get("step"); }catch(e){}
+  if(!q) q = document.documentElement.getAttribute("data-step");
+  if(!q) return null;
+  var n = parseInt(q,10);
+  if(!isNaN(n) && n >= 1 && n <= STEPS.length) return n - 1;
+  for(var i=0;i<STEPS.length;i++){ if(STEPS[i].id === q) return i; }
+  return null;
+}
+
+/* ==========================================================================
+   小道具
+   ========================================================================== */
+function el(tag, attrs, children){
+  var e = document.createElement(tag);
+  attrs = attrs || {};
+  for(var k in attrs){
+    if(k === "class") e.className = attrs[k];
+    else if(k === "text") e.textContent = attrs[k];
+    else if(k.indexOf("on") === 0 && typeof attrs[k] === "function") e.addEventListener(k.slice(2), attrs[k]);
+    else if(attrs[k] !== null && attrs[k] !== undefined) e.setAttribute(k, attrs[k]);
+  }
+  (children || []).forEach(function(c){
+    if(c === null || c === undefined) return;
+    if(typeof c === "string") e.appendChild(document.createTextNode(c));
+    else e.appendChild(c);
+  });
+  return e;
+}
+function card(children, extraClass){
+  return el("div", {class:"card" + (extraClass ? " " + extraClass : "")}, children);
+}
+function t(v){ return (v === null || v === undefined) ? "" : String(v).trim(); }
+function has(v){ return t(v).length > 0; }
+function joinAll(arr, other){
+  var xs = (arr || []).slice();
+  if(has(other)) xs.push(t(other));
+  return xs.join("、");
+}
+function navRow(opts){
+  opts = opts || {};
+  var kids = [];
+  if(opts.showBack !== false){
+    kids.push(el("button", {class:"btn btn-ghost", type:"button",
+      onclick:function(){ opts.onBack ? opts.onBack() : goPrev(); }}, [icon("back"), "もどる"]));
+  }
+  var next = el("button", {class:"btn btn-primary", type:"button",
+    onclick:function(){ opts.onNext ? opts.onNext() : goNext(); }},
+    [opts.nextLabel || "つぎへ", icon("next")]);
+  if(opts.nextDisabled) next.disabled = true;
+  kids.push(next);
+  return el("div", {class:"btnrow"}, kids);
+}
+function chipList(options, isOn, onToggle, extraClass){
+  var ul = el("ul", {class:"chips"});
+  options.forEach(function(opt){
+    var on = isOn(opt);
+    var li = el("li");
+    var btn = el("button", {
+      class:"chip" + (on ? " on" : "") + (extraClass ? " " + extraClass : ""),
+      type:"button",
+      "aria-pressed": on ? "true" : "false",
+      onclick:function(){ onToggle(opt); }
+    }, [on ? icon("check","ico-sm") : null, opt]);
+    li.appendChild(btn);
+    ul.appendChild(li);
+  });
+  return ul;
+}
+function toggleIn(arr, v){
+  var i = arr.indexOf(v);
+  if(i > -1) arr.splice(i,1); else arr.push(v);
+}
+function filledCount(){
+  var n = 0;
+  ITEMS.forEach(function(it){ if(has(state[it.key])) n++; });
+  if(has(state.gift)) n++;
+  return n;
+}
+/* プロンプトを作ってよいか。アイコン1枚＋トリセツ8欄のどれか1つ。
+   3項目を必須にはしない（空欄を肯定するのが仕様の芯）。 */
+function canBuild(){ return has(state.iconData) && filledCount() >= 1; }
+function gateReasons(){
+  var out = [];
+  if(!has(state.iconData)) out.push({msg:"アイコンを1枚貼ると、プロンプトを作れます。", to:"icon", label:"アイコンを貼りに行く", ico:"upload"});
+  if(filledCount() < 1)    out.push({msg:"トリセツの言葉を1つ書くと、プロンプトを作れます。", to:"torisetsu", label:"書きに戻る", ico:"pen"});
+  return out;
+}
+/* 実際にプロンプトへ入る1文。画面にも同じものを出す */
+function assembledLine(it){
+  var v = state[it.key];
+  if(!has(v)) return "";
+  return it.sentence(v);
+}
+
+/* ==========================================================================
+   最終プロンプト
+   空欄は行ごと消す。足りない言葉をAIに埋めさせる指示は、1行も書かない。
+   ========================================================================== */
+function iconTreatmentLines(){
+  var out = [];
+  for(var i=0;i<ICON_USE.length;i++){ if(ICON_USE[i].v === state.iconUse) out.push(ICON_USE[i].line); }
+  for(var j=0;j<PHOTO_USE.length;j++){ if(PHOTO_USE[j].v === state.photoUse) out.push(PHOTO_USE[j].line); }
+  if(!out.length) out.push("アイコンの使い方はおまかせします。");
+  return out;
+}
+function torisetsuBody(){
+  var out = [];
+  ITEMS.forEach(function(it){
+    var v = t(state[it.key]);
+    if(!v) return;
+    if(out.length) out.push("");
+    out.push(it.no + ". " + it.title);
+    out.push(it.sentence(v));
+  });
+  return out;
+}
+function buildPrompt(){
+  var L = [];
+  var push = function(s){ L.push(s); };
+  var line = function(label, value){ if(has(value)) L.push(label + t(value)); };
+
+  push("あなたは、本人らしさを引き出して「わたしのトリセツ」を1枚の画像に仕上げるデザイナーです。");
+  push("");
+  push("添付した画像を確認してください。");
+  push("- Image A：本人のアイコン");
+  push("- Image B：おけもんの完成見本（構成・完成度の参考）");
+  if(has(state.worksheetName)) push("- Image C：記入済みワークシート");
+  push("");
+  push("【この画像制作の目的】");
+  push("ストレングスファインダーの資質説明画像ではありません。");
+  push("本人が実体験から見つけた「自分の扱い方」を、親しみやすく保存したくなる1枚のトリセツへ変換してください。");
+  push("");
+  push("添付した「おけもんのトリセツ画像」は、情報の整理方法、親しみやすさ、完成度、レイアウトの参考です。");
+  push("森、カピバラ、インコ、植物、配色、画風をそのままコピーしないでください。");
+  push("今回の本人のアイコン、好きな色、希望する世界観、モチーフを最優先し、その人専用のデザインにしてください。");
+
+  var top5 = (state.top5 || []).map(t).filter(has).join("・");
+  if(has(state.name) || has(top5)){
+    push("");
+    push("【本人】");
+    line("名前：", state.name);
+    line("上位5資質：", top5);
+  }
+
+  push("");
+  push("【アイコンの扱い】");
+  iconTreatmentLines().forEach(push);
+
+  var mood = joinAll(state.mood, state.moodOther);
+  var world = joinAll(state.world, state.worldOther);
+  var motifs = joinAll(state.motifs, state.motifOther);
+  var useCase = state.useCase === "その他" ? (has(state.useCaseOther) ? t(state.useCaseOther) : "その他") : t(state.useCase);
+  if(has(mood) || has(world) || has(state.colors) || has(state.avoidColors) || has(motifs) || has(state.avoidMotifs) || has(useCase)){
+    push("");
+    push("【本人が希望する世界観】");
+    line("感じたい印象：", mood);
+    line("世界観：", world);
+    line("好きな色：", state.colors);
+    line("避けたい色：", state.avoidColors);
+    line("入れたいモチーフ：", motifs);
+    line("避けたいモチーフ：", state.avoidMotifs);
+    line("用途：", useCase);
+  }
+
+  var body = torisetsuBody();
+  if(body.length){
+    push("");
+    push("【トリセツ本文】");
+    body.forEach(push);
+  }
+
+  if(has(state.gift)){
+    push("");
+    push("【ペアからもらったギフトの言葉】");
+    push(tidyRaw(state.gift));
+  }
+
+  push("");
+  push("【紹介文】");
+  if(has(state.tagline)){
+    push("本人が書いた一言：" + t(state.tagline));
+    push("この言葉を活かして、上部に短く入れてください。");
+    push("本人が書いていない性格や価値を創作しないでください。");
+  }else{
+    push("本人の入力から2〜3案考え、その中で最も自然な1案を上部に短く入れてください。");
+    push("本人が書いていない性格や価値を創作しないでください。");
+  }
+
+  push("");
+  push("【デザイン原則】");
+  push("- Image A のアイコンを見た瞬間に本人のカードだと分かること");
+  push("- アイコンの色・線・表情・キャラクター性をデザインの起点にする");
+  push("- 主役キャラクターは1人として一貫性を保つ");
+  push("- 各セクションで表情やポーズを少し変えてよい");
+  push("- 本人の世界観に合う背景と装飾を選ぶ");
+  push("- 全員を同じテンプレートにしない");
+  push("- 資質名だけから本人像を決めつけない");
+  push("- 空欄だった項目を勝手に作らない");
+  push("- 長文は意味と本人らしい口調を残し、画像に収まる長さへ短くしてよい");
+  push("- 日本語の可読性を最優先する");
+  push("- スマホでも見出しが読める");
+  push("- 情報を詰め込みすぎず余白を残す");
+
+  push("");
+  push("【タイトル】");
+  push("「" + (has(state.name) ? t(state.name) : "わたし") + "のトリセツ」");
+  if(has(top5)){
+    push("");
+    push("タイトル付近に");
+    push("「上位5資質：" + top5 + "」");
+    push("を表示してください。");
+  }
+
+  push("");
+  push("【下部メッセージ】");
+  push("「この取扱説明書は、まだ第一稿。」");
+  push("「使ってみる → 気づく → 更新する。このトリセツは、あなたと一緒に育ちます。」");
+
+  push("");
+  push("【出力】");
+  push("- 1枚で完結");
+  push("- 高解像度");
+  push("- 日本語をできる限り正確に表示");
+  push(has(useCase) && RATIO[state.useCase] ? "- 用途に合う縦横比（" + RATIO[state.useCase] + "）" : "- 用途に合う縦横比");
+  push("- 保存したくなる完成度");
+  push("");
+  push("そのまま画像を生成してください。");
+
+  return L.join("\n");
+}
+
+/* ==========================================================================
+   コピー・保存
+   ========================================================================== */
+function copyText(text, statusEl, fallbackTa){
+  function ok(){ statusEl.textContent = "コピーしました。ChatGPT等の入力欄に貼り付けてください。"; }
+  function fail(){
+    statusEl.textContent = "自動コピーができませんでした。下の枠の文章を選んでコピーしてください。";
+    if(fallbackTa){
+      fallbackTa.style.display = "block";
+      fallbackTa.value = text;
+      fallbackTa.focus();
+      fallbackTa.select();
+    }
+  }
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, fail);
+      return;
+    }
+    throw new Error("clipboard api なし");
+  }catch(e){
+    try{
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.top = "-1000px";
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      var done = document.execCommand("copy");
+      document.body.removeChild(ta);
+      if(done) ok(); else fail();
+    }catch(e2){ fail(); }
+  }
+}
+function saveTxt(text, statusEl){
+  try{
+    var blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = (has(state.name) ? t(state.name) : "わたし") + "のトリセツ_画像生成プロンプト.txt";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+    statusEl.textContent = "TXTを保存しました。";
+  }catch(e){
+    statusEl.textContent = "TXTの保存ができませんでした。プロンプトをコピーして使ってください。";
+  }
+}
+
+/* ---- 画像を長辺512pxへ縮めてから持つ（原寸のまま保存すると容量上限を超える） ---- */
+function shrinkToDataUrl(file, cb){
+  var reader = new FileReader();
+  reader.onload = function(){
+    var img = new Image();
+    img.onload = function(){
+      try{
+        var max = 512;
+        var w = img.naturalWidth || img.width;
+        var h = img.naturalHeight || img.height;
+        var scale = Math.min(1, max / Math.max(w,h));
+        var cw = Math.max(1, Math.round(w*scale));
+        var ch = Math.max(1, Math.round(h*scale));
+        var cv = document.createElement("canvas");
+        cv.width = cw; cv.height = ch;
+        cv.getContext("2d").drawImage(img, 0, 0, cw, ch);
+        var out = cv.toDataURL("image/webp", 0.85);
+        if(out.indexOf("data:image/webp") !== 0) out = cv.toDataURL("image/png");
+        cb(out, reader.result);
+      }catch(e){ cb(reader.result, reader.result); }
+    };
+    img.onerror = function(){ cb("", ""); };
+    img.src = reader.result;
+  };
+  reader.onerror = function(){ cb("", ""); };
+  reader.readAsDataURL(file);
+}
+
+/* ==========================================================================
+   画面
+   ========================================================================== */
+var mainEl = document.getElementById("main");
+var progressFill = document.getElementById("progressFill");
+var stepLabel = document.getElementById("stepLabel");
+
+function updateProgress(){
+  var pct = Math.round((state.stepIndex / (STEPS.length - 1)) * 100);
+  progressFill.style.width = pct + "%";
+  stepLabel.textContent = STEPS[state.stepIndex].label + "（" + (state.stepIndex + 1) + " / " + STEPS.length + "）";
+}
+/* 下部バーは、画面のいちばん上にいる間は貼りつけない（下の内容を隠さないため） */
+function syncStickyBar(){
+  var b = document.getElementById("stickybar");
+  if(!b) return;
+  if(window.scrollY > 40) b.classList.add("is-stuck");
+  else b.classList.remove("is-stuck");
+}
+window.addEventListener("scroll", syncStickyBar, {passive:true});
+
+function render(){
+  clampStepIndex();
+  /* 測定用の入り口（?step / data-step）から直接ここへ来ても、
+     条件を満たしていなければ完成画面は出さず、確認画面へ落とす。 */
+  if(STEPS[state.stepIndex].id === "done" && !canBuild()){
+    for(var k=0;k<STEPS.length;k++){ if(STEPS[k].id === "confirm"){ state.stepIndex = k; break; } }
+    saveState();
+  }
+  updateProgress();
+  mainEl.innerHTML = "";
+  var fn = RENDERERS[STEPS[state.stepIndex].id];
+  if(fn) mainEl.appendChild(fn());
+  syncStickyBar();
+}
+
+/* ---- STEP 0 ようこそ ---- */
+function renderWelcome(){
+  var wrap = document.createDocumentFragment();
+
+  wrap.appendChild(card([
+    el("span", {class:"eyebrow"}, ["ストレングス初心者オフ会"]),
+    el("h1", {}, ["わたしのトリセツを、あなたらしい1枚にしよう"]),
+    el("p", {class:"body"}, ["今日のオフ会で書いた「わたしのトリセツ 第一稿」を、画像生成AIに渡せる形にします。全部埋まっていなくて大丈夫です。3つ書けていれば十分です。"]),
+    el("p", {class:"body"}, ["紙に書いた言葉は、そのまま写してください。たとえば1番の欄に「信頼できる人といっぱい話している」と書いたなら、その文のままで大丈夫です。"]),
+    el("p", {class:"body"}, ["2〜3分の入力で、あなた専用の画像生成の指示文ができます。"])
+  ]));
+
+  var fig = el("figure", {class:"ref-figure"}, [
+    el("img", {src:"sf-watashi-no-torisetsu-maker-assets/okemon_torisetsu_reference_display.webp",
+               alt:"おけもんのトリセツ完成見本。カピバラのキャラクターが7つの項目それぞれに登場する1枚絵",
+               loading:"lazy", width:"1000", height:"1422"}),
+    el("figcaption", {class:"ref-cap"}, ["完成見本：おけもんのトリセツ（カピバラ版）"])
+  ]);
+  wrap.appendChild(card([
+    el("h2", {class:"question"}, ["できあがりの見本を、先に見ておきます"]),
+    fig,
+    el("div", {class:"caution"}, [
+      el("p", {}, [el("strong", {}, ["この画像は 完成度・情報整理・親しみやすさの参考 です。"])]),
+      el("p", {}, ["森・カピバラ・インコ・色を真似する必要はありません。"]),
+      el("p", {}, ["あなたのアイコンと好きな世界観から、あなた専用のデザインを作ります。"])
+    ]),
+    el("h3", {style:"margin-top:20px;"}, ["同じ仕組みで、こう変わります"]),
+    el("p", {class:"lead-sm"}, ["選んだ世界観しだいで、見た目はここまで変わります。下の3枚は雰囲気の見本です。"]),
+    sampleRow()
+  ]));
+
+  wrap.appendChild(el("div", {class:"btnrow btnrow-stack"}, [
+    el("button", {class:"btn btn-primary", type:"button", onclick:goNext}, ["はじめます", icon("next")])
+  ]));
+
+  return wrap;
+}
+function sampleCard(cls, ico, title, cap){
+  return el("div", {class:"sample " + cls}, [
+    el("div", {class:"sample-art"}, [
+      icon(ico, "ico-lg"),
+      el("span", {class:"sample-title"}, [title]),
+      el("span", {class:"sample-bars", "aria-hidden":"true"}, [el("i"), el("i"), el("i")])
+    ]),
+    el("p", {class:"sample-cap"}, [cap])
+  ]);
+}
+function sampleRow(){
+  return el("div", {class:"samples"}, [
+    sampleCard("sm-city", "star",   "ミナトのトリセツ", "都会的"),
+    sampleCard("sm-pop",  "bubble", "はなのトリセツ",   "ポップ"),
+    sampleCard("sm-book", "leaf",   "そらのトリセツ",   "絵本・水彩")
+  ]);
+}
+
+/* ---- STEP 1 アイコン ---- */
+function renderIcon(){
+  var wrap = document.createDocumentFragment();
+  var body = [];
+
+  body.push(el("span", {class:"eyebrow"}, [icon("image","ico-sm"), "STEP 1"]));
+  body.push(el("h2", {class:"question"}, ["まず、あなたのアイコンを貼ってね。"]));
+  body.push(el("p", {class:"lead-sm"}, ["SNSで普段使っている画像がおすすめです。PNG・JPG・WEBPに対応しています。"]));
+
+  var fileInput = el("input", {type:"file", accept:"image/png,image/jpeg,image/webp", class:"visually-hidden", id:"iconInput"});
+  var label = el("label", {class:"drop", for:"iconInput"}, [
+    icon("upload","ico-lg"),
+    el("p", {class:"drop-title"}, ["画像を選ぶ"]),
+    el("p", {class:"drop-sub"}, ["タップするとカメラロールやフォルダが開きます"])
+  ]);
+  var previewHolder = el("div", {});
+  var errorHolder = el("div", {});
+
+  function showError(msg){
+    errorHolder.innerHTML = "";
+    if(!msg) return;
+    errorHolder.appendChild(el("p", {class:"file-error", role:"status"}, [msg]));
+  }
+  function drawPreview(){
+    previewHolder.innerHTML = "";
+    if(!has(state.iconData)) return;
+    previewHolder.appendChild(el("div", {class:"preview-row"}, [
+      el("img", {src:state.iconData, alt:"選んだアイコンのプレビュー"}),
+      el("div", {class:"preview-meta"}, [
+        el("p", {class:"sum-key"}, ["選んだファイル"]),
+        el("p", {class:"sum-val"}, [t(state.iconName) || "（名前なし）"])
+      ])
+    ]));
+  }
+  fileInput.addEventListener("change", function(){
+    var f = fileInput.files && fileInput.files[0];
+    if(!f) return;
+    showError("");
+    shrinkToDataUrl(f, function(dataUrl){
+      if(!dataUrl){
+        showError("この画像は読み込めませんでした。PNG / JPG / WEBP を選んでください。");
+        return;
+      }
+      state.iconData = dataUrl;
+      state.iconName = f.name;
+      saveState();
+      drawPreview();
+    });
+  });
+  body.push(fileInput);
+  body.push(label);
+  body.push(errorHolder);
+  body.push(previewHolder);
+  drawPreview();
+
+  wrap.appendChild(card(body));
+
+  wrap.appendChild(card([
+    el("h3", {}, ["このアイコンを、どう使いたいですか？"]),
+    chipList(ICON_USE.map(function(o){ return o.v; }),
+      function(v){ return state.iconUse === v; },
+      function(v){ state.iconUse = (state.iconUse === v ? "" : v); saveState(); render(); })
+  ]));
+
+  wrap.appendChild(card([
+    el("h3", {}, ["写真を選んだ方は、ここも選べます"]),
+    el("p", {class:"lead-sm"}, ["イラストのアイコンを選んだ方は、ここは飛ばして大丈夫です。"]),
+    chipList(PHOTO_USE.map(function(o){ return o.v; }),
+      function(v){ return state.photoUse === v; },
+      function(v){ state.photoUse = (state.photoUse === v ? "" : v); saveState(); render(); })
+  ]));
+
+  wrap.appendChild(navRow({}));
+  return wrap;
+}
+
+/* ---- STEP 2 トリセツの中身 ---- */
+function renderTorisetsu(){
+  var wrap = document.createDocumentFragment();
+
+  var okHolder = el("div", {});
+  var barStatus = el("p", {class:"stickybar-status"});
+
+  function drawOk(){
+    var ready = filledCount() >= 3;
+    okHolder.innerHTML = "";
+    if(ready){
+      okHolder.appendChild(el("div", {class:"ok-note"}, [
+        icon("sprout"),
+        el("p", {}, ["もう第一稿は作れます。気になるところだけ足してもOK。"])
+      ]));
+    }
+    /* 下部バーの状態行。3つ目を書いた瞬間、いま見ている場所で切り替わる */
+    barStatus.innerHTML = "";
+    barStatus.className = "stickybar-status" + (ready ? " ready" : "");
+    if(ready){
+      barStatus.appendChild(icon("sprout"));
+      barStatus.appendChild(document.createTextNode("もう第一稿は作れます。気になるところだけ足してもOK。"));
+    }else{
+      barStatus.appendChild(icon("pen"));
+      barStatus.appendChild(document.createTextNode("書けたところだけで大丈夫です。空欄はそのままで進めます。"));
+    }
+  }
+
+  /* 名前・上位5資質 */
+  var nameInput = el("input", {type:"text", id:"nameInput", value:state.name, placeholder:"呼ばれたい名前", autocomplete:"off"});
+  nameInput.addEventListener("input", function(){ state.name = nameInput.value; saveState(); });
+
+  var domHolder = el("div", {class:"dom-chips"});
+  var legend = el("p", {class:"dom-legend"}, ["色は4つの資質グループ（実行力・影響力・人間関係構築力・戦略的思考力）を表しています。"]);
+  function drawDomChips(){
+    domHolder.innerHTML = "";
+    var any = false;
+    state.top5.forEach(function(v){
+      if(!has(v)) return;
+      any = true;
+      var d = domainOf(v);
+      domHolder.appendChild(el("span", {class:"dom-chip" + (d ? " " + d.cls : "")}, [
+        el("span", {class:"dot", "aria-hidden":"true"}), t(v)
+      ]));
+    });
+    domHolder.style.display = any ? "flex" : "none";
+    legend.style.display = any ? "block" : "none";   /* 資質が1つも無い時は凡例も出さない */
+  }
+
+  var rows = el("div", {class:"top5-grid"});
+  for(var i=0;i<5;i++){
+    (function(idx){
+      var inp = el("input", {type:"text", list:"themes", value:state.top5[idx],
+        placeholder:"資質名を入れるか、自分の言葉でも大丈夫です",
+        autocomplete:"off", "aria-label":"上位5資質の" + (idx+1) + "つめ"});
+      inp.addEventListener("input", function(){ state.top5[idx] = inp.value; saveState(); drawDomChips(); });
+      rows.appendChild(el("div", {class:"top5-row"}, [
+        el("span", {class:"top5-no", "aria-hidden":"true"}, [String(idx+1)]),
+        inp
+      ]));
+    })(i);
+  }
+  drawDomChips();
+
+  wrap.appendChild(okHolder);
+  wrap.appendChild(card([
+    el("span", {class:"eyebrow"}, [icon("pen","ico-sm"), "STEP 2"]),
+    el("h2", {class:"question"}, ["ワークシートの中身を、そのまま写します"]),
+    el("div", {class:"worksheet-row"}, [
+      el("img", {src:"sf-watashi-no-torisetsu-maker-assets/worksheet_display.webp",
+                 alt:"会場で配った印刷用ワークシート", loading:"lazy"}),
+      el("p", {}, ["会場で書いたこの紙の中身を入れます。空欄のままで大丈夫です。たとえば3つ書けていれば、第一稿として渡せます。"])
+    ]),
+    el("div", {class:"field"}, [
+      el("label", {for:"nameInput"}, ["お名前"]),
+      nameInput
+    ]),
+    el("div", {class:"field"}, [
+      el("h3", {style:"font-size:14px;color:var(--ink);margin:0 0 6px;"}, ["上位5資質"]),
+      rows,
+      domHolder,
+      legend
+    ])
+  ]));
+
+  /* 7項目＋ギフト。書いた文が、そのままの形でプロンプトへ入るところまで見せる */
+  var itemsCard = [
+    el("p", {class:"assembled-note"}, ["書いた言葉は、下の枠のとおりにプロンプトへ入ります。違っていたら、文ごと書き直して大丈夫です。"])
+  ];
+  ITEMS.concat([GIFT]).forEach(function(it){
+    var ta = el("textarea", {rows:"2", id:"ta-"+it.key, "aria-label":it.title});
+    ta.value = state[it.key];
+    var live = el("p", {class:"assembled", id:"live-"+it.key});
+    function drawLive(){
+      if(it.raw || !has(state[it.key])){ live.style.display = "none"; live.textContent = ""; return; }
+      live.style.display = "block";
+      live.innerHTML = "";
+      live.appendChild(document.createTextNode("こう入ります："));
+      live.appendChild(el("b", {}, [assembledLine(it)]));
+    }
+    ta.addEventListener("input", function(){ state[it.key] = ta.value; saveState(); drawOk(); drawLive(); });
+
+    var kids = [
+      el("div", {class:"item-head"}, [
+        it.key === "gift"
+          ? el("span", {class:"badge badge-star", "aria-hidden":"true"}, [icon("star","ico-sm")])
+          : el("span", {class:"badge", "aria-hidden":"true"}, [it.no]),
+        el("h3", {class:"item-title"}, [it.title]),
+        icon(it.ico)
+      ]),
+      el("p", {class:"item-lead"}, [it.lead]),
+      ta,
+      live
+    ];
+    drawLive();
+    if(it.bank){
+      var bank = el("div", {class:"bank"}, [ el("p", {class:"bank-label"}, [it.bank.label]) ]);
+      bank.appendChild(chipList(it.bank.words,
+        function(){ return false; },
+        function(w){
+          var cur = t(ta.value);
+          ta.value = cur ? cur + "、" + w : w;
+          state[it.key] = ta.value;
+          saveState();
+          drawOk();
+          drawLive();
+          ta.focus();
+        }, "chip-word"));
+      kids.push(bank);
+    }
+    itemsCard.push(el("div", {class:"item " + it.cls}, kids));
+  });
+  wrap.appendChild(card(itemsCard));
+
+  /* ワークシートの写真（保持はファイル名だけ） */
+  var wsInput = el("input", {type:"file", accept:"image/*,application/pdf", class:"visually-hidden", id:"wsInput"});
+  var wsName = el("p", {class:"sum-val"}, [has(state.worksheetName) ? t(state.worksheetName) : "まだ選んでいません"]);
+  wsInput.addEventListener("change", function(){
+    var f = wsInput.files && wsInput.files[0];
+    if(!f) return;
+    state.worksheetName = f.name;
+    saveState();
+    wsName.textContent = f.name;
+  });
+  wrap.appendChild(card([
+    el("h3", {}, ["ワークシートの写真も選べます（任意）"]),
+    el("p", {class:"lead-sm"}, ["あとでAIへ一緒に貼ると、読み取りの助けになります。このページでは中身を読みません。ファイル名だけ覚えておきます。"]),
+    wsInput,
+    el("label", {class:"btn btn-ghost", for:"wsInput"}, [icon("image"), "写真を選ぶ"]),
+    el("p", {class:"sum-key", style:"margin-top:12px;"}, ["選んだファイル"]),
+    wsName
+  ], "card-quiet"));
+
+  drawOk();
+  /* この画面は長い。もどる／つぎへと状態を、いつでも手の届く場所に置く */
+  wrap.appendChild(el("div", {class:"stickybar", id:"stickybar"}, [
+    barStatus,
+    el("div", {class:"btnrow"}, [
+      el("button", {class:"btn btn-ghost", type:"button", onclick:goPrev}, [icon("back"), "もどる"]),
+      el("button", {class:"btn btn-primary", type:"button", onclick:goNext}, ["つぎへ", icon("next")])
+    ])
+  ]));
+  return wrap;
+}
+
+/* ---- STEP 3 Q1〜Q5 ---- */
+function questionCard(eyebrow, question, hint, children, ico){
+  var kids = [
+    el("span", {class:"eyebrow"}, [ico ? icon(ico,"ico-sm") : null, eyebrow]),
+    el("h2", {class:"question"}, [question])
+  ];
+  if(hint) kids.push(el("p", {class:"lead-sm"}, [hint]));
+  return card(kids.concat(children));
+}
+function renderQ1(){
+  var wrap = document.createDocumentFragment();
+  var other = el("input", {type:"text", id:"moodOther", value:state.moodOther, placeholder:"ほかにあれば、自由に書いてください", autocomplete:"off"});
+  other.addEventListener("input", function(){ state.moodOther = other.value; saveState(); });
+  wrap.appendChild(questionCard("世界観 1/5",
+    "完成画像を見た時、どんな気持ちになれたら嬉しいですか？",
+    "できた1枚をスマホで開いた時を想像してみてください。いくつ選んでも大丈夫です。",
+    [
+      chipList(Q1_MOOD, function(v){ return state.mood.indexOf(v) > -1; },
+        function(v){ toggleIn(state.mood, v); saveState(); render(); }),
+      el("div", {class:"field", style:"margin-top:16px;"}, [
+        el("label", {for:"moodOther"}, ["自由に書く"]), other
+      ])
+    ], "heart"));
+  wrap.appendChild(navRow({}));
+  return wrap;
+}
+function renderQ2(){
+  var wrap = document.createDocumentFragment();
+  var other = el("input", {type:"text", id:"worldOther", value:state.worldOther, placeholder:"その他（例：夜の街、レトロゲーム風）", autocomplete:"off"});
+  other.addEventListener("input", function(){ state.worldOther = other.value; saveState(); });
+  wrap.appendChild(questionCard("世界観 2/5",
+    "好きな世界観はどれですか？",
+    "いくつ選んでも大丈夫です。決めきれない時は「アイコンに合わせておまかせ」を選んでください。",
+    [
+      chipList(Q2_WORLD, function(v){ return state.world.indexOf(v) > -1; },
+        function(v){
+          if(v === "アイコンに合わせておまかせ"){
+            state.world = (state.world.indexOf(v) > -1) ? [] : [v];
+          }else{
+            var i = state.world.indexOf("アイコンに合わせておまかせ");
+            if(i > -1) state.world.splice(i,1);
+            toggleIn(state.world, v);
+          }
+          saveState(); render();
+        }),
+      el("div", {class:"field", style:"margin-top:16px;"}, [
+        el("label", {for:"worldOther"}, ["その他"]), other
+      ])
+    ], "palette"));
+  wrap.appendChild(navRow({}));
+  return wrap;
+}
+function renderQ3(){
+  var wrap = document.createDocumentFragment();
+  var like = el("input", {type:"text", id:"colorLike", value:state.colors, placeholder:"例：ネイビー、シルバー", autocomplete:"off"});
+  like.addEventListener("input", function(){ state.colors = like.value; saveState(); });
+  var avoid = el("input", {type:"text", id:"colorAvoid", value:state.avoidColors, placeholder:"例：暖色", autocomplete:"off"});
+  avoid.addEventListener("input", function(){ state.avoidColors = avoid.value; saveState(); });
+
+  function appendTo(input, key, w){
+    var cur = t(input.value);
+    input.value = cur ? cur + "、" + w : w;
+    state[key] = input.value;
+    saveState();
+  }
+  wrap.appendChild(questionCard("世界観 3/5",
+    "好きな色と、避けたい色はありますか？",
+    "たとえば「ネイビーとシルバー」のように、思いついた言葉で大丈夫です。空欄でもかまいません。",
+    [
+      el("div", {class:"field"}, [
+        el("label", {for:"colorLike"}, ["好きな色"]), like,
+        el("div", {class:"bank"}, [
+          el("p", {class:"bank-label"}, ["言葉を借りる"]),
+          chipList(Q3_COLOR_WORDS, function(){ return false; },
+            function(w){ appendTo(like, "colors", w); }, "chip-word")
+        ])
+      ]),
+      el("div", {class:"field"}, [
+        el("label", {for:"colorAvoid"}, ["避けたい色"]), avoid,
+        el("div", {class:"bank"}, [
+          el("p", {class:"bank-label"}, ["言葉を借りる"]),
+          chipList(Q3_COLOR_WORDS, function(){ return false; },
+            function(w){ appendTo(avoid, "avoidColors", w); }, "chip-word")
+        ])
+      ])
+    ], "droplet"));
+  wrap.appendChild(navRow({}));
+  return wrap;
+}
+function renderQ4(){
+  var wrap = document.createDocumentFragment();
+  var other = el("input", {type:"text", id:"motifOther", value:state.motifOther, placeholder:"例：カメラ、自転車", autocomplete:"off"});
+  other.addEventListener("input", function(){ state.motifOther = other.value; saveState(); });
+  var avoid = el("input", {type:"text", id:"motifAvoid", value:state.avoidMotifs, placeholder:"例：森・植物", autocomplete:"off"});
+  avoid.addEventListener("input", function(){ state.avoidMotifs = avoid.value; saveState(); });
+  wrap.appendChild(questionCard("世界観 4/5",
+    "画像に入れたいモチーフはありますか？",
+    "いくつ選んでも大丈夫です。たとえば「猫」「コーヒー」のように、好きなものを自由に足せます。",
+    [
+      chipList(Q4_MOTIF, function(v){ return state.motifs.indexOf(v) > -1; },
+        function(v){ toggleIn(state.motifs, v); saveState(); render(); }),
+      el("div", {class:"field", style:"margin-top:16px;"}, [
+        el("label", {for:"motifOther"}, ["自由に書く"]), other
+      ]),
+      el("div", {class:"field"}, [
+        el("label", {for:"motifAvoid"}, ["避けたいもの"]), avoid
+      ])
+    ], "shapes"));
+  wrap.appendChild(navRow({}));
+  return wrap;
+}
+function renderQ5(){
+  var wrap = document.createDocumentFragment();
+  var other = el("input", {type:"text", id:"useOther", value:state.useCaseOther, placeholder:"どこで使うか、書いてください", autocomplete:"off"});
+  other.addEventListener("input", function(){ state.useCaseOther = other.value; saveState(); });
+  var kids = [
+    chipList(Q5_USE, function(v){ return state.useCase === v; },
+      function(v){ state.useCase = (state.useCase === v ? "" : v); saveState(); render(); })
+  ];
+  if(state.useCase === "その他"){
+    kids.push(el("div", {class:"field", style:"margin-top:16px;"}, [
+      el("label", {for:"useOther"}, ["その他"]), other
+    ]));
+  }
+  if(has(state.useCase) && RATIO[state.useCase]){
+    kids.push(el("p", {class:"hint"}, ["この用途なら、縦横比は " + RATIO[state.useCase] + " をおすすめします。プロンプトにも書き込みます。"]));
+  }
+  wrap.appendChild(questionCard("世界観 5/5", "できた画像は、どこで使いますか？", "ひとつ選んでください。", kids, "phone"));
+  wrap.appendChild(navRow({}));
+  return wrap;
+}
+
+/* ---- STEP 4 短い紹介文 ---- */
+function renderIntro(){
+  var wrap = document.createDocumentFragment();
+  var ta = el("textarea", {rows:"2", id:"tagline", "aria-label":"一言でいうと？"});
+  ta.value = state.tagline;
+  ta.addEventListener("input", function(){ state.tagline = ta.value; saveState(); });
+  wrap.appendChild(card([
+    el("span", {class:"eyebrow"}, ["STEP 4"]),
+    el("h2", {class:"question"}, ["一言でいうと？"]),
+    el("p", {class:"lead-sm"}, ["浮かばなければ空欄のままで大丈夫です。空欄のときは、あなたが書いた言葉から2〜3案を考えるようAIへ頼みます。"]),
+    ta
+  ]));
+  wrap.appendChild(navRow({}));
+  return wrap;
+}
+
+/* ---- STEP 5 確認（長文はここで直せる） ---- */
+function domChipRow(list){
+  var row = el("div", {class:"dom-chips"});
+  (list || []).forEach(function(v){
+    if(!has(v)) return;
+    var d = domainOf(v);
+    row.appendChild(el("span", {class:"dom-chip" + (d ? " " + d.cls : "")}, [
+      el("span", {class:"dot", "aria-hidden":"true"}), t(v)
+    ]));
+  });
+  return row;
+}
+function sumRow(key, value){
+  return el("div", {class:"sum-row"}, [
+    el("p", {class:"sum-key"}, [key]),
+    el("p", {class:"sum-val"}, [has(value) ? t(value) : "（未記入）"])
+  ]);
+}
+function renderConfirm(){
+  var wrap = document.createDocumentFragment();
+
+  wrap.appendChild(card([
+    el("span", {class:"eyebrow"}, ["STEP 5"]),
+    el("h2", {class:"question"}, ["この内容でプロンプトを作ります"]),
+    el("p", {class:"lead-sm"}, ["気になるところは、ここで直せます。空欄はそのままで大丈夫です。"])
+  ]));
+
+  /* 名前・アイコン・資質 */
+  var nameInput = el("input", {type:"text", id:"cName", value:state.name, autocomplete:"off"});
+  nameInput.addEventListener("input", function(){ state.name = nameInput.value; saveState(); });
+  var iconBlock = has(state.iconData)
+    ? el("div", {class:"preview-row"}, [
+        el("img", {src:state.iconData, alt:"選んだアイコンのプレビュー"}),
+        el("div", {class:"preview-meta"}, [
+          el("p", {class:"sum-key"}, ["アイコン"]),
+          el("p", {class:"sum-val"}, [t(state.iconName) || "（名前なし）"])
+        ])
+      ])
+    : el("p", {class:"sum-val"}, ["まだ貼っていません"]);
+
+  wrap.appendChild(card([
+    el("div", {class:"sum-head"}, [
+      el("h3", {}, ["お名前とアイコンを見ておきます"]),
+      el("button", {class:"btn btn-ghost btn-sm", type:"button", onclick:function(){ goTo("icon"); }}, [icon("pen","ico-sm"), "アイコンを直す"])
+    ]),
+    el("div", {class:"field"}, [ el("label", {for:"cName"}, ["お名前"]), nameInput ]),
+    iconBlock,
+    el("div", {class:"sum-row"}, [
+      el("p", {class:"sum-key"}, ["上位5資質"]),
+      state.top5.map(t).filter(has).length
+        ? domChipRow(state.top5)
+        : el("p", {class:"sum-val"}, ["（未記入）"])
+    ])
+  ]));
+
+  /* トリセツ本文 */
+  var itemKids = [ el("h3", {}, ["書いた言葉は、ここで直せます"]) ];
+  ITEMS.concat([GIFT]).forEach(function(it){
+    var ta = el("textarea", {rows:"2", id:"c-"+it.key, "aria-label":it.title});
+    ta.value = state[it.key];
+    ta.addEventListener("input", function(){ state[it.key] = ta.value; saveState(); });
+    itemKids.push(el("div", {class:"item " + it.cls}, [
+      el("div", {class:"item-head"}, [
+        it.key === "gift"
+          ? el("span", {class:"badge badge-star", "aria-hidden":"true"}, [icon("star","ico-sm")])
+          : el("span", {class:"badge", "aria-hidden":"true"}, [it.no]),
+        el("h3", {class:"item-title"}, [it.title])
+      ]),
+      ta
+    ]));
+  });
+  wrap.appendChild(card(itemKids));
+
+  /* 世界観 */
+  var useCaseText = state.useCase === "その他"
+    ? (has(state.useCaseOther) ? t(state.useCaseOther) : "その他")
+    : t(state.useCase);
+  wrap.appendChild(card([
+    el("div", {class:"sum-head"}, [
+      el("h3", {}, ["選んだ世界観は、これでいいですか？"]),
+      el("button", {class:"btn btn-ghost btn-sm", type:"button", onclick:function(){ goTo("q1"); }}, [icon("pen","ico-sm"), "質問に戻る"])
+    ]),
+    sumRow("感じたい印象", joinAll(state.mood, state.moodOther)),
+    sumRow("世界観", joinAll(state.world, state.worldOther)),
+    sumRow("好きな色", state.colors),
+    sumRow("避けたい色", state.avoidColors),
+    sumRow("入れたいモチーフ", joinAll(state.motifs, state.motifOther)),
+    sumRow("避けたいモチーフ", state.avoidMotifs),
+    sumRow("用途", useCaseText),
+    sumRow("ワークシートの写真", state.worksheetName),
+    sumRow("一言でいうと", state.tagline)
+  ]));
+
+  /* プロンプトを作れる条件は「アイコン1枚」＋「トリセツ8欄のどれか1つ」。
+     足りない理由の数だけ、案内文とその場所へ戻るボタンを出す。
+     残り項目数は数えない（空欄を肯定するのが仕様の芯）。 */
+  var ready = canBuild();
+  var nav = navRow({nextLabel:"プロンプトを作る", nextDisabled:!ready,
+    onNext:function(){ if(canBuild()) goNext(); else render(); }});
+  var kids = [nav];
+  if(!ready){
+    var msgBox = el("div", {});
+    var btnBox = el("div", {class:"btnrow btnrow-stack"});
+    gateReasons().forEach(function(r){
+      msgBox.appendChild(el("p", {class:"hint"}, [r.msg]));
+      btnBox.appendChild(el("button", {class:"btn btn-ghost", type:"button",
+        onclick:function(){ goTo(r.to); }}, [icon(r.ico), r.label]));
+    });
+    kids.unshift(msgBox);
+    kids.push(btnBox);
+  }
+  wrap.appendChild(el("div", {}, kids));
+  return wrap;
+}
+
+/* ---- STEP 6 AIへ渡す ---- */
+function renderDone(){
+  /* ?step=11 の直開きや、古い保存状態からここへ来た場合の受け止め。
+     render() 側でも落としているが、この関数単体でも完成画面は描かない。 */
+  if(!canBuild()) return renderConfirm();
+  var wrap = document.createDocumentFragment();
+  var prompt = buildPrompt();
+
+  wrap.appendChild(card([
+    el("span", {class:"eyebrow"}, ["STEP 6"]),
+    el("h1", {}, ["できた！あとはAIに渡すだけ"]),
+    el("p", {class:"body"}, ["下の3つをChatGPT等の新しいチャットに貼れば、あなた専用の1枚ができます。ファイルの添付は、ご自身で行ってください。"])
+  ]));
+
+  var setList = el("ul", {class:"set-list"}, [
+    el("li", {}, [el("span", {class:"set-no", "aria-hidden":"true"}, ["1"]), el("span", {}, ["あなたのアイコン"])]),
+    el("li", {}, [el("span", {class:"set-no", "aria-hidden":"true"}, ["2"]), el("span", {}, ["おけもんの完成見本画像"])]),
+    el("li", {}, [el("span", {class:"set-no", "aria-hidden":"true"}, ["3"]), el("span", {}, ["下の専用プロンプト"])])
+  ]);
+  var setKids = [ el("h3", {}, ["ChatGPT等へ貼るもの"]), setList ];
+  if(has(state.worksheetName)){
+    setKids.push(el("p", {class:"hint"}, ["ワークシートの写真「" + t(state.worksheetName) + "」も、一緒に貼るとさらに安心です。"]));
+  }else{
+    setKids.push(el("p", {class:"hint"}, ["ワークシートの写真がある場合は、一緒に貼るとさらに安心です。"]));
+  }
+  wrap.appendChild(card(setKids));
+
+  /* 手元にあるもの */
+  var haveKids = [ el("h3", {}, ["見本の画像も、保存しておきます"]) ];
+  if(has(state.iconData)){
+    haveKids.push(el("div", {class:"preview-row"}, [
+      el("img", {src:state.iconData, alt:"あなたのアイコン"}),
+      el("div", {class:"preview-meta"}, [
+        el("p", {class:"sum-key"}, ["あなたのアイコン"]),
+        el("p", {class:"sum-val"}, [t(state.iconName) || "（名前なし）"])
+      ])
+    ]));
+  }
+  haveKids.push(el("div", {class:"btnrow btnrow-stack"}, [
+    el("a", {class:"btn btn-ghost", href:"sf-watashi-no-torisetsu-maker-assets/okemon_torisetsu_reference.jpg",
+             download:"okemon_torisetsu_reference.jpg"}, [icon("download"), "おけもん完成見本を保存"])
+  ]));
+  wrap.appendChild(card(haveKids));
+
+  /* プロンプト */
+  var status = el("p", {class:"status", role:"status"});
+  var fallback = el("textarea", {class:"fallback-ta", "aria-label":"コピー用のプロンプト"});
+  var pre = el("pre", {class:"prompt-box"}, [prompt]);
+  wrap.appendChild(card([
+    el("h3", {}, ["これが、あなた専用のプロンプトです"]),
+    el("div", {class:"btnrow btnrow-stack"}, [
+      el("button", {class:"btn btn-primary", type:"button", onclick:function(){ copyText(prompt, status, fallback); }}, [icon("copy"), "プロンプトをコピー"]),
+      el("button", {class:"btn btn-ghost", type:"button", onclick:function(){ saveTxt(prompt, status); }}, [icon("download"), "TXTで保存"])
+    ]),
+    status,
+    fallback,
+    pre
+  ]));
+
+  wrap.appendChild(card([
+    el("h3", {}, ["新しいチャットを開きます"]),
+    el("p", {class:"lead-sm"}, ["新しいチャットを開いて、上の3点を貼り付けてください。"]),
+    el("div", {class:"btnrow btnrow-stack"}, [
+      el("a", {class:"btn btn-primary", href:"https://chatgpt.com/", target:"_blank", rel:"noopener"}, [icon("external"), "ChatGPTで新しいチャットを開く"])
+    ]),
+    el("details", {}, [
+      el("summary", {}, ["うまく貼れない時は"]),
+      el("p", {}, ["「プロンプトをコピー」を押したあと、チャットの入力欄を長押しして貼り付けてください。画像は、入力欄のクリップのマークから選べます。"])
+    ])
+  ]));
+
+  wrap.appendChild(card([
+    el("h3", {}, ["この取扱説明書は、まだ第一稿。"]),
+    el("p", {class:"body"}, ["使ってみる → 気づく → 更新する。このトリセツは、あなたと一緒に育ちます。"]),
+    el("div", {class:"btnrow"}, [
+      el("button", {class:"btn btn-ghost", type:"button", onclick:goPrev}, [icon("back"), "内容を直す"])
+    ])
+  ], "card-quiet"));
+
+  return wrap;
+}
+
+var RENDERERS = {
+  welcome:renderWelcome, icon:renderIcon, torisetsu:renderTorisetsu,
+  q1:renderQ1, q2:renderQ2, q3:renderQ3, q4:renderQ4, q5:renderQ5,
+  intro:renderIntro, confirm:renderConfirm, done:renderDone
+};
+
+/* ==========================================================================
+   起動
+   ========================================================================== */
+(function boot(){
+  var dl = document.getElementById("themes");
+  DOMAINS.forEach(function(d){
+    d.list.forEach(function(name){
+      dl.appendChild(el("option", {value:name}));
+    });
+  });
+  document.getElementById("resetBtn").addEventListener("click", resetAll);
+  var f = forcedStep();
+  if(f !== null) state.stepIndex = f;
+  render();
+})();
+
+})();
+</script>
+</body>
+</html>
