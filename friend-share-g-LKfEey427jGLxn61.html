@@ -70,7 +70,8 @@
     content:"";position:absolute;left:22px;top:-1px;width:46px;height:3px;background:var(--accent);
   }
   .cover-date{font-size:13px;letter-spacing:.06em;color:var(--ink-faint);}
-  .cover-label h1{margin-top:8px;font-size:clamp(24px,5.6vw,38px);}
+  /* 語中で折らない。切ってよい位置は本文の <wbr> だけに任せる（「はし／ごして」対策・実測） */
+  .cover-label h1{margin-top:8px;font-size:clamp(24px,5.6vw,38px);word-break:keep-all;}
   .cover-lead{margin-top:16px;max-width:33em;color:var(--ink-soft);font-size:15px;}
   .cover-credit{margin-top:14px;color:var(--ink-faint);}
   @media(min-width:720px){
@@ -87,7 +88,6 @@
   .sec-title::after{content:"";display:block;width:34px;height:2px;margin-top:12px;background:var(--accent);}
   .sec-lead{margin-top:20px;color:var(--ink-soft);}
   .sec-lead + .sec-lead{margin-top:12px;}
-  .sec-lead b{color:var(--ink);font-weight:700;}
 
   /* ========== 集合 ========== */
   #meet{padding:46px 0 54px;}
@@ -121,7 +121,8 @@
   .stop > p{margin-top:12px;color:var(--ink-soft);font-size:15px;}
   .stop > p.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;font-size:12.5px;}
   .links a{
-    display:inline-block;padding:5px 12px;border:1px solid var(--line);border-radius:2px;
+    /* 歩きながら片手で押す。padding 10px で高さ45.5px＝44pt以上（実測） */
+    display:inline-block;padding:10px 12px;border:1px solid var(--line);border-radius:2px;
     font-size:12.5px;font-weight:700;color:var(--ink);text-decoration:none;
     transition:border-color .2s ease,color .2s ease;
   }
@@ -158,7 +159,9 @@
   .ph-l{max-width:100%;}
   .pair{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px;}
   .pair figure{margin-top:0;}
-  @media(min-width:600px){.pair{grid-template-columns:0.85fr 1.15fr;gap:18px;align-items:start;}}
+  /* 列比は2枚の縦横比の比（横長2.92:1 と 4:3 → 2.92/1.33≒2.2）に合わせてある。
+     こうすると写真の高さがどの幅でも揃い、短いほうの下に穴が空かない（実測165px→0）。 */
+  @media(min-width:600px){.pair{grid-template-columns:1.37fr 0.63fr;gap:18px;align-items:start;}}
 
   /* 徒歩の区間 */
   .walk{display:flex;align-items:center;gap:12px;padding:16px 0 18px;margin:14px 0 0;border-top:1px solid var(--line-soft);}
@@ -263,7 +266,7 @@
   <div class="wrap">
     <div class="cover-label">
       <p class="cover-date">2026年9月13日（日）のしおり</p>
-      <h1>灘の酒蔵を3つはしごして、最後はみんなで乾杯します。</h1>
+      <h1>灘の酒蔵を<wbr>3つ<wbr>はしごして、<wbr>最後は<wbr>みんなで<wbr>乾杯します。</h1>
       <p class="cover-lead">予約は10人分、4か所ぜんぶ取れました。あとは9月13日（日）の12:30に、阪神「魚崎駅」の改札を出たところへ来てください。</p>
       <p class="cover-credit"><small>写真は菊正宗の菰樽です。当日ならんでいるとは限りません。</small></p>
     </div>
@@ -280,7 +283,8 @@
         <span>阪神「魚崎駅」の改札を出たところ</span>
       </div>
       <p class="sec-lead">お昼はそれぞれ済ませてから来てね。13:00の浜福鶴でいきなり試飲がはじまるので、何か食べておいたほうが体がラクです。</p>
-      <p class="sec-lead">10人そろったら浜福鶴まで歩きます。徒歩11分なので12:41ごろに着いて、予約の13:00まで19分くらい余ります。少し遅れる人がいても、この19分で吸収できます。</p>
+      <p class="sec-lead">10人そろったら浜福鶴まで歩きます。徒歩11分なので12:41ごろに着いて、予約の13:00まで19分くらい余ります。ちょっと遅れても大丈夫。</p>
+      <p class="sec-lead">遅れそうなときや、はぐれたときは、このしおりが届いた連絡先へ一言ください。</p>
       <figure class="shot shot-meet">
         <img src="./friend-share-g-LKfEey427jGLxn61-assets/meet-uozaki-station.webp" width="1200" height="900" alt="青空の下の阪神電車 魚崎駅の駅舎。駅名が大きく掲げられ、手前に自転車が並ぶ">
         <figcaption>阪神電車の魚崎駅です。この駅舎が目印になります。</figcaption>
@@ -291,8 +295,7 @@
   <section id="route">
     <div class="wrap">
       <h2 class="sec-title">当日の流れ</h2>
-      <p class="sec-lead">魚崎から御影へ、西に向かって歩くだけの一本道です。全部で約3.2km。あいだに4回止まるので、たぶん思っているより歩けます。</p>
-      <p class="sec-lead">ひとつだけ、14:50に気をつけてください。菊正宗の案内が目いっぱい50分かかった日は、白鶴の15:00まで移動の10分ぴったりで、余白がまったくありません。</p>
+      <p class="sec-lead">魚崎駅から浜福鶴までは海のほうへ下って、そこから先は御影までずっと西へ歩きます。全部で約3.2km。あいだに4回止まるので、たぶん思っているより歩けます。</p>
 
       <div class="caution">
         <strong>14:50になったら、白鶴へ歩き出します</strong>
@@ -351,9 +354,9 @@
               <b class="t1">予約済</b><b class="t2">10名</b>
             </span>
           </div>
-          <p>4か所のなかで案内が付くのはここだけです。無料試飲まで含めて40分から50分あるので、今日いちばんちゃんと酒蔵を見られる時間になると思います。</p>
-          <p>終わったら14:50。ここから白鶴までは徒歩10分なので、寄り道はまた今度にしてください。</p>
-          <figure class="ph-l">
+          <p>酒蔵3つのなかで案内が付くのはここだけです。無料試飲まで含めて40分から50分あるので、今日いちばんちゃんと酒蔵を見られる時間になると思います。</p>
+          <p>終わったら14:50。すぐ白鶴へ歩きます。</p>
+          <figure class="ph-m">
             <img src="./friend-share-g-LKfEey427jGLxn61-assets/official-kikumasamune.webp" width="1280" height="800" alt="焼杉板の壁と瓦屋根が印象的な菊正宗酒造記念館の外観">
             <figcaption><a href="https://www.kikumasamune.co.jp/kinenkan/" target="_blank" rel="noopener">写真：菊正宗 公式サイトより</a></figcaption>
           </figure>
@@ -384,7 +387,7 @@
             </figure>
             <figure>
               <img src="./friend-share-g-LKfEey427jGLxn61-assets/hakutsuru-kuranonaka.webp" width="1600" height="1200" alt="白鶴酒造資料館の館内展示。木の桶や麹蓋が手前に置かれ、奥に杜氏姿の人形が並ぶ">
-              <figcaption>白鶴酒造資料館の館内展示です。</figcaption>
+              <figcaption>館内の展示です。</figcaption>
             </figure>
           </div>
           <p class="links">
@@ -407,8 +410,9 @@
             </span>
           </div>
           <p>16:00に全員いっせいスタートで、そこから90分あります。ここが今日の締めです。</p>
-          <p>完全予約制のお店なので、開始から30分を過ぎるとキャンセル扱いになることがあります。白鶴を15:45に出れば間に合う計算です。</p>
-          <figure class="ph-m">
+          <p>完全予約制なので、開始から30分を過ぎるとキャンセル扱いになることがあります。白鶴を15:45に出れば間に合います。</p>
+          <p>灘五郷酒所は、予約と同時にオンラインで先に払う仕組みのお店です。そのぶんの精算は、当日幹事に聞いてください。</p>
+          <figure class="ph-l">
             <img src="./friend-share-g-LKfEey427jGLxn61-assets/official-nadagogo.webp" width="1200" height="802" alt="灘五郷5つの郷の枡で味わう飲み比べセットと小皿料理">
             <figcaption><a href="https://nadagogo.com/" target="_blank" rel="noopener">写真：灘五郷酒所 公式サイトより</a></figcaption>
           </figure>
@@ -440,7 +444,8 @@
   <section id="map">
     <div class="wrap">
       <h2 class="sec-title">地図</h2>
-      <p class="sec-lead">灘五郷酒造組合の公式デジタルマップに、今回の6か所を朱い線で重ねました。右の魚崎郷から左の御影郷へ、ずっと西に進みます。画像を押すと、今いる場所が出る本物の地図が開きます。</p>
+      <p class="sec-lead">灘五郷酒造組合の公式デジタルマップに、今回の6か所と、おおよその道すじを朱い線で重ねました。1から2までは右下＝海のほうへ下りて、そのあとは左＝西へ進むだけです。</p>
+      <p class="sec-lead">画像を押すと本物の地図が開きます。ふだんの地図アプリと同じで今いる場所も出るので、はぐれたときはこれを見てください。</p>
 
       <figure class="map-figure">
         <a class="map-visual" href="https://stroly.com/viewer/1670995815" target="_blank" rel="noopener" aria-label="今回の徒歩ルートを重ねた灘五郷酒造組合の公式デジタルマップを開く">
@@ -460,7 +465,7 @@
           <b class="pin" style="left:5.20%;top:31.39%">6</b>
           <span class="map-note">朱い線が今回の道です</span>
         </a>
-        <figcaption>灘五郷酒造組合の公式デジタルマップに、番号と朱い線を重ねています。線はおおよその道すじです。</figcaption>
+        <figcaption>灘五郷酒造組合の公式デジタルマップ（Stroly）より引用しています。</figcaption>
       </figure>
       <a class="map-open" href="https://stroly.com/viewer/1670995815" target="_blank" rel="noopener">動く公式マップを開く</a>
     </div>
@@ -491,7 +496,7 @@
       <div class="memo">
         <div>
           <h3>今日いちばん美味しかった一杯</h3>
-          <p>4か所で何杯か飲むので、帰るころにはたぶん全部わからなくなります。旅先で撮った写真と同じで、その場で残した一行だけがあとから効きます。書けるように行を3本引いておいたので、印刷して持ってきてもいいし、スクショでも大丈夫です。</p>
+          <p>浜福鶴の1杯目か、菊正宗の試飲か、それとも酒所の5郷飲み比べか。帰りの電車で思い出せるように、行を3本引いておきました。印刷しても、スクショでも。</p>
           <div class="lines">
             <div><span>1</span></div>
             <div><span>2</span></div>
@@ -511,7 +516,7 @@
 <footer>
   <div class="wrap">
     <p class="signoff">9月13日の12:30、魚崎駅の改札の外で待ってます。</p>
-    <p class="fine">予約は10人分、4か所とも取れています（2026年9月4日時点）。徒歩の時間と距離は2026年9月2日のGoogleマップ表示です。行程表の写真は各施設の公式サイトより、地図画像は灘五郷酒造組合の公式デジタルマップより引用しています。</p>
+    <p class="fine">予約は10人分、4か所とも取れています。徒歩の時間と距離は2026年9月2日のGoogleマップ表示です。行程表の写真は各施設の公式サイトより、地図画像は灘五郷酒造組合の公式デジタルマップより引用しています。</p>
     <p class="fine">写真「菊正宗の菰樽」円周率３パーセント／<a href="https://commons.wikimedia.org/wiki/File:Kikumasamune_Taru_20171221.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>／<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a><br>
     写真「阪神電車 魚崎駅」桂鷺淵／<a href="https://commons.wikimedia.org/wiki/File:Hanshin_Uozaki_station_2017_a.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>／<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a><br>
     写真「白鶴酒造資料館の館内展示」hslo／<a href="https://commons.wikimedia.org/wiki/File:A_Hakutsuru_Sake_Brewery_Museum_exhibit.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>／<a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a><br>
