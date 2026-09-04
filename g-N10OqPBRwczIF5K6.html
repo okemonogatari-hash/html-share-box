@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>素材と制作フロー</title>
+<style>
+  :root{
+    --paper:#F7F8F6;
+    --panel:#FFFFFF;
+    --panel-line:#E4E1D9;
+    --ink:#23272B;
+    --ink-soft:#4B5157;
+    --ink-faint:#6B7278;
+    --accent:#B0491F;
+    --accent-soft:#8A5A2B;
+    --ok:#2B6B4A;
+    --measure:40em;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{
+    max-width:840px;
+    margin:0 auto;
+    padding:0 20px 64px;
+  }
+  header.hero{
+    padding:40px 20px 28px;
+    border-bottom:1px solid var(--panel-line);
+    margin-bottom:32px;
+  }
+  header.hero .kicker{
+    font-size:.82rem;
+    letter-spacing:.06em;
+    color:var(--ink-faint);
+    margin:0 0 10px;
+  }
+  header.hero h1{
+    font-size:1.5rem;
+    line-height:1.5;
+    margin:0 0 12px;
+    font-weight:700;
+    text-wrap:balance;
+  }
+  header.hero .meta{
+    font-size:.85rem;
+    color:var(--ink-faint);
+    margin:0;
+  }
+  .col{
+    width:100%;
+    max-width:var(--measure);
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .wrap{counter-reset:sec;}
+  section{
+    margin:0 auto 44px;
+    max-width:840px;
+  }
+  section.step{
+    counter-increment:sec;
+  }
+  h2{
+    font-size:1.18rem;
+    line-height:1.6;
+    margin:0 0 18px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  section.step > h2::before{
+    content:counter(sec);
+    flex:none;
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--panel);
+    background:var(--accent);
+    border-radius:999px;
+    width:26px;height:26px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+  }
+  h2 .htxt{
+    text-wrap:balance;
+    line-break:strict;
+  }
+  h3{
+    font-size:1rem;
+    color:var(--ink-soft);
+    margin:26px 0 10px;
+    font-weight:700;
+  }
+  p{margin:0 0 16px;}
+  .lead{color:var(--ink-soft);}
+  strong{color:var(--ink);font-weight:700;}
+  a{color:var(--accent-soft);}
+  small{font-size:12.5px;}
+
+  /* ひとことの答え */
+  .answer{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-left:4px solid var(--ok);
+    border-radius:10px;
+    padding:22px 22px;
+  }
+  .answer .big{
+    font-size:1.12rem;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 8px;
+    line-height:1.7;
+  }
+  .answer p:last-child{margin-bottom:0;}
+
+  /* 表 */
+  .tablewrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    background:var(--panel);
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    table-layout:fixed;
+    font-size:.9rem;
+  }
+  th,td{
+    text-align:left;
+    padding:10px 12px;
+    border-bottom:1px solid var(--panel-line);
+    vertical-align:top;
+    overflow-wrap:break-word;
+    word-break:break-word;
+  }
+  th{
+    color:var(--ink-faint);
+    font-weight:700;
+    font-size:.78rem;
+    letter-spacing:.02em;
+    background:#FAFAF7;
+  }
+  tr:last-child td{border-bottom:none;}
+  .tablecap{
+    font-size:.82rem;
+    color:var(--ink-faint);
+    margin:8px 0 0;
+  }
+
+  /* 工程フロー */
+  .flow{
+    list-style:none;
+    margin:0;
+    padding:0;
+    counter-reset:step;
+  }
+  .flow li{
+    counter-increment:step;
+    position:relative;
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    padding:16px 18px 16px 54px;
+    margin-bottom:12px;
+  }
+  .flow li::before{
+    content:counter(step);
+    position:absolute;
+    left:14px;
+    top:16px;
+    width:26px;height:26px;
+    border-radius:999px;
+    background:var(--accent-soft);
+    color:var(--panel);
+    font-size:.82rem;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .flow .ttl{
+    font-weight:700;
+    color:var(--ink);
+    display:block;
+    margin-bottom:6px;
+    font-size:.98rem;
+  }
+  .flow .who{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    font-size:.82rem;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  .flow .who b{
+    color:var(--ink-faint);
+    font-weight:700;
+    margin-right:2px;
+  }
+  .flow .chip{
+    display:inline-block;
+    background:#FAFAF7;
+    border:1px solid var(--panel-line);
+    border-radius:6px;
+    padding:2px 8px;
+    font-size:.8rem;
+    color:var(--ink-soft);
+  }
+
+  /* 品質チェックリスト */
+  .checklist{
+    list-style:none;
+    margin:0;
+    padding:0;
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .checklist li{
+    display:flex;
+    gap:12px;
+    padding:15px 18px;
+    border-bottom:1px solid var(--panel-line);
+    font-size:.94rem;
+    line-height:1.75;
+  }
+  .checklist li:last-child{border-bottom:none;}
+  .checklist .mark{
+    flex:none;
+    color:var(--ok);
+    font-weight:700;
+  }
+  .checklist .ttl{font-weight:700;color:var(--ink);display:block;}
+  .checklist .desc{color:var(--ink-soft);font-size:.88rem;display:block;margin-top:2px;}
+
+  /* お金 */
+  .money{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+    padding:22px;
+  }
+  .money p:last-child{margin-bottom:0;}
+
+  /* 参考リンク */
+  .linklist{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .linklist li{
+    padding:12px 0;
+    border-bottom:1px solid var(--panel-line);
+    font-size:.92rem;
+  }
+  .linklist li:last-child{border-bottom:none;}
+  .linklist .lttl{font-weight:700;color:var(--ink);display:block;margin-bottom:2px;}
+  .linklist .lnote{color:var(--ink-faint);font-size:.82rem;}
+
+  footer{
+    max-width:840px;
+    margin:0 auto;
+    padding:0 20px;
+    font-size:.8rem;
+    color:var(--ink-faint);
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="col">
+    <p class="kicker">カドッチさんへ・2026-09-04</p>
+    <h1>動画の背景映像、どこから来ているかをまとめました</h1>
+    <p class="meta">9/4のLINEでいただいたご質問「フリー素材はどこのものか」「お金はトークン使用料が一番か」への回答です。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="col answer">
+      <p class="big">買っていません。すべて、商用利用OKの無料素材と、AIの無料枠で作っています。</p>
+      <p>背景映像はMixkitという海外のフリー素材サイトから、ナレーションはFish Audioという音声AIの無料プランから、それぞれ商用利用が認められた形で持ってきています。BGMだけは、カドッチさんからいただいたUNL1433をそのまま使わせていただいています。お金がかかっているのは、動画そのものを組み立てているAIエージェント（Claude Code）の月額利用料だけです。</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2><span class="htxt">素材はどこから来ているか</span></h2>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>種類</th><th>どこから</th><th>ライセンス</th><th>確認していること</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>背景映像</td>
+            <td>Mixkit（海外のフリー素材サイト）</td>
+            <td>Stock Video Free License</td>
+            <td>使用前に必ず映像を目視して、人物・建物・乗り物が写っていないものだけを選んでいます</td>
+          </tr>
+          <tr>
+            <td>ナレーション音声</td>
+            <td>Fish Audio（音声合成AI）</td>
+            <td>無料プラン（s2.1-pro-free）</td>
+            <td>毎回同じ声（「爽やかナレーター2」）に固定し、聞き取りやすい速さで統一しています</td>
+          </tr>
+          <tr>
+            <td>BGM</td>
+            <td>カドッチさんからご提供いただいた音源（UNL1433）</td>
+            <td>カドッチさん側で使用権利を取得済み</td>
+            <td>いただいた音源以外は使っていません</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tablecap">Mixkitの公式ライセンスページ（2026-09-04 確認）には「Free License下の素材は、商用・非商用のプロジェクトで無料で使用でき、ダウンロード・複製・改変・配布・上演・放送が許可される。権利は非独占的・世界的・サブライセンス可能で、クレジット表記は必須ではないが可能であれば歓迎する」と明記されています。原文はこちらから読めます（利用条件の詳細はMixkitのUser Termsにも定めがあります）。</p>
+    <p>たとえば、動画に映る夕暮れの湖、夕日の海を上から飛ぶ映像、ひまわり畑は、すべてこのMixkitで探した映像です。同じ組み合わせを二度使わないよう、公開する動画ごとに違う3本を選んでいます。</p>
+  </section>
+
+  <section class="step">
+    <h2><span class="htxt">1本ができるまで</span></h2>
+    <ol class="flow">
+      <li>
+        <span class="ttl">台本を書く</span>
+        <p class="who"><b>人</b>過去に伸びた動画（TTP親）を1本指名し、構成・尺・言い回しの型を寄せる<span class="chip">AI</span>台本文面を作成<span class="chip">機械</span>文字数・題材の重複を自動チェック</p>
+      </li>
+      <li>
+        <span class="ttl">声を作る（TTS）</span>
+        <p class="who"><span class="chip">AI</span>Fish Audioで台本を読み上げ音声化<span class="chip">機械</span>読み上げ速度を尺に合わせて自動調整</p>
+      </li>
+      <li>
+        <span class="ttl">字幕を音声に合わせる</span>
+        <p class="who"><span class="chip">機械</span>音声認識（whisper）で実際の発話タイミングを測り、字幕の表示時刻をそこへ合わせ直す<span class="chip">機械</span>ズレが基準を超えていないかを自動判定</p>
+      </li>
+      <li>
+        <span class="ttl">背景映像とBGMを合わせる</span>
+        <p class="who"><span class="chip">AI</span>Mixkitの映像3本を組み合わせ<span class="chip">機械</span>音量・音圧（LUFS）を毎回実測して基準内に調整</p>
+      </li>
+      <li>
+        <span class="ttl">機械の検査（ゲート）</span>
+        <p class="who"><span class="chip">機械</span>尺、字幕の被り、無音、そのほか音量まわりを含めた十数項目を自動判定。1つでも基準を外れたら先に進めません</p>
+      </li>
+      <li>
+        <span class="ttl">独立検品</span>
+        <p class="who"><b>人＋AI</b>制作した本人とは別の目で、音声の聞き取りにくさや表記のゆれを最終確認</p>
+      </li>
+      <li>
+        <span class="ttl">予約入稿</span>
+        <p class="who"><b>人</b>毎朝7:00公開で予約設定し、台帳に記録</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="step">
+    <h2><span class="htxt">品質はこう守っています</span></h2>
+    <ul class="checklist">
+      <li>
+        <span class="mark">✓</span>
+        <span>
+          <span class="ttl">作った担当とは別のAIの担当が確認します</span>
+          <span class="desc">台本を作った担当がそのまま検品すると見落とします。文字数や整合のチェックは、台本を作った担当とは別に立てたAIの担当が行います。</span>
+        </span>
+      </li>
+      <li>
+        <span class="mark">✓</span>
+        <span>
+          <span class="ttl">聞き取りにくい発話は複数の音声認識で照合しています</span>
+          <span class="desc">1つの認識ツールだけで判定せず、2種類（whisperとGemini）で聞き比え、両方が一致するまで読み方を直しています。</span>
+        </span>
+      </li>
+      <li>
+        <span class="mark">✓</span>
+        <span>
+          <span class="ttl">毎回、前回のうまくいった作り方と1対1で比較しています</span>
+          <span class="desc">尺・フックの秒数・順位の見せ方など、直近で伸びた動画の構造をそのまま踏襲し、変えた点だけを記録に残しています。</span>
+        </span>
+      </li>
+    </ul>
+    <p>例えば、9/4公開分の動画では「使途のわからない通帳」というセリフのAI音声が「すきとの」と聞こえる誤読を起こしました。表示される字幕は正しい表記のままにしつつ、AIに読ませる音のほうだけをひらがなに直して再収録し、直った読みを確認してから公開しています。</p>
+  </section>
+
+  <section class="step">
+    <h2><span class="htxt">お金がかかっているのはここです</span></h2>
+    <div class="col money">
+      <p>背景映像・ナレーション音声・BGMには、費用がかかっていません。すべて無料枠か、カドッチさんからいただいた素材です。かかっているのは、台本作成から検品までを組み立てているAIエージェント（Claude Code）の月額利用料だけです。内訳や割合の詳しい数字は、社内の運用に関わるためこの場では控えさせてください。</p>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2><span class="htxt">参考にした一次情報はこちらです</span></h2>
+    <ul class="linklist">
+      <li>
+        <span class="lttl"><a href="https://mixkit.co/license/" target="_blank" rel="noopener">Mixkit License（公式）</a></span>
+        <span class="lnote">背景映像のライセンス条文。Free Licenseの条件はこのページの「Stock Video Free License」欄から確認できます</span>
+      </li>
+      <li>
+        <span class="lttl"><a href="https://www.fish.audio/" target="_blank" rel="noopener">Fish Audio（公式）</a></span>
+        <span class="lnote">ナレーション音声を作っているAI音声合成サービス</span>
+      </li>
+    </ul>
+  </section>
+
+</div>
+
+<footer>
+  <p>2026-09-04・おけもんカンパニー作成</p>
+</footer>
+
+</body>
+</html>

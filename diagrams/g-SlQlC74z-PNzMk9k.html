@@ -440,6 +440,55 @@ html.js-ready .fade-in.is-visible{opacity:1; transform:none}
   .hero-photo{animation:none !important; opacity:0 !important; transform:scale(1.06) !important}
   .hero-photo.p1{opacity:1 !important}
 }
+
+/* ================================================================
+   doc-check 実測ぶん（2026-09-03・375px/1280px）
+   直したのは見た目だけ。本文の文章は1文字も触っていない。
+   ・金は「地の明るさ」で2値に分ける（明るい地=--iwai-deep / 暗い地=--iwai-hikari）
+   ・写真ヒーローはアニメの位相で地色が動くので、文字の真下だけを局所スクリムで沈める
+   ・目次パネルは不透明にする（フェード中の半透明が暗い地を透かしていた）
+   ・SCROLL は地がクリームへ変わりきる位置にいるので、白ではなく墨で置く
+   ・日本語の下限 12.4px を割っていた2箇所（11px / 12px）を 12.5px へ
+   ================================================================ */
+:root{ --iwai-hikari:#e6cf9e; }   /* 暗い地の上に置く金 */
+
+/* 文字の真下だけ沈める。写真は生かしたまま、グリフの地だけを確定させる */
+.hero-inner::before{
+  content:""; position:absolute; z-index:-1; inset:-56px -36px;
+  border-radius:50% / 42%;
+  background:radial-gradient(ellipse at 50% 48%,
+    rgba(6,11,20,.80) 0%, rgba(6,11,20,.66) 52%, rgba(6,11,20,.30) 74%, transparent 87%);
+  filter:blur(12px); pointer-events:none;
+}
+.hero-mark{ color:var(--iwai-hikari); font-size:12.5px; }
+.hero h1 .accent{ color:var(--iwai-hikari); }
+.hero-meta{ color:rgba(253,249,240,.80); font-size:12.5px; }
+
+/* 下端のクリームへの溶け込みを確定させてから、SCROLL を墨で置く */
+.hero::after{
+  background:linear-gradient(180deg, transparent 0%, rgba(253,251,245,.55) 62%, #fdfbf5 90%);
+}
+.hero-scroll{ color:var(--moji); font-size:12.5px; z-index:3; }
+
+/* 装飾は線画にした。絵文字の色は指定できないが、線なら地に合わせられる */
+.hero-orn{ color:var(--iwai-hikari); font-size:0; }
+.hero-orn svg{ width:150px; height:auto; display:block; }
+.hero-orn.o2 svg{ width:118px; }
+
+/* 目次パネル：半透明をやめ、上端固定にする（きょんはち版と同じ形へ）。
+   縦中央固定 + translateY(-50%) は、パネルの実描画位置と矩形が食い違う */
+.toc{
+  background:#fdfbf5; backdrop-filter:none;
+  top:24px; transform:none; max-height:calc(100vh - 48px);
+}
+/* 詳細度の事故。html.js-ready .toc{opacity:0}(0,2,1) が .toc.ready{opacity:1}(0,2,0) に
+   勝っていて、目次パネルはずっと opacity:0 のまま＝一度も出ていなかった。
+   出す側の指定を同じ土俵に上げて、意図どおり出るようにする */
+html.js-ready .toc.ready{ opacity:1; }
+html.js-ready .toc.behind-interlude{ opacity:0; pointer-events:none; }
+
+/* 幕間の暗い地の上の金 */
+.interlude small{ color:var(--iwai-hikari); }
 </style>
 </head>
 
@@ -453,8 +502,8 @@ html.js-ready .fade-in.is-visible{opacity:1; transform:none}
   </div>
   <div class="hero-dawn"></div>
   <div class="hero-dots" id="dots"></div>
-  <div class="hero-orn o1">✉️</div>
-  <div class="hero-orn o2">🌅</div>
+  <div class="hero-orn o1" aria-hidden="true"><svg viewBox="0 0 100 72" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="94" height="58" rx="7"/><path d="M3 14l47 32L97 14"/><path d="M3 64l33-26M97 64L64 38"/></svg></div>
+  <div class="hero-orn o2" aria-hidden="true"><svg viewBox="0 0 100 72" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 54a32 32 0 0 1 64 0"/><path d="M50 4v11M21 15l7.5 8M79 15l-7.5 8M2 46h12M86 46h12"/><path d="M4 54h92"/><path d="M10 64h26M44 64h16M68 64h22"/></svg></div>
   <div class="hero-inner">
     <div class="hero-mark">MASUMARU — 2026.08.28</div>
     <h1>より良くなる未来が<br>見えるのに、<br><span class="accent">やらない意味が<br>わからない。</span></h1>

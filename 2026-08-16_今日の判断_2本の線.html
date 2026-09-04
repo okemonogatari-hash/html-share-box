@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日の判断 2本の線</title>
+<style>
+  :root{
+    --bg: #faf3e7;
+    --paper: #fffdf8;
+    --ink: #3a2a1d;
+    --ink-soft: #6b5642;
+    --amber: #c9832e;
+    --amber-deep: #a86420;
+    --amber-pale: #f3dbb0;
+    --line: #e4d3b4;
+    --brown: #5b3d24;
+    --shadow: rgba(90, 60, 30, 0.12);
+    --danger: #b0492e;
+    --danger-pale: #f4ddd0;
+    --press: #3d7a5c;
+    --press-pale: #ddeee0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #241b13;
+      --paper: #2e2318;
+      --ink: #f2e6d3;
+      --ink-soft: #cdb997;
+      --amber: #e2a851;
+      --amber-deep: #f0bd6f;
+      --amber-pale: #4a3820;
+      --line: #4a3c28;
+      --brown: #e8d5b5;
+      --shadow: rgba(0, 0, 0, 0.35);
+      --danger: #e08a6c;
+      --danger-pale: #4a2c22;
+      --press: #7fc79e;
+      --press-pale: #223a2c;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #241b13;
+    --paper: #2e2318;
+    --ink: #f2e6d3;
+    --ink-soft: #cdb997;
+    --amber: #e2a851;
+    --amber-deep: #f0bd6f;
+    --amber-pale: #4a3820;
+    --line: #4a3c28;
+    --brown: #e8d5b5;
+    --shadow: rgba(0, 0, 0, 0.35);
+    --danger: #e08a6c;
+    --danger-pale: #4a2c22;
+    --press: #7fc79e;
+    --press-pale: #223a2c;
+  }
+
+  *{ box-sizing: border-box; }
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    padding: 40px 20px 80px;
+  }
+  .wrap{
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  header{
+    text-align: center;
+    margin-bottom: 38px;
+  }
+  .date{
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  h1{
+    font-size: 26px;
+    margin: 0 0 10px;
+    color: var(--brown);
+    letter-spacing: 0.02em;
+  }
+  .sub{
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  /* ライン軸 */
+  .axis{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .line-block{
+    position: relative;
+    background: var(--paper);
+    border-radius: 20px;
+    padding: 28px 26px 26px;
+    box-shadow: 0 8px 22px var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .line-block + .line-block{
+    margin-top: 30px;
+  }
+
+  .line-head{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .icon-badge{
+    flex: none;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .line--vanish .icon-badge{ background: var(--danger-pale); }
+  .line--press .icon-badge{ background: var(--press-pale); }
+
+  .line-title-group{ flex: 1; }
+  .line-label{
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    margin-bottom: 2px;
+  }
+  .line-title{
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .line--vanish .line-title{ color: var(--danger); }
+  .line--press .line-title{ color: var(--press); }
+
+  .cards{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 640px){
+    .cards{ grid-template-columns: 1fr; }
+  }
+
+  .card{
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .card .mark{
+    flex: none;
+    width: 26px;
+    height: 26px;
+    margin-top: 2px;
+  }
+  .card-body{ flex: 1; min-width: 0; }
+  .card-title{
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .card-detail{
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .card-tag{
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 10.5px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+  }
+  .line--vanish .card-tag{ background: var(--danger-pale); color: var(--danger); }
+  .line--press .card-tag{ background: var(--press-pale); color: var(--press); }
+
+  /* 押すだけライン内の小分類 */
+  .sub-row{
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin: 20px 0 10px;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sub-row::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* 連結の縦線（絵として見える工夫） */
+  .connector{
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    height: 30px;
+  }
+  .connector svg{ display: block; }
+
+  footer{
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="date">2026-08-16 きょうちゃん 図解</div>
+    <h1>今日の判断卓、線は2本しかない</h1>
+    <div class="sub">8件それぞれの中身より先に、どっちの線の上にいるかだけ見てほしい。</div>
+  </header>
+
+  <div class="axis">
+
+    <!-- 線1：消える -->
+    <div class="line-block line--vanish">
+      <div class="line-head">
+        <div class="icon-badge">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M8 3H20M8 25H20M9 3C9 8 13 10 13 14C13 10 9 8 9 3Z" stroke="var(--danger)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19 3C19 8 15 10 15 14C15 10 19 8 19 3M9 25C9 20 13 18 13 14C13 18 9 20 9 25M19 25C19 20 15 18 15 14C15 18 19 20 19 25" stroke="var(--danger)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="line-title-group">
+          <div class="line-label">LINE 1 ・ 待っても増えない</div>
+          <div class="line-title">8/22までに、消える</div>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <svg class="mark" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="10" stroke="var(--danger)" stroke-width="1.6"/><path d="M13 7V13L17 15.5" stroke="var(--danger)" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <div class="card-body">
+            <div class="card-title">9/6 復路バス（ドリームルリエ17号 Aクラス）</div>
+            <div class="card-detail">¥12,000・8/16 09:48時点で残5席・まだ未予約</div>
+            <span class="card-tag">席が埋まって消える</span>
+          </div>
+        </div>
+        <div class="card">
+          <svg class="mark" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="10" stroke="var(--danger)" stroke-width="1.6"/><path d="M13 7V13L17 15.5" stroke="var(--danger)" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <div class="card-body">
+            <div class="card-title">Higgsfield 残クレジット 7,402.1cr</div>
+            <div class="card-detail">8/22失効・1080p動画1本＝約270cr（換算で約27本分）</div>
+            <span class="card-tag">日付が来て消える</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector">
+      <svg width="2" height="30" viewBox="0 0 2 30"><line x1="1" y1="0" x2="1" y2="30" stroke="var(--line)" stroke-width="2" stroke-dasharray="2 5"/></svg>
+    </div>
+
+    <!-- 線2：押さないと動かない -->
+    <div class="line-block line--press">
+      <div class="line-head">
+        <div class="icon-badge">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <circle cx="13" cy="13" r="10.5" stroke="var(--press)" stroke-width="1.8"/>
+            <circle cx="13" cy="13" r="4" fill="var(--press)"/>
+          </svg>
+        </div>
+        <div class="line-title-group">
+          <div class="line-label">LINE 2 ・ 期限はない、でも自然には動かない</div>
+          <div class="line-title">押さないと、止まったまま</div>
+        </div>
+      </div>
+
+      <div class="sub-row">ボタン一つ</div>
+      <div class="cards">
+        <div class="card">
+          <svg class="mark" viewBox="0 0 26 26" fill="none"><rect x="4" y="4" width="18" height="18" rx="4" stroke="var(--press)" stroke-width="1.6"/><path d="M9 13L12 16L18 10" stroke="var(--press)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="card-body">
+            <div class="card-title">ノウハウ図書館 下書き2本</div>
+            <div class="card-detail">入稿・画像済み。GOだけ待ち</div>
+          </div>
+        </div>
+        <div class="card">
+          <svg class="mark" viewBox="0 0 26 26" fill="none"><rect x="4" y="4" width="18" height="18" rx="4" stroke="var(--press)" stroke-width="1.6"/><path d="M9 13L12 16L18 10" stroke="var(--press)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="card-body">
+            <div class="card-title">カドッチ BGM「ピアノ半分」</div>
+            <div class="card-detail">LINE送信、文面用意済み</div>
+          </div>
+        </div>
+        <div class="card">
+          <svg class="mark" viewBox="0 0 26 26" fill="none"><rect x="4" y="4" width="18" height="18" rx="4" stroke="var(--press)" stroke-width="1.6"/><path d="M9 13L12 16L18 10" stroke="var(--press)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="card-body">
+            <div class="card-title">カドッチ サムネ復旧</div>
+            <div class="card-detail">今夜23:30以降に再開でOK</div>
+          </div>
+        </div>
+        <div class="card">
+          <svg class="mark" viewBox="0 0 26 26" fill="none"><rect x="4" y="4" width="18" height="18" rx="4" stroke="var(--press)" stroke-width="1.6"/><path d="M9 13L12 16L18 10" stroke="var(--press)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="card-body">
+            <div class="card-title">Suno Pro ¥1,500/月</div>
+            <div class="card-detail">継続可否・判断期限7/22を経過中</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-row">一言だけ</div>
+      <div class="cards">
+        <div class="card">
+          <svg class="mark" viewBox="0 0 26 26" fill="none"><path d="M4 6H22V17H10L5 21V17H4V6Z" stroke="var(--press)" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <div class="card-body">
+            <div class="card-title">8/13 ストレングス雑談会</div>
+            <div class="card-detail">開催した？森に記録が無い</div>
+          </div>
+        </div>
+        <div class="card">
+          <svg class="mark" viewBox="0 0 26 26" fill="none"><path d="M4 6H22V17H10L5 21V17H4V6Z" stroke="var(--press)" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <div class="card-body">
+            <div class="card-title">ゆいてぃー Day12</div>
+            <div class="card-detail">先に記事化していい？</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-row">データを見る</div>
+      <div class="cards">
+        <div class="card" style="grid-column: 1 / -1;">
+          <svg class="mark" viewBox="0 0 26 26" fill="none"><rect x="5" y="4" width="16" height="18" rx="2" stroke="var(--press)" stroke-width="1.6"/><line x1="9" y1="9" x2="17" y2="9" stroke="var(--press)" stroke-width="1.4"/><line x1="9" y1="13" x2="17" y2="13" stroke="var(--press)" stroke-width="1.4"/><line x1="9" y1="17" x2="14" y2="17" stroke="var(--press)" stroke-width="1.4"/></svg>
+          <div class="card-body">
+            <div class="card-title">7月仕分けデータ 5点</div>
+            <div class="card-detail">MF／住信SBI／住信デビット／楽天／PayPay・計15〜20分</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    線の上か下かだけ見て、あとは流してもいい一枚。
+  </footer>
+
+</div>
+</body>
+</html>

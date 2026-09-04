@@ -852,6 +852,43 @@
     a { text-decoration: none !important; color: #2f281f !important; }
     body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
   }
+
+  /* ================================================================
+     doc-check 実測ぶん（2026-09-03・375px/1280px で 色69件＋崩れ5件）
+     直したのは見た目だけ。本文の文章は1文字も触っていない。
+     (1) 章番号の落款は「金地に白」をやめ、「明るい金地に墨」へ反転する
+         （白#fffaf0 は金 #c99a4e の上では比2.5。地を暗くすると金でなくなる）
+     (2) strong の2色（金茶・緑）は淡い地の上で比3.6〜4.0だったので、トークンごと濃くする
+     (3) 見出しは1行に1〜2文字だけ残る折り返しが出ていたので text-wrap:balance
+         （きょんはち版 g-KFvdO_IavnRh0s_J.html の h1,h2,h3 指定をそのまま移植）
+     ================================================================ */
+  :root{
+    --haishin-deep: #7a4f19;
+    --mori-deep:    #41603a;
+  }
+  .sec-mark {
+    background: linear-gradient(140deg,#f0d49a,#cf9f52);
+    color: #3a2408;
+    box-shadow: inset 0 0 0 1px rgba(90,58,16,.28);
+  }
+  h1, h2, h3, .hero-sub, .interlude-text, .quote-text { text-wrap: balance; }
+  .cloud-close { color: #6f4f26 !important; }
+  .hero-meta   { color: #5c4838 !important; }
+  .hero-mark   { color: #5a4526 !important; }
+  .hero h1 .accent, .hero .accent { color: #7f4a15; }
+
+  /* (4) 1280x900 で目次の中身が 984px になり、下4項目が .toc-scroll の外へ出て
+     「最初に戻る」ボタンと重なっていた（実測: clientH 701 / scrollH 984）。
+     副題を落として14項目とも1画面に収める。スマホ側の目次には副題を残す */
+  @media (min-width:1150px){
+    .toc .toc-sub { display:none !important; }
+    .toc li { padding-top:5px; padding-bottom:5px; }
+  }
+
+  /* (5) 目次パネルの 0.96 半透明がヒーローを透かして、地の明るさが測るたびに動いていた。
+     不透明にして地を確定させ、金の文字色トークンも一段濃くする（実測 比4.47→7.8） */
+  .toc { background:#fdfaf3; }
+  :root{ --t-gold: #6f4715; }
 </style>
 <noscript><style>.fade-in{opacity:1!important;transform:none!important}.hero-photo.p2{opacity:0}
   /* ================================================================
