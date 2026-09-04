@@ -198,6 +198,14 @@
   .bank{margin-top:10px;}
   .bank-label{font-size:12.5px;color:var(--muted);margin:0 0 6px;}
 
+  /* ---- 1画面に複数の問いを置く時の小見出し ---- */
+  .sub-q{
+    font-size:15.5px;color:var(--ink);
+    margin:26px 0 10px;padding-top:20px;
+    border-top:1px solid var(--line-soft);
+    line-height:1.6;word-break:auto-phrase;
+  }
+
   /* ---- 上位5資質 ---- */
   .top5-grid{display:flex;flex-direction:column;gap:9px;}
   .top5-row{display:flex;align-items:center;gap:9px;}
@@ -501,11 +509,7 @@ var ICONS = {
   copy:'<rect x="8.6" y="3.6" width="11.8" height="13.6" rx="2"/><path d="M15.4 20.4H5.6a2 2 0 0 1-2-2V7.6"/>',
   download:'<path d="M12 3.6v11.6"/><path d="m7.4 10.8 4.6 4.4 4.6-4.4"/><path d="M4.2 15.4v3a2 2 0 0 0 2 2h11.6a2 2 0 0 0 2-2v-3"/>',
   external:'<path d="M14 4.2h5.8V10"/><path d="M19.8 4.2 11 13"/><path d="M18.2 14.4v4.4a2 2 0 0 1-2 2H5.4a2 2 0 0 1-2-2V8.2a2 2 0 0 1 2-2h4.4"/>',
-  heart:'<path d="M12 20.4S3.6 15.2 3.6 9.4a4.4 4.4 0 0 1 8.4-1.8 4.4 4.4 0 0 1 8.4 1.8c0 5.8-8.4 11-8.4 11z"/>',
   palette:'<path d="M12 3.4a8.6 8.6 0 0 0 0 17.2c1.3 0 1.9-.9 1.9-1.8 0-1.1-.9-1.6-.9-2.5 0-.8.7-1.4 1.6-1.4h1.8a4.2 4.2 0 0 0 4.2-4.2c0-4-3.9-7.3-8.6-7.3z"/><circle cx="7.6" cy="11.8" r="1" fill="currentColor" stroke="none"/><circle cx="10.6" cy="7.9" r="1" fill="currentColor" stroke="none"/><circle cx="15.2" cy="8.5" r="1" fill="currentColor" stroke="none"/>',
-  droplet:'<path d="M12 3.4c3 3.6 5.4 6.5 5.4 9.4a5.4 5.4 0 0 1-10.8 0c0-2.9 2.4-5.8 5.4-9.4z"/>',
-  shapes:'<circle cx="7.4" cy="7.4" r="3.3"/><rect x="13.6" y="13.2" width="7" height="7" rx="1.4"/><path d="m7.4 13.2 4 7h-8z"/>',
-  phone:'<rect x="6.6" y="2.8" width="10.8" height="18.4" rx="2.4"/><path d="M10.4 5.6h3.2M11 18.4h2"/>',
   bubble:'<path d="M20.4 13.2a3.2 3.2 0 0 1-3.2 3.2H9.6l-4.4 3.4v-3.4a3.2 3.2 0 0 1-1.6-2.8V6.8a3.2 3.2 0 0 1 3.2-3.2h10.4a3.2 3.2 0 0 1 3.2 3.2z"/>',
   leaf:'<path d="M4.6 19.4c0-8 5.2-13 14.8-13.6.6 9.6-4.4 15.2-12.4 15.2a5 5 0 0 1-2.4-.6z"/><path d="M4.6 19.4c3-3.6 6.6-6.4 11-8.4"/>',
   image:'<rect x="3.4" y="4.6" width="17.2" height="14.8" rx="2"/><circle cx="8.6" cy="9.6" r="1.7"/><path d="m4.4 17.4 4.9-5 4 3.6 3-2.6 3.9 4"/>',
@@ -629,21 +633,12 @@ var GIFT = {key:"gift", no:"★", cls:"w8", ico:"star",
   raw:true,
   sentence:function(v){ return tidyRaw(v); }};
 
-/* ---- 世界観の質問（仕様書 STEP 3 の Q1〜Q5。1問1画面） ---- */
-var Q1_MOOD = ["かわいい","かっこいい","やさしい","元気が出る","安心する","ワクワクする","大人っぽい","シンプル","ユーモア","自分らしい"];
-var Q2_WORLD = ["絵本 / 手描き / 水彩","ポップ / カラフル","シンプル / 余白多め / 北欧","都会的 / スタイリッシュ","ファンタジー / 魔法 / 宇宙","和風 / レトロ","自然 / 森 / 海 / 空","カフェ / 文房具 / ノート","ゲーム / 漫画 / アニメ系","仕事でも使える落ち着いた雰囲気","アイコンに合わせておまかせ"];
-var Q3_COLOR_WORDS = ["白","ベージュ","ネイビー","シルバー","パステル","くすみカラー","モノトーン","ビビッド","暖色","寒色"];
-var Q4_MOTIF = ["動物","花 / 植物","星 / 月 / 宇宙","本 / ノート / 文房具","コーヒー / 食べ物","音楽","PC / 仕事道具","旅 / 電車 / 海","ハート / リボン","特になし","アイコンからおまかせ"];
-var Q5_USE = ["スマホで保存","SNS投稿","プロフィール紹介","印刷","家族・仕事仲間へ見せる","PC壁紙","その他"];
-var RATIO = {
-  "スマホで保存":"4:5 縦",
-  "SNS投稿":"4:5 縦",
-  "プロフィール紹介":"1:1",
-  "印刷":"A4 縦（1:1.414）",
-  "家族・仕事仲間へ見せる":"4:5 縦",
-  "PC壁紙":"16:9 横",
-  "その他":"4:5 縦"
-};
+/* ---- 世界観（仕様書 STEP 3。細かく聞かず、1画面にまとめる） ----
+   細かい色・モチーフ・用途の質問はしない。決められない人は先頭の
+   「おまかせ」1つで通り抜けられ、決めたい人だけ下の自由記述に書く。 */
+var OMAKASE = "アイコンに合わせておまかせ";
+var WORLD_OPTIONS = [OMAKASE,"絵本 / 手描き / 水彩","ポップ / カラフル","シンプル / 余白多め / 北欧","都会的 / スタイリッシュ","ファンタジー / 魔法 / 宇宙","和風 / レトロ","自然 / 森 / 海 / 空","カフェ / 文房具 / ノート","ゲーム / 漫画 / アニメ系","仕事でも使える落ち着いた雰囲気"];
+var MOOD_OPTIONS = ["かわいい","かっこいい","やさしい","元気が出る","安心する","ワクワクする","大人っぽい","シンプル","ユーモア","自分らしい"];
 var ICON_USE = [
   {v:"なるべくそのまま使いたい",               line:"アイコンはなるべくそのままの形で使ってください。"},
   {v:"特徴を残して世界観に合わせて描き直したい", line:"アイコンの特徴を残したまま、希望する世界観に合わせて描き直してください。"},
@@ -664,14 +659,11 @@ var defaultState = {
   name:"",
   top5:["","","","",""],
   happy:"", habit:"", glad:"", warning:"", recover:"", impact:"", weekly:"", gift:"",
-  worksheetName:"",
   iconData:"", iconName:"",
   iconUse:"", photoUse:"",
-  mood:[], moodOther:"",
+  mood:[],
   world:[], worldOther:"",
-  colors:"", avoidColors:"",
-  motifs:[], motifOther:"", avoidMotifs:"",
-  useCase:"", useCaseOther:"",
+  prefs:"",
   tagline:""
 };
 var state = loadState();
@@ -709,11 +701,7 @@ var STEPS = [
   {id:"welcome",   label:"はじめに"},
   {id:"icon",      label:"アイコン"},
   {id:"torisetsu", label:"トリセツの中身"},
-  {id:"q1",        label:"世界観 1/5"},
-  {id:"q2",        label:"世界観 2/5"},
-  {id:"q3",        label:"世界観 3/5"},
-  {id:"q4",        label:"世界観 4/5"},
-  {id:"q5",        label:"世界観 5/5"},
+  {id:"world",     label:"世界観"},
   {id:"intro",     label:"短い紹介文"},
   {id:"confirm",   label:"確認"},
   {id:"done",      label:"AIへ渡す"}
@@ -865,7 +853,6 @@ function buildPrompt(){
   push("添付した画像を確認してください。");
   push("- Image A：本人のアイコン");
   push("- Image B：おけもんの完成見本（構成・完成度の参考）");
-  if(has(state.worksheetName)) push("- Image C：記入済みワークシート");
   push("");
   push("【この画像制作の目的】");
   push("ストレングスファインダーの資質説明画像ではありません。");
@@ -887,21 +874,15 @@ function buildPrompt(){
   push("【アイコンの扱い】");
   iconTreatmentLines().forEach(push);
 
-  var mood = joinAll(state.mood, state.moodOther);
+  /* 何も選ばなくても「おまかせ」で通す。こだわりは本人の文をそのまま1行で渡す */
+  var mood = joinAll(state.mood);
   var world = joinAll(state.world, state.worldOther);
-  var motifs = joinAll(state.motifs, state.motifOther);
-  var useCase = state.useCase === "その他" ? (has(state.useCaseOther) ? t(state.useCaseOther) : "その他") : t(state.useCase);
-  if(has(mood) || has(world) || has(state.colors) || has(state.avoidColors) || has(motifs) || has(state.avoidMotifs) || has(useCase)){
-    push("");
-    push("【本人が希望する世界観】");
-    line("感じたい印象：", mood);
-    line("世界観：", world);
-    line("好きな色：", state.colors);
-    line("避けたい色：", state.avoidColors);
-    line("入れたいモチーフ：", motifs);
-    line("避けたいモチーフ：", state.avoidMotifs);
-    line("用途：", useCase);
-  }
+  var prefs = t(state.prefs).replace(/\s*[\r\n]+\s*/g, " ");
+  push("");
+  push("【本人が希望する世界観】");
+  line("感じたい印象：", mood);
+  push("世界観：" + (has(world) ? world : OMAKASE));
+  line("こだわり：", prefs);
 
   var body = torisetsuBody();
   if(body.length){
@@ -962,7 +943,7 @@ function buildPrompt(){
   push("- 1枚で完結");
   push("- 高解像度");
   push("- 日本語をできる限り正確に表示");
-  push(has(useCase) && RATIO[state.useCase] ? "- 用途に合う縦横比（" + RATIO[state.useCase] + "）" : "- 用途に合う縦横比");
+  push("- 縦長（A4比 1:1.414）。スマホで開いて1枚で読め、印刷もできる比率");
   push("- 保存したくなる完成度");
   push("");
   push("そのまま画像を生成してください。");
@@ -1269,7 +1250,7 @@ function renderTorisetsu(){
   for(var i=0;i<5;i++){
     (function(idx){
       var inp = el("input", {type:"text", list:"themes", value:state.top5[idx],
-        placeholder:"資質名を入れるか、自分の言葉でも大丈夫です",
+        placeholder:"資質名",
         autocomplete:"off", "aria-label":"上位5資質の" + (idx+1) + "つめ"});
       inp.addEventListener("input", function(){ state.top5[idx] = inp.value; saveState(); drawDomChips(); });
       rows.appendChild(el("div", {class:"top5-row"}, [
@@ -1294,7 +1275,8 @@ function renderTorisetsu(){
       nameInput
     ]),
     el("div", {class:"field"}, [
-      el("h3", {style:"font-size:14px;color:var(--ink);margin:0 0 6px;"}, ["上位5資質"]),
+      el("h3", {style:"font-size:14px;color:var(--ink);margin:0 0 4px;"}, ["上位5資質（受けた人だけ）"]),
+      el("p", {class:"hint", style:"margin:0 0 10px;"}, ["ストレングスファインダーを受けた方は、結果の上位5つをそのまま入れてください。まだ受けていない方は、空欄のままで大丈夫です。"]),
       rows,
       domHolder,
       legend
@@ -1350,25 +1332,6 @@ function renderTorisetsu(){
   });
   wrap.appendChild(card(itemsCard));
 
-  /* ワークシートの写真（保持はファイル名だけ） */
-  var wsInput = el("input", {type:"file", accept:"image/*,application/pdf", class:"visually-hidden", id:"wsInput"});
-  var wsName = el("p", {class:"sum-val"}, [has(state.worksheetName) ? t(state.worksheetName) : "まだ選んでいません"]);
-  wsInput.addEventListener("change", function(){
-    var f = wsInput.files && wsInput.files[0];
-    if(!f) return;
-    state.worksheetName = f.name;
-    saveState();
-    wsName.textContent = f.name;
-  });
-  wrap.appendChild(card([
-    el("h3", {}, ["ワークシートの写真も選べます（任意）"]),
-    el("p", {class:"lead-sm"}, ["あとでAIへ一緒に貼ると、読み取りの助けになります。このページでは中身を読みません。ファイル名だけ覚えておきます。"]),
-    wsInput,
-    el("label", {class:"btn btn-ghost", for:"wsInput"}, [icon("image"), "写真を選ぶ"]),
-    el("p", {class:"sum-key", style:"margin-top:12px;"}, ["選んだファイル"]),
-    wsName
-  ], "card-quiet"));
-
   drawOk();
   /* この画面は長い。もどる／つぎへと状態を、いつでも手の届く場所に置く */
   wrap.appendChild(el("div", {class:"stickybar", id:"stickybar"}, [
@@ -1381,134 +1344,51 @@ function renderTorisetsu(){
   return wrap;
 }
 
-/* ---- STEP 3 Q1〜Q5 ---- */
-function questionCard(eyebrow, question, hint, children, ico){
-  var kids = [
-    el("span", {class:"eyebrow"}, [ico ? icon(ico,"ico-sm") : null, eyebrow]),
-    el("h2", {class:"question"}, [question])
-  ];
-  if(hint) kids.push(el("p", {class:"lead-sm"}, [hint]));
-  return card(kids.concat(children));
-}
-function renderQ1(){
+/* ---- STEP 3 世界観（1画面）----
+   3つの塊を上から：世界観チップ（おまかせ排他）／感じたい印象（任意）／こだわり（任意）。
+   どれも選ばずに「つぎへ」で通る。その時はプロンプト側が「おまかせ」を書く。 */
+function renderWorld(){
   var wrap = document.createDocumentFragment();
-  var other = el("input", {type:"text", id:"moodOther", value:state.moodOther, placeholder:"ほかにあれば、自由に書いてください", autocomplete:"off"});
-  other.addEventListener("input", function(){ state.moodOther = other.value; saveState(); });
-  wrap.appendChild(questionCard("世界観 1/5",
-    "完成画像を見た時、どんな気持ちになれたら嬉しいですか？",
-    "できた1枚をスマホで開いた時を想像してみてください。いくつ選んでも大丈夫です。",
-    [
-      chipList(Q1_MOOD, function(v){ return state.mood.indexOf(v) > -1; },
-        function(v){ toggleIn(state.mood, v); saveState(); render(); }),
-      el("div", {class:"field", style:"margin-top:16px;"}, [
-        el("label", {for:"moodOther"}, ["自由に書く"]), other
-      ])
-    ], "heart"));
-  wrap.appendChild(navRow({}));
-  return wrap;
-}
-function renderQ2(){
-  var wrap = document.createDocumentFragment();
-  var other = el("input", {type:"text", id:"worldOther", value:state.worldOther, placeholder:"その他（例：夜の街、レトロゲーム風）", autocomplete:"off"});
-  other.addEventListener("input", function(){ state.worldOther = other.value; saveState(); });
-  wrap.appendChild(questionCard("世界観 2/5",
-    "好きな世界観はどれですか？",
-    "いくつ選んでも大丈夫です。決めきれない時は「アイコンに合わせておまかせ」を選んでください。",
-    [
-      chipList(Q2_WORLD, function(v){ return state.world.indexOf(v) > -1; },
-        function(v){
-          if(v === "アイコンに合わせておまかせ"){
-            state.world = (state.world.indexOf(v) > -1) ? [] : [v];
-          }else{
-            var i = state.world.indexOf("アイコンに合わせておまかせ");
-            if(i > -1) state.world.splice(i,1);
-            toggleIn(state.world, v);
-          }
-          saveState(); render();
-        }),
-      el("div", {class:"field", style:"margin-top:16px;"}, [
-        el("label", {for:"worldOther"}, ["その他"]), other
-      ])
-    ], "palette"));
-  wrap.appendChild(navRow({}));
-  return wrap;
-}
-function renderQ3(){
-  var wrap = document.createDocumentFragment();
-  var like = el("input", {type:"text", id:"colorLike", value:state.colors, placeholder:"例：ネイビー、シルバー", autocomplete:"off"});
-  like.addEventListener("input", function(){ state.colors = like.value; saveState(); });
-  var avoid = el("input", {type:"text", id:"colorAvoid", value:state.avoidColors, placeholder:"例：暖色", autocomplete:"off"});
-  avoid.addEventListener("input", function(){ state.avoidColors = avoid.value; saveState(); });
 
-  function appendTo(input, key, w){
-    var cur = t(input.value);
-    input.value = cur ? cur + "、" + w : w;
-    state[key] = input.value;
-    saveState();
+  var worldOther = el("input", {type:"text", id:"worldOther", value:state.worldOther,
+    placeholder:"その他（例：夜の街、レトロゲーム風）", autocomplete:"off"});
+  worldOther.addEventListener("input", function(){ state.worldOther = worldOther.value; saveState(); });
+
+  var prefs = el("textarea", {rows:"2", id:"prefs",
+    placeholder:"例：ネイビーとシルバー。星だけ入れたい。森や暖色は避けたい",
+    "aria-label":"色や入れたいもの、避けたいものがあれば"});
+  prefs.value = state.prefs;
+  prefs.addEventListener("input", function(){ state.prefs = prefs.value; saveState(); });
+
+  /* 「おまかせ」と他のチップは同時に立たない */
+  function toggleWorld(v){
+    if(v === OMAKASE){
+      state.world = (state.world.indexOf(v) > -1) ? [] : [v];
+    }else{
+      var i = state.world.indexOf(OMAKASE);
+      if(i > -1) state.world.splice(i,1);
+      toggleIn(state.world, v);
+    }
+    saveState(); render();
   }
-  wrap.appendChild(questionCard("世界観 3/5",
-    "好きな色と、避けたい色はありますか？",
-    "たとえば「ネイビーとシルバー」のように、思いついた言葉で大丈夫です。空欄でもかまいません。",
-    [
-      el("div", {class:"field"}, [
-        el("label", {for:"colorLike"}, ["好きな色"]), like,
-        el("div", {class:"bank"}, [
-          el("p", {class:"bank-label"}, ["言葉を借りる"]),
-          chipList(Q3_COLOR_WORDS, function(){ return false; },
-            function(w){ appendTo(like, "colors", w); }, "chip-word")
-        ])
-      ]),
-      el("div", {class:"field"}, [
-        el("label", {for:"colorAvoid"}, ["避けたい色"]), avoid,
-        el("div", {class:"bank"}, [
-          el("p", {class:"bank-label"}, ["言葉を借りる"]),
-          chipList(Q3_COLOR_WORDS, function(){ return false; },
-            function(w){ appendTo(avoid, "avoidColors", w); }, "chip-word")
-        ])
-      ])
-    ], "droplet"));
-  wrap.appendChild(navRow({}));
-  return wrap;
-}
-function renderQ4(){
-  var wrap = document.createDocumentFragment();
-  var other = el("input", {type:"text", id:"motifOther", value:state.motifOther, placeholder:"例：カメラ、自転車", autocomplete:"off"});
-  other.addEventListener("input", function(){ state.motifOther = other.value; saveState(); });
-  var avoid = el("input", {type:"text", id:"motifAvoid", value:state.avoidMotifs, placeholder:"例：森・植物", autocomplete:"off"});
-  avoid.addEventListener("input", function(){ state.avoidMotifs = avoid.value; saveState(); });
-  wrap.appendChild(questionCard("世界観 4/5",
-    "画像に入れたいモチーフはありますか？",
-    "いくつ選んでも大丈夫です。たとえば「猫」「コーヒー」のように、好きなものを自由に足せます。",
-    [
-      chipList(Q4_MOTIF, function(v){ return state.motifs.indexOf(v) > -1; },
-        function(v){ toggleIn(state.motifs, v); saveState(); render(); }),
-      el("div", {class:"field", style:"margin-top:16px;"}, [
-        el("label", {for:"motifOther"}, ["自由に書く"]), other
-      ]),
-      el("div", {class:"field"}, [
-        el("label", {for:"motifAvoid"}, ["避けたいもの"]), avoid
-      ])
-    ], "shapes"));
-  wrap.appendChild(navRow({}));
-  return wrap;
-}
-function renderQ5(){
-  var wrap = document.createDocumentFragment();
-  var other = el("input", {type:"text", id:"useOther", value:state.useCaseOther, placeholder:"どこで使うか、書いてください", autocomplete:"off"});
-  other.addEventListener("input", function(){ state.useCaseOther = other.value; saveState(); });
-  var kids = [
-    chipList(Q5_USE, function(v){ return state.useCase === v; },
-      function(v){ state.useCase = (state.useCase === v ? "" : v); saveState(); render(); })
-  ];
-  if(state.useCase === "その他"){
-    kids.push(el("div", {class:"field", style:"margin-top:16px;"}, [
-      el("label", {for:"useOther"}, ["その他"]), other
-    ]));
-  }
-  if(has(state.useCase) && RATIO[state.useCase]){
-    kids.push(el("p", {class:"hint"}, ["この用途なら、縦横比は " + RATIO[state.useCase] + " をおすすめします。プロンプトにも書き込みます。"]));
-  }
-  wrap.appendChild(questionCard("世界観 5/5", "できた画像は、どこで使いますか？", "ひとつ選んでください。", kids, "phone"));
+
+  wrap.appendChild(card([
+    el("span", {class:"eyebrow"}, [icon("palette","ico-sm"), "世界観"]),
+    el("h2", {class:"question"}, ["どんな雰囲気の1枚にしますか？"]),
+    el("p", {class:"lead-sm"}, ["決めきれない時は、いちばん上の「アイコンに合わせておまかせ」だけ選んで進んで大丈夫です。"]),
+
+    chipList(WORLD_OPTIONS, function(v){ return state.world.indexOf(v) > -1; }, toggleWorld),
+    el("div", {class:"field", style:"margin-top:16px;"}, [
+      el("label", {for:"worldOther"}, ["その他"]), worldOther
+    ]),
+
+    el("h3", {class:"sub-q"}, ["できた1枚を見て、どんな気持ちになれたら嬉しいですか？（任意）"]),
+    chipList(MOOD_OPTIONS, function(v){ return state.mood.indexOf(v) > -1; },
+      function(v){ toggleIn(state.mood, v); saveState(); render(); }),
+
+    el("h3", {class:"sub-q"}, ["色や入れたいもの、避けたいものがあれば"]),
+    el("div", {class:"field"}, [prefs])
+  ]));
   wrap.appendChild(navRow({}));
   return wrap;
 }
@@ -1603,22 +1483,14 @@ function renderConfirm(){
   wrap.appendChild(card(itemKids));
 
   /* 世界観 */
-  var useCaseText = state.useCase === "その他"
-    ? (has(state.useCaseOther) ? t(state.useCaseOther) : "その他")
-    : t(state.useCase);
   wrap.appendChild(card([
     el("div", {class:"sum-head"}, [
       el("h3", {}, ["選んだ世界観は、これでいいですか？"]),
-      el("button", {class:"btn btn-ghost btn-sm", type:"button", onclick:function(){ goTo("q1"); }}, [icon("pen","ico-sm"), "質問に戻る"])
+      el("button", {class:"btn btn-ghost btn-sm", type:"button", onclick:function(){ goTo("world"); }}, [icon("pen","ico-sm"), "質問に戻る"])
     ]),
-    sumRow("感じたい印象", joinAll(state.mood, state.moodOther)),
+    sumRow("感じたい印象", joinAll(state.mood)),
     sumRow("世界観", joinAll(state.world, state.worldOther)),
-    sumRow("好きな色", state.colors),
-    sumRow("避けたい色", state.avoidColors),
-    sumRow("入れたいモチーフ", joinAll(state.motifs, state.motifOther)),
-    sumRow("避けたいモチーフ", state.avoidMotifs),
-    sumRow("用途", useCaseText),
-    sumRow("ワークシートの写真", state.worksheetName),
+    sumRow("こだわり", state.prefs),
     sumRow("一言でいうと", state.tagline)
   ]));
 
@@ -1664,11 +1536,7 @@ function renderDone(){
     el("li", {}, [el("span", {class:"set-no", "aria-hidden":"true"}, ["3"]), el("span", {}, ["下の専用プロンプト"])])
   ]);
   var setKids = [ el("h3", {}, ["ChatGPT等へ貼るもの"]), setList ];
-  if(has(state.worksheetName)){
-    setKids.push(el("p", {class:"hint"}, ["ワークシートの写真「" + t(state.worksheetName) + "」も、一緒に貼るとさらに安心です。"]));
-  }else{
-    setKids.push(el("p", {class:"hint"}, ["ワークシートの写真がある場合は、一緒に貼るとさらに安心です。"]));
-  }
+  setKids.push(el("p", {class:"hint"}, ["ワークシートの写真がある場合は、一緒に貼るとさらに安心です。"]));
   wrap.appendChild(card(setKids));
 
   /* 手元にあるもの */
@@ -1728,7 +1596,7 @@ function renderDone(){
 
 var RENDERERS = {
   welcome:renderWelcome, icon:renderIcon, torisetsu:renderTorisetsu,
-  q1:renderQ1, q2:renderQ2, q3:renderQ3, q4:renderQ4, q5:renderQ5,
+  world:renderWorld,
   intro:renderIntro, confirm:renderConfirm, done:renderDone
 };
 
