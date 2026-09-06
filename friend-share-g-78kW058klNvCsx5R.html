@@ -279,6 +279,22 @@ input[type="range"]{width:100%; accent-color:var(--accent)}
 .intro a.btn{text-decoration:none; display:inline-flex; align-items:center; gap:7px}
 @media (max-width:600px){ .rev-open{right:12px; bottom:12px; padding:10px 14px} }
 
+
+.intro ul{margin:0 0 12px; padding-left:1.3em; font-size:13px; line-height:1.85; max-width:64ch}
+.intro ul li{margin-bottom:3px}
+.split{display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--rule); border-radius:var(--radius); overflow:hidden; margin:16px 0 18px; background:var(--surface-2)}
+.split-col{padding:14px 17px; border-right:1px solid var(--rule)}
+.split-col:last-child{border-right:0}
+.split-col:first-child{background:var(--sev1-bg)}
+.split-col:last-child{background:var(--sev4-bg)}
+.split-k{font-size:13px; font-weight:700}
+.split-col:first-child .split-k{color:var(--sev1)}
+.split-col:last-child .split-k{color:var(--sev4)}
+.split-note{font-size:11px; color:var(--ink-2); margin-top:1px; margin-bottom:8px}
+.split-col ul{margin:0 0 9px; padding-left:1.2em; font-size:12.5px; line-height:1.7}
+.split-ans{margin:0 !important; font-size:12px; font-weight:500; padding-top:8px; border-top:1px solid var(--rule-soft)}
+@media (max-width:700px){ .split{grid-template-columns:1fr} .split-col{border-right:0; border-bottom:1px solid var(--rule)} }
+
 </style>
 
 <div class="shell">
@@ -330,14 +346,49 @@ input[type="range"]{width:100%; accent-color:var(--accent)}
     <!-- 管制塔 -->
     <section class="pane" id="pane-tower">
       <div class="intro">
-        <h2>これは完成品ではなく、いちばん最初の叩き台です</h2>
-        <p class="lead">社労士として労務管理の仕事をはじめるにあたって、「給与や昇給のタイミングを、こちらで自動で判定してくれる道具」を作れないかと考えています。その第一稿を、実務をご存じの目で率直に見ていただきたくてお渡ししました。</p>
+        <h2>伝えたはずのことが、次には違う答えになる。その対策として作りました</h2>
+        <p class="lead">Claude Codeに労務のことを伝えても、セッションが変わると消えてしまう。等級や保険料を聞けばもっともらしい数字が返ってくるけれど、根拠がない。次に聞くと違う数字になる——sakkoさんが困っていらっしゃると伺ったのは、たぶんここだと思っています。</p>
+        <p>原因は3つあると考えました。<b>①会話は残らない</b>ので、伝えた情報が次のセッションに引き継がれない。<b>②LLMは数字を「思い出す」ときに作ってしまう</b>——等級表も料率も、それらしい形で生成されます。<b>③制度は毎年変わる</b>ので、モデルが学習した時点の知識はもう古い。実際、キャリアアップ助成金の社会保険適用時処遇改善コースは2026年3月末で終了していますが、ネット上の多くの記事はまだ「使える」と書いたままです。</p>
+        <p>だからこの道具は、<b>AIに数字を作らせない</b>設計にしています。</p>
+        <ul>
+          <li>従業員・給与・契約は、<b>会話の外のデータベース</b>に置く（セッションが変わっても消えない）</li>
+          <li>等級と保険料の計算は、<b>決定論的なコード</b>がやる（LLMの推論を通さない）</li>
+          <li>料率と等級表は、<b>協会けんぽ・日本年金機構の配布ファイル</b>から取る（生成しない）</li>
+          <li>すべての判定に<b>根拠を添える</b>（合っているか、人が確かめられる）</li>
+        </ul>
+        <p>下のリストで、各行の左に細い罫線がついた文——あれが根拠です。「なぜこの人が随時改定に該当するのか」を、月ごとの数字と等級差まで書いてあります。合っているかどうか、そこを見れば確かめられるようにしたつもりです。</p>
+
+        <div class="split">
+          <div class="split-col">
+            <div class="split-k">AIに任せてはいけないところ</div>
+            <div class="split-note">ここを任せると、静かに間違えます</div>
+            <ul>
+              <li>等級と保険料の金額</li>
+              <li>期日の計算（有給の付与日、36協定の満了、年齢到達）</li>
+              <li>その制度が今も生きているか</li>
+              <li>都道府県ごとに違う料率・最低賃金</li>
+            </ul>
+            <p class="split-ans">→ このツールがマスタを引いて出します</p>
+          </div>
+          <div class="split-col">
+            <div class="split-k">AIに任せていいところ</div>
+            <div class="split-note">むしろAIのほうが速い仕事です</div>
+            <ul>
+              <li>「この人、来月なにかある？」と自然文で聞く</li>
+              <li>顧問先への説明文の下書き</li>
+              <li>例外にあたるかどうかの相談相手</li>
+              <li>調べものの入口をつくる</li>
+            </ul>
+            <p class="split-ans">→ 判定結果を材料として渡します</p>
+          </div>
+        </div>
+
         <p>会社10社・従業員71名は<b>すべて架空</b>です。ただし判定は実際に動いていて、数字を変えれば結果も変わります。画面は左から、社労士が顧問先を横断して見る<b>管制塔</b>、会社の人事・経営者が自社だけを見る<b>顧問先</b>、ひとりの1年を並べる<b>従業員</b>、そして昇給を決める前に試算する<b>昇給シミュレーター</b>の4つです。</p>
         <p>いちばん伺いたいのは、この3つです。</p>
         <ol>
           <li>判定の条件が、実務の感覚と合っているか（とくに随時改定）</li>
-          <li>この4画面で、ほんとうに楽になるのか。順番や粒度は合っているか</li>
-          <li>決定的に足りていないものは何か</li>
+          <li>根拠の出し方が、確かめるのに足りているか。何があれば「これは信じていい」と思えるか</li>
+          <li>sakkoさんがいま手で管理していて、<b>いちばん間違えたくないのはどこか</b></li>
         </ol>
         <p>右下の<b>「レビューメモ」</b>に、気づいたことをそのまま書き込めます。書いた内容はお使いの端末に残るので、途中で閉じても消えません。最後にボタンひとつで全部まとめてコピーできるので、それを貼って送り返していただければ助かります。</p>
         <p style="font-size:12px;color:var(--ink-2)">ご自身で中身を書き換えたい場合は、下の「HTMLのソースを開く」からファイルを保存してください（開いた画面で右クリック→「別名で保存」、またはこのページで ⌘S ／ Ctrl+S）。1枚のHTMLに判定ロジックもデータも入っているので、テキストエディタで直接なおせます。</p>
