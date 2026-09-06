@@ -1,0 +1,1033 @@
+<title>労務イベント管制塔</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F6F5F2; --surface:#FFFFFF; --surface-2:#FBFAF7;
+  --ink:#1A2A38; --ink-2:#5B6B79; --ink-3:#8A96A1;
+  --rule:#DEDCD5; --rule-soft:#EAE8E2;
+  --accent:#1F4E6D; --accent-2:#3A7CA5; --accent-soft:#E7EEF3;
+  --sev1:#9E3226; --sev1-bg:#F7EAE8;
+  --sev2:#A9631A; --sev2-bg:#F9F0E4;
+  --sev3:#6E6221; --sev3-bg:#F5F2E3;
+  --sev4:#2C6A4F; --sev4-bg:#E6F0EA;
+  --shadow:0 1px 2px rgba(26,42,56,.06), 0 6px 18px rgba(26,42,56,.05);
+  --radius:6px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic UI", system-ui, sans-serif;
+  font-size:14px; line-height:1.7; -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric:tabular-nums}
+.num{font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+
+/* ── shell ── */
+.shell{display:grid; grid-template-columns:196px 1fr; min-height:100vh}
+.rail{
+  background:var(--surface); border-right:1px solid var(--rule);
+  padding:18px 0 24px; display:flex; flex-direction:column; gap:2px; position:sticky; top:0; height:100vh;
+}
+.brand{padding:0 18px 18px; display:flex; gap:9px; align-items:flex-start}
+.brand-mark{flex:0 0 auto; margin-top:2px}
+.brand-name{font-weight:700; font-size:14px; letter-spacing:.02em; line-height:1.35}
+.brand-sub{font-size:10.5px; color:var(--ink-3); letter-spacing:.06em; margin-top:1px}
+.navlabel{font-size:10px; letter-spacing:.14em; color:var(--ink-3); padding:14px 18px 6px; font-weight:500}
+.navbtn{
+  display:flex; align-items:center; gap:10px; width:100%; background:none; border:0; cursor:pointer;
+  padding:9px 18px; font:inherit; font-size:13px; color:var(--ink-2); text-align:left;
+  border-left:2px solid transparent;
+}
+.navbtn:hover{background:var(--surface-2); color:var(--ink)}
+.navbtn[aria-selected="true"]{color:var(--accent); border-left-color:var(--accent); background:var(--accent-soft); font-weight:500}
+.navbtn:focus-visible{outline:2px solid var(--accent-2); outline-offset:-2px}
+.navbtn .cnt{margin-left:auto; font-size:11px; color:var(--ink-3)}
+.rail-foot{margin-top:auto; padding:14px 18px 0; border-top:1px solid var(--rule-soft); font-size:10.5px; color:var(--ink-3); line-height:1.55}
+
+.main{min-width:0; display:flex; flex-direction:column}
+.topbar{
+  display:flex; align-items:center; gap:16px; padding:14px 26px; background:var(--surface);
+  border-bottom:1px solid var(--rule); position:sticky; top:0; z-index:5; flex-wrap:wrap;
+}
+.asof{display:flex; align-items:baseline; gap:8px}
+.asof-lbl{font-size:10px; letter-spacing:.12em; color:var(--ink-3)}
+.asof-val{font-size:15px; font-weight:500}
+.topbar-sep{width:1px; height:26px; background:var(--rule)}
+.chip-row{display:flex; gap:6px; flex-wrap:wrap}
+.chip{
+  border:1px solid var(--rule); background:var(--surface); color:var(--ink-2); cursor:pointer;
+  border-radius:100px; padding:3px 11px; font:inherit; font-size:12px; display:flex; align-items:center; gap:6px;
+}
+.chip:hover{border-color:var(--ink-3)}
+.chip[aria-pressed="true"]{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.chip:focus-visible{outline:2px solid var(--accent-2); outline-offset:1px}
+.chip .dot{width:7px;height:7px;border-radius:50%}
+.pane{padding:22px 26px 60px; max-width:1180px}
+.pane[hidden]{display:none}
+
+h2.section{font-size:16px; font-weight:700; margin:0 0 3px; text-wrap:balance}
+.section-note{font-size:12.5px; color:var(--ink-2); margin:0 0 16px; max-width:64ch}
+
+/* ── summary strip ── */
+.strip{display:flex; gap:0; border:1px solid var(--rule); border-radius:var(--radius); background:var(--surface); overflow:hidden; margin-bottom:22px}
+.strip-cell{flex:1; padding:12px 16px; border-right:1px solid var(--rule-soft); min-width:0}
+.strip-cell:last-child{border-right:0}
+.strip-k{font-size:10.5px; letter-spacing:.1em; color:var(--ink-3); display:flex; align-items:center; gap:6px}
+.strip-v{font-size:23px; font-weight:500; line-height:1.25; margin-top:3px}
+.strip-v small{font-size:12px; color:var(--ink-2); font-weight:400; margin-left:3px}
+.strip-cell.s1 .strip-v{color:var(--sev1)} .strip-cell.s2 .strip-v{color:var(--sev2)}
+.strip-cell.s4 .strip-v{color:var(--sev4)}
+
+/* ── event rows ── */
+.rows{border:1px solid var(--rule); border-radius:var(--radius); background:var(--surface); overflow:hidden}
+.row{display:grid; grid-template-columns:3px 92px 1fr 168px; align-items:stretch; border-bottom:1px solid var(--rule-soft); cursor:pointer; background:none; border-left:0;border-right:0;border-top:0; width:100%; padding:0; font:inherit; color:inherit; text-align:left}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--surface-2)}
+.row:focus-visible{outline:2px solid var(--accent-2); outline-offset:-2px}
+.row-sev{background:var(--sev3)}
+.row.s1 .row-sev{background:var(--sev1)} .row.s2 .row-sev{background:var(--sev2)}
+.row.s3 .row-sev{background:var(--sev3)} .row.s4 .row-sev{background:var(--sev4)}
+.row-when{padding:11px 0 11px 13px; font-size:11px; color:var(--ink-2); font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+.row-when b{display:block; font-size:12px; font-weight:500; color:var(--ink)}
+.row.s1 .row-when b{color:var(--sev1)}
+.row-body{padding:11px 14px; min-width:0}
+.row-title{font-size:13.5px; font-weight:500; line-height:1.5}
+.row-meta{font-size:11.5px; color:var(--ink-2); margin-top:1px; display:flex; gap:7px; flex-wrap:wrap; align-items:center}
+.row-meta .sep{color:var(--ink-3)}
+.row-basis{font-size:11.5px; color:var(--ink-2); margin-top:5px; padding-left:9px; border-left:2px solid var(--rule); line-height:1.6}
+.row-act{padding:11px 14px 11px 0; display:flex; flex-direction:column; align-items:flex-end; justify-content:center; gap:5px}
+.tag{font-size:10.5px; letter-spacing:.06em; padding:2px 8px; border-radius:3px; white-space:nowrap; font-weight:500}
+.t1{background:var(--sev1-bg); color:var(--sev1)} .t2{background:var(--sev2-bg); color:var(--sev2)}
+.t3{background:var(--sev3-bg); color:var(--sev3)} .t4{background:var(--sev4-bg); color:var(--sev4)}
+.row-act .who{font-size:11px; color:var(--ink-3); text-align:right}
+.empty{padding:38px 20px; text-align:center; color:var(--ink-3); font-size:13px}
+
+/* ── tables ── */
+table{width:100%; border-collapse:collapse; font-size:12.5px}
+.tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:var(--radius); background:var(--surface)}
+th{text-align:left; font-size:10.5px; letter-spacing:.08em; color:var(--ink-3); font-weight:500; padding:9px 12px; border-bottom:1px solid var(--rule); white-space:nowrap; background:var(--surface-2)}
+td{padding:9px 12px; border-bottom:1px solid var(--rule-soft); white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface-2)}
+td.r,th.r{text-align:right}
+.namecell{display:flex; align-items:center; gap:8px}
+.badge{font-size:10px; padding:1px 6px; border-radius:3px; background:var(--surface-2); color:var(--ink-2); border:1px solid var(--rule)}
+.delta-up{color:var(--sev2); font-weight:500}
+.delta-dn{color:var(--sev4); font-weight:500}
+
+/* ── company grid ── */
+.cogrid{display:grid; grid-template-columns:repeat(auto-fill, minmax(272px,1fr)); gap:12px; margin-bottom:26px}
+.cocard{
+  border:1px solid var(--rule); border-radius:var(--radius); background:var(--surface); padding:13px 15px;
+  cursor:pointer; text-align:left; font:inherit; color:inherit; display:flex; flex-direction:column; gap:8px;
+}
+.cocard:hover{border-color:var(--accent-2)}
+.cocard[aria-pressed="true"]{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent)}
+.cocard:focus-visible{outline:2px solid var(--accent-2); outline-offset:1px}
+.co-head{display:flex; justify-content:space-between; align-items:flex-start; gap:8px}
+.co-name{font-size:13.5px; font-weight:500; line-height:1.45}
+.co-sub{font-size:11px; color:var(--ink-3); margin-top:1px}
+.co-tally{display:flex; gap:10px; font-size:11.5px; color:var(--ink-2); align-items:center}
+.tally{display:flex; align-items:center; gap:4px}
+.tally .dot{width:7px;height:7px;border-radius:50%}
+.co-bar{height:4px; border-radius:2px; background:var(--rule-soft); display:flex; overflow:hidden}
+.co-bar span{display:block}
+
+/* ── person ── */
+.person-head{display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap; padding:16px 18px; border:1px solid var(--rule); border-radius:var(--radius); background:var(--surface); margin-bottom:16px}
+.ph-name{font-size:19px; font-weight:700; line-height:1.3}
+.ph-sub{font-size:12px; color:var(--ink-2); margin-top:2px}
+.ph-facts{display:flex; gap:22px; margin-left:auto; flex-wrap:wrap}
+.fact-k{font-size:10px; letter-spacing:.1em; color:var(--ink-3)}
+.fact-v{font-size:15px; font-weight:500; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.fact-v small{font-size:11px; color:var(--ink-2); font-family:"Zen Kaku Gothic New",sans-serif}
+.two{display:grid; grid-template-columns:1fr 340px; gap:16px; align-items:start}
+@media (max-width:1080px){ .two{grid-template-columns:1fr} }
+.panel{border:1px solid var(--rule); border-radius:var(--radius); background:var(--surface); overflow:hidden}
+.panel-h{padding:10px 14px; border-bottom:1px solid var(--rule); font-size:11px; letter-spacing:.1em; color:var(--ink-3); display:flex; justify-content:space-between; align-items:center; background:var(--surface-2)}
+.panel-b{padding:14px}
+.kv{display:flex; justify-content:space-between; gap:12px; padding:6px 0; border-bottom:1px dashed var(--rule-soft); font-size:12.5px}
+.kv:last-child{border-bottom:0}
+.kv dt{color:var(--ink-2); margin:0}
+.kv dd{margin:0; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-weight:500}
+
+/* ── timeline ── */
+.tl{position:relative; padding-left:20px}
+.tl::before{content:""; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--rule)}
+.tl-item{position:relative; padding:0 0 14px}
+.tl-item::before{content:""; position:absolute; left:-19px; top:6px; width:9px; height:9px; border-radius:50%; background:var(--surface); border:2px solid var(--ink-3)}
+.tl-item.s1::before{border-color:var(--sev1)} .tl-item.s2::before{border-color:var(--sev2)}
+.tl-item.s3::before{border-color:var(--sev3)} .tl-item.s4::before{border-color:var(--sev4)}
+.tl-when{font-size:11px; color:var(--ink-3); font-family:"IBM Plex Mono",monospace}
+.tl-what{font-size:13px; font-weight:500; line-height:1.5}
+.tl-detail{font-size:11.5px; color:var(--ink-2); line-height:1.6}
+
+/* ── sim ── */
+.simgrid{display:grid; grid-template-columns:330px 1fr; gap:18px; align-items:start}
+@media (max-width:940px){ .simgrid{grid-template-columns:1fr} }
+.field{display:flex; flex-direction:column; gap:5px; margin-bottom:14px}
+.field label{font-size:11px; letter-spacing:.08em; color:var(--ink-3)}
+select,input[type="number"]{
+  font:inherit; font-size:13px; padding:7px 10px; border:1px solid var(--rule); border-radius:5px;
+  background:var(--surface); color:var(--ink); width:100%;
+}
+input[type="number"]{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+select:focus-visible,input:focus-visible{outline:2px solid var(--accent-2); outline-offset:0}
+input[type="range"]{width:100%; accent-color:var(--accent)}
+.range-head{display:flex; justify-content:space-between; align-items:baseline}
+.range-val{font-family:"IBM Plex Mono",monospace; font-size:15px; font-weight:500; font-variant-numeric:tabular-nums}
+.verdict{border:1px solid var(--rule); border-left:3px solid var(--ink-3); border-radius:var(--radius); background:var(--surface); padding:14px 16px; margin-bottom:14px}
+.verdict.hit{border-left-color:var(--sev2); background:var(--sev2-bg)}
+.verdict.miss{border-left-color:var(--sev4); background:var(--sev4-bg)}
+.verdict-t{font-size:14px; font-weight:700; display:flex; align-items:center; gap:8px}
+.verdict-d{font-size:12.5px; color:var(--ink-2); margin-top:4px; line-height:1.65}
+.verdict.hit .verdict-t{color:var(--sev2)} .verdict.miss .verdict-t{color:var(--sev4)}
+.steps{display:grid; gap:0; border:1px solid var(--rule); border-radius:var(--radius); background:var(--surface); overflow:hidden; margin-bottom:14px}
+.step{display:grid; grid-template-columns:26px 1fr auto; gap:10px; padding:9px 14px; border-bottom:1px solid var(--rule-soft); align-items:baseline; font-size:12.5px}
+.step:last-child{border-bottom:0}
+.step-n{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3)}
+.step-v{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-weight:500; white-space:nowrap}
+.step.ok .step-v{color:var(--sev4)} .step.ng .step-v{color:var(--sev1)}
+.cmp{display:grid; grid-template-columns:1fr auto 1fr; gap:14px; align-items:center; padding:16px; border:1px solid var(--rule); border-radius:var(--radius); background:var(--surface)}
+.cmp-side{text-align:center}
+.cmp-k{font-size:10.5px; letter-spacing:.1em; color:var(--ink-3)}
+.cmp-grade{font-size:12px; color:var(--ink-2); margin-top:2px}
+.cmp-v{font-size:24px; font-weight:500; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; line-height:1.25}
+.cmp-v small{font-size:12px; color:var(--ink-2)}
+.cmp-arrow{color:var(--ink-3)}
+.note{font-size:11.5px; color:var(--ink-2); line-height:1.65; margin-top:12px; padding:11px 13px; border:1px dashed var(--rule); border-radius:var(--radius); background:var(--surface-2)}
+.note b{color:var(--ink)}
+.spark{display:block}
+.backlink{background:none;border:0;padding:0;font:inherit;font-size:12px;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:5px;margin-bottom:12px}
+.backlink:hover{text-decoration:underline}
+.disclaimer{margin-top:30px; padding:14px 16px; border:1px solid var(--rule); border-left:3px solid var(--sev2); border-radius:var(--radius); background:var(--surface); font-size:11.5px; color:var(--ink-2); line-height:1.7}
+.disclaimer b{color:var(--ink); font-size:12px}
+@media (prefers-reduced-motion:no-preference){ .row,.cocard,.chip{transition:background .12s ease, border-color .12s ease} }
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:static;height:auto;flex-direction:row;overflow-x:auto;align-items:center;padding:10px 12px}
+  .brand,.navlabel,.rail-foot{display:none}
+  .navbtn{white-space:nowrap;border-left:0;border-bottom:2px solid transparent;padding:7px 12px}
+  .navbtn[aria-selected="true"]{border-left:0;border-bottom-color:var(--accent)}
+  .row{grid-template-columns:3px 78px 1fr}
+  .row-act{display:none}
+  .pane{padding:16px 14px 50px}
+  .strip{flex-wrap:wrap}
+  .strip-cell{flex:1 1 44%}
+}
+
+/* ── レビューメモ ── */
+.rev-open{
+  position:fixed; right:20px; bottom:20px; z-index:40;
+  display:flex; align-items:center; gap:8px; padding:11px 17px;
+  background:var(--accent); color:#fff; border:0; border-radius:100px; cursor:pointer;
+  font:inherit; font-size:13.5px; font-weight:500; box-shadow:0 3px 14px rgba(31,78,109,.28);
+}
+.rev-open:hover{background:#18405B}
+.rev-open:focus-visible{outline:3px solid var(--accent-2); outline-offset:2px}
+.rev-open .badge-n{
+  background:rgba(255,255,255,.22); border-radius:100px; padding:0 7px; font-size:11.5px;
+  font-family:"IBM Plex Mono",monospace;
+}
+.rev-panel{
+  position:fixed; right:0; top:0; bottom:0; width:min(460px,100%); z-index:50;
+  background:var(--surface); border-left:1px solid var(--rule); box-shadow:-8px 0 30px rgba(26,42,56,.13);
+  display:flex; flex-direction:column;
+}
+.rev-panel[hidden]{display:none}
+.rev-head{padding:16px 20px 13px; border-bottom:1px solid var(--rule); background:var(--surface-2)}
+.rev-head h3{margin:0; font-size:15px; font-weight:700}
+.rev-head p{margin:4px 0 0; font-size:11.5px; color:var(--ink-2); line-height:1.6}
+.rev-close{position:absolute; right:14px; top:14px; background:none; border:0; cursor:pointer; color:var(--ink-2); padding:5px; line-height:0; border-radius:4px}
+.rev-close:hover{background:var(--rule-soft); color:var(--ink)}
+.rev-close:focus-visible{outline:2px solid var(--accent-2)}
+.rev-body{flex:1; overflow-y:auto; padding:16px 20px 20px}
+.rev-field{margin-bottom:16px}
+.rev-field label{display:block; font-size:12px; font-weight:500; margin-bottom:5px}
+.rev-field .hint{font-size:11px; color:var(--ink-3); font-weight:400; margin-left:5px}
+.rev-field textarea{
+  width:100%; min-height:74px; resize:vertical; font:inherit; font-size:13px; line-height:1.7;
+  padding:9px 11px; border:1px solid var(--rule); border-radius:5px; background:var(--surface); color:var(--ink);
+}
+.rev-field textarea:focus-visible{outline:2px solid var(--accent-2); outline-offset:0; border-color:var(--accent-2)}
+.rev-foot{padding:13px 20px; border-top:1px solid var(--rule); background:var(--surface-2); display:flex; gap:9px; align-items:center; flex-wrap:wrap}
+.btn{font:inherit; font-size:13px; padding:8px 15px; border-radius:5px; cursor:pointer; border:1px solid var(--rule); background:var(--surface); color:var(--ink)}
+.btn:hover{border-color:var(--ink-3)}
+.btn-main{background:var(--accent); color:#fff; border-color:var(--accent); font-weight:500}
+.btn-main:hover{background:#18405B; border-color:#18405B}
+.btn:focus-visible{outline:2px solid var(--accent-2); outline-offset:1px}
+.rev-saved{font-size:11.5px; color:var(--ink-3); margin-left:auto}
+.rev-saved.ok{color:var(--sev4)}
+.rev-scrim{position:fixed; inset:0; background:rgba(26,42,56,.2); z-index:45; border:0; padding:0; cursor:pointer}
+.rev-scrim[hidden]{display:none}
+
+/* ── はじめに ── */
+.intro{
+  border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:var(--radius);
+  background:var(--surface); padding:19px 22px; margin-bottom:22px;
+}
+.intro h2{margin:0 0 8px; font-size:17px; font-weight:700; text-wrap:balance}
+.intro p{margin:0 0 10px; font-size:13px; line-height:1.85; max-width:66ch}
+.intro p:last-child{margin-bottom:0}
+.intro ol{margin:0 0 12px; padding-left:1.35em; font-size:13px; line-height:1.85; max-width:64ch}
+.intro li{margin-bottom:2px}
+.intro .lead{color:var(--ink-2)}
+.intro-acts{display:flex; gap:9px; flex-wrap:wrap; margin-top:14px; padding-top:14px; border-top:1px solid var(--rule-soft)}
+.intro a.btn{text-decoration:none; display:inline-flex; align-items:center; gap:7px}
+@media (max-width:600px){ .rev-open{right:12px; bottom:12px; padding:10px 14px} }
+
+</style>
+
+<div class="shell">
+  <nav class="rail">
+    <div class="brand">
+      <svg class="brand-mark" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M9 1.4 16 5v8L9 16.6 2 13V5l7-3.6Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M9 6.2v5.6M6.3 9h5.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <div class="brand-name">労務イベント<br>管制塔</div>
+        <div class="brand-sub mono">MOCK / 2026</div>
+      </div>
+    </div>
+    <div class="navlabel">画面</div>
+    <button class="navbtn" role="tab" aria-selected="true" data-view="tower">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 13h12M4 13V7l4-4 4 4v6M6.5 13v-3h3v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      管制塔<span class="cnt num" id="cnt-tower"></span>
+    </button>
+    <button class="navbtn" role="tab" aria-selected="false" data-view="company">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 14V3.2c0-.4.3-.7.7-.7h5.6c.4 0 .7.3.7.7V14M9.5 14V6.8h3.3c.4 0 .7.3.7.7V14M1.5 14h13M5 5.2h1.5M5 7.6h1.5M5 10h1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      顧問先<span class="cnt num" id="cnt-co"></span>
+    </button>
+    <button class="navbtn" role="tab" aria-selected="false" data-view="person">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="5.4" r="2.6" stroke="currentColor" stroke-width="1.2"/><path d="M2.9 13.6c.5-2.6 2.6-4 5.1-4s4.6 1.4 5.1 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      従業員<span class="cnt num" id="cnt-emp"></span>
+    </button>
+    <div class="navlabel">試算</div>
+    <button class="navbtn" role="tab" aria-selected="false" data-view="sim">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="1.8" width="10" height="12.4" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M5.4 4.6h5.2M5.6 7.6h1.2M7.4 7.6h1.2M9.2 7.6h1.2M5.6 10.2h1.2M7.4 10.2h1.2M9.2 10.2h3v1.8h-3z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      昇給シミュレーター
+    </button>
+    <div class="rail-foot">
+      架空データによるモック。制度の判定条件・料率は検証中の暫定値です。
+    </div>
+  </nav>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="asof">
+        <span class="asof-lbl mono">基準日</span>
+        <span class="asof-val num" id="asof">2026-09-06</span>
+      </div>
+      <div class="topbar-sep" aria-hidden="true"></div>
+      <div class="chip-row" id="sevfilter" role="group" aria-label="緊急度でしぼりこむ"></div>
+      <div class="chip-row" id="typefilter" role="group" aria-label="種別でしぼりこむ" style="margin-left:auto"></div>
+    </header>
+
+    <!-- 管制塔 -->
+    <section class="pane" id="pane-tower">
+      <div class="intro">
+        <h2>これは完成品ではなく、いちばん最初の叩き台です</h2>
+        <p class="lead">社労士として労務管理の仕事をはじめるにあたって、「給与や昇給のタイミングを、こちらで自動で判定してくれる道具」を作れないかと考えています。その第一稿を、実務をご存じの目で率直に見ていただきたくてお渡ししました。</p>
+        <p>会社10社・従業員71名は<b>すべて架空</b>です。ただし判定は実際に動いていて、数字を変えれば結果も変わります。画面は左から、社労士が顧問先を横断して見る<b>管制塔</b>、会社の人事・経営者が自社だけを見る<b>顧問先</b>、ひとりの1年を並べる<b>従業員</b>、そして昇給を決める前に試算する<b>昇給シミュレーター</b>の4つです。</p>
+        <p>いちばん伺いたいのは、この3つです。</p>
+        <ol>
+          <li>判定の条件が、実務の感覚と合っているか（とくに随時改定）</li>
+          <li>この4画面で、ほんとうに楽になるのか。順番や粒度は合っているか</li>
+          <li>決定的に足りていないものは何か</li>
+        </ol>
+        <p>右下の<b>「レビューメモ」</b>に、気づいたことをそのまま書き込めます。書いた内容はお使いの端末に残るので、途中で閉じても消えません。最後にボタンひとつで全部まとめてコピーできるので、それを貼って送り返していただければ助かります。</p>
+        <div class="intro-acts">
+          <button class="btn btn-main" id="intro-open">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M11.4 2.3 13.7 4.6 5.6 12.7 2.4 13.6l.9-3.2 8.1-8.1Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+            レビューメモを開く
+          </button>
+          <a class="btn" href="https://github.com/okemonogatari-hash/html-share-box/blob/main/friend-share-g-78kW058klNvCsx5R.html" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v8.4M4.8 7.4 8 10.6l3.2-3.2M2.6 13.4h10.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            HTMLを取得して自分で直す
+          </a>
+        </div>
+      </div>
+      <h2 class="section">顧問先10社を、1本のリストで</h2>
+      <p class="section-note">会社ごとにログインし直さず、期限の近い順にぜんぶ並べます。各行に判定の根拠を添えてあるので、社労士の確認は「合っているか」を見るだけで済みます。</p>
+      <div class="strip" id="strip"></div>
+      <div class="rows" id="towerrows"></div>
+      <div class="disclaimer">
+        <b>このモックについて。</b> 会社名・氏名・給与はすべて架空です。標準報酬月額の等級表、保険料率、最低賃金額はモック用の暫定値で、実装前に協会けんぽ・日本年金機構・厚生労働省の一次資料で検算が必要です。判定ロジックも簡略化してあり、産前産後・育休復帰後の改定、保険者算定、時間単位年休などの例外は未実装です。
+      </div>
+    </section>
+
+    <!-- 顧問先 -->
+    <section class="pane" id="pane-company" hidden>
+      <h2 class="section">会社の側から見た、今月の変更</h2>
+      <p class="section-note">顧問先の経営者と人事担当が、自社の従業員だけを見る画面です。「誰の保険料が、いつから、いくらに変わるのか」を、社労士に聞かなくても読めます。</p>
+      <div class="cogrid" id="cogrid"></div>
+      <div id="codetail"></div>
+    </section>
+
+    <!-- 従業員 -->
+    <section class="pane" id="pane-person" hidden>
+      <h2 class="section">ひとりぶんの、これから1年</h2>
+      <p class="section-note">その人に起きる労務イベントを時系列に並べます。等級が動けば保険料も動くので、給与・等級・保険料を同じ画面に置いています。</p>
+      <div class="field" style="max-width:380px">
+        <label for="empsel">従業員</label>
+        <select id="empsel"></select>
+      </div>
+      <div id="persondetail"></div>
+    </section>
+
+    <!-- シミュレーター -->
+    <section class="pane" id="pane-sim" hidden>
+      <h2 class="section">昇給する前に、結果が見える</h2>
+      <p class="section-note">昇給額を決める前に、随時改定に該当するか・保険料がいくら増えるか・助成金の対象になるかを試算します。既存のサービスは「昇給したあと」に検知しますが、知りたいのは決める前です。</p>
+      <div class="simgrid">
+        <div>
+          <div class="panel">
+            <div class="panel-h"><span>条件</span></div>
+            <div class="panel-b">
+              <div class="field">
+                <label for="simemp">対象の従業員</label>
+                <select id="simemp"></select>
+              </div>
+              <div class="field">
+                <div class="range-head">
+                  <label for="simraise">昇給額（固定的賃金）</label>
+                  <span class="range-val" id="simraiseval">+15,000</span>
+                </div>
+                <input type="range" id="simraise" min="0" max="60000" step="1000" value="15000">
+              </div>
+              <div class="field">
+                <label for="simmonth">昇給を実施する月</label>
+                <select id="simmonth">
+                  <option value="10">2026年10月</option>
+                  <option value="11">2026年11月</option>
+                  <option value="12">2026年12月</option>
+                  <option value="1">2027年1月</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="note" id="simnote"></div>
+        </div>
+        <div id="simout"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+
+<button class="rev-scrim" id="rev-scrim" hidden aria-label="レビューメモを閉じる"></button>
+<button class="rev-open" id="rev-open">
+  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M11.4 2.3 13.7 4.6 5.6 12.7 2.4 13.6l.9-3.2 8.1-8.1Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/></svg>
+  レビューメモ<span class="badge-n" id="rev-count" hidden></span>
+</button>
+<aside class="rev-panel" id="rev-panel" hidden aria-label="レビューメモ">
+  <div class="rev-head">
+    <h3>気づいたことを、そのまま書いてください</h3>
+    <p>書いた内容はこの端末にだけ保存されます。送信はされないので、下の「まとめてコピー」で貼って送り返してください。</p>
+    <button class="rev-close" id="rev-close" aria-label="閉じる">
+      <svg width="17" height="17" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="rev-body">
+        <div class="rev-field">
+          <label for="rv-all">全体について<span class="hint">率直な第一印象で構いません</span></label>
+          <textarea id="rv-all" data-k="all" placeholder="ここに書き込めます"></textarea>
+        </div>
+        <div class="rev-field">
+          <label for="rv-rev">随時改定の判定について<span class="hint">2等級差・3か月・支払基礎日数の扱いなど</span></label>
+          <textarea id="rv-rev" data-k="rev" placeholder="ここに書き込めます"></textarea>
+        </div>
+        <div class="rev-field">
+          <label for="rv-date">有給・年齢到達・36協定について<span class="hint">期日の出し方、通知のタイミング</span></label>
+          <textarea id="rv-date" data-k="date" placeholder="ここに書き込めます"></textarea>
+        </div>
+        <div class="rev-field">
+          <label for="rv-prem">保険料の計算・等級の扱いについて<span class="hint">料率、労使折半、賞与の扱いなど</span></label>
+          <textarea id="rv-prem" data-k="prem" placeholder="ここに書き込めます"></textarea>
+        </div>
+        <div class="rev-field">
+          <label for="rv-sim">昇給シミュレーターについて<span class="hint">経営者に見せるとしたら何が要りますか</span></label>
+          <textarea id="rv-sim" data-k="sim" placeholder="ここに書き込めます"></textarea>
+        </div>
+        <div class="rev-field">
+          <label for="rv-miss">足りない画面・機能<span class="hint">これが無いと使えない、というもの</span></label>
+          <textarea id="rv-miss" data-k="miss" placeholder="ここに書き込めます"></textarea>
+        </div>
+        <div class="rev-field">
+          <label for="rv-who">そもそも、これは誰の道具にすべきか<span class="hint">社労士／会社／両方</span></label>
+          <textarea id="rv-who" data-k="who" placeholder="ここに書き込めます"></textarea>
+        </div>
+  </div>
+  <div class="rev-foot">
+    <button class="btn btn-main" id="rev-copy">まとめてコピー</button>
+    <button class="btn" id="rev-clear">消す</button>
+    <span class="rev-saved" id="rev-saved"></span>
+  </div>
+</aside>
+<script>
+(function(){
+  "use strict";
+  const KEY = "roumu-mock-review-v1";
+  const $ = id => document.getElementById(id);
+  const areas = [...document.querySelectorAll("#rev-panel textarea")];
+  const LABELS = {"all": "全体について", "rev": "随時改定の判定について", "date": "有給・年齢到達・36協定について", "prem": "保険料の計算・等級の扱いについて", "sim": "昇給シミュレーターについて", "miss": "足りない画面・機能", "who": "そもそも、これは誰の道具にすべきか"};
+  let store = {};
+  try { store = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e) { store = {}; }
+  for(const a of areas) if(store[a.dataset.k]) a.value = store[a.dataset.k];
+
+  function filled(){ return areas.filter(a => a.value.trim()).length; }
+  function refreshCount(){
+    const n = filled(), b = $("rev-count");
+    b.hidden = n === 0; b.textContent = n;
+  }
+  let t = null;
+  function save(){
+    for(const a of areas) store[a.dataset.k] = a.value;
+    try { localStorage.setItem(KEY, JSON.stringify(store)); $("rev-saved").textContent = "保存しました"; $("rev-saved").className = "rev-saved ok"; }
+    catch(e) { $("rev-saved").textContent = "この環境では保存できません。コピーしてお使いください"; $("rev-saved").className = "rev-saved"; }
+    clearTimeout(t); t = setTimeout(() => { $("rev-saved").textContent = ""; }, 2200);
+    refreshCount();
+  }
+  for(const a of areas) a.addEventListener("input", () => { clearTimeout(t); t = setTimeout(save, 500); });
+
+  function open(){ $("rev-panel").hidden = false; $("rev-scrim").hidden = false; areas[0].focus(); }
+  function close(){ save(); $("rev-panel").hidden = true; $("rev-scrim").hidden = true; }
+  $("rev-open").onclick = open;
+  $("rev-close").onclick = close;
+  $("rev-scrim").onclick = close;
+  const io = $("intro-open"); if(io) io.onclick = open;
+  document.addEventListener("keydown", e => { if(e.key === "Escape" && !$("rev-panel").hidden) close(); });
+
+  $("rev-copy").onclick = async () => {
+    save();
+    const lines = ["労務管理ツール 叩き台へのレビュー", "（" + new Date().toLocaleString("ja-JP") + "）", ""];
+    let any = false;
+    for(const a of areas){
+      const v = a.value.trim();
+      if(v){ any = true; lines.push("■ " + LABELS[a.dataset.k], v, ""); }
+    }
+    if(!any){ $("rev-saved").textContent = "まだ何も書かれていません"; $("rev-saved").className = "rev-saved"; return; }
+    const text = lines.join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      $("rev-saved").textContent = "コピーしました。貼り付けて送ってください";
+      $("rev-saved").className = "rev-saved ok";
+    } catch(e) {
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.cssText = "position:fixed;left:-9999px";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); $("rev-saved").textContent = "コピーしました"; $("rev-saved").className = "rev-saved ok"; }
+      catch(e2) { $("rev-saved").textContent = "コピーできませんでした。手で選択してください"; $("rev-saved").className = "rev-saved"; }
+      document.body.removeChild(ta);
+    }
+    clearTimeout(t); t = setTimeout(() => { $("rev-saved").textContent = ""; }, 3200);
+  };
+  $("rev-clear").onclick = () => {
+    if(!filled() || !confirm("書いたメモをすべて消します。よろしいですか。")) return;
+    for(const a of areas) a.value = "";
+    store = {};
+    try { localStorage.removeItem(KEY); } catch(e) {}
+    refreshCount(); $("rev-saved").textContent = "消しました"; $("rev-saved").className = "rev-saved";
+  };
+  refreshCount();
+})();
+</script>
+
+<script id="payload" type="application/json">{"companies":[{"id":"C01","name":"株式会社ミナモト製作所","industry":"金属加工","pref":"大阪府","agreement36_start":"2026-04-01","agreement36_end":"2027-03-31","min_wage":1177,"count":6,"rates":{"health":0.1034,"care":0.016,"pension":0.183}},{"id":"C02","name":"有限会社かなえ介護サービス","industry":"介護","pref":"兵庫県","agreement36_start":"2026-04-01","agreement36_end":"2027-03-31","min_wage":1116,"count":11,"rates":{"health":0.1029,"care":0.016,"pension":0.183}},{"id":"C03","name":"株式会社スミレ運輸","industry":"運送","pref":"大阪府","agreement36_start":"2025-10-01","agreement36_end":"2026-09-30","min_wage":1177,"count":9,"rates":{"health":0.1034,"care":0.016,"pension":0.183}},{"id":"C04","name":"合同会社アオバ設計","industry":"建築設計","pref":"京都府","agreement36_start":"2026-04-01","agreement36_end":"2027-03-31","min_wage":1122,"count":6,"rates":{"health":0.1013,"care":0.016,"pension":0.183}},{"id":"C05","name":"株式会社ハルタ商会","industry":"卸売","pref":"大阪府","agreement36_start":"2026-06-01","agreement36_end":"2027-05-31","min_wage":1177,"count":8,"rates":{"health":0.1034,"care":0.016,"pension":0.183}},{"id":"C06","name":"株式会社コトブキ食品","industry":"食品製造","pref":"兵庫県","agreement36_start":"2026-04-01","agreement36_end":"2027-03-31","min_wage":1116,"count":9,"rates":{"health":0.1029,"care":0.016,"pension":0.183}},{"id":"C07","name":"株式会社ノガミ工務店","industry":"建設","pref":"大阪府","agreement36_start":"2026-09-01","agreement36_end":"2027-08-31","min_wage":1177,"count":6,"rates":{"health":0.1034,"care":0.016,"pension":0.183}},{"id":"C08","name":"株式会社エムズ美容","industry":"美容","pref":"京都府","agreement36_start":"2026-04-01","agreement36_end":"2027-03-31","min_wage":1122,"count":6,"rates":{"health":0.1013,"care":0.016,"pension":0.183}},{"id":"C09","name":"有限会社タチバナ印刷","industry":"印刷","pref":"大阪府","agreement36_start":"2026-04-01","agreement36_end":"2027-03-31","min_wage":1177,"count":4,"rates":{"health":0.1034,"care":0.016,"pension":0.183}},{"id":"C10","name":"株式会社リンドウITサービス","industry":"情報通信","pref":"東京都","agreement36_start":"2026-04-01","agreement36_end":"2027-03-31","min_wage":1226,"count":6,"rates":{"health":0.0991,"care":0.016,"pension":0.183}}],"employees":[{"id":"E001","name":"市川 杏","company":"C01","pref":"大阪府","birth":"1997-08-17","age":29,"hire":"2021-04-17","type":"契約社員","weekly":40,"base":182000,"health_grade":15,"health_std":180000,"pension_grade":12,"pension_std":180000,"history":[{"y":2025,"m":10,"fixed":182000,"var":9800,"total":191800,"days":31},{"y":2025,"m":11,"fixed":182000,"var":14500,"total":196500,"days":31},{"y":2025,"m":12,"fixed":182000,"var":14500,"total":196500,"days":31},{"y":2026,"m":1,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":2,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":3,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":4,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":5,"fixed":182000,"var":9800,"total":191800,"days":31},{"y":2026,"m":6,"fixed":182000,"var":9800,"total":191800,"days":31},{"y":2026,"m":7,"fixed":182000,"var":28400,"total":210400,"days":31},{"y":2026,"m":8,"fixed":182000,"var":28400,"total":210400,"days":31},{"y":2026,"m":9,"fixed":182000,"var":4200,"total":186200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":16,"pl_taken":4,"pl_last":"2025-10-17","pl_next":"2026-10-17","contract_end":null},{"id":"E002","name":"栗田 蓮","company":"C01","pref":"大阪府","birth":"1950-10-21","age":75,"hire":"2021-01-24","type":"正社員","weekly":40,"base":228000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":228000,"var":4200,"total":232200,"days":31},{"y":2025,"m":11,"fixed":228000,"var":9800,"total":237800,"days":31},{"y":2025,"m":12,"fixed":228000,"var":0,"total":228000,"days":31},{"y":2026,"m":1,"fixed":228000,"var":0,"total":228000,"days":31},{"y":2026,"m":2,"fixed":228000,"var":0,"total":228000,"days":31},{"y":2026,"m":3,"fixed":228000,"var":28400,"total":256400,"days":31},{"y":2026,"m":4,"fixed":228000,"var":36200,"total":264200,"days":31},{"y":2026,"m":5,"fixed":228000,"var":0,"total":228000,"days":31},{"y":2026,"m":6,"fixed":228000,"var":36200,"total":264200,"days":31},{"y":2026,"m":7,"fixed":228000,"var":28400,"total":256400,"days":31},{"y":2026,"m":8,"fixed":228000,"var":14500,"total":242500,"days":31},{"y":2026,"m":9,"fixed":228000,"var":4200,"total":232200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":18,"pl_taken":0,"pl_last":"2026-07-24","pl_next":"2027-07-24","contract_end":null},{"id":"E003","name":"相馬 大輔","company":"C01","pref":"大阪府","birth":"1965-10-18","age":60,"hire":"2023-09-23","type":"契約社員","weekly":40,"base":205000,"health_grade":17,"health_std":200000,"pension_grade":14,"pension_std":200000,"history":[{"y":2025,"m":10,"fixed":205000,"var":4200,"total":209200,"days":31},{"y":2025,"m":11,"fixed":205000,"var":36200,"total":241200,"days":31},{"y":2025,"m":12,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":1,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2026,"m":2,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":3,"fixed":205000,"var":9800,"total":214800,"days":31},{"y":2026,"m":4,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2026,"m":5,"fixed":205000,"var":4200,"total":209200,"days":31},{"y":2026,"m":6,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":7,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":8,"fixed":205000,"var":36200,"total":241200,"days":31},{"y":2026,"m":9,"fixed":205000,"var":9800,"total":214800,"days":31}],"change_at":null,"change_amt":0,"pl_granted":12,"pl_taken":4,"pl_last":"2026-03-23","pl_next":"2027-03-23","contract_end":null},{"id":"E004","name":"森下 大輔","company":"C01","pref":"大阪府","birth":"1950-10-22","age":75,"hire":"2026-03-26","type":"パート","weekly":12,"base":96000,"health_grade":5,"health_std":98000,"pension_grade":2,"pension_std":98000,"history":[{"y":2025,"m":10,"fixed":96000,"var":0,"total":96000,"days":21},{"y":2025,"m":11,"fixed":96000,"var":6800,"total":102800,"days":11},{"y":2025,"m":12,"fixed":96000,"var":0,"total":96000,"days":17},{"y":2026,"m":1,"fixed":96000,"var":6800,"total":102800,"days":14},{"y":2026,"m":2,"fixed":96000,"var":0,"total":96000,"days":19},{"y":2026,"m":3,"fixed":96000,"var":6800,"total":102800,"days":16},{"y":2026,"m":4,"fixed":96000,"var":6800,"total":102800,"days":17},{"y":2026,"m":5,"fixed":96000,"var":0,"total":96000,"days":18},{"y":2026,"m":6,"fixed":96000,"var":0,"total":96000,"days":17},{"y":2026,"m":7,"fixed":96000,"var":0,"total":96000,"days":17},{"y":2026,"m":8,"fixed":96000,"var":0,"total":96000,"days":16},{"y":2026,"m":9,"fixed":96000,"var":0,"total":96000,"days":11}],"change_at":null,"change_amt":0,"pl_granted":0,"pl_taken":0,"pl_last":null,"pl_next":"2026-09-26","contract_end":null},{"id":"E005","name":"日野 和也","company":"C01","pref":"大阪府","birth":"1973-12-26","age":52,"hire":"2026-07-25","type":"正社員","weekly":40,"base":512000,"health_grade":30,"health_std":500000,"pension_grade":27,"pension_std":500000,"history":[{"y":2025,"m":10,"fixed":512000,"var":14500,"total":526500,"days":31},{"y":2025,"m":11,"fixed":512000,"var":0,"total":512000,"days":31},{"y":2025,"m":12,"fixed":512000,"var":0,"total":512000,"days":31},{"y":2026,"m":1,"fixed":512000,"var":9800,"total":521800,"days":31},{"y":2026,"m":2,"fixed":512000,"var":9800,"total":521800,"days":31},{"y":2026,"m":3,"fixed":512000,"var":14500,"total":526500,"days":31},{"y":2026,"m":4,"fixed":512000,"var":0,"total":512000,"days":31},{"y":2026,"m":5,"fixed":506000,"var":4200,"total":510200,"days":31},{"y":2026,"m":6,"fixed":506000,"var":4200,"total":510200,"days":31},{"y":2026,"m":7,"fixed":506000,"var":21000,"total":527000,"days":31},{"y":2026,"m":8,"fixed":506000,"var":9800,"total":515800,"days":31},{"y":2026,"m":9,"fixed":506000,"var":14500,"total":520500,"days":31}],"change_at":5,"change_amt":-6000,"pl_granted":0,"pl_taken":0,"pl_last":null,"pl_next":"2027-01-25","contract_end":null},{"id":"E006","name":"谷口 彩香","company":"C01","pref":"大阪府","birth":"1959-10-29","age":66,"hire":"2026-08-19","type":"パート","weekly":20,"base":132000,"health_grade":10,"health_std":134000,"pension_grade":7,"pension_std":134000,"history":[{"y":2025,"m":10,"fixed":132000,"var":6800,"total":138800,"days":21},{"y":2025,"m":11,"fixed":132000,"var":3200,"total":135200,"days":21},{"y":2025,"m":12,"fixed":132000,"var":3200,"total":135200,"days":17},{"y":2026,"m":1,"fixed":132000,"var":0,"total":132000,"days":14},{"y":2026,"m":2,"fixed":132000,"var":3200,"total":135200,"days":18},{"y":2026,"m":3,"fixed":132000,"var":6800,"total":138800,"days":17},{"y":2026,"m":4,"fixed":132000,"var":6800,"total":138800,"days":14},{"y":2026,"m":5,"fixed":132000,"var":0,"total":132000,"days":21},{"y":2026,"m":6,"fixed":132000,"var":6800,"total":138800,"days":14},{"y":2026,"m":7,"fixed":126000,"var":6800,"total":132800,"days":14},{"y":2026,"m":8,"fixed":126000,"var":6800,"total":132800,"days":14},{"y":2026,"m":9,"fixed":126000,"var":3200,"total":129200,"days":21}],"change_at":3,"change_amt":-6000,"pl_granted":0,"pl_taken":0,"pl_last":null,"pl_next":"2027-02-19","contract_end":null},{"id":"E007","name":"市川 健太","company":"C02","pref":"兵庫県","birth":"1962-01-05","age":64,"hire":"2014-11-09","type":"正社員","weekly":40,"base":342000,"health_grade":24,"health_std":340000,"pension_grade":21,"pension_std":340000,"history":[{"y":2025,"m":10,"fixed":342000,"var":14500,"total":356500,"days":31},{"y":2025,"m":11,"fixed":342000,"var":4200,"total":346200,"days":31},{"y":2025,"m":12,"fixed":342000,"var":0,"total":342000,"days":31},{"y":2026,"m":1,"fixed":342000,"var":4200,"total":346200,"days":31},{"y":2026,"m":2,"fixed":342000,"var":0,"total":342000,"days":31},{"y":2026,"m":3,"fixed":342000,"var":14500,"total":356500,"days":31},{"y":2026,"m":4,"fixed":342000,"var":28400,"total":370400,"days":31},{"y":2026,"m":5,"fixed":342000,"var":4200,"total":346200,"days":31},{"y":2026,"m":6,"fixed":342000,"var":28400,"total":370400,"days":31},{"y":2026,"m":7,"fixed":342000,"var":21000,"total":363000,"days":31},{"y":2026,"m":8,"fixed":342000,"var":9800,"total":351800,"days":31},{"y":2026,"m":9,"fixed":342000,"var":0,"total":342000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":6,"pl_last":"2026-05-09","pl_next":"2027-05-09","contract_end":null},{"id":"E008","name":"相馬 誠","company":"C02","pref":"兵庫県","birth":"1970-12-29","age":55,"hire":"2024-09-13","type":"パート","weekly":28,"base":118000,"health_grade":8,"health_std":118000,"pension_grade":5,"pension_std":118000,"history":[{"y":2025,"m":10,"fixed":118000,"var":6800,"total":124800,"days":18},{"y":2025,"m":11,"fixed":118000,"var":3200,"total":121200,"days":11},{"y":2025,"m":12,"fixed":118000,"var":3200,"total":121200,"days":16},{"y":2026,"m":1,"fixed":118000,"var":0,"total":118000,"days":11},{"y":2026,"m":2,"fixed":118000,"var":0,"total":118000,"days":17},{"y":2026,"m":3,"fixed":118000,"var":0,"total":118000,"days":16},{"y":2026,"m":4,"fixed":118000,"var":0,"total":118000,"days":19},{"y":2026,"m":5,"fixed":118000,"var":0,"total":118000,"days":11},{"y":2026,"m":6,"fixed":118000,"var":6800,"total":124800,"days":21},{"y":2026,"m":7,"fixed":118000,"var":6800,"total":124800,"days":19},{"y":2026,"m":8,"fixed":118000,"var":6800,"total":124800,"days":21},{"y":2026,"m":9,"fixed":118000,"var":3200,"total":121200,"days":21}],"change_at":null,"change_amt":0,"pl_granted":8,"pl_taken":2,"pl_last":"2026-03-13","pl_next":"2027-03-13","contract_end":"2027-05-06"},{"id":"E009","name":"栗田 和也","company":"C02","pref":"兵庫県","birth":"1999-05-19","age":27,"hire":"2021-01-11","type":"契約社員","weekly":40,"base":205000,"health_grade":17,"health_std":200000,"pension_grade":14,"pension_std":200000,"history":[{"y":2025,"m":10,"fixed":205000,"var":4200,"total":209200,"days":31},{"y":2025,"m":11,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2025,"m":12,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2026,"m":1,"fixed":205000,"var":36200,"total":241200,"days":31},{"y":2026,"m":2,"fixed":205000,"var":9800,"total":214800,"days":31},{"y":2026,"m":3,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":4,"fixed":205000,"var":21000,"total":226000,"days":31},{"y":2026,"m":5,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2026,"m":6,"fixed":205000,"var":28400,"total":233400,"days":31},{"y":2026,"m":7,"fixed":205000,"var":36200,"total":241200,"days":31},{"y":2026,"m":8,"fixed":205000,"var":36200,"total":241200,"days":31},{"y":2026,"m":9,"fixed":205000,"var":9800,"total":214800,"days":31}],"change_at":null,"change_amt":0,"pl_granted":18,"pl_taken":2,"pl_last":"2026-07-11","pl_next":"2027-07-11","contract_end":null},{"id":"E010","name":"小柳 和也","company":"C02","pref":"兵庫県","birth":"1962-05-06","age":64,"hire":"2026-03-19","type":"正社員","weekly":40,"base":214000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":214000,"var":28400,"total":242400,"days":31},{"y":2025,"m":11,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2025,"m":12,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":1,"fixed":214000,"var":9800,"total":223800,"days":31},{"y":2026,"m":2,"fixed":214000,"var":36200,"total":250200,"days":31},{"y":2026,"m":3,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":4,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":5,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":6,"fixed":214000,"var":9800,"total":223800,"days":31},{"y":2026,"m":7,"fixed":214000,"var":9800,"total":223800,"days":31},{"y":2026,"m":8,"fixed":214000,"var":36200,"total":250200,"days":31},{"y":2026,"m":9,"fixed":214000,"var":36200,"total":250200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":0,"pl_taken":0,"pl_last":null,"pl_next":"2026-09-19","contract_end":null},{"id":"E011","name":"柴崎 千尋","company":"C02","pref":"兵庫県","birth":"2001-03-23","age":25,"hire":"2025-02-08","type":"正社員","weekly":40,"base":512000,"health_grade":30,"health_std":500000,"pension_grade":27,"pension_std":500000,"history":[{"y":2025,"m":10,"fixed":512000,"var":4200,"total":516200,"days":31},{"y":2025,"m":11,"fixed":512000,"var":36200,"total":548200,"days":31},{"y":2025,"m":12,"fixed":512000,"var":14500,"total":526500,"days":31},{"y":2026,"m":1,"fixed":512000,"var":36200,"total":548200,"days":31},{"y":2026,"m":2,"fixed":512000,"var":28400,"total":540400,"days":31},{"y":2026,"m":3,"fixed":512000,"var":28400,"total":540400,"days":31},{"y":2026,"m":4,"fixed":512000,"var":0,"total":512000,"days":31},{"y":2026,"m":5,"fixed":512000,"var":21000,"total":533000,"days":31},{"y":2026,"m":6,"fixed":512000,"var":28400,"total":540400,"days":31},{"y":2026,"m":7,"fixed":512000,"var":36200,"total":548200,"days":31},{"y":2026,"m":8,"fixed":512000,"var":36200,"total":548200,"days":31},{"y":2026,"m":9,"fixed":512000,"var":14500,"total":526500,"days":31}],"change_at":null,"change_amt":0,"pl_granted":11,"pl_taken":8,"pl_last":"2026-08-08","pl_next":"2027-08-08","contract_end":null},{"id":"E012","name":"上田 悠真","company":"C02","pref":"兵庫県","birth":"1962-09-04","age":64,"hire":"2024-09-23","type":"契約社員","weekly":35,"base":182000,"health_grade":15,"health_std":180000,"pension_grade":12,"pension_std":180000,"history":[{"y":2025,"m":10,"fixed":182000,"var":9800,"total":191800,"days":31},{"y":2025,"m":11,"fixed":182000,"var":28400,"total":210400,"days":31},{"y":2025,"m":12,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":1,"fixed":182000,"var":14500,"total":196500,"days":31},{"y":2026,"m":2,"fixed":182000,"var":21000,"total":203000,"days":31},{"y":2026,"m":3,"fixed":182000,"var":9800,"total":191800,"days":31},{"y":2026,"m":4,"fixed":182000,"var":21000,"total":203000,"days":31},{"y":2026,"m":5,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":6,"fixed":182000,"var":36200,"total":218200,"days":31},{"y":2026,"m":7,"fixed":176000,"var":14500,"total":190500,"days":31},{"y":2026,"m":8,"fixed":176000,"var":28400,"total":204400,"days":31},{"y":2026,"m":9,"fixed":176000,"var":28400,"total":204400,"days":31}],"change_at":3,"change_amt":-6000,"pl_granted":11,"pl_taken":0,"pl_last":"2026-03-23","pl_next":"2027-03-23","contract_end":"2027-02-06"},{"id":"E013","name":"柴崎 悠真","company":"C02","pref":"兵庫県","birth":"1982-03-30","age":44,"hire":"2017-12-02","type":"正社員","weekly":40,"base":288000,"health_grade":21,"health_std":280000,"pension_grade":18,"pension_std":280000,"history":[{"y":2025,"m":10,"fixed":288000,"var":21000,"total":309000,"days":31},{"y":2025,"m":11,"fixed":288000,"var":4200,"total":292200,"days":31},{"y":2025,"m":12,"fixed":288000,"var":28400,"total":316400,"days":31},{"y":2026,"m":1,"fixed":288000,"var":28400,"total":316400,"days":31},{"y":2026,"m":2,"fixed":288000,"var":28400,"total":316400,"days":31},{"y":2026,"m":3,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":4,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":5,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":6,"fixed":288000,"var":28400,"total":316400,"days":31},{"y":2026,"m":7,"fixed":288000,"var":9800,"total":297800,"days":31},{"y":2026,"m":8,"fixed":288000,"var":21000,"total":309000,"days":31},{"y":2026,"m":9,"fixed":288000,"var":4200,"total":292200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":11,"pl_last":"2026-06-02","pl_next":"2027-06-02","contract_end":null},{"id":"E014","name":"藤井 彩香","company":"C02","pref":"兵庫県","birth":"1996-12-07","age":29,"hire":"2021-10-17","type":"契約社員","weekly":35,"base":248000,"health_grade":20,"health_std":260000,"pension_grade":17,"pension_std":260000,"history":[{"y":2025,"m":10,"fixed":248000,"var":4200,"total":252200,"days":31},{"y":2025,"m":11,"fixed":248000,"var":4200,"total":252200,"days":31},{"y":2025,"m":12,"fixed":248000,"var":4200,"total":252200,"days":31},{"y":2026,"m":1,"fixed":248000,"var":4200,"total":252200,"days":31},{"y":2026,"m":2,"fixed":248000,"var":4200,"total":252200,"days":31},{"y":2026,"m":3,"fixed":248000,"var":21000,"total":269000,"days":31},{"y":2026,"m":4,"fixed":248000,"var":4200,"total":252200,"days":31},{"y":2026,"m":5,"fixed":248000,"var":36200,"total":284200,"days":31},{"y":2026,"m":6,"fixed":248000,"var":0,"total":248000,"days":31},{"y":2026,"m":7,"fixed":248000,"var":0,"total":248000,"days":31},{"y":2026,"m":8,"fixed":248000,"var":36200,"total":284200,"days":31},{"y":2026,"m":9,"fixed":248000,"var":36200,"total":284200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":16,"pl_taken":0,"pl_last":"2026-04-17","pl_next":"2027-04-17","contract_end":"2026-10-06"},{"id":"E015","name":"橋詰 裕介","company":"C02","pref":"兵庫県","birth":"1979-06-24","age":47,"hire":"2020-12-20","type":"契約社員","weekly":40,"base":224000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":224000,"var":4200,"total":228200,"days":31},{"y":2025,"m":11,"fixed":224000,"var":28400,"total":252400,"days":31},{"y":2025,"m":12,"fixed":224000,"var":9800,"total":233800,"days":31},{"y":2026,"m":1,"fixed":224000,"var":4200,"total":228200,"days":31},{"y":2026,"m":2,"fixed":224000,"var":9800,"total":233800,"days":31},{"y":2026,"m":3,"fixed":224000,"var":0,"total":224000,"days":31},{"y":2026,"m":4,"fixed":224000,"var":9800,"total":233800,"days":31},{"y":2026,"m":5,"fixed":224000,"var":0,"total":224000,"days":31},{"y":2026,"m":6,"fixed":224000,"var":0,"total":224000,"days":31},{"y":2026,"m":7,"fixed":224000,"var":36200,"total":260200,"days":31},{"y":2026,"m":8,"fixed":224000,"var":28400,"total":252400,"days":31},{"y":2026,"m":9,"fixed":224000,"var":14500,"total":238500,"days":31}],"change_at":null,"change_amt":0,"pl_granted":18,"pl_taken":8,"pl_last":"2026-06-20","pl_next":"2027-06-20","contract_end":null},{"id":"E016","name":"小柳 誠","company":"C02","pref":"兵庫県","birth":"1951-06-21","age":75,"hire":"2018-06-17","type":"パート","weekly":20,"base":118000,"health_grade":8,"health_std":118000,"pension_grade":5,"pension_std":118000,"history":[{"y":2025,"m":10,"fixed":118000,"var":6800,"total":124800,"days":21},{"y":2025,"m":11,"fixed":118000,"var":6800,"total":124800,"days":19},{"y":2025,"m":12,"fixed":118000,"var":3200,"total":121200,"days":14},{"y":2026,"m":1,"fixed":118000,"var":6800,"total":124800,"days":17},{"y":2026,"m":2,"fixed":118000,"var":0,"total":118000,"days":11},{"y":2026,"m":3,"fixed":118000,"var":0,"total":118000,"days":19},{"y":2026,"m":4,"fixed":118000,"var":0,"total":118000,"days":11},{"y":2026,"m":5,"fixed":118000,"var":3200,"total":121200,"days":14},{"y":2026,"m":6,"fixed":118000,"var":6800,"total":124800,"days":11},{"y":2026,"m":7,"fixed":118000,"var":0,"total":118000,"days":19},{"y":2026,"m":8,"fixed":118000,"var":0,"total":118000,"days":16},{"y":2026,"m":9,"fixed":118000,"var":0,"total":118000,"days":19}],"change_at":null,"change_amt":0,"pl_granted":11,"pl_taken":2,"pl_last":"2025-12-17","pl_next":"2026-12-17","contract_end":"2027-05-06"},{"id":"E017","name":"中西 舞","company":"C02","pref":"兵庫県","birth":"1999-07-18","age":27,"hire":"2021-03-19","type":"パート","weekly":28,"base":118000,"health_grade":8,"health_std":118000,"pension_grade":5,"pension_std":118000,"history":[{"y":2025,"m":10,"fixed":118000,"var":6800,"total":124800,"days":11},{"y":2025,"m":11,"fixed":118000,"var":0,"total":118000,"days":14},{"y":2025,"m":12,"fixed":118000,"var":6800,"total":124800,"days":11},{"y":2026,"m":1,"fixed":118000,"var":3200,"total":121200,"days":18},{"y":2026,"m":2,"fixed":118000,"var":0,"total":118000,"days":14},{"y":2026,"m":3,"fixed":118000,"var":6800,"total":124800,"days":19},{"y":2026,"m":4,"fixed":118000,"var":0,"total":118000,"days":17},{"y":2026,"m":5,"fixed":140000,"var":0,"total":140000,"days":18},{"y":2026,"m":6,"fixed":140000,"var":0,"total":140000,"days":18},{"y":2026,"m":7,"fixed":140000,"var":6800,"total":146800,"days":17},{"y":2026,"m":8,"fixed":140000,"var":6800,"total":146800,"days":21},{"y":2026,"m":9,"fixed":140000,"var":6800,"total":146800,"days":14}],"change_at":5,"change_amt":22000,"pl_granted":13,"pl_taken":4,"pl_last":"2026-09-19","pl_next":"2027-09-19","contract_end":"2026-12-06"},{"id":"E018","name":"田村 和也","company":"C03","pref":"大阪府","birth":"2003-10-13","age":22,"hire":"2024-06-14","type":"パート","weekly":28,"base":108000,"health_grade":7,"health_std":110000,"pension_grade":4,"pension_std":110000,"history":[{"y":2025,"m":10,"fixed":108000,"var":6800,"total":114800,"days":17},{"y":2025,"m":11,"fixed":108000,"var":0,"total":108000,"days":18},{"y":2025,"m":12,"fixed":108000,"var":0,"total":108000,"days":19},{"y":2026,"m":1,"fixed":108000,"var":0,"total":108000,"days":18},{"y":2026,"m":2,"fixed":108000,"var":0,"total":108000,"days":18},{"y":2026,"m":3,"fixed":108000,"var":0,"total":108000,"days":16},{"y":2026,"m":4,"fixed":108000,"var":3200,"total":111200,"days":17},{"y":2026,"m":5,"fixed":108000,"var":3200,"total":111200,"days":11},{"y":2026,"m":6,"fixed":108000,"var":0,"total":108000,"days":17},{"y":2026,"m":7,"fixed":108000,"var":6800,"total":114800,"days":16},{"y":2026,"m":8,"fixed":108000,"var":3200,"total":111200,"days":14},{"y":2026,"m":9,"fixed":108000,"var":3200,"total":111200,"days":14}],"change_at":null,"change_amt":0,"pl_granted":8,"pl_taken":6,"pl_last":"2025-12-14","pl_next":"2026-12-14","contract_end":"2026-10-06"},{"id":"E019","name":"塩見 陽介","company":"C03","pref":"大阪府","birth":"1993-02-16","age":33,"hire":"2025-03-28","type":"正社員","weekly":40,"base":262000,"health_grade":20,"health_std":260000,"pension_grade":17,"pension_std":260000,"history":[{"y":2025,"m":10,"fixed":262000,"var":0,"total":262000,"days":31},{"y":2025,"m":11,"fixed":262000,"var":14500,"total":276500,"days":31},{"y":2025,"m":12,"fixed":262000,"var":4200,"total":266200,"days":31},{"y":2026,"m":1,"fixed":262000,"var":28400,"total":290400,"days":31},{"y":2026,"m":2,"fixed":262000,"var":36200,"total":298200,"days":31},{"y":2026,"m":3,"fixed":262000,"var":21000,"total":283000,"days":31},{"y":2026,"m":4,"fixed":262000,"var":36200,"total":298200,"days":31},{"y":2026,"m":5,"fixed":262000,"var":9800,"total":271800,"days":31},{"y":2026,"m":6,"fixed":262000,"var":14500,"total":276500,"days":31},{"y":2026,"m":7,"fixed":262000,"var":36200,"total":298200,"days":31},{"y":2026,"m":8,"fixed":262000,"var":36200,"total":298200,"days":31},{"y":2026,"m":9,"fixed":262000,"var":0,"total":262000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":11,"pl_taken":6,"pl_last":"2026-09-28","pl_next":"2027-09-28","contract_end":null},{"id":"E020","name":"森下 結衣","company":"C03","pref":"大阪府","birth":"1987-05-31","age":39,"hire":"2025-01-12","type":"正社員","weekly":40,"base":386000,"health_grade":26,"health_std":380000,"pension_grade":23,"pension_std":380000,"history":[{"y":2025,"m":10,"fixed":386000,"var":14500,"total":400500,"days":31},{"y":2025,"m":11,"fixed":386000,"var":0,"total":386000,"days":31},{"y":2025,"m":12,"fixed":386000,"var":0,"total":386000,"days":31},{"y":2026,"m":1,"fixed":386000,"var":4200,"total":390200,"days":31},{"y":2026,"m":2,"fixed":386000,"var":21000,"total":407000,"days":31},{"y":2026,"m":3,"fixed":386000,"var":21000,"total":407000,"days":31},{"y":2026,"m":4,"fixed":386000,"var":21000,"total":407000,"days":31},{"y":2026,"m":5,"fixed":386000,"var":4200,"total":390200,"days":31},{"y":2026,"m":6,"fixed":386000,"var":4200,"total":390200,"days":31},{"y":2026,"m":7,"fixed":386000,"var":0,"total":386000,"days":31},{"y":2026,"m":8,"fixed":386000,"var":9800,"total":395800,"days":31},{"y":2026,"m":9,"fixed":386000,"var":9800,"total":395800,"days":31}],"change_at":null,"change_amt":0,"pl_granted":11,"pl_taken":0,"pl_last":"2026-07-12","pl_next":"2027-07-12","contract_end":null},{"id":"E021","name":"藤井 誠","company":"C03","pref":"大阪府","birth":"1984-10-15","age":41,"hire":"2014-10-14","type":"正社員","weekly":40,"base":196000,"health_grade":17,"health_std":200000,"pension_grade":14,"pension_std":200000,"history":[{"y":2025,"m":10,"fixed":196000,"var":0,"total":196000,"days":31},{"y":2025,"m":11,"fixed":196000,"var":9800,"total":205800,"days":31},{"y":2025,"m":12,"fixed":196000,"var":28400,"total":224400,"days":31},{"y":2026,"m":1,"fixed":196000,"var":21000,"total":217000,"days":31},{"y":2026,"m":2,"fixed":196000,"var":0,"total":196000,"days":31},{"y":2026,"m":3,"fixed":196000,"var":0,"total":196000,"days":31},{"y":2026,"m":4,"fixed":196000,"var":21000,"total":217000,"days":31},{"y":2026,"m":5,"fixed":196000,"var":36200,"total":232200,"days":31},{"y":2026,"m":6,"fixed":196000,"var":9800,"total":205800,"days":31},{"y":2026,"m":7,"fixed":196000,"var":14500,"total":210500,"days":31},{"y":2026,"m":8,"fixed":196000,"var":0,"total":196000,"days":31},{"y":2026,"m":9,"fixed":196000,"var":0,"total":196000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":6,"pl_last":"2026-04-14","pl_next":"2027-04-14","contract_end":null},{"id":"E022","name":"小柳 隼人","company":"C03","pref":"大阪府","birth":"1956-11-26","age":69,"hire":"2022-05-18","type":"正社員","weekly":40,"base":228000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":228000,"var":36200,"total":264200,"days":31},{"y":2025,"m":11,"fixed":228000,"var":21000,"total":249000,"days":31},{"y":2025,"m":12,"fixed":228000,"var":21000,"total":249000,"days":31},{"y":2026,"m":1,"fixed":228000,"var":14500,"total":242500,"days":31},{"y":2026,"m":2,"fixed":228000,"var":4200,"total":232200,"days":31},{"y":2026,"m":3,"fixed":228000,"var":36200,"total":264200,"days":31},{"y":2026,"m":4,"fixed":228000,"var":28400,"total":256400,"days":31},{"y":2026,"m":5,"fixed":228000,"var":0,"total":228000,"days":31},{"y":2026,"m":6,"fixed":228000,"var":0,"total":228000,"days":31},{"y":2026,"m":7,"fixed":228000,"var":21000,"total":249000,"days":31},{"y":2026,"m":8,"fixed":228000,"var":36200,"total":264200,"days":31},{"y":2026,"m":9,"fixed":228000,"var":36200,"total":264200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":14,"pl_taken":2,"pl_last":"2025-11-18","pl_next":"2026-11-18","contract_end":null},{"id":"E023","name":"市川 千尋","company":"C03","pref":"大阪府","birth":"1978-12-23","age":47,"hire":"2011-07-16","type":"パート","weekly":24,"base":118000,"health_grade":8,"health_std":118000,"pension_grade":5,"pension_std":118000,"history":[{"y":2025,"m":10,"fixed":118000,"var":6800,"total":124800,"days":19},{"y":2025,"m":11,"fixed":118000,"var":3200,"total":121200,"days":16},{"y":2025,"m":12,"fixed":118000,"var":0,"total":118000,"days":18},{"y":2026,"m":1,"fixed":118000,"var":3200,"total":121200,"days":21},{"y":2026,"m":2,"fixed":118000,"var":6800,"total":124800,"days":18},{"y":2026,"m":3,"fixed":118000,"var":0,"total":118000,"days":19},{"y":2026,"m":4,"fixed":118000,"var":0,"total":118000,"days":19},{"y":2026,"m":5,"fixed":126000,"var":0,"total":126000,"days":14},{"y":2026,"m":6,"fixed":126000,"var":3200,"total":129200,"days":21},{"y":2026,"m":7,"fixed":126000,"var":0,"total":126000,"days":18},{"y":2026,"m":8,"fixed":126000,"var":3200,"total":129200,"days":11},{"y":2026,"m":9,"fixed":126000,"var":6800,"total":132800,"days":16}],"change_at":5,"change_amt":8000,"pl_granted":15,"pl_taken":4,"pl_last":"2026-01-16","pl_next":"2027-01-16","contract_end":"2026-10-06"},{"id":"E024","name":"堀内 菜月","company":"C03","pref":"大阪府","birth":"1974-02-25","age":52,"hire":"2026-05-05","type":"正社員","weekly":40,"base":425000,"health_grade":28,"health_std":440000,"pension_grade":25,"pension_std":440000,"history":[{"y":2025,"m":10,"fixed":425000,"var":36200,"total":461200,"days":31},{"y":2025,"m":11,"fixed":425000,"var":4200,"total":429200,"days":31},{"y":2025,"m":12,"fixed":425000,"var":36200,"total":461200,"days":31},{"y":2026,"m":1,"fixed":425000,"var":0,"total":425000,"days":31},{"y":2026,"m":2,"fixed":425000,"var":4200,"total":429200,"days":31},{"y":2026,"m":3,"fixed":425000,"var":21000,"total":446000,"days":31},{"y":2026,"m":4,"fixed":425000,"var":36200,"total":461200,"days":31},{"y":2026,"m":5,"fixed":425000,"var":0,"total":425000,"days":31},{"y":2026,"m":6,"fixed":425000,"var":21000,"total":446000,"days":31},{"y":2026,"m":7,"fixed":425000,"var":9800,"total":434800,"days":31},{"y":2026,"m":8,"fixed":425000,"var":0,"total":425000,"days":31},{"y":2026,"m":9,"fixed":425000,"var":28400,"total":453400,"days":31}],"change_at":null,"change_amt":0,"pl_granted":0,"pl_taken":0,"pl_last":null,"pl_next":"2026-11-05","contract_end":null},{"id":"E025","name":"市川 彩香","company":"C03","pref":"大阪府","birth":"1986-11-25","age":39,"hire":"2024-08-06","type":"正社員","weekly":40,"base":305000,"health_grade":22,"health_std":300000,"pension_grade":19,"pension_std":300000,"history":[{"y":2025,"m":10,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2025,"m":11,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2025,"m":12,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":1,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2026,"m":2,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":3,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":4,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":5,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":6,"fixed":305000,"var":4200,"total":309200,"days":31},{"y":2026,"m":7,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":8,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":9,"fixed":305000,"var":9800,"total":314800,"days":31}],"change_at":null,"change_amt":0,"pl_granted":11,"pl_taken":8,"pl_last":"2026-02-06","pl_next":"2027-02-06","contract_end":null},{"id":"E026","name":"相馬 真央","company":"C03","pref":"大阪府","birth":"1962-12-31","age":63,"hire":"2022-10-23","type":"正社員","weekly":40,"base":245000,"health_grade":19,"health_std":240000,"pension_grade":16,"pension_std":240000,"history":[{"y":2025,"m":10,"fixed":245000,"var":0,"total":245000,"days":31},{"y":2025,"m":11,"fixed":245000,"var":0,"total":245000,"days":31},{"y":2025,"m":12,"fixed":245000,"var":4200,"total":249200,"days":31},{"y":2026,"m":1,"fixed":245000,"var":0,"total":245000,"days":31},{"y":2026,"m":2,"fixed":245000,"var":21000,"total":266000,"days":31},{"y":2026,"m":3,"fixed":245000,"var":21000,"total":266000,"days":31},{"y":2026,"m":4,"fixed":245000,"var":0,"total":245000,"days":31},{"y":2026,"m":5,"fixed":245000,"var":14500,"total":259500,"days":31},{"y":2026,"m":6,"fixed":245000,"var":0,"total":245000,"days":31},{"y":2026,"m":7,"fixed":245000,"var":28400,"total":273400,"days":31},{"y":2026,"m":8,"fixed":245000,"var":14500,"total":259500,"days":31},{"y":2026,"m":9,"fixed":245000,"var":36200,"total":281200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":14,"pl_taken":6,"pl_last":"2026-04-23","pl_next":"2027-04-23","contract_end":null},{"id":"E027","name":"栗田 健太","company":"C04","pref":"京都府","birth":"1986-10-10","age":39,"hire":"2015-02-12","type":"正社員","weekly":40,"base":512000,"health_grade":31,"health_std":530000,"pension_grade":28,"pension_std":530000,"history":[{"y":2025,"m":10,"fixed":512000,"var":14500,"total":526500,"days":31},{"y":2025,"m":11,"fixed":512000,"var":9800,"total":521800,"days":31},{"y":2025,"m":12,"fixed":512000,"var":4200,"total":516200,"days":31},{"y":2026,"m":1,"fixed":512000,"var":21000,"total":533000,"days":31},{"y":2026,"m":2,"fixed":512000,"var":21000,"total":533000,"days":31},{"y":2026,"m":3,"fixed":512000,"var":4200,"total":516200,"days":31},{"y":2026,"m":4,"fixed":512000,"var":36200,"total":548200,"days":31},{"y":2026,"m":5,"fixed":538000,"var":14500,"total":552500,"days":31},{"y":2026,"m":6,"fixed":538000,"var":9800,"total":547800,"days":31},{"y":2026,"m":7,"fixed":538000,"var":9800,"total":547800,"days":31},{"y":2026,"m":8,"fixed":538000,"var":4200,"total":542200,"days":31},{"y":2026,"m":9,"fixed":538000,"var":9800,"total":547800,"days":31}],"change_at":5,"change_amt":26000,"pl_granted":20,"pl_taken":6,"pl_last":"2026-08-12","pl_next":"2027-08-12","contract_end":null},{"id":"E028","name":"南部 菜月","company":"C04","pref":"京都府","birth":"1984-09-30","age":41,"hire":"2020-01-10","type":"正社員","weekly":40,"base":196000,"health_grade":17,"health_std":200000,"pension_grade":14,"pension_std":200000,"history":[{"y":2025,"m":10,"fixed":196000,"var":0,"total":196000,"days":31},{"y":2025,"m":11,"fixed":196000,"var":0,"total":196000,"days":31},{"y":2025,"m":12,"fixed":196000,"var":0,"total":196000,"days":31},{"y":2026,"m":1,"fixed":196000,"var":0,"total":196000,"days":31},{"y":2026,"m":2,"fixed":196000,"var":14500,"total":210500,"days":31},{"y":2026,"m":3,"fixed":196000,"var":28400,"total":224400,"days":31},{"y":2026,"m":4,"fixed":196000,"var":4200,"total":200200,"days":31},{"y":2026,"m":5,"fixed":190000,"var":4200,"total":194200,"days":31},{"y":2026,"m":6,"fixed":190000,"var":36200,"total":226200,"days":31},{"y":2026,"m":7,"fixed":190000,"var":0,"total":190000,"days":31},{"y":2026,"m":8,"fixed":190000,"var":9800,"total":199800,"days":31},{"y":2026,"m":9,"fixed":190000,"var":4200,"total":194200,"days":31}],"change_at":5,"change_amt":-6000,"pl_granted":20,"pl_taken":3,"pl_last":"2026-07-10","pl_next":"2027-07-10","contract_end":null},{"id":"E029","name":"南部 結衣","company":"C04","pref":"京都府","birth":"1991-03-26","age":35,"hire":"2015-06-26","type":"契約社員","weekly":40,"base":182000,"health_grade":16,"health_std":190000,"pension_grade":13,"pension_std":190000,"history":[{"y":2025,"m":10,"fixed":182000,"var":21000,"total":203000,"days":31},{"y":2025,"m":11,"fixed":182000,"var":28400,"total":210400,"days":31},{"y":2025,"m":12,"fixed":182000,"var":9800,"total":191800,"days":31},{"y":2026,"m":1,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":2,"fixed":182000,"var":21000,"total":203000,"days":31},{"y":2026,"m":3,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":4,"fixed":182000,"var":28400,"total":210400,"days":31},{"y":2026,"m":5,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":6,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":7,"fixed":182000,"var":14500,"total":196500,"days":31},{"y":2026,"m":8,"fixed":182000,"var":36200,"total":218200,"days":31},{"y":2026,"m":9,"fixed":182000,"var":4200,"total":186200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":2,"pl_last":"2025-12-26","pl_next":"2026-12-26","contract_end":null},{"id":"E030","name":"上田 美咲","company":"C04","pref":"京都府","birth":"2001-06-25","age":25,"hire":"2026-02-06","type":"正社員","weekly":40,"base":214000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":214000,"var":4200,"total":218200,"days":31},{"y":2025,"m":11,"fixed":214000,"var":4200,"total":218200,"days":31},{"y":2025,"m":12,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":1,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":2,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":3,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":4,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":5,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":6,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":7,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":8,"fixed":214000,"var":9800,"total":223800,"days":31},{"y":2026,"m":9,"fixed":214000,"var":14500,"total":228500,"days":31}],"change_at":null,"change_amt":0,"pl_granted":10,"pl_taken":0,"pl_last":"2026-08-06","pl_next":"2027-08-06","contract_end":null},{"id":"E031","name":"相馬 蓮","company":"C04","pref":"京都府","birth":"1965-11-20","age":60,"hire":"2025-05-17","type":"契約社員","weekly":40,"base":224000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":224000,"var":9800,"total":233800,"days":31},{"y":2025,"m":11,"fixed":224000,"var":14500,"total":238500,"days":31},{"y":2025,"m":12,"fixed":224000,"var":0,"total":224000,"days":31},{"y":2026,"m":1,"fixed":224000,"var":0,"total":224000,"days":31},{"y":2026,"m":2,"fixed":224000,"var":36200,"total":260200,"days":31},{"y":2026,"m":3,"fixed":224000,"var":0,"total":224000,"days":31},{"y":2026,"m":4,"fixed":224000,"var":21000,"total":245000,"days":31},{"y":2026,"m":5,"fixed":224000,"var":0,"total":224000,"days":31},{"y":2026,"m":6,"fixed":224000,"var":36200,"total":260200,"days":31},{"y":2026,"m":7,"fixed":224000,"var":14500,"total":238500,"days":31},{"y":2026,"m":8,"fixed":224000,"var":28400,"total":252400,"days":31},{"y":2026,"m":9,"fixed":224000,"var":14500,"total":238500,"days":31}],"change_at":null,"change_amt":0,"pl_granted":10,"pl_taken":11,"pl_last":"2025-11-17","pl_next":"2026-11-17","contract_end":"2027-05-06"},{"id":"E032","name":"柴崎 裕介","company":"C04","pref":"京都府","birth":"1998-12-03","age":27,"hire":"2015-03-22","type":"正社員","weekly":40,"base":305000,"health_grade":22,"health_std":300000,"pension_grade":19,"pension_std":300000,"history":[{"y":2025,"m":10,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2025,"m":11,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2025,"m":12,"fixed":305000,"var":4200,"total":309200,"days":31},{"y":2026,"m":1,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":2,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2026,"m":3,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":4,"fixed":305000,"var":36200,"total":341200,"days":31},{"y":2026,"m":5,"fixed":305000,"var":14500,"total":319500,"days":31},{"y":2026,"m":6,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":7,"fixed":305000,"var":36200,"total":341200,"days":31},{"y":2026,"m":8,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2026,"m":9,"fixed":305000,"var":28400,"total":333400,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":4,"pl_last":"2026-09-22","pl_next":"2027-09-22","contract_end":null},{"id":"E033","name":"谷口 陽菜","company":"C05","pref":"大阪府","birth":"1997-08-23","age":29,"hire":"2024-12-02","type":"パート","weekly":24,"base":148000,"health_grade":12,"health_std":150000,"pension_grade":9,"pension_std":150000,"history":[{"y":2025,"m":10,"fixed":148000,"var":3200,"total":151200,"days":21},{"y":2025,"m":11,"fixed":148000,"var":6800,"total":154800,"days":11},{"y":2025,"m":12,"fixed":148000,"var":0,"total":148000,"days":19},{"y":2026,"m":1,"fixed":148000,"var":0,"total":148000,"days":18},{"y":2026,"m":2,"fixed":148000,"var":6800,"total":154800,"days":19},{"y":2026,"m":3,"fixed":148000,"var":3200,"total":151200,"days":21},{"y":2026,"m":4,"fixed":148000,"var":0,"total":148000,"days":14},{"y":2026,"m":5,"fixed":148000,"var":0,"total":148000,"days":21},{"y":2026,"m":6,"fixed":148000,"var":3200,"total":151200,"days":17},{"y":2026,"m":7,"fixed":170000,"var":0,"total":170000,"days":11},{"y":2026,"m":8,"fixed":170000,"var":6800,"total":176800,"days":14},{"y":2026,"m":9,"fixed":170000,"var":6800,"total":176800,"days":14}],"change_at":3,"change_amt":22000,"pl_granted":8,"pl_taken":8,"pl_last":"2026-06-02","pl_next":"2027-06-02","contract_end":"2026-11-06"},{"id":"E034","name":"橋詰 裕介","company":"C05","pref":"大阪府","birth":"1962-11-26","age":63,"hire":"2010-09-24","type":"パート","weekly":16,"base":96000,"health_grade":5,"health_std":98000,"pension_grade":2,"pension_std":98000,"history":[{"y":2025,"m":10,"fixed":96000,"var":3200,"total":99200,"days":18},{"y":2025,"m":11,"fixed":96000,"var":3200,"total":99200,"days":17},{"y":2025,"m":12,"fixed":96000,"var":6800,"total":102800,"days":18},{"y":2026,"m":1,"fixed":96000,"var":3200,"total":99200,"days":14},{"y":2026,"m":2,"fixed":96000,"var":6800,"total":102800,"days":16},{"y":2026,"m":3,"fixed":96000,"var":0,"total":96000,"days":17},{"y":2026,"m":4,"fixed":111000,"var":3200,"total":114200,"days":14},{"y":2026,"m":5,"fixed":111000,"var":6800,"total":117800,"days":16},{"y":2026,"m":6,"fixed":111000,"var":0,"total":111000,"days":14},{"y":2026,"m":7,"fixed":111000,"var":0,"total":111000,"days":16},{"y":2026,"m":8,"fixed":111000,"var":3200,"total":114200,"days":18},{"y":2026,"m":9,"fixed":111000,"var":3200,"total":114200,"days":16}],"change_at":6,"change_amt":15000,"pl_granted":11,"pl_taken":3,"pl_last":"2026-03-24","pl_next":"2027-03-24","contract_end":"2026-11-06"},{"id":"E035","name":"堀内 和也","company":"C05","pref":"大阪府","birth":"2000-10-25","age":25,"hire":"2026-03-13","type":"正社員","weekly":40,"base":214000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":214000,"var":28400,"total":242400,"days":31},{"y":2025,"m":11,"fixed":214000,"var":9800,"total":223800,"days":31},{"y":2025,"m":12,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":1,"fixed":214000,"var":4200,"total":218200,"days":31},{"y":2026,"m":2,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":3,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":4,"fixed":214000,"var":28400,"total":242400,"days":31},{"y":2026,"m":5,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":6,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":7,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":8,"fixed":214000,"var":4200,"total":218200,"days":31},{"y":2026,"m":9,"fixed":214000,"var":4200,"total":218200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":0,"pl_taken":0,"pl_last":null,"pl_next":"2026-09-13","contract_end":null},{"id":"E036","name":"坂口 結衣","company":"C05","pref":"大阪府","birth":"1999-04-21","age":27,"hire":"2025-11-14","type":"正社員","weekly":40,"base":305000,"health_grade":22,"health_std":300000,"pension_grade":19,"pension_std":300000,"history":[{"y":2025,"m":10,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2025,"m":11,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2025,"m":12,"fixed":305000,"var":36200,"total":341200,"days":31},{"y":2026,"m":1,"fixed":305000,"var":14500,"total":319500,"days":31},{"y":2026,"m":2,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2026,"m":3,"fixed":305000,"var":4200,"total":309200,"days":31},{"y":2026,"m":4,"fixed":305000,"var":4200,"total":309200,"days":31},{"y":2026,"m":5,"fixed":305000,"var":28400,"total":333400,"days":31},{"y":2026,"m":6,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":7,"fixed":305000,"var":14500,"total":319500,"days":31},{"y":2026,"m":8,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2026,"m":9,"fixed":305000,"var":0,"total":305000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":10,"pl_taken":2,"pl_last":"2026-05-14","pl_next":"2027-05-14","contract_end":null},{"id":"E037","name":"谷口 蓮","company":"C05","pref":"大阪府","birth":"1967-06-12","age":59,"hire":"2017-10-29","type":"正社員","weekly":40,"base":305000,"health_grade":22,"health_std":300000,"pension_grade":19,"pension_std":300000,"history":[{"y":2025,"m":10,"fixed":305000,"var":14500,"total":319500,"days":31},{"y":2025,"m":11,"fixed":305000,"var":14500,"total":319500,"days":31},{"y":2025,"m":12,"fixed":305000,"var":4200,"total":309200,"days":31},{"y":2026,"m":1,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":2,"fixed":305000,"var":14500,"total":319500,"days":31},{"y":2026,"m":3,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":4,"fixed":331000,"var":9800,"total":340800,"days":31},{"y":2026,"m":5,"fixed":331000,"var":14500,"total":345500,"days":31},{"y":2026,"m":6,"fixed":331000,"var":28400,"total":359400,"days":31},{"y":2026,"m":7,"fixed":331000,"var":0,"total":331000,"days":31},{"y":2026,"m":8,"fixed":331000,"var":9800,"total":340800,"days":31},{"y":2026,"m":9,"fixed":331000,"var":0,"total":331000,"days":31}],"change_at":6,"change_amt":26000,"pl_granted":20,"pl_taken":3,"pl_last":"2026-04-29","pl_next":"2027-04-29","contract_end":null},{"id":"E038","name":"三宅 舞","company":"C05","pref":"大阪府","birth":"1955-03-10","age":71,"hire":"2015-05-04","type":"正社員","weekly":40,"base":288000,"health_grade":22,"health_std":300000,"pension_grade":19,"pension_std":300000,"history":[{"y":2025,"m":10,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2025,"m":11,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2025,"m":12,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":1,"fixed":288000,"var":21000,"total":309000,"days":31},{"y":2026,"m":2,"fixed":288000,"var":28400,"total":316400,"days":31},{"y":2026,"m":3,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":4,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":5,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":6,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":7,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":8,"fixed":288000,"var":9800,"total":297800,"days":31},{"y":2026,"m":9,"fixed":288000,"var":4200,"total":292200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":4,"pl_last":"2025-11-04","pl_next":"2026-11-04","contract_end":null},{"id":"E039","name":"小柳 翔","company":"C05","pref":"大阪府","birth":"1987-04-20","age":39,"hire":"2024-01-04","type":"正社員","weekly":40,"base":214000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":214000,"var":4200,"total":218200,"days":31},{"y":2025,"m":11,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2025,"m":12,"fixed":214000,"var":28400,"total":242400,"days":31},{"y":2026,"m":1,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":2,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":3,"fixed":214000,"var":4200,"total":218200,"days":31},{"y":2026,"m":4,"fixed":222000,"var":4200,"total":226200,"days":31},{"y":2026,"m":5,"fixed":222000,"var":0,"total":222000,"days":31},{"y":2026,"m":6,"fixed":222000,"var":36200,"total":258200,"days":31},{"y":2026,"m":7,"fixed":222000,"var":28400,"total":250400,"days":31},{"y":2026,"m":8,"fixed":222000,"var":4200,"total":226200,"days":31},{"y":2026,"m":9,"fixed":222000,"var":28400,"total":250400,"days":31}],"change_at":6,"change_amt":8000,"pl_granted":12,"pl_taken":1,"pl_last":"2026-07-04","pl_next":"2027-07-04","contract_end":null},{"id":"E040","name":"三宅 拓也","company":"C05","pref":"大阪府","birth":"1985-09-06","age":41,"hire":"2022-08-30","type":"パート","weekly":12,"base":88000,"health_grade":4,"health_std":88000,"pension_grade":1,"pension_std":88000,"history":[{"y":2025,"m":10,"fixed":88000,"var":3200,"total":91200,"days":21},{"y":2025,"m":11,"fixed":88000,"var":3200,"total":91200,"days":14},{"y":2025,"m":12,"fixed":88000,"var":0,"total":88000,"days":18},{"y":2026,"m":1,"fixed":88000,"var":0,"total":88000,"days":14},{"y":2026,"m":2,"fixed":88000,"var":6800,"total":94800,"days":11},{"y":2026,"m":3,"fixed":88000,"var":0,"total":88000,"days":18},{"y":2026,"m":4,"fixed":88000,"var":0,"total":88000,"days":11},{"y":2026,"m":5,"fixed":88000,"var":0,"total":88000,"days":21},{"y":2026,"m":6,"fixed":88000,"var":6800,"total":94800,"days":16},{"y":2026,"m":7,"fixed":88000,"var":3200,"total":91200,"days":16},{"y":2026,"m":8,"fixed":88000,"var":0,"total":88000,"days":21},{"y":2026,"m":9,"fixed":88000,"var":6800,"total":94800,"days":11}],"change_at":null,"change_amt":0,"pl_granted":5,"pl_taken":0,"pl_last":"2026-02-28","pl_next":"2027-02-28","contract_end":null},{"id":"E041","name":"森下 舞","company":"C06","pref":"兵庫県","birth":"1959-11-02","age":66,"hire":"2026-05-02","type":"パート","weekly":16,"base":118000,"health_grade":8,"health_std":118000,"pension_grade":5,"pension_std":118000,"history":[{"y":2025,"m":10,"fixed":118000,"var":0,"total":118000,"days":18},{"y":2025,"m":11,"fixed":118000,"var":3200,"total":121200,"days":11},{"y":2025,"m":12,"fixed":118000,"var":0,"total":118000,"days":21},{"y":2026,"m":1,"fixed":118000,"var":6800,"total":124800,"days":18},{"y":2026,"m":2,"fixed":118000,"var":0,"total":118000,"days":11},{"y":2026,"m":3,"fixed":118000,"var":3200,"total":121200,"days":19},{"y":2026,"m":4,"fixed":112000,"var":0,"total":112000,"days":21},{"y":2026,"m":5,"fixed":112000,"var":6800,"total":118800,"days":19},{"y":2026,"m":6,"fixed":112000,"var":0,"total":112000,"days":19},{"y":2026,"m":7,"fixed":112000,"var":6800,"total":118800,"days":16},{"y":2026,"m":8,"fixed":112000,"var":0,"total":112000,"days":18},{"y":2026,"m":9,"fixed":112000,"var":0,"total":112000,"days":21}],"change_at":6,"change_amt":-6000,"pl_granted":0,"pl_taken":0,"pl_last":null,"pl_next":"2026-11-02","contract_end":null},{"id":"E042","name":"三宅 裕介","company":"C06","pref":"兵庫県","birth":"2004-05-11","age":22,"hire":"2022-05-05","type":"パート","weekly":24,"base":118000,"health_grade":8,"health_std":118000,"pension_grade":5,"pension_std":118000,"history":[{"y":2025,"m":10,"fixed":118000,"var":3200,"total":121200,"days":17},{"y":2025,"m":11,"fixed":118000,"var":3200,"total":121200,"days":19},{"y":2025,"m":12,"fixed":118000,"var":0,"total":118000,"days":16},{"y":2026,"m":1,"fixed":118000,"var":3200,"total":121200,"days":14},{"y":2026,"m":2,"fixed":118000,"var":3200,"total":121200,"days":14},{"y":2026,"m":3,"fixed":118000,"var":6800,"total":124800,"days":18},{"y":2026,"m":4,"fixed":118000,"var":6800,"total":124800,"days":21},{"y":2026,"m":5,"fixed":118000,"var":6800,"total":124800,"days":21},{"y":2026,"m":6,"fixed":118000,"var":6800,"total":124800,"days":17},{"y":2026,"m":7,"fixed":118000,"var":0,"total":118000,"days":14},{"y":2026,"m":8,"fixed":118000,"var":0,"total":118000,"days":19},{"y":2026,"m":9,"fixed":118000,"var":0,"total":118000,"days":14}],"change_at":null,"change_amt":0,"pl_granted":10,"pl_taken":1,"pl_last":"2025-11-05","pl_next":"2026-11-05","contract_end":"2026-10-06"},{"id":"E043","name":"相馬 陽介","company":"C06","pref":"兵庫県","birth":"1997-07-28","age":29,"hire":"2015-01-12","type":"契約社員","weekly":40,"base":182000,"health_grade":16,"health_std":190000,"pension_grade":13,"pension_std":190000,"history":[{"y":2025,"m":10,"fixed":182000,"var":9800,"total":191800,"days":31},{"y":2025,"m":11,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2025,"m":12,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":1,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":2,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":3,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":4,"fixed":182000,"var":14500,"total":196500,"days":31},{"y":2026,"m":5,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":6,"fixed":182000,"var":9800,"total":191800,"days":31},{"y":2026,"m":7,"fixed":182000,"var":28400,"total":210400,"days":31},{"y":2026,"m":8,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":9,"fixed":182000,"var":36200,"total":218200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":0,"pl_last":"2026-07-12","pl_next":"2027-07-12","contract_end":null},{"id":"E044","name":"浜口 健太","company":"C06","pref":"兵庫県","birth":"1996-12-01","age":29,"hire":"2020-03-15","type":"パート","weekly":20,"base":118000,"health_grade":8,"health_std":118000,"pension_grade":5,"pension_std":118000,"history":[{"y":2025,"m":10,"fixed":118000,"var":6800,"total":124800,"days":16},{"y":2025,"m":11,"fixed":118000,"var":6800,"total":124800,"days":17},{"y":2025,"m":12,"fixed":118000,"var":3200,"total":121200,"days":17},{"y":2026,"m":1,"fixed":118000,"var":3200,"total":121200,"days":21},{"y":2026,"m":2,"fixed":118000,"var":3200,"total":121200,"days":19},{"y":2026,"m":3,"fixed":118000,"var":0,"total":118000,"days":17},{"y":2026,"m":4,"fixed":118000,"var":0,"total":118000,"days":16},{"y":2026,"m":5,"fixed":118000,"var":0,"total":118000,"days":11},{"y":2026,"m":6,"fixed":118000,"var":6800,"total":124800,"days":17},{"y":2026,"m":7,"fixed":118000,"var":0,"total":118000,"days":18},{"y":2026,"m":8,"fixed":118000,"var":6800,"total":124800,"days":16},{"y":2026,"m":9,"fixed":118000,"var":0,"total":118000,"days":17}],"change_at":null,"change_amt":0,"pl_granted":11,"pl_taken":4,"pl_last":"2026-09-15","pl_next":"2027-09-15","contract_end":"2027-05-06"},{"id":"E045","name":"藤井 杏","company":"C06","pref":"兵庫県","birth":"1982-04-07","age":44,"hire":"2026-02-22","type":"契約社員","weekly":40,"base":248000,"health_grade":19,"health_std":240000,"pension_grade":16,"pension_std":240000,"history":[{"y":2025,"m":10,"fixed":248000,"var":0,"total":248000,"days":31},{"y":2025,"m":11,"fixed":248000,"var":9800,"total":257800,"days":31},{"y":2025,"m":12,"fixed":248000,"var":14500,"total":262500,"days":31},{"y":2026,"m":1,"fixed":248000,"var":21000,"total":269000,"days":31},{"y":2026,"m":2,"fixed":248000,"var":0,"total":248000,"days":31},{"y":2026,"m":3,"fixed":248000,"var":28400,"total":276400,"days":31},{"y":2026,"m":4,"fixed":248000,"var":0,"total":248000,"days":31},{"y":2026,"m":5,"fixed":248000,"var":4200,"total":252200,"days":31},{"y":2026,"m":6,"fixed":248000,"var":0,"total":248000,"days":31},{"y":2026,"m":7,"fixed":248000,"var":4200,"total":252200,"days":31},{"y":2026,"m":8,"fixed":248000,"var":21000,"total":269000,"days":31},{"y":2026,"m":9,"fixed":248000,"var":4200,"total":252200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":10,"pl_taken":5,"pl_last":"2026-08-22","pl_next":"2027-08-22","contract_end":null},{"id":"E046","name":"日野 千尋","company":"C06","pref":"兵庫県","birth":"1990-11-30","age":35,"hire":"2020-09-28","type":"正社員","weekly":40,"base":214000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":214000,"var":36200,"total":250200,"days":31},{"y":2025,"m":11,"fixed":214000,"var":28400,"total":242400,"days":31},{"y":2025,"m":12,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":1,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":2,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":3,"fixed":214000,"var":36200,"total":250200,"days":31},{"y":2026,"m":4,"fixed":222000,"var":4200,"total":226200,"days":31},{"y":2026,"m":5,"fixed":222000,"var":21000,"total":243000,"days":31},{"y":2026,"m":6,"fixed":222000,"var":21000,"total":243000,"days":31},{"y":2026,"m":7,"fixed":222000,"var":14500,"total":236500,"days":31},{"y":2026,"m":8,"fixed":222000,"var":14500,"total":236500,"days":31},{"y":2026,"m":9,"fixed":222000,"var":0,"total":222000,"days":31}],"change_at":6,"change_amt":8000,"pl_granted":18,"pl_taken":2,"pl_last":"2026-03-28","pl_next":"2027-03-28","contract_end":null},{"id":"E047","name":"橋詰 千尋","company":"C06","pref":"兵庫県","birth":"1970-09-11","age":55,"hire":"2021-02-24","type":"正社員","weekly":40,"base":512000,"health_grade":30,"health_std":500000,"pension_grade":27,"pension_std":500000,"history":[{"y":2025,"m":10,"fixed":512000,"var":4200,"total":516200,"days":31},{"y":2025,"m":11,"fixed":512000,"var":4200,"total":516200,"days":31},{"y":2025,"m":12,"fixed":512000,"var":9800,"total":521800,"days":31},{"y":2026,"m":1,"fixed":512000,"var":0,"total":512000,"days":31},{"y":2026,"m":2,"fixed":512000,"var":28400,"total":540400,"days":31},{"y":2026,"m":3,"fixed":512000,"var":36200,"total":548200,"days":31},{"y":2026,"m":4,"fixed":527000,"var":0,"total":527000,"days":31},{"y":2026,"m":5,"fixed":527000,"var":21000,"total":548000,"days":31},{"y":2026,"m":6,"fixed":527000,"var":0,"total":527000,"days":31},{"y":2026,"m":7,"fixed":527000,"var":0,"total":527000,"days":31},{"y":2026,"m":8,"fixed":527000,"var":9800,"total":536800,"days":31},{"y":2026,"m":9,"fixed":527000,"var":9800,"total":536800,"days":31}],"change_at":6,"change_amt":15000,"pl_granted":18,"pl_taken":6,"pl_last":"2026-08-24","pl_next":"2027-08-24","contract_end":null},{"id":"E048","name":"橋詰 理沙","company":"C06","pref":"兵庫県","birth":"1965-12-18","age":60,"hire":"2022-01-04","type":"正社員","weekly":40,"base":214000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2025,"m":11,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2025,"m":12,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":1,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":2,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":3,"fixed":214000,"var":4200,"total":218200,"days":31},{"y":2026,"m":4,"fixed":214000,"var":9800,"total":223800,"days":31},{"y":2026,"m":5,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":6,"fixed":214000,"var":36200,"total":250200,"days":31},{"y":2026,"m":7,"fixed":214000,"var":9800,"total":223800,"days":31},{"y":2026,"m":8,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":9,"fixed":214000,"var":21000,"total":235000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":16,"pl_taken":1,"pl_last":"2026-07-04","pl_next":"2027-07-04","contract_end":null},{"id":"E049","name":"小柳 大輔","company":"C06","pref":"兵庫県","birth":"1997-07-13","age":29,"hire":"2020-12-12","type":"パート","weekly":16,"base":96000,"health_grade":5,"health_std":98000,"pension_grade":2,"pension_std":98000,"history":[{"y":2025,"m":10,"fixed":96000,"var":6800,"total":102800,"days":14},{"y":2025,"m":11,"fixed":96000,"var":0,"total":96000,"days":17},{"y":2025,"m":12,"fixed":96000,"var":6800,"total":102800,"days":14},{"y":2026,"m":1,"fixed":96000,"var":6800,"total":102800,"days":11},{"y":2026,"m":2,"fixed":96000,"var":3200,"total":99200,"days":21},{"y":2026,"m":3,"fixed":96000,"var":6800,"total":102800,"days":17},{"y":2026,"m":4,"fixed":96000,"var":0,"total":96000,"days":17},{"y":2026,"m":5,"fixed":96000,"var":0,"total":96000,"days":14},{"y":2026,"m":6,"fixed":108000,"var":0,"total":108000,"days":16},{"y":2026,"m":7,"fixed":108000,"var":0,"total":108000,"days":21},{"y":2026,"m":8,"fixed":108000,"var":0,"total":108000,"days":11},{"y":2026,"m":9,"fixed":108000,"var":3200,"total":111200,"days":14}],"change_at":4,"change_amt":12000,"pl_granted":10,"pl_taken":2,"pl_last":"2026-06-12","pl_next":"2027-06-12","contract_end":"2026-12-06"},{"id":"E050","name":"岡本 陽菜","company":"C07","pref":"大阪府","birth":"1993-08-31","age":33,"hire":"2023-11-27","type":"正社員","weekly":40,"base":425000,"health_grade":28,"health_std":440000,"pension_grade":25,"pension_std":440000,"history":[{"y":2025,"m":10,"fixed":425000,"var":21000,"total":446000,"days":31},{"y":2025,"m":11,"fixed":425000,"var":14500,"total":439500,"days":31},{"y":2025,"m":12,"fixed":425000,"var":9800,"total":434800,"days":31},{"y":2026,"m":1,"fixed":425000,"var":36200,"total":461200,"days":31},{"y":2026,"m":2,"fixed":425000,"var":28400,"total":453400,"days":31},{"y":2026,"m":3,"fixed":425000,"var":4200,"total":429200,"days":31},{"y":2026,"m":4,"fixed":425000,"var":4200,"total":429200,"days":31},{"y":2026,"m":5,"fixed":425000,"var":28400,"total":453400,"days":31},{"y":2026,"m":6,"fixed":425000,"var":0,"total":425000,"days":31},{"y":2026,"m":7,"fixed":425000,"var":9800,"total":434800,"days":31},{"y":2026,"m":8,"fixed":425000,"var":36200,"total":461200,"days":31},{"y":2026,"m":9,"fixed":425000,"var":4200,"total":429200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":12,"pl_taken":3,"pl_last":"2026-05-27","pl_next":"2027-05-27","contract_end":null},{"id":"E051","name":"坂口 拓也","company":"C07","pref":"大阪府","birth":"1950-12-25","age":75,"hire":"2025-01-04","type":"正社員","weekly":40,"base":214000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2025,"m":11,"fixed":214000,"var":36200,"total":250200,"days":31},{"y":2025,"m":12,"fixed":214000,"var":9800,"total":223800,"days":31},{"y":2026,"m":1,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":2,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":3,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":4,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":5,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":6,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":7,"fixed":214000,"var":36200,"total":250200,"days":31},{"y":2026,"m":8,"fixed":214000,"var":4200,"total":218200,"days":31},{"y":2026,"m":9,"fixed":214000,"var":9800,"total":223800,"days":31}],"change_at":null,"change_amt":0,"pl_granted":11,"pl_taken":8,"pl_last":"2026-07-04","pl_next":"2027-07-04","contract_end":null},{"id":"E052","name":"上田 千尋","company":"C07","pref":"大阪府","birth":"1988-02-22","age":38,"hire":"2020-11-14","type":"正社員","weekly":40,"base":305000,"health_grade":22,"health_std":300000,"pension_grade":19,"pension_std":300000,"history":[{"y":2025,"m":10,"fixed":305000,"var":28400,"total":333400,"days":31},{"y":2025,"m":11,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2025,"m":12,"fixed":305000,"var":28400,"total":333400,"days":31},{"y":2026,"m":1,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":2,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":3,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":4,"fixed":305000,"var":36200,"total":341200,"days":31},{"y":2026,"m":5,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2026,"m":6,"fixed":305000,"var":28400,"total":333400,"days":31},{"y":2026,"m":7,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":8,"fixed":305000,"var":36200,"total":341200,"days":31},{"y":2026,"m":9,"fixed":305000,"var":0,"total":305000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":18,"pl_taken":8,"pl_last":"2026-05-14","pl_next":"2027-05-14","contract_end":null},{"id":"E053","name":"南部 大輔","company":"C07","pref":"大阪府","birth":"1971-02-27","age":55,"hire":"2018-08-23","type":"契約社員","weekly":35,"base":205000,"health_grade":17,"health_std":200000,"pension_grade":14,"pension_std":200000,"history":[{"y":2025,"m":10,"fixed":205000,"var":21000,"total":226000,"days":31},{"y":2025,"m":11,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2025,"m":12,"fixed":205000,"var":9800,"total":214800,"days":31},{"y":2026,"m":1,"fixed":205000,"var":9800,"total":214800,"days":31},{"y":2026,"m":2,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":3,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":4,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":5,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2026,"m":6,"fixed":205000,"var":28400,"total":233400,"days":31},{"y":2026,"m":7,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2026,"m":8,"fixed":205000,"var":21000,"total":226000,"days":31},{"y":2026,"m":9,"fixed":205000,"var":9800,"total":214800,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":3,"pl_last":"2026-02-23","pl_next":"2027-02-23","contract_end":"2027-02-06"},{"id":"E054","name":"坂口 杏","company":"C07","pref":"大阪府","birth":"1987-04-30","age":39,"hire":"2024-08-24","type":"正社員","weekly":40,"base":305000,"health_grade":22,"health_std":300000,"pension_grade":19,"pension_std":300000,"history":[{"y":2025,"m":10,"fixed":305000,"var":36200,"total":341200,"days":31},{"y":2025,"m":11,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2025,"m":12,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2026,"m":1,"fixed":305000,"var":14500,"total":319500,"days":31},{"y":2026,"m":2,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":3,"fixed":305000,"var":28400,"total":333400,"days":31},{"y":2026,"m":4,"fixed":305000,"var":14500,"total":319500,"days":31},{"y":2026,"m":5,"fixed":305000,"var":14500,"total":319500,"days":31},{"y":2026,"m":6,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":7,"fixed":323000,"var":0,"total":323000,"days":31},{"y":2026,"m":8,"fixed":323000,"var":4200,"total":327200,"days":31},{"y":2026,"m":9,"fixed":323000,"var":21000,"total":344000,"days":31}],"change_at":3,"change_amt":18000,"pl_granted":11,"pl_taken":0,"pl_last":"2026-02-24","pl_next":"2027-02-24","contract_end":null},{"id":"E055","name":"谷口 陽菜","company":"C07","pref":"大阪府","birth":"1955-04-16","age":71,"hire":"2018-02-25","type":"契約社員","weekly":40,"base":182000,"health_grade":16,"health_std":190000,"pension_grade":13,"pension_std":190000,"history":[{"y":2025,"m":10,"fixed":182000,"var":14500,"total":196500,"days":31},{"y":2025,"m":11,"fixed":182000,"var":36200,"total":218200,"days":31},{"y":2025,"m":12,"fixed":182000,"var":14500,"total":196500,"days":31},{"y":2026,"m":1,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":2,"fixed":182000,"var":21000,"total":203000,"days":31},{"y":2026,"m":3,"fixed":182000,"var":9800,"total":191800,"days":31},{"y":2026,"m":4,"fixed":182000,"var":21000,"total":203000,"days":31},{"y":2026,"m":5,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":6,"fixed":182000,"var":9800,"total":191800,"days":31},{"y":2026,"m":7,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":8,"fixed":182000,"var":36200,"total":218200,"days":31},{"y":2026,"m":9,"fixed":182000,"var":0,"total":182000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":11,"pl_last":"2026-08-25","pl_next":"2027-08-25","contract_end":"2026-11-06"},{"id":"E056","name":"谷口 真央","company":"C08","pref":"京都府","birth":"2000-09-29","age":25,"hire":"2026-08-12","type":"契約社員","weekly":35,"base":182000,"health_grade":16,"health_std":190000,"pension_grade":13,"pension_std":190000,"history":[{"y":2025,"m":10,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2025,"m":11,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2025,"m":12,"fixed":182000,"var":36200,"total":218200,"days":31},{"y":2026,"m":1,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":2,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":3,"fixed":182000,"var":14500,"total":196500,"days":31},{"y":2026,"m":4,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":5,"fixed":182000,"var":4200,"total":186200,"days":31},{"y":2026,"m":6,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":7,"fixed":182000,"var":0,"total":182000,"days":31},{"y":2026,"m":8,"fixed":182000,"var":28400,"total":210400,"days":31},{"y":2026,"m":9,"fixed":182000,"var":14500,"total":196500,"days":31}],"change_at":null,"change_amt":0,"pl_granted":0,"pl_taken":0,"pl_last":null,"pl_next":"2027-02-12","contract_end":"2026-11-06"},{"id":"E057","name":"市川 大輔","company":"C08","pref":"京都府","birth":"1987-01-18","age":39,"hire":"2017-11-28","type":"契約社員","weekly":40,"base":205000,"health_grade":17,"health_std":200000,"pension_grade":14,"pension_std":200000,"history":[{"y":2025,"m":10,"fixed":205000,"var":36200,"total":241200,"days":31},{"y":2025,"m":11,"fixed":205000,"var":9800,"total":214800,"days":31},{"y":2025,"m":12,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":1,"fixed":205000,"var":9800,"total":214800,"days":31},{"y":2026,"m":2,"fixed":205000,"var":36200,"total":241200,"days":31},{"y":2026,"m":3,"fixed":205000,"var":9800,"total":214800,"days":31},{"y":2026,"m":4,"fixed":205000,"var":4200,"total":209200,"days":31},{"y":2026,"m":5,"fixed":205000,"var":36200,"total":241200,"days":31},{"y":2026,"m":6,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2026,"m":7,"fixed":205000,"var":36200,"total":241200,"days":31},{"y":2026,"m":8,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":9,"fixed":205000,"var":4200,"total":209200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":3,"pl_last":"2026-05-28","pl_next":"2027-05-28","contract_end":null},{"id":"E058","name":"三宅 結衣","company":"C08","pref":"京都府","birth":"1961-12-25","age":64,"hire":"2018-06-30","type":"正社員","weekly":40,"base":228000,"health_grade":19,"health_std":240000,"pension_grade":16,"pension_std":240000,"history":[{"y":2025,"m":10,"fixed":228000,"var":9800,"total":237800,"days":31},{"y":2025,"m":11,"fixed":228000,"var":0,"total":228000,"days":31},{"y":2025,"m":12,"fixed":228000,"var":21000,"total":249000,"days":31},{"y":2026,"m":1,"fixed":228000,"var":4200,"total":232200,"days":31},{"y":2026,"m":2,"fixed":228000,"var":14500,"total":242500,"days":31},{"y":2026,"m":3,"fixed":228000,"var":21000,"total":249000,"days":31},{"y":2026,"m":4,"fixed":228000,"var":0,"total":228000,"days":31},{"y":2026,"m":5,"fixed":228000,"var":4200,"total":232200,"days":31},{"y":2026,"m":6,"fixed":228000,"var":9800,"total":237800,"days":31},{"y":2026,"m":7,"fixed":228000,"var":36200,"total":264200,"days":31},{"y":2026,"m":8,"fixed":228000,"var":4200,"total":232200,"days":31},{"y":2026,"m":9,"fixed":228000,"var":21000,"total":249000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":3,"pl_last":"2025-12-30","pl_next":"2026-12-30","contract_end":null},{"id":"E059","name":"浜口 理沙","company":"C08","pref":"京都府","birth":"2000-09-21","age":25,"hire":"2025-08-28","type":"パート","weekly":12,"base":108000,"health_grade":7,"health_std":110000,"pension_grade":4,"pension_std":110000,"history":[{"y":2025,"m":10,"fixed":108000,"var":6800,"total":114800,"days":19},{"y":2025,"m":11,"fixed":108000,"var":3200,"total":111200,"days":17},{"y":2025,"m":12,"fixed":108000,"var":0,"total":108000,"days":17},{"y":2026,"m":1,"fixed":108000,"var":0,"total":108000,"days":16},{"y":2026,"m":2,"fixed":108000,"var":6800,"total":114800,"days":17},{"y":2026,"m":3,"fixed":108000,"var":0,"total":108000,"days":21},{"y":2026,"m":4,"fixed":108000,"var":0,"total":108000,"days":11},{"y":2026,"m":5,"fixed":108000,"var":3200,"total":111200,"days":18},{"y":2026,"m":6,"fixed":108000,"var":0,"total":108000,"days":16},{"y":2026,"m":7,"fixed":108000,"var":0,"total":108000,"days":11},{"y":2026,"m":8,"fixed":108000,"var":3200,"total":111200,"days":21},{"y":2026,"m":9,"fixed":108000,"var":0,"total":108000,"days":17}],"change_at":null,"change_amt":0,"pl_granted":3,"pl_taken":11,"pl_last":"2026-02-28","pl_next":"2027-02-28","contract_end":"2026-12-06"},{"id":"E060","name":"南部 菜月","company":"C08","pref":"京都府","birth":"1967-08-25","age":59,"hire":"2020-12-18","type":"パート","weekly":16,"base":88000,"health_grade":4,"health_std":88000,"pension_grade":1,"pension_std":88000,"history":[{"y":2025,"m":10,"fixed":88000,"var":6800,"total":94800,"days":19},{"y":2025,"m":11,"fixed":88000,"var":0,"total":88000,"days":17},{"y":2025,"m":12,"fixed":88000,"var":6800,"total":94800,"days":16},{"y":2026,"m":1,"fixed":88000,"var":6800,"total":94800,"days":11},{"y":2026,"m":2,"fixed":88000,"var":6800,"total":94800,"days":14},{"y":2026,"m":3,"fixed":88000,"var":0,"total":88000,"days":19},{"y":2026,"m":4,"fixed":88000,"var":0,"total":88000,"days":19},{"y":2026,"m":5,"fixed":88000,"var":6800,"total":94800,"days":16},{"y":2026,"m":6,"fixed":88000,"var":6800,"total":94800,"days":21},{"y":2026,"m":7,"fixed":88000,"var":3200,"total":91200,"days":19},{"y":2026,"m":8,"fixed":88000,"var":0,"total":88000,"days":11},{"y":2026,"m":9,"fixed":88000,"var":3200,"total":91200,"days":11}],"change_at":null,"change_amt":0,"pl_granted":10,"pl_taken":11,"pl_last":"2026-06-18","pl_next":"2027-06-18","contract_end":null},{"id":"E061","name":"相馬 彩香","company":"C08","pref":"京都府","birth":"1999-06-05","age":27,"hire":"2021-04-02","type":"正社員","weekly":40,"base":288000,"health_grade":21,"health_std":280000,"pension_grade":18,"pension_std":280000,"history":[{"y":2025,"m":10,"fixed":288000,"var":9800,"total":297800,"days":31},{"y":2025,"m":11,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2025,"m":12,"fixed":288000,"var":21000,"total":309000,"days":31},{"y":2026,"m":1,"fixed":288000,"var":9800,"total":297800,"days":31},{"y":2026,"m":2,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":3,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":4,"fixed":288000,"var":9800,"total":297800,"days":31},{"y":2026,"m":5,"fixed":288000,"var":21000,"total":309000,"days":31},{"y":2026,"m":6,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":7,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":8,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":9,"fixed":288000,"var":9800,"total":297800,"days":31}],"change_at":null,"change_amt":0,"pl_granted":16,"pl_taken":6,"pl_last":"2025-10-02","pl_next":"2026-10-02","contract_end":null},{"id":"E062","name":"田村 千尋","company":"C09","pref":"大阪府","birth":"1999-08-27","age":27,"hire":"2020-09-16","type":"正社員","weekly":40,"base":305000,"health_grade":22,"health_std":300000,"pension_grade":19,"pension_std":300000,"history":[{"y":2025,"m":10,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2025,"m":11,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2025,"m":12,"fixed":305000,"var":36200,"total":341200,"days":31},{"y":2026,"m":1,"fixed":305000,"var":14500,"total":319500,"days":31},{"y":2026,"m":2,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":3,"fixed":305000,"var":28400,"total":333400,"days":31},{"y":2026,"m":4,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":5,"fixed":305000,"var":4200,"total":309200,"days":31},{"y":2026,"m":6,"fixed":327000,"var":0,"total":327000,"days":31},{"y":2026,"m":7,"fixed":327000,"var":21000,"total":348000,"days":31},{"y":2026,"m":8,"fixed":327000,"var":0,"total":327000,"days":31},{"y":2026,"m":9,"fixed":327000,"var":0,"total":327000,"days":31}],"change_at":4,"change_amt":22000,"pl_granted":18,"pl_taken":0,"pl_last":"2026-03-16","pl_next":"2027-03-16","contract_end":null},{"id":"E063","name":"森下 健太","company":"C09","pref":"大阪府","birth":"1955-05-03","age":71,"hire":"2025-02-17","type":"正社員","weekly":40,"base":305000,"health_grade":22,"health_std":300000,"pension_grade":19,"pension_std":300000,"history":[{"y":2025,"m":10,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2025,"m":11,"fixed":305000,"var":4200,"total":309200,"days":31},{"y":2025,"m":12,"fixed":305000,"var":9800,"total":314800,"days":31},{"y":2026,"m":1,"fixed":305000,"var":28400,"total":333400,"days":31},{"y":2026,"m":2,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":3,"fixed":305000,"var":0,"total":305000,"days":31},{"y":2026,"m":4,"fixed":305000,"var":21000,"total":326000,"days":31},{"y":2026,"m":5,"fixed":345000,"var":9800,"total":354800,"days":31},{"y":2026,"m":6,"fixed":345000,"var":0,"total":345000,"days":31},{"y":2026,"m":7,"fixed":345000,"var":0,"total":345000,"days":31},{"y":2026,"m":8,"fixed":345000,"var":21000,"total":366000,"days":31},{"y":2026,"m":9,"fixed":345000,"var":14500,"total":359500,"days":31}],"change_at":5,"change_amt":40000,"pl_granted":11,"pl_taken":1,"pl_last":"2026-08-17","pl_next":"2027-08-17","contract_end":null},{"id":"E064","name":"中西 美咲","company":"C09","pref":"大阪府","birth":"1987-01-21","age":39,"hire":"2021-04-19","type":"パート","weekly":28,"base":108000,"health_grade":7,"health_std":110000,"pension_grade":4,"pension_std":110000,"history":[{"y":2025,"m":10,"fixed":108000,"var":6800,"total":114800,"days":17},{"y":2025,"m":11,"fixed":108000,"var":3200,"total":111200,"days":11},{"y":2025,"m":12,"fixed":108000,"var":0,"total":108000,"days":17},{"y":2026,"m":1,"fixed":108000,"var":6800,"total":114800,"days":17},{"y":2026,"m":2,"fixed":108000,"var":3200,"total":111200,"days":21},{"y":2026,"m":3,"fixed":108000,"var":6800,"total":114800,"days":14},{"y":2026,"m":4,"fixed":108000,"var":6800,"total":114800,"days":18},{"y":2026,"m":5,"fixed":108000,"var":0,"total":108000,"days":18},{"y":2026,"m":6,"fixed":108000,"var":3200,"total":111200,"days":21},{"y":2026,"m":7,"fixed":123000,"var":0,"total":123000,"days":16},{"y":2026,"m":8,"fixed":123000,"var":0,"total":123000,"days":18},{"y":2026,"m":9,"fixed":123000,"var":3200,"total":126200,"days":19}],"change_at":3,"change_amt":15000,"pl_granted":12,"pl_taken":5,"pl_last":"2025-10-19","pl_next":"2026-10-19","contract_end":"2026-12-06"},{"id":"E065","name":"藤井 陽菜","company":"C09","pref":"大阪府","birth":"1962-05-30","age":64,"hire":"2021-11-12","type":"正社員","weekly":40,"base":512000,"health_grade":31,"health_std":530000,"pension_grade":28,"pension_std":530000,"history":[{"y":2025,"m":10,"fixed":512000,"var":28400,"total":540400,"days":31},{"y":2025,"m":11,"fixed":512000,"var":36200,"total":548200,"days":31},{"y":2025,"m":12,"fixed":512000,"var":21000,"total":533000,"days":31},{"y":2026,"m":1,"fixed":512000,"var":14500,"total":526500,"days":31},{"y":2026,"m":2,"fixed":512000,"var":9800,"total":521800,"days":31},{"y":2026,"m":3,"fixed":512000,"var":4200,"total":516200,"days":31},{"y":2026,"m":4,"fixed":512000,"var":4200,"total":516200,"days":31},{"y":2026,"m":5,"fixed":512000,"var":36200,"total":548200,"days":31},{"y":2026,"m":6,"fixed":512000,"var":0,"total":512000,"days":31},{"y":2026,"m":7,"fixed":512000,"var":36200,"total":548200,"days":31},{"y":2026,"m":8,"fixed":512000,"var":0,"total":512000,"days":31},{"y":2026,"m":9,"fixed":512000,"var":21000,"total":533000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":16,"pl_taken":8,"pl_last":"2026-05-12","pl_next":"2027-05-12","contract_end":null},{"id":"E066","name":"栗田 隼人","company":"C10","pref":"東京都","birth":"1979-08-04","age":47,"hire":"2026-07-22","type":"正社員","weekly":40,"base":214000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2025,"m":11,"fixed":214000,"var":28400,"total":242400,"days":31},{"y":2025,"m":12,"fixed":214000,"var":21000,"total":235000,"days":31},{"y":2026,"m":1,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":2,"fixed":214000,"var":9800,"total":223800,"days":31},{"y":2026,"m":3,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":4,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":5,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":6,"fixed":232000,"var":4200,"total":236200,"days":31},{"y":2026,"m":7,"fixed":232000,"var":0,"total":232000,"days":31},{"y":2026,"m":8,"fixed":232000,"var":36200,"total":268200,"days":31},{"y":2026,"m":9,"fixed":232000,"var":14500,"total":246500,"days":31}],"change_at":4,"change_amt":18000,"pl_granted":0,"pl_taken":0,"pl_last":null,"pl_next":"2027-01-22","contract_end":null},{"id":"E067","name":"柴崎 菜月","company":"C10","pref":"東京都","birth":"1995-04-08","age":31,"hire":"2011-01-21","type":"正社員","weekly":40,"base":214000,"health_grade":18,"health_std":220000,"pension_grade":15,"pension_std":220000,"history":[{"y":2025,"m":10,"fixed":214000,"var":9800,"total":223800,"days":31},{"y":2025,"m":11,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2025,"m":12,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":1,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":2,"fixed":214000,"var":4200,"total":218200,"days":31},{"y":2026,"m":3,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":4,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":5,"fixed":214000,"var":4200,"total":218200,"days":31},{"y":2026,"m":6,"fixed":214000,"var":0,"total":214000,"days":31},{"y":2026,"m":7,"fixed":214000,"var":14500,"total":228500,"days":31},{"y":2026,"m":8,"fixed":214000,"var":36200,"total":250200,"days":31},{"y":2026,"m":9,"fixed":214000,"var":21000,"total":235000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":20,"pl_taken":0,"pl_last":"2026-07-21","pl_next":"2027-07-21","contract_end":null},{"id":"E068","name":"栗田 陽菜","company":"C10","pref":"東京都","birth":"1970-10-21","age":55,"hire":"2024-10-17","type":"正社員","weekly":40,"base":288000,"health_grade":21,"health_std":280000,"pension_grade":18,"pension_std":280000,"history":[{"y":2025,"m":10,"fixed":288000,"var":4200,"total":292200,"days":31},{"y":2025,"m":11,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2025,"m":12,"fixed":288000,"var":4200,"total":292200,"days":31},{"y":2026,"m":1,"fixed":288000,"var":28400,"total":316400,"days":31},{"y":2026,"m":2,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":3,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":4,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":5,"fixed":288000,"var":9800,"total":297800,"days":31},{"y":2026,"m":6,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":7,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":8,"fixed":288000,"var":36200,"total":324200,"days":31},{"y":2026,"m":9,"fixed":288000,"var":0,"total":288000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":11,"pl_taken":4,"pl_last":"2026-04-17","pl_next":"2027-04-17","contract_end":null},{"id":"E069","name":"三宅 涼太","company":"C10","pref":"東京都","birth":"2003-09-27","age":22,"hire":"2020-04-29","type":"契約社員","weekly":35,"base":205000,"health_grade":17,"health_std":200000,"pension_grade":14,"pension_std":200000,"history":[{"y":2025,"m":10,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2025,"m":11,"fixed":205000,"var":21000,"total":226000,"days":31},{"y":2025,"m":12,"fixed":205000,"var":36200,"total":241200,"days":31},{"y":2026,"m":1,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":2,"fixed":205000,"var":0,"total":205000,"days":31},{"y":2026,"m":3,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2026,"m":4,"fixed":205000,"var":28400,"total":233400,"days":31},{"y":2026,"m":5,"fixed":205000,"var":4200,"total":209200,"days":31},{"y":2026,"m":6,"fixed":205000,"var":14500,"total":219500,"days":31},{"y":2026,"m":7,"fixed":205000,"var":21000,"total":226000,"days":31},{"y":2026,"m":8,"fixed":205000,"var":21000,"total":226000,"days":31},{"y":2026,"m":9,"fixed":205000,"var":36200,"total":241200,"days":31}],"change_at":null,"change_amt":0,"pl_granted":18,"pl_taken":5,"pl_last":"2025-10-29","pl_next":"2026-10-29","contract_end":null},{"id":"E070","name":"柴崎 理沙","company":"C10","pref":"東京都","birth":"2003-11-17","age":22,"hire":"2025-09-12","type":"正社員","weekly":40,"base":288000,"health_grade":22,"health_std":300000,"pension_grade":19,"pension_std":300000,"history":[{"y":2025,"m":10,"fixed":288000,"var":28400,"total":316400,"days":31},{"y":2025,"m":11,"fixed":288000,"var":21000,"total":309000,"days":31},{"y":2025,"m":12,"fixed":288000,"var":28400,"total":316400,"days":31},{"y":2026,"m":1,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":2,"fixed":288000,"var":4200,"total":292200,"days":31},{"y":2026,"m":3,"fixed":288000,"var":9800,"total":297800,"days":31},{"y":2026,"m":4,"fixed":288000,"var":14500,"total":302500,"days":31},{"y":2026,"m":5,"fixed":288000,"var":0,"total":288000,"days":31},{"y":2026,"m":6,"fixed":288000,"var":21000,"total":309000,"days":31},{"y":2026,"m":7,"fixed":288000,"var":36200,"total":324200,"days":31},{"y":2026,"m":8,"fixed":288000,"var":21000,"total":309000,"days":31},{"y":2026,"m":9,"fixed":288000,"var":21000,"total":309000,"days":31}],"change_at":null,"change_amt":0,"pl_granted":10,"pl_taken":4,"pl_last":"2026-03-12","pl_next":"2027-03-12","contract_end":null},{"id":"E071","name":"塩見 陽菜","company":"C10","pref":"東京都","birth":"2001-05-07","age":25,"hire":"2022-07-22","type":"正社員","weekly":40,"base":425000,"health_grade":28,"health_std":440000,"pension_grade":25,"pension_std":440000,"history":[{"y":2025,"m":10,"fixed":425000,"var":4200,"total":429200,"days":31},{"y":2025,"m":11,"fixed":425000,"var":0,"total":425000,"days":31},{"y":2025,"m":12,"fixed":425000,"var":9800,"total":434800,"days":31},{"y":2026,"m":1,"fixed":425000,"var":36200,"total":461200,"days":31},{"y":2026,"m":2,"fixed":425000,"var":0,"total":425000,"days":31},{"y":2026,"m":3,"fixed":425000,"var":9800,"total":434800,"days":31},{"y":2026,"m":4,"fixed":425000,"var":14500,"total":439500,"days":31},{"y":2026,"m":5,"fixed":425000,"var":4200,"total":429200,"days":31},{"y":2026,"m":6,"fixed":425000,"var":21000,"total":446000,"days":31},{"y":2026,"m":7,"fixed":425000,"var":0,"total":425000,"days":31},{"y":2026,"m":8,"fixed":425000,"var":0,"total":425000,"days":31},{"y":2026,"m":9,"fixed":425000,"var":9800,"total":434800,"days":31}],"change_at":null,"change_amt":0,"pl_granted":14,"pl_taken":5,"pl_last":"2026-01-22","pl_next":"2027-01-22","contract_end":null}],"health_grades":[[1,58000,0,63000],[2,68000,63000,73000],[3,78000,73000,83000],[4,88000,83000,93000],[5,98000,93000,101000],[6,104000,101000,107000],[7,110000,107000,114000],[8,118000,114000,122000],[9,126000,122000,130000],[10,134000,130000,138000],[11,142000,138000,146000],[12,150000,146000,155000],[13,160000,155000,165000],[14,170000,165000,175000],[15,180000,175000,185000],[16,190000,185000,195000],[17,200000,195000,210000],[18,220000,210000,230000],[19,240000,230000,250000],[20,260000,250000,270000],[21,280000,270000,290000],[22,300000,290000,310000],[23,320000,310000,330000],[24,340000,330000,350000],[25,360000,350000,370000],[26,380000,370000,395000],[27,410000,395000,425000],[28,440000,425000,455000],[29,470000,455000,485000],[30,500000,485000,515000],[31,530000,515000,545000],[32,560000,545000,575000],[33,590000,575000,605000],[34,620000,605000,635000],[35,650000,635000,665000],[36,680000,665000,695000],[37,710000,695000,730000],[38,750000,730000,770000],[39,790000,770000,810000],[40,830000,810000,855000],[41,880000,855000,905000],[42,930000,905000,955000],[43,980000,955000,1005000],[44,1030000,1005000,1055000],[45,1090000,1055000,1115000],[46,1150000,1115000,1175000],[47,1210000,1175000,1235000],[48,1270000,1235000,1295000],[49,1330000,1295000,1355000],[50,1390000,1355000,99999999]],"min_wage":{"大阪府":1177,"兵庫県":1116,"京都府":1122,"東京都":1226},"rates":{"大阪府":{"health":0.1034,"care":0.016,"pension":0.183},"兵庫県":{"health":0.1029,"care":0.016,"pension":0.183},"京都府":{"health":0.1013,"care":0.016,"pension":0.183},"東京都":{"health":0.0991,"care":0.016,"pension":0.183}},"today":"2026-09-06"}</script>
+<script>
+(function(){
+"use strict";
+const D = JSON.parse(document.getElementById("payload").textContent);
+const TODAY = new Date(D.today + "T00:00:00");
+const GRADES = D.health_grades;
+const yen = n => "¥" + Math.round(n).toLocaleString("ja-JP");
+const yenp = n => (n >= 0 ? "+" : "−") + "¥" + Math.abs(Math.round(n)).toLocaleString("ja-JP");
+const d2 = s => new Date(s + "T00:00:00");
+const fmtD = dd => `${dd.getFullYear()}-${String(dd.getMonth()+1).padStart(2,"0")}-${String(dd.getDate()).padStart(2,"0")}`;
+const fmtJ = dd => `${dd.getMonth()+1}月${dd.getDate()}日`;
+const days = dd => Math.round((dd - TODAY) / 86400000);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// ── 制度計算 ──
+function healthGrade(m){ for(const [g,std,lo,hi] of GRADES){ if(m>=lo && m<hi) return {g,std}; } return {g:50,std:1390000}; }
+function pensionGrade(hg){ if(hg<4) return {g:1,std:88000}; if(hg>35) return {g:32,std:650000}; return {g:hg-3,std:GRADES[hg-1][1]}; }
+function premium(std, pref, age){
+  const r = D.rates[pref];
+  const h = std*r.health/2, c = (age>=40&&age<65) ? std*r.care/2 : 0, p = (age<70) ? std*r.pension/2 : 0;
+  return {health:h, care:c, pension:p, total:h+c+p};
+}
+const co = id => D.companies.find(c => c.id === id);
+const emp = id => D.employees.find(e => e.id === id);
+
+/* 随時改定の判定。固定的賃金の変動月から3か月、各月の支払基礎日数17日以上、
+   3か月の報酬平均が従前等級と2等級以上ちがえば該当。4か月目から改定。 */
+function judgeRevision(e){
+  if(e.change_at === null) return null;
+  const h = e.history, L = h.length;
+  const idxs = [];
+  for(let k = 0; k < 3; k++){ const ago = e.change_at - 1 - k; if(ago >= 0 && ago < L) idxs.push(L-1-ago); }
+  if(idxs.length < 3) return {status:"watch", months:idxs.length};
+  const ms = idxs.map(i => h[i]).sort((a,b) => a.y*12+a.m - (b.y*12+b.m));
+  const shortDays = ms.filter(m => m.days < 17);
+  const avg = ms.reduce((s,m) => s+m.total, 0) / 3;
+  const now = healthGrade(avg);
+  const diff = now.g - e.health_grade;
+  const first = ms[0];
+  const rev = new Date(first.y, first.m - 1 + 3, 1);
+  return {
+    status: shortDays.length ? "blocked" : (Math.abs(diff) >= 2 ? "hit" : "miss"),
+    months: ms, avg, newGrade: now, diff, revMonth: rev, shortDays: shortDays.length,
+    deadline: new Date(rev.getFullYear(), rev.getMonth(), 10)
+  };
+}
+
+// ── イベント生成 ──
+const SEV = {1:{k:"s1",t:"t1",label:"期限超過・違反状態"},2:{k:"s2",t:"t2",label:"30日以内"},3:{k:"s3",t:"t3",label:"90日以内"},4:{k:"s4",t:"t4",label:"提案できる"}};
+const TYPES = {rev:"随時改定", paid:"年次有給", age:"年齢到達", agr:"36協定", wage:"最低賃金", cont:"契約期限", conv:"無期転換", grant:"助成金"};
+const events = [];
+function push(o){ events.push(o); }
+
+for(const e of D.employees){
+  const c = co(e.company);
+  const last = e.history[e.history.length-1];
+
+  // 随時改定
+  const r = judgeRevision(e);
+  if(r && r.status === "hit"){
+    const dl = r.deadline, dd = days(dl);
+    push({sev: dd < 0 ? 1 : (dd <= 30 ? 2 : 3), type:"rev", emp:e, co:c, when:dl,
+      title:`${e.name}さん　随時改定に該当（${r.diff>0?"＋":"−"}${Math.abs(r.diff)}等級）`,
+      basis:`${r.months[0].m}月に固定的賃金が${e.change_amt>0?"増":"減"}額。${r.months.map(m=>m.m+"月").join("・")}の平均 ${yen(r.avg)} → ${r.newGrade.g}等級（${yen(r.newGrade.std)}）。従前 ${e.health_grade}等級から${Math.abs(r.diff)}等級の差。3か月とも支払基礎日数17日以上。`,
+      action:"月額変更届", who:"社労士が届出", rev:r});
+  } else if(r && r.status === "watch"){
+    push({sev:3, type:"rev", emp:e, co:c, when:new Date(TODAY.getFullYear(), TODAY.getMonth()+ (3-r.months), 10),
+      title:`${e.name}さん　随時改定になるか経過観察中（${r.months}/3か月）`,
+      basis:`固定的賃金が変動。あと${3-r.months}か月ぶんの給与が確定すると判定できます。`,
+      action:"経過観察", who:"自動で再判定"});
+  } else if(r && r.status === "blocked"){
+    push({sev:3, type:"rev", emp:e, co:c, when:r.deadline,
+      title:`${e.name}さん　随時改定の対象外（支払基礎日数）`,
+      basis:`3か月のうち${r.shortDays}か月が支払基礎日数17日未満のため、随時改定の対象になりません。人の目で確認してください。`,
+      action:"確認のみ", who:"社労士が確認"});
+  }
+
+  // 年次有給・年5日
+  if(e.pl_granted >= 10){
+    const next = d2(e.pl_next), dd = days(next);
+    if(e.pl_taken < 5){
+      push({sev: dd < 0 ? 1 : (dd <= 60 ? 2 : 3), type:"paid", emp:e, co:c, when:next,
+        title:`${e.name}さん　年5日の取得義務まであと${5-e.pl_taken}日`,
+        basis:`付与 ${e.pl_granted}日／取得済み ${e.pl_taken}日。次の基準日 ${fmtD(next)} までに5日取らせないと労基法39条違反（30万円以下の罰金）。`,
+        action:"時季指定", who:"会社が実施"});
+    }
+    if(dd >= 0 && dd <= 45){
+      push({sev:3, type:"paid", emp:e, co:c, when:next,
+        title:`${e.name}さん　有給の付与日（${fmtJ(next)}）`,
+        basis:`勤続にともなう付与。出勤率8割以上の確認が要ります。`,
+        action:"付与処理", who:"会社が実施"});
+    }
+  }
+
+  // 年齢到達
+  const b = d2(e.birth);
+  for(const [age, label, detail] of [[40,"介護保険料の徴収開始","40歳の誕生日の前日が属する月から、介護保険料（第2号）の控除が始まります。"],
+      [64,"雇用保険料の取扱い確認","高年齢労働者の保険料まわりの取扱いを確認してください。"],
+      [65,"介護保険 第1号へ","第2号被保険者を外れ、給与からの介護保険料の控除が終わります。"],
+      [70,"厚生年金の資格喪失","70歳到達で厚生年金保険の被保険者資格を失います。70歳以上被用者該当届。"],
+      [75,"後期高齢者医療へ","健康保険の被保険者資格を失い、後期高齢者医療制度へ移ります。"]]){
+    const hit = new Date(b.getFullYear()+age, b.getMonth(), b.getDate());
+    const dd = days(hit);
+    if(dd >= -20 && dd <= 120){
+      push({sev: dd < 0 ? 2 : (dd <= 30 ? 2 : 3), type:"age", emp:e, co:c, when:hit,
+        title:`${e.name}さん　${age}歳到達（${fmtJ(hit)}）　${label}`,
+        basis:detail, action:label, who: age===70||age===75 ? "社労士が届出" : "給与計算で対応"});
+    }
+  }
+
+  // 最低賃金
+  const hourly = e.weekly > 0 ? Math.round(last.fixed / (e.weekly * 52 / 12)) : 0;
+  if(hourly > 0 && hourly < c.min_wage){
+    push({sev:1, type:"wage", emp:e, co:c, when:TODAY,
+      title:`${e.name}さん　最低賃金を下回っています`,
+      basis:`固定的賃金 ${yen(last.fixed)} ÷ 月平均所定 ${Math.round(e.weekly*52/12)}時間 ＝ 時給換算 ${yen(hourly)}。${c.pref}の地域別最低賃金 ${yen(c.min_wage)} に ${yen(c.min_wage-hourly)} 不足。`,
+      action:"賃金の是正", who:"会社が実施"});
+  }
+
+  // 無期転換
+  const hire = d2(e.hire);
+  if(e.type !== "正社員"){
+    const five = new Date(hire.getFullYear()+5, hire.getMonth(), hire.getDate());
+    const dd = days(five);
+    if(dd >= -60 && dd <= 150){
+      push({sev: dd < 0 ? 2 : 3, type:"conv", emp:e, co:c, when:five,
+        title:`${e.name}さん　無期転換の申込権が発生（${fmtJ(five)}）`,
+        basis:`${fmtD(hire)} 入社の有期契約が通算5年に到達。更新のタイミングで無期転換の申込機会を明示する義務があります。`,
+        action:"申込機会の明示", who:"会社が実施"});
+    }
+  }
+
+  // 契約期限
+  if(e.contract_end){
+    const ce = d2(e.contract_end), dd = days(ce);
+    if(dd <= 90){
+      push({sev: dd <= 30 ? 2 : 3, type:"cont", emp:e, co:c, when:ce,
+        title:`${e.name}さん　契約期間の満了（${fmtJ(ce)}）`,
+        basis:`更新するか否かの判断と、更新後の労働条件明示が要ります。3回以上更新または1年超の継続なら、30日前の予告が必要です。`,
+        action:"更新可否の判断", who:"会社が判断"});
+    }
+  }
+
+  // 助成金の芽
+  if(r && r.status === "hit" && r.diff > 0 && e.type !== "正社員"){
+    push({sev:4, type:"grant", emp:e, co:c, when:new Date(TODAY.getFullYear(), TODAY.getMonth()+2, 1),
+      title:`${e.name}さん　賃金引上げが助成金の要件に届くかもしれません`,
+      basis:`有期・パート雇用者の賃金を引き上げた実績。キャリアアップ助成金（賃金規定等改定コース）の要件に当たる可能性があります。就業規則・賃金規定の改定と、引上げ率の確認が要ります。`,
+      action:"要件の確認", who:"社労士が確認"});
+  }
+}
+
+// 36協定
+for(const c of D.companies){
+  const end = d2(c.agreement36_end), dd = days(end);
+  if(dd <= 120){
+    push({sev: dd < 0 ? 1 : (dd <= 30 ? 2 : 3), type:"agr", co:c, emp:null, when:end,
+      title: dd < 0 ? `${c.name}　36協定が失効しています` : `${c.name}　36協定の有効期限（${fmtJ(end)}）`,
+      basis: dd < 0
+        ? `有効期間 ${c.agreement36_start} 〜 ${c.agreement36_end}。すでに ${Math.abs(dd)}日 経過。いま時間外労働をさせると労基法32条違反の状態です。`
+        : `有効期間の満了まで ${dd}日。新協定の締結と、期間開始前の届出が要ります。起算日は会社ごとに違うので一括処理できません。`,
+      action:"新協定の締結・届出", who:"社労士が届出"});
+  }
+}
+
+events.sort((a,b) => a.sev - b.sev || a.when - b.when);
+
+// ── 描画 ──
+let filterSev = null, filterType = null, curCo = null, curEmp = D.employees[0].id;
+
+function sevCounts(){ const c = {1:0,2:0,3:0,4:0}; for(const e of events) c[e.sev]++; return c; }
+
+function renderFilters(){
+  const c = sevCounts();
+  document.getElementById("sevfilter").innerHTML = [1,2,3,4].map(s =>
+    `<button class="chip" role="button" aria-pressed="${filterSev===s}" data-sev="${s}">
+      <span class="dot" style="background:var(--sev${s})"></span>${SEV[s].label}
+      <span class="num" style="color:var(--ink-3)">${c[s]}</span></button>`).join("");
+  const types = [...new Set(events.map(e => e.type))];
+  document.getElementById("typefilter").innerHTML = types.map(t =>
+    `<button class="chip" role="button" aria-pressed="${filterType===t}" data-type="${t}">${TYPES[t]}</button>`).join("");
+}
+
+function shown(){ return events.filter(e => (!filterSev || e.sev === filterSev) && (!filterType || e.type === filterType)); }
+
+function renderStrip(){
+  const c = sevCounts();
+  const cos = new Set(events.filter(e => e.sev <= 2).map(e => e.co.id)).size;
+  document.getElementById("strip").innerHTML = `
+    <div class="strip-cell s1"><div class="strip-k">対応が遅れている</div><div class="strip-v num">${c[1]}<small>件</small></div></div>
+    <div class="strip-cell s2"><div class="strip-k">30日以内</div><div class="strip-v num">${c[2]}<small>件</small></div></div>
+    <div class="strip-cell"><div class="strip-k">90日以内</div><div class="strip-v num">${c[3]}<small>件</small></div></div>
+    <div class="strip-cell s4"><div class="strip-k">提案できる</div><div class="strip-v num">${c[4]}<small>件</small></div></div>
+    <div class="strip-cell"><div class="strip-k">手当が要る顧問先</div><div class="strip-v num">${cos}<small>/ ${D.companies.length}社</small></div></div>
+    <div class="strip-cell"><div class="strip-k">見ている人数</div><div class="strip-v num">${D.employees.length}<small>名</small></div></div>`;
+}
+
+function rowHTML(ev, i){
+  const dd = days(ev.when);
+  const when = dd < 0 ? `<b>${Math.abs(dd)}日 超過</b>${fmtD(ev.when)}`
+             : dd === 0 ? `<b>今日</b>${fmtD(ev.when)}`
+             : `<b>あと${dd}日</b>${fmtD(ev.when)}`;
+  return `<button class="row ${SEV[ev.sev].k}" data-i="${i}">
+    <span class="row-sev"></span>
+    <span class="row-when">${when}</span>
+    <span class="row-body">
+      <span class="row-title">${esc(ev.title)}</span>
+      <span class="row-meta">${esc(ev.co.name)}<span class="sep">·</span>${TYPES[ev.type]}${ev.emp ? `<span class="sep">·</span>${esc(ev.emp.type)}` : ""}</span>
+      <span class="row-basis">${esc(ev.basis)}</span>
+    </span>
+    <span class="row-act"><span class="tag ${SEV[ev.sev].t}">${esc(ev.action)}</span><span class="who">${esc(ev.who)}</span></span>
+  </button>`;
+}
+
+function renderTower(){
+  const list = shown();
+  document.getElementById("towerrows").innerHTML = list.length
+    ? list.map((e,i) => rowHTML(e, events.indexOf(e))).join("")
+    : `<div class="empty">その条件に当てはまるものはありません。</div>`;
+  document.getElementById("cnt-tower").textContent = events.length;
+  document.getElementById("cnt-co").textContent = D.companies.length;
+  document.getElementById("cnt-emp").textContent = D.employees.length;
+}
+
+function coStats(cid){
+  const es = events.filter(e => e.co.id === cid);
+  return {1:es.filter(e=>e.sev===1).length, 2:es.filter(e=>e.sev===2).length,
+          3:es.filter(e=>e.sev===3).length, 4:es.filter(e=>e.sev===4).length, all:es.length};
+}
+
+function renderCompanies(){
+  document.getElementById("cogrid").innerHTML = D.companies.map(c => {
+    const s = coStats(c.id), tot = Math.max(s.all, 1);
+    return `<button class="cocard" data-co="${c.id}" aria-pressed="${curCo===c.id}">
+      <span class="co-head"><span>
+        <span class="co-name">${esc(c.name)}</span>
+        <span class="co-sub">${esc(c.industry)}・${esc(c.pref)}・${c.count}名</span>
+      </span><span class="badge num">${s.all}</span></span>
+      <span class="co-bar">
+        ${[1,2,3,4].map(k => s[k] ? `<span style="background:var(--sev${k});width:${s[k]/tot*100}%"></span>` : "").join("")}
+      </span>
+      <span class="co-tally">
+        ${[1,2,4].map(k => `<span class="tally"><span class="dot" style="background:var(--sev${k})"></span><span class="num">${s[k]}</span></span>`).join("")}
+        <span style="margin-left:auto;color:var(--ink-3);font-size:11px">36協定 ${c.agreement36_end.slice(5).replace("-","/")}</span>
+      </span>
+    </button>`;
+  }).join("");
+  renderCoDetail();
+}
+
+function renderCoDetail(){
+  const box = document.getElementById("codetail");
+  if(!curCo){ box.innerHTML = `<div class="empty" style="border:1px dashed var(--rule);border-radius:6px">顧問先をえらぶと、その会社の従業員と今月の変更が出ます。</div>`; return; }
+  const c = co(curCo);
+  const members = D.employees.filter(e => e.company === curCo);
+  const rows = members.map(e => {
+    const r = judgeRevision(e);
+    const last = e.history[e.history.length-1];
+    const cur = premium(e.health_std, e.pref, e.age);
+    let after = null, ng = null;
+    if(r && r.status === "hit"){ ng = r.newGrade; after = premium(ng.std, e.pref, e.age); }
+    const diff = after ? after.total - cur.total : 0;
+    return `<tr>
+      <td><span class="namecell">${esc(e.name)}<span class="badge">${esc(e.type)}</span></span></td>
+      <td class="num r">${e.age}</td>
+      <td class="num r">${yen(last.total)}</td>
+      <td class="num r">${e.health_grade}<span style="color:var(--ink-3)">等級</span></td>
+      <td class="num r">${yen(cur.total)}</td>
+      <td class="num r">${ng ? `${ng.g}<span style="color:var(--ink-3)">等級</span>` : `<span style="color:var(--ink-3)">—</span>`}</td>
+      <td class="num r">${after ? `<span class="${diff>0?"delta-up":"delta-dn"}">${yenp(diff)}</span>` : `<span style="color:var(--ink-3)">—</span>`}</td>
+      <td class="num r">${r && r.status==="hit" ? `${r.revMonth.getFullYear()}/${r.revMonth.getMonth()+1}月分` : `<span style="color:var(--ink-3)">—</span>`}</td>
+    </tr>`;
+  }).join("");
+  const es = events.filter(e => e.co.id === curCo);
+  box.innerHTML = `
+    <button class="backlink" id="cclear">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M7.5 2.5 4 6l3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      顧問先の一覧にもどる
+    </button>
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-h"><span>${esc(c.name)}　従業員と保険料</span><span class="mono" style="color:var(--ink-3)">健保 ${(c.rates.health*100).toFixed(2)}%／介護 ${(c.rates.care*100).toFixed(2)}%／厚年 ${(c.rates.pension*100).toFixed(1)}%　労使折半</span></div>
+      <div class="tablewrap" style="border:0;border-radius:0">
+        <table><thead><tr>
+          <th>氏名</th><th class="r">年齢</th><th class="r">直近の総支給</th><th class="r">現在の等級</th>
+          <th class="r">本人負担ぶん</th><th class="r">改定後の等級</th><th class="r">保険料の変化</th><th class="r">改定は何月分から</th>
+        </tr></thead><tbody>${rows}</tbody></table>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span>この会社でやること　${es.length}件</span></div>
+      <div class="rows" style="border:0;border-radius:0">${es.map(e => rowHTML(e, events.indexOf(e))).join("") || `<div class="empty">いまはありません。</div>`}</div>
+    </div>`;
+  document.getElementById("cclear").onclick = () => { curCo = null; renderCompanies(); };
+}
+
+function sparkline(hist, w, h){
+  const vals = hist.map(m => m.total);
+  const min = Math.min(...vals) * .96, max = Math.max(...vals) * 1.02, rng = max - min || 1;
+  const pts = vals.map((v,i) => [8 + i*(w-16)/(vals.length-1), h-14 - (v-min)/rng*(h-26)]);
+  const line = pts.map((p,i) => (i?"L":"M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+  const area = line + ` L${pts[pts.length-1][0].toFixed(1)} ${h-8} L${pts[0][0].toFixed(1)} ${h-8} Z`;
+  const lastP = pts[pts.length-1];
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img" aria-label="直近12か月の総支給額の推移。${yen(vals[0])}から${yen(vals[vals.length-1])}へ">
+    <path d="${area}" fill="var(--accent-soft)"/>
+    <path d="${line}" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>
+    <circle cx="${lastP[0].toFixed(1)}" cy="${lastP[1].toFixed(1)}" r="3" fill="var(--accent)"/>
+    <text x="8" y="${h-2}" fill="var(--ink-3)" font-size="9" font-family="IBM Plex Mono, monospace">${hist[0].m}月</text>
+    <text x="${w-8}" y="${h-2}" fill="var(--ink-3)" font-size="9" text-anchor="end" font-family="IBM Plex Mono, monospace">${hist[hist.length-1].m}月</text>
+  </svg>`;
+}
+
+function renderPerson(){
+  const e = emp(curEmp), c = co(e.company);
+  const last = e.history[e.history.length-1];
+  const r = judgeRevision(e);
+  const cur = premium(e.health_std, e.pref, e.age);
+  const pg = pensionGrade(e.health_grade);
+  const mine = events.filter(x => x.emp && x.emp.id === e.id)
+    .concat(events.filter(x => !x.emp && x.co.id === e.company))
+    .sort((a,b) => a.when - b.when);
+  const hourly = Math.round(last.fixed / (e.weekly*52/12));
+
+  document.getElementById("persondetail").innerHTML = `
+    <div class="person-head">
+      <div>
+        <div class="ph-name">${esc(e.name)}</div>
+        <div class="ph-sub">${esc(c.name)}・${esc(e.type)}・週${e.weekly}時間　／　${e.hire} 入社（勤続 ${((TODAY-d2(e.hire))/31557600000).toFixed(1)}年）</div>
+      </div>
+      <div class="ph-facts">
+        <div><div class="fact-k">年齢</div><div class="fact-v">${e.age}<small>歳</small></div></div>
+        <div><div class="fact-k">健保 等級</div><div class="fact-v">${e.health_grade}<small>／50</small></div></div>
+        <div><div class="fact-k">厚年 等級</div><div class="fact-v">${pg.g}<small>／32</small></div></div>
+        <div><div class="fact-k">本人負担ぶん</div><div class="fact-v">${yen(cur.total)}</div></div>
+      </div>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <div class="panel-h"><span>これから起きること　${mine.length}件</span></div>
+        <div class="panel-b">
+          <div class="tl">${mine.map(x => `
+            <div class="tl-item ${SEV[x.sev].k}">
+              <div class="tl-when">${fmtD(x.when)}${days(x.when)<0 ? `　<span style="color:var(--sev1)">${Math.abs(days(x.when))}日 超過</span>` : `　あと${days(x.when)}日`}</div>
+              <div class="tl-what">${esc(x.title)}</div>
+              <div class="tl-detail">${esc(x.basis)}</div>
+            </div>`).join("") || `<div class="empty">当面はありません。</div>`}</div>
+        </div>
+      </div>
+      <div>
+        <div class="panel" style="margin-bottom:14px">
+          <div class="panel-h"><span>総支給額の12か月</span><span class="mono" style="color:var(--ink-3)">${yen(last.total)}</span></div>
+          <div class="panel-b" style="padding:8px 4px 4px">${sparkline(e.history, 320, 96)}</div>
+        </div>
+        <div class="panel" style="margin-bottom:14px">
+          <div class="panel-h"><span>いまの保険料（本人負担ぶん）</span></div>
+          <div class="panel-b">
+            <dl class="kv"><dt>健康保険</dt><dd>${yen(cur.health)}</dd></dl>
+            <dl class="kv"><dt>介護保険${e.age>=40&&e.age<65?"":"（対象外）"}</dt><dd>${cur.care?yen(cur.care):"—"}</dd></dl>
+            <dl class="kv"><dt>厚生年金${e.age<70?"":"（資格喪失）"}</dt><dd>${cur.pension?yen(cur.pension):"—"}</dd></dl>
+            <dl class="kv"><dt style="color:var(--ink)">合計</dt><dd>${yen(cur.total)}</dd></dl>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><span>足もとの数字</span></div>
+          <div class="panel-b">
+            <dl class="kv"><dt>固定的賃金</dt><dd>${yen(last.fixed)}</dd></dl>
+            <dl class="kv"><dt>時給換算</dt><dd>${yen(hourly)}${hourly < c.min_wage ? ` <span style="color:var(--sev1)">割れ</span>` : ""}</dd></dl>
+            <dl class="kv"><dt>${esc(c.pref)}の最低賃金</dt><dd>${yen(c.min_wage)}</dd></dl>
+            <dl class="kv"><dt>有給 付与／取得</dt><dd>${e.pl_granted} ／ ${e.pl_taken}日</dd></dl>
+            <dl class="kv"><dt>次の付与日</dt><dd>${e.pl_next}</dd></dl>
+            ${e.contract_end ? `<dl class="kv"><dt>契約満了</dt><dd>${e.contract_end}</dd></dl>` : ""}
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderSim(){
+  const e = emp(document.getElementById("simemp").value);
+  const raise = +document.getElementById("simraise").value;
+  const month = +document.getElementById("simmonth").value;
+  const c = co(e.company);
+  document.getElementById("simraiseval").textContent = (raise>=0?"+":"") + raise.toLocaleString("ja-JP");
+
+  const last = e.history[e.history.length-1];
+  const newFixed = last.fixed + raise;
+  const avgVar = Math.round(e.history.slice(-3).reduce((s,m)=>s+m.var,0)/3);
+  const newTotal = newFixed + avgVar;
+  const ng = healthGrade(newTotal);
+  const diff = ng.g - e.health_grade;
+  const hit = Math.abs(diff) >= 2;
+  const cur = premium(e.health_std, e.pref, e.age);
+  const after = premium(hit ? ng.std : e.health_std, e.pref, e.age);
+  const pDiff = after.total - cur.total;
+  const empBurdenY = (raise - pDiff) * 12;
+
+  const y = month >= 10 ? 2026 : 2027;
+  const start = new Date(y, month-1, 1);
+  const revM = new Date(y, month-1+3, 1);
+  const dl = new Date(revM.getFullYear(), revM.getMonth(), 10);
+  const enough = Math.round(newFixed / (e.weekly*52/12));
+  const wageOk = enough >= c.min_wage;
+  const pgNow = pensionGrade(e.health_grade), pgNew = pensionGrade(ng.g);
+
+  document.getElementById("simout").innerHTML = `
+    <div class="verdict ${hit?"hit":"miss"}">
+      <div class="verdict-t">
+        ${hit ? `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8 15 14H1L8 1.8Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6v3.4M8 11.4v.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>随時改定に該当します`
+              : `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.3"/><path d="M5.4 8.2 7.2 10l3.4-3.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>随時改定にはなりません`}
+      </div>
+      <div class="verdict-d">${hit
+        ? `${y}年${month}月に ${yen(raise)} 昇給すると、${month}・${month%12+1}・${(month+1)%12+1}月の平均が ${yen(newTotal)} になり、${e.health_grade}等級から ${ng.g}等級へ ${Math.abs(diff)}等級 動きます。改定は <b>${revM.getFullYear()}年${revM.getMonth()+1}月分</b> から、月額変更届の期限は <b>${fmtD(dl)}</b> ごろです。`
+        : `${yen(raise)} の昇給では等級の差が ${Math.abs(diff)}等級 にとどまり、2等級以上という要件に届きません。標準報酬月額は ${e.health_grade}等級のまま、保険料も変わりません。`}</div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><span class="step-n">1</span><span>昇給後の固定的賃金</span><span class="step-v">${yen(last.fixed)} → ${yen(newFixed)}</span></div>
+      <div class="step"><span class="step-n">2</span><span>直近3か月の変動給の平均を足す</span><span class="step-v">＋${yen(avgVar)}</span></div>
+      <div class="step"><span class="step-n">3</span><span>3か月の報酬月額の見込み</span><span class="step-v">${yen(newTotal)}</span></div>
+      <div class="step ${hit?"ng":"ok"}"><span class="step-n">4</span><span>等級の差（2等級以上で該当）</span><span class="step-v">${e.health_grade} → ${ng.g}　${diff>=0?"＋":"−"}${Math.abs(diff)}等級</span></div>
+      <div class="step ${wageOk?"ok":"ng"}"><span class="step-n">5</span><span>時給換算と${esc(c.pref)}の最低賃金</span><span class="step-v">${yen(enough)} / ${yen(c.min_wage)}</span></div>
+    </div>
+
+    <div class="cmp">
+      <div class="cmp-side">
+        <div class="cmp-k">いまの保険料</div>
+        <div class="cmp-v">${yen(cur.total)}</div>
+        <div class="cmp-grade">健保 ${e.health_grade}等級・厚年 ${pgNow.g}等級</div>
+      </div>
+      <svg class="cmp-arrow" width="22" height="14" viewBox="0 0 22 14" fill="none" aria-hidden="true"><path d="M1 7h19M15 2l5 5-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="cmp-side">
+        <div class="cmp-k">昇給後</div>
+        <div class="cmp-v">${yen(after.total)} <small>${pDiff ? yenp(pDiff) : "変わらず"}</small></div>
+        <div class="cmp-grade">健保 ${hit?ng.g:e.health_grade}等級・厚年 ${hit?pgNew.g:pgNow.g}等級</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>本人の手取りで見ると。</b> 月 ${yen(raise)} の昇給に対し、社会保険料の本人負担は ${pDiff ? yenp(pDiff) : "変わりません"}。差引き年 ${yen(empBurdenY)} ぶんが手取りの増加（税金は別）。${hit ? `会社の負担も同額ふえます（労使折半）。` : `等級が動かないので、昇給ぶんがそのまま残ります。`}<br>
+      <b>${e.type !== "正社員" ? "有期・パート雇用のため、" : ""}</b>${e.type !== "正社員"
+        ? `賃金の引上げがキャリアアップ助成金（賃金規定等改定コース）の要件に当たる可能性があります。就業規則・賃金規定の改定と引上げ率の確認が要ります。<b>ここは制度の年度更新が必要な箇所です。</b>`
+        : `正社員のため、賃金規定等改定コースの主たる対象からは外れます。賃上げ促進税制の判定は税理士の領分になるので、材料を渡す形にします。`}
+    </div>`;
+  document.getElementById("simnote").innerHTML = `
+    昇給を<b>決める前</b>に判定します。既存の人事労務サービスは給与を確定させたあとに検知するので、「この金額にすると等級が2つ上がる」を事前に知る手段がありません。<br><br>
+    <b>簡略化してある点。</b> 変動給は直近3か月の平均で置いています。支払基礎日数はすべて17日以上と仮定。産前産後・育休復帰後の改定、保険者算定、賞与の扱いは未実装です。`;
+}
+
+// ── 操作 ──
+function setView(v){
+  for(const b of document.querySelectorAll(".navbtn")) b.setAttribute("aria-selected", String(b.dataset.view === v));
+  for(const id of ["tower","company","person","sim"]) document.getElementById("pane-"+id).hidden = (id !== v);
+  document.querySelector(".topbar").style.display = (v === "tower") ? "" : "none";
+  if(v === "person") renderPerson();
+  if(v === "sim") renderSim();
+}
+document.querySelector(".rail").addEventListener("click", ev => {
+  const b = ev.target.closest(".navbtn"); if(b) setView(b.dataset.view);
+});
+document.getElementById("sevfilter").addEventListener("click", ev => {
+  const b = ev.target.closest("[data-sev]"); if(!b) return;
+  filterSev = (filterSev === +b.dataset.sev) ? null : +b.dataset.sev;
+  renderFilters(); renderTower();
+});
+document.getElementById("typefilter").addEventListener("click", ev => {
+  const b = ev.target.closest("[data-type]"); if(!b) return;
+  filterType = (filterType === b.dataset.type) ? null : b.dataset.type;
+  renderFilters(); renderTower();
+});
+document.getElementById("towerrows").addEventListener("click", ev => {
+  const r = ev.target.closest(".row"); if(!r) return;
+  const e = events[+r.dataset.i];
+  if(e.emp){ curEmp = e.emp.id; document.getElementById("empsel").value = curEmp; setView("person"); }
+  else { curCo = e.co.id; setView("company"); renderCompanies(); }
+});
+document.getElementById("cogrid").addEventListener("click", ev => {
+  const b = ev.target.closest("[data-co]"); if(!b) return;
+  curCo = (curCo === b.dataset.co) ? null : b.dataset.co;
+  renderCompanies();
+});
+document.getElementById("codetail").addEventListener("click", ev => {
+  const r = ev.target.closest(".row"); if(!r) return;
+  const e = events[+r.dataset.i];
+  if(e.emp){ curEmp = e.emp.id; document.getElementById("empsel").value = curEmp; setView("person"); }
+});
+const optHTML = D.employees.map(e => `<option value="${e.id}">${esc(e.name)}　（${esc(co(e.company).name)}・${esc(e.type)}）</option>`).join("");
+document.getElementById("empsel").innerHTML = optHTML;
+document.getElementById("simemp").innerHTML = optHTML;
+document.getElementById("empsel").addEventListener("change", ev => { curEmp = ev.target.value; renderPerson(); });
+for(const id of ["simemp","simraise","simmonth"]) document.getElementById(id).addEventListener("input", renderSim);
+
+document.getElementById("asof").textContent = D.today;
+renderFilters(); renderStrip(); renderTower(); renderCompanies();
+})();
+</script>
