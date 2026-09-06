@@ -77,14 +77,14 @@
   .tc-count{ margin-left:auto; font-size:13px; font-weight:700; color:var(--muted);}
   .tc-list{ list-style:none; padding:12px 18px 17px;}
   .seat{
-    display:flex; align-items:center; gap:8px; padding:9px 0; font-size:16px; font-weight:600;
+    display:flex; align-items:flex-start; gap:8px; padding:11px 0; font-size:16px; font-weight:600;
     border-bottom:1px solid #f6f1ea; word-break:break-word;
   }
   .seat:last-child{ border-bottom:none;}
   .seat.is-host{ color:#8f4a12;}
   .seat.hit{ background:#fff3c4; border-radius:8px; padding-left:8px; padding-right:8px;}
   .seat-link{
-    flex:1; min-width:0; display:flex; align-items:center; gap:11px;
+    flex:1; min-width:0; display:flex; align-items:flex-start; gap:11px;
     color:inherit; text-decoration:none; border-radius:8px; padding:2px 0;
   }
   .seat-txt{ min-width:0; display:flex; flex-direction:column; gap:1px;}
@@ -132,6 +132,10 @@
   .seat-link[href]:hover .seat-call{ color:#b8446f; text-decoration:underline; text-underline-offset:3px;}
   .seat-call{ font-size:16px; font-weight:700; line-height:1.45;}
   .seat-role{ font-size:13px; font-weight:600; color:var(--muted); line-height:1.5;}
+  .seat-hook{
+    font-size:13px; font-weight:600; color:#6f645b; line-height:1.6; margin-top:3px;
+    padding:6px 10px; background:#fdf6ee; border-radius:9px; border-left:3px solid var(--accent);
+  }
   .seat.is-host .seat-call{ color:#8f4a12;}
   .ix-call{ font-size:16.5px; font-weight:700;}
   .ix-role{ font-size:13px; font-weight:600; color:var(--muted);}
@@ -144,6 +148,59 @@
   .host-badge{
     font-size:12.5px; font-weight:800; color:#fff; background:#8f4a12;
     padding:3px 9px; border-radius:999px; white-space:nowrap; flex-shrink:0;
+  }
+
+  /* ===== 追従バー（検索＋目次） ===== */
+  .topbar{
+    position:sticky; top:0; z-index:30; margin:0 -16px 18px; padding:10px 16px 11px;
+    background:rgba(255,250,244,.94); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line); display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  .topbar input{
+    flex:1; min-width:210px; font-family:inherit; font-size:16px; padding:11px 15px;
+    border:2px solid var(--line); border-radius:14px; background:#fff; color:var(--ink);
+  }
+  .topbar input:focus{ outline:none; border-color:#f0a8c0;}
+  .jump{ display:flex; gap:7px; flex-wrap:wrap;}
+  .jump a{
+    font-size:13.5px; font-weight:800; color:#6f645b; text-decoration:none;
+    background:#fff; border:1px solid var(--line); border-radius:999px; padding:9px 14px; white-space:nowrap;
+  }
+  .jump a:hover{ color:#b8446f; border-color:#f0c4d5;}
+  h2.round, .index-wrap{ scroll-margin-top:112px;}
+
+  /* ===== あなたの席 ===== */
+  .myseat{
+    background:linear-gradient(135deg,#fff4f8 0%,#fff8ee 100%);
+    border:2px solid #f3cddc; border-radius:20px; padding:16px 18px; margin-bottom:22px;
+    box-shadow:var(--shadow); display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .ms-ico{ flex-shrink:0; width:52px; height:52px; border-radius:50%;
+    background:#f2ece5 center/cover no-repeat; border:2px solid #fff; box-shadow:0 2px 6px rgba(90,70,60,.18);}
+  .ms-body{ flex:1; min-width:160px;}
+  .ms-label{ font-size:12.5px; font-weight:800; color:#b8446f; letter-spacing:.08em;}
+  .ms-name{ font-size:18px; font-weight:800; line-height:1.4; margin-top:1px;}
+  .ms-seats{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:7px;}
+  .ms-seats a{
+    font-size:15px; font-weight:800; color:#fff; background:#b8446f; text-decoration:none;
+    border-radius:999px; padding:7px 15px;
+  }
+  .ms-seats a.late{ background:#2f6ea3;}
+  .ms-seats span{ color:var(--muted); font-weight:700;}
+  .ms-actions{ display:flex; gap:8px; flex-wrap:wrap;}
+  .ms-btn{
+    font-family:inherit; font-size:13.5px; font-weight:800; cursor:pointer;
+    border:1px solid var(--line); background:#fff; color:#6f645b; border-radius:999px; padding:9px 15px;
+  }
+  .ms-btn.primary{ background:#487a37; color:#fff; border-color:#487a37;}
+  .ms-miss{ font-size:15px; font-weight:700; color:var(--muted);}
+
+  /* ===== いま進行中 ===== */
+  .sc-now{ display:none;}
+  .sc-row.now{ border-color:#f3cddc; box-shadow:0 0 0 3px #ffe6ef, var(--shadow); background:#fffdf8;}
+  .sc-row.now .sc-now{
+    display:block; align-self:flex-start; font-size:12.5px; font-weight:800; color:#fff;
+    background:#b8446f; border-radius:999px; padding:5px 12px; white-space:nowrap;
   }
 
   .schedule{ list-style:none; display:flex; flex-direction:column; gap:10px;}
@@ -195,6 +252,12 @@
   @media (max-width:520px){
     body{ padding:16px 12px 56px;}
     .grid{ grid-template-columns:1fr;}
+    .topbar{ margin:0 -12px 16px; padding:9px 12px 10px;}
+    .topbar input{ min-width:100%; font-size:16px;}
+    .jump{ width:100%;}
+    .jump a{ flex:1; text-align:center; padding:9px 6px; font-size:13px;}
+    h2.round, .index-wrap{ scroll-margin-top:130px;}
+    .ms-ico{ width:46px; height:46px;}
     .sc-row{ gap:12px; padding:13px 15px;}
     .sc-time{ width:60px;}
     .sc-time b{ font-size:17px;}
@@ -221,64 +284,69 @@
     <div class="stat"><span><b>29</b>名</span><span><b>7</b>卓</span><span>前半・後半で<b>席替え</b></span></div>
   </div>
 
+  <div class="topbar" id="topbar">
+    <input type="text" id="finder" placeholder="🔎 お名前で自分の席をさがす" autocomplete="off">
+    <nav class="jump">
+      <a href="#flow">🕒 流れ</a>
+      <a href="#round1">🌸 前半</a>
+      <a href="#round2">☁️ 後半</a>
+      <a href="#roster">📋 名簿</a>
+    </nav>
+  </div>
+
+  <div class="myseat" id="myseat" hidden></div>
+
   <div class="lead">
     はじめまして同士でも話しやすいように、<b>4〜5人ずつの卓</b>に分けました。
     前半と後半で席が変わるので、<b>1日で8人前後の方とお話しできます</b>。
     主催の2人（おけもん・みずの）は別々の卓に入って、どの卓にも困りごとを拾いに行ける形にしています。
-    <div class="finder">
-      <input type="text" id="finder" placeholder="🔎 自分のお名前を入れると、席が出ます" autocomplete="off">
-    </div>
-    <div class="finder-out" id="finderOut">名前の一部でOK（ひらがなでも探せます）</div>
-    <div class="tap-note">👆 席表のお名前をタップすると、その方のリベシティのプロフィールが開きます</div>
+    <div class="tap-note">👆 お名前をタップすると、その方のリベシティのプロフィールが開きます</div>
   </div>
 
-  <h2 class="round"><span class="time">14:00〜16:00</span>きょうの流れ</h2>
+  <h2 class="round" id="flow"><span class="time">14:00〜16:00</span>きょうの流れ</h2>
   <div class="round-note">実際にお話しできるのは95分。「自己紹介10分＋トーク30分」を2セットにしています。</div>
   <ol class="schedule">
-<li class="sc-row sc-open"><div class="sc-time"><b>14:00</b><span>10分</span></div><div class="sc-body"><div class="sc-title">開会・主催あいさつ</div><p class="sc-note">きょうの流れと席表を画面に出します</p></div></li>
-<li class="sc-row sc-move"><div class="sc-time"><b>14:10</b><span>5分</span></div><div class="sc-body"><div class="sc-title">前半の席へ移動</div><p class="sc-note">A〜G卓の紙を目印に、自分の卓へ</p></div></li>
-<li class="sc-row sc-first"><div class="sc-time"><b>14:15</b><span>10分</span></div><div class="sc-body"><div class="sc-title">卓で自己紹介</div><p class="sc-note">1人2分：お名前／いまAIでやっていること／今日聞きたいこと</p></div></li>
-<li class="sc-row sc-first"><div class="sc-time"><b>14:25</b><span>30分</span></div><div class="sc-body"><div class="sc-title">卓トーク①　いま困ってること・やってみたいこと</div><p class="sc-note">うまくいかない所を出す時間。主催の2人が別々の卓にいるので、手が止まったら呼んでください</p></div></li>
-<li class="sc-row sc-move"><div class="sc-time"><b>14:55</b><span>5分</span></div><div class="sc-body"><div class="sc-title">席替えで移動</div><p class="sc-note">後半の席は同じ席表の下half。前半と同じ人にはなりません</p></div></li>
-<li class="sc-row sc-second"><div class="sc-time"><b>15:00</b><span>10分</span></div><div class="sc-body"><div class="sc-title">卓で自己紹介</div><p class="sc-note">顔ぶれが変わるので、もう一度1人2分ずつ</p></div></li>
-<li class="sc-row sc-second"><div class="sc-time"><b>15:10</b><span>30分</span></div><div class="sc-body"><div class="sc-title">卓トーク②　今日持ち帰る一歩</div><p class="sc-note">①で出た悩みを「帰ってやること1つ」に変える時間</p></div></li>
-<li class="sc-row sc-share"><div class="sc-time"><b>15:40</b><span>10分</span></div><div class="sc-body"><div class="sc-title">全体シェア</div><p class="sc-note">各卓から1分ずつ。自分がいなかった卓の話も持って帰れます</p></div></li>
-<li class="sc-row sc-share"><div class="sc-time"><b>15:50</b><span>10分</span></div><div class="sc-body"><div class="sc-title">集合写真・お知らせ・締め</div><p class="sc-note">稼げや祭り／ノウハウ図書館の告知もここで</p></div></li>
+<li class="sc-row sc-open" data-start="14:00" data-min="10"><div class="sc-time"><b>14:00</b><span>10分</span></div><div class="sc-body"><div class="sc-title">開会・主催あいさつ</div><p class="sc-note">きょうの流れと席表を画面に出します</p></div><div class="sc-now">▶ いま</div></li>
+<li class="sc-row sc-move" data-start="14:10" data-min="5"><div class="sc-time"><b>14:10</b><span>5分</span></div><div class="sc-body"><div class="sc-title">前半の席へ移動</div><p class="sc-note">A〜G卓の紙を目印に、自分の卓へ</p></div><div class="sc-now">▶ いま</div></li>
+<li class="sc-row sc-first" data-start="14:15" data-min="10"><div class="sc-time"><b>14:15</b><span>10分</span></div><div class="sc-body"><div class="sc-title">卓で自己紹介</div><p class="sc-note">1人2分：お名前／いまAIでやっていること／今日聞きたいこと</p></div><div class="sc-now">▶ いま</div></li>
+<li class="sc-row sc-first" data-start="14:25" data-min="30"><div class="sc-time"><b>14:25</b><span>30分</span></div><div class="sc-body"><div class="sc-title">卓トーク①　いま困ってること・やってみたいこと</div><p class="sc-note">うまくいかない所を出す時間。主催の2人が別々の卓にいるので、手が止まったら呼んでください</p></div><div class="sc-now">▶ いま</div></li>
+<li class="sc-row sc-move" data-start="14:55" data-min="5"><div class="sc-time"><b>14:55</b><span>5分</span></div><div class="sc-body"><div class="sc-title">席替えで移動</div><p class="sc-note">下の「後半の席」を見てね。前半と同じ卓だった人とは、ひとりも重なりません</p></div><div class="sc-now">▶ いま</div></li>
+<li class="sc-row sc-second" data-start="15:00" data-min="10"><div class="sc-time"><b>15:00</b><span>10分</span></div><div class="sc-body"><div class="sc-title">卓で自己紹介</div><p class="sc-note">顔ぶれが変わるので、もう一度1人2分ずつ</p></div><div class="sc-now">▶ いま</div></li>
+<li class="sc-row sc-second" data-start="15:10" data-min="30"><div class="sc-time"><b>15:10</b><span>30分</span></div><div class="sc-body"><div class="sc-title">卓トーク②　今日持ち帰る一歩</div><p class="sc-note">①で出た悩みを「帰ってやること1つ」に変える時間</p></div><div class="sc-now">▶ いま</div></li>
+<li class="sc-row sc-share" data-start="15:40" data-min="10"><div class="sc-time"><b>15:40</b><span>10分</span></div><div class="sc-body"><div class="sc-title">全体シェア</div><p class="sc-note">各卓から1分ずつ。自分がいなかった卓の話も持って帰れます</p></div><div class="sc-now">▶ いま</div></li>
+<li class="sc-row sc-share" data-start="15:50" data-min="10"><div class="sc-time"><b>15:50</b><span>10分</span></div><div class="sc-body"><div class="sc-title">集合写真・お知らせ・締め</div><p class="sc-note">稼げや祭り／ノウハウ図書館の告知もここで</p></div><div class="sc-now">▶ いま</div></li>
   </ol>
 
-  <h2 class="round"><span class="time">前半 14:15〜14:55</span>第1部の席</h2>
+  <h2 class="round" id="round1"><span class="time">前半 14:15〜14:55</span>第1部の席</h2>
   <div class="round-note">島ごとにA〜G卓の紙を置いておきます。着いたらまずここへ。<br>
     はじめの10分は自己紹介です——<b>お名前／いまAIでやっていること／今日聞きたいこと</b>を1人2分ずつ。</div>
   <div class="grid">
-<article class="table-card" style="--accent:#c8447a"><header class="tc-head"><span class="tc-emoji">🌸</span><span class="tc-name">A卓</span><span class="tc-count">5名</span></header><ul class="tc-list"><li class="seat is-host" data-name="みずの＠寄り添うAIxWebデザイナー"><a class="seat-link" href="https://libecity.com/user_profile/j8keMocSfhNfSYnCzwbF2dDxznf2" target="_blank" rel="noopener" title="みずの さんのリベシティのプロフィールを開く"><span class="seat-ico ic-j8keMocSfhNfSYnCzwbF2dDxznf2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">みずの</span><span class="seat-role">寄り添うAIxWebデザイナー</span></span></a><span class="host-badge">🎤 主催</span></li><li class="seat" data-name="むらさき🟣＠100%会社員・友達作り"><a class="seat-link" href="https://libecity.com/user_profile/EyKhAJqmCCPO7iudRw51dv1gokm2" target="_blank" rel="noopener" title="むらさき🟣 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-EyKhAJqmCCPO7iudRw51dv1gokm2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">むらさき🟣</span><span class="seat-role">100%会社員・友達作り</span></span></a></li><li class="seat" data-name="ジューン＠デザイン×AI活用サポート"><a class="seat-link" href="https://libecity.com/user_profile/3JrZxl2y8pNzhMLpX2xLB6bJgfo2" target="_blank" rel="noopener" title="ジューン さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3JrZxl2y8pNzhMLpX2xLB6bJgfo2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ジューン</span><span class="seat-role">デザイン×AI活用サポート</span></span></a></li><li class="seat" data-name="のぶきち@オンライン秘書✨旅するカメラ"><a class="seat-link" href="https://libecity.com/user_profile/nLb0h4PLteg3YXQAGgRhaApJDyv2" target="_blank" rel="noopener" title="のぶきち さんのリベシティのプロフィールを開く"><span class="seat-ico ic-nLb0h4PLteg3YXQAGgRhaApJDyv2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のぶきち</span><span class="seat-role">オンライン秘書✨旅するカメラ</span></span></a></li><li class="seat" data-name="こいと＠お店のデジタル係｜お菓子も焼く人"><a class="seat-link" href="https://libecity.com/user_profile/9rmxLR9IVhOc7Z1FKcLEMQ12bS83" target="_blank" rel="noopener" title="こいと さんのリベシティのプロフィールを開く"><span class="seat-ico ic-9rmxLR9IVhOc7Z1FKcLEMQ12bS83" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">こいと</span><span class="seat-role">お店のデジタル係｜お菓子も焼く人</span></span></a></li></ul></article>
-<article class="table-card" style="--accent:#b35c14"><header class="tc-head"><span class="tc-emoji">🍊</span><span class="tc-name">B卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="おにちゃん@AI×音楽配信"><a class="seat-link" href="https://libecity.com/user_profile/8mIylNZa3DfIs2Z09z1OPMCVVkk1" target="_blank" rel="noopener" title="おにちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-8mIylNZa3DfIs2Z09z1OPMCVVkk1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">おにちゃん</span><span class="seat-role">AI×音楽配信</span></span></a></li><li class="seat" data-name="Gon＠デザイン"><a class="seat-link" href="https://libecity.com/user_profile/71v5RUfOJrRXBl6FvUOv3tuGa3z1" target="_blank" rel="noopener" title="Gon さんのリベシティのプロフィールを開く"><span class="seat-ico ic-71v5RUfOJrRXBl6FvUOv3tuGa3z1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">Gon</span><span class="seat-role">デザイン</span></span></a></li><li class="seat" data-name="リケジョのはる"><a class="seat-link" href="https://libecity.com/user_profile/9TVJgHhGzRVcTPxO9IZr1FhaFR13" target="_blank" rel="noopener" title="リケジョのはる さんのリベシティのプロフィールを開く"><span class="seat-ico ic-9TVJgHhGzRVcTPxO9IZr1FhaFR13" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">リケジョのはる</span></span></a></li><li class="seat" data-name="あきら｜ホームページ制作・運用パートナー"><a class="seat-link" href="https://libecity.com/user_profile/qXonm8hz5UT03bgBZDSeXrAW5Sk2" target="_blank" rel="noopener" title="あきら さんのリベシティのプロフィールを開く"><span class="seat-ico ic-qXonm8hz5UT03bgBZDSeXrAW5Sk2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">あきら</span><span class="seat-role">ホームページ制作・運用パートナー</span></span></a></li></ul></article>
-<article class="table-card" style="--accent:#8f6a0f"><header class="tc-head"><span class="tc-emoji">⭐️</span><span class="tc-name">C卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="なつ@AI×業務改善"><a class="seat-link" href="https://libecity.com/user_profile/BMpXkcdvzFZn0fkGcwuovRLBX8D3" target="_blank" rel="noopener" title="なつ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-BMpXkcdvzFZn0fkGcwuovRLBX8D3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">なつ</span><span class="seat-role">AI×業務改善</span></span></a></li><li class="seat" data-name="小平ゆたか＠社労士×診断士✕ライター"><a class="seat-link" href="https://libecity.com/user_profile/GMjy694YSGXkXRcf0JupdBptP4L2" target="_blank" rel="noopener" title="小平ゆたか さんのリベシティのプロフィールを開く"><span class="seat-ico ic-GMjy694YSGXkXRcf0JupdBptP4L2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">小平ゆたか</span><span class="seat-role">社労士×診断士✕ライター</span></span></a></li><li class="seat" data-name="あんにん"><a class="seat-link" href="https://libecity.com/user_profile/gpAZDsEMlhMfeSFrVZtUZhjDlU83" target="_blank" rel="noopener" title="あんにん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-gpAZDsEMlhMfeSFrVZtUZhjDlU83" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">あんにん</span></span></a></li><li class="seat" data-name="のんちゃん@整体師&amp;サロン向けHP制作"><a class="seat-link" href="https://libecity.com/user_profile/LbZd7IKlX5TmsI7de7K5RbWvdOG3" target="_blank" rel="noopener" title="のんちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-LbZd7IKlX5TmsI7de7K5RbWvdOG3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のんちゃん</span><span class="seat-role">整体師&amp;サロン向けHP制作</span></span></a></li></ul></article>
-<article class="table-card" style="--accent:#137a70"><header class="tc-head"><span class="tc-emoji">🌊</span><span class="tc-name">D卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="ルーク＠心のセルフケア"><a class="seat-link" href="https://libecity.com/user_profile/ZIsFH3zdsoZiM7TTxDo9CLAYRtZ2" target="_blank" rel="noopener" title="ルーク さんのリベシティのプロフィールを開く"><span class="seat-ico ic-ZIsFH3zdsoZiM7TTxDo9CLAYRtZ2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ルーク</span><span class="seat-role">心のセルフケア</span></span></a></li><li class="seat" data-name="なおたっと"><a class="seat-link" href="https://libecity.com/user_profile/b9mQEv7lnzXIz7fhMd5G71F11YF2" target="_blank" rel="noopener" title="なおたっと さんのリベシティのプロフィールを開く"><span class="seat-ico ic-b9mQEv7lnzXIz7fhMd5G71F11YF2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">なおたっと</span></span></a></li><li class="seat" data-name="sakko@社労士×介護福祉士"><a class="seat-link" href="https://libecity.com/user_profile/3H8cvTcRNbRvRmMesb8kEXa8gRN2" target="_blank" rel="noopener" title="sakko さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3H8cvTcRNbRvRmMesb8kEXa8gRN2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">sakko</span><span class="seat-role">社労士×介護福祉士</span></span></a></li><li class="seat" data-name="まや@副業勉強中"><a class="seat-link" href="https://libecity.com/user_profile/T90HRvSvPSdA4Fb7D1MvR1fsxid2" target="_blank" rel="noopener" title="まや さんのリベシティのプロフィールを開く"><span class="seat-ico ic-T90HRvSvPSdA4Fb7D1MvR1fsxid2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">まや</span><span class="seat-role">副業勉強中</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#c8447a"><header class="tc-head"><span class="tc-emoji">🌸</span><span class="tc-name">A卓</span><span class="tc-count">5名</span></header><ul class="tc-list"><li class="seat is-host" data-name="みずの＠寄り添うAIxWebデザイナー"><a class="seat-link" href="https://libecity.com/user_profile/j8keMocSfhNfSYnCzwbF2dDxznf2" target="_blank" rel="noopener" title="みずの さんのリベシティのプロフィールを開く"><span class="seat-ico ic-j8keMocSfhNfSYnCzwbF2dDxznf2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">みずの</span><span class="seat-role">寄り添うAIxWebデザイナー</span><span class="seat-hook">ノウハウ図書館に記事100本以上。AI初心者サポートチャットの運営者</span></span></a><span class="host-badge">🎤 主催</span></li><li class="seat" data-name="むらさき🟣＠100%会社員・友達作り"><a class="seat-link" href="https://libecity.com/user_profile/EyKhAJqmCCPO7iudRw51dv1gokm2" target="_blank" rel="noopener" title="むらさき🟣 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-EyKhAJqmCCPO7iudRw51dv1gokm2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">むらさき🟣</span><span class="seat-role">100%会社員・友達作り</span></span></a></li><li class="seat" data-name="ジューン＠デザイン×AI活用サポート"><a class="seat-link" href="https://libecity.com/user_profile/3JrZxl2y8pNzhMLpX2xLB6bJgfo2" target="_blank" rel="noopener" title="ジューン さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3JrZxl2y8pNzhMLpX2xLB6bJgfo2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ジューン</span><span class="seat-role">デザイン×AI活用サポート</span></span></a></li><li class="seat" data-name="のぶきち@オンライン秘書✨旅するカメラ"><a class="seat-link" href="https://libecity.com/user_profile/nLb0h4PLteg3YXQAGgRhaApJDyv2" target="_blank" rel="noopener" title="のぶきち さんのリベシティのプロフィールを開く"><span class="seat-ico ic-nLb0h4PLteg3YXQAGgRhaApJDyv2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のぶきち</span><span class="seat-role">オンライン秘書✨旅するカメラ</span></span></a></li><li class="seat" data-name="こいと＠お店のデジタル係｜お菓子も焼く人"><a class="seat-link" href="https://libecity.com/user_profile/9rmxLR9IVhOc7Z1FKcLEMQ12bS83" target="_blank" rel="noopener" title="こいと さんのリベシティのプロフィールを開く"><span class="seat-ico ic-9rmxLR9IVhOc7Z1FKcLEMQ12bS83" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">こいと</span><span class="seat-role">お店のデジタル係｜お菓子も焼く人</span><span class="seat-hook">焼菓子を作るのも食べるのも好き。いつかリベシティ市場に出品したい</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#b35c14"><header class="tc-head"><span class="tc-emoji">🍊</span><span class="tc-name">B卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="おにちゃん@AI×音楽配信"><a class="seat-link" href="https://libecity.com/user_profile/8mIylNZa3DfIs2Z09z1OPMCVVkk1" target="_blank" rel="noopener" title="おにちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-8mIylNZa3DfIs2Z09z1OPMCVVkk1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">おにちゃん</span><span class="seat-role">AI×音楽配信</span><span class="seat-hook">AI×音楽のYouTubeを2か月で収益化。名前の由来は「行動力の鬼」</span></span></a></li><li class="seat" data-name="Gon＠デザイン"><a class="seat-link" href="https://libecity.com/user_profile/71v5RUfOJrRXBl6FvUOv3tuGa3z1" target="_blank" rel="noopener" title="Gon さんのリベシティのプロフィールを開く"><span class="seat-ico ic-71v5RUfOJrRXBl6FvUOv3tuGa3z1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">Gon</span><span class="seat-role">デザイン</span><span class="seat-hook">愛犬シーズーがタロットを占うサイトと、飲食店向けQR注文アプリをApp Storeに公開</span></span></a></li><li class="seat" data-name="リケジョのはる"><a class="seat-link" href="https://libecity.com/user_profile/9TVJgHhGzRVcTPxO9IZr1FhaFR13" target="_blank" rel="noopener" title="リケジョのはる さんのリベシティのプロフィールを開く"><span class="seat-ico ic-9TVJgHhGzRVcTPxO9IZr1FhaFR13" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">リケジョのはる</span></span></a></li><li class="seat" data-name="あきら｜ホームページ制作・運用パートナー"><a class="seat-link" href="https://libecity.com/user_profile/qXonm8hz5UT03bgBZDSeXrAW5Sk2" target="_blank" rel="noopener" title="あきら さんのリベシティのプロフィールを開く"><span class="seat-ico ic-qXonm8hz5UT03bgBZDSeXrAW5Sk2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">あきら</span><span class="seat-role">ホームページ制作・運用パートナー</span><span class="seat-hook">41歳でWeb制作を学び直して独立。事業の強みを言葉にするのが仕事</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#8f6a0f"><header class="tc-head"><span class="tc-emoji">⭐️</span><span class="tc-name">C卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="なつ@AI×業務改善"><a class="seat-link" href="https://libecity.com/user_profile/BMpXkcdvzFZn0fkGcwuovRLBX8D3" target="_blank" rel="noopener" title="なつ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-BMpXkcdvzFZn0fkGcwuovRLBX8D3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">なつ</span><span class="seat-role">AI×業務改善</span></span></a></li><li class="seat" data-name="小平ゆたか＠社労士×診断士✕ライター"><a class="seat-link" href="https://libecity.com/user_profile/GMjy694YSGXkXRcf0JupdBptP4L2" target="_blank" rel="noopener" title="小平ゆたか さんのリベシティのプロフィールを開く"><span class="seat-ico ic-GMjy694YSGXkXRcf0JupdBptP4L2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">小平ゆたか</span><span class="seat-role">社労士×診断士✕ライター</span></span></a></li><li class="seat" data-name="あんにん"><a class="seat-link" href="https://libecity.com/user_profile/gpAZDsEMlhMfeSFrVZtUZhjDlU83" target="_blank" rel="noopener" title="あんにん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-gpAZDsEMlhMfeSFrVZtUZhjDlU83" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">あんにん</span><span class="seat-hook">秘書業務からマーケ・ディレクションまで。人と関わるのに勇気がいるタイプだそう</span></span></a></li><li class="seat" data-name="のんちゃん@整体師&amp;サロン向けHP制作"><a class="seat-link" href="https://libecity.com/user_profile/LbZd7IKlX5TmsI7de7K5RbWvdOG3" target="_blank" rel="noopener" title="のんちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-LbZd7IKlX5TmsI7de7K5RbWvdOG3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のんちゃん</span><span class="seat-role">整体師&amp;サロン向けHP制作</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#137a70"><header class="tc-head"><span class="tc-emoji">🌊</span><span class="tc-name">D卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="ルーク＠心のセルフケア"><a class="seat-link" href="https://libecity.com/user_profile/ZIsFH3zdsoZiM7TTxDo9CLAYRtZ2" target="_blank" rel="noopener" title="ルーク さんのリベシティのプロフィールを開く"><span class="seat-ico ic-ZIsFH3zdsoZiM7TTxDo9CLAYRtZ2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ルーク</span><span class="seat-role">心のセルフケア</span></span></a></li><li class="seat" data-name="なおたっと"><a class="seat-link" href="https://libecity.com/user_profile/b9mQEv7lnzXIz7fhMd5G71F11YF2" target="_blank" rel="noopener" title="なおたっと さんのリベシティのプロフィールを開く"><span class="seat-ico ic-b9mQEv7lnzXIz7fhMd5G71F11YF2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">なおたっと</span></span></a></li><li class="seat" data-name="sakko@社労士×介護福祉士"><a class="seat-link" href="https://libecity.com/user_profile/3H8cvTcRNbRvRmMesb8kEXa8gRN2" target="_blank" rel="noopener" title="sakko さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3H8cvTcRNbRvRmMesb8kEXa8gRN2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">sakko</span><span class="seat-role">社労士×介護福祉士</span><span class="seat-hook">4回目の受験で社労士に合格。介護福祉士も取って、いま開業準備中</span></span></a></li><li class="seat" data-name="まや@副業勉強中"><a class="seat-link" href="https://libecity.com/user_profile/T90HRvSvPSdA4Fb7D1MvR1fsxid2" target="_blank" rel="noopener" title="まや さんのリベシティのプロフィールを開く"><span class="seat-ico ic-T90HRvSvPSdA4Fb7D1MvR1fsxid2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">まや</span><span class="seat-role">副業勉強中</span></span></a></li></ul></article>
 <article class="table-card" style="--accent:#2f6ea3"><header class="tc-head"><span class="tc-emoji">☁️</span><span class="tc-name">E卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="青い鳥@Webデザイン・HP制作"><a class="seat-link" href="https://libecity.com/user_profile/opjcHUmnJsPj5GnXmdUmvG77jEs1" target="_blank" rel="noopener" title="青い鳥 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-opjcHUmnJsPj5GnXmdUmvG77jEs1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">青い鳥</span><span class="seat-role">Webデザイン・HP制作</span></span></a></li><li class="seat" data-name="ひさぽん＠介護と腸活ブログ"><a class="seat-link" href="https://libecity.com/user_profile/0ISKXUeoD7gsZrVFrC7DAwoBtgM2" target="_blank" rel="noopener" title="ひさぽん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-0ISKXUeoD7gsZrVFrC7DAwoBtgM2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ひさぽん</span><span class="seat-role">介護と腸活ブログ</span></span></a></li><li class="seat" data-name="たつ@PR×営業支援"><a class="seat-link" href="https://libecity.com/user_profile/xMYhyDweQVT1M5RWflTPLBGC2YX2" target="_blank" rel="noopener" title="たつ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-xMYhyDweQVT1M5RWflTPLBGC2YX2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">たつ</span><span class="seat-role">PR×営業支援</span></span></a></li><li class="seat" data-name="ミヤ"><a class="seat-link" href="https://libecity.com/user_profile/1zxKb5jBInVboLY91hsm3e5Q1P93" target="_blank" rel="noopener" title="ミヤ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-1zxKb5jBInVboLY91hsm3e5Q1P93" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ミヤ</span></span></a></li></ul></article>
-<article class="table-card" style="--accent:#487a37"><header class="tc-head"><span class="tc-emoji">🍀</span><span class="tc-name">F卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat is-host" data-name="おけもん🦫尻チャレあおはるっぱー☘️"><a class="seat-link" href="https://libecity.com/user_profile/bsiQxYzfrSXq4NNlOl7IGn35YO13" target="_blank" rel="noopener" title="おけもん🦫尻チャレあおはるっぱー☘️ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-bsiQxYzfrSXq4NNlOl7IGn35YO13" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">おけもん🦫尻チャレあおはるっぱー☘️</span></span></a><span class="host-badge">🎤 主催</span></li><li class="seat" data-name="こじかママ＠ノウハウ記事📝投稿中"><a class="seat-link" href="https://libecity.com/user_profile/TRCSbURycta66XVsEvuk3DO8jUi2" target="_blank" rel="noopener" title="こじかママ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-TRCSbURycta66XVsEvuk3DO8jUi2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">こじかママ</span><span class="seat-role">ノウハウ記事📝投稿中</span></span></a></li><li class="seat" data-name="アル📘公務員→独立｜自治体・AI"><a class="seat-link" href="https://libecity.com/user_profile/rzk3uRmKj4alLqiDpsEdbUtZNO43" target="_blank" rel="noopener" title="アル📘公務員→独立 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-rzk3uRmKj4alLqiDpsEdbUtZNO43" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">アル📘公務員→独立</span><span class="seat-role">自治体・AI</span></span></a></li><li class="seat" data-name="のりべ🌟習慣のりづけ伴走秘書"><a class="seat-link" href="https://libecity.com/user_profile/jp4GAKiZ8qP70V1W30negpEQRt22" target="_blank" rel="noopener" title="のりべ🌟習慣のりづけ伴走秘書 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-jp4GAKiZ8qP70V1W30negpEQRt22" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のりべ🌟習慣のりづけ伴走秘書</span></span></a></li></ul></article>
-<article class="table-card" style="--accent:#a84a4a"><header class="tc-head"><span class="tc-emoji">🍑</span><span class="tc-name">G卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="モア＠AI画像アーティスト"><a class="seat-link" href="https://libecity.com/user_profile/3trH7b0M4QOLvOyYA5A2zPGNmOA3" target="_blank" rel="noopener" title="モア さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3trH7b0M4QOLvOyYA5A2zPGNmOA3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">モア</span><span class="seat-role">AI画像アーティスト</span></span></a></li><li class="seat" data-name="yuki🍩高配当株〻楽天ROOM"><a class="seat-link" href="https://libecity.com/user_profile/0CzjUys5SGPvoq8riNo2utZRGeZ2" target="_blank" rel="noopener" title="yuki🍩高配当株〻楽天ROOM さんのリベシティのプロフィールを開く"><span class="seat-ico ic-0CzjUys5SGPvoq8riNo2utZRGeZ2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">yuki🍩高配当株〻楽天ROOM</span></span></a></li><li class="seat" data-name="ひとやすみちゃん"><a class="seat-link" href="https://libecity.com/user_profile/ajfYuu3hkXcbSkMb1J9VFNP1Oc92" target="_blank" rel="noopener" title="ひとやすみちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-ajfYuu3hkXcbSkMb1J9VFNP1Oc92" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ひとやすみちゃん</span></span></a></li><li class="seat" data-name="チョコつも🌴 肌を磨き今は部屋を磨く"><a class="seat-link" href="https://libecity.com/user_profile/YcsemVdDnDeFGeBgO4GygusJYOG2" target="_blank" rel="noopener" title="チョコつも🌴 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-YcsemVdDnDeFGeBgO4GygusJYOG2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">チョコつも🌴</span><span class="seat-role">肌を磨き今は部屋を磨く</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#487a37"><header class="tc-head"><span class="tc-emoji">🍀</span><span class="tc-name">F卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat is-host" data-name="おけもん🦫尻チャレあおはるっぱー☘️"><a class="seat-link" href="https://libecity.com/user_profile/bsiQxYzfrSXq4NNlOl7IGn35YO13" target="_blank" rel="noopener" title="おけもん🦫尻チャレあおはるっぱー☘️ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-bsiQxYzfrSXq4NNlOl7IGn35YO13" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">おけもん🦫尻チャレあおはるっぱー☘️</span><span class="seat-hook">青春18きっぷ旅のまっただ中。AI社員11人と毎晩かんぱいしてます</span></span></a><span class="host-badge">🎤 主催</span></li><li class="seat" data-name="こじかママ＠ノウハウ記事📝投稿中"><a class="seat-link" href="https://libecity.com/user_profile/TRCSbURycta66XVsEvuk3DO8jUi2" target="_blank" rel="noopener" title="こじかママ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-TRCSbURycta66XVsEvuk3DO8jUi2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">こじかママ</span><span class="seat-role">ノウハウ記事📝投稿中</span><span class="seat-hook">Claude Codeで自己紹介ページを自作。oviceのオフ会にほぼ毎日いる</span></span></a></li><li class="seat" data-name="アル📘公務員→独立｜自治体・AI"><a class="seat-link" href="https://libecity.com/user_profile/rzk3uRmKj4alLqiDpsEdbUtZNO43" target="_blank" rel="noopener" title="アル📘公務員→独立 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-rzk3uRmKj4alLqiDpsEdbUtZNO43" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">アル📘公務員→独立</span><span class="seat-role">自治体・AI</span></span></a></li><li class="seat" data-name="のりべ🌟習慣のりづけ伴走秘書"><a class="seat-link" href="https://libecity.com/user_profile/jp4GAKiZ8qP70V1W30negpEQRt22" target="_blank" rel="noopener" title="のりべ🌟習慣のりづけ伴走秘書 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-jp4GAKiZ8qP70V1W30negpEQRt22" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のりべ🌟習慣のりづけ伴走秘書</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#a84a4a"><header class="tc-head"><span class="tc-emoji">🍑</span><span class="tc-name">G卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="モア＠AI画像アーティスト"><a class="seat-link" href="https://libecity.com/user_profile/3trH7b0M4QOLvOyYA5A2zPGNmOA3" target="_blank" rel="noopener" title="モア さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3trH7b0M4QOLvOyYA5A2zPGNmOA3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">モア</span><span class="seat-role">AI画像アーティスト</span></span></a></li><li class="seat" data-name="yuki🍩高配当株〻楽天ROOM"><a class="seat-link" href="https://libecity.com/user_profile/0CzjUys5SGPvoq8riNo2utZRGeZ2" target="_blank" rel="noopener" title="yuki🍩高配当株〻楽天ROOM さんのリベシティのプロフィールを開く"><span class="seat-ico ic-0CzjUys5SGPvoq8riNo2utZRGeZ2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">yuki🍩高配当株〻楽天ROOM</span><span class="seat-hook">合言葉は「今日が一番若い日」。医療職をしながら高配当株と楽天ROOM</span></span></a></li><li class="seat" data-name="ひとやすみちゃん"><a class="seat-link" href="https://libecity.com/user_profile/ajfYuu3hkXcbSkMb1J9VFNP1Oc92" target="_blank" rel="noopener" title="ひとやすみちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-ajfYuu3hkXcbSkMb1J9VFNP1Oc92" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ひとやすみちゃん</span></span></a></li><li class="seat" data-name="チョコつも🌴 肌を磨き今は部屋を磨く"><a class="seat-link" href="https://libecity.com/user_profile/YcsemVdDnDeFGeBgO4GygusJYOG2" target="_blank" rel="noopener" title="チョコつも🌴 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-YcsemVdDnDeFGeBgO4GygusJYOG2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">チョコつも🌴</span><span class="seat-role">肌を磨き今は部屋を磨く</span></span></a></li></ul></article>
   </div>
 
-  <h2 class="round"><span class="time late">後半 15:00〜15:40</span>第2部の席（席替え）</h2>
+  <h2 class="round" id="round2"><span class="time late">後半 15:00〜15:40</span>第2部の席（席替え）</h2>
   <div class="round-note">前半で同じ卓だった人とは、ひとりも重ならないように組んでいます。<br>
     顔ぶれが変わるので、ここでももう一度<b>1人2分の自己紹介</b>から始めましょう。</div>
   <div class="grid">
 <article class="table-card" style="--accent:#c8447a"><header class="tc-head"><span class="tc-emoji">🌸</span><span class="tc-name">A卓</span><span class="tc-count">5名</span></header><ul class="tc-list"><li class="seat" data-name="アル📘公務員→独立｜自治体・AI"><a class="seat-link" href="https://libecity.com/user_profile/rzk3uRmKj4alLqiDpsEdbUtZNO43" target="_blank" rel="noopener" title="アル📘公務員→独立 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-rzk3uRmKj4alLqiDpsEdbUtZNO43" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">アル📘公務員→独立</span><span class="seat-role">自治体・AI</span></span></a></li><li class="seat" data-name="ひさぽん＠介護と腸活ブログ"><a class="seat-link" href="https://libecity.com/user_profile/0ISKXUeoD7gsZrVFrC7DAwoBtgM2" target="_blank" rel="noopener" title="ひさぽん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-0ISKXUeoD7gsZrVFrC7DAwoBtgM2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ひさぽん</span><span class="seat-role">介護と腸活ブログ</span></span></a></li><li class="seat" data-name="ジューン＠デザイン×AI活用サポート"><a class="seat-link" href="https://libecity.com/user_profile/3JrZxl2y8pNzhMLpX2xLB6bJgfo2" target="_blank" rel="noopener" title="ジューン さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3JrZxl2y8pNzhMLpX2xLB6bJgfo2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ジューン</span><span class="seat-role">デザイン×AI活用サポート</span></span></a></li><li class="seat" data-name="ひとやすみちゃん"><a class="seat-link" href="https://libecity.com/user_profile/ajfYuu3hkXcbSkMb1J9VFNP1Oc92" target="_blank" rel="noopener" title="ひとやすみちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-ajfYuu3hkXcbSkMb1J9VFNP1Oc92" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ひとやすみちゃん</span></span></a></li><li class="seat" data-name="まや@副業勉強中"><a class="seat-link" href="https://libecity.com/user_profile/T90HRvSvPSdA4Fb7D1MvR1fsxid2" target="_blank" rel="noopener" title="まや さんのリベシティのプロフィールを開く"><span class="seat-ico ic-T90HRvSvPSdA4Fb7D1MvR1fsxid2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">まや</span><span class="seat-role">副業勉強中</span></span></a></li></ul></article>
-<article class="table-card" style="--accent:#b35c14"><header class="tc-head"><span class="tc-emoji">🍊</span><span class="tc-name">B卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="モア＠AI画像アーティスト"><a class="seat-link" href="https://libecity.com/user_profile/3trH7b0M4QOLvOyYA5A2zPGNmOA3" target="_blank" rel="noopener" title="モア さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3trH7b0M4QOLvOyYA5A2zPGNmOA3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">モア</span><span class="seat-role">AI画像アーティスト</span></span></a></li><li class="seat" data-name="Gon＠デザイン"><a class="seat-link" href="https://libecity.com/user_profile/71v5RUfOJrRXBl6FvUOv3tuGa3z1" target="_blank" rel="noopener" title="Gon さんのリベシティのプロフィールを開く"><span class="seat-ico ic-71v5RUfOJrRXBl6FvUOv3tuGa3z1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">Gon</span><span class="seat-role">デザイン</span></span></a></li><li class="seat" data-name="むらさき🟣＠100%会社員・友達作り"><a class="seat-link" href="https://libecity.com/user_profile/EyKhAJqmCCPO7iudRw51dv1gokm2" target="_blank" rel="noopener" title="むらさき🟣 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-EyKhAJqmCCPO7iudRw51dv1gokm2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">むらさき🟣</span><span class="seat-role">100%会社員・友達作り</span></span></a></li><li class="seat" data-name="のんちゃん@整体師&amp;サロン向けHP制作"><a class="seat-link" href="https://libecity.com/user_profile/LbZd7IKlX5TmsI7de7K5RbWvdOG3" target="_blank" rel="noopener" title="のんちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-LbZd7IKlX5TmsI7de7K5RbWvdOG3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のんちゃん</span><span class="seat-role">整体師&amp;サロン向けHP制作</span></span></a></li></ul></article>
-<article class="table-card" style="--accent:#8f6a0f"><header class="tc-head"><span class="tc-emoji">⭐️</span><span class="tc-name">C卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat is-host" data-name="みずの＠寄り添うAIxWebデザイナー"><a class="seat-link" href="https://libecity.com/user_profile/j8keMocSfhNfSYnCzwbF2dDxznf2" target="_blank" rel="noopener" title="みずの さんのリベシティのプロフィールを開く"><span class="seat-ico ic-j8keMocSfhNfSYnCzwbF2dDxznf2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">みずの</span><span class="seat-role">寄り添うAIxWebデザイナー</span></span></a><span class="host-badge">🎤 主催</span></li><li class="seat" data-name="あんにん"><a class="seat-link" href="https://libecity.com/user_profile/gpAZDsEMlhMfeSFrVZtUZhjDlU83" target="_blank" rel="noopener" title="あんにん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-gpAZDsEMlhMfeSFrVZtUZhjDlU83" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">あんにん</span></span></a></li><li class="seat" data-name="リケジョのはる"><a class="seat-link" href="https://libecity.com/user_profile/9TVJgHhGzRVcTPxO9IZr1FhaFR13" target="_blank" rel="noopener" title="リケジョのはる さんのリベシティのプロフィールを開く"><span class="seat-ico ic-9TVJgHhGzRVcTPxO9IZr1FhaFR13" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">リケジョのはる</span></span></a></li><li class="seat" data-name="青い鳥@Webデザイン・HP制作"><a class="seat-link" href="https://libecity.com/user_profile/opjcHUmnJsPj5GnXmdUmvG77jEs1" target="_blank" rel="noopener" title="青い鳥 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-opjcHUmnJsPj5GnXmdUmvG77jEs1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">青い鳥</span><span class="seat-role">Webデザイン・HP制作</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#b35c14"><header class="tc-head"><span class="tc-emoji">🍊</span><span class="tc-name">B卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="モア＠AI画像アーティスト"><a class="seat-link" href="https://libecity.com/user_profile/3trH7b0M4QOLvOyYA5A2zPGNmOA3" target="_blank" rel="noopener" title="モア さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3trH7b0M4QOLvOyYA5A2zPGNmOA3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">モア</span><span class="seat-role">AI画像アーティスト</span></span></a></li><li class="seat" data-name="Gon＠デザイン"><a class="seat-link" href="https://libecity.com/user_profile/71v5RUfOJrRXBl6FvUOv3tuGa3z1" target="_blank" rel="noopener" title="Gon さんのリベシティのプロフィールを開く"><span class="seat-ico ic-71v5RUfOJrRXBl6FvUOv3tuGa3z1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">Gon</span><span class="seat-role">デザイン</span><span class="seat-hook">愛犬シーズーがタロットを占うサイトと、飲食店向けQR注文アプリをApp Storeに公開</span></span></a></li><li class="seat" data-name="むらさき🟣＠100%会社員・友達作り"><a class="seat-link" href="https://libecity.com/user_profile/EyKhAJqmCCPO7iudRw51dv1gokm2" target="_blank" rel="noopener" title="むらさき🟣 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-EyKhAJqmCCPO7iudRw51dv1gokm2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">むらさき🟣</span><span class="seat-role">100%会社員・友達作り</span></span></a></li><li class="seat" data-name="のんちゃん@整体師&amp;サロン向けHP制作"><a class="seat-link" href="https://libecity.com/user_profile/LbZd7IKlX5TmsI7de7K5RbWvdOG3" target="_blank" rel="noopener" title="のんちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-LbZd7IKlX5TmsI7de7K5RbWvdOG3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のんちゃん</span><span class="seat-role">整体師&amp;サロン向けHP制作</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#8f6a0f"><header class="tc-head"><span class="tc-emoji">⭐️</span><span class="tc-name">C卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat is-host" data-name="みずの＠寄り添うAIxWebデザイナー"><a class="seat-link" href="https://libecity.com/user_profile/j8keMocSfhNfSYnCzwbF2dDxznf2" target="_blank" rel="noopener" title="みずの さんのリベシティのプロフィールを開く"><span class="seat-ico ic-j8keMocSfhNfSYnCzwbF2dDxznf2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">みずの</span><span class="seat-role">寄り添うAIxWebデザイナー</span><span class="seat-hook">ノウハウ図書館に記事100本以上。AI初心者サポートチャットの運営者</span></span></a><span class="host-badge">🎤 主催</span></li><li class="seat" data-name="あんにん"><a class="seat-link" href="https://libecity.com/user_profile/gpAZDsEMlhMfeSFrVZtUZhjDlU83" target="_blank" rel="noopener" title="あんにん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-gpAZDsEMlhMfeSFrVZtUZhjDlU83" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">あんにん</span><span class="seat-hook">秘書業務からマーケ・ディレクションまで。人と関わるのに勇気がいるタイプだそう</span></span></a></li><li class="seat" data-name="リケジョのはる"><a class="seat-link" href="https://libecity.com/user_profile/9TVJgHhGzRVcTPxO9IZr1FhaFR13" target="_blank" rel="noopener" title="リケジョのはる さんのリベシティのプロフィールを開く"><span class="seat-ico ic-9TVJgHhGzRVcTPxO9IZr1FhaFR13" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">リケジョのはる</span></span></a></li><li class="seat" data-name="青い鳥@Webデザイン・HP制作"><a class="seat-link" href="https://libecity.com/user_profile/opjcHUmnJsPj5GnXmdUmvG77jEs1" target="_blank" rel="noopener" title="青い鳥 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-opjcHUmnJsPj5GnXmdUmvG77jEs1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">青い鳥</span><span class="seat-role">Webデザイン・HP制作</span></span></a></li></ul></article>
 <article class="table-card" style="--accent:#137a70"><header class="tc-head"><span class="tc-emoji">🌊</span><span class="tc-name">D卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="小平ゆたか＠社労士×診断士✕ライター"><a class="seat-link" href="https://libecity.com/user_profile/GMjy694YSGXkXRcf0JupdBptP4L2" target="_blank" rel="noopener" title="小平ゆたか さんのリベシティのプロフィールを開く"><span class="seat-ico ic-GMjy694YSGXkXRcf0JupdBptP4L2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">小平ゆたか</span><span class="seat-role">社労士×診断士✕ライター</span></span></a></li><li class="seat" data-name="のりべ🌟習慣のりづけ伴走秘書"><a class="seat-link" href="https://libecity.com/user_profile/jp4GAKiZ8qP70V1W30negpEQRt22" target="_blank" rel="noopener" title="のりべ🌟習慣のりづけ伴走秘書 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-jp4GAKiZ8qP70V1W30negpEQRt22" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のりべ🌟習慣のりづけ伴走秘書</span></span></a></li><li class="seat" data-name="チョコつも🌴 肌を磨き今は部屋を磨く"><a class="seat-link" href="https://libecity.com/user_profile/YcsemVdDnDeFGeBgO4GygusJYOG2" target="_blank" rel="noopener" title="チョコつも🌴 さんのリベシティのプロフィールを開く"><span class="seat-ico ic-YcsemVdDnDeFGeBgO4GygusJYOG2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">チョコつも🌴</span><span class="seat-role">肌を磨き今は部屋を磨く</span></span></a></li><li class="seat" data-name="ルーク＠心のセルフケア"><a class="seat-link" href="https://libecity.com/user_profile/ZIsFH3zdsoZiM7TTxDo9CLAYRtZ2" target="_blank" rel="noopener" title="ルーク さんのリベシティのプロフィールを開く"><span class="seat-ico ic-ZIsFH3zdsoZiM7TTxDo9CLAYRtZ2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ルーク</span><span class="seat-role">心のセルフケア</span></span></a></li></ul></article>
-<article class="table-card" style="--accent:#2f6ea3"><header class="tc-head"><span class="tc-emoji">☁️</span><span class="tc-name">E卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat is-host" data-name="おけもん🦫尻チャレあおはるっぱー☘️"><a class="seat-link" href="https://libecity.com/user_profile/bsiQxYzfrSXq4NNlOl7IGn35YO13" target="_blank" rel="noopener" title="おけもん🦫尻チャレあおはるっぱー☘️ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-bsiQxYzfrSXq4NNlOl7IGn35YO13" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">おけもん🦫尻チャレあおはるっぱー☘️</span></span></a><span class="host-badge">🎤 主催</span></li><li class="seat" data-name="sakko@社労士×介護福祉士"><a class="seat-link" href="https://libecity.com/user_profile/3H8cvTcRNbRvRmMesb8kEXa8gRN2" target="_blank" rel="noopener" title="sakko さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3H8cvTcRNbRvRmMesb8kEXa8gRN2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">sakko</span><span class="seat-role">社労士×介護福祉士</span></span></a></li><li class="seat" data-name="こいと＠お店のデジタル係｜お菓子も焼く人"><a class="seat-link" href="https://libecity.com/user_profile/9rmxLR9IVhOc7Z1FKcLEMQ12bS83" target="_blank" rel="noopener" title="こいと さんのリベシティのプロフィールを開く"><span class="seat-ico ic-9rmxLR9IVhOc7Z1FKcLEMQ12bS83" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">こいと</span><span class="seat-role">お店のデジタル係｜お菓子も焼く人</span></span></a></li><li class="seat" data-name="おにちゃん@AI×音楽配信"><a class="seat-link" href="https://libecity.com/user_profile/8mIylNZa3DfIs2Z09z1OPMCVVkk1" target="_blank" rel="noopener" title="おにちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-8mIylNZa3DfIs2Z09z1OPMCVVkk1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">おにちゃん</span><span class="seat-role">AI×音楽配信</span></span></a></li></ul></article>
-<article class="table-card" style="--accent:#487a37"><header class="tc-head"><span class="tc-emoji">🍀</span><span class="tc-name">F卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="たつ@PR×営業支援"><a class="seat-link" href="https://libecity.com/user_profile/xMYhyDweQVT1M5RWflTPLBGC2YX2" target="_blank" rel="noopener" title="たつ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-xMYhyDweQVT1M5RWflTPLBGC2YX2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">たつ</span><span class="seat-role">PR×営業支援</span></span></a></li><li class="seat" data-name="なつ@AI×業務改善"><a class="seat-link" href="https://libecity.com/user_profile/BMpXkcdvzFZn0fkGcwuovRLBX8D3" target="_blank" rel="noopener" title="なつ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-BMpXkcdvzFZn0fkGcwuovRLBX8D3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">なつ</span><span class="seat-role">AI×業務改善</span></span></a></li><li class="seat" data-name="こじかママ＠ノウハウ記事📝投稿中"><a class="seat-link" href="https://libecity.com/user_profile/TRCSbURycta66XVsEvuk3DO8jUi2" target="_blank" rel="noopener" title="こじかママ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-TRCSbURycta66XVsEvuk3DO8jUi2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">こじかママ</span><span class="seat-role">ノウハウ記事📝投稿中</span></span></a></li><li class="seat" data-name="なおたっと"><a class="seat-link" href="https://libecity.com/user_profile/b9mQEv7lnzXIz7fhMd5G71F11YF2" target="_blank" rel="noopener" title="なおたっと さんのリベシティのプロフィールを開く"><span class="seat-ico ic-b9mQEv7lnzXIz7fhMd5G71F11YF2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">なおたっと</span></span></a></li></ul></article>
-<article class="table-card" style="--accent:#a84a4a"><header class="tc-head"><span class="tc-emoji">🍑</span><span class="tc-name">G卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="あきら｜ホームページ制作・運用パートナー"><a class="seat-link" href="https://libecity.com/user_profile/qXonm8hz5UT03bgBZDSeXrAW5Sk2" target="_blank" rel="noopener" title="あきら さんのリベシティのプロフィールを開く"><span class="seat-ico ic-qXonm8hz5UT03bgBZDSeXrAW5Sk2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">あきら</span><span class="seat-role">ホームページ制作・運用パートナー</span></span></a></li><li class="seat" data-name="yuki🍩高配当株〻楽天ROOM"><a class="seat-link" href="https://libecity.com/user_profile/0CzjUys5SGPvoq8riNo2utZRGeZ2" target="_blank" rel="noopener" title="yuki🍩高配当株〻楽天ROOM さんのリベシティのプロフィールを開く"><span class="seat-ico ic-0CzjUys5SGPvoq8riNo2utZRGeZ2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">yuki🍩高配当株〻楽天ROOM</span></span></a></li><li class="seat" data-name="のぶきち@オンライン秘書✨旅するカメラ"><a class="seat-link" href="https://libecity.com/user_profile/nLb0h4PLteg3YXQAGgRhaApJDyv2" target="_blank" rel="noopener" title="のぶきち さんのリベシティのプロフィールを開く"><span class="seat-ico ic-nLb0h4PLteg3YXQAGgRhaApJDyv2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のぶきち</span><span class="seat-role">オンライン秘書✨旅するカメラ</span></span></a></li><li class="seat" data-name="ミヤ"><a class="seat-link" href="https://libecity.com/user_profile/1zxKb5jBInVboLY91hsm3e5Q1P93" target="_blank" rel="noopener" title="ミヤ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-1zxKb5jBInVboLY91hsm3e5Q1P93" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ミヤ</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#2f6ea3"><header class="tc-head"><span class="tc-emoji">☁️</span><span class="tc-name">E卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat is-host" data-name="おけもん🦫尻チャレあおはるっぱー☘️"><a class="seat-link" href="https://libecity.com/user_profile/bsiQxYzfrSXq4NNlOl7IGn35YO13" target="_blank" rel="noopener" title="おけもん🦫尻チャレあおはるっぱー☘️ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-bsiQxYzfrSXq4NNlOl7IGn35YO13" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">おけもん🦫尻チャレあおはるっぱー☘️</span><span class="seat-hook">青春18きっぷ旅のまっただ中。AI社員11人と毎晩かんぱいしてます</span></span></a><span class="host-badge">🎤 主催</span></li><li class="seat" data-name="sakko@社労士×介護福祉士"><a class="seat-link" href="https://libecity.com/user_profile/3H8cvTcRNbRvRmMesb8kEXa8gRN2" target="_blank" rel="noopener" title="sakko さんのリベシティのプロフィールを開く"><span class="seat-ico ic-3H8cvTcRNbRvRmMesb8kEXa8gRN2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">sakko</span><span class="seat-role">社労士×介護福祉士</span><span class="seat-hook">4回目の受験で社労士に合格。介護福祉士も取って、いま開業準備中</span></span></a></li><li class="seat" data-name="こいと＠お店のデジタル係｜お菓子も焼く人"><a class="seat-link" href="https://libecity.com/user_profile/9rmxLR9IVhOc7Z1FKcLEMQ12bS83" target="_blank" rel="noopener" title="こいと さんのリベシティのプロフィールを開く"><span class="seat-ico ic-9rmxLR9IVhOc7Z1FKcLEMQ12bS83" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">こいと</span><span class="seat-role">お店のデジタル係｜お菓子も焼く人</span><span class="seat-hook">焼菓子を作るのも食べるのも好き。いつかリベシティ市場に出品したい</span></span></a></li><li class="seat" data-name="おにちゃん@AI×音楽配信"><a class="seat-link" href="https://libecity.com/user_profile/8mIylNZa3DfIs2Z09z1OPMCVVkk1" target="_blank" rel="noopener" title="おにちゃん さんのリベシティのプロフィールを開く"><span class="seat-ico ic-8mIylNZa3DfIs2Z09z1OPMCVVkk1" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">おにちゃん</span><span class="seat-role">AI×音楽配信</span><span class="seat-hook">AI×音楽のYouTubeを2か月で収益化。名前の由来は「行動力の鬼」</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#487a37"><header class="tc-head"><span class="tc-emoji">🍀</span><span class="tc-name">F卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="たつ@PR×営業支援"><a class="seat-link" href="https://libecity.com/user_profile/xMYhyDweQVT1M5RWflTPLBGC2YX2" target="_blank" rel="noopener" title="たつ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-xMYhyDweQVT1M5RWflTPLBGC2YX2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">たつ</span><span class="seat-role">PR×営業支援</span></span></a></li><li class="seat" data-name="なつ@AI×業務改善"><a class="seat-link" href="https://libecity.com/user_profile/BMpXkcdvzFZn0fkGcwuovRLBX8D3" target="_blank" rel="noopener" title="なつ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-BMpXkcdvzFZn0fkGcwuovRLBX8D3" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">なつ</span><span class="seat-role">AI×業務改善</span></span></a></li><li class="seat" data-name="こじかママ＠ノウハウ記事📝投稿中"><a class="seat-link" href="https://libecity.com/user_profile/TRCSbURycta66XVsEvuk3DO8jUi2" target="_blank" rel="noopener" title="こじかママ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-TRCSbURycta66XVsEvuk3DO8jUi2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">こじかママ</span><span class="seat-role">ノウハウ記事📝投稿中</span><span class="seat-hook">Claude Codeで自己紹介ページを自作。oviceのオフ会にほぼ毎日いる</span></span></a></li><li class="seat" data-name="なおたっと"><a class="seat-link" href="https://libecity.com/user_profile/b9mQEv7lnzXIz7fhMd5G71F11YF2" target="_blank" rel="noopener" title="なおたっと さんのリベシティのプロフィールを開く"><span class="seat-ico ic-b9mQEv7lnzXIz7fhMd5G71F11YF2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">なおたっと</span></span></a></li></ul></article>
+<article class="table-card" style="--accent:#a84a4a"><header class="tc-head"><span class="tc-emoji">🍑</span><span class="tc-name">G卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat" data-name="あきら｜ホームページ制作・運用パートナー"><a class="seat-link" href="https://libecity.com/user_profile/qXonm8hz5UT03bgBZDSeXrAW5Sk2" target="_blank" rel="noopener" title="あきら さんのリベシティのプロフィールを開く"><span class="seat-ico ic-qXonm8hz5UT03bgBZDSeXrAW5Sk2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">あきら</span><span class="seat-role">ホームページ制作・運用パートナー</span><span class="seat-hook">41歳でWeb制作を学び直して独立。事業の強みを言葉にするのが仕事</span></span></a></li><li class="seat" data-name="yuki🍩高配当株〻楽天ROOM"><a class="seat-link" href="https://libecity.com/user_profile/0CzjUys5SGPvoq8riNo2utZRGeZ2" target="_blank" rel="noopener" title="yuki🍩高配当株〻楽天ROOM さんのリベシティのプロフィールを開く"><span class="seat-ico ic-0CzjUys5SGPvoq8riNo2utZRGeZ2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">yuki🍩高配当株〻楽天ROOM</span><span class="seat-hook">合言葉は「今日が一番若い日」。医療職をしながら高配当株と楽天ROOM</span></span></a></li><li class="seat" data-name="のぶきち@オンライン秘書✨旅するカメラ"><a class="seat-link" href="https://libecity.com/user_profile/nLb0h4PLteg3YXQAGgRhaApJDyv2" target="_blank" rel="noopener" title="のぶきち さんのリベシティのプロフィールを開く"><span class="seat-ico ic-nLb0h4PLteg3YXQAGgRhaApJDyv2" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">のぶきち</span><span class="seat-role">オンライン秘書✨旅するカメラ</span></span></a></li><li class="seat" data-name="ミヤ"><a class="seat-link" href="https://libecity.com/user_profile/1zxKb5jBInVboLY91hsm3e5Q1P93" target="_blank" rel="noopener" title="ミヤ さんのリベシティのプロフィールを開く"><span class="seat-ico ic-1zxKb5jBInVboLY91hsm3e5Q1P93" aria-hidden="true"></span><span class="seat-txt"><span class="seat-call">ミヤ</span></span></a></li></ul></article>
   </div>
 
-  <div class="index-wrap">
+  <div class="index-wrap" id="roster">
     <h2>📋 名前から探す</h2>
     <p>前半の卓の順に並べています。お名前をタップすると、その方のリベシティのプロフィールが開きます。</p>
-    <div class="finder finder-inline">
-      <input type="text" id="finder2" placeholder="🔎 お名前を入れると、席が出ます" autocomplete="off">
-    </div>
-    <div class="finder-out" id="finderOut2">名前の一部でOK（ひらがなでも探せます）</div>
+
     <div class="table-scroll">
       <table>
         <thead><tr><th>お名前</th><th>前半</th><th>後半</th></tr></thead>
@@ -326,20 +394,77 @@
 
 <script>
 (function(){
-  var inputs=[document.getElementById('finder'), document.getElementById('finder2')].filter(Boolean);
-  var outs=[document.getElementById('finderOut'), document.getElementById('finderOut2')].filter(Boolean);
+  var MYKEY='okemori-seat-20260906';
+  var EVENT_DAY='2026-09-06';
+  var input=document.getElementById('finder');
+  var myseat=document.getElementById('myseat');
   var rows=[].slice.call(document.querySelectorAll('#indexBody tr'));
   var seats=[].slice.call(document.querySelectorAll('.seat'));
-  var HINT='名前の一部でOK（ひらがなでも探せます）';
+
   function norm(s){ return String(s||'').toLowerCase().replace(/[\s　]/g,''); }
   function esc(s){ return String(s).replace(/[&<>"']/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function store(k,v){ try{ v===null ? localStorage.removeItem(k) : localStorage.setItem(k,v); }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+
+  function rowFor(name){
+    for(var i=0;i<rows.length;i++){ if(rows[i].getAttribute('data-name')===name) return rows[i]; }
+    return null;
+  }
+  function seatInfo(row){
+    var tds=row.querySelectorAll('td');
+    var ico=row.querySelector('.ix-ico');
+    return {
+      name: row.getAttribute('data-name'),
+      call: (row.querySelector('.ix-call')||{}).textContent || row.getAttribute('data-name'),
+      first: tds[0].innerText.trim(),
+      second: tds[1].innerText.trim(),
+      icoClass: ico ? ico.className.replace('ix-ico','').trim() : ''
+    };
+  }
+
+  // ---- あなたの席 ----
+  function renderMySeat(name, remembered){
+    var row=rowFor(name);
+    if(!row){ myseat.hidden=true; return; }
+    var s=seatInfo(row);
+    myseat.hidden=false;
+    myseat.innerHTML =
+      '<span class="ms-ico '+esc(s.icoClass)+'" aria-hidden="true"></span>'+
+      '<div class="ms-body">'+
+        '<div class="ms-label">'+(remembered?'あなたの席':'この方の席')+'</div>'+
+        '<div class="ms-name">'+esc(s.call)+' さん</div>'+
+        '<div class="ms-seats">'+
+          '<a href="#round1">前半 '+esc(s.first)+'</a><span>→</span>'+
+          '<a href="#round2" class="late">後半 '+esc(s.second)+'</a>'+
+        '</div>'+
+      '</div>'+
+      '<div class="ms-actions">'+
+        (remembered
+          ? '<button class="ms-btn" id="msClear">別の人にする</button>'
+          : '<button class="ms-btn primary" id="msSave">⭐️ 自分の席として覚える</button>')+
+      '</div>';
+    var save=document.getElementById('msSave');
+    if(save) save.addEventListener('click', function(){ store(MYKEY, name); renderMySeat(name, true); });
+    var clear=document.getElementById('msClear');
+    if(clear) clear.addEventListener('click', function(){
+      store(MYKEY, null); myseat.hidden=true; input.value=''; apply('');
+      input.focus();
+    });
+  }
+  function showMissing(raw){
+    myseat.hidden=false;
+    myseat.innerHTML='<div class="ms-body"><div class="ms-miss">「'+esc(raw)+'」は名簿に見つからないよ。受付で声をかけてね🙌</div></div>';
+  }
+
+  // ---- 検索 ----
   function apply(raw){
     var q=norm(raw);
     seats.forEach(function(s){ s.classList.remove('hit'); });
     if(!q){
       rows.forEach(function(r){ r.classList.remove('hit','dim'); });
-      outs.forEach(function(o){ o.innerHTML=HINT; });
+      var saved=load(MYKEY);
+      if(saved) renderMySeat(saved, true); else myseat.hidden=true;
       return;
     }
     var hits=[];
@@ -347,27 +472,45 @@
       var ok=norm(r.getAttribute('data-name')).indexOf(q)>=0;
       r.classList.toggle('hit', ok);
       r.classList.toggle('dim', !ok);
-      if(ok){
-        var tds=r.querySelectorAll('td');
-        hits.push({name:r.getAttribute('data-name'), a:tds[0].innerText.trim(), b:tds[1].innerText.trim()});
-      }
+      if(ok) hits.push(r.getAttribute('data-name'));
     });
     seats.forEach(function(s){
       if(norm(s.getAttribute('data-name')).indexOf(q)>=0) s.classList.add('hit');
     });
-    var html = hits.length
-      ? hits.map(function(h){
-          return '<span class="hit">'+esc(h.name)+' さん → 前半 <b>'+esc(h.a)+'</b> ／ 後半 <b>'+esc(h.b)+'</b></span>';
-        }).join('')
-      : '「'+esc(raw)+'」は名簿に見つからないよ。受付で声をかけてね🙌';
-    outs.forEach(function(o){ o.innerHTML=html; });
+    if(hits.length===1){ renderMySeat(hits[0], load(MYKEY)===hits[0]); }
+    else if(hits.length===0){ showMissing(raw); }
+    else{
+      myseat.hidden=false;
+      myseat.innerHTML='<div class="ms-body"><div class="ms-miss">'+hits.length+'人が見つかりました。もう少し文字を足してね</div></div>';
+    }
   }
-  inputs.forEach(function(inp){
-    inp.addEventListener('input', function(){
-      inputs.forEach(function(other){ if(other!==inp) other.value=inp.value; });
-      apply(inp.value);
+  input.addEventListener('input', function(){ apply(input.value); });
+
+  // ---- いま進行中のブロックを光らせる ----
+  var scRows=[].slice.call(document.querySelectorAll('.sc-row'));
+  function pad(n){ return (n<10?'0':'')+n; }
+  function updateNow(){
+    var now=new Date();
+    var today=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate());
+    scRows.forEach(function(r){ r.classList.remove('now'); });
+    if(today!==EVENT_DAY) return;
+    var mins=now.getHours()*60+now.getMinutes();
+    scRows.forEach(function(r){
+      var hm=(r.getAttribute('data-start')||'').split(':');
+      var st=parseInt(hm[0],10)*60+parseInt(hm[1],10);
+      var len=parseInt(r.getAttribute('data-min'),10)||0;
+      if(mins>=st && mins<st+len){
+        r.classList.add('now');
+        var box=r.querySelector('.sc-now');
+        if(box) box.textContent='▶ いま（あと'+(st+len-mins)+'分）';
+      }
     });
-  });
+  }
+  updateNow();
+  setInterval(updateNow, 30000);
+
+  // ---- 起動時：覚えている席があれば出す ----
+  apply('');
 })();
 </script>
 </body>
