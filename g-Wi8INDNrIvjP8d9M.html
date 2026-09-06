@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="color-scheme" content="light only">
+<title>席表 — 9/6 AI初心者サポートチャットオフ会 in 新宿</title>
+<style>
+  :root{
+    color-scheme: light only;
+    --ink:#2f2a26; --muted:#7b6f65; --line:#eae2d9;
+    --bg:#fffaf4; --paper:#ffffff;
+    --accent:#e0567f;
+    --shadow:0 6px 20px rgba(90,70,60,0.08);
+    --radius:20px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Hiragino Maru Gothic ProN","Rounded Mplus 1c","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    line-height:1.75; padding:24px 16px 72px; -webkit-text-size-adjust:100%;
+  }
+  .page{max-width:1000px; margin:0 auto;}
+
+  .hero{
+    background:linear-gradient(135deg,#fff1f5 0%,#fff6ea 50%,#eefaf8 100%);
+    border:1px solid var(--line); border-radius:26px; padding:28px 26px 24px;
+    box-shadow:var(--shadow); text-align:center; margin-bottom:26px;
+  }
+  .hero .kicker{ font-size:13px; font-weight:700; letter-spacing:.14em; color:#b8446f; margin-bottom:10px;}
+  .hero h1{ font-size:clamp(26px,5.4vw,36px); font-weight:800; letter-spacing:.01em; line-height:1.4;
+    text-wrap:balance; line-break:strict;}
+  .hero .meta{ margin-top:12px; font-size:15px; color:var(--muted); font-weight:600;}
+  .hero .stat{
+    display:inline-flex; gap:18px; margin-top:16px; padding:10px 20px; background:rgba(255,255,255,.75);
+    border-radius:999px; border:1px solid var(--line); font-size:14px; font-weight:700;
+  }
+  .hero .stat b{ font-size:19px; color:#b8446f;}
+
+  .lead{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 22px; margin-bottom:26px; box-shadow:var(--shadow); font-size:15px;
+  }
+  .lead b{ color:#b8446f;}
+
+  .finder{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
+  .finder input{
+    flex:1; min-width:220px; font-family:inherit; font-size:16px; padding:13px 16px;
+    border:2px solid var(--line); border-radius:14px; background:#fff; color:var(--ink);
+  }
+  .finder input:focus{ outline:none; border-color:#f0a8c0;}
+  .finder-out{ margin-top:12px; font-size:15px; font-weight:700; color:var(--muted);}
+  .finder-out .hit{ display:block; padding:8px 0; color:var(--ink); border-top:1px dashed var(--line);}
+  .finder-out .hit b{ color:#b8446f;}
+
+  h2.round{
+    font-size:21px; font-weight:800; margin:34px 0 6px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  h2.round .time{
+    font-size:13px; font-weight:700; color:#fff; background:#b8446f;
+    padding:5px 13px; border-radius:999px; letter-spacing:.03em;
+  }
+  h2.round .time.late{ background:#2f6ea3;}
+  .round-note{ font-size:14px; color:var(--muted); margin-bottom:16px;}
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(272px,1fr)); gap:16px;}
+  .table-card{
+    background:var(--paper); border:1px solid var(--line); border-top:5px solid var(--accent);
+    border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden;
+  }
+  .tc-head{ display:flex; align-items:center; gap:10px; padding:15px 18px 11px; border-bottom:1px dashed var(--line);}
+  .tc-emoji{ font-size:24px; line-height:1;}
+  .tc-name{ font-size:19px; font-weight:800; color:var(--accent); letter-spacing:.02em;}
+  .tc-count{ margin-left:auto; font-size:13px; font-weight:700; color:var(--muted);}
+  .tc-list{ list-style:none; padding:12px 18px 17px;}
+  .seat{
+    display:flex; align-items:center; gap:8px; padding:7px 0; font-size:16px; font-weight:600;
+    border-bottom:1px solid #f6f1ea; word-break:break-word;
+  }
+  .seat:last-child{ border-bottom:none;}
+  .seat.is-host{ color:#8f4a12;}
+  .seat.hit{ background:#fff3c4; border-radius:8px; padding-left:8px; padding-right:8px;}
+  .host-badge{
+    font-size:12.5px; font-weight:800; color:#fff; background:#8f4a12;
+    padding:3px 9px; border-radius:999px; white-space:nowrap; flex-shrink:0;
+  }
+
+  .schedule{ list-style:none; display:flex; flex-direction:column; gap:10px;}
+  .sc-row{
+    display:flex; gap:16px; background:var(--paper); border:1px solid var(--line);
+    border-left:5px solid var(--tone,#b8446f); border-radius:16px; padding:14px 18px; box-shadow:var(--shadow);
+  }
+  .sc-open{ --tone:#b8446f;} .sc-move{ --tone:#6f645b;} .sc-first{ --tone:#b8446f;}
+  .sc-second{ --tone:#2f6ea3;} .sc-share{ --tone:#487a37;}
+  .sc-time{ flex-shrink:0; width:74px; display:flex; flex-direction:column; line-height:1.35; padding-top:2px;}
+  .sc-time b{ font-size:19px; font-weight:800; color:var(--tone,#b8446f); letter-spacing:.01em;}
+  .sc-time span{ font-size:12.5px; color:var(--muted); font-weight:700;}
+  .sc-title{ font-size:16.5px; font-weight:800; line-height:1.5;}
+  .sc-note{ font-size:14px; color:var(--muted); margin-top:3px; line-height:1.7;}
+  .sc-move .sc-title{ font-weight:700; color:var(--muted); font-size:15.5px;}
+
+  .index-wrap{ margin-top:38px; background:var(--paper); border:1px solid var(--line);
+    border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden;}
+  .index-wrap h2{ font-size:19px; font-weight:800; padding:18px 22px 4px;}
+  .index-wrap p{ font-size:14px; color:var(--muted); padding:0 22px 14px;}
+  .table-scroll{ overflow-x:auto;}
+  table{ border-collapse:collapse; width:100%; min-width:460px; font-size:15px;}
+  th,td{ padding:11px 16px; text-align:left; border-top:1px solid var(--line);}
+  thead th{ background:#fdf6ee; font-size:13px; color:var(--muted); font-weight:800; border-top:none;}
+  tbody th{ font-weight:600; word-break:break-word;}
+  tbody tr.hit{ background:#fff3c4;}
+  tbody tr.dim{ opacity:.28;}
+
+  footer{ margin-top:36px; font-size:13.5px; color:var(--muted); text-align:center; line-height:2;}
+  .seat-machine-link{ margin-top:14px;}
+  .seat-machine-link a{
+    display:inline-block; font-size:13px; font-weight:700; color:var(--muted);
+    text-decoration:none; border:1px solid var(--line); border-radius:999px;
+    padding:8px 18px; background:var(--paper);
+  }
+  .seat-machine-link a:hover{ color:#b8446f; border-color:#f0c4d5;}
+  footer .fine{ font-size:12.5px;}
+
+  @media (max-width:560px){
+    .table-scroll{ overflow-x:visible;}
+    table{ min-width:0;}
+    thead{ display:none;}
+    tbody tr{ display:block; padding:13px 18px; border-top:1px solid var(--line);}
+    tbody th, tbody td{ display:block; border:none; padding:1px 0;}
+    tbody th{ font-size:16.5px; font-weight:700;}
+    tbody td{ font-size:15px; color:var(--muted);}
+    tbody td::before{ content:attr(data-label)"　"; font-weight:800; color:var(--ink);}
+  }
+  @media (max-width:520px){
+    body{ padding:16px 12px 56px;}
+    .grid{ grid-template-columns:1fr;}
+    .sc-row{ gap:12px; padding:13px 15px;}
+    .sc-time{ width:60px;}
+    .sc-time b{ font-size:17px;}
+    .hero{ padding:22px 18px;}
+    .hero .stat{ gap:14px; padding:9px 15px;}
+  }
+  @media print{
+    body{ background:#fff; padding:0;}
+    .finder, .finder-out, .seat-machine-link{ display:none;}
+    .table-card, .lead, .hero, .index-wrap{ box-shadow:none;}
+    .grid{ grid-template-columns:repeat(3,1fr);}
+    h2.round{ break-after:avoid;}
+    .table-card{ break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="kicker">🔰 AI初心者サポートチャットオフ会 in 新宿</div>
+    <h1>9月6日(日)<br>オフ会の席表</h1>
+    <div class="meta">新宿西口オフィス ・ 14:00〜16:00 ・ Claude Code / Codex 雑談会</div>
+    <div class="stat"><span><b>29</b>名</span><span><b>7</b>卓</span><span>前半・後半で<b>席替え</b></span></div>
+  </div>
+
+  <div class="lead">
+    はじめまして同士でも話しやすいように、<b>4〜5人ずつの卓</b>に分けました。
+    前半と後半で席が変わるので、<b>1日で8人前後の方とお話しできます</b>。
+    主催の2人（おけもん・みずの）は別々の卓に入って、どの卓にも困りごとを拾いに行ける形にしています。
+    <div class="finder">
+      <input type="text" id="finder" placeholder="🔎 自分のお名前を入れると、席が出ます" autocomplete="off">
+    </div>
+    <div class="finder-out" id="finderOut">名前の一部でOK（ひらがなでも探せます）</div>
+  </div>
+
+  <h2 class="round"><span class="time">14:00〜16:00</span>きょうの流れ</h2>
+  <div class="round-note">実際にお話しできるのは95分。「自己紹介10分＋トーク30分」を2セットにしています。</div>
+  <ol class="schedule">
+<li class="sc-row sc-open"><div class="sc-time"><b>14:00</b><span>10分</span></div><div class="sc-body"><div class="sc-title">開会・主催あいさつ</div><p class="sc-note">きょうの流れと席表を画面に出します</p></div></li>
+<li class="sc-row sc-move"><div class="sc-time"><b>14:10</b><span>5分</span></div><div class="sc-body"><div class="sc-title">前半の席へ移動</div><p class="sc-note">A〜G卓の紙を目印に、自分の卓へ</p></div></li>
+<li class="sc-row sc-first"><div class="sc-time"><b>14:15</b><span>10分</span></div><div class="sc-body"><div class="sc-title">卓で自己紹介</div><p class="sc-note">1人2分：お名前／いまAIでやっていること／今日聞きたいこと</p></div></li>
+<li class="sc-row sc-first"><div class="sc-time"><b>14:25</b><span>30分</span></div><div class="sc-body"><div class="sc-title">卓トーク①　いま困ってること・やってみたいこと</div><p class="sc-note">うまくいかない所を出す時間。主催の2人が別々の卓にいるので、手が止まったら呼んでください</p></div></li>
+<li class="sc-row sc-move"><div class="sc-time"><b>14:55</b><span>5分</span></div><div class="sc-body"><div class="sc-title">席替えで移動</div><p class="sc-note">後半の席は同じ席表の下half。前半と同じ人にはなりません</p></div></li>
+<li class="sc-row sc-second"><div class="sc-time"><b>15:00</b><span>10分</span></div><div class="sc-body"><div class="sc-title">卓で自己紹介</div><p class="sc-note">顔ぶれが変わるので、もう一度1人2分ずつ</p></div></li>
+<li class="sc-row sc-second"><div class="sc-time"><b>15:10</b><span>30分</span></div><div class="sc-body"><div class="sc-title">卓トーク②　今日持ち帰る一歩</div><p class="sc-note">①で出た悩みを「帰ってやること1つ」に変える時間</p></div></li>
+<li class="sc-row sc-share"><div class="sc-time"><b>15:40</b><span>10分</span></div><div class="sc-body"><div class="sc-title">全体シェア</div><p class="sc-note">各卓から1分ずつ。自分がいなかった卓の話も持って帰れます</p></div></li>
+<li class="sc-row sc-share"><div class="sc-time"><b>15:50</b><span>10分</span></div><div class="sc-body"><div class="sc-title">集合写真・お知らせ・締め</div><p class="sc-note">稼げや祭り／ノウハウ図書館の告知もここで</p></div></li>
+  </ol>
+
+  <h2 class="round"><span class="time">前半 14:15〜14:55</span>第1部の席</h2>
+  <div class="round-note">お店の島ごとにA〜G卓の紙を置いておきます。着いたらまずここへ。</div>
+  <div class="grid">
+<article class="table-card" style="--accent:#c8447a"><header class="tc-head"><span class="tc-emoji">🌸</span><span class="tc-name">A卓</span><span class="tc-count">5名</span></header><ul class="tc-list"><li class="seat is-host"><span class="seat-name">みずの＠寄り添うAIxWebデザイナー</span><span class="host-badge">🎤 主催</span></li><li class="seat"><span class="seat-name">こじかママ＠ノウハウ記事📝投稿中</span></li><li class="seat"><span class="seat-name">ジューン＠デザイン×AI活用サポート</span></li><li class="seat"><span class="seat-name">のぶきち@オンライン秘書✨旅するカメラ</span></li><li class="seat"><span class="seat-name">こいと＠お店のデジタル係｜お菓子も焼く人</span></li></ul></article>
+<article class="table-card" style="--accent:#b35c14"><header class="tc-head"><span class="tc-emoji">🍊</span><span class="tc-name">B卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat"><span class="seat-name">おにちゃん@AI×音楽配信</span></li><li class="seat"><span class="seat-name">Gon＠デザイン</span></li><li class="seat"><span class="seat-name">リケジョのはる</span></li><li class="seat"><span class="seat-name">あきら｜ホームページ制作・運用パートナー</span></li></ul></article>
+<article class="table-card" style="--accent:#8f6a0f"><header class="tc-head"><span class="tc-emoji">⭐️</span><span class="tc-name">C卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat"><span class="seat-name">なつ@AI×業務改善</span></li><li class="seat"><span class="seat-name">小平ゆたか＠社労士×診断士✕ライター</span></li><li class="seat"><span class="seat-name">あんにん</span></li><li class="seat"><span class="seat-name">のんちゃん@整体師&amp;サロン向けHP制作</span></li></ul></article>
+<article class="table-card" style="--accent:#137a70"><header class="tc-head"><span class="tc-emoji">🌊</span><span class="tc-name">D卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat"><span class="seat-name">ルーク＠心のセルフケア</span></li><li class="seat"><span class="seat-name">なおたっと</span></li><li class="seat"><span class="seat-name">sakko@社労士×介護福祉士</span></li><li class="seat"><span class="seat-name">まや@副業勉強中</span></li></ul></article>
+<article class="table-card" style="--accent:#2f6ea3"><header class="tc-head"><span class="tc-emoji">☁️</span><span class="tc-name">E卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat"><span class="seat-name">青い鳥@Webデザイン・HP制作</span></li><li class="seat"><span class="seat-name">ひさぽん＠介護と腸活ブログ</span></li><li class="seat"><span class="seat-name">たつ@PR×営業支援</span></li><li class="seat"><span class="seat-name">ミヤ</span></li></ul></article>
+<article class="table-card" style="--accent:#487a37"><header class="tc-head"><span class="tc-emoji">🍀</span><span class="tc-name">F卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat is-host"><span class="seat-name">おけもん🦫尻チャレあおはるっぱー☘️</span><span class="host-badge">🎤 主催</span></li><li class="seat"><span class="seat-name">むらさき🟣＠100%会社員・友達作り</span></li><li class="seat"><span class="seat-name">アル📘公務員→独立｜自治体・AI</span></li><li class="seat"><span class="seat-name">のりべ🌟習慣のりづけ伴走秘書</span></li></ul></article>
+<article class="table-card" style="--accent:#a84a4a"><header class="tc-head"><span class="tc-emoji">🍑</span><span class="tc-name">G卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat"><span class="seat-name">モア＠AI画像アーティスト</span></li><li class="seat"><span class="seat-name">yuki🍩高配当株〻楽天ROOM</span></li><li class="seat"><span class="seat-name">ひとやすみちゃん</span></li><li class="seat"><span class="seat-name">チョコつも🌴 肌を磨き今は部屋を磨く</span></li></ul></article>
+  </div>
+
+  <h2 class="round"><span class="time late">後半 15:00〜15:40</span>第2部の席（席替え）</h2>
+  <div class="round-note">前半で同じ卓だった人とは、ひとりも重ならないように組んでいます。</div>
+  <div class="grid">
+<article class="table-card" style="--accent:#c8447a"><header class="tc-head"><span class="tc-emoji">🌸</span><span class="tc-name">A卓</span><span class="tc-count">5名</span></header><ul class="tc-list"><li class="seat"><span class="seat-name">アル📘公務員→独立｜自治体・AI</span></li><li class="seat"><span class="seat-name">ひさぽん＠介護と腸活ブログ</span></li><li class="seat"><span class="seat-name">ジューン＠デザイン×AI活用サポート</span></li><li class="seat"><span class="seat-name">ひとやすみちゃん</span></li><li class="seat"><span class="seat-name">まや@副業勉強中</span></li></ul></article>
+<article class="table-card" style="--accent:#b35c14"><header class="tc-head"><span class="tc-emoji">🍊</span><span class="tc-name">B卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat"><span class="seat-name">モア＠AI画像アーティスト</span></li><li class="seat"><span class="seat-name">Gon＠デザイン</span></li><li class="seat"><span class="seat-name">むらさき🟣＠100%会社員・友達作り</span></li><li class="seat"><span class="seat-name">のんちゃん@整体師&amp;サロン向けHP制作</span></li></ul></article>
+<article class="table-card" style="--accent:#8f6a0f"><header class="tc-head"><span class="tc-emoji">⭐️</span><span class="tc-name">C卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat is-host"><span class="seat-name">みずの＠寄り添うAIxWebデザイナー</span><span class="host-badge">🎤 主催</span></li><li class="seat"><span class="seat-name">あんにん</span></li><li class="seat"><span class="seat-name">リケジョのはる</span></li><li class="seat"><span class="seat-name">青い鳥@Webデザイン・HP制作</span></li></ul></article>
+<article class="table-card" style="--accent:#137a70"><header class="tc-head"><span class="tc-emoji">🌊</span><span class="tc-name">D卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat"><span class="seat-name">小平ゆたか＠社労士×診断士✕ライター</span></li><li class="seat"><span class="seat-name">のりべ🌟習慣のりづけ伴走秘書</span></li><li class="seat"><span class="seat-name">チョコつも🌴 肌を磨き今は部屋を磨く</span></li><li class="seat"><span class="seat-name">ルーク＠心のセルフケア</span></li></ul></article>
+<article class="table-card" style="--accent:#2f6ea3"><header class="tc-head"><span class="tc-emoji">☁️</span><span class="tc-name">E卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat is-host"><span class="seat-name">おけもん🦫尻チャレあおはるっぱー☘️</span><span class="host-badge">🎤 主催</span></li><li class="seat"><span class="seat-name">yuki🍩高配当株〻楽天ROOM</span></li><li class="seat"><span class="seat-name">こいと＠お店のデジタル係｜お菓子も焼く人</span></li><li class="seat"><span class="seat-name">おにちゃん@AI×音楽配信</span></li></ul></article>
+<article class="table-card" style="--accent:#487a37"><header class="tc-head"><span class="tc-emoji">🍀</span><span class="tc-name">F卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat"><span class="seat-name">たつ@PR×営業支援</span></li><li class="seat"><span class="seat-name">なつ@AI×業務改善</span></li><li class="seat"><span class="seat-name">こじかママ＠ノウハウ記事📝投稿中</span></li><li class="seat"><span class="seat-name">なおたっと</span></li></ul></article>
+<article class="table-card" style="--accent:#a84a4a"><header class="tc-head"><span class="tc-emoji">🍑</span><span class="tc-name">G卓</span><span class="tc-count">4名</span></header><ul class="tc-list"><li class="seat"><span class="seat-name">あきら｜ホームページ制作・運用パートナー</span></li><li class="seat"><span class="seat-name">sakko@社労士×介護福祉士</span></li><li class="seat"><span class="seat-name">のぶきち@オンライン秘書✨旅するカメラ</span></li><li class="seat"><span class="seat-name">ミヤ</span></li></ul></article>
+  </div>
+
+  <div class="index-wrap">
+    <h2>📋 名前から探す</h2>
+    <p>前半の卓の順に並べています。上の検索でも絞り込めます。</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>お名前</th><th>前半</th><th>後半</th></tr></thead>
+        <tbody id="indexBody">
+<tr data-name="みずの＠寄り添うAIxWebデザイナー"><th scope="row">みずの＠寄り添うAIxWebデザイナー <span class="host-badge">🎤</span></th><td data-label="前半"><b>🌸 A卓</b></td><td data-label="後半"><b>⭐️ C卓</b></td></tr>
+<tr data-name="こじかママ＠ノウハウ記事📝投稿中"><th scope="row">こじかママ＠ノウハウ記事📝投稿中</th><td data-label="前半"><b>🌸 A卓</b></td><td data-label="後半"><b>🍀 F卓</b></td></tr>
+<tr data-name="ジューン＠デザイン×AI活用サポート"><th scope="row">ジューン＠デザイン×AI活用サポート</th><td data-label="前半"><b>🌸 A卓</b></td><td data-label="後半"><b>🌸 A卓</b></td></tr>
+<tr data-name="のぶきち@オンライン秘書✨旅するカメラ"><th scope="row">のぶきち@オンライン秘書✨旅するカメラ</th><td data-label="前半"><b>🌸 A卓</b></td><td data-label="後半"><b>🍑 G卓</b></td></tr>
+<tr data-name="こいと＠お店のデジタル係｜お菓子も焼く人"><th scope="row">こいと＠お店のデジタル係｜お菓子も焼く人</th><td data-label="前半"><b>🌸 A卓</b></td><td data-label="後半"><b>☁️ E卓</b></td></tr>
+<tr data-name="おにちゃん@AI×音楽配信"><th scope="row">おにちゃん@AI×音楽配信</th><td data-label="前半"><b>🍊 B卓</b></td><td data-label="後半"><b>☁️ E卓</b></td></tr>
+<tr data-name="Gon＠デザイン"><th scope="row">Gon＠デザイン</th><td data-label="前半"><b>🍊 B卓</b></td><td data-label="後半"><b>🍊 B卓</b></td></tr>
+<tr data-name="リケジョのはる"><th scope="row">リケジョのはる</th><td data-label="前半"><b>🍊 B卓</b></td><td data-label="後半"><b>⭐️ C卓</b></td></tr>
+<tr data-name="あきら｜ホームページ制作・運用パートナー"><th scope="row">あきら｜ホームページ制作・運用パートナー</th><td data-label="前半"><b>🍊 B卓</b></td><td data-label="後半"><b>🍑 G卓</b></td></tr>
+<tr data-name="なつ@AI×業務改善"><th scope="row">なつ@AI×業務改善</th><td data-label="前半"><b>⭐️ C卓</b></td><td data-label="後半"><b>🍀 F卓</b></td></tr>
+<tr data-name="小平ゆたか＠社労士×診断士✕ライター"><th scope="row">小平ゆたか＠社労士×診断士✕ライター</th><td data-label="前半"><b>⭐️ C卓</b></td><td data-label="後半"><b>🌊 D卓</b></td></tr>
+<tr data-name="あんにん"><th scope="row">あんにん</th><td data-label="前半"><b>⭐️ C卓</b></td><td data-label="後半"><b>⭐️ C卓</b></td></tr>
+<tr data-name="のんちゃん@整体師&amp;サロン向けHP制作"><th scope="row">のんちゃん@整体師&amp;サロン向けHP制作</th><td data-label="前半"><b>⭐️ C卓</b></td><td data-label="後半"><b>🍊 B卓</b></td></tr>
+<tr data-name="ルーク＠心のセルフケア"><th scope="row">ルーク＠心のセルフケア</th><td data-label="前半"><b>🌊 D卓</b></td><td data-label="後半"><b>🌊 D卓</b></td></tr>
+<tr data-name="なおたっと"><th scope="row">なおたっと</th><td data-label="前半"><b>🌊 D卓</b></td><td data-label="後半"><b>🍀 F卓</b></td></tr>
+<tr data-name="sakko@社労士×介護福祉士"><th scope="row">sakko@社労士×介護福祉士</th><td data-label="前半"><b>🌊 D卓</b></td><td data-label="後半"><b>🍑 G卓</b></td></tr>
+<tr data-name="まや@副業勉強中"><th scope="row">まや@副業勉強中</th><td data-label="前半"><b>🌊 D卓</b></td><td data-label="後半"><b>🌸 A卓</b></td></tr>
+<tr data-name="青い鳥@Webデザイン・HP制作"><th scope="row">青い鳥@Webデザイン・HP制作</th><td data-label="前半"><b>☁️ E卓</b></td><td data-label="後半"><b>⭐️ C卓</b></td></tr>
+<tr data-name="ひさぽん＠介護と腸活ブログ"><th scope="row">ひさぽん＠介護と腸活ブログ</th><td data-label="前半"><b>☁️ E卓</b></td><td data-label="後半"><b>🌸 A卓</b></td></tr>
+<tr data-name="たつ@PR×営業支援"><th scope="row">たつ@PR×営業支援</th><td data-label="前半"><b>☁️ E卓</b></td><td data-label="後半"><b>🍀 F卓</b></td></tr>
+<tr data-name="ミヤ"><th scope="row">ミヤ</th><td data-label="前半"><b>☁️ E卓</b></td><td data-label="後半"><b>🍑 G卓</b></td></tr>
+<tr data-name="おけもん🦫尻チャレあおはるっぱー☘️"><th scope="row">おけもん🦫尻チャレあおはるっぱー☘️ <span class="host-badge">🎤</span></th><td data-label="前半"><b>🍀 F卓</b></td><td data-label="後半"><b>☁️ E卓</b></td></tr>
+<tr data-name="むらさき🟣＠100%会社員・友達作り"><th scope="row">むらさき🟣＠100%会社員・友達作り</th><td data-label="前半"><b>🍀 F卓</b></td><td data-label="後半"><b>🍊 B卓</b></td></tr>
+<tr data-name="アル📘公務員→独立｜自治体・AI"><th scope="row">アル📘公務員→独立｜自治体・AI</th><td data-label="前半"><b>🍀 F卓</b></td><td data-label="後半"><b>🌸 A卓</b></td></tr>
+<tr data-name="のりべ🌟習慣のりづけ伴走秘書"><th scope="row">のりべ🌟習慣のりづけ伴走秘書</th><td data-label="前半"><b>🍀 F卓</b></td><td data-label="後半"><b>🌊 D卓</b></td></tr>
+<tr data-name="モア＠AI画像アーティスト"><th scope="row">モア＠AI画像アーティスト</th><td data-label="前半"><b>🍑 G卓</b></td><td data-label="後半"><b>🍊 B卓</b></td></tr>
+<tr data-name="yuki🍩高配当株〻楽天ROOM"><th scope="row">yuki🍩高配当株〻楽天ROOM</th><td data-label="前半"><b>🍑 G卓</b></td><td data-label="後半"><b>☁️ E卓</b></td></tr>
+<tr data-name="ひとやすみちゃん"><th scope="row">ひとやすみちゃん</th><td data-label="前半"><b>🍑 G卓</b></td><td data-label="後半"><b>🌸 A卓</b></td></tr>
+<tr data-name="チョコつも🌴 肌を磨き今は部屋を磨く"><th scope="row">チョコつも🌴 肌を磨き今は部屋を磨く</th><td data-label="前半"><b>🍑 G卓</b></td><td data-label="後半"><b>🌊 D卓</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    当日の欠席・飛び入りが出たら、その場で組み直します。<br>
+    <span class="fine">🔰 9/6 AI初心者サポートチャットオフ会 ・ 新宿西口オフィス ・ 主催 おけもん／みずの</span>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var input=document.getElementById('finder');
+  var out=document.getElementById('finderOut');
+  var rows=[].slice.call(document.querySelectorAll('#indexBody tr'));
+  var seats=[].slice.call(document.querySelectorAll('.seat'));
+  function norm(s){ return String(s||'').toLowerCase().replace(/[\s\u3000]/g,''); }
+  input.addEventListener('input', function(){
+    var q=norm(input.value);
+    seats.forEach(function(s){ s.classList.remove('hit'); });
+    if(!q){
+      rows.forEach(function(r){ r.classList.remove('hit','dim'); });
+      out.innerHTML='名前の一部でOK（ひらがなでも探せます）';
+      return;
+    }
+    var hits=[];
+    rows.forEach(function(r){
+      var name=norm(r.getAttribute('data-name'));
+      var ok=name.indexOf(q)>=0;
+      r.classList.toggle('hit', ok);
+      r.classList.toggle('dim', !ok);
+      if(ok){
+        var tds=r.querySelectorAll('td');
+        hits.push({name:r.getAttribute('data-name'), a:tds[0].innerText.trim(), b:tds[1].innerText.trim()});
+      }
+    });
+    seats.forEach(function(s){
+      var n=norm(s.querySelector('.seat-name').innerText);
+      if(n.indexOf(q)>=0) s.classList.add('hit');
+    });
+    if(!hits.length){ out.innerHTML='「'+input.value+'」は名簿に見つからないよ。受付で声をかけてね🙌'; return; }
+    out.innerHTML=hits.map(function(h){
+      return '<span class="hit">'+h.name+' さん → 前半 <b>'+h.a+'</b> ／ 後半 <b>'+h.b+'</b></span>';
+    }).join('');
+  });
+})();
+</script>
+</body>
+</html>
