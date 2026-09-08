@@ -537,17 +537,41 @@ svg .draw{fill:none}
     }
   }catch(e){}
 
-  var targets = document.querySelectorAll('.rise, #heroTitle');
-  if(!('IntersectionObserver' in window)){
-    for(var k=0;k<targets.length;k++) targets[k].classList.add('kf-in');
-    return;
+  var targets = [].slice.call(document.querySelectorAll('.rise, #heroTitle'));
+
+  // 手で位置を見る版。これが本命の保険で、IntersectionObserver が動かない
+  // 環境（自動化ブラウザ・古いWebView）でも本文が透明のまま残らない。
+  function sweep(){
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    for(var i=targets.length-1;i>=0;i--){
+      var el = targets[i];
+      var r = el.getBoundingClientRect();
+      if(r.top < vh * 0.94 && r.bottom > 0){
+        el.classList.add('kf-in');
+        targets.splice(i,1);
+      }
+    }
   }
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(en){
-      if(en.isIntersecting){ en.target.classList.add('kf-in'); io.unobserve(en.target); }
-    });
-  }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
-  for(var j=0;j<targets.length;j++) io.observe(targets[j]);
+  var ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){ ticking = false; sweep(); });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+  window.addEventListener('load', onScroll);
+  requestAnimationFrame(sweep);
+  setTimeout(sweep, 400);
+
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('kf-in'); io.unobserve(en.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
+    for(var j=0;j<targets.length;j++) io.observe(targets[j]);
+  }
 })();
 </script>
 </body>
