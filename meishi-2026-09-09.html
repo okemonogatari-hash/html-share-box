@@ -36,13 +36,13 @@ body{
 .preview-row .cap{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:8px}
 
 /* ============ 印刷ページ（91mm x 55mm 実寸 + 塗り足し3mm = 97mm x 61mm） ============ */
-[data-document-role="page"]{
+[data-document-role="page"],[data-preview-card="page"]{
   width:97mm;height:61mm;
   background:var(--paper);
   position:relative;
   overflow:hidden;
 }
-[data-document-role="page"]::before{ /* 和紙の繊維感（全面＝塗り足しまで伸ばす） */
+[data-document-role="page"]::before,[data-preview-card="page"]::before{ /* 和紙の繊維感（全面＝塗り足しまで伸ばす） */
   content:"";position:absolute;inset:0;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.42 0 0 0 0 0.34 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)'/%3E%3C/svg%3E");
   pointer-events:none;
@@ -83,7 +83,7 @@ body{
 .back-x{font-family:var(--serif);font-size:9pt;color:var(--navy);font-weight:600;letter-spacing:.04em}
 
 /* 画面プレビュー用の拡大表示（実寸換算・スクリーンでの視認用） */
-.preview-row [data-document-role="page"]{
+.preview-row [data-preview-card="page"]{
   width:388px;height:244px;
   box-shadow:0 20px 50px -26px rgba(29,43,58,.45);
 }
@@ -107,7 +107,7 @@ body{
 @media (max-width:420px){
   .preview-row{flex-direction:column;align-items:center;gap:16px}
   .preview-row > div{width:335px;overflow:hidden}
-  .preview-row [data-document-role="page"]{
+  .preview-row [data-preview-card="page"]{
     transform:scale(0.863);
     transform-origin:top left;
   }
@@ -128,7 +128,7 @@ body{
   <p class="lead">実寸 91mm×55mm＋塗り足し3mm＝97mm×61mm。表はワタシトリセツ正本を継承、裏はAI現場伴走室QR＋Xアカウント。</p>
   <div class="preview-row">
     <div>
-      <div data-document-role="page" data-label="表">
+      <div data-preview-card="page" data-label="表">
         <div class="safe">
           <div class="card-top">
             <span class="kamon" aria-hidden="true">
@@ -159,7 +159,7 @@ body{
       <p class="cap">表</p>
     </div>
     <div>
-      <div data-document-role="page" data-label="裏">
+      <div data-preview-card="page" data-label="裏">
         <div class="safe back-safe">
           <p class="back-lead">スマホでお見せしたAI社員たち、<br>ここから</p>
           <div class="back-qr-wrap">
