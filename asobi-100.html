@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>おもろいAI実践、100案。 ─ おけもんカンパニー</title>
+<style>
+:root{
+  color-scheme: light;
+  --washi:#f5f1e6;
+  --paper:#fbf8f0;
+  --ink:#1d2b3a;
+  --ink-soft:#3c4a58;
+  --ink-faint:#5f6c7a;
+  --gold:#a2803a;
+  --gold-ink:#7a5c22;
+  --ai:#2f5d7c;
+  --so:#9b3b3b;
+  --rule:#ddd4bf;
+  --rule-soft:#e6ddc9;
+  --mincho:"Hiragino Mincho ProN","ヒラギノ明朝 ProN","Yu Mincho","YuMincho","Noto Serif JP","Times New Roman",serif;
+  --gothic:"Hiragino Sans","Helvetica Neue",Arial,"Yu Gothic",sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--washi);color:var(--ink);
+  font-family:var(--mincho);font-size:16px;line-height:1.9;letter-spacing:.045em;
+  overflow-wrap:anywhere;
+}
+a{color:var(--gold-ink)}
+img{max-width:100%;display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+.col{width:100%;max-width:34em;margin-left:auto;margin-right:auto}
+.kicker{font-family:var(--gothic);font-size:12.5px;letter-spacing:.34em;line-height:1.7;color:var(--gold-ink);margin:0 0 16px}
+
+/* ── HERO */
+.hero{background:var(--paper);border-bottom:1px solid var(--rule);padding:58px 0 44px}
+.hero__title{
+  font-family:var(--mincho);font-weight:400;
+  font-size:clamp(34px,8.6vw,68px);line-height:1.22;letter-spacing:.08em;
+  margin:0 0 18px;text-wrap:balance;line-break:strict;
+}
+.hero__lead{font-size:clamp(17px,4.4vw,23px);line-height:1.85;letter-spacing:.07em;margin:0 0 26px;color:var(--ink-soft);text-wrap:balance;line-break:strict}
+.ornament{margin:0 auto 30px;max-width:460px}
+.ornament svg{width:100%;height:auto}
+.hero__note{font-size:15px;line-height:1.95;color:var(--ink-soft);margin:0 0 10px}
+.links{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.links a{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--gothic);font-size:13.5px;letter-spacing:.06em;line-height:1.5;
+  text-decoration:none;color:var(--ink);
+  border:1px solid var(--rule);background:var(--washi);border-radius:3px;padding:10px 14px;
+  transition:border-color .2s,background-color .2s;
+}
+.links a:hover{border-color:var(--gold);background:#fff}
+.links svg{width:15px;height:15px;flex:0 0 auto;color:var(--gold-ink)}
+
+/* ── 今日の1個 */
+.today{background:var(--washi);border-bottom:1px solid var(--rule);padding:34px 0}
+.today__inner{border:1px solid var(--rule);background:var(--paper);border-radius:4px;padding:24px 22px}
+.today__lab{font-family:var(--gothic);font-size:12.5px;letter-spacing:.3em;color:var(--gold-ink);margin:0 0 12px}
+.today__empty{margin:0;font-size:15.5px;color:var(--ink-soft);line-height:1.9}
+.today__title{font-size:clamp(22px,5.4vw,34px);line-height:1.4;letter-spacing:.06em;margin:0 0 10px;text-wrap:balance;line-break:strict}
+.today__what{margin:0 0 8px;font-size:16px;color:var(--ink-soft);line-height:1.9}
+.today__wow{margin:0 0 14px;font-size:15.5px;color:var(--gold-ink);line-height:1.9}
+.today__row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 16px}
+.today__line{
+  font-family:var(--gothic);font-size:12.8px;line-height:1.8;letter-spacing:.02em;
+  background:var(--washi);border:1px solid var(--rule);border-radius:3px;
+  padding:10px 12px;margin:0 0 12px;color:var(--ink-soft);
+  overflow-wrap:anywhere;
+}
+.btn{
+  font-family:var(--gothic);font-size:13px;letter-spacing:.06em;line-height:1.5;
+  border:1px solid var(--gold);background:var(--paper);color:var(--gold-ink);
+  border-radius:3px;padding:9px 14px;cursor:pointer;
+  transition:background-color .2s,border-color .2s,color .2s;
+}
+.btn:hover{background:var(--gold-ink);border-color:var(--gold-ink);color:#fff}
+.btn--quiet{border-color:var(--rule);color:var(--ink-faint)}
+.btn--quiet:hover{background:var(--ink-soft);border-color:var(--ink-soft);color:#fff}
+
+/* ── 絞り込み */
+.filter{background:var(--paper);border-bottom:1px solid var(--rule);padding:22px 0 18px}
+.filter__grp{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin:0 0 12px}
+.filter__lab{
+  font-family:var(--gothic);font-size:12.5px;letter-spacing:.2em;color:var(--ink-faint);
+  min-width:5.6em;line-height:2.2;margin:0;
+}
+.chip{
+  font-family:var(--gothic);font-size:13px;letter-spacing:.04em;line-height:1.5;
+  display:inline-flex;align-items:center;gap:7px;
+  border:1px solid var(--rule);background:var(--washi);color:var(--ink-soft);
+  border-radius:3px;padding:7px 11px;cursor:pointer;
+  transition:background-color .18s,border-color .18s,color .18s;
+}
+.chip:hover{border-color:var(--gold)}
+.chip__n{font-size:12.5px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.on .chip__n{color:#e7e2d6}
+.chip.zero{opacity:.45}
+.filter__foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:14px 0 0}
+.filter__cnt{font-family:var(--gothic);font-size:13.5px;letter-spacing:.06em;color:var(--ink);margin:0;font-variant-numeric:tabular-nums}
+
+/* ── カード一覧 */
+.list{padding:38px 0 60px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;list-style:none;margin:0;padding:0}
+.card{
+  display:flex;flex-direction:column;
+  background:var(--paper);border:1px solid var(--rule-soft);border-radius:4px;
+  padding:20px 18px 18px;min-width:0;
+}
+html.js-ready .card.hide{display:none}
+.card.is-today{border-color:var(--gold);background:#fff}
+.card__top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
+.card__no{font-family:var(--gothic);font-size:12.5px;letter-spacing:.18em;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.card__grp{font-family:var(--gothic);font-size:12.5px;letter-spacing:.14em;line-height:1.6;padding:2px 8px;border-radius:2px;border:1px solid currentColor}
+.card__grp--a{color:var(--gold-ink)}
+.card__grp--b{color:var(--ai)}
+.card__grp--c{color:var(--so)}
+.card__title{
+  font-family:var(--mincho);font-weight:400;
+  font-size:20px;line-height:1.55;letter-spacing:.05em;margin:0 0 10px;
+  text-wrap:balance;line-break:strict;
+}
+.card__what{margin:0 0 10px;font-size:15px;line-height:1.85;color:var(--ink-soft)}
+.card__wow{margin:0 0 14px;font-size:14.5px;line-height:1.85;color:var(--gold-ink)}
+.card__tools{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:0}
+.card__tools li{
+  font-family:var(--gothic);font-size:12.5px;letter-spacing:.03em;line-height:1.5;
+  border:1px solid var(--rule);border-radius:2px;padding:3px 7px;color:var(--ink-soft);background:var(--washi);
+}
+.card__tools .tag--none{border-style:dashed;color:var(--ink-faint)}
+.card__meta{display:flex;gap:10px;margin:0 0 12px;font-family:var(--gothic);font-size:12.5px;letter-spacing:.1em;color:var(--ink-faint)}
+.card__time{color:var(--ink-soft)}
+.card__src{margin:0 0 14px;font-family:var(--gothic);font-size:12.5px;line-height:1.75;border-top:1px dotted var(--rule);padding-top:10px}
+.card__src a{color:var(--gold-ink)}
+.card__who{display:block;color:var(--ink-faint);margin-top:3px}
+.card__unv{display:inline-flex;align-items:center;gap:6px;color:var(--ink-faint)}
+.card__unv svg{width:14px;height:14px;flex:0 0 auto}
+.card__act{margin:auto 0 0}
+.pick{
+  font-family:var(--gothic);font-size:12.8px;letter-spacing:.06em;line-height:1.5;
+  width:100%;border:1px solid var(--rule);background:var(--washi);color:var(--ink-soft);
+  border-radius:3px;padding:9px 10px;cursor:pointer;
+  transition:background-color .18s,border-color .18s,color .18s;
+}
+.pick:hover{border-color:var(--gold-ink);color:var(--gold-ink)}
+.card.is-today .pick{background:var(--gold-ink);border-color:var(--gold-ink);color:#fff}
+.empty{margin:0;font-size:16px;color:var(--ink-soft)}
+html.js-ready .empty.hide{display:none}
+
+/* ── フッター */
+.closing{background:var(--paper);border-top:1px solid var(--rule);padding:56px 0 60px;text-align:center}
+.closing__big{font-size:clamp(26px,7vw,44px);line-height:1.45;letter-spacing:.1em;margin:0 0 20px;text-wrap:balance;line-break:strict}
+.closing p.soft{color:var(--ink-soft);font-size:15.5px;line-height:1.95;margin:0 0 8px}
+.sign{font-family:var(--gothic);font-size:12.5px;letter-spacing:.28em;color:var(--ink-faint);margin:30px 0 0}
+.closing .links{justify-content:center}
+
+@media (max-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:620px){
+  .grid{grid-template-columns:1fr}
+  .filter__lab{min-width:100%;line-height:1.8;margin:0 0 2px}
+  .hero{padding:44px 0 36px}
+}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="col">
+      <p class="kicker">おもろいAI実践100案</p>
+      <h1 class="hero__title">おもろいAI実践、100案。</h1>
+      <p class="hero__lead">タイパもコスパも、いったん忘れる。</p>
+      <div class="ornament"><svg viewBox="0 0 460 26" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><path d="M0 13 H190" stroke="#ddd4bf" stroke-width="1"/><path d="M270 13 H460" stroke="#ddd4bf" stroke-width="1"/><circle cx="230" cy="13" r="8.5" stroke="#a2803a" stroke-width="1.2"/><path d="M212 13 h9 M239 13 h9" stroke="#a2803a" stroke-width="1.2"/><path d="M226.5 13 l2.6 2.8 l4.6 -5.6" stroke="#a2803a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <p class="hero__note">仕事も遊びも混ぜて、世界のどこかで実際にやられている「おもろい使い方」を100個ならべました。97案には元ネタのURLが付いています。残り3案は、まだ元ネタを突き止められていないので未確認と書いてあります。</p>
+      <p class="hero__note">この100案は、稼げや祭り×最高のMacの毎日の弾です。上から見て光ったものを、その日ひとつ選んでください。</p>
+      <ul class="links">
+        <li><a href="https://okemonogatari-hash.github.io/html-share-box/kasegeya-2026-coming-soon.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" role="img" xmlns="http://www.w3.org/2000/svg"><title>戻る</title><path d="M10 5 L3.5 12 L10 19"/><path d="M3.5 12 H20.5"/></svg>稼げや祭り2026 ─ 作戦書に戻る</a></li>
+        <li><a href="https://okemon-asobo.pages.dev/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" role="img" xmlns="http://www.w3.org/2000/svg"><title>別のページを開く</title><path d="M14 4h6v6"/><path d="M20 4 L11 13"/><path d="M18 14v5a1.6 1.6 0 0 1-1.6 1.6H5A1.6 1.6 0 0 1 3.4 19V7.6A1.6 1.6 0 0 1 5 6h5"/></svg>さわる自己紹介（1日1AI実験・2日目）</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<section class="today" id="today" aria-live="polite">
+  <div class="wrap">
+    <div class="col">
+      <div class="today__inner">
+        <p class="today__lab">今日の1個</p>
+        <div id="todayEmpty">
+          <p class="today__empty">まだ選んでいません。下のカードの「今日の1個にする」を押すと、ここに出ます。選んだものはこの端末に残るので、明日また開いても同じものが立っています。</p>
+        </div>
+        <div id="todayBody" hidden>
+          <h2 class="today__title" id="todayTitle"></h2>
+          <p class="today__what" id="todayWhat"></p>
+          <p class="today__wow" id="todayWow"></p>
+          <p class="today__line" id="todayLine"></p>
+          <p class="today__row">
+            <button type="button" class="btn" id="copyBtn">台帳に書く用の1行をコピーします</button>
+            <button type="button" class="btn btn--quiet" id="clearBtn">選び直します</button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="filter" id="filter">
+  <div class="wrap">
+    <div class="filter__grp">
+      <p class="filter__lab">ジャンル</p>
+      <button type="button" class="chip" data-f="genre" data-v="遊び"><span class="chip__l">遊び</span><span class="chip__n" data-cnt="genre:遊び">0</span></button>
+        <button type="button" class="chip" data-f="genre" data-v="仕事"><span class="chip__l">仕事</span><span class="chip__n" data-cnt="genre:仕事">0</span></button>
+        <button type="button" class="chip" data-f="genre" data-v="両方"><span class="chip__l">両方</span><span class="chip__n" data-cnt="genre:両方">0</span></button>
+    </div>
+    <div class="filter__grp">
+      <p class="filter__lab">所要</p>
+      <button type="button" class="chip" data-f="time" data-v="30分"><span class="chip__l">30分</span><span class="chip__n" data-cnt="time:30分">0</span></button>
+        <button type="button" class="chip" data-f="time" data-v="1時間"><span class="chip__l">1時間</span><span class="chip__n" data-cnt="time:1時間">0</span></button>
+        <button type="button" class="chip" data-f="time" data-v="2時間"><span class="chip__l">2時間</span><span class="chip__n" data-cnt="time:2時間">0</span></button>
+        <button type="button" class="chip" data-f="time" data-v="1日"><span class="chip__l">1日</span><span class="chip__n" data-cnt="time:1日">0</span></button>
+        <button type="button" class="chip" data-f="time" data-v="1週間"><span class="chip__l">1週間</span><span class="chip__n" data-cnt="time:1週間">0</span></button>
+    </div>
+    <div class="filter__grp">
+      <p class="filter__lab">群</p>
+      <button type="button" class="chip" data-f="group" data-v="A"><span class="chip__l">A 作る・鳴らす・動かす</span><span class="chip__n" data-cnt="group:A">0</span></button>
+        <button type="button" class="chip" data-f="group" data-v="B"><span class="chip__l">B 働かせる・自動化</span><span class="chip__n" data-cnt="group:B">0</span></button>
+        <button type="button" class="chip" data-f="group" data-v="C"><span class="chip__l">C 人・場・旅・自分</span><span class="chip__n" data-cnt="group:C">0</span></button>
+    </div>
+    <div class="filter__grp">
+      <p class="filter__lab">元ネタ</p>
+      <button type="button" class="chip" data-f="src" data-v="ari"><span class="chip__l">元ネタあり</span><span class="chip__n" data-cnt="src:ari">0</span></button>
+        <button type="button" class="chip" data-f="src" data-v="mi"><span class="chip__l">未確認</span><span class="chip__n" data-cnt="src:mi">0</span></button>
+    </div>
+    <div class="filter__foot">
+      <p class="filter__cnt" id="cnt">100案を表示しています。</p>
+      <button type="button" class="btn btn--quiet" id="resetBtn">絞り込みを外します</button>
+    </div>
+  </div>
+</section>
+
+<main class="list">
+  <div class="wrap">
+    <div class="grid" id="grid">
+<article class="card" data-no="1" data-genre="遊び" data-time="1週間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">001</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">AIだけでローグライク8日制作</h3>
+  <p class="card__what">Claude Codeにコードを100%書かせ、190PR・約500テストのデッキ構築ローグライクを8日で仕上げる</p>
+  <p class="card__wow">人間はほぼコードを書かずゲーム1本が完成していく過程が見える</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://zenn.dev/no_code_written/articles/ai-gamedev-intro" target="_blank" rel="noopener">Claude Code 100%生成でデッキ構築ローグライクを作っている話</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="1">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="2" data-genre="遊び" data-time="1日" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">002</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">要望だけで3Dゲーム完成</h3>
+  <p class="card__what">Godot上でClaude Codeに要望を伝え続けるだけで、アセットも全部コード生成の3Dゲームを数時間で作る</p>
+  <p class="card__wow">外部素材ファイル一切なしで3Dゲームが動く</p>
+  <ul class="card__tools"><li>Claude Code</li><li>Godot</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://blog.usize-tech.com/claudecode-3dgame-developing/" target="_blank" rel="noopener">Claude Codeに要望を伝え続けたら数時間で3Dゲームが完成した話</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="2">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="3" data-genre="遊び" data-time="2時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">003</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">グラBGMも全部AI製ゲーム</h3>
+  <p class="card__what">グラフィック・BGM・SEまで全部Claude Codeが生成する2Dゲームプロトタイプ用テンプレを使う</p>
+  <p class="card__wow">絵も音も自分で用意せずゲームの体裁が一発で整う</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://zenn.dev/aya/articles/4c7ae95322ced5" target="_blank" rel="noopener">グラフィックもBGM・SEもAIが作ってくれるゲームプロトタイプ作成テンプレート</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="3">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="4" data-genre="遊び" data-time="2時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">004</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">2日で工場運営クリッカー</h3>
+  <p class="card__what">ゲーム開発未経験のままClaudeだけで工場運営クリッカーゲームを2日で完成させる</p>
+  <p class="card__wow">経験ゼロから2日でリリース可能な形まで行く速度</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/kotsubuai/n/na3a936557962" target="_blank" rel="noopener">Claudeを使って工場運営クリッカーゲームを作ってみた</a><span class="card__who">kotsubuai</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="4">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="5" data-genre="遊び" data-time="1日" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">005</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">1日ゲームジャム個人版</h3>
+  <p class="card__what">朝から晩までの1日だけでClaude Codeを使い個人ゲームジャムをやってみる</p>
+  <p class="card__wow">朝始めて夜には遊べるゲームが手元にある</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/hiro02/n/n7bb038808bf7" target="_blank" rel="noopener">「ClaudeCode」で1日でゲームを作る</a><span class="card__who">Hiro</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="5">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="6" data-genre="遊び" data-time="1日" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">006</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">初めてのブラウザゲーム</h3>
+  <p class="card__what">コード未経験からClaude Codeで初めてのブラウザゲームを一から作りきる</p>
+  <p class="card__wow">知識ゼロの状態から公開できるゲームまで辿り着く</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/yamakoswf/n/n2298ab84fbb3" target="_blank" rel="noopener">Claude Codeで初めてブラウザゲームを作った話</a><span class="card__who">yama_ko</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="6">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="7" data-genre="遊び" data-time="30分" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">007</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">Sunoで和風RPG曲を一撃生成</h3>
+  <p class="card__what">「和風RPGのフィールド曲、琴と尺八、太鼓」の一言プロンプトだけでSunoに曲を作らせる</p>
+  <p class="card__wow">たった1行の指示でゲーム世界観そのものの高品質曲が出る</p>
+  <ul class="card__tools"><li>Suno</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://mono-good.com/2026/03/05/suno-ai-daw-ai-2026/" target="_blank" rel="noopener">Suno × DAW併用で作曲革命！AI時代の新しい音楽制作ワークフロー</a><span class="card__who">Leo ／ 2026-03</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="7">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="8" data-genre="遊び" data-time="1時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">008</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">自分の声で新曲を歌わせる</h3>
+  <p class="card__what">Suno v5.5のVoices機能に自分の歌声を登録し、その声で知らない新曲を歌わせる</p>
+  <p class="card__wow">自分の声質のまま作ったことのない曲を歌う自分が生まれる</p>
+  <ul class="card__tools"><li>Suno</li></ul>
+  <p class="card__meta"><span class="card__time">1時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://uravation.com/media/suno-ai-music-generation-guide-2026/" target="_blank" rel="noopener">【2026年8月最新】Suno AIとは｜使い方・料金・商用利用まで完全ガイド</a><span class="card__who">2026-03</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="8">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="9" data-genre="遊び" data-time="30分" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">009</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">Veo3とKling3.0で撮影対決</h3>
+  <p class="card__what">同じプロンプトをVeo3.1とKling3.0の両方に投げて絵作りのクセを見比べる</p>
+  <p class="card__wow">同じ言葉でも一方は実写風・一方は映画的画作りとまるで違う映像が出る</p>
+  <ul class="card__tools"><li>Veo3</li><li>Kling</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/mashtake/n/nbc5c7808e789" target="_blank" rel="noopener">【2026年最新版】動画生成AIの人気3ツール徹底比較 Veo 3.1/Kling 3.0/Grok Imagine</a><span class="card__who">Ai-BOW ／ 2026-04</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="9">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="10" data-genre="遊び" data-time="1週間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">010</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">写真からフィギュア実物発注</h3>
+  <p class="card__what">自撮りやペット写真をAIで3Dモデル化し、FigMeeで実物フィギュアとして出力する</p>
+  <p class="card__wow">平面の写真が数日後に手のひらサイズの立体物として届く</p>
+  <ul class="card__tools"><li>Meshy</li><li>Blender</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://3day-printer.com/media/product-service/photo-to-figure/" target="_blank" rel="noopener">【2026年最新】写真からフィギュアを作れるサイト5選を徹底比較</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="10">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="11" data-genre="遊び" data-time="2時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">011</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">イラストをMeshy4で立体化</h3>
+  <p class="card__what">自分の描いたイラストをMeshy4に投げてテクスチャ込みの3Dメッシュを一発生成する</p>
+  <p class="card__wow">平面の陰影頼みの絵が奥行きを持った立体データに化ける</p>
+  <ul class="card__tools"><li>Meshy</li><li>Blender</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://unolaboratory.com/3dgenai_meshy/" target="_blank" rel="noopener">【2026最新】3Dモデル生成AI「Meshy」とは？3Dプリント活用のコツ</a><span class="card__who">2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="11">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="12" data-genre="遊び" data-time="1週間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">012</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">映画のロボットを自宅に再現</h3>
+  <p class="card__what">『プロジェクト・ヘイル・メアリー』のロッキーをRaspberry Pi5とClaude Codeで音声対話ロボットとして自作する</p>
+  <p class="card__wow">喋る・聞く・7本のサーボで動く映画キャラが本当に机の上にいる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>Raspberry Pi</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://www.raspberrypi.com/news/ai-rocky-from-project-hail-mary/" target="_blank" rel="noopener">AI Rocky from &#x27;Project Hail Mary&#x27;</a><span class="card__who">Leviathan Engineer</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="12">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="13" data-genre="両方" data-time="1週間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">013</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">Claude Codeが自律で家事秘書化</h3>
+  <p class="card__what">Raspberry PiにClaude Codeを常駐させ、メール確認・議事録処理・Slack返信・Telegram通知を自律実行させる</p>
+  <p class="card__wow">頼まなくても必要な時だけ勝手に通知が飛んでくる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>Raspberry Pi</li><li>Telegram</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">両方</span></p>
+  <p class="card__src"><a href="https://strugglestreet.substack.com/p/claude-chode-an-autonomous-claude" target="_blank" rel="noopener">Claude Chode: An autonomous Claude Code system running on $700 of Raspberry Pi gear</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="13">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="14" data-genre="遊び" data-time="1週間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">014</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">$80の自宅専用AI拠点</h3>
+  <p class="card__what">$80のRaspberry Pi5にローカルWhisperの音声入力とClaude Codeを載せ、Google Driveをマウントして自分専用AIにする</p>
+  <p class="card__wow">スマホもクラウドアプリも介さず家の中に自分だけのAI拠点ができる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>Raspberry Pi</li><li>Whisper</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://www.ehasan.com/p/claude-code-on-a-raspberry-pi-in" target="_blank" rel="noopener">Claude Code on a Raspberry Pi in my living room</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="14">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="15" data-genre="遊び" data-time="2時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">015</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">ハッシュシードの生成アート</h3>
+  <p class="card__what">genart-skillを導入し、Claude Codeにハッシュシード決定論の生成アートを描かせる</p>
+  <p class="card__wow">同じシードなら誰の環境でも寸分違わず同じ絵が再現される</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://github.com/camilleroux/genart-skill" target="_blank" rel="noopener">genart-skill: Generative art skill for Claude Code — deterministic, hash-seeded</a><span class="card__who">camilleroux</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="15">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="16" data-genre="遊び" data-time="1日" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">016</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">コードが顔になるフォトブース</h3>
+  <p class="card__what">p5.jsでピクセルアートアバターを生成し、SVGが組み上がる過程をその場で画面表示するフォトブースを作る</p>
+  <p class="card__wow">自分の似顔絵がコードの断片からリアルタイムに描き上がっていく</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://techtiff.substack.com/p/code-with-claude-2026" target="_blank" rel="noopener">Code with Claude 2026: Claude Code Routines, Dreaming, AI Systems</a><span class="card__who">2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="16">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="17" data-genre="遊び" data-time="2時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">017</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">p5.jsで自分の美学を語るアート</h3>
+  <p class="card__what">Algorithmic Art skillで自分なりの「哲学」を言葉にし、p5.jsのマスター級生成アートをClaude Codeに作らせる</p>
+  <p class="card__wow">美術知識ゼロでも言葉にした思想が一点物の作品になる</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://mcpmarket.com/tools/skills/algorithmic-art-generative-aesthetics-7" target="_blank" rel="noopener">Algorithmic Art &amp; Generative Aesthetics - Claude Code Skill</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="17">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="18" data-genre="遊び" data-time="1日" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">018</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">公式スタックチャンを組み立てる</h3>
+  <p class="card__what">M5Stack公式のAIデスクトップロボット「スタックチャン」を組み立ててAI対話させる</p>
+  <p class="card__wow">1.8万円のキットが喋って動く自分専用ロボットになる</p>
+  <ul class="card__tools"><li>M5Stack</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://prtimes.jp/main/html/rd/p/000000244.000064534.html" target="_blank" rel="noopener">M5StackとユーザコミュニティのAI連携デスクトップロボット「M5スタックチャン」販売開始</a><span class="card__who">2026-05</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="18">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="19" data-genre="遊び" data-time="2時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">019</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">スタックチャンをローカルLLM化</h3>
+  <p class="card__what">M5StackChanのAI.AGENTをXiaozhi互換サーバー経由でローカルLLMに繋ぎ替える</p>
+  <p class="card__wow">クラウド接続なしでも机の上のロボットが自分の言葉で返事する</p>
+  <ul class="card__tools"><li>M5Stack</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://blog.rpine.net/posts/stackchan-local-llm" target="_blank" rel="noopener">M5Stack版StackChanのAI.AGENTをローカルLLMで実行してみる</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="19">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="20" data-genre="両方" data-time="1週間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">020</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">WebGPUで展示物級の3D表現</h3>
+  <p class="card__what">Three.jsのWebGPU対応を使い、ブラウザの中の3D表現を展示インスタレーション風に組む</p>
+  <p class="card__wow">サイトの中の3Dがそのまま展示物のビジュアルとして通用する</p>
+  <ul class="card__tools"><li>three.js</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">両方</span></p>
+  <p class="card__src"><a href="https://www.utsubo.com/blog/threejs-2026-what-changed" target="_blank" rel="noopener">What&#x27;s New in Three.js (2026): WebGPU, New Workflows &amp; Beyond</a><span class="card__who">2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="20">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="21" data-genre="仕事" data-time="1週間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">021</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">声で操るガラスの3Dキャラ</h3>
+  <p class="card__what">音声UIと半透明WebGLキャラクターでUIを操作するプロダクトの作りを真似て自分のサイトに載せる</p>
+  <p class="card__wow">画面の中のガラス質のキャラに話しかけるだけでUIが動く</p>
+  <ul class="card__tools"><li>three.js</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://www.utsubo.com/blog/threejs-2026-what-changed" target="_blank" rel="noopener">What&#x27;s New in Three.js (2026)（Lazarev&#x27;s Elva紹介）</a><span class="card__who">Lazarev ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="21">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="22" data-genre="遊び" data-time="1日" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">022</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">エンダードラゴンを魔改造</h3>
+  <p class="card__what">Claude Codeで統合版マイクラのアドオンを作り、公式ボスのエンダードラゴンを強化改造する</p>
+  <p class="card__wow">コード知識ゼロでも公式ボスの強さを自分好みに書き換えられる</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://ai-kids-pc.com/posts/claude-code-minecraft-bedrock-addon/" target="_blank" rel="noopener">Claude Codeで統合版マイクラのアドオンを作ってみた！エンダードラゴン魔改造チャレンジ</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="22">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="23" data-genre="遊び" data-time="1日" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">023</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">マイクラアドオン企画〜実装全部AI任せ</h3>
+  <p class="card__what">Claude Codeにマイクラアドオン開発を企画から実装まで丸ごとやらせる</p>
+  <p class="card__wow">アイデアを言うだけでゲーム内に新しい仕組みが実装される</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/mirinhoshi/n/n19946d192e1a" target="_blank" rel="noopener">Claude Codeでマイクラアドオン開発を全部やらせてみた</a><span class="card__who">みりん</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="23">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="24" data-genre="遊び" data-time="1日" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">024</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">AIと共同でMinecraft拡張</h3>
+  <p class="card__what">Claude Coworkと一緒にMinecraftのアドオンを共同制作する</p>
+  <p class="card__wow">AIと人が役割分担しながら1つのMOD開発を進める体験ができる</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/a_bros/n/n9427462a7571" target="_blank" rel="noopener">Claude Coworkに衝撃を受けて、AIと一緒にMinecraftのアドオンを作った話</a><span class="card__who">A-bros.</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="24">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="25" data-genre="遊び" data-time="2時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">025</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">CLIで遊べるAIゲームスキル自作</h3>
+  <p class="card__what">Claude Code上でコマンドを打つだけで起動する遊べるゲームスキルを自作する</p>
+  <p class="card__wow">ターミナルに文字を打つだけでゲームが立ち上がる</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://zenn.dev/orga/articles/373c9e33da599c" target="_blank" rel="noopener">CodexとかClaude Codeとかで遊べるゲームのスキルを作った</a><span class="card__who">orga</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="25">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="26" data-genre="遊び" data-time="1週間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">026</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">賞金付きバイブコーディング祭に参加</h3>
+  <p class="card__what">Cursor Vibe Jam 2026にAI製ゲームで参加してみる（コードの90%以上がAI生成というルール）</p>
+  <p class="card__wow">1ヶ月後には賞金4万ドルを競う舞台に自分のゲームが並ぶ</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://jam.pieter.com/2026/" target="_blank" rel="noopener">2026 Vibe Coding Game Jam</a><span class="card__who">Pieter Levels ／ 2026-04</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="26">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="27" data-genre="遊び" data-time="30分" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">027</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">AI同士の乱闘を観戦する</h3>
+  <p class="card__what">AI Battle Royale Generatorで自分のAIを学習させ、視聴者参加型のバトルロワイヤルを観戦する</p>
+  <p class="card__wow">1億通り以上のマップからAI同士が毎回違う戦い方を見せる</p>
+  <ul class="card__tools"><li class="tag--none">道具はこれから決めます</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://store.steampowered.com/app/1604450/AI_Battle_Royale_Generator/" target="_blank" rel="noopener">AI Battle Royale Generator on Steam</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="27">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="28" data-genre="両方" data-time="2時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">028</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">HTMLを書くだけでMP4動画</h3>
+  <p class="card__what">HyperFramesでHTML/CSSのビデオコンポジションを組み、ヘッドレスChrome経由でMP4に書き出す</p>
+  <p class="card__wow">After Effectsのタイムライン操作なしにコードだけで動画が完成する</p>
+  <ul class="card__tools"><li>HyperFrames</li><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">両方</span></p>
+  <p class="card__src"><a href="https://note.com/kudo_notes/n/n0185dec6319d" target="_blank" rel="noopener">HyperFrames: &quot;Writing Videos in HTML&quot;</a><span class="card__who">Kudo ／ 2026-04</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="28">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="29" data-genre="仕事" data-time="30分" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">029</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">URL1個でAIが5秒CM作成</h3>
+  <p class="card__what">自分のサイトURLをHyperFramesに渡すだけで色とロゴを拾ったAIナレーション付き5秒スポット動画を作らせる</p>
+  <p class="card__wow">URLを投げただけでサイトの雰囲気そのままのCMが自動で出てくる</p>
+  <ul class="card__tools"><li>HyperFrames</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://apptalenthub.co.jp/column-posts/3575/" target="_blank" rel="noopener">HTMLで動画が書ける時代-HyperFramesで5秒スポット動画をやってみた</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="29">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="30" data-genre="仕事" data-time="1日" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">030</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">エージェントに動画テンプレ量産させる</h3>
+  <p class="card__what">Claude CodeにHyperFramesのプロダクトデモや講座クリップのテンプレートを量産させる</p>
+  <p class="card__wow">1つ頼むと似た動画テンプレが何パターンも自動で増えていく</p>
+  <ul class="card__tools"><li>HyperFrames</li><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://qiita.com/kai_kou/items/852f3a82898d8c6e629c" target="_blank" rel="noopener">HyperFrames入門 — HTMLからMP4を生成するエージェントOSS</a><span class="card__who">kai_kou</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="30">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="31" data-genre="仕事" data-time="2時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">031</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">ElevenLabsで自分のキャラボイス設計</h3>
+  <p class="card__what">ElevenLabsのVoice Designで自分専用のキャラクターボイスを作り、動画ナレーションに当てる</p>
+  <p class="card__wow">月5ドルでプロ声優級のキャラボイスが無限に量産できる</p>
+  <ul class="card__tools"><li>ElevenLabs</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://weel.co.jp/media/innovator/elevenlabs/" target="_blank" rel="noopener">ElevenLabs（イレブンラボ）の使い方・商用利用・AI音声生成を解説</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="31">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="32" data-genre="遊び" data-time="1時間" data-group="A" data-src="ari">
+  <p class="card__top"><span class="card__no">032</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">自分の声をクローンして遊ぶ</h3>
+  <p class="card__what">ElevenLabsのVoice Cloningで自分の声を複製し、言っていないセリフを喋らせてみる</p>
+  <p class="card__wow">自分そっくりの声が自分の知らない台詞を読み上げる面白さと不気味さ</p>
+  <ul class="card__tools"><li>ElevenLabs</li></ul>
+  <p class="card__meta"><span class="card__time">1時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://weel.co.jp/media/innovator/elevenlabs/" target="_blank" rel="noopener">ElevenLabs（イレブンラボ）の使い方・商用利用・AI音声生成を解説</a></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="32">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="33" data-genre="遊び" data-time="1日" data-group="A" data-src="mi">
+  <p class="card__top"><span class="card__no">033</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">スマートグラスで即興AR生成</h3>
+  <p class="card__what">AR対応スマートグラスに音声で言った物をAIが3D生成し、視界の中に重ねて遊ぶ</p>
+  <p class="card__wow">言葉にした物がそのまま目の前の空間に浮かんで見える</p>
+  <ul class="card__tools"><li class="tag--none">道具はこれから決めます</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><span class="card__unv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" role="img" xmlns="http://www.w3.org/2000/svg"><title>未確認</title><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><path d="M12 16.4h.01"/></svg>未確認 ─ 元ネタをまだ突き止めていません</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="33">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="34" data-genre="遊び" data-time="1日" data-group="A" data-src="mi">
+  <p class="card__top"><span class="card__no">034</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">市販ロボット犬をAIで拡張</h3>
+  <p class="card__what">市販の犬型ロボットトイの通信をリバースエンジニアリングし、Claude Codeで新しい動作パターンを追加する</p>
+  <p class="card__wow">既製品のおもちゃが自分だけのコマンドで動く相棒に変わる</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><span class="card__unv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" role="img" xmlns="http://www.w3.org/2000/svg"><title>未確認</title><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><path d="M12 16.4h.01"/></svg>未確認 ─ 元ネタをまだ突き止めていません</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="34">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="35" data-genre="遊び" data-time="2時間" data-group="A" data-src="mi">
+  <p class="card__top"><span class="card__no">035</span><span class="card__grp card__grp--a">つくる</span></p>
+  <h3 class="card__title">IoTぬいぐるみに感情AIを仕込む</h3>
+  <p class="card__what">M5Stackとマイクを仕込んだぬいぐるみにAI経由の感情表現を持たせ、話しかけると声色を変えて反応させる</p>
+  <p class="card__wow">ただの布のぬいぐるみが撫で方や言葉で機嫌を変えるようになる</p>
+  <ul class="card__tools"><li>M5Stack</li><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><span class="card__unv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" role="img" xmlns="http://www.w3.org/2000/svg"><title>未確認</title><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><path d="M12 16.4h.01"/></svg>未確認 ─ 元ネタをまだ突き止めていません</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="35">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="36" data-genre="仕事" data-time="1週間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">036</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">一晩700実験でLLM高速化</h3>
+  <p class="card__what">Karpathyが小型LLM学習ループをAIに任せ寝てる間に700回自動実験させた</p>
+  <p class="card__wow">本人が見逃したバグまで発見・学習時間を2.02h→1.80hに短縮</p>
+  <ul class="card__tools"><li>Claude Code</li><li>GitHub</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://www.oreilly.com/radar/i-let-an-ai-agent-run-40-experiments-while-i-slept/" target="_blank" rel="noopener">I Let an AI Agent Run 40 Experiments While I Slept / karpathy/autoresearch</a><span class="card__who">Andrej Karpathy ／ 2026-08</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="36">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="37" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">037</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">一晩放置エージェント運用の作法</h3>
+  <p class="card__what">Claude Codeを一晩自律稼働させる際の壊れ方と直し方をまとめた実践記</p>
+  <p class="card__wow">「壊れる場所」を先に洗い出す視点がそのまま使える</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://medium.com/@evekhm/running-claude-code-autonomously-overnight-what-breaks-and-how-to-fix-it-3bee3bd958b5" target="_blank" rel="noopener">Running Claude Code Autonomously Overnight — What Breaks and How to Fix It</a><span class="card__who">Eva Khmelinskaya ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="37">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="38" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">038</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Claude Code Hooksの安全網プラグイン</h3>
+  <p class="card__what">PreToolUse/PostToolUseで全ツール呼び出しを許可・拒否・改変する市場配布フック集</p>
+  <p class="card__wow">mainへのpushを承認制でブロックできる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>hooks</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://github.com/karanb192/claude-code-hooks" target="_blank" rel="noopener">karanb192/claude-code-hooks</a><span class="card__who">karanb192 ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="38">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="39" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">039</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Claude Code Hooks完全攻略リポジトリ</h3>
+  <p class="card__what">フックの型と落とし穴を体系化したマスター教材</p>
+  <p class="card__wow">ライフサイクルの各時点にコマンドを差し込む発想が一望できる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>hooks</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://github.com/disler/claude-code-hooks-mastery" target="_blank" rel="noopener">disler/claude-code-hooks-mastery</a><span class="card__who">disler ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="39">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="40" data-genre="仕事" data-time="30分" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">040</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">ターミナルに常駐するClaude HUD</h3>
+  <p class="card__what">statusline APIだけで文脈使用量・稼働エージェント・todo進捗を可視化</p>
+  <p class="card__wow">別ウィンドウ無し、tmux不要でどのターミナルでも動く</p>
+  <ul class="card__tools"><li>Claude Code</li><li>statusline</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://github.com/jarrodwatts/claude-hud" target="_blank" rel="noopener">jarrodwatts/claude-hud</a><span class="card__who">jarrodwatts ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="40">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="41" data-genre="仕事" data-time="30分" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">041</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Rust製の超軽量HUD版</h3>
+  <p class="card__what">claude-hudをRustで書き直した高速版statuslineツール</p>
+  <p class="card__wow">最小構成主義で表示速度を極限まで詰めている</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://github.com/GaoSSR/best-claude-hud" target="_blank" rel="noopener">GaoSSR/best-claude-hud</a><span class="card__who">GaoSSR ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="41">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="42" data-genre="両方" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">042</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Obsidianに常駐するAIエージェント</h3>
+  <p class="card__what">Claude Code/Codexをそのままボルトに埋め込みノートを自然言語操作</p>
+  <p class="card__wow">1.8Mダウンロード超・タグや繋がりの提案までしてくれる</p>
+  <ul class="card__tools"><li>Obsidian</li><li>Claude Code</li><li>Codex</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">両方</span></p>
+  <p class="card__src"><a href="https://github.com/YishenTu/claudian" target="_blank" rel="noopener">YishenTu/claudian</a><span class="card__who">YishenTu ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="42">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="43" data-genre="遊び" data-time="1日" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">043</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">64Mパラメータを2時間で自前学習</h3>
+  <p class="card__what">純PyTorchでLLMをゼロから学習できる教育用OSS</p>
+  <p class="card__wow">クラウド不要・ノートPC1台でLLMの中身が理解できる</p>
+  <ul class="card__tools"><li>PyTorch</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://github.com/jingyaogong/minimind" target="_blank" rel="noopener">jingyaogong/minimind</a><span class="card__who">jingyaogong ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="43">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="44" data-genre="遊び" data-time="1日" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">044</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">最小構成のVLMを自作</h3>
+  <p class="card__what">MiniMindの視覚言語モデル版、画像も読めるミニLLMを自前で作る</p>
+  <p class="card__wow">最小実装のVLMなのに教材として完結している</p>
+  <ul class="card__tools"><li>PyTorch</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://github.com/jingyaogong/minimind-v" target="_blank" rel="noopener">jingyaogong/minimind-v</a><span class="card__who">jingyaogong ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="44">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="45" data-genre="仕事" data-time="30分" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">045</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">マーケ特化スキル集をClaude Codeに</h3>
+  <p class="card__what">CRO・コピー・SEO・分析をワンコマンドでインストールできるスキル集</p>
+  <p class="card__wow">npx一発でLP改善提案まで出す実務直結セット</p>
+  <ul class="card__tools"><li>Claude Code</li><li>skills</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://github.com/coreyhaines31/marketingskills" target="_blank" rel="noopener">coreyhaines31/marketingskills</a><span class="card__who">Corey Haines ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="45">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="46" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">046</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">15スキル並列でサイト監査</h3>
+  <p class="card__what">並列サブエージェントでWeb監査〜広告文〜PDFレポートまで自動生成</p>
+  <p class="card__wow">クライアント納品可能なPDFレポートまで自走で出る</p>
+  <ul class="card__tools"><li>Claude Code</li><li>subagents</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://github.com/zubair-trabzada/ai-marketing-claude" target="_blank" rel="noopener">zubair-trabzada/ai-marketing-claude</a><span class="card__who">zubair-trabzada ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="46">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="47" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">047</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Playwright MCPでブラウザを直接操縦</h3>
+  <p class="card__what">アクセシビリティツリーを読んでクリック・入力・スクショまで実行</p>
+  <p class="card__wow">ビジョンモデル無しでも画面構造を理解して操作できる</p>
+  <ul class="card__tools"><li>Playwright</li><li>MCP</li><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://playwright.dev/docs/getting-started-mcp" target="_blank" rel="noopener">Playwright MCP</a><span class="card__who">Microsoft/Playwright ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="47">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="48" data-genre="仕事" data-time="30分" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">048</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Playwright MCPでQAとスクレイピングを自動化</h3>
+  <p class="card__what">認証済みセッション含めブラウザ操作をClaude Codeに丸ごと渡す実践ガイド</p>
+  <p class="card__wow">claude mcp add一発で常駐ブラウザ制御が生える</p>
+  <ul class="card__tools"><li>Playwright</li><li>MCP</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://www.mindstudio.ai/blog/automate-browser-tasks-claude-code-playwright" target="_blank" rel="noopener">Automate Browser Tasks with Claude Code and the Playwright MCP Server</a><span class="card__who">MindStudio ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="48">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="49" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">049</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Apple音声メモを検索可能アーカイブに</h3>
+  <p class="card__what">数百件のボイスメモをClaude Codeスキルで文字起こし・要約・引用抽出</p>
+  <p class="card__wow">APIキー無しで自分の声の資産が検索可能な図書館になる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>skills</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://github.com/cathrynlavery/voice-memo-organizer" target="_blank" rel="noopener">cathrynlavery/voice-memo-organizer</a><span class="card__who">cathrynlavery ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="49">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="50" data-genre="仕事" data-time="1日" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">050</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">iPhoneボイスメモを毎日ノートに自動着地</h3>
+  <p class="card__what">iOSのVoice MemosをClaude Code経由でObsidianのDaily Noteに流し込む</p>
+  <p class="card__wow">喋るだけで日記が育っていく仕組みが個人開発で完成</p>
+  <ul class="card__tools"><li>Claude Code</li><li>Obsidian</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://drew.tech/posts/ios-memos-obsidian-claude" target="_blank" rel="noopener">How to Send iOS Voice Memos to Obsidian with Claude Code</a><span class="card__who">Drew Bredvick ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="50">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="51" data-genre="仕事" data-time="30分" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">051</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">「文字起こしして」で議事録が生える</h3>
+  <p class="card__what">Claude Codeに一言投げるだけでボイスメモが議事録に変わる運用</p>
+  <p class="card__wow">コマンドを覚えなくていい、ただの一言でパイプライン起動</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/reiser/n/n87af82005786" target="_blank" rel="noopener">Just say「transcribe」to Claude Code, and your voice memos become meeting minutes</a><span class="card__who">R (note.com) ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="51">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="52" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">052</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">数百の並列サブエージェントを1セッションから</h3>
+  <p class="card__what">親エージェントがタスクを分解し子エージェントを大量に並列展開</p>
+  <p class="card__wow">Fleetモードでは数十〜数百体を1回のセッションで動かせる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>subagents</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://www.mindstudio.ai/blog/claude-code-dynamic-workflows-parallel-sub-agents" target="_blank" rel="noopener">How to Use Claude Code Dynamic Workflows: Spawning Hundreds of Parallel Sub-Agents</a><span class="card__who">MindStudio ／ 2026-05</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="52">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="53" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">053</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">git worktreeで5エージェント同時稼働</h3>
+  <p class="card__what">worktreeを切ってそれぞれ別のClaude Codeセッションを並走させる</p>
+  <p class="card__wow">コンテキストスイッチ無しで並行開発が体感できる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>git worktree</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://devtoollab.com/blog/claude-code-git-worktrees-parallel-agents-guide" target="_blank" rel="noopener">Claude Code Git Worktrees: Run 5 AI Agents in Parallel</a><span class="card__who">DevToolLab ／ 2026-07</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="53">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="54" data-genre="両方" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">054</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">複数AI人格でブレストさせる</h3>
+  <p class="card__what">Claude Codeのagent teamsで複数ペルソナに討論・合意形成をさせる</p>
+  <p class="card__wow">1人で考えるより明らかに違う視点が机の上に並ぶ</p>
+  <ul class="card__tools"><li>Claude Code</li><li>agent teams</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">両方</span></p>
+  <p class="card__src"><a href="https://www.mindstudio.ai/blog/claude-code-agent-teams-brainstorming" target="_blank" rel="noopener">How to Use Claude Code Agent Teams for Multi-Perspective Brainstorming</a><span class="card__who">MindStudio ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="54">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="55" data-genre="仕事" data-time="1週間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">055</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">チームリードAIがメンバーに直接指示</h3>
+  <p class="card__what">team-leadセッションがタスクリストを共有しteammateに直接メッセージする新モード</p>
+  <p class="card__wow">「Swarms」と噂されていたものが正式にagent teamsとして公開</p>
+  <ul class="card__tools"><li>Claude Code</li><li>agent teams</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://blog.imseankim.com/claude-code-team-mode-multi-agent-orchestration-march-2026/" target="_blank" rel="noopener">Claude Code Agent Teams: TeammateTool and Swarm Mode</a><span class="card__who">Sean Kim ／ 2026-03</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="55">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="56" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">056</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Obsidianボルトを開発の司令塔に</h3>
+  <p class="card__what">ノートvaultをClaude Code専用ダッシュボードに変え進捗・ログを一画面に集約</p>
+  <p class="card__wow">ノートを開いたまま開発ログとタスクが同時に見える</p>
+  <ul class="card__tools"><li>Obsidian</li><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://github.com/mighty-technophobia970/Obsidian-Dashboard" target="_blank" rel="noopener">mighty-technophobia970/Obsidian-Dashboard</a><span class="card__who">mighty-technophobia970 ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="56">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="57" data-genre="仕事" data-time="1時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">057</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">クリックせずNotionを構築する</h3>
+  <p class="card__what">Notion CLI経由でClaude Codeにページ・DB構築を丸ごと任せる</p>
+  <p class="card__wow">ローカルmarkdownフォルダから構造化Notionページが自動で生える</p>
+  <ul class="card__tools"><li>Notion</li><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://aimaker.substack.com/p/notion-cli-claude-code" target="_blank" rel="noopener">Notion CLI + Claude Code: Build Notion Without Clicking</a><span class="card__who">aimaker (Substack) ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="57">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="58" data-genre="仕事" data-time="30分" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">058</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">コマンド1つでNotion連携完成</h3>
+  <p class="card__what">notion-search/notion-createなどのツールでClaude CodeからNotionを直接編集</p>
+  <p class="card__wow">ブラウザログイン1回・ターミナル1コマンドで接続完了</p>
+  <ul class="card__tools"><li>Notion</li><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://ccforeveryone.com/guides/connect-claude-code-to-notion" target="_blank" rel="noopener">Claude Code Notion Setup: One Command and 3 Real Recipes</a><span class="card__who">CC for Everyone ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="58">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="59" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">059</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Claude Codeに日記をつけさせる</h3>
+  <p class="card__what">セッションのコンテキストからJSONL履歴まで解析し自動で日記エントリを生成</p>
+  <p class="card__wow">「振り返る」を人間が書かなくても済む仕組み</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://github.com/rlancemartin/claude-diary" target="_blank" rel="noopener">rlancemartin/claude-diary</a><span class="card__who">rlancemartin ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="59">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="60" data-genre="仕事" data-time="1日" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">060</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Obsidian×Hooksで自己進化する記憶</h3>
+  <p class="card__what">セッション境界ごとにフックが捕捉→整理→昇格のループを自動実行</p>
+  <p class="card__wow">ベクトルDB無しでもインデックスとバックリンクだけで十分ナビゲートできる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>hooks</li><li>Obsidian</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://www.mindstudio.ai/blog/self-evolving-claude-code-memory-obsidian-hooks" target="_blank" rel="noopener">How to Build a Self-Evolving Claude Code Memory System With Obsidian and Claude Code Hooks</a><span class="card__who">MindStudio ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="60">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="61" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">061</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">スキルが自分で自分を直す「Karpathyループ」</h3>
+  <p class="card__what">スキルの出力を別スキルが批評し、その批評を元に自分の指示書を書き換える</p>
+  <p class="card__wow">回すたびに次の1回がわずかに賢くなる自己改善ループ</p>
+  <ul class="card__tools"><li>Claude Code</li><li>skills</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://www.waboom.ai/blog/claude-karpathy-loop-self-improving-skill" target="_blank" rel="noopener">The Karpathy Loop: A Claude Skill That Improves Itself</a><span class="card__who">Waboom AI ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="61">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="62" data-genre="仕事" data-time="1時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">062</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">iPhoneからClaude Codeを遠隔操作</h3>
+  <p class="card__what">Tailscale+Termius+tmuxの組み合わせでMacのClaude Codeにスマホから接続</p>
+  <p class="card__wow">ノートPCをカバンに入れたままタスクの続きが操縦できる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>SSH</li><li>Tailscale</li></ul>
+  <p class="card__meta"><span class="card__time">1時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://sealos.io/blog/claude-code-on-phone/" target="_blank" rel="noopener">Claude Code Mobile: iPhone, Android &amp; SSH</a><span class="card__who">Sealos ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="62">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="63" data-genre="仕事" data-time="1時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">063</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Termux+SSH+tmuxでスマホから開発</h3>
+  <p class="card__what">iPhoneからSSH接続しtmuxセッション越しにClaude Codeを操作する実践記</p>
+  <p class="card__wow">移動中でもAIエージェントを止めずに触り続けられる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>Termux</li><li>tmux</li></ul>
+  <p class="card__meta"><span class="card__time">1時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://dev.to/shimo4228/running-claude-code-from-iphone-via-ssh-tmux-4c10" target="_blank" rel="noopener">Running Claude Code from iPhone via SSH + tmux</a><span class="card__who">shimo4228 ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="63">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="64" data-genre="仕事" data-time="1週間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">064</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Claude CodeはいかにしてAI社員となりし乎</h3>
+  <p class="card__what">CLAUDE.mdを職務記述書に見立てAIを自律的な社員として運用する記録</p>
+  <p class="card__wow">「AI社員」という言葉が個人開発者の実体験として言語化されている</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/immmmmmmu/n/n9bca761bc6d3" target="_blank" rel="noopener">Claude Codeは如何にしてAI社員となりし乎</a><span class="card__who">imds (note.com) ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="64">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="65" data-genre="仕事" data-time="1週間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">065</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">Claude CodeでAI自律型組織をつくる</h3>
+  <p class="card__what">複数のAIロールを社員に見立てて一人社長が組織運営する試み</p>
+  <p class="card__wow">「AI社員と働く時代へ」を実際にnoteで公開している一人発信者</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/gifted_quince621/n/nfbdf77405ac1" target="_blank" rel="noopener">Claude Codeで「AI社員」と働く時代へ｜AI自律型組織の作り方</a><span class="card__who">おかもち (note.com) ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="65">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="66" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">066</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">AI社員は4つの部屋でできていた</h3>
+  <p class="card__what">Claude Codeで作ったAI社員の構造を4つの役割部屋に分解して解説</p>
+  <p class="card__wow">組織図をAI社員の内部構造として比喩化した発想が独特</p>
+  <ul class="card__tools"><li>Claude Code</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/leal_parrot5638/n/n3dde9c05b0b7" target="_blank" rel="noopener">Claude Codeで作った「AI社員」は4つの部屋でできていた</a><span class="card__who">あぽろ (note.com) ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="66">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="67" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">067</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">AIペルソナで仮想顧客調査</h3>
+  <p class="card__what">Claude Codeスキルで複数の人格パネルを作りコンセプトテストを回す</p>
+  <p class="card__wow">インタビューを実施せずに顧客反応の当たりを先取りできる</p>
+  <ul class="card__tools"><li>Claude Code</li><li>skills</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://github.com/takechanman1228/claude-persona" target="_blank" rel="noopener">takechanman1228/claude-persona</a><span class="card__who">takechanman1228 ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="67">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="68" data-genre="両方" data-time="30分" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">068</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">NotebookLMでノートをポッドキャストに変換</h3>
+  <p class="card__what">アップロードした資料を2人の掛け合い音声に自動変換する機能を運用</p>
+  <p class="card__wow">Deep Dive/Brief/Critique/Debateの4形式・80言語超に対応</p>
+  <ul class="card__tools"><li>NotebookLM</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">両方</span></p>
+  <p class="card__src"><a href="https://recast.studio/blog/how-to-create-notebook-lm-podcast" target="_blank" rel="noopener">How to Create a NotebookLM Podcast (2026 Guide)</a><span class="card__who">Recast Studio ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="68">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="69" data-genre="両方" data-time="30分" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">069</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">NotebookLM活用12パターン</h3>
+  <p class="card__what">資料を要約・関連付け・スライド・レポート化する使い方を12種まとめた実例集</p>
+  <p class="card__wow">1つのツールで音声・動画・図解・表まで生成できる幅の広さ</p>
+  <ul class="card__tools"><li>NotebookLM</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">両方</span></p>
+  <p class="card__src"><a href="https://nicolleweeks.substack.com/p/12-powerful-ways-to-use-notebooklm" target="_blank" rel="noopener">12 powerful ways to use NotebookLM in 2026</a><span class="card__who">Nicolle Weeks ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="69">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="70" data-genre="仕事" data-time="2時間" data-group="B" data-src="ari">
+  <p class="card__top"><span class="card__no">070</span><span class="card__grp card__grp--b">はたらかせる</span></p>
+  <h3 class="card__title">NotebookLM音声をポッドキャスト配信まで通す</h3>
+  <p class="card__what">NotebookLMの単発Audio OverviewをRSS配信・Spotify掲載まで持っていくワークフロー</p>
+  <p class="card__wow">「聞いて終わり」の壁を配信導線側の別ツールで突破する発想</p>
+  <ul class="card__tools"><li>NotebookLM</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://www.jellypod.com/workflows/notebooklm-to-published-podcast" target="_blank" rel="noopener">Turn NotebookLM Into a Published Podcast</a><span class="card__who">Jellypod ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="70">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="71" data-genre="遊び" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">071</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">AI大喜利で3年分の進化対決</h3>
+  <p class="card__what">同じお題をAIに投げ、旧世代と最新版の回答を並べて笑う</p>
+  <p class="card__wow">「こんなAIは嫌だ」の答えの質がここまで変わったかと爆笑になる</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://www.gizmodo.jp/2026/03/ohgiri_ai.html" target="_blank" rel="noopener">【大喜利】3年前のChatGPT対2026年のAI</a><span class="card__who">ギズモード・ジャパン編集部 ／ 2026-03</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="71">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="72" data-genre="遊び" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">072</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">Sunoでオリジナルテーマソング作曲</h3>
+  <p class="card__what">イベント名や参加者の言葉を歌詞に入れてSunoで即興のテーマ曲を作る</p>
+  <p class="card__wow">会場のノリがそのまま曲になって流れる瞬間</p>
+  <ul class="card__tools"><li>Suno</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/yasabi/n/n724a342d249d" target="_blank" rel="noopener">SunoとAIスキルでTRPGシナリオテーマソングを作ろう！</a><span class="card__who">やさび</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="72">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="73" data-genre="遊び" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">073</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">Sunoで仲間へ誕生日曲プレゼント</h3>
+  <p class="card__what">当日の名前・エピソードを歌詞に入れてSunoで世界に一つの誕生日曲を作る</p>
+  <p class="card__wow">サプライズのケーキと同時に本人だけの曲が流れる</p>
+  <ul class="card__tools"><li>Suno</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/daisei_1689/n/needa74433f96" target="_blank" rel="noopener">仲間の誕生日にSUNOで曲をプレゼントした話</a><span class="card__who">小松大成</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="73">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="74" data-genre="両方" data-time="2時間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">074</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">10年分の強みをAIに読ませる</h3>
+  <p class="card__what">過去のストレングスファインダー結果を全部AIに渡して変化を分析させる</p>
+  <p class="card__wow">自分でも気づかなかった資質の推移をAIが言語化する</p>
+  <ul class="card__tools"><li>ChatGPT</li><li>Claude</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">両方</span></p>
+  <p class="card__src"><a href="https://note.com/toianna/n/n4fc762f5c33c" target="_blank" rel="noopener">10年分のストレングスファインダーを生成AIに読ませて</a><span class="card__who">トイアンナ</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="74">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="75" data-genre="遊び" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">075</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">AI診断が的中して震えた話</h3>
+  <p class="card__what">ストレングスファインダー風の診断をAIにお願いし本物の結果と照合する</p>
+  <p class="card__wow">公式診断を受けていないのに驚くほど言い当てる</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/brave_hare3872/n/n96d1f7d20c58" target="_blank" rel="noopener">AIに&quot;ストレングスファインダー風の診断&quot;をお願いしたら的中した話</a><span class="card__who">結城ユーレカ</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="75">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="76" data-genre="仕事" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">076</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">未来の自分と対話するプロンプト</h3>
+  <p class="card__what">10年後の理想の自分になりきらせてAIに今の自分へアドバイスさせる</p>
+  <p class="card__wow">問いを重ねるうちに本音がAI経由で自分に返ってくる</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/ryo_0627/n/n257931574eff" target="_blank" rel="noopener">ChatGPTで&quot;未来の自分&quot;と対話する方法｜魔法の質問テンプレ</a><span class="card__who">Chappy</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="76">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="77" data-genre="仕事" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">077</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">AIに5年後を辛口で描かせる</h3>
+  <p class="card__what">現在の会話パターンから5〜30年後の自分をAIに予測・言語化させる</p>
+  <p class="card__wow">優しい言葉を期待したら想像以上に辛口な現実を突きつけられる</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://soulsynk-ai.com/ai-future-self-prompt/" target="_blank" rel="noopener">AIに「5年後の自分」を描かせたら、想像以上に辛口だった話</a><span class="card__who">ノアとHiroの共創録</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="77">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="78" data-genre="遊び" data-time="2時間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">078</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">ChatGPTでファンタジーRPGを遊ぶ</h3>
+  <p class="card__what">プロンプト一つでAIがゲームマスターになりRPGを進行してくれる</p>
+  <p class="card__wow">恋愛ゲームや歴史シミュレーションにも同じ型で応用できる汎用性</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/fladdict/n/nb66db952f992" target="_blank" rel="noopener">ChatGPTで、ファンタジーRPGを遊ぶには？</a><span class="card__who">深津貴之(fladdict)</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="78">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="79" data-genre="遊び" data-time="2時間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">079</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">一人で無限に遊べるAI TRPG</h3>
+  <p class="card__what">ChatGPTを進行役にして一人で終わりのないTRPGセッションを回す</p>
+  <p class="card__wow">人数が集まらない夜でも即席で物語が始まる手軽さ</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/ai_hitoriasobi/n/nc220ef5f824a" target="_blank" rel="noopener">【AI】一人で無限にTRPGが遊べるやつ【ChatGPT】</a><span class="card__who">未確認ばなな</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="79">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="80" data-genre="遊び" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">080</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">日記をポジティブ小説に変換</h3>
+  <p class="card__what">専用GPTに日記を渡すと感情豊かな物語調に書き直してくれる</p>
+  <p class="card__wow">同じ一日なのに主人公になった気分で読み返せる</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://chatgpt.com/g/g-DbEAPLxcu-hosiri-ji-bian-huan-maigpt-posidiary-transformer-mygpt" target="_blank" rel="noopener">ポジ日記変換マイGPT (PosiDiary Transformer MyGPT)</a><span class="card__who">個人開発者(GPTストア)</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="80">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="81" data-genre="仕事" data-time="2時間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">081</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">AIペルソナ4人で自分会議</h3>
+  <p class="card__what">自分の性格から複数のペルソナをAIに生成させ議論・会議形式で進行させる</p>
+  <p class="card__wow">「僕が4人分になる」感覚で一人ブレストが本物の会議になる</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://qiita.com/torafukuro/items/229901a26b2d458a5fc9" target="_blank" rel="noopener">「僕が4人分になる...」ChatGPTのペルソナと会議をしてみた話</a><span class="card__who">torafukuro</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="81">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="82" data-genre="仕事" data-time="2時間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">082</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">NVIDIA製ペルソナに60分インタビュー</h3>
+  <p class="card__what">オープンソースのペルソナ生成技術で架空の人物を作りAIと60分対話する</p>
+  <p class="card__wow">作った架空の人物が本当にしゃべり出し人物像が育つ</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/tis_design/n/n94811c5ca696" target="_blank" rel="noopener">AIペルソナにインタビューしてみた話</a><span class="card__who">TIS XD Studio</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="82">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="83" data-genre="仕事" data-time="1週間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">083</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">ADHDの先延ばしを1週間AI実験</h3>
+  <p class="card__what">タスク分解や見積もりをAIに任せて1週間先延ばし癖と向き合う</p>
+  <p class="card__wow">最初の見積もりよりAIの方が正確に所要時間を当てる</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/yoshie_nagatomo/n/n6b53324670fd" target="_blank" rel="noopener">ChatGPTで先延ばし癖を克服できるのか？ー1週間やってみたら効果あったよ！</a><span class="card__who">長友好江</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="83">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="84" data-genre="仕事" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">084</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">ADHDの弱点をAIが補完する話</h3>
+  <p class="card__what">日常のタスク管理・整理整頓の困りごとをAIとの対話で肩代わりする</p>
+  <p class="card__wow">「できない自分」を責めずに仕組みで解決できると気づく</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/kuxu/n/n6bafb266c38e" target="_blank" rel="noopener">ADHDの弱点はChatGPTにより補完できると最近思ってる</a><span class="card__who">くぅ</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="84">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="85" data-genre="遊び" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">085</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">青春18きっぷの最適ルートをAI検索</h3>
+  <p class="card__what">出発地と条件を伝えるとJR全線から乗り継ぎルートを提案してくれる</p>
+  <p class="card__wow">自分では組めない乗り継ぎの妙をAIが一瞬で出す</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://chapro.jp/prompt/56586" target="_blank" rel="noopener">【青春18切符】JR全線のルート検索プロンプト</a><span class="card__who">チャプロAI</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="85">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="86" data-genre="遊び" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">086</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">青春18きっぷ専属コンシェルジュGPT</h3>
+  <p class="card__what">カスタムGPTが青春18きっぷのルールやおすすめルートの質問に答える</p>
+  <p class="card__wow">旅行前の細かい疑問が調べ物ゼロで即解決する</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://www.kzlifelog.com/seishun18/seishun18-app-trial-release" target="_blank" rel="noopener">【青春18きっぷコンシェルジュ】ChatGPTのカスタムGPTで質問に答えるアプリを試験公開</a><span class="card__who">青春18きっぷナビ</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="86">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="87" data-genre="遊び" data-time="1日" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">087</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">Runway48時間で旅の短編映画</h3>
+  <p class="card__what">AI動画生成で48時間以内に短編映画・予告編級の映像を作り上げる</p>
+  <p class="card__wow">世界3500組が挑んだハッカソンの手法をそのまま旅の記録に応用できる</p>
+  <ul class="card__tools"><li>Runway</li></ul>
+  <p class="card__meta"><span class="card__time">1日</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://newstella.co.jp/2024/10/15/4884" target="_blank" rel="noopener">動画生成AI Runwayで48時間以内に短編映画を制作するハッカソンGen:48に参加しました</a><span class="card__who">株式会社ニューステラ</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="87">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="88" data-genre="遊び" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">088</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">ChatGPTで自分の取扱説明書</h3>
+  <p class="card__what">雑談の会話履歴からAIに自分の性格・扱い方を「取説」形式でまとめさせる</p>
+  <p class="card__wow">Z世代SNSで自己開示ツールとしてバズった手法を本人向けに使う</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/hitsuji_fire/n/n1a6c14c60f51" target="_blank" rel="noopener">ChatGPTで作る「わたしの取扱説明書」</a><span class="card__who">ひつじ</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="88">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="89" data-genre="遊び" data-time="2時間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">089</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">AIで年末振り返りムービー</h3>
+  <p class="card__what">1年分の写真・動画をAIが自動で整理し転換とBGM付きで編集する</p>
+  <p class="card__wow">自分では絶対組まない編集リズムで思い出が映画になる</p>
+  <ul class="card__tools"><li>AI動画編集ツール</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/zasshokuwriter/n/n76ee782ef865" target="_blank" rel="noopener">【便利】AIで簡単に作る年末振り返りムービーの作り方</a><span class="card__who">セイウチ</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="89">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="90" data-genre="両方" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">090</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">NotebookLMで本と対話するラジオ</h3>
+  <p class="card__what">読みたい本の資料をアップロードすると2人のAIホストが対談形式で解説する</p>
+  <p class="card__wow">読んでいないのに本の内容が勝手にポッドキャストになって流れてくる</p>
+  <ul class="card__tools"><li>NotebookLM</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">両方</span></p>
+  <p class="card__src"><a href="https://note.com/yakiimo_blog/n/nad5861adade4" target="_blank" rel="noopener">【徹底解説】NotebookLM「音声ラジオ」とは？使い方から活用例まで紹介！</a><span class="card__who">やきいも</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="90">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="91" data-genre="仕事" data-time="1週間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">091</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">生成AI時代の100日チャレンジ本</h3>
+  <p class="card__what">AIと二人三脚で100日100本アプリを作った実録から学び方の変化を追う</p>
+  <p class="card__wow">経済学部出身の著者がAIだけでエンジニア就職まで駆け上がった軌跡</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/susa_lab/n/nc71bc91c7e0e" target="_blank" rel="noopener">『#100日チャレンジ』から学んだ、生成AI時代の新しい学び方</a><span class="card__who">高知のIoT屋 ／ 2026</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="91">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="92" data-genre="仕事" data-time="1週間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">092</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">Claude Academyで学びのロードマップ</h3>
+  <p class="card__what">Anthropic公式の無償学習サイトで自分の理解度に合ったコースを進める</p>
+  <p class="card__wow">22コース355リソースが全部無料でLinkedIn掲載可能なバッジまで出る</p>
+  <ul class="card__tools"><li>Claude</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://forest.watch.impress.co.jp/docs/news/2134400.html" target="_blank" rel="noopener">Anthropic、「Claude」の学習サイト「Claude Academy」を無償開設</a><span class="card__who">Impress Watch ／ 2026-08</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="92">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="93" data-genre="遊び" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">093</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">2分で終わるAIアイスブレイク</h3>
+  <p class="card__what">どんな人数のグループでもAIが2分で本音を引き出す質問を進行する</p>
+  <p class="card__wow">準備ゼロ・恥ずかしさゼロで場の空気が一気にほぐれる</p>
+  <ul class="card__tools"><li>Claude</li><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://weand.me/2026/04/28/2-minute-ai-icebreaker-no-prep-no-cringe-any-group-size/" target="_blank" rel="noopener">2-Minute AI Icebreaker (No Prep, No Cringe, Any Group Size)</a><span class="card__who">We and Me ／ 2026-04</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="93">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="94" data-genre="遊び" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">094</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">Nano Bananaでフィギュア化写真</h3>
+  <p class="card__what">参加者の写真をGeminiのNano Bananaでフィギュア風に画像編集する</p>
+  <p class="card__wow">自分がガチャガチャの箱に入った商品のように写真加工される驚き</p>
+  <ul class="card__tools"><li>Gemini</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/himukai_an/n/n0c6e363386b0" target="_blank" rel="noopener">Geminiの画像生成で流行りのフィギュアにして遊んでみた【nano-banana】</a><span class="card__who">日向</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="94">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="95" data-genre="仕事" data-time="1週間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">095</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">ゲーミフィケーションToDoで勉強習慣化</h3>
+  <p class="card__what">タスクをゲーム要素付きアプリに組み込み勉強の継続を試みる</p>
+  <p class="card__wow">「続かない自分」に挫折した経緯まで正直に晒しているリアルさ</p>
+  <ul class="card__tools"><li>ゲーミフィケーションToDoアプリ</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/naganaga_5762838/n/nf3e4aad248da" target="_blank" rel="noopener">ゲーミフィケーション×ToDoアプリで勉強を習慣化したかった話</a><span class="card__who">NAGA</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="95">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="96" data-genre="仕事" data-time="1週間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">096</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">AI開発習慣トラッカーが1ヶ月で急成長</h3>
+  <p class="card__what">AI開発プラットフォームで作った習慣アプリが6100件超のチェックインを記録</p>
+  <p class="card__wow">個人が作ったアプリで149人が35日以上継続する結果が出た</p>
+  <ul class="card__tools"><li>AI開発プラットフォーム</li></ul>
+  <p class="card__meta"><span class="card__time">1週間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://create-guide.com/archives/1485" target="_blank" rel="noopener">続けるを支える習慣化アプリ【2026年2月28日のAnythingニュース】</a><span class="card__who">だれクリ ／ 2026-02</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="96">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="97" data-genre="仕事" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">097</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">リベシティのノウハウ図書館でAI技を探す</h3>
+  <p class="card__what">5つの力(貯める・増やす・稼ぐ・使う・守る)に紐づくAI活用ノウハウを漁る</p>
+  <p class="card__wow">Canva×AIの画像加工までコミュニティ発の実例がそのまま読める</p>
+  <ul class="card__tools"><li>リベシティ</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://library.libecity.com/" target="_blank" rel="noopener">リベシティノウハウ図書館</a><span class="card__who">リベシティ運営</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="97">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="98" data-genre="仕事" data-time="30分" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">098</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">雑なプロンプトで図解が即完成</h3>
+  <p class="card__what">きっちり作り込まず「雑」なプロンプト5選をChatGPTに投げて図解化する</p>
+  <p class="card__wow">ちゃんと指示を練らなくてもプロ品質の図が一瞬で出る拍子抜け感</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">30分</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://note.com/alpaka_ai/n/n5b130e5900ea" target="_blank" rel="noopener">ChatGPTで良さげな図解が作れる雑なプロンプト5選＋α【画像生成AI】</a><span class="card__who">Alpaka</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="98">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="99" data-genre="遊び" data-time="2時間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">099</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">AI小説であそぶ</h3>
+  <p class="card__what">ChatGPTと交互に文章を継ぎ足しながら即興で物語を紡いでいく</p>
+  <p class="card__wow">筋書きゼロから始めても2人(人間+AI)の掛け合いで物語が着地する</p>
+  <ul class="card__tools"><li>ChatGPT</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">遊び</span></p>
+  <p class="card__src"><a href="https://note.com/himukai_an/n/n36fae9045b32" target="_blank" rel="noopener">AI小説であそぶ【ChatGPT】</a><span class="card__who">日向</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="99">今日の1個にする</button></p>
+</article>
+<article class="card" data-no="100" data-genre="仕事" data-time="2時間" data-group="C" data-src="ari">
+  <p class="card__top"><span class="card__no">100</span><span class="card__grp card__grp--c">ひとと場</span></p>
+  <h3 class="card__title">Sunoで社内イベントBGMを内製化</h3>
+  <p class="card__what">忘年会や表彰式など年4回のイベント音楽を全てSunoで自前制作する</p>
+  <p class="card__wow">外注ゼロで場面ごとに合ったオリジナルBGMが量産できる体制</p>
+  <ul class="card__tools"><li>Suno</li></ul>
+  <p class="card__meta"><span class="card__time">2時間</span><span class="card__genre">仕事</span></p>
+  <p class="card__src"><a href="https://www.globalgate.co.jp/blog/making-music-using-suno" target="_blank" rel="noopener">音楽生成AI「Suno」を使っていろんな楽曲をつくってみよう</a><span class="card__who">株式会社グローバルゲート</span></p>
+  <p class="card__act"><button type="button" class="pick" data-pick="100">今日の1個にする</button></p>
+</article>
+    </div>
+    <p class="empty hide" id="empty">その組み合わせに当てはまる案はありません。チップをひとつ外してみてください。</p>
+  </div>
+</main>
+
+<footer class="closing">
+  <div class="wrap">
+    <p class="closing__big">書いたものは、実現する。</p>
+    <div class="col">
+      <p class="soft">100案そのものは、まだ1つもやっていません。ここから毎日1つずつ減らしていきます。</p>
+      <ul class="links">
+        <li><a href="https://okemonogatari-hash.github.io/html-share-box/kasegeya-2026-coming-soon.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" role="img" xmlns="http://www.w3.org/2000/svg"><title>戻る</title><path d="M10 5 L3.5 12 L10 19"/><path d="M3.5 12 H20.5"/></svg>稼げや祭り2026 ─ 作戦書に戻る</a></li>
+      </ul>
+    </div>
+    <p class="sign">おけもんカンパニー ─ 2026.09.09</p>
+  </div>
+</footer>
+
+<script>document.documentElement.classList.add("js-ready");</script>
+<script>
+(function(){
+  var DATA = {"1":{"t":"AIだけでローグライク8日制作","d":"Claude Codeにコードを100%書かせ、190PR・約500テストのデッキ構築ローグライクを8日で仕上げる","w":"人間はほぼコードを書かずゲーム1本が完成していく過程が見える","o":["Claude Code"],"m":"1週間","g":"遊び","u":"https://zenn.dev/no_code_written/articles/ai-gamedev-intro","s":"Claude Code 100%生成でデッキ構築ローグライクを作っている話"},"2":{"t":"要望だけで3Dゲーム完成","d":"Godot上でClaude Codeに要望を伝え続けるだけで、アセットも全部コード生成の3Dゲームを数時間で作る","w":"外部素材ファイル一切なしで3Dゲームが動く","o":["Claude Code","Godot"],"m":"1日","g":"遊び","u":"https://blog.usize-tech.com/claudecode-3dgame-developing/","s":"Claude Codeに要望を伝え続けたら数時間で3Dゲームが完成した話"},"3":{"t":"グラBGMも全部AI製ゲーム","d":"グラフィック・BGM・SEまで全部Claude Codeが生成する2Dゲームプロトタイプ用テンプレを使う","w":"絵も音も自分で用意せずゲームの体裁が一発で整う","o":["Claude Code"],"m":"2時間","g":"遊び","u":"https://zenn.dev/aya/articles/4c7ae95322ced5","s":"グラフィックもBGM・SEもAIが作ってくれるゲームプロトタイプ作成テンプレート"},"4":{"t":"2日で工場運営クリッカー","d":"ゲーム開発未経験のままClaudeだけで工場運営クリッカーゲームを2日で完成させる","w":"経験ゼロから2日でリリース可能な形まで行く速度","o":["Claude Code"],"m":"2時間","g":"遊び","u":"https://note.com/kotsubuai/n/na3a936557962","s":"Claudeを使って工場運営クリッカーゲームを作ってみた"},"5":{"t":"1日ゲームジャム個人版","d":"朝から晩までの1日だけでClaude Codeを使い個人ゲームジャムをやってみる","w":"朝始めて夜には遊べるゲームが手元にある","o":["Claude Code"],"m":"1日","g":"遊び","u":"https://note.com/hiro02/n/n7bb038808bf7","s":"「ClaudeCode」で1日でゲームを作る"},"6":{"t":"初めてのブラウザゲーム","d":"コード未経験からClaude Codeで初めてのブラウザゲームを一から作りきる","w":"知識ゼロの状態から公開できるゲームまで辿り着く","o":["Claude Code"],"m":"1日","g":"遊び","u":"https://note.com/yamakoswf/n/n2298ab84fbb3","s":"Claude Codeで初めてブラウザゲームを作った話"},"7":{"t":"Sunoで和風RPG曲を一撃生成","d":"「和風RPGのフィールド曲、琴と尺八、太鼓」の一言プロンプトだけでSunoに曲を作らせる","w":"たった1行の指示でゲーム世界観そのものの高品質曲が出る","o":["Suno"],"m":"30分","g":"遊び","u":"https://mono-good.com/2026/03/05/suno-ai-daw-ai-2026/","s":"Suno × DAW併用で作曲革命！AI時代の新しい音楽制作ワークフロー"},"8":{"t":"自分の声で新曲を歌わせる","d":"Suno v5.5のVoices機能に自分の歌声を登録し、その声で知らない新曲を歌わせる","w":"自分の声質のまま作ったことのない曲を歌う自分が生まれる","o":["Suno"],"m":"1時間","g":"遊び","u":"https://uravation.com/media/suno-ai-music-generation-guide-2026/","s":"【2026年8月最新】Suno AIとは｜使い方・料金・商用利用まで完全ガイド"},"9":{"t":"Veo3とKling3.0で撮影対決","d":"同じプロンプトをVeo3.1とKling3.0の両方に投げて絵作りのクセを見比べる","w":"同じ言葉でも一方は実写風・一方は映画的画作りとまるで違う映像が出る","o":["Veo3","Kling"],"m":"30分","g":"遊び","u":"https://note.com/mashtake/n/nbc5c7808e789","s":"【2026年最新版】動画生成AIの人気3ツール徹底比較 Veo 3.1/Kling 3.0/Grok Imagine"},"10":{"t":"写真からフィギュア実物発注","d":"自撮りやペット写真をAIで3Dモデル化し、FigMeeで実物フィギュアとして出力する","w":"平面の写真が数日後に手のひらサイズの立体物として届く","o":["Meshy","Blender"],"m":"1週間","g":"遊び","u":"https://3day-printer.com/media/product-service/photo-to-figure/","s":"【2026年最新】写真からフィギュアを作れるサイト5選を徹底比較"},"11":{"t":"イラストをMeshy4で立体化","d":"自分の描いたイラストをMeshy4に投げてテクスチャ込みの3Dメッシュを一発生成する","w":"平面の陰影頼みの絵が奥行きを持った立体データに化ける","o":["Meshy","Blender"],"m":"2時間","g":"遊び","u":"https://unolaboratory.com/3dgenai_meshy/","s":"【2026最新】3Dモデル生成AI「Meshy」とは？3Dプリント活用のコツ"},"12":{"t":"映画のロボットを自宅に再現","d":"『プロジェクト・ヘイル・メアリー』のロッキーをRaspberry Pi5とClaude Codeで音声対話ロボットとして自作する","w":"喋る・聞く・7本のサーボで動く映画キャラが本当に机の上にいる","o":["Claude Code","Raspberry Pi"],"m":"1週間","g":"遊び","u":"https://www.raspberrypi.com/news/ai-rocky-from-project-hail-mary/","s":"AI Rocky from 'Project Hail Mary'"},"13":{"t":"Claude Codeが自律で家事秘書化","d":"Raspberry PiにClaude Codeを常駐させ、メール確認・議事録処理・Slack返信・Telegram通知を自律実行させる","w":"頼まなくても必要な時だけ勝手に通知が飛んでくる","o":["Claude Code","Raspberry Pi","Telegram"],"m":"1週間","g":"両方","u":"https://strugglestreet.substack.com/p/claude-chode-an-autonomous-claude","s":"Claude Chode: An autonomous Claude Code system running on $700 of Raspberry Pi gear"},"14":{"t":"$80の自宅専用AI拠点","d":"$80のRaspberry Pi5にローカルWhisperの音声入力とClaude Codeを載せ、Google Driveをマウントして自分専用AIにする","w":"スマホもクラウドアプリも介さず家の中に自分だけのAI拠点ができる","o":["Claude Code","Raspberry Pi","Whisper"],"m":"1週間","g":"遊び","u":"https://www.ehasan.com/p/claude-code-on-a-raspberry-pi-in","s":"Claude Code on a Raspberry Pi in my living room"},"15":{"t":"ハッシュシードの生成アート","d":"genart-skillを導入し、Claude Codeにハッシュシード決定論の生成アートを描かせる","w":"同じシードなら誰の環境でも寸分違わず同じ絵が再現される","o":["Claude Code"],"m":"2時間","g":"遊び","u":"https://github.com/camilleroux/genart-skill","s":"genart-skill: Generative art skill for Claude Code — deterministic, hash-seeded"},"16":{"t":"コードが顔になるフォトブース","d":"p5.jsでピクセルアートアバターを生成し、SVGが組み上がる過程をその場で画面表示するフォトブースを作る","w":"自分の似顔絵がコードの断片からリアルタイムに描き上がっていく","o":["Claude Code"],"m":"1日","g":"遊び","u":"https://techtiff.substack.com/p/code-with-claude-2026","s":"Code with Claude 2026: Claude Code Routines, Dreaming, AI Systems"},"17":{"t":"p5.jsで自分の美学を語るアート","d":"Algorithmic Art skillで自分なりの「哲学」を言葉にし、p5.jsのマスター級生成アートをClaude Codeに作らせる","w":"美術知識ゼロでも言葉にした思想が一点物の作品になる","o":["Claude Code"],"m":"2時間","g":"遊び","u":"https://mcpmarket.com/tools/skills/algorithmic-art-generative-aesthetics-7","s":"Algorithmic Art & Generative Aesthetics - Claude Code Skill"},"18":{"t":"公式スタックチャンを組み立てる","d":"M5Stack公式のAIデスクトップロボット「スタックチャン」を組み立ててAI対話させる","w":"1.8万円のキットが喋って動く自分専用ロボットになる","o":["M5Stack"],"m":"1日","g":"遊び","u":"https://prtimes.jp/main/html/rd/p/000000244.000064534.html","s":"M5StackとユーザコミュニティのAI連携デスクトップロボット「M5スタックチャン」販売開始"},"19":{"t":"スタックチャンをローカルLLM化","d":"M5StackChanのAI.AGENTをXiaozhi互換サーバー経由でローカルLLMに繋ぎ替える","w":"クラウド接続なしでも机の上のロボットが自分の言葉で返事する","o":["M5Stack"],"m":"2時間","g":"遊び","u":"https://blog.rpine.net/posts/stackchan-local-llm","s":"M5Stack版StackChanのAI.AGENTをローカルLLMで実行してみる"},"20":{"t":"WebGPUで展示物級の3D表現","d":"Three.jsのWebGPU対応を使い、ブラウザの中の3D表現を展示インスタレーション風に組む","w":"サイトの中の3Dがそのまま展示物のビジュアルとして通用する","o":["three.js"],"m":"1週間","g":"両方","u":"https://www.utsubo.com/blog/threejs-2026-what-changed","s":"What's New in Three.js (2026): WebGPU, New Workflows & Beyond"},"21":{"t":"声で操るガラスの3Dキャラ","d":"音声UIと半透明WebGLキャラクターでUIを操作するプロダクトの作りを真似て自分のサイトに載せる","w":"画面の中のガラス質のキャラに話しかけるだけでUIが動く","o":["three.js"],"m":"1週間","g":"仕事","u":"https://www.utsubo.com/blog/threejs-2026-what-changed","s":"What's New in Three.js (2026)（Lazarev's Elva紹介）"},"22":{"t":"エンダードラゴンを魔改造","d":"Claude Codeで統合版マイクラのアドオンを作り、公式ボスのエンダードラゴンを強化改造する","w":"コード知識ゼロでも公式ボスの強さを自分好みに書き換えられる","o":["Claude Code"],"m":"1日","g":"遊び","u":"https://ai-kids-pc.com/posts/claude-code-minecraft-bedrock-addon/","s":"Claude Codeで統合版マイクラのアドオンを作ってみた！エンダードラゴン魔改造チャレンジ"},"23":{"t":"マイクラアドオン企画〜実装全部AI任せ","d":"Claude Codeにマイクラアドオン開発を企画から実装まで丸ごとやらせる","w":"アイデアを言うだけでゲーム内に新しい仕組みが実装される","o":["Claude Code"],"m":"1日","g":"遊び","u":"https://note.com/mirinhoshi/n/n19946d192e1a","s":"Claude Codeでマイクラアドオン開発を全部やらせてみた"},"24":{"t":"AIと共同でMinecraft拡張","d":"Claude Coworkと一緒にMinecraftのアドオンを共同制作する","w":"AIと人が役割分担しながら1つのMOD開発を進める体験ができる","o":["Claude Code"],"m":"1日","g":"遊び","u":"https://note.com/a_bros/n/n9427462a7571","s":"Claude Coworkに衝撃を受けて、AIと一緒にMinecraftのアドオンを作った話"},"25":{"t":"CLIで遊べるAIゲームスキル自作","d":"Claude Code上でコマンドを打つだけで起動する遊べるゲームスキルを自作する","w":"ターミナルに文字を打つだけでゲームが立ち上がる","o":["Claude Code"],"m":"2時間","g":"遊び","u":"https://zenn.dev/orga/articles/373c9e33da599c","s":"CodexとかClaude Codeとかで遊べるゲームのスキルを作った"},"26":{"t":"賞金付きバイブコーディング祭に参加","d":"Cursor Vibe Jam 2026にAI製ゲームで参加してみる（コードの90%以上がAI生成というルール）","w":"1ヶ月後には賞金4万ドルを競う舞台に自分のゲームが並ぶ","o":["Claude Code"],"m":"1週間","g":"遊び","u":"https://jam.pieter.com/2026/","s":"2026 Vibe Coding Game Jam"},"27":{"t":"AI同士の乱闘を観戦する","d":"AI Battle Royale Generatorで自分のAIを学習させ、視聴者参加型のバトルロワイヤルを観戦する","w":"1億通り以上のマップからAI同士が毎回違う戦い方を見せる","o":[],"m":"30分","g":"遊び","u":"https://store.steampowered.com/app/1604450/AI_Battle_Royale_Generator/","s":"AI Battle Royale Generator on Steam"},"28":{"t":"HTMLを書くだけでMP4動画","d":"HyperFramesでHTML/CSSのビデオコンポジションを組み、ヘッドレスChrome経由でMP4に書き出す","w":"After Effectsのタイムライン操作なしにコードだけで動画が完成する","o":["HyperFrames","Claude Code"],"m":"2時間","g":"両方","u":"https://note.com/kudo_notes/n/n0185dec6319d","s":"HyperFrames: \"Writing Videos in HTML\""},"29":{"t":"URL1個でAIが5秒CM作成","d":"自分のサイトURLをHyperFramesに渡すだけで色とロゴを拾ったAIナレーション付き5秒スポット動画を作らせる","w":"URLを投げただけでサイトの雰囲気そのままのCMが自動で出てくる","o":["HyperFrames"],"m":"30分","g":"仕事","u":"https://apptalenthub.co.jp/column-posts/3575/","s":"HTMLで動画が書ける時代-HyperFramesで5秒スポット動画をやってみた"},"30":{"t":"エージェントに動画テンプレ量産させる","d":"Claude CodeにHyperFramesのプロダクトデモや講座クリップのテンプレートを量産させる","w":"1つ頼むと似た動画テンプレが何パターンも自動で増えていく","o":["HyperFrames","Claude Code"],"m":"1日","g":"仕事","u":"https://qiita.com/kai_kou/items/852f3a82898d8c6e629c","s":"HyperFrames入門 — HTMLからMP4を生成するエージェントOSS"},"31":{"t":"ElevenLabsで自分のキャラボイス設計","d":"ElevenLabsのVoice Designで自分専用のキャラクターボイスを作り、動画ナレーションに当てる","w":"月5ドルでプロ声優級のキャラボイスが無限に量産できる","o":["ElevenLabs"],"m":"2時間","g":"仕事","u":"https://weel.co.jp/media/innovator/elevenlabs/","s":"ElevenLabs（イレブンラボ）の使い方・商用利用・AI音声生成を解説"},"32":{"t":"自分の声をクローンして遊ぶ","d":"ElevenLabsのVoice Cloningで自分の声を複製し、言っていないセリフを喋らせてみる","w":"自分そっくりの声が自分の知らない台詞を読み上げる面白さと不気味さ","o":["ElevenLabs"],"m":"1時間","g":"遊び","u":"https://weel.co.jp/media/innovator/elevenlabs/","s":"ElevenLabs（イレブンラボ）の使い方・商用利用・AI音声生成を解説"},"33":{"t":"スマートグラスで即興AR生成","d":"AR対応スマートグラスに音声で言った物をAIが3D生成し、視界の中に重ねて遊ぶ","w":"言葉にした物がそのまま目の前の空間に浮かんで見える","o":[],"m":"1日","g":"遊び","u":"","s":""},"34":{"t":"市販ロボット犬をAIで拡張","d":"市販の犬型ロボットトイの通信をリバースエンジニアリングし、Claude Codeで新しい動作パターンを追加する","w":"既製品のおもちゃが自分だけのコマンドで動く相棒に変わる","o":["Claude Code"],"m":"1日","g":"遊び","u":"","s":""},"35":{"t":"IoTぬいぐるみに感情AIを仕込む","d":"M5Stackとマイクを仕込んだぬいぐるみにAI経由の感情表現を持たせ、話しかけると声色を変えて反応させる","w":"ただの布のぬいぐるみが撫で方や言葉で機嫌を変えるようになる","o":["M5Stack","Claude Code"],"m":"2時間","g":"遊び","u":"","s":""},"36":{"t":"一晩700実験でLLM高速化","d":"Karpathyが小型LLM学習ループをAIに任せ寝てる間に700回自動実験させた","w":"本人が見逃したバグまで発見・学習時間を2.02h→1.80hに短縮","o":["Claude Code","GitHub"],"m":"1週間","g":"仕事","u":"https://www.oreilly.com/radar/i-let-an-ai-agent-run-40-experiments-while-i-slept/","s":"I Let an AI Agent Run 40 Experiments While I Slept / karpathy/autoresearch"},"37":{"t":"一晩放置エージェント運用の作法","d":"Claude Codeを一晩自律稼働させる際の壊れ方と直し方をまとめた実践記","w":"「壊れる場所」を先に洗い出す視点がそのまま使える","o":["Claude Code"],"m":"2時間","g":"仕事","u":"https://medium.com/@evekhm/running-claude-code-autonomously-overnight-what-breaks-and-how-to-fix-it-3bee3bd958b5","s":"Running Claude Code Autonomously Overnight — What Breaks and How to Fix It"},"38":{"t":"Claude Code Hooksの安全網プラグイン","d":"PreToolUse/PostToolUseで全ツール呼び出しを許可・拒否・改変する市場配布フック集","w":"mainへのpushを承認制でブロックできる","o":["Claude Code","hooks"],"m":"2時間","g":"仕事","u":"https://github.com/karanb192/claude-code-hooks","s":"karanb192/claude-code-hooks"},"39":{"t":"Claude Code Hooks完全攻略リポジトリ","d":"フックの型と落とし穴を体系化したマスター教材","w":"ライフサイクルの各時点にコマンドを差し込む発想が一望できる","o":["Claude Code","hooks"],"m":"2時間","g":"仕事","u":"https://github.com/disler/claude-code-hooks-mastery","s":"disler/claude-code-hooks-mastery"},"40":{"t":"ターミナルに常駐するClaude HUD","d":"statusline APIだけで文脈使用量・稼働エージェント・todo進捗を可視化","w":"別ウィンドウ無し、tmux不要でどのターミナルでも動く","o":["Claude Code","statusline"],"m":"30分","g":"仕事","u":"https://github.com/jarrodwatts/claude-hud","s":"jarrodwatts/claude-hud"},"41":{"t":"Rust製の超軽量HUD版","d":"claude-hudをRustで書き直した高速版statuslineツール","w":"最小構成主義で表示速度を極限まで詰めている","o":["Claude Code"],"m":"30分","g":"仕事","u":"https://github.com/GaoSSR/best-claude-hud","s":"GaoSSR/best-claude-hud"},"42":{"t":"Obsidianに常駐するAIエージェント","d":"Claude Code/Codexをそのままボルトに埋め込みノートを自然言語操作","w":"1.8Mダウンロード超・タグや繋がりの提案までしてくれる","o":["Obsidian","Claude Code","Codex"],"m":"2時間","g":"両方","u":"https://github.com/YishenTu/claudian","s":"YishenTu/claudian"},"43":{"t":"64Mパラメータを2時間で自前学習","d":"純PyTorchでLLMをゼロから学習できる教育用OSS","w":"クラウド不要・ノートPC1台でLLMの中身が理解できる","o":["PyTorch"],"m":"1日","g":"遊び","u":"https://github.com/jingyaogong/minimind","s":"jingyaogong/minimind"},"44":{"t":"最小構成のVLMを自作","d":"MiniMindの視覚言語モデル版、画像も読めるミニLLMを自前で作る","w":"最小実装のVLMなのに教材として完結している","o":["PyTorch"],"m":"1日","g":"遊び","u":"https://github.com/jingyaogong/minimind-v","s":"jingyaogong/minimind-v"},"45":{"t":"マーケ特化スキル集をClaude Codeに","d":"CRO・コピー・SEO・分析をワンコマンドでインストールできるスキル集","w":"npx一発でLP改善提案まで出す実務直結セット","o":["Claude Code","skills"],"m":"30分","g":"仕事","u":"https://github.com/coreyhaines31/marketingskills","s":"coreyhaines31/marketingskills"},"46":{"t":"15スキル並列でサイト監査","d":"並列サブエージェントでWeb監査〜広告文〜PDFレポートまで自動生成","w":"クライアント納品可能なPDFレポートまで自走で出る","o":["Claude Code","subagents"],"m":"2時間","g":"仕事","u":"https://github.com/zubair-trabzada/ai-marketing-claude","s":"zubair-trabzada/ai-marketing-claude"},"47":{"t":"Playwright MCPでブラウザを直接操縦","d":"アクセシビリティツリーを読んでクリック・入力・スクショまで実行","w":"ビジョンモデル無しでも画面構造を理解して操作できる","o":["Playwright","MCP","Claude Code"],"m":"2時間","g":"仕事","u":"https://playwright.dev/docs/getting-started-mcp","s":"Playwright MCP"},"48":{"t":"Playwright MCPでQAとスクレイピングを自動化","d":"認証済みセッション含めブラウザ操作をClaude Codeに丸ごと渡す実践ガイド","w":"claude mcp add一発で常駐ブラウザ制御が生える","o":["Playwright","MCP"],"m":"30分","g":"仕事","u":"https://www.mindstudio.ai/blog/automate-browser-tasks-claude-code-playwright","s":"Automate Browser Tasks with Claude Code and the Playwright MCP Server"},"49":{"t":"Apple音声メモを検索可能アーカイブに","d":"数百件のボイスメモをClaude Codeスキルで文字起こし・要約・引用抽出","w":"APIキー無しで自分の声の資産が検索可能な図書館になる","o":["Claude Code","skills"],"m":"2時間","g":"仕事","u":"https://github.com/cathrynlavery/voice-memo-organizer","s":"cathrynlavery/voice-memo-organizer"},"50":{"t":"iPhoneボイスメモを毎日ノートに自動着地","d":"iOSのVoice MemosをClaude Code経由でObsidianのDaily Noteに流し込む","w":"喋るだけで日記が育っていく仕組みが個人開発で完成","o":["Claude Code","Obsidian"],"m":"1日","g":"仕事","u":"https://drew.tech/posts/ios-memos-obsidian-claude","s":"How to Send iOS Voice Memos to Obsidian with Claude Code"},"51":{"t":"「文字起こしして」で議事録が生える","d":"Claude Codeに一言投げるだけでボイスメモが議事録に変わる運用","w":"コマンドを覚えなくていい、ただの一言でパイプライン起動","o":["Claude Code"],"m":"30分","g":"仕事","u":"https://note.com/reiser/n/n87af82005786","s":"Just say「transcribe」to Claude Code, and your voice memos become meeting minutes"},"52":{"t":"数百の並列サブエージェントを1セッションから","d":"親エージェントがタスクを分解し子エージェントを大量に並列展開","w":"Fleetモードでは数十〜数百体を1回のセッションで動かせる","o":["Claude Code","subagents"],"m":"2時間","g":"仕事","u":"https://www.mindstudio.ai/blog/claude-code-dynamic-workflows-parallel-sub-agents","s":"How to Use Claude Code Dynamic Workflows: Spawning Hundreds of Parallel Sub-Agents"},"53":{"t":"git worktreeで5エージェント同時稼働","d":"worktreeを切ってそれぞれ別のClaude Codeセッションを並走させる","w":"コンテキストスイッチ無しで並行開発が体感できる","o":["Claude Code","git worktree"],"m":"2時間","g":"仕事","u":"https://devtoollab.com/blog/claude-code-git-worktrees-parallel-agents-guide","s":"Claude Code Git Worktrees: Run 5 AI Agents in Parallel"},"54":{"t":"複数AI人格でブレストさせる","d":"Claude Codeのagent teamsで複数ペルソナに討論・合意形成をさせる","w":"1人で考えるより明らかに違う視点が机の上に並ぶ","o":["Claude Code","agent teams"],"m":"2時間","g":"両方","u":"https://www.mindstudio.ai/blog/claude-code-agent-teams-brainstorming","s":"How to Use Claude Code Agent Teams for Multi-Perspective Brainstorming"},"55":{"t":"チームリードAIがメンバーに直接指示","d":"team-leadセッションがタスクリストを共有しteammateに直接メッセージする新モード","w":"「Swarms」と噂されていたものが正式にagent teamsとして公開","o":["Claude Code","agent teams"],"m":"1週間","g":"仕事","u":"https://blog.imseankim.com/claude-code-team-mode-multi-agent-orchestration-march-2026/","s":"Claude Code Agent Teams: TeammateTool and Swarm Mode"},"56":{"t":"Obsidianボルトを開発の司令塔に","d":"ノートvaultをClaude Code専用ダッシュボードに変え進捗・ログを一画面に集約","w":"ノートを開いたまま開発ログとタスクが同時に見える","o":["Obsidian","Claude Code"],"m":"2時間","g":"仕事","u":"https://github.com/mighty-technophobia970/Obsidian-Dashboard","s":"mighty-technophobia970/Obsidian-Dashboard"},"57":{"t":"クリックせずNotionを構築する","d":"Notion CLI経由でClaude Codeにページ・DB構築を丸ごと任せる","w":"ローカルmarkdownフォルダから構造化Notionページが自動で生える","o":["Notion","Claude Code"],"m":"1時間","g":"仕事","u":"https://aimaker.substack.com/p/notion-cli-claude-code","s":"Notion CLI + Claude Code: Build Notion Without Clicking"},"58":{"t":"コマンド1つでNotion連携完成","d":"notion-search/notion-createなどのツールでClaude CodeからNotionを直接編集","w":"ブラウザログイン1回・ターミナル1コマンドで接続完了","o":["Notion","Claude Code"],"m":"30分","g":"仕事","u":"https://ccforeveryone.com/guides/connect-claude-code-to-notion","s":"Claude Code Notion Setup: One Command and 3 Real Recipes"},"59":{"t":"Claude Codeに日記をつけさせる","d":"セッションのコンテキストからJSONL履歴まで解析し自動で日記エントリを生成","w":"「振り返る」を人間が書かなくても済む仕組み","o":["Claude Code"],"m":"2時間","g":"仕事","u":"https://github.com/rlancemartin/claude-diary","s":"rlancemartin/claude-diary"},"60":{"t":"Obsidian×Hooksで自己進化する記憶","d":"セッション境界ごとにフックが捕捉→整理→昇格のループを自動実行","w":"ベクトルDB無しでもインデックスとバックリンクだけで十分ナビゲートできる","o":["Claude Code","hooks","Obsidian"],"m":"1日","g":"仕事","u":"https://www.mindstudio.ai/blog/self-evolving-claude-code-memory-obsidian-hooks","s":"How to Build a Self-Evolving Claude Code Memory System With Obsidian and Claude Code Hooks"},"61":{"t":"スキルが自分で自分を直す「Karpathyループ」","d":"スキルの出力を別スキルが批評し、その批評を元に自分の指示書を書き換える","w":"回すたびに次の1回がわずかに賢くなる自己改善ループ","o":["Claude Code","skills"],"m":"2時間","g":"仕事","u":"https://www.waboom.ai/blog/claude-karpathy-loop-self-improving-skill","s":"The Karpathy Loop: A Claude Skill That Improves Itself"},"62":{"t":"iPhoneからClaude Codeを遠隔操作","d":"Tailscale+Termius+tmuxの組み合わせでMacのClaude Codeにスマホから接続","w":"ノートPCをカバンに入れたままタスクの続きが操縦できる","o":["Claude Code","SSH","Tailscale"],"m":"1時間","g":"仕事","u":"https://sealos.io/blog/claude-code-on-phone/","s":"Claude Code Mobile: iPhone, Android & SSH"},"63":{"t":"Termux+SSH+tmuxでスマホから開発","d":"iPhoneからSSH接続しtmuxセッション越しにClaude Codeを操作する実践記","w":"移動中でもAIエージェントを止めずに触り続けられる","o":["Claude Code","Termux","tmux"],"m":"1時間","g":"仕事","u":"https://dev.to/shimo4228/running-claude-code-from-iphone-via-ssh-tmux-4c10","s":"Running Claude Code from iPhone via SSH + tmux"},"64":{"t":"Claude CodeはいかにしてAI社員となりし乎","d":"CLAUDE.mdを職務記述書に見立てAIを自律的な社員として運用する記録","w":"「AI社員」という言葉が個人開発者の実体験として言語化されている","o":["Claude Code"],"m":"1週間","g":"仕事","u":"https://note.com/immmmmmmu/n/n9bca761bc6d3","s":"Claude Codeは如何にしてAI社員となりし乎"},"65":{"t":"Claude CodeでAI自律型組織をつくる","d":"複数のAIロールを社員に見立てて一人社長が組織運営する試み","w":"「AI社員と働く時代へ」を実際にnoteで公開している一人発信者","o":["Claude Code"],"m":"1週間","g":"仕事","u":"https://note.com/gifted_quince621/n/nfbdf77405ac1","s":"Claude Codeで「AI社員」と働く時代へ｜AI自律型組織の作り方"},"66":{"t":"AI社員は4つの部屋でできていた","d":"Claude Codeで作ったAI社員の構造を4つの役割部屋に分解して解説","w":"組織図をAI社員の内部構造として比喩化した発想が独特","o":["Claude Code"],"m":"2時間","g":"仕事","u":"https://note.com/leal_parrot5638/n/n3dde9c05b0b7","s":"Claude Codeで作った「AI社員」は4つの部屋でできていた"},"67":{"t":"AIペルソナで仮想顧客調査","d":"Claude Codeスキルで複数の人格パネルを作りコンセプトテストを回す","w":"インタビューを実施せずに顧客反応の当たりを先取りできる","o":["Claude Code","skills"],"m":"2時間","g":"仕事","u":"https://github.com/takechanman1228/claude-persona","s":"takechanman1228/claude-persona"},"68":{"t":"NotebookLMでノートをポッドキャストに変換","d":"アップロードした資料を2人の掛け合い音声に自動変換する機能を運用","w":"Deep Dive/Brief/Critique/Debateの4形式・80言語超に対応","o":["NotebookLM"],"m":"30分","g":"両方","u":"https://recast.studio/blog/how-to-create-notebook-lm-podcast","s":"How to Create a NotebookLM Podcast (2026 Guide)"},"69":{"t":"NotebookLM活用12パターン","d":"資料を要約・関連付け・スライド・レポート化する使い方を12種まとめた実例集","w":"1つのツールで音声・動画・図解・表まで生成できる幅の広さ","o":["NotebookLM"],"m":"30分","g":"両方","u":"https://nicolleweeks.substack.com/p/12-powerful-ways-to-use-notebooklm","s":"12 powerful ways to use NotebookLM in 2026"},"70":{"t":"NotebookLM音声をポッドキャスト配信まで通す","d":"NotebookLMの単発Audio OverviewをRSS配信・Spotify掲載まで持っていくワークフロー","w":"「聞いて終わり」の壁を配信導線側の別ツールで突破する発想","o":["NotebookLM"],"m":"2時間","g":"仕事","u":"https://www.jellypod.com/workflows/notebooklm-to-published-podcast","s":"Turn NotebookLM Into a Published Podcast"},"71":{"t":"AI大喜利で3年分の進化対決","d":"同じお題をAIに投げ、旧世代と最新版の回答を並べて笑う","w":"「こんなAIは嫌だ」の答えの質がここまで変わったかと爆笑になる","o":["ChatGPT"],"m":"30分","g":"遊び","u":"https://www.gizmodo.jp/2026/03/ohgiri_ai.html","s":"【大喜利】3年前のChatGPT対2026年のAI"},"72":{"t":"Sunoでオリジナルテーマソング作曲","d":"イベント名や参加者の言葉を歌詞に入れてSunoで即興のテーマ曲を作る","w":"会場のノリがそのまま曲になって流れる瞬間","o":["Suno"],"m":"30分","g":"遊び","u":"https://note.com/yasabi/n/n724a342d249d","s":"SunoとAIスキルでTRPGシナリオテーマソングを作ろう！"},"73":{"t":"Sunoで仲間へ誕生日曲プレゼント","d":"当日の名前・エピソードを歌詞に入れてSunoで世界に一つの誕生日曲を作る","w":"サプライズのケーキと同時に本人だけの曲が流れる","o":["Suno"],"m":"30分","g":"遊び","u":"https://note.com/daisei_1689/n/needa74433f96","s":"仲間の誕生日にSUNOで曲をプレゼントした話"},"74":{"t":"10年分の強みをAIに読ませる","d":"過去のストレングスファインダー結果を全部AIに渡して変化を分析させる","w":"自分でも気づかなかった資質の推移をAIが言語化する","o":["ChatGPT","Claude"],"m":"2時間","g":"両方","u":"https://note.com/toianna/n/n4fc762f5c33c","s":"10年分のストレングスファインダーを生成AIに読ませて"},"75":{"t":"AI診断が的中して震えた話","d":"ストレングスファインダー風の診断をAIにお願いし本物の結果と照合する","w":"公式診断を受けていないのに驚くほど言い当てる","o":["ChatGPT"],"m":"30分","g":"遊び","u":"https://note.com/brave_hare3872/n/n96d1f7d20c58","s":"AIに\"ストレングスファインダー風の診断\"をお願いしたら的中した話"},"76":{"t":"未来の自分と対話するプロンプト","d":"10年後の理想の自分になりきらせてAIに今の自分へアドバイスさせる","w":"問いを重ねるうちに本音がAI経由で自分に返ってくる","o":["ChatGPT"],"m":"30分","g":"仕事","u":"https://note.com/ryo_0627/n/n257931574eff","s":"ChatGPTで\"未来の自分\"と対話する方法｜魔法の質問テンプレ"},"77":{"t":"AIに5年後を辛口で描かせる","d":"現在の会話パターンから5〜30年後の自分をAIに予測・言語化させる","w":"優しい言葉を期待したら想像以上に辛口な現実を突きつけられる","o":["ChatGPT"],"m":"30分","g":"仕事","u":"https://soulsynk-ai.com/ai-future-self-prompt/","s":"AIに「5年後の自分」を描かせたら、想像以上に辛口だった話"},"78":{"t":"ChatGPTでファンタジーRPGを遊ぶ","d":"プロンプト一つでAIがゲームマスターになりRPGを進行してくれる","w":"恋愛ゲームや歴史シミュレーションにも同じ型で応用できる汎用性","o":["ChatGPT"],"m":"2時間","g":"遊び","u":"https://note.com/fladdict/n/nb66db952f992","s":"ChatGPTで、ファンタジーRPGを遊ぶには？"},"79":{"t":"一人で無限に遊べるAI TRPG","d":"ChatGPTを進行役にして一人で終わりのないTRPGセッションを回す","w":"人数が集まらない夜でも即席で物語が始まる手軽さ","o":["ChatGPT"],"m":"2時間","g":"遊び","u":"https://note.com/ai_hitoriasobi/n/nc220ef5f824a","s":"【AI】一人で無限にTRPGが遊べるやつ【ChatGPT】"},"80":{"t":"日記をポジティブ小説に変換","d":"専用GPTに日記を渡すと感情豊かな物語調に書き直してくれる","w":"同じ一日なのに主人公になった気分で読み返せる","o":["ChatGPT"],"m":"30分","g":"遊び","u":"https://chatgpt.com/g/g-DbEAPLxcu-hosiri-ji-bian-huan-maigpt-posidiary-transformer-mygpt","s":"ポジ日記変換マイGPT (PosiDiary Transformer MyGPT)"},"81":{"t":"AIペルソナ4人で自分会議","d":"自分の性格から複数のペルソナをAIに生成させ議論・会議形式で進行させる","w":"「僕が4人分になる」感覚で一人ブレストが本物の会議になる","o":["ChatGPT"],"m":"2時間","g":"仕事","u":"https://qiita.com/torafukuro/items/229901a26b2d458a5fc9","s":"「僕が4人分になる...」ChatGPTのペルソナと会議をしてみた話"},"82":{"t":"NVIDIA製ペルソナに60分インタビュー","d":"オープンソースのペルソナ生成技術で架空の人物を作りAIと60分対話する","w":"作った架空の人物が本当にしゃべり出し人物像が育つ","o":["ChatGPT"],"m":"2時間","g":"仕事","u":"https://note.com/tis_design/n/n94811c5ca696","s":"AIペルソナにインタビューしてみた話"},"83":{"t":"ADHDの先延ばしを1週間AI実験","d":"タスク分解や見積もりをAIに任せて1週間先延ばし癖と向き合う","w":"最初の見積もりよりAIの方が正確に所要時間を当てる","o":["ChatGPT"],"m":"1週間","g":"仕事","u":"https://note.com/yoshie_nagatomo/n/n6b53324670fd","s":"ChatGPTで先延ばし癖を克服できるのか？ー1週間やってみたら効果あったよ！"},"84":{"t":"ADHDの弱点をAIが補完する話","d":"日常のタスク管理・整理整頓の困りごとをAIとの対話で肩代わりする","w":"「できない自分」を責めずに仕組みで解決できると気づく","o":["ChatGPT"],"m":"30分","g":"仕事","u":"https://note.com/kuxu/n/n6bafb266c38e","s":"ADHDの弱点はChatGPTにより補完できると最近思ってる"},"85":{"t":"青春18きっぷの最適ルートをAI検索","d":"出発地と条件を伝えるとJR全線から乗り継ぎルートを提案してくれる","w":"自分では組めない乗り継ぎの妙をAIが一瞬で出す","o":["ChatGPT"],"m":"30分","g":"遊び","u":"https://chapro.jp/prompt/56586","s":"【青春18切符】JR全線のルート検索プロンプト"},"86":{"t":"青春18きっぷ専属コンシェルジュGPT","d":"カスタムGPTが青春18きっぷのルールやおすすめルートの質問に答える","w":"旅行前の細かい疑問が調べ物ゼロで即解決する","o":["ChatGPT"],"m":"30分","g":"遊び","u":"https://www.kzlifelog.com/seishun18/seishun18-app-trial-release","s":"【青春18きっぷコンシェルジュ】ChatGPTのカスタムGPTで質問に答えるアプリを試験公開"},"87":{"t":"Runway48時間で旅の短編映画","d":"AI動画生成で48時間以内に短編映画・予告編級の映像を作り上げる","w":"世界3500組が挑んだハッカソンの手法をそのまま旅の記録に応用できる","o":["Runway"],"m":"1日","g":"遊び","u":"https://newstella.co.jp/2024/10/15/4884","s":"動画生成AI Runwayで48時間以内に短編映画を制作するハッカソンGen:48に参加しました"},"88":{"t":"ChatGPTで自分の取扱説明書","d":"雑談の会話履歴からAIに自分の性格・扱い方を「取説」形式でまとめさせる","w":"Z世代SNSで自己開示ツールとしてバズった手法を本人向けに使う","o":["ChatGPT"],"m":"30分","g":"遊び","u":"https://note.com/hitsuji_fire/n/n1a6c14c60f51","s":"ChatGPTで作る「わたしの取扱説明書」"},"89":{"t":"AIで年末振り返りムービー","d":"1年分の写真・動画をAIが自動で整理し転換とBGM付きで編集する","w":"自分では絶対組まない編集リズムで思い出が映画になる","o":["AI動画編集ツール"],"m":"2時間","g":"遊び","u":"https://note.com/zasshokuwriter/n/n76ee782ef865","s":"【便利】AIで簡単に作る年末振り返りムービーの作り方"},"90":{"t":"NotebookLMで本と対話するラジオ","d":"読みたい本の資料をアップロードすると2人のAIホストが対談形式で解説する","w":"読んでいないのに本の内容が勝手にポッドキャストになって流れてくる","o":["NotebookLM"],"m":"30分","g":"両方","u":"https://note.com/yakiimo_blog/n/nad5861adade4","s":"【徹底解説】NotebookLM「音声ラジオ」とは？使い方から活用例まで紹介！"},"91":{"t":"生成AI時代の100日チャレンジ本","d":"AIと二人三脚で100日100本アプリを作った実録から学び方の変化を追う","w":"経済学部出身の著者がAIだけでエンジニア就職まで駆け上がった軌跡","o":["ChatGPT"],"m":"1週間","g":"仕事","u":"https://note.com/susa_lab/n/nc71bc91c7e0e","s":"『#100日チャレンジ』から学んだ、生成AI時代の新しい学び方"},"92":{"t":"Claude Academyで学びのロードマップ","d":"Anthropic公式の無償学習サイトで自分の理解度に合ったコースを進める","w":"22コース355リソースが全部無料でLinkedIn掲載可能なバッジまで出る","o":["Claude"],"m":"1週間","g":"仕事","u":"https://forest.watch.impress.co.jp/docs/news/2134400.html","s":"Anthropic、「Claude」の学習サイト「Claude Academy」を無償開設"},"93":{"t":"2分で終わるAIアイスブレイク","d":"どんな人数のグループでもAIが2分で本音を引き出す質問を進行する","w":"準備ゼロ・恥ずかしさゼロで場の空気が一気にほぐれる","o":["Claude","ChatGPT"],"m":"30分","g":"遊び","u":"https://weand.me/2026/04/28/2-minute-ai-icebreaker-no-prep-no-cringe-any-group-size/","s":"2-Minute AI Icebreaker (No Prep, No Cringe, Any Group Size)"},"94":{"t":"Nano Bananaでフィギュア化写真","d":"参加者の写真をGeminiのNano Bananaでフィギュア風に画像編集する","w":"自分がガチャガチャの箱に入った商品のように写真加工される驚き","o":["Gemini"],"m":"30分","g":"遊び","u":"https://note.com/himukai_an/n/n0c6e363386b0","s":"Geminiの画像生成で流行りのフィギュアにして遊んでみた【nano-banana】"},"95":{"t":"ゲーミフィケーションToDoで勉強習慣化","d":"タスクをゲーム要素付きアプリに組み込み勉強の継続を試みる","w":"「続かない自分」に挫折した経緯まで正直に晒しているリアルさ","o":["ゲーミフィケーションToDoアプリ"],"m":"1週間","g":"仕事","u":"https://note.com/naganaga_5762838/n/nf3e4aad248da","s":"ゲーミフィケーション×ToDoアプリで勉強を習慣化したかった話"},"96":{"t":"AI開発習慣トラッカーが1ヶ月で急成長","d":"AI開発プラットフォームで作った習慣アプリが6100件超のチェックインを記録","w":"個人が作ったアプリで149人が35日以上継続する結果が出た","o":["AI開発プラットフォーム"],"m":"1週間","g":"仕事","u":"https://create-guide.com/archives/1485","s":"続けるを支える習慣化アプリ【2026年2月28日のAnythingニュース】"},"97":{"t":"リベシティのノウハウ図書館でAI技を探す","d":"5つの力(貯める・増やす・稼ぐ・使う・守る)に紐づくAI活用ノウハウを漁る","w":"Canva×AIの画像加工までコミュニティ発の実例がそのまま読める","o":["リベシティ"],"m":"30分","g":"仕事","u":"https://library.libecity.com/","s":"リベシティノウハウ図書館"},"98":{"t":"雑なプロンプトで図解が即完成","d":"きっちり作り込まず「雑」なプロンプト5選をChatGPTに投げて図解化する","w":"ちゃんと指示を練らなくてもプロ品質の図が一瞬で出る拍子抜け感","o":["ChatGPT"],"m":"30分","g":"仕事","u":"https://note.com/alpaka_ai/n/n5b130e5900ea","s":"ChatGPTで良さげな図解が作れる雑なプロンプト5選＋α【画像生成AI】"},"99":{"t":"AI小説であそぶ","d":"ChatGPTと交互に文章を継ぎ足しながら即興で物語を紡いでいく","w":"筋書きゼロから始めても2人(人間+AI)の掛け合いで物語が着地する","o":["ChatGPT"],"m":"2時間","g":"遊び","u":"https://note.com/himukai_an/n/n36fae9045b32","s":"AI小説であそぶ【ChatGPT】"},"100":{"t":"Sunoで社内イベントBGMを内製化","d":"忘年会や表彰式など年4回のイベント音楽を全てSunoで自前制作する","w":"外注ゼロで場面ごとに合ったオリジナルBGMが量産できる体制","o":["Suno"],"m":"2時間","g":"仕事","u":"https://www.globalgate.co.jp/blog/making-music-using-suno","s":"音楽生成AI「Suno」を使っていろんな楽曲をつくってみよう"}};
+  var KEY = 'asobi100_today';
+  var FIELDS = {genre:'genre', time:'time', group:'group', src:'src'};
+  var state = {genre:[], time:[], group:[], src:[]};
+  var cards = [].slice.call(document.querySelectorAll('.card'));
+  var chipEls = [].slice.call(document.querySelectorAll('.chip'));
+  var cntEl = document.getElementById('cnt');
+  var emptyEl = document.getElementById('empty');
+
+  function readHash(){
+    var h = location.hash.replace(/^#/,'');
+    if(!h) return;
+    h.split('&').forEach(function(pair){
+      var kv = pair.split('=');
+      var k = decodeURIComponent(kv[0]||'');
+      if(!(k in state) || !kv[1]) return;
+      state[k] = decodeURIComponent(kv[1]).split(',').filter(Boolean);
+    });
+  }
+  function writeHash(){
+    var parts = [];
+    Object.keys(state).forEach(function(k){
+      if(state[k].length) parts.push(encodeURIComponent(k)+'='+encodeURIComponent(state[k].join(',')));
+    });
+    var h = parts.join('&');
+    try{ history.replaceState(null,'', h ? '#'+h : location.pathname + location.search); }catch(e){}
+  }
+  function matches(card, skip){
+    var ok = true;
+    Object.keys(state).forEach(function(k){
+      if(k===skip) return;
+      var sel = state[k];
+      if(sel.length && sel.indexOf(card.dataset[FIELDS[k]]) < 0) ok = false;
+    });
+    return ok;
+  }
+  function apply(){
+    var shown = 0;
+    cards.forEach(function(c){
+      var vis = matches(c, null);
+      c.classList.toggle('hide', !vis);
+      if(vis) shown++;
+    });
+    chipEls.forEach(function(ch){
+      var k = ch.dataset.f, v = ch.dataset.v;
+      var n = 0;
+      cards.forEach(function(c){ if(c.dataset[FIELDS[k]]===v && matches(c,k)) n++; });
+      ch.querySelector('.chip__n').textContent = n;
+      ch.classList.toggle('on', state[k].indexOf(v) >= 0);
+      ch.classList.toggle('zero', n===0 && state[k].indexOf(v)<0);
+      ch.setAttribute('aria-pressed', state[k].indexOf(v)>=0 ? 'true':'false');
+    });
+    var any = state.genre.length||state.time.length||state.group.length||state.src.length;
+    cntEl.textContent = any ? (shown + '案が当てはまりました。（全100案のうち）') : '100案を表示しています。';
+    emptyEl.classList.toggle('hide', shown>0);
+    writeHash();
+  }
+  chipEls.forEach(function(ch){
+    ch.addEventListener('click', function(){
+      var k = ch.dataset.f, v = ch.dataset.v, i = state[k].indexOf(v);
+      if(i>=0) state[k].splice(i,1); else state[k].push(v);
+      apply();
+    });
+  });
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    state = {genre:[], time:[], group:[], src:[]};
+    apply();
+  });
+
+  /* ── 今日の1個 */
+  var tEmpty = document.getElementById('todayEmpty');
+  var tBody  = document.getElementById('todayBody');
+  var copyBtn = document.getElementById('copyBtn');
+
+  function today(){
+    var d = new Date();
+    return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+  }
+  function render(no){
+    cards.forEach(function(c){ c.classList.toggle('is-today', c.dataset.no === String(no)); });
+    var it = DATA[String(no)];
+    if(!it){ tEmpty.hidden = false; tBody.hidden = true; return; }
+    tEmpty.hidden = true; tBody.hidden = false;
+    document.getElementById('todayTitle').textContent = it.t;
+    document.getElementById('todayWhat').textContent = it.d;
+    document.getElementById('todayWow').textContent = it.w;
+    document.getElementById('todayLine').textContent =
+      today()+' | '+it.t+' | '+(it.o.length?it.o.join('・'):'道具は未定')+' | '+(it.u || '元ネタ未確認');
+    copyBtn.textContent = '台帳に書く用の1行をコピーします';
+  }
+  function save(no){
+    try{ localStorage.setItem(KEY, String(no)); }catch(e){}
+  }
+  document.getElementById('grid').addEventListener('click', function(ev){
+    var b = ev.target.closest ? ev.target.closest('.pick') : null;
+    if(!b) return;
+    var no = b.dataset.pick;
+    save(no); render(no);
+    document.getElementById('today').scrollIntoView({block:'start'});
+  });
+  document.getElementById('clearBtn').addEventListener('click', function(){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    cards.forEach(function(c){ c.classList.remove('is-today'); });
+    tEmpty.hidden = false; tBody.hidden = true;
+  });
+  copyBtn.addEventListener('click', function(){
+    var txt = document.getElementById('todayLine').textContent;
+    var done = function(){ copyBtn.textContent = 'コピーしました'; setTimeout(function(){ copyBtn.textContent='台帳に書く用の1行をコピーします'; }, 2200); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(done, fallback);
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = txt; ta.setAttribute('readonly','');
+      ta.style.position='fixed'; ta.style.left='-9999px';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }
+      catch(e){ copyBtn.textContent = '選んでコピーしてください'; }
+      document.body.removeChild(ta);
+    }
+  });
+
+  readHash();
+  apply();
+  var saved = null;
+  try{ saved = localStorage.getItem(KEY); }catch(e){}
+  if(saved) render(saved);
+})();
+</script>
+</body>
+</html>
