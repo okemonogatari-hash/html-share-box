@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>金曜の速報</title>
+<style>
+  :root{
+    --paper:#F7F8F6;
+    --panel:#FFFFFF;
+    --panel-line:#E4E1D9;
+    --ink:#23272B;
+    --ink-soft:#4B5157;
+    --ink-faint:#6B7278;
+    --accent:#B0491F;
+    --accent-soft:#8A5A2B;
+    --ok:#2B6B4A;
+    --warn:#8A6D1D;
+    --ng:#A5342A;
+    --measure:40em;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{
+    max-width:840px;
+    margin:0 auto;
+    padding:0 20px 64px;
+    counter-reset:sec;
+  }
+  header.hero{
+    padding:40px 20px 28px;
+    border-bottom:1px solid var(--panel-line);
+    margin-bottom:32px;
+  }
+  header.hero .kicker{
+    font-size:.82rem;
+    letter-spacing:.06em;
+    color:var(--ink-faint);
+    margin:0 0 10px;
+  }
+  header.hero h1{
+    font-size:1.4rem;
+    line-height:1.55;
+    margin:0 0 12px;
+    font-weight:700;
+    text-wrap:balance;
+    line-break:strict;
+  }
+  header.hero .meta{
+    font-size:.85rem;
+    color:var(--ink-faint);
+    margin:0;
+  }
+  .col{
+    width:100%;
+    max-width:var(--measure);
+    margin-left:auto;
+    margin-right:auto;
+  }
+  section{
+    margin:0 auto 44px;
+    max-width:840px;
+    scroll-margin-top:16px;
+  }
+  section.step{
+    counter-increment:sec;
+  }
+  h2{
+    font-size:1.15rem;
+    line-height:1.6;
+    margin:0 0 16px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  section.step > h2::before{
+    content:counter(sec);
+    flex:none;
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--panel);
+    background:var(--accent);
+    border-radius:999px;
+    width:26px;height:26px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+  }
+  h2 .htxt{
+    text-wrap:balance;
+    line-break:strict;
+  }
+  h3{
+    font-size:1rem;
+    color:var(--ink-soft);
+    margin:26px 0 10px;
+    font-weight:700;
+  }
+  p{margin:0 0 16px;}
+  .lead{color:var(--ink-soft);}
+  strong{color:var(--ink);font-weight:700;}
+  a{color:var(--accent-soft);}
+  small{font-size:12.5px;}
+
+  /* つまり、3行で */
+  .tsumari{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-left:4px solid var(--ok);
+    border-radius:10px;
+    padding:22px;
+    margin-bottom:20px;
+  }
+  .tsumari .ttl{
+    font-size:.8rem;
+    font-weight:700;
+    letter-spacing:.04em;
+    color:var(--ok);
+    margin:0 0 12px;
+  }
+  .tsumari ol{
+    list-style:none;
+    margin:0;
+    padding:0;
+    counter-reset:ts;
+  }
+  .tsumari li{
+    counter-increment:ts;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:11px 0;
+    border-bottom:1px solid var(--panel-line);
+    font-size:.98rem;
+    line-height:1.75;
+  }
+  .tsumari li:last-child{border-bottom:none;}
+  .tsumari li::before{
+    content:counter(ts);
+    flex:none;
+    width:22px;height:22px;
+    border-radius:999px;
+    background:var(--ok);
+    color:var(--panel);
+    font-size:.76rem;
+    font-weight:700;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .tsumari li .txt{flex:1 1 auto;}
+  .tsumari li a{
+    flex:none;
+    font-size:.85rem;
+    font-weight:700;
+    white-space:nowrap;
+  }
+
+  /* 目次 */
+  .toc{
+    background:#FAFAF7;
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    padding:16px 20px;
+    margin-bottom:36px;
+  }
+  .toc .ttl{
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.04em;
+    color:var(--ink-faint);
+    margin:0 0 8px;
+  }
+  .toc ol{
+    margin:0;
+    padding-left:1.3em;
+  }
+  .toc li{
+    font-size:.92rem;
+    line-height:1.9;
+  }
+  .toc a{
+    color:var(--ink);
+    font-weight:700;
+    text-decoration:none;
+  }
+  .toc a:hover,.toc a:focus{text-decoration:underline;}
+
+  .kicker-sec{
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 16px;
+  }
+
+  /* 表 */
+  .tablewrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    background:var(--panel);
+    margin-bottom:10px;
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    table-layout:fixed;
+    font-size:.88rem;
+  }
+  th,td{
+    text-align:left;
+    padding:10px 12px;
+    border-bottom:1px solid var(--panel-line);
+    vertical-align:top;
+    overflow-wrap:break-word;
+    word-break:break-word;
+  }
+  th{
+    color:var(--ink-faint);
+    font-weight:700;
+    font-size:.82rem;
+    letter-spacing:.02em;
+    background:#FAFAF7;
+  }
+  tr:last-child td{border-bottom:none;}
+  .tablecap{
+    font-size:.82rem;
+    color:var(--ink-faint);
+    margin:8px 0 20px;
+  }
+  .num-r{text-align:right;}
+
+  /* 決めごとリスト（次に決めていただきたいこと／足りていないところ） */
+  .checklist{
+    list-style:none;
+    margin:0;
+    padding:0;
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .checklist li{
+    display:flex;
+    gap:12px;
+    padding:15px 18px;
+    border-bottom:1px solid var(--panel-line);
+    font-size:.94rem;
+    line-height:1.75;
+  }
+  .checklist li:last-child{border-bottom:none;}
+  .checklist .mark{
+    flex:none;
+    color:var(--accent-soft);
+    font-weight:700;
+  }
+  .checklist.honest .mark{color:var(--warn);}
+  .checklist .ttl{font-weight:700;color:var(--ink);display:block;}
+  .checklist .desc{color:var(--ink-soft);font-size:.88rem;display:block;margin-top:2px;}
+
+  /* 読みの帯 */
+  .yomi{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-left:4px solid var(--accent-soft);
+    border-radius:10px;
+    padding:22px;
+  }
+  .yomi p:last-child{margin-bottom:0;}
+
+  footer{
+    max-width:840px;
+    margin:0 auto;
+    padding:0 20px;
+    font-size:.8rem;
+    color:var(--ink-faint);
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="col">
+    <p class="kicker">カドッチさんへ・2026-09-11</p>
+    <h1>金曜の速報です——決めた設定は直しました。数字はまだ帯の中です</h1>
+    <p class="meta">9/7の会議で決めた8項目と「あと4本」の進み具合、そしてここまでの再生数・表示回数の実測をまとめました。判定の確定は9/14です。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="col tsumari">
+    <p class="ttl">つまり、3行で</p>
+    <ol>
+      <li><span class="txt">9/7で決めた設定は、チャンネル全体の日本語設定を除いて全部直しました。</span><a href="#settei">くわしく→</a></li>
+      <li><span class="txt">「あと4本」は出しました。4本目だけ07:00の枠を逃し、07:41公開になりました。</span><a href="#suuji">くわしく→</a></li>
+      <li><span class="txt">表示回数が戻った日（9/7→8窓、106件）でも、クリックはほぼ0でした。配られない、と、配られても選ばれない、の両方が同じ週に出ています。</span><a href="#yomi">くわしく→</a></li>
+    </ol>
+  </div>
+
+  <nav class="col toc" aria-label="目次">
+    <p class="ttl">目次</p>
+    <ol>
+      <li><a href="#settei">決めたことは、こうやりました</a></li>
+      <li><a href="#suuji">数字はこうでした</a></li>
+      <li><a href="#yomi">読みはこう見ています（まだ言い切りません）</a></li>
+      <li><a href="#kimete">次に決めていただきたいことです</a></li>
+      <li><a href="#tarinai">正直に、足りていないところです</a></li>
+    </ol>
+  </nav>
+
+  <section id="settei" class="step">
+    <h2><span class="htxt">決めたことは、こうやりました</span></h2>
+    <p class="kicker-sec">つまり、9/7で決めた設定は、チャンネル全体の日本語設定を除いて全部直しました。</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th style="width:34%">決めたこと</th><th style="width:66%">やったこと</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>① AI開示</td><td>✅ K22〜K31の全本でチェック済み。再読込しても消えないことを確認済み</td></tr>
+          <tr><td>② 日本語（動画ごと）</td><td>✅ 動画の言語・タイトルと説明の言語をK22〜K31全本で日本語に設定し、実測済み</td></tr>
+          <tr><td>② 日本語（チャンネル全体）</td><td>❌ 未設定のまま。YouTube Studioの画面には単独で設定する場所がなく、次の一手（API直接操作）はまだ実行していません</td></tr>
+          <tr><td>③ 縦サムネ</td><td>🟡 保存して再読込しても消えないことは確認済み。Shorts一覧で実際にどう見えているかは、まだ目視できていません</td></tr>
+          <tr><td>④ 概要欄</td><td>🟡 K22〜K31全本で、本文とハッシュタグが入っていて空欄ではないことを確認済み。ご指摘いただいた「設定できていない」がどの画面を指すかは、まだ分かっていません</td></tr>
+          <tr><td>⑤ 差分を出す</td><td>❌ 設定だけ直した本（K28）と、台本ごと作り直した本（K27再・K29）が混ざっていて、どちらが効いたかを切り分けられる状態になっていません</td></tr>
+          <tr><td>⑥ あと4本</td><td>✅ 4本を公開しました（K28、K27再、K29、そしてK31）。ただしK31だけ07:00の枠を逃し、07:41公開になっています</td></tr>
+          <tr><td>追加：カテゴリ</td><td>✅ K28でカテゴリを25番から26番（ハウツーとスタイル）に変更しました</td></tr>
+          <tr><td>追加：2回タップの誘導を外す</td><td>✅ K29・K31で、視聴者に2回タップを求めるセリフをやめ、橋渡しの一文に変えました</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tablecap">✅=直した ／ 🟡=直したが確認できていない部分が残る ／ ❌=未着手。出典：<code>2026-09-09_MTGポイント照合と金曜報告の設計.md</code>／STATE.md 9/8〜9/11行。</p>
+  </section>
+
+  <section id="suuji" class="step">
+    <h2><span class="htxt">数字はこうでした</span></h2>
+    <p class="kicker-sec">つまり、直した後の再生数は、直す前の帯からまだ外に出ていません。</p>
+
+    <h3>設定を直した4本の再生数です</h3>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>動画</th><th>経過時間</th><th class="num-r">再生数</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>K28（寝たきり）</td><td>72h超</td><td class="num-r">6</td></tr>
+          <tr><td>K27再（節約）</td><td>53h</td><td class="num-r">5</td></tr>
+          <tr><td>K29（話して後悔）</td><td>29h</td><td class="num-r">2</td></tr>
+          <tr><td>K31（ストレス発散）</td><td>5h</td><td class="num-r">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>参考に、直す前の帯を並べます（K22〜K26・同じ経過時間）</h3>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th style="width:40%">時点</th><th>帯</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>24h時点</td><td>0〜7（中央値2）</td></tr>
+          <tr><td>72h時点</td><td>0〜18</td></tr>
+          <tr><td>各本の実数（4〜9日経過時点）</td><td>K22=6・K23=3・K24=16・K25=2・K26=0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tablecap">直した4本の再生数（6・5・2・0）は、直す前の帯（24h：0〜7／72h：0〜18）の中に収まっていて、帯の外に出た本はまだありません。たとえば、設定を直したK28は公開から72時間が過ぎても6回のまま。直す前のK26（0回）やK23（3回）と同じ並びに並んでいます。</p>
+
+    <h3>チャンネル全体では、1日あたりこう動いています</h3>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>日付</th><th class="num-r">1日増分</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>9/3</td><td class="num-r">+3</td></tr>
+          <tr><td>9/7</td><td class="num-r">+1</td></tr>
+          <tr><td>9/9</td><td class="num-r">+9</td></tr>
+          <tr><td>9/10</td><td class="num-r">+9</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tablecap">8月後半の1日増分は+13〜62で推移していました。9月の増分（+1〜+9）は、その帯より下にあります。</p>
+
+    <h3>表示回数（Reporting API・video_thumbnail_impressions／2日ラグ）</h3>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>観測窓</th><th class="num-r">チャンネル合計</th><th class="num-r">掲載本数</th><th>内訳</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>9/6→7</td><td class="num-r">6</td><td class="num-r">4本</td><td>—</td></tr>
+          <tr><td>9/7→8</td><td class="num-r">106</td><td class="num-r">25本</td><td>うちシリーズ5本で46・クリック1本</td></tr>
+          <tr><td>9/8→9</td><td class="num-r">44</td><td class="num-r">11本</td><td>K27再=16（クリック0）・K28=12（クリック1）・K26=4・K23=2・K24=1・K25=1（残り8回は対象外の5本分）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tablecap">この「表示回数」（video_thumbnail_impressions）は、Shortsのフィードに実際に流れた回数と同一の指標ではありません。YouTubeが「掲載候補として提示した回数」に近い数字です。</p>
+  </section>
+
+  <section id="yomi" class="step">
+    <h2><span class="htxt">読みはこう見ています（まだ言い切りません）</span></h2>
+    <p class="kicker-sec">つまり、設定よりも「配られていない」ことのほうが、今のところ大きく見えています。</p>
+    <div class="col yomi">
+      <p>設定を直した4本（K28・K27再・K29・K31）は、直す前の帯（24h：0〜7、中央値2）からまだ外に出ていません。設定だけを直したK28も、台本ごと作り直したK27再・K29も、今のところ同じ帯の中にいます。</p>
+      <p>一方で、表示回数は9/6→7窓の6件から9/7→8窓の106件へ一度戻りましたが、クリック(CTR非ゼロ)は1本だけでした。表示回数そのものが少ない日（9/6→7窓・9/8→9窓）と、表示回数が戻ってもクリックが0〜1件のままだった日（9/7→8窓）の両方が、同じ1週間の中に出ています。</p>
+      <p>「配られない」と「配られても選ばれない」——どちらか一方が原因、と絞れる段階ではありません。設定を直したことが効果を持つかどうかも、判定はまだ確定していないからです。確定できるのはK28（9/8公開で9/11に丸3日）まで。K27再・K29・K31の判定は9/14に持ち越します。たとえば9/7→8窓のように、掲示は106件と多かった週の中日でも、クリックしてもらえたのは1件だけでした。</p>
+    </div>
+  </section>
+
+  <section id="kimete" class="step">
+    <h2><span class="htxt">次に決めていただきたいことです</span></h2>
+    <p class="kicker-sec">つまり、次回のMTG（9/16〜18想定）で、2つ決めていただきたいことがあります。</p>
+    <ul class="checklist">
+      <li>
+        <span class="mark">①</span>
+        <span>
+          <span class="ttl">新チャンネル3案を進めるかどうか</span>
+          <span class="desc">9/7でご共有した新チャンネル3案について、いま作っている既存チャンネルと並行して進めるか、9/14の数字を見てから決めるか。</span>
+        </span>
+      </li>
+      <li>
+        <span class="mark">②</span>
+        <span>
+          <span class="ttl">クリック検証をどちらの箱でやるか</span>
+          <span class="desc">「配られても選ばれない」を確かめる実験（サムネ・タイトルの変更検証）を、今の既存チャンネルでやるか、新チャンネルでやり直すか。</span>
+        </span>
+      </li>
+    </ul>
+    <p>次回MTGは9/16〜18を想定しています。9/14に確定判定が出てから、その結果を持って臨める日程です。</p>
+  </section>
+
+  <section id="tarinai" class="step">
+    <h2><span class="htxt">正直に、足りていないところです</span></h2>
+    <p class="kicker-sec">つまり、正直に言うと、まだ判定できる段階ではありません。</p>
+    <ul class="checklist honest">
+      <li>
+        <span class="mark">・</span>
+        <span>
+          <span class="ttl">4本目（K31）の公開時刻がずれています</span>
+          <span class="desc">K28・K27再・K29は07:00公開でしたが、K31だけ07:00の枠を逃し07:41公開になりました。同じ経過時間で比べる前提が、この1本だけ崩れています。</span>
+        </span>
+      </li>
+      <li>
+        <span class="mark">・</span>
+        <span>
+          <span class="ttl">効果は9/14まで測り切れません</span>
+          <span class="desc">インプレッションには2〜3日のラグがあります。確定的に判定できるのはK28まで（9/8公開・9/11で丸3日）で、K27再・K29・K31の判定は9/14に持ち越しです。</span>
+        </span>
+      </li>
+      <li>
+        <span class="mark">・</span>
+        <span>
+          <span class="ttl">チャンネル全体の日本語設定が未設定のままです</span>
+          <span class="desc">YouTube Studioの画面には単独で設定する場所がなく、API側での直接操作がまだ実行できていません。</span>
+        </span>
+      </li>
+    </ul>
+  </section>
+
+</div>
+
+<footer>
+  <p>9月の公開本数は9/11時点で9本です。</p>
+  <p>2026-09-11・おけもんカンパニー作成</p>
+</footer>
+
+</body>
+</html>
