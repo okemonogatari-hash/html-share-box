@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>タフティとトランサーフィン、ぜんぶ映画館の話｜読書会の地図</title>
 <style>
   :root{
@@ -41,7 +42,7 @@
     border-bottom:1px solid var(--line);
     padding:40px 20px 34px; text-align:center; position:relative; overflow:hidden;
   }
-  .hero-art{max-width:420px; margin:0 auto 18px; display:block;}
+  .hero-art{width:100%; max-width:470px; height:auto; margin:0 auto 20px; display:block; border-radius:16px; box-shadow:0 4px 20px rgba(140,90,120,.13);}
   .hero h1{
     font-size:clamp(22px,5.2vw,30px); margin:0 0 10px; line-height:1.5;
     letter-spacing:.02em;
@@ -64,7 +65,7 @@
     max-width:44em; margin:0 auto; padding:0 12px;
     display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;
   }
-  .navinner::-webkit-scrollbar{display:none;}
+  .js-ready .navinner::-webkit-scrollbar{display:none;}
   nav a{
     flex:0 0 auto; font-size:13px; text-decoration:none; color:var(--ink-soft);
     padding:6px 13px; border-radius:999px; border:1px solid transparent;
@@ -101,12 +102,13 @@
     cursor:pointer; padding:17px 20px; list-style:none;
     display:flex; align-items:flex-start; gap:13px;
   }
-  details.tool summary::-webkit-details-marker{display:none;}
+  .js-ready details.tool summary::-webkit-details-marker{display:none;}
   .chip{
     flex:0 0 auto; width:34px; height:34px; border-radius:11px;
     display:grid; place-items:center; font-size:17px;
     background:var(--pink-soft); margin-top:1px;
   }
+  .chip svg{display:block;}
   .sum-txt{flex:1;}
   .sum-txt b{display:block; font-size:16px; line-height:1.5;}
   .sum-txt span{display:block; font-size:13px; color:var(--ink-soft); margin-top:2px;}
@@ -208,6 +210,71 @@
     text-align:center; color:var(--ink-soft); font-size:12.5px;
     border-top:1px solid var(--line); padding-top:22px; line-height:2;
   }
+
+  /* レッスン一覧 */
+  .lessons-grid{display:grid; gap:11px;}
+  @media(min-width:700px){ .lessons-grid{grid-template-columns:1fr 1fr;} }
+  .lgroup{
+    background:var(--paper); border:1px solid var(--line); border-radius:14px;
+    padding:15px 17px; box-shadow:var(--shadow);
+  }
+  .lgroup h4{
+    margin:0 0 9px; font-size:15px; display:flex; align-items:center; gap:8px;
+  }
+  .lgroup h4 em{
+    font-style:normal; margin-left:auto; font-size:11.5px; color:var(--ink-soft);
+    background:var(--bg); padding:2px 9px; border-radius:999px;
+  }
+  .lic{font-size:16px;}
+  .lslist{margin:0; padding:0; list-style:none;}
+  .ls-item{
+    font-size:14px; padding:5px 0 5px 15px; position:relative; line-height:1.65;
+    border-top:1px dashed var(--line);
+  }
+  .ls-item:first-child{border-top:none;}
+  .ls-item::before{
+    content:"·"; position:absolute; left:3px; color:var(--pink); font-weight:700;
+  }
+  /* 78日表 */
+  .wkblock{margin-bottom:16px;}
+  .wkhead{
+    font-size:14px; font-weight:700; padding:9px 15px;
+    border-radius:11px 11px 0 0; border:1px solid var(--line); border-bottom:none;
+  }
+  .dtable{min-width:420px; font-size:14px;}
+  .dtable th{background:#FCFAFB; font-size:12.5px;}
+  .dnum{text-align:center; color:var(--pink-deep); font-weight:700;}
+  .dttl{font-weight:700;}
+  .wkblock .tablewrap{margin-bottom:0;}
+  .wkblock table{border-radius:0 0 11px 11px;}
+
+  /* 検索 */
+  .searchbox{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:17px 19px; box-shadow:var(--shadow); margin-bottom:34px;
+  }
+  .searchbox label{display:block; font-size:14px; font-weight:700; margin-bottom:9px;}
+  .searchbox input{
+    width:100%; font-family:var(--font); font-size:15.5px; padding:11px 15px;
+    border:1.5px solid var(--line); border-radius:12px; background:var(--bg);
+    color:var(--ink); outline:none;
+  }
+  .searchbox input:focus{border-color:var(--pink); background:#fff;}
+  .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:11px;}
+  .chip-k{
+    font-size:12.5px; padding:5px 12px; border-radius:999px; cursor:pointer;
+    background:var(--pink-soft); color:var(--pink-deep); border:1px solid transparent;
+    transition:.15s;
+  }
+  .chip-k:hover{background:var(--pink); color:#fff;}
+  .chip-k.active{background:var(--pink); color:#fff;}
+  .shits{font-size:13px; color:var(--ink-soft); margin-top:10px; min-height:1.4em;}
+  .js-ready .hidden-by-search{display:none !important;}
+  mark{background:#FDE4EE; color:var(--pink-deep); padding:0 2px; border-radius:3px;}
+  .figimg{
+    width:100%; height:auto; display:block; border-radius:14px; margin:4px 0 6px;
+    box-shadow:0 3px 16px rgba(140,90,120,.11);
+  }
   .fig{width:100%; height:auto; display:block; margin:6px 0 4px;}
   .figcap{font-size:13px; color:var(--ink-soft); text-align:center; margin:0 0 6px;}
 </style>
@@ -215,22 +282,7 @@
 <body>
 
 <header class="hero">
-  <svg class="hero-art" viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="映画館のスクリーンと観客席のイラスト">
-    <rect x="58" y="16" width="304" height="82" rx="7" fill="#fff" stroke="#E8799F" stroke-width="2"/>
-    <rect x="66" y="24" width="288" height="66" rx="4" fill="#FDEFF4"/>
-    <circle cx="150" cy="52" r="13" fill="#F6C9DA"/>
-    <path d="M186 66 l17-22 13 15 10-11 20 18z" fill="#EAD9F5"/>
-    <circle cx="262" cy="44" r="8" fill="#FBE4B8"/>
-    <path d="M58 98 q152 26 304 0" fill="none" stroke="#E8799F" stroke-width="2" stroke-linecap="round"/>
-    <g fill="#D9CFE4">
-      <rect x="86" y="112" width="30" height="22" rx="7"/><rect x="128" y="112" width="30" height="22" rx="7"/>
-      <rect x="212" y="112" width="30" height="22" rx="7"/><rect x="254" y="112" width="30" height="22" rx="7"/>
-      <rect x="296" y="112" width="30" height="22" rx="7"/>
-    </g>
-    <g><rect x="170" y="112" width="30" height="22" rx="7" fill="#E8799F"/>
-    <circle cx="185" cy="105" r="7" fill="#E8799F"/></g>
-    <text x="185" y="147" font-size="9" fill="#C4517A" text-anchor="middle" font-family="sans-serif">ここに座るのが、ぜんぶの入り口</text>
-  </svg>
+  <img class="hero-art" src="assets-tufti-2026-09-12/hero.jpg" alt="小さな映画館。スクリーンの前の客席にひとりだけ座っている" width="1200" height="675">
   <h1>タフティもトランサーフィンも、<br><span class="em">ぜんぶ「映画館」の話</span>だった</h1>
   <p>用語が多くて難しく見えるけれど、比喩を1つに揃えると、驚くほどきれいに、たった1枚の絵に収まります。今日はこの1枚を持って、3人で「これってこういうこと？」を始めるための地図です。</p>
   <div class="meta">2026年9月12日（土）12:00〜 読書会のおとも</div>
@@ -241,6 +293,8 @@
     <a href="#map">🎬 映画館マップ</a>
     <a href="#tools">🛠 5つの道具</a>
     <a href="#terms">📖 用語をほどく</a>
+    <a href="#lessons">📑 全レッスン</a>
+    <a href="#days78">🗓 78日マップ</a>
     <a href="#books">📚 3冊の違い</a>
     <a href="#days">💎 28日やってみた</a>
     <a href="#questions">💬 問いカード</a>
@@ -248,6 +302,13 @@
 </nav>
 
 <div class="wrap">
+
+<div class="searchbox">
+  <label for="q">🔍 用語や気になる言葉から探す</label>
+  <input type="text" id="q" placeholder="例：振り子、鏡、重要性、アドバンテージ…" autocomplete="off">
+  <div class="chips" id="chips"></div>
+  <div class="shits" id="shits"></div>
+</div>
 
 <!-- 1 映画館マップ -->
 <section id="map">
@@ -330,7 +391,7 @@
 
   <details class="tool" open>
     <summary>
-      <span class="chip">👀</span>
+      <span class="chip"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#C4517A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.8 12S5.5 5.2 12 5.2 22.2 12 22.2 12 18.5 18.8 12 18.8 1.8 12 1.8 12Z"/><circle cx="12" cy="12" r="3.1"/></svg></span>
       <span class="sum-txt"><b>① 目を覚ます</b><span>合言葉「自分を見て、現実を見る」</span></span>
       <span class="arrow">▶</span>
     </summary>
@@ -346,7 +407,7 @@
 
   <details class="tool">
     <summary>
-      <span class="chip">🪑</span>
+      <span class="chip"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#C4517A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4v7M18 4v7M4.5 11h15M7 11v9M17 11v9M7 15.5h10"/></svg></span>
       <span class="sum-txt"><b>② 観客席に降りる（三つ編み・プレゼンス）</b><span>役は演じたまま、観客でもいる</span></span>
       <span class="arrow">▶</span>
     </summary>
@@ -360,7 +421,7 @@
 
   <details class="tool">
     <summary>
-      <span class="chip">✨</span>
+      <span class="chip"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#C4517A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 13.9 9l5.9 1.9-5.9 1.9L12 18.7l-1.9-5.9L4.2 11 10.1 9Z"/><path d="M18.7 4.3v3M17.2 5.8h3"/></svg></span>
       <span class="sum-txt"><b>③ アドバンテージの法則</b><span>「うまくいけば最高。いかなくても、それはそれで最高」</span></span>
       <span class="arrow">▶</span>
     </summary>
@@ -376,7 +437,7 @@
 
   <details class="tool">
     <summary>
-      <span class="chip">🎞</span>
+      <span class="chip"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#C4517A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.8" y="5.2" width="18.4" height="13.6" rx="2.2"/><path d="M7.4 5.2v13.6M16.6 5.2v13.6M2.8 12h18.4"/></svg></span>
       <span class="sum-txt"><b>④ ゴールのコマを照らす／台本は握らない</b><span>選ぶのは結末。段取りは向こうの担当</span></span>
       <span class="arrow">▶</span>
     </summary>
@@ -390,7 +451,7 @@
 
   <details class="tool">
     <summary>
-      <span class="chip">🪞</span>
+      <span class="chip"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#C4517A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="9.6" rx="6.2" ry="7.1"/><path d="M9.3 18.6h5.4M12 16.7v4.2"/></svg></span>
       <span class="sum-txt"><b>⑤ 鏡の原理と、マネキンの着替え</b><span>先に出す。もう持っている人として振る舞う</span></span>
       <span class="arrow">▶</span>
     </summary>
@@ -434,6 +495,9 @@
     <p class="ex">大事なのは<b>「怖い」と「魂のNO」を混ぜないこと</b>。怖いだけなら進んでよく、魂が嫌がっているなら別ルートを探す。見分けるには、実際にやってみて反応を見るのが早いです。</p>
   </div>
 
+  <img class="figimg" src="assets-tufti-2026-09-12/mirror.jpg" alt="やわらかい光がこぼれるアンティークの手鏡" loading="lazy" width="1200" height="1200">
+  <p class="figcap">「世界という鏡」——先に出したものが、返ってくる</p>
+
   <div class="term">
     <h4>バリアント空間 <em>フィルムの保管庫</em></h4>
     <p>起こりうる展開が、もう全部そこに在るという前提。だから<b>作るのではなく、選ぶ</b>。</p>
@@ -451,10 +515,96 @@
   </div>
 </section>
 
+
+<!-- 3.5 全レッスン -->
+<section id="lessons">
+  <h2><span class="num">4</span>『タフティ』の中身、全部で40本</h2>
+  <p class="lead">原書の目次そのままの並び（OCR全文から取りました）。わたしたちで8つのかたまりに分けています。どこに何があるか分かると、読むのがぐっと楽になります。</p>
+
+  <div class="lessons-grid">
+  <div class="lgroup searchable" data-s="世界の仕組みを知る 2つのスクリーン 夢の中を自由に歩く 「現実」へようこそ 意識の向け先を観察する">
+    <h4><span class="lic">🎬</span>世界の仕組みを知る<em>4本</em></h4>
+    <ul class="lslist"><li class="ls-item" data-s="2つのスクリーン">2つのスクリーン</li><li class="ls-item" data-s="夢の中を自由に歩く">夢の中を自由に歩く</li><li class="ls-item" data-s="「現実」へようこそ">「現実」へようこそ</li><li class="ls-item" data-s="意識の向け先を観察する">意識の向け先を観察する</li></ul>
+  </div>
+  <div class="lgroup searchable" data-s="道具を受け取る 現実を構築する 意図の三つ編み 三つ編みの使い方">
+    <h4><span class="lic">🎀</span>道具を受け取る<em>3本</em></h4>
+    <ul class="lslist"><li class="ls-item" data-s="現実を構築する">現実を構築する</li><li class="ls-item" data-s="意図の三つ編み">意図の三つ編み</li><li class="ls-item" data-s="三つ編みの使い方">三つ編みの使い方</li></ul>
+  </div>
+  <div class="lgroup searchable" data-s="幻想から抜ける 「自分で行動している」という幻想 罠から逃れる方法 再プログラミング 変容 メタパワー">
+    <h4><span class="lic">🌀</span>幻想から抜ける<em>5本</em></h4>
+    <ul class="lslist"><li class="ls-item" data-s="「自分で行動している」という幻想">「自分で行動している」という幻想</li><li class="ls-item" data-s="罠から逃れる方法">罠から逃れる方法</li><li class="ls-item" data-s="再プログラミング">再プログラミング</li><li class="ls-item" data-s="変容">変容</li><li class="ls-item" data-s="メタパワー">メタパワー</li></ul>
+  </div>
+  <div class="lgroup searchable" data-s="先取りして振る舞う フリをする プレゼンスを得る アドバンテージ 起きるにまかせる">
+    <h4><span class="lic">👗</span>先取りして振る舞う<em>4本</em></h4>
+    <ul class="lslist"><li class="ls-item" data-s="フリをする">フリをする</li><li class="ls-item" data-s="プレゼンスを得る">プレゼンスを得る</li><li class="ls-item" data-s="アドバンテージ">アドバンテージ</li><li class="ls-item" data-s="起きるにまかせる">起きるにまかせる</li></ul>
+  </div>
+  <div class="lgroup searchable" data-s="台本と流れに乗る 台本 創造主の輝き パワーからの指示 流れに乗る 自分を超えたパワー">
+    <h4><span class="lic">🌊</span>台本と流れに乗る<em>5本</em></h4>
+    <ul class="lslist"><li class="ls-item" data-s="台本">台本</li><li class="ls-item" data-s="創造主の輝き">創造主の輝き</li><li class="ls-item" data-s="パワーからの指示">パワーからの指示</li><li class="ls-item" data-s="流れに乗る">流れに乗る</li><li class="ls-item" data-s="自分を超えたパワー">自分を超えたパワー</li></ul>
+  </div>
+  <div class="lgroup searchable" data-s="鏡を使う ペーパー人間 映像を構築する 鏡とのコミュニケーション 操る 鏡への反射を構築する">
+    <h4><span class="lic">🪞</span>鏡を使う<em>5本</em></h4>
+    <ul class="lslist"><li class="ls-item" data-s="ペーパー人間">ペーパー人間</li><li class="ls-item" data-s="映像を構築する">映像を構築する</li><li class="ls-item" data-s="鏡とのコミュニケーション">鏡とのコミュニケーション</li><li class="ls-item" data-s="操る">操る</li><li class="ls-item" data-s="鏡への反射を構築する">鏡への反射を構築する</li></ul>
+  </div>
+  <div class="lgroup searchable" data-s="自分を受け入れる 運命的なジレンマ あなたは素晴らしい あなたは完璧">
+    <h4><span class="lic">💗</span>自分を受け入れる<em>3本</em></h4>
+    <ul class="lslist"><li class="ls-item" data-s="運命的なジレンマ">運命的なジレンマ</li><li class="ls-item" data-s="あなたは素晴らしい">あなたは素晴らしい</li><li class="ls-item" data-s="あなたは完璧">あなたは完璧</li></ul>
+  </div>
+  <div class="lgroup searchable" data-s="仕上げの技法 トリプル・アクション あなたの天才性 フリをするテクニック 思考フォーム 思考マーカー 見逃さないでキャッチする スイート・ハーモニー 三つ編みとエネルギーの流れ 過去世からの力 無限の中の無限 終章">
+    <h4><span class="lic">✨</span>仕上げの技法<em>11本</em></h4>
+    <ul class="lslist"><li class="ls-item" data-s="トリプル・アクション">トリプル・アクション</li><li class="ls-item" data-s="あなたの天才性">あなたの天才性</li><li class="ls-item" data-s="フリをするテクニック">フリをするテクニック</li><li class="ls-item" data-s="思考フォーム">思考フォーム</li><li class="ls-item" data-s="思考マーカー">思考マーカー</li><li class="ls-item" data-s="見逃さないでキャッチする">見逃さないでキャッチする</li><li class="ls-item" data-s="スイート・ハーモニー">スイート・ハーモニー</li><li class="ls-item" data-s="三つ編みとエネルギーの流れ">三つ編みとエネルギーの流れ</li><li class="ls-item" data-s="過去世からの力">過去世からの力</li><li class="ls-item" data-s="無限の中の無限">無限の中の無限</li><li class="ls-item" data-s="終章">終章</li></ul>
+  </div></div>
+
+  <div class="note" style="margin-top:14px;">
+    📖 <b>読む順のおすすめ：</b>A→B→Dだけ先に読むと、実践に必要なものはだいたい揃います。C（幻想から抜ける）とE（台本と流れ）は理屈が濃いので、<b>手を動かしてから戻る</b>ほうが入りやすいです。
+  </div>
+</section>
+
+<!-- 3.6 78日マップ -->
+<section id="days78">
+  <h2><span class="num">5</span>『78日間実践マニュアル』の最初の4週</h2>
+  <p class="lead">1日1テーマ×78日のワークブック。原題と「やること」だけ並べました。おけもんが実際に走っているのがこれです。</p>
+  
+  <div class="wkblock">
+    <div class="wkhead" style="background:#FDEFF4;color:#C4517A">第1週（Day1-7）｜まず目を覚ますところから</div>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:14%">Day</th><th style="width:32%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day1 目覚め 目の前のことを「これ夢だな」と思いながら一日過ごす"><td class="dnum">1</td><td class="dttl">目覚め</td><td>目の前のことを「これ夢だな」と思いながら一日過ごす</td></tr><tr class="searchable" data-s="Day2 夢の乗っとり 今どこで何をしてるか自分に言い聞かせて、また舞台に戻る"><td class="dnum">2</td><td class="dttl">夢の乗っとり</td><td>今どこで何をしてるか自分に言い聞かせて、また舞台に戻る</td></tr><tr class="searchable" data-s="Day3 神の子 「〜になりますように」を全部「〜にする」に言い換える"><td class="dnum">3</td><td class="dttl">神の子</td><td>「〜になりますように」を全部「〜にする」に言い換える</td></tr><tr class="searchable" data-s="Day4 スター誕生 「みんなやってるから」を1個やめて、自分の基準を1個決める"><td class="dnum">4</td><td class="dttl">スター誕生</td><td>「みんなやってるから」を1個やめて、自分の基準を1個決める</td></tr><tr class="searchable" data-s="Day5 世界という鏡 自分が世界をどう思ってるか書き出す（それが返ってくる）"><td class="dnum">5</td><td class="dttl">世界という鏡</td><td>自分が世界をどう思ってるか書き出す（それが返ってくる）</td></tr><tr class="searchable" data-s="Day6 ブーメラン イラッとしたとき、投げ返す前に止める"><td class="dnum">6</td><td class="dttl">ブーメラン</td><td>イラッとしたとき、投げ返す前に止める</td></tr><tr class="searchable" data-s="Day7 鏡に映っているのは幻影 現実を見て反応するのをやめ、先に自分を決める"><td class="dnum">7</td><td class="dttl">鏡に映っているのは幻影</td><td>現実を見て反応するのをやめ、先に自分を決める</td></tr>
+    </table></div>
+  </div>
+  <div class="wkblock">
+    <div class="wkhead" style="background:#FBF3E4;color:#A87C2E">第2週（Day8-14）｜エネルギーを取り戻す</div>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:14%">Day</th><th style="width:32%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day8 ピンクの双子 「あ、いま良かった」の一瞬を捕まえて焦点を合わせる"><td class="dnum">8</td><td class="dttl">ピンクの双子</td><td>「あ、いま良かった」の一瞬を捕まえて焦点を合わせる</td></tr><tr class="searchable" data-s="Day9 安堵のため息 進んでない計画を、捨てるか一歩進めるか決める"><td class="dnum">9</td><td class="dttl">安堵のため息</td><td>進んでない計画を、捨てるか一歩進めるか決める</td></tr><tr class="searchable" data-s="Day10 解放 欲しいものを「当然自分のもの」として扱って一歩出る"><td class="dnum">10</td><td class="dttl">解放</td><td>欲しいものを「当然自分のもの」として扱って一歩出る</td></tr><tr class="searchable" data-s="Day11 自信 自信を出そうとせず、守るものを外して流れに乗る"><td class="dnum">11</td><td class="dttl">自信</td><td>自信を出そうとせず、守るものを外して流れに乗る</td></tr><tr class="searchable" data-s="Day12 バランス 克服しようとせず、重要性のほうを下げる"><td class="dnum">12</td><td class="dttl">バランス</td><td>克服しようとせず、重要性のほうを下げる</td></tr><tr class="searchable" data-s="Day13 魂の魅力 浮かぶネガティブな場面を、いいやつに置き換える"><td class="dnum">13</td><td class="dttl">魂の魅力</td><td>浮かぶネガティブな場面を、いいやつに置き換える</td></tr><tr class="searchable" data-s="Day14 自分への愛 他人のよさを見る前に、自分のいいところを1個認める"><td class="dnum">14</td><td class="dttl">自分への愛</td><td>他人のよさを見る前に、自分のいいところを1個認める</td></tr>
+    </table></div>
+  </div>
+  <div class="wkblock">
+    <div class="wkhead" style="background:#EAF6F2;color:#3E8C77">第3週（Day15-21）｜自分の基準を立てる</div>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:14%">Day</th><th style="width:32%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day15 私の目的は、私 自分のケアを1個やる。何でもいい"><td class="dnum">15</td><td class="dttl">私の目的は、私</td><td>自分のケアを1個やる。何でもいい</td></tr><tr class="searchable" data-s="Day16 信念 信じるかどうかは置いといて、とりあえずやってみる"><td class="dnum">16</td><td class="dttl">信念</td><td>信じるかどうかは置いといて、とりあえずやってみる</td></tr><tr class="searchable" data-s="Day17 罪悪感 「申し訳ない」を1個手放す。罪がなければ罰もない"><td class="dnum">17</td><td class="dttl">罪悪感</td><td>「申し訳ない」を1個手放す。罪がなければ罰もない</td></tr><tr class="searchable" data-s="Day18 自己価値 アピールしたくなったら黙る。人のプライドは傷つけない"><td class="dnum">18</td><td class="dttl">自己価値</td><td>アピールしたくなったら黙る。人のプライドは傷つけない</td></tr><tr class="searchable" data-s="Day19 決定者の信条 考えと行動がズレてるところを1個直す"><td class="dnum">19</td><td class="dttl">決定者の信条</td><td>考えと行動がズレてるところを1個直す</td></tr><tr class="searchable" data-s="Day20 あなたの本当の道 「うまくいってるのにモヤる」を探す。魂の反対サイン"><td class="dnum">20</td><td class="dttl">あなたの本当の道</td><td>「うまくいってるのにモヤる」を探す。魂の反対サイン</td></tr><tr class="searchable" data-s="Day21 判決を下す 「こうすべき」を1個、自分の基準で決め直す"><td class="dnum">21</td><td class="dttl">判決を下す</td><td>「こうすべき」を1個、自分の基準で決め直す</td></tr>
+    </table></div>
+  </div>
+  <div class="wkblock">
+    <div class="wkhead" style="background:#F1EDFA;color:#6A57A0">第4週（Day22-28）｜意図して動く</div>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:14%">Day</th><th style="width:32%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day22 意図の宣言 自動運転に気づいて、ハンドルを自分に戻す"><td class="dnum">22</td><td class="dttl">意図の宣言</td><td>自動運転に気づいて、ハンドルを自分に戻す</td></tr><tr class="searchable" data-s="Day23 行動の決意 ゴールは選ぶ。一歩は踏む。ルートは握らない"><td class="dnum">23</td><td class="dttl">行動の決意</td><td>ゴールは選ぶ。一歩は踏む。ルートは握らない</td></tr><tr class="searchable" data-s="Day24 所有の決意 「欲しい」ではなく「もうある」の姿勢で過ごす"><td class="dnum">24</td><td class="dttl">所有の決意</td><td>「欲しい」ではなく「もうある」の姿勢で過ごす</td></tr><tr class="searchable" data-s="Day25 — ※Day25以降は、おけもんの実践がまだ進行中です"><td class="dnum">25</td><td class="dttl">—</td><td>※Day25以降は、おけもんの実践がまだ進行中です</td></tr><tr class="searchable" data-s="Day26 — 同上（対話の記録はあるけれど、結晶はこれから）"><td class="dnum">26</td><td class="dttl">—</td><td>同上（対話の記録はあるけれど、結晶はこれから）</td></tr>
+    </table></div>
+  </div>
+  <div class="note">
+    🌊 <b>今日の見どころ：</b>Day1が「目覚め」から始まって、Day21で「判決を下す」まで来る流れ。<b>気づく→力を取り戻す→自分の基準を立てる→意図して動く</b>の順に組まれています。並べて見ると、この本がちゃんと設計されているのが分かります。
+  </div>
+</section>
+
 <!-- 4 3冊 -->
 <section id="books">
-  <h2><span class="num">4</span>で、どの本から読むの？</h2>
+  <h2><span class="num">6</span>で、どの本から読むの？</h2>
   <p class="lead">同じ著者（ヴァジム・ゼランド）ですが、役割がはっきり違います。</p>
+
+  <img class="figimg" src="assets-tufti-2026-09-12/projector.jpg" alt="レトロな映写機から光が伸び、フィルムのコマが宙に漂っている" loading="lazy" width="1200" height="1200">
+  <p class="figcap">照らすコマを選ぶ。それだけが、こちらの仕事</p>
 
   <div class="tablewrap">
     <table>
@@ -486,7 +636,7 @@
 
 <!-- 5 Day結晶 -->
 <section id="days">
-  <h2><span class="num">5</span>28日やってみた人の、結晶</h2>
+  <h2><span class="num">7</span>28日やってみた人の、結晶</h2>
   <p class="lead">本の要約ではありません。おけもんが2026年8月4日から毎日実践して、自分の言葉になったところだけ。ここが今日いちばん話せるところだと思います。</p>
 
   <div class="days">
@@ -516,7 +666,7 @@
 
 <!-- 6 問い -->
 <section id="questions">
-  <h2><span class="num">6</span>「意味わからん」で終わらせない問い</h2>
+  <h2><span class="num">8</span>「意味わからん」で終わらせない問い</h2>
   <p class="lead">正解を当てる問いではありません。全部、自分の話に着地できるものだけ選びました。</p>
 
   <div class="qcard" id="qcard">
@@ -546,6 +696,7 @@
 </div>
 
 <script>
+  document.documentElement.classList.add('js-ready');
   const QS = [
     ["最近「台本に乗ってたな」と気づいた瞬間、ある？","自分で決めたつもりだったけど、あとから振り返ると流れに運ばれてただけ、という出来事。小さいほど良い例になります。"],
     ["今週、賛成でも反対でも「心が動いた」ニュースや話題は？","振り子のごはんは感情。怒った時も、共感した時も、同じだけエネルギーを渡しています。乗ったこと自体は悪ではなくて、気づけるかどうかだけ。"],
@@ -566,6 +717,54 @@
   function prevQ(){ i = (i-1+QS.length) % QS.length; render(); }
   function shuffleQ(){ let n; do { n = Math.floor(Math.random()*QS.length); } while(n===i && QS.length>1); i=n; render(); }
   render();
+
+  // ==== 検索 ====
+  const KEYWORDS = ["振り子","過剰ポテンシャル","重要性","三つ編み","観客席","アドバンテージ","台本","鏡","マネキン","外的意図","バリアント空間","魂","プレゼンス","ゴールのコマ","フリをする","目を覚ます"];
+  const chipbox = document.getElementById('chips');
+  KEYWORDS.forEach(k=>{
+    const b=document.createElement('span');
+    b.className='chip-k'; b.textContent=k;
+    b.onclick=()=>{ const q=document.getElementById('q');
+      if(q.value===k){ q.value=''; } else { q.value=k; }
+      runSearch(); };
+    chipbox.appendChild(b);
+  });
+
+  const TARGET_SEL = '.term, details.tool, .day, .lgroup, .dtable tr.searchable, #questions .card, #map .card, #books .card';
+  let targets = [];
+  document.querySelectorAll(TARGET_SEL).forEach(el=>{
+    targets.push({el:el, text:(el.textContent||'').toLowerCase()});
+  });
+
+  function runSearch(){
+    const q = document.getElementById('q').value.trim().toLowerCase();
+    const hits = document.getElementById('shits');
+    document.querySelectorAll('.chip-k').forEach(c=>{
+      c.classList.toggle('active', c.textContent.toLowerCase()===q);
+    });
+    if(!q){
+      targets.forEach(t=>t.el.classList.remove('hidden-by-search'));
+      document.querySelectorAll('section').forEach(s=>s.classList.remove('hidden-by-search'));
+      hits.textContent='';
+      return;
+    }
+    let n=0;
+    targets.forEach(t=>{
+      const hit = t.text.indexOf(q) !== -1;
+      t.el.classList.toggle('hidden-by-search', !hit);
+      if(hit){ n++; if(t.el.tagName==='DETAILS'){ t.el.open = true; } }
+    });
+    // 中身が全部消えたセクションは隠す
+    document.querySelectorAll('section').forEach(sec=>{
+      const inner = sec.querySelectorAll(TARGET_SEL);
+      if(inner.length===0){ sec.classList.remove('hidden-by-search'); return; }
+      const anyVisible = Array.from(inner).some(e=>!e.classList.contains('hidden-by-search'));
+      sec.classList.toggle('hidden-by-search', !anyVisible);
+    });
+    hits.textContent = n ? ('「'+q+'」に触れているカード：'+n+'件（消えた章は、その言葉が出てこない章です）')
+                         : ('「'+q+'」は、この地図には出てきませんでした。原書のほうで探すやつかも。');
+  }
+  document.getElementById('q').addEventListener('input', runSearch);
 </script>
 </body>
 </html>
