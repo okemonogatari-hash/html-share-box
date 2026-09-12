@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>タフティとトランサーフィン、ぜんぶ映画館の話｜読書会の地図</title>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#FFF9FB;
+    --paper:#FFFFFF;
+    --ink:#2E2A33;
+    --ink-soft:#6B6472;
+    --line:#F0E3EA;
+    --pink:#E8799F;
+    --pink-soft:#FDEFF4;
+    --pink-deep:#C4517A;
+    --gold:#D6A85C;
+    --gold-soft:#FBF3E4;
+    --mint:#6FB6A4;
+    --mint-soft:#EAF6F2;
+    --violet:#8E7BC4;
+    --violet-soft:#F1EDFA;
+    --radius:18px;
+    --shadow:0 2px 14px rgba(90,60,80,.07);
+    --font:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN W4",-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--font); line-height:1.9;
+    font-size:16px; letter-spacing:.01em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:40em; margin:0 auto; padding:0 20px 80px;}
+  @media(min-width:900px){ .wrap{max-width:44em;} }
+
+  /* ヒーロー */
+  .hero{
+    background:linear-gradient(170deg,#FFF3F7 0%,#FDF7FF 55%,#F4F8FF 100%);
+    border-bottom:1px solid var(--line);
+    padding:40px 20px 34px; text-align:center; position:relative; overflow:hidden;
+  }
+  .hero-art{max-width:420px; margin:0 auto 18px; display:block;}
+  .hero h1{
+    font-size:clamp(22px,5.2vw,30px); margin:0 0 10px; line-height:1.5;
+    letter-spacing:.02em;
+  }
+  .hero h1 .em{color:var(--pink-deep);}
+  .hero p{margin:0 auto; max-width:32em; color:var(--ink-soft); font-size:15px;}
+  .hero .meta{
+    margin-top:16px; font-size:13px; color:var(--ink-soft);
+    background:rgba(255,255,255,.75); display:inline-block;
+    padding:6px 16px; border-radius:999px; border:1px solid var(--line);
+  }
+
+  /* ナビ */
+  nav{
+    position:sticky; top:0; z-index:20; background:rgba(255,249,251,.94);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--line);
+    padding:9px 0; margin-bottom:34px;
+  }
+  .navinner{
+    max-width:44em; margin:0 auto; padding:0 12px;
+    display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;
+  }
+  .navinner::-webkit-scrollbar{display:none;}
+  nav a{
+    flex:0 0 auto; font-size:13px; text-decoration:none; color:var(--ink-soft);
+    padding:6px 13px; border-radius:999px; border:1px solid transparent;
+    white-space:nowrap; transition:.15s;
+  }
+  nav a:hover{background:var(--pink-soft); color:var(--pink-deep); border-color:var(--line);}
+
+  section{margin:0 0 56px; scroll-margin-top:64px;}
+  h2{
+    font-size:20px; margin:0 0 6px; line-height:1.5;
+    display:flex; align-items:center; gap:10px;
+  }
+  h2 .num{
+    flex:0 0 auto; width:28px; height:28px; border-radius:50%;
+    background:var(--pink); color:#fff; font-size:13px;
+    display:grid; place-items:center; font-weight:700;
+  }
+  .lead{color:var(--ink-soft); font-size:14.5px; margin:0 0 22px; padding-left:38px;}
+
+  .card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px 22px; box-shadow:var(--shadow); margin-bottom:14px;
+  }
+  .card h3{margin:0 0 8px; font-size:16.5px; line-height:1.55;}
+  .card p{margin:0 0 10px; font-size:15px;}
+  .card p:last-child{margin-bottom:0;}
+
+  /* 開くカード */
+  details.tool{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    margin-bottom:12px; box-shadow:var(--shadow); overflow:hidden;
+  }
+  details.tool summary{
+    cursor:pointer; padding:17px 20px; list-style:none;
+    display:flex; align-items:flex-start; gap:13px;
+  }
+  details.tool summary::-webkit-details-marker{display:none;}
+  .chip{
+    flex:0 0 auto; width:34px; height:34px; border-radius:11px;
+    display:grid; place-items:center; font-size:17px;
+    background:var(--pink-soft); margin-top:1px;
+  }
+  .sum-txt{flex:1;}
+  .sum-txt b{display:block; font-size:16px; line-height:1.5;}
+  .sum-txt span{display:block; font-size:13px; color:var(--ink-soft); margin-top:2px;}
+  .arrow{
+    flex:0 0 auto; color:var(--pink); font-size:13px; margin-top:9px;
+    transition:transform .2s;
+  }
+  details.tool[open] .arrow{transform:rotate(90deg);}
+  .tool-body{padding:0 20px 20px 67px; font-size:15px;}
+  @media(max-width:520px){ .tool-body{padding-left:20px;} }
+  .tool-body p{margin:0 0 12px;}
+  .tool-body p:last-child{margin-bottom:0;}
+
+  .yes-no{display:grid; gap:9px; margin:14px 0;}
+  @media(min-width:640px){ .yes-no{grid-template-columns:1fr 1fr;} }
+  .yn{border-radius:13px; padding:13px 15px; font-size:14px; line-height:1.75;}
+  .yn.no{background:#FCF1F1; border:1px solid #F4DCDC;}
+  .yn.yes{background:var(--mint-soft); border:1px solid #D6EBE4;}
+  .yn b{display:block; font-size:12.5px; letter-spacing:.06em; margin-bottom:4px;}
+  .yn.no b{color:#C0675F;}
+  .yn.yes b{color:#3E8C77;}
+
+  .quote{
+    border-left:3px solid var(--pink); background:var(--pink-soft);
+    padding:13px 17px; border-radius:0 12px 12px 0; margin:14px 0;
+    font-size:15px; line-height:1.8;
+  }
+  .quote small{display:block; margin-top:6px; color:var(--ink-soft); font-size:12.5px;}
+
+  /* 用語 */
+  .term{
+    background:var(--paper); border:1px solid var(--line);
+    border-radius:14px; padding:16px 18px; margin-bottom:11px; box-shadow:var(--shadow);
+  }
+  .term h4{
+    margin:0 0 7px; font-size:15.5px; display:flex; align-items:baseline;
+    gap:8px; flex-wrap:wrap;
+  }
+  .term h4 em{
+    font-style:normal; font-size:12px; color:var(--violet);
+    background:var(--violet-soft); padding:2px 9px; border-radius:999px;
+  }
+  .term p{margin:0; font-size:14.5px;}
+  .term .ex{
+    margin-top:9px; padding-top:9px; border-top:1px dashed var(--line);
+    font-size:14px; color:var(--ink-soft);
+  }
+  .term .ex b{color:var(--pink-deep); font-weight:normal;}
+
+  /* 比較表 */
+  .tablewrap{overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom:12px;}
+  table{border-collapse:collapse; width:100%; min-width:460px; font-size:14px; background:var(--paper);}
+  th,td{border:1px solid var(--line); padding:11px 13px; text-align:left; vertical-align:top;}
+  th{background:var(--pink-soft); font-weight:700; font-size:13.5px;}
+  td b{color:var(--pink-deep);}
+
+  /* Day結晶 */
+  .days{display:grid; gap:10px;}
+  @media(min-width:700px){ .days{grid-template-columns:1fr 1fr;} }
+  .day{
+    background:var(--paper); border:1px solid var(--line); border-radius:14px;
+    padding:14px 16px; box-shadow:var(--shadow);
+  }
+  .day .n{
+    font-size:11.5px; letter-spacing:.1em; color:var(--gold);
+    background:var(--gold-soft); display:inline-block;
+    padding:2px 10px; border-radius:999px; margin-bottom:7px;
+  }
+  .day p{margin:0; font-size:14.5px; line-height:1.8;}
+  .day p b{color:var(--ink); background:linear-gradient(transparent 62%, #FDE4EE 62%);}
+
+  /* 問いカード */
+  .qcard{
+    background:linear-gradient(160deg,#FFFFFF,#FFF8FB);
+    border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 22px 20px; box-shadow:var(--shadow); text-align:center;
+    min-height:190px; display:flex; flex-direction:column; justify-content:center;
+  }
+  .qcard .qn{font-size:12px; letter-spacing:.12em; color:var(--pink); margin-bottom:12px;}
+  .qcard .qt{font-size:17.5px; line-height:1.75; margin:0 0 12px; font-weight:700;}
+  .qcard .qh{font-size:13.5px; color:var(--ink-soft); line-height:1.7; margin:0;}
+  .qbtns{display:flex; gap:9px; justify-content:center; margin-top:16px; flex-wrap:wrap;}
+  button{
+    font-family:var(--font); font-size:14px; cursor:pointer;
+    border:1px solid var(--line); background:var(--paper); color:var(--ink);
+    padding:9px 20px; border-radius:999px; transition:.15s; box-shadow:var(--shadow);
+  }
+  button:hover{background:var(--pink-soft); color:var(--pink-deep);}
+  button.primary{background:var(--pink); color:#fff; border-color:var(--pink);}
+  button.primary:hover{background:var(--pink-deep); color:#fff;}
+
+  .note{
+    background:var(--gold-soft); border:1px solid #F0E3C9; border-radius:14px;
+    padding:15px 18px; font-size:14px; color:#7A6132; line-height:1.8;
+  }
+  .note b{color:#8A6A2C;}
+
+  footer{
+    text-align:center; color:var(--ink-soft); font-size:12.5px;
+    border-top:1px solid var(--line); padding-top:22px; line-height:2;
+  }
+  .fig{width:100%; height:auto; display:block; margin:6px 0 4px;}
+  .figcap{font-size:13px; color:var(--ink-soft); text-align:center; margin:0 0 6px;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <svg class="hero-art" viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="映画館のスクリーンと観客席のイラスト">
+    <rect x="58" y="16" width="304" height="82" rx="7" fill="#fff" stroke="#E8799F" stroke-width="2"/>
+    <rect x="66" y="24" width="288" height="66" rx="4" fill="#FDEFF4"/>
+    <circle cx="150" cy="52" r="13" fill="#F6C9DA"/>
+    <path d="M186 66 l17-22 13 15 10-11 20 18z" fill="#EAD9F5"/>
+    <circle cx="262" cy="44" r="8" fill="#FBE4B8"/>
+    <path d="M58 98 q152 26 304 0" fill="none" stroke="#E8799F" stroke-width="2" stroke-linecap="round"/>
+    <g fill="#D9CFE4">
+      <rect x="86" y="112" width="30" height="22" rx="7"/><rect x="128" y="112" width="30" height="22" rx="7"/>
+      <rect x="212" y="112" width="30" height="22" rx="7"/><rect x="254" y="112" width="30" height="22" rx="7"/>
+      <rect x="296" y="112" width="30" height="22" rx="7"/>
+    </g>
+    <g><rect x="170" y="112" width="30" height="22" rx="7" fill="#E8799F"/>
+    <circle cx="185" cy="105" r="7" fill="#E8799F"/></g>
+    <text x="185" y="147" font-size="9" fill="#C4517A" text-anchor="middle" font-family="sans-serif">ここに座るのが、ぜんぶの入り口</text>
+  </svg>
+  <h1>タフティもトランサーフィンも、<br><span class="em">ぜんぶ「映画館」の話</span>だった</h1>
+  <p>用語が多くて難しく見えるけれど、比喩を1つに揃えると、驚くほどきれいに、たった1枚の絵に収まります。今日はこの1枚を持って、3人で「これってこういうこと？」を始めるための地図です。</p>
+  <div class="meta">2026年9月12日（土）12:00〜 読書会のおとも</div>
+</header>
+
+<nav>
+  <div class="navinner">
+    <a href="#map">🎬 映画館マップ</a>
+    <a href="#tools">🛠 5つの道具</a>
+    <a href="#terms">📖 用語をほどく</a>
+    <a href="#books">📚 3冊の違い</a>
+    <a href="#days">💎 28日やってみた</a>
+    <a href="#questions">💬 問いカード</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- 1 映画館マップ -->
+<section id="map">
+  <h2><span class="num">1</span>まず、この絵だけ共有する</h2>
+  <p class="lead">ここから先の用語は、全部この絵のどこかを指しています。迷子になったら戻ってくる場所。</p>
+
+  <svg class="fig" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="バリアント空間・映写機・スクリーン・観客席の関係図">
+    <rect width="600" height="400" fill="#FFFDFE"/>
+
+    <!-- 保管庫 -->
+    <rect x="24" y="30" width="150" height="150" rx="14" fill="#F1EDFA" stroke="#8E7BC4" stroke-width="1.5"/>
+    <text x="99" y="56" font-size="13" fill="#6A57A0" text-anchor="middle" font-family="sans-serif" font-weight="bold">バリアント空間</text>
+    <text x="99" y="74" font-size="10.5" fill="#8E7BC4" text-anchor="middle" font-family="sans-serif">＝フィルムの保管庫</text>
+    <g stroke="#B6A6DC" stroke-width="1.2" fill="none">
+      <rect x="44" y="88" width="110" height="13" rx="3"/><rect x="44" y="106" width="110" height="13" rx="3"/>
+      <rect x="44" y="124" width="110" height="13" rx="3"/><rect x="44" y="142" width="110" height="13" rx="3"/>
+    </g>
+    <rect x="44" y="106" width="110" height="13" rx="3" fill="#E8799F" opacity=".55"/>
+    <text x="99" y="172" font-size="9.5" fill="#8E7BC4" text-anchor="middle" font-family="sans-serif">起こりうる展開が、全部もう在る</text>
+
+    <!-- 映写機 -->
+    <path d="M174 113 L232 113" stroke="#C9B8E8" stroke-width="2" stroke-dasharray="5 4"/>
+    <rect x="232" y="88" width="74" height="52" rx="11" fill="#FBF3E4" stroke="#D6A85C" stroke-width="1.5"/>
+    <circle cx="269" cy="114" r="13" fill="#F5DFAE"/><circle cx="269" cy="114" r="5" fill="#D6A85C"/>
+    <text x="269" y="80" font-size="12" fill="#A87C2E" text-anchor="middle" font-family="sans-serif" font-weight="bold">映写機＝意識の光</text>
+    <text x="269" y="157" font-size="9.5" fill="#B08C43" text-anchor="middle" font-family="sans-serif">どのコマを照らすか、を選ぶ</text>
+
+    <!-- スクリーン -->
+    <path d="M306 114 L352 96 L352 132 Z" fill="#FBE9C9" opacity=".8"/>
+    <rect x="352" y="46" width="220" height="136" rx="10" fill="#fff" stroke="#E8799F" stroke-width="2"/>
+    <rect x="360" y="54" width="204" height="120" rx="6" fill="#FDEFF4"/>
+    <text x="462" y="104" font-size="15" fill="#C4517A" text-anchor="middle" font-family="sans-serif" font-weight="bold">スクリーン＝現実</text>
+    <text x="462" y="128" font-size="10.5" fill="#D98FAF" text-anchor="middle" font-family="sans-serif">いま目の前で起きていること</text>
+    <text x="462" y="30" font-size="11" fill="#C4517A" text-anchor="middle" font-family="sans-serif">＝「世界という鏡」に映っているもの</text>
+
+    <!-- 台本 -->
+    <rect x="352" y="196" width="220" height="44" rx="10" fill="#EAF6F2" stroke="#6FB6A4" stroke-width="1.4"/>
+    <text x="462" y="216" font-size="12" fill="#3E8C77" text-anchor="middle" font-family="sans-serif" font-weight="bold">台本＝出来事の流れ・段取り</text>
+    <text x="462" y="232" font-size="10" fill="#5BA894" text-anchor="middle" font-family="sans-serif">ここは、握らない。書き換えようとすると疲れるだけ</text>
+
+    <!-- 登場人物 -->
+    <circle cx="200" cy="252" r="17" fill="#E8799F"/>
+    <rect x="184" y="272" width="32" height="34" rx="11" fill="#E8799F"/>
+    <text x="200" y="322" font-size="11.5" fill="#C4517A" text-anchor="middle" font-family="sans-serif" font-weight="bold">登場人物のあなた</text>
+    <text x="200" y="338" font-size="9.5" fill="#D98FAF" text-anchor="middle" font-family="sans-serif">体はスクリーンの中にいる</text>
+
+    <!-- 観客席 -->
+    <rect x="286" y="248" width="176" height="86" rx="14" fill="#FFF6FA" stroke="#E8799F" stroke-width="1.8" stroke-dasharray="6 4"/>
+    <text x="374" y="272" font-size="13" fill="#C4517A" text-anchor="middle" font-family="sans-serif" font-weight="bold">観客席＝気づきの中心点</text>
+    <text x="374" y="292" font-size="10.5" fill="#B0608A" text-anchor="middle" font-family="sans-serif">「自分を見て、現実を見る」</text>
+    <text x="374" y="310" font-size="10.5" fill="#B0608A" text-anchor="middle" font-family="sans-serif">役は演じたまま、同時に観客でもいる</text>
+    <text x="374" y="326" font-size="9.5" fill="#D98FAF" text-anchor="middle" font-family="sans-serif">タフティの「三つ編み」はここのスイッチ</text>
+    <path d="M222 278 Q254 280 284 286" stroke="#E8799F" stroke-width="1.6" fill="none" marker-end="url(#ar)"/>
+    <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L7 3 L0 6 Z" fill="#E8799F"/></marker></defs>
+
+    <!-- 振り子 -->
+    <rect x="24" y="248" width="140" height="86" rx="14" fill="#FCF1F1" stroke="#DDA8A8" stroke-width="1.4"/>
+    <text x="94" y="270" font-size="12.5" fill="#C0675F" text-anchor="middle" font-family="sans-serif" font-weight="bold">振り子</text>
+    <text x="94" y="288" font-size="10" fill="#C68C86" text-anchor="middle" font-family="sans-serif">上りのエスカレーター。</text>
+    <text x="94" y="303" font-size="10" fill="#C68C86" text-anchor="middle" font-family="sans-serif">歩いてるつもりで、</text>
+    <text x="94" y="318" font-size="10" fill="#C68C86" text-anchor="middle" font-family="sans-serif">運んでいるのは階段の側</text>
+
+    <text x="300" y="376" font-size="10.5" fill="#9A90A6" text-anchor="middle" font-family="sans-serif">やることは1つ。客席に座り直して、照らすコマを選ぶ。台本は、そのまま流す。</text>
+  </svg>
+
+  <div class="card">
+    <h3>3秒でいうと</h3>
+    <p><b>現実＝上映中の映画。</b>あなたは登場人物として中にいて、台本どおりに動いている。<br>
+    でも席を1つ移して<b>観客席にも同時に座れる</b>。それが「目を覚ます」。<br>
+    そこから<b>結末のコマだけを選ぶ</b>と、途中の段取りは勝手についてくる。</p>
+    <p style="color:var(--ink-soft);font-size:14px;margin-top:12px;">難しくなるのは、ここに「振り子」「過剰ポテンシャル」「三つ編み」「マネキン」と別名が増えるから。中身はどれも、この絵の一部です。</p>
+  </div>
+</section>
+
+<!-- 2 5つの道具 -->
+<section id="tools">
+  <h2><span class="num">2</span>タフティの道具は、たった5つ</h2>
+  <p class="lead">本の章順ではなく「実際に使う順」で並べました。カードを開くと、日常のたとえが出てきます。</p>
+
+  <details class="tool" open>
+    <summary>
+      <span class="chip">👀</span>
+      <span class="sum-txt"><b>① 目を覚ます</b><span>合言葉「自分を見て、現実を見る」</span></span>
+      <span class="arrow">▶</span>
+    </summary>
+    <div class="tool-body">
+      <p>ほとんどの時間、わたしたちは映画に没入していて、自分が見られていること自体を忘れています。ここでやるのは、<b>ストーリーから抜けることではなく、見ている自分を思い出すこと</b>だけ。</p>
+      <p>コツは二重にすること。現実だけ見るのでも、自分だけ見るのでもなく、<b>両方を同時に</b>。</p>
+      <div class="yes-no">
+        <div class="yn no"><b>ありがちな誤解</b>「悟った人だけができる特別な状態」</div>
+        <div class="yn yes"><b>実際は</b>映画館で「あ、いま自分、泣いてるな」と気づくあの一瞬。1日に数回できれば上出来</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary>
+      <span class="chip">🪑</span>
+      <span class="sum-txt"><b>② 観客席に降りる（三つ編み・プレゼンス）</b><span>役は演じたまま、観客でもいる</span></span>
+      <span class="arrow">▶</span>
+    </summary>
+    <div class="tool-body">
+      <p>①で目が覚めたら、次は<b>立ち位置を変える</b>。体はスクリーンの中にあるままでいい。意識だけ、客席へ置きます。</p>
+      <p>タフティ特有の「三つ編み」は、この切り替えを身体の感覚で起こすためのスイッチ。後頭部から背中へ伸びる想像上の三つ編みに注意を置いて、同時に<b>頭の中のスクリーンにゴールの絵を出す</b>——注意を「感じる場所」と「描く場所」の2つに分けるのが、この本の一番の発明です。</p>
+      <div class="quote">降りるのは、逃げるためじゃない。同じ場面を、<b>観る側の余裕つきで</b>もう一回やるため。
+      <small>読書会メモ：ここが腑に落ちると、残りは全部おまけ</small></div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary>
+      <span class="chip">✨</span>
+      <span class="sum-txt"><b>③ アドバンテージの法則</b><span>「うまくいけば最高。いかなくても、それはそれで最高」</span></span>
+      <span class="arrow">▶</span>
+    </summary>
+    <div class="tool-body">
+      <p>何かが起きたとき、間に<b>「これの利点は？」という一拍</b>を入れる。答えが出たら受け取る。出なくても、そのまま受け入れる。それだけ。</p>
+      <p>ポイントは<b>事前に設定しておくこと</b>。起きてから慌てて探すのではなく、出かける前に「どっちに転んでもいい」と決めておくと、そもそも動揺が小さくなります。</p>
+      <div class="yes-no">
+        <div class="yn no"><b>これじゃない</b>無理やりポジティブに言い換える。つらいのに「感謝しなきゃ」</div>
+        <div class="yn yes"><b>これ</b>電車を逃した→ホームのパン屋に気づいた、くらいの軽さ。見つからなければ「見つからなかったね」でOK</div>
+      </div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary>
+      <span class="chip">🎞</span>
+      <span class="sum-txt"><b>④ ゴールのコマを照らす／台本は握らない</b><span>選ぶのは結末。段取りは向こうの担当</span></span>
+      <span class="arrow">▶</span>
+    </summary>
+    <div class="tool-body">
+      <p>この本でいちばん実務的なところ。やることは<b>最終シーンを決めて、そこに光を当て続ける</b>だけ。誰を通じて、どの順番で、いつまでに——は<b>全部あちら側の担当</b>です。</p>
+      <p>うまくいかない時はたいてい、結末ではなく<b>途中経過を握っている</b>。「あの人がこう言ってくれたら」「この方法でなければ」と決めた瞬間に、映画の中から映画を書き換えようとしていることになります。</p>
+      <div class="quote">ゴールは鮮明に。道中は、柔らかく。
+      <small>実践28日めの人の言葉（後半に全部あります）</small></div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary>
+      <span class="chip">🪞</span>
+      <span class="sum-txt"><b>⑤ 鏡の原理と、マネキンの着替え</b><span>先に出す。もう持っている人として振る舞う</span></span>
+      <span class="arrow">▶</span>
+    </summary>
+    <div class="tool-body">
+      <p>世界は鏡なので、<b>求めている姿を映せば「求めている」が返り、与えている姿を映せば「与えられる」が返る</b>。だから最初の一歩は必ずこちらから。愛されたいなら、先に放つ。</p>
+      <p>そして<b>マネキンの着替え</b>——もうそうなっている自分として、今日ちょっとだけ振る舞ってみる。演技ではなく<b>予告編の先取り</b>。「なりたい」と願い続ける状態は、裏を返せば「まだ無い」を照らし続けることなので、逆効果になります。</p>
+      <div class="yes-no">
+        <div class="yn no"><b>やりがちな罠</b>立派な人を演じて疲れる</div>
+        <div class="yn yes"><b>本当の狙い</b>その人の<b>生活の質感</b>を、今日ちょっとだけ味わう。朝のコーヒーの飲み方くらいでいい</div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- 3 用語 -->
+<section id="terms">
+  <h2><span class="num">3</span>つまずく用語だけ、ほどいておく</h2>
+  <p class="lead">『トランサーフィン』側の言葉。全部さっきの映画館のどこかにあります。</p>
+
+  <div class="term">
+    <h4>振り子 <em>外側の流れ</em></h4>
+    <p>たくさんの人が同じ方向に気持ちを向けると生まれる流れ。会社、業界、流行、「普通はこうでしょ」という空気。<b>誰かの悪意ではなく、人が集まると勝手にできます。</b></p>
+    <p class="ex">たとえるなら<b>上りのエスカレーター</b>。自分の足で歩いているつもりでいられるけれど、実際に運んでいるのは階段の側。／ごはんは<b>感情</b>で、賛成でも反対でも同じだけ栄養になります。<b>アンチと信者は、同じ皿からエサをあげている。</b></p>
+  </div>
+
+  <div class="term">
+    <h4>過剰ポテンシャル <em>内側の力み</em></h4>
+    <p>ひとつのことに重要性を載せすぎたときに、自分の内側に生まれる緊張。<b>振り子とは別物です</b>（混ぜると話がこんがらがります）。</p>
+    <p class="ex">「これがないと困る」「この道でなきゃダメ」と思ったときの、<b>お腹や肩の張り</b>がそれ。大切にすることと、重要性を上げることは別。</p>
+  </div>
+
+  <div class="term">
+    <h4>重要性を下げる <em>やり方の核心</em></h4>
+    <p>どうでもよくなることではありません。<b>大切にしたまま、握力だけ緩める</b>。</p>
+    <p class="ex">推しは推しのまま、<b>「会えなかったらこの世の終わり」だけ外す</b>。それだけで動きが軽くなります。</p>
+  </div>
+
+  <div class="term">
+    <h4>魂と理性 <em>意思決定の二人組</em></h4>
+    <p>理屈で考える理性と、理由なく反応する魂。「魂に従え」ではなく、<b>二人を仲直りさせる</b>のがトランサーフィンの言い方。</p>
+    <p class="ex">大事なのは<b>「怖い」と「魂のNO」を混ぜないこと</b>。怖いだけなら進んでよく、魂が嫌がっているなら別ルートを探す。見分けるには、実際にやってみて反応を見るのが早いです。</p>
+  </div>
+
+  <div class="term">
+    <h4>バリアント空間 <em>フィルムの保管庫</em></h4>
+    <p>起こりうる展開が、もう全部そこに在るという前提。だから<b>作るのではなく、選ぶ</b>。</p>
+    <p class="ex">量子力学の言葉づかいが出てきますが、<b>信じ込む必要はありません</b>。「そういうルールのゲームだとして、やってみたらどうなるか」で十分です。</p>
+  </div>
+
+  <div class="term">
+    <h4>外的意図 <em>いちばん難しいところ</em></h4>
+    <p>「自分が頑張って動かす」が内的意図。「世界のほうから来るのを許す」が外的意図。<b>強制せず、起きるにまかせる。</b></p>
+    <p class="ex">頼む・要求する・追いかける、を全部やめて、<b>ただ決めて、あとは流れに乗る</b>。ここが一番わけがわからないところなので、今日は「わからん」で置いておくのが正解かも。</p>
+  </div>
+
+  <div class="note">
+    ⚠️ <b>振り子の使い方の注意：他人には使わない。</b>「あの人、振り子に乗ってるね」と言った瞬間、それ自体が優越感という名の振り子になります。<b>自分にだけ向ける言葉</b>として持ち帰るのが安全です。
+  </div>
+</section>
+
+<!-- 4 3冊 -->
+<section id="books">
+  <h2><span class="num">4</span>で、どの本から読むの？</h2>
+  <p class="lead">同じ著者（ヴァジム・ゼランド）ですが、役割がはっきり違います。</p>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th style="width:26%">本</th><th style="width:24%">ひとことで</th><th>向いている人</th></tr>
+      <tr>
+        <td><b>タフティ・ザ・プリーステス</b></td>
+        <td>実践の即戦力。巫女タフティが上から目線で語りかけてくる</td>
+        <td>とにかく<b>明日から何をやるか</b>が欲しい人。読み物としても面白い</td>
+      </tr>
+      <tr>
+        <td><b>リアリティ・トランサーフィン</b>（本編）</td>
+        <td>世界観の全部。振り子・過剰ポテンシャル・バリアント空間の理論編</td>
+        <td><b>なぜそうなるのか</b>を納得したい人。ボリュームは多め</td>
+      </tr>
+      <tr>
+        <td><b>78日間トランサーフィン実践マニュアル</b></td>
+        <td>1日1テーマ×78日のワークブック</td>
+        <td>読んで終わりにしたくない人。<b>今日のおけもんはこれを実践中</b></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>今日の3人におすすめの入口</h3>
+    <p>「難解で挫折した」の正体はたいてい、<b>理論編から入って用語に溺れる</b>パターンです。<br>
+    タフティ→面白い→用語が気になる→本編、の順のほうが、たぶん楽しい。</p>
+  </div>
+</section>
+
+<!-- 5 Day結晶 -->
+<section id="days">
+  <h2><span class="num">5</span>28日やってみた人の、結晶</h2>
+  <p class="lead">本の要約ではありません。おけもんが2026年8月4日から毎日実践して、自分の言葉になったところだけ。ここが今日いちばん話せるところだと思います。</p>
+
+  <div class="days">
+    <div class="day"><span class="n">DAY 8</span><p><b>ゴールは鮮明に、道中は柔らかく。</b>望みは鮮明、執着は薄い。</p></div>
+    <div class="day"><span class="n">DAY 9</span><p>意図は<b>実現するか、手放すか</b>。未着手の山は、配管の詰まり。</p></div>
+    <div class="day"><span class="n">DAY 10</span><p><b>世界は遊び場。ゴールは選ぶ。道中は遊ぶ。</b>振り子に乗って、ブランコで遊ぶ。</p></div>
+    <div class="day"><span class="n">DAY 11</span><p><b>選んでもいい。でも、重要性は増さない。</b>自信は、選ぶための入場券ではない。</p></div>
+    <div class="day"><span class="n">DAY 12</span><p><b>困難は、自分が重要性を載せて作った壁。</b>「大切にする」と「重要性を上げる」は別。対処と、戦争を分ける。</p></div>
+    <div class="day"><span class="n">DAY 13</span><p><b>コントラストを起こして、魂の反応を見る。</b>「怖い」と「魂のNO」は別物。</p></div>
+    <div class="day"><span class="n">DAY 14</span><p><b>比較してしまう自分も、採点台から降ろす。</b>感情の強弱はあっていい。人としての上下は作らない。</p></div>
+    <div class="day"><span class="n">DAY 15</span><p><b>私の目的は、私。</b>私は改善対象ではない。／<b>やってみたいから、やってみる。以上。</b></p></div>
+    <div class="day"><span class="n">DAY 16</span><p><b>信念は橋であって、住む場所じゃない。信じなくていい。試して、見てみる。</b></p></div>
+    <div class="day"><span class="n">DAY 17</span><p><b>貢献＝喜び と、貢献＝居場所代 は別。</b>責任は取る。自己処罰はしない。</p></div>
+    <div class="day"><span class="n">DAY 18</span><p><b>価値提供を、存在許可証にしない。</b>私は普通にここにいていい。そこから出てくるものを渡せばいい。</p></div>
+    <div class="day"><span class="n">DAY 19</span><p><b>不安は来てもいい。未来の保証は取りに行かない。</b>5分だけ、自分と世界を見て、また戻る。</p></div>
+    <div class="day"><span class="n">DAY 20</span><p><b>成果が出るから楽しいんじゃない。楽しいから続いて、そこから世界が広がる。</b></p></div>
+    <div class="day"><span class="n">DAY 21</span><p><b>自分の人生の決定権を、自分に戻す。判決は下す。でも拳は握らない。</b></p></div>
+    <div class="day"><span class="n">DAY 22</span><p><b>思考を止めるんじゃない。自動運転から、ハンドルを自分に戻す。忘れたら、また思い出す。</b></p></div>
+    <div class="day"><span class="n">DAY 23</span><p><b>Howは握らない。でも、バス停までは歩く。</b>「恋人を探す」より「恋が起こりうる世界に自分を置く」。</p></div>
+    <div class="day"><span class="n">DAY 24</span><p><b>「欲しい」は方向を教えてくれる。「ある」は、その方向を生きる姿勢。</b></p></div>
+  </div>
+
+  <div class="note" style="margin-top:14px;">
+    💡 <b>読書会で使うなら：</b>この中から「いま自分に一番刺さる1枚」をそれぞれ選んで、理由を話すのが一番盛り上がると思います。本の要約より、<b>やった人の言葉のほうが話しやすい</b>ので。
+  </div>
+</section>
+
+<!-- 6 問い -->
+<section id="questions">
+  <h2><span class="num">6</span>「意味わからん」で終わらせない問い</h2>
+  <p class="lead">正解を当てる問いではありません。全部、自分の話に着地できるものだけ選びました。</p>
+
+  <div class="qcard" id="qcard">
+    <div class="qn" id="qn">QUESTION 1 / 8</div>
+    <p class="qt" id="qt">最近「台本に乗ってたな」と気づいた瞬間、ある？</p>
+    <p class="qh" id="qh">自分で決めたつもりだったけど、あとから振り返ると流れに運ばれてただけ、という出来事。小さいほど良い例になります。</p>
+  </div>
+  <div class="qbtns">
+    <button onclick="prevQ()">← 前</button>
+    <button class="primary" onclick="nextQ()">次の問い →</button>
+    <button onclick="shuffleQ()">🎲 ランダム</button>
+  </div>
+
+  <div class="card" style="margin-top:22px;">
+    <h3>話が止まったときの、魔法の一言</h3>
+    <p><b>「これって、こういうことじゃない？」</b><br>
+    この本の用語は、正確に理解するより<b>自分の生活のどれに当たるかを言い当てるゲーム</b>にしたほうが進みます。外れていても大丈夫。外れた瞬間に、誰かが「いや、むしろ〜」と続けてくれるので。</p>
+  </div>
+</section>
+
+<footer>
+  タフティ＆トランサーフィン 読書会の地図<br>
+  2026年9月12日 ／ おけもんカンパニー<br>
+  <span style="font-size:11.5px;">※本文は原書の引用ではなく、読書会用の言い換えとメタファーです。<br>気になったところは、ぜひ原書で確かめてみてください。</span>
+</footer>
+
+</div>
+
+<script>
+  const QS = [
+    ["最近「台本に乗ってたな」と気づいた瞬間、ある？","自分で決めたつもりだったけど、あとから振り返ると流れに運ばれてただけ、という出来事。小さいほど良い例になります。"],
+    ["今週、賛成でも反対でも「心が動いた」ニュースや話題は？","振り子のごはんは感情。怒った時も、共感した時も、同じだけエネルギーを渡しています。乗ったこと自体は悪ではなくて、気づけるかどうかだけ。"],
+    ["「うまくいかなかったけど、あれはあれで良かった」と言えた出来事は？","アドバンテージの法則を、すでに自然にやっていた瞬間を探してみる。後づけで十分です。"],
+    ["いま握りしめてる「こうじゃなきゃ」は何かある？","ゴールではなく、道順のほうを握っていないか。手放すのではなく、握力だけ緩めるとしたら、どこが緩む？"],
+    ["欲しいものを、もう持っている人として1日過ごすとしたら——何が一番変わる？","立派に振る舞うことではなく、生活の質感の話。朝の飲み物、返信の速さ、歩く速度、どれでも。"],
+    ["世界が鏡だとしたら、最近の自分は何を出してた？","求めていた？ 与えていた？ 責めていた？ 正解はないので、見えたものをそのまま。"],
+    ["自分が「観客席」に戻れる合図は何だろう？","おけもんの場合は「気づいたらここにきてたね」。深呼吸でも、コーヒーの一口目でも、自分の合図を1つ決めると実践が続きます。"],
+    ["この本の内容で、いちばん「胡散臭い」と思ったところは？","信じる必要はありません。疑いを口に出したほうが、実は一番面白い話になります。"]
+  ];
+  let i = 0;
+  function render(){
+    document.getElementById('qn').textContent = 'QUESTION ' + (i+1) + ' / ' + QS.length;
+    document.getElementById('qt').textContent = QS[i][0];
+    document.getElementById('qh').textContent = QS[i][1];
+  }
+  function nextQ(){ i = (i+1) % QS.length; render(); }
+  function prevQ(){ i = (i-1+QS.length) % QS.length; render(); }
+  function shuffleQ(){ let n; do { n = Math.floor(Math.random()*QS.length); } while(n===i && QS.length>1); i=n; render(); }
+  render();
+</script>
+</body>
+</html>
