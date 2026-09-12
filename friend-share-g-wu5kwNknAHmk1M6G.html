@@ -211,6 +211,22 @@
     border-top:1px solid var(--line); padding-top:22px; line-height:2;
   }
 
+
+  .corebox{
+    background:linear-gradient(155deg,#FFF4F8 0%,#FDF4FF 60%,#F6F1FF 100%);
+    border:1px solid #F2DCE7; border-radius:20px;
+    padding:30px 26px 24px; text-align:center;
+    box-shadow:0 3px 18px rgba(150,95,125,.08);
+  }
+  .corelabel{
+    font-size:11.5px; letter-spacing:.14em; color:var(--pink);
+    margin-bottom:14px;
+  }
+  .coreline{
+    font-size:clamp(19px,4.6vw,25px); line-height:1.7; margin:0 0 12px;
+    font-weight:700; color:var(--ink);
+  }
+  .corewho{margin:0; font-size:12.5px; color:var(--ink-soft);}
   /* レッスン一覧 */
   .lessons-grid{display:grid; gap:11px;}
   @media(min-width:700px){ .lessons-grid{grid-template-columns:1fr 1fr;} }
@@ -235,6 +251,21 @@
   .ls-item::before{
     content:"·"; position:absolute; left:3px; color:var(--pink); font-weight:700;
   }
+
+  details.ls{border-top:1px dashed var(--line);}
+  details.ls:first-of-type{border-top:none;}
+  details.ls summary{
+    cursor:pointer; list-style:none; padding:7px 0; font-size:14px;
+    display:flex; align-items:center; gap:8px; line-height:1.6;
+  }
+  .js-ready details.ls summary::-webkit-details-marker{display:none;}
+  .lsname{flex:1;}
+  .lsarrow{color:var(--pink); font-size:13px; flex:0 0 auto;}
+  details.ls[open] .lsarrow{transform:rotate(45deg);}
+  details.ls p{
+    margin:0 0 11px; font-size:13.5px; color:var(--ink-soft); line-height:1.8;
+    padding:9px 13px; background:var(--bg); border-radius:10px;
+  }
   /* 78日表 */
   .wkblock{margin-bottom:16px;}
   .wkhead{
@@ -248,6 +279,47 @@
   .wkblock .tablewrap{margin-bottom:0;}
   .wkblock table{border-radius:0 0 11px 11px;}
 
+
+  .wklist{display:grid; gap:9px;}
+  details.wk{
+    border:1px solid var(--line); border-radius:13px; overflow:hidden;
+    background:var(--paper); box-shadow:var(--shadow);
+  }
+  details.wk summary{
+    cursor:pointer; list-style:none; padding:12px 16px;
+    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; font-size:14px;
+  }
+  .js-ready details.wk summary::-webkit-details-marker{display:none;}
+  details.wk summary b{font-size:14.5px;}
+  details.wk summary span{color:inherit; opacity:.82; font-size:13.5px;}
+  details.wk summary em{
+    font-style:normal; margin-left:auto; font-size:12px; opacity:.75;
+  }
+  details.wk .tablewrap{margin:0; border-top:1px solid var(--line);}
+  details.wk table{min-width:420px;}
+  .nowrow{background:#FFF6FA;}
+  .nowtag{
+    display:inline-block; margin-left:7px; font-size:10.5px; font-weight:400;
+    background:var(--pink); color:#fff; padding:1px 8px; border-radius:999px;
+    vertical-align:middle;
+  }
+
+  .navinner{padding:0 12px;}
+  button.tb{
+    flex:0 0 auto; font-size:13.5px; padding:7px 15px; border-radius:999px;
+    border:1px solid transparent; background:transparent; color:var(--ink-soft);
+    box-shadow:none; white-space:nowrap;
+  }
+  button.tb:hover{background:var(--pink-soft); color:var(--pink-deep);}
+  button.tb.on{background:var(--pink); color:#fff; border-color:var(--pink);}
+  button.tb.on:hover{background:var(--pink-deep); color:#fff;}
+  .tabhint{
+    font-size:13px; color:var(--ink-soft); text-align:center;
+    margin:-18px 0 26px; min-height:1.4em;
+  }
+  h2 .num{width:9px; height:9px; font-size:0; margin-top:2px;}
+  .js-ready section[data-tab]{display:none;}
+  .js-ready section[data-tab].tabon{display:block;}
   /* 検索 */
   .searchbox{
     background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
@@ -289,20 +361,19 @@
 </header>
 
 <nav>
-  <div class="navinner">
-    <a href="#map">🎬 映画館マップ</a>
-    <a href="#tools">🛠 5つの道具</a>
-    <a href="#terms">📖 用語をほどく</a>
-    <a href="#lessons">📑 全レッスン</a>
-    <a href="#days78">🗓 78日マップ</a>
-    <a href="#books">📚 3冊の違い</a>
-    <a href="#days">💎 28日やってみた</a>
-    <a href="#questions">💬 問いカード</a>
+  <div class="navinner" id="tabbar">
+    <button class="tb" data-go="start" title="この本ぜんぶが入っている1枚の絵と、いちばん太い一本">はじめに</button>
+    <button class="tb" data-go="tufti" title="5つの道具と、全40章の一言解説">タフティ</button>
+    <button class="tb" data-go="days78" title="1日1テーマ×78日。おけもんが走っている本">78日マップ</button>
+    <button class="tb" data-go="words" title="難しい言葉のほどき方と、どれから読むか">用語と3冊</button>
+    <button class="tb" data-go="oke" title="実際にやった人の言葉">28日の結晶</button>
+    <button class="tb" data-go="talk" title="3人で話すための火種8枚">問いカード</button>
   </div>
 </nav>
 
 <div class="wrap">
 
+<p class="tabhint" id="tabhint"></p>
 <div class="searchbox">
   <label for="q">🔍 用語や気になる言葉から探す</label>
   <input type="text" id="q" placeholder="例：振り子、鏡、重要性、アドバンテージ…" autocomplete="off">
@@ -311,7 +382,7 @@
 </div>
 
 <!-- 1 映画館マップ -->
-<section id="map">
+<section id="map" data-tab="start">
   <h2><span class="num">1</span>まず、この絵だけ共有する</h2>
   <p class="lead">ここから先の用語は、全部この絵のどこかを指しています。迷子になったら戻ってくる場所。</p>
 
@@ -384,8 +455,50 @@
   </div>
 </section>
 
+
+<!-- 核 -->
+<section id="core" data-tab="start">
+  <div class="corebox">
+    <div class="corelabel">この本の、いちばん太い一本</div>
+    <p class="coreline">ゴールはできるだけ鮮明に、<br>道中はできるだけ緩やかに。</p>
+    <p class="corewho">— おけもんが78日走って掴んだ、核</p>
+  </div>
+
+  <p class="lead" style="padding-left:0; margin-top:22px;">これは感想ではなく、<b>原書がずっと言っていることの要約</b>です。なぜそう言えるのかを、3つに分けます。</p>
+
+  <div class="card">
+    <h3>① 構築するのは「結末のコマ」だけ</h3>
+    <p>原書では、現実を構築するとは<b>最終ゴールを決めること</b>だと繰り返し書かれています。映写機がゴールのコマを照らすと、展開は自動的にそちらへ向かう。だから影響を与える先は、<b>出来事の流れでも他人でもなく、最終結果</b>。</p>
+    <p>ここだけは<b>思いきり鮮明でいい</b>。ゴールのシーンは、ありありと、臨場感を持って描く。それは執着ではなく作業です。</p>
+  </div>
+
+  <div class="card">
+    <h3>② 台本は、こちらの持ち物ではない</h3>
+    <p>一方で原書は、<b>台本は決してコントロールできない</b>と言い切ります。変えようとしたり逆らおうとしたりすると罠にはまる、と。やることは3つだけ——<b>台本をコントロールしようとするのをやめる／台本の流れに乗る／ゴールのコマを構築する</b>。</p>
+    <p>つまり「道中を緩やかに」は、<b>諦めや妥協ではなく、担当が違うという話</b>。誰を通じて、どの順で、いつ来るかは、向こうの領分です。</p>
+  </div>
+
+  <div class="card">
+    <h3>③ 「まだできてない」が、いちばん効くブレーキ</h3>
+    <p>ここがおけもんの言うとおりで、原書の理屈とも合います。ゴールを描いたのに<b>「まだ実現していない」のほうを見つめ続ける</b>と、そこに重要性が載る。それが<b>過剰ポテンシャル</b>——内側に生まれる緊張です。</p>
+    <p>そして原書はこう畳みます。<b>意図は、実現されるか手放されるかのどちらかでなければならない</b>。宙吊りの願いは、エネルギーを奪うだけの余分な荷物になる。<b>「欲しい」と握り続ける状態そのものが、ブレーキ</b>だということです。</p>
+  </div>
+
+  <div class="quote" style="margin-top:20px;">
+    だから答えは、<b>ワクワクのほうを原動力にする</b>。<br>
+    原書の言い方だと「うまくいけば素晴らしい。うまくいかなくても、それはそれで素晴らしい」（アドバンテージの法則）、そして「疲れ果てるなら、その扉は違う」（Day46「扉」）。<br>
+    <small>頑張りで押すとブレーキになり、ワクワクで進むとブレーキが要らない。同じ道でも、燃料が違います。</small>
+  </div>
+
+  <div class="note" style="margin-top:16px;">
+    💡 <b>いちばん誤解されるところ：臨場感の高さと、重要性の高さは別の軸です。</b><br>
+    「執着しちゃダメなら、ゴールもぼんやり描くの？」——逆です。<b>ゴールの映画は、鮮明であるほどいい。</b>握ってはいけないのは、脚本・キャスト・上映スケジュールのほう。<br>
+    ありありと描くこと（臨場感）と、それがないと困ると思うこと（重要性）は、まったく別物。<b>ここが分かれると、この本は一気に軽くなります。</b>
+  </div>
+</section>
+
 <!-- 2 5つの道具 -->
-<section id="tools">
+<section id="tools" data-tab="tufti">
   <h2><span class="num">2</span>タフティの道具は、たった5つ</h2>
   <p class="lead">本の章順ではなく「実際に使う順」で並べました。カードを開くと、日常のたとえが出てきます。</p>
 
@@ -467,7 +580,7 @@
 </section>
 
 <!-- 3 用語 -->
-<section id="terms">
+<section id="terms" data-tab="words">
   <h2><span class="num">3</span>つまずく用語だけ、ほどいておく</h2>
   <p class="lead">『トランサーフィン』側の言葉。全部さっきの映画館のどこかにあります。</p>
 
@@ -517,89 +630,158 @@
 
 
 <!-- 3.5 全レッスン -->
-<section id="lessons">
-  <h2><span class="num">4</span>『タフティ』の中身、全部で40本</h2>
-  <p class="lead">原書の目次そのままの並び（OCR全文から取りました）。わたしたちで8つのかたまりに分けています。どこに何があるか分かると、読むのがぐっと楽になります。</p>
-
+<section id="lessons" data-tab="tufti">
+  <h2><span class="num">2</span>全40章、ぜんぶに一言の解説をつけた</h2>
+  <p class="lead">原書の目次そのままの並び（OCR全文から取りました）。章名を押すと、中身の一言解説が開きます。</p>
   <div class="lessons-grid">
   <div class="lgroup searchable" data-s="世界の仕組みを知る 2つのスクリーン 夢の中を自由に歩く 「現実」へようこそ 意識の向け先を観察する">
     <h4><span class="lic">🎬</span>世界の仕組みを知る<em>4本</em></h4>
-    <ul class="lslist"><li class="ls-item" data-s="2つのスクリーン">2つのスクリーン</li><li class="ls-item" data-s="夢の中を自由に歩く">夢の中を自由に歩く</li><li class="ls-item" data-s="「現実」へようこそ">「現実」へようこそ</li><li class="ls-item" data-s="意識の向け先を観察する">意識の向け先を観察する</li></ul>
+    <details class="ls"><summary><span class="lsname">2つのスクリーン</span><span class="lsarrow">＋</span></summary><p>注意の向け先は2つある——目の前の現実（外のスクリーン）と、頭の中の想像（内のスクリーン）。ふだんは外に釘づけになっている、という出発点。</p></details><details class="ls"><summary><span class="lsname">夢の中を自由に歩く</span><span class="lsarrow">＋</span></summary><p>夢の中で「これは夢だ」と気づくと動けるようになる。同じことを起きている間にやる、という宣言。</p></details><details class="ls"><summary><span class="lsname">「現実」へようこそ</span><span class="lsarrow">＋</span></summary><p>現実は「起きているときの夢」。自分で動いているつもりで、実は台本に沿って動かされている。</p></details><details class="ls"><summary><span class="lsname">意識の向け先を観察する</span><span class="lsarrow">＋</span></summary><p>何を考えるかより先に、いま自分の注意がどこを向いているかを見る。全部の技法の土台。</p></details>
   </div>
   <div class="lgroup searchable" data-s="道具を受け取る 現実を構築する 意図の三つ編み 三つ編みの使い方">
     <h4><span class="lic">🎀</span>道具を受け取る<em>3本</em></h4>
-    <ul class="lslist"><li class="ls-item" data-s="現実を構築する">現実を構築する</li><li class="ls-item" data-s="意図の三つ編み">意図の三つ編み</li><li class="ls-item" data-s="三つ編みの使い方">三つ編みの使い方</li></ul>
+    <details class="ls"><summary><span class="lsname">現実を構築する</span><span class="lsarrow">＋</span></summary><p>待つのでも期待するのでもなく「構築する」。最終ゴールを決める、という意味。</p></details><details class="ls"><summary><span class="lsname">意図の三つ編み</span><span class="lsarrow">＋</span></summary><p>後頭部から背中へ伸びる想像上の三つ編み。ここに注意を置くのが、この本独自のスイッチ。</p></details><details class="ls"><summary><span class="lsname">三つ編みの使い方</span><span class="lsarrow">＋</span></summary><p>三つ編みを感じながら、同時に内のスクリーンにゴールの絵を出す。注意を2つに分けるのが要点。</p></details>
   </div>
   <div class="lgroup searchable" data-s="幻想から抜ける 「自分で行動している」という幻想 罠から逃れる方法 再プログラミング 変容 メタパワー">
     <h4><span class="lic">🌀</span>幻想から抜ける<em>5本</em></h4>
-    <ul class="lslist"><li class="ls-item" data-s="「自分で行動している」という幻想">「自分で行動している」という幻想</li><li class="ls-item" data-s="罠から逃れる方法">罠から逃れる方法</li><li class="ls-item" data-s="再プログラミング">再プログラミング</li><li class="ls-item" data-s="変容">変容</li><li class="ls-item" data-s="メタパワー">メタパワー</li></ul>
+    <details class="ls"><summary><span class="lsname">「自分で行動している」という幻想</span><span class="lsarrow">＋</span></summary><p>自分の判断で動いていると思っているが、多くは台本どおり。まずこれを認めるところから。</p></details><details class="ls"><summary><span class="lsname">罠から逃れる方法</span><span class="lsarrow">＋</span></summary><p>「なぜ思いどおりにならないのか」と問い続けること自体が罠。問いの向きを変える。</p></details><details class="ls"><summary><span class="lsname">再プログラミング</span><span class="lsarrow">＋</span></summary><p>習慣を入れ替える。欲しがる→与える、拒否する→受け入れる、眠る→目を覚ます。</p></details><details class="ls"><summary><span class="lsname">変容</span><span class="lsarrow">＋</span></summary><p>自分を作り変えるのではなく、別のコマにいる自分へ移る、という発想の転換。</p></details><details class="ls"><summary><span class="lsname">メタパワー</span><span class="lsarrow">＋</span></summary><p>自分の内側から使える力の話。理性の努力とは別系統のもの。</p></details>
   </div>
   <div class="lgroup searchable" data-s="先取りして振る舞う フリをする プレゼンスを得る アドバンテージ 起きるにまかせる">
     <h4><span class="lic">👗</span>先取りして振る舞う<em>4本</em></h4>
-    <ul class="lslist"><li class="ls-item" data-s="フリをする">フリをする</li><li class="ls-item" data-s="プレゼンスを得る">プレゼンスを得る</li><li class="ls-item" data-s="アドバンテージ">アドバンテージ</li><li class="ls-item" data-s="起きるにまかせる">起きるにまかせる</li></ul>
+    <details class="ls"><summary><span class="lsname">フリをする</span><span class="lsarrow">＋</span></summary><p>もう持っている人として振る舞う。願い続けると「まだ無い」を照らし続けることになるため。</p></details><details class="ls"><summary><span class="lsname">プレゼンスを得る</span><span class="lsarrow">＋</span></summary><p>その場にちゃんと居る状態。目を覚ましたうえで、自分の立ち位置を保つこと。</p></details><details class="ls"><summary><span class="lsname">アドバンテージ</span><span class="lsarrow">＋</span></summary><p>何が起きても「これの利点は？」と一拍おく。事前に決めておくのがコツ。</p></details><details class="ls"><summary><span class="lsname">起きるにまかせる</span><span class="lsarrow">＋</span></summary><p>強制して起こすのではなく、現実のほうから来るのを許す。押さないための章。</p></details>
   </div>
   <div class="lgroup searchable" data-s="台本と流れに乗る 台本 創造主の輝き パワーからの指示 流れに乗る 自分を超えたパワー">
     <h4><span class="lic">🌊</span>台本と流れに乗る<em>5本</em></h4>
-    <ul class="lslist"><li class="ls-item" data-s="台本">台本</li><li class="ls-item" data-s="創造主の輝き">創造主の輝き</li><li class="ls-item" data-s="パワーからの指示">パワーからの指示</li><li class="ls-item" data-s="流れに乗る">流れに乗る</li><li class="ls-item" data-s="自分を超えたパワー">自分を超えたパワー</li></ul>
+    <details class="ls"><summary><span class="lsname">台本</span><span class="lsarrow">＋</span></summary><p>出来事の流れは自分の持ち物ではない。逆らうと罠にはまる、という核心の章。</p></details><details class="ls"><summary><span class="lsname">創造主の輝き</span><span class="lsarrow">＋</span></summary><p>自分の内側から出てくるものを、そのまま出していい、という許可。</p></details><details class="ls"><summary><span class="lsname">パワーからの指示</span><span class="lsarrow">＋</span></summary><p>理屈ではなく、流れから来る合図を感じ取る。</p></details><details class="ls"><summary><span class="lsname">流れに乗る</span><span class="lsarrow">＋</span></summary><p>コントロールする習慣を、手放して流れに乗る習慣へ置き換える。</p></details><details class="ls"><summary><span class="lsname">自分を超えたパワー</span><span class="lsarrow">＋</span></summary><p>自分の力だけで押し切ろうとしない。台本の力と知恵のほうを使う。</p></details>
   </div>
   <div class="lgroup searchable" data-s="鏡を使う ペーパー人間 映像を構築する 鏡とのコミュニケーション 操る 鏡への反射を構築する">
     <h4><span class="lic">🪞</span>鏡を使う<em>5本</em></h4>
-    <ul class="lslist"><li class="ls-item" data-s="ペーパー人間">ペーパー人間</li><li class="ls-item" data-s="映像を構築する">映像を構築する</li><li class="ls-item" data-s="鏡とのコミュニケーション">鏡とのコミュニケーション</li><li class="ls-item" data-s="操る">操る</li><li class="ls-item" data-s="鏡への反射を構築する">鏡への反射を構築する</li></ul>
+    <details class="ls"><summary><span class="lsname">ペーパー人間</span><span class="lsarrow">＋</span></summary><p>中身のない型として生きている状態。役から抜けるための対比として置かれている。</p></details><details class="ls"><summary><span class="lsname">映像を構築する</span><span class="lsarrow">＋</span></summary><p>鏡に映したいものを、頭の中で先に作る。文句を言うのではなく愛せ、という原則。</p></details><details class="ls"><summary><span class="lsname">鏡とのコミュニケーション</span><span class="lsarrow">＋</span></summary><p>世界に何かを望む前に「鏡に対して自分は何をすべきか」と問い直す。</p></details><details class="ls"><summary><span class="lsname">操る</span><span class="lsarrow">＋</span></summary><p>人を操るのは恥ずべき行為だと明言される章。ブーメランで返るため。</p></details><details class="ls"><summary><span class="lsname">鏡への反射を構築する</span><span class="lsarrow">＋</span></summary><p>まだ持っていないものを持っているかのように振る舞うと、反射が映像に変わる。</p></details>
   </div>
   <div class="lgroup searchable" data-s="自分を受け入れる 運命的なジレンマ あなたは素晴らしい あなたは完璧">
     <h4><span class="lic">💗</span>自分を受け入れる<em>3本</em></h4>
-    <ul class="lslist"><li class="ls-item" data-s="運命的なジレンマ">運命的なジレンマ</li><li class="ls-item" data-s="あなたは素晴らしい">あなたは素晴らしい</li><li class="ls-item" data-s="あなたは完璧">あなたは完璧</li></ul>
+    <details class="ls"><summary><span class="lsname">運命的なジレンマ</span><span class="lsarrow">＋</span></summary><p>欠乏意識から抜ける／目的を見つける／達成する。人生の3つの課題。</p></details><details class="ls"><summary><span class="lsname">あなたは素晴らしい</span><span class="lsarrow">＋</span></summary><p>自分を好きになれないのは、他人の基準と比べているから。</p></details><details class="ls"><summary><span class="lsname">あなたは完璧</span><span class="lsarrow">＋</span></summary><p>欠点も含めて唯一無二として受け入れると人生はうまくいく、という断言。</p></details>
   </div>
   <div class="lgroup searchable" data-s="仕上げの技法 トリプル・アクション あなたの天才性 フリをするテクニック 思考フォーム 思考マーカー 見逃さないでキャッチする スイート・ハーモニー 三つ編みとエネルギーの流れ 過去世からの力 無限の中の無限 終章">
     <h4><span class="lic">✨</span>仕上げの技法<em>11本</em></h4>
-    <ul class="lslist"><li class="ls-item" data-s="トリプル・アクション">トリプル・アクション</li><li class="ls-item" data-s="あなたの天才性">あなたの天才性</li><li class="ls-item" data-s="フリをするテクニック">フリをするテクニック</li><li class="ls-item" data-s="思考フォーム">思考フォーム</li><li class="ls-item" data-s="思考マーカー">思考マーカー</li><li class="ls-item" data-s="見逃さないでキャッチする">見逃さないでキャッチする</li><li class="ls-item" data-s="スイート・ハーモニー">スイート・ハーモニー</li><li class="ls-item" data-s="三つ編みとエネルギーの流れ">三つ編みとエネルギーの流れ</li><li class="ls-item" data-s="過去世からの力">過去世からの力</li><li class="ls-item" data-s="無限の中の無限">無限の中の無限</li><li class="ls-item" data-s="終章">終章</li></ul>
+    <details class="ls"><summary><span class="lsname">トリプル・アクション</span><span class="lsarrow">＋</span></summary><p>構築する／フリをする／実際に動く。3つを同時にやる。</p></details><details class="ls"><summary><span class="lsname">あなたの天才性</span><span class="lsarrow">＋</span></summary><p>どの方向に伸びるかは自分が一番知っている。分からなければ「成長する」を目標に置く。</p></details><details class="ls"><summary><span class="lsname">フリをするテクニック</span><span class="lsarrow">＋</span></summary><p>具体的なやり方編。良いと思う人の状態を映写機として借りる。</p></details><details class="ls"><summary><span class="lsname">思考フォーム</span><span class="lsarrow">＋</span></summary><p>思考は何かを生み出すのではなく、保管庫から読み取っているだけ、という捉え方。</p></details><details class="ls"><summary><span class="lsname">思考マーカー</span><span class="lsarrow">＋</span></summary><p>繰り返す言葉が現実の色を決める。使う言葉を選ぶ。</p></details><details class="ls"><summary><span class="lsname">見逃さないでキャッチする</span><span class="lsarrow">＋</span></summary><p>流れが出すサインに気づいて、その場で拾う練習。</p></details><details class="ls"><summary><span class="lsname">スイート・ハーモニー</span><span class="lsarrow">＋</span></summary><p>自分と世界が噛み合っている状態。力まずに事が運ぶときの感覚。</p></details><details class="ls"><summary><span class="lsname">三つ編みとエネルギーの流れ</span><span class="lsarrow">＋</span></summary><p>身体を通るエネルギーと三つ編みの関係。実践の身体編。</p></details><details class="ls"><summary><span class="lsname">過去世からの力</span><span class="lsarrow">＋</span></summary><p>タフティという語り手の設定に関わる章。神話的な部分。</p></details><details class="ls"><summary><span class="lsname">無限の中の無限</span><span class="lsarrow">＋</span></summary><p>仕組みは理解しきれなくていい。使えれば足りる、という締め。</p></details><details class="ls"><summary><span class="lsname">終章</span><span class="lsarrow">＋</span></summary><p>タフティからの別れの言葉。</p></details>
   </div></div>
-
   <div class="note" style="margin-top:14px;">
     📖 <b>読む順のおすすめ：</b>A→B→Dだけ先に読むと、実践に必要なものはだいたい揃います。C（幻想から抜ける）とE（台本と流れ）は理屈が濃いので、<b>手を動かしてから戻る</b>ほうが入りやすいです。
   </div>
 </section>
 
 <!-- 3.6 78日マップ -->
-<section id="days78">
-  <h2><span class="num">5</span>『78日間実践マニュアル』の最初の4週</h2>
-  <p class="lead">1日1テーマ×78日のワークブック。原題と「やること」だけ並べました。おけもんが実際に走っているのがこれです。</p>
-  
-  <div class="wkblock">
-    <div class="wkhead" style="background:#FDEFF4;color:#C4517A">第1週（Day1-7）｜まず目を覚ますところから</div>
+<section id="days78" data-tab="days78">
+  <h2><span class="num">5</span>『78日間実践マニュアル』全78日</h2>
+  <p class="lead">1日1テーマ×78日のワークブック。原題と「やること」を全部並べました。週の見出しを押すと開きます。おけもんが実際に走っているのがこれで、いまDay24のあたり。</p>
+  <div class="wklist">
+  <details class="wk" open>
+    <summary style="background:#FDEFF4;color:#C4517A">
+      <b>第1週</b><span>まず目を覚ますところから</span><em>Day1-7</em>
+    </summary>
     <div class="tablewrap"><table class="dtable">
-      <tr><th style="width:14%">Day</th><th style="width:32%">原題</th><th>やること</th></tr>
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
       <tr class="searchable" data-s="Day1 目覚め 目の前のことを「これ夢だな」と思いながら一日過ごす"><td class="dnum">1</td><td class="dttl">目覚め</td><td>目の前のことを「これ夢だな」と思いながら一日過ごす</td></tr><tr class="searchable" data-s="Day2 夢の乗っとり 今どこで何をしてるか自分に言い聞かせて、また舞台に戻る"><td class="dnum">2</td><td class="dttl">夢の乗っとり</td><td>今どこで何をしてるか自分に言い聞かせて、また舞台に戻る</td></tr><tr class="searchable" data-s="Day3 神の子 「〜になりますように」を全部「〜にする」に言い換える"><td class="dnum">3</td><td class="dttl">神の子</td><td>「〜になりますように」を全部「〜にする」に言い換える</td></tr><tr class="searchable" data-s="Day4 スター誕生 「みんなやってるから」を1個やめて、自分の基準を1個決める"><td class="dnum">4</td><td class="dttl">スター誕生</td><td>「みんなやってるから」を1個やめて、自分の基準を1個決める</td></tr><tr class="searchable" data-s="Day5 世界という鏡 自分が世界をどう思ってるか書き出す（それが返ってくる）"><td class="dnum">5</td><td class="dttl">世界という鏡</td><td>自分が世界をどう思ってるか書き出す（それが返ってくる）</td></tr><tr class="searchable" data-s="Day6 ブーメラン イラッとしたとき、投げ返す前に止める"><td class="dnum">6</td><td class="dttl">ブーメラン</td><td>イラッとしたとき、投げ返す前に止める</td></tr><tr class="searchable" data-s="Day7 鏡に映っているのは幻影 現実を見て反応するのをやめ、先に自分を決める"><td class="dnum">7</td><td class="dttl">鏡に映っているのは幻影</td><td>現実を見て反応するのをやめ、先に自分を決める</td></tr>
     </table></div>
-  </div>
-  <div class="wkblock">
-    <div class="wkhead" style="background:#FBF3E4;color:#A87C2E">第2週（Day8-14）｜エネルギーを取り戻す</div>
+  </details>
+  <details class="wk">
+    <summary style="background:#FBF3E4;color:#A87C2E">
+      <b>第2週</b><span>エネルギーを取り戻す</span><em>Day8-14</em>
+    </summary>
     <div class="tablewrap"><table class="dtable">
-      <tr><th style="width:14%">Day</th><th style="width:32%">原題</th><th>やること</th></tr>
-      <tr class="searchable" data-s="Day8 ピンクの双子 「あ、いま良かった」の一瞬を捕まえて焦点を合わせる"><td class="dnum">8</td><td class="dttl">ピンクの双子</td><td>「あ、いま良かった」の一瞬を捕まえて焦点を合わせる</td></tr><tr class="searchable" data-s="Day9 安堵のため息 進んでない計画を、捨てるか一歩進めるか決める"><td class="dnum">9</td><td class="dttl">安堵のため息</td><td>進んでない計画を、捨てるか一歩進めるか決める</td></tr><tr class="searchable" data-s="Day10 解放 欲しいものを「当然自分のもの」として扱って一歩出る"><td class="dnum">10</td><td class="dttl">解放</td><td>欲しいものを「当然自分のもの」として扱って一歩出る</td></tr><tr class="searchable" data-s="Day11 自信 自信を出そうとせず、守るものを外して流れに乗る"><td class="dnum">11</td><td class="dttl">自信</td><td>自信を出そうとせず、守るものを外して流れに乗る</td></tr><tr class="searchable" data-s="Day12 バランス 克服しようとせず、重要性のほうを下げる"><td class="dnum">12</td><td class="dttl">バランス</td><td>克服しようとせず、重要性のほうを下げる</td></tr><tr class="searchable" data-s="Day13 魂の魅力 浮かぶネガティブな場面を、いいやつに置き換える"><td class="dnum">13</td><td class="dttl">魂の魅力</td><td>浮かぶネガティブな場面を、いいやつに置き換える</td></tr><tr class="searchable" data-s="Day14 自分への愛 他人のよさを見る前に、自分のいいところを1個認める"><td class="dnum">14</td><td class="dttl">自分への愛</td><td>他人のよさを見る前に、自分のいいところを1個認める</td></tr>
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day8 ピンクの双子 「あ、いま良かった」の一瞬を捕まえて、そこに焦点を合わせる"><td class="dnum">8</td><td class="dttl">ピンクの双子</td><td>「あ、いま良かった」の一瞬を捕まえて、そこに焦点を合わせる</td></tr><tr class="searchable" data-s="Day9 安堵のため息 進んでない計画を、捨てるか一歩進めるか決める"><td class="dnum">9</td><td class="dttl">安堵のため息</td><td>進んでない計画を、捨てるか一歩進めるか決める</td></tr><tr class="searchable" data-s="Day10 解放 欲しいものを「当然自分のもの」として扱って一歩出る"><td class="dnum">10</td><td class="dttl">解放</td><td>欲しいものを「当然自分のもの」として扱って一歩出る</td></tr><tr class="searchable" data-s="Day11 自信 自信を出そうとせず、守るものを外して流れに乗る"><td class="dnum">11</td><td class="dttl">自信</td><td>自信を出そうとせず、守るものを外して流れに乗る</td></tr><tr class="searchable" data-s="Day12 バランス 克服しようとせず、重要性のほうを下げる"><td class="dnum">12</td><td class="dttl">バランス</td><td>克服しようとせず、重要性のほうを下げる</td></tr><tr class="searchable" data-s="Day13 魂の魅力 浮かぶネガティブな場面を、いいやつに置き換える"><td class="dnum">13</td><td class="dttl">魂の魅力</td><td>浮かぶネガティブな場面を、いいやつに置き換える</td></tr><tr class="searchable" data-s="Day14 自分への愛 他人のよさを見る前に、自分のいいところを1個認める"><td class="dnum">14</td><td class="dttl">自分への愛</td><td>他人のよさを見る前に、自分のいいところを1個認める</td></tr>
     </table></div>
-  </div>
-  <div class="wkblock">
-    <div class="wkhead" style="background:#EAF6F2;color:#3E8C77">第3週（Day15-21）｜自分の基準を立てる</div>
+  </details>
+  <details class="wk">
+    <summary style="background:#EAF6F2;color:#3E8C77">
+      <b>第3週</b><span>自分の基準を立てる</span><em>Day15-21</em>
+    </summary>
     <div class="tablewrap"><table class="dtable">
-      <tr><th style="width:14%">Day</th><th style="width:32%">原題</th><th>やること</th></tr>
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
       <tr class="searchable" data-s="Day15 私の目的は、私 自分のケアを1個やる。何でもいい"><td class="dnum">15</td><td class="dttl">私の目的は、私</td><td>自分のケアを1個やる。何でもいい</td></tr><tr class="searchable" data-s="Day16 信念 信じるかどうかは置いといて、とりあえずやってみる"><td class="dnum">16</td><td class="dttl">信念</td><td>信じるかどうかは置いといて、とりあえずやってみる</td></tr><tr class="searchable" data-s="Day17 罪悪感 「申し訳ない」を1個手放す。罪がなければ罰もない"><td class="dnum">17</td><td class="dttl">罪悪感</td><td>「申し訳ない」を1個手放す。罪がなければ罰もない</td></tr><tr class="searchable" data-s="Day18 自己価値 アピールしたくなったら黙る。人のプライドは傷つけない"><td class="dnum">18</td><td class="dttl">自己価値</td><td>アピールしたくなったら黙る。人のプライドは傷つけない</td></tr><tr class="searchable" data-s="Day19 決定者の信条 考えと行動がズレてるところを1個直す"><td class="dnum">19</td><td class="dttl">決定者の信条</td><td>考えと行動がズレてるところを1個直す</td></tr><tr class="searchable" data-s="Day20 あなたの本当の道 「うまくいってるのにモヤる」を探す。魂の反対サイン"><td class="dnum">20</td><td class="dttl">あなたの本当の道</td><td>「うまくいってるのにモヤる」を探す。魂の反対サイン</td></tr><tr class="searchable" data-s="Day21 判決を下す 「こうすべき」を1個、自分の基準で決め直す"><td class="dnum">21</td><td class="dttl">判決を下す</td><td>「こうすべき」を1個、自分の基準で決め直す</td></tr>
     </table></div>
-  </div>
-  <div class="wkblock">
-    <div class="wkhead" style="background:#F1EDFA;color:#6A57A0">第4週（Day22-28）｜意図して動く</div>
+  </details>
+  <details class="wk">
+    <summary style="background:#F1EDFA;color:#6A57A0">
+      <b>第4週</b><span>意図して動く</span><em>Day22-28</em>
+    </summary>
     <div class="tablewrap"><table class="dtable">
-      <tr><th style="width:14%">Day</th><th style="width:32%">原題</th><th>やること</th></tr>
-      <tr class="searchable" data-s="Day22 意図の宣言 自動運転に気づいて、ハンドルを自分に戻す"><td class="dnum">22</td><td class="dttl">意図の宣言</td><td>自動運転に気づいて、ハンドルを自分に戻す</td></tr><tr class="searchable" data-s="Day23 行動の決意 ゴールは選ぶ。一歩は踏む。ルートは握らない"><td class="dnum">23</td><td class="dttl">行動の決意</td><td>ゴールは選ぶ。一歩は踏む。ルートは握らない</td></tr><tr class="searchable" data-s="Day24 所有の決意 「欲しい」ではなく「もうある」の姿勢で過ごす"><td class="dnum">24</td><td class="dttl">所有の決意</td><td>「欲しい」ではなく「もうある」の姿勢で過ごす</td></tr><tr class="searchable" data-s="Day25 — ※Day25以降は、おけもんの実践がまだ進行中です"><td class="dnum">25</td><td class="dttl">—</td><td>※Day25以降は、おけもんの実践がまだ進行中です</td></tr><tr class="searchable" data-s="Day26 — 同上（対話の記録はあるけれど、結晶はこれから）"><td class="dnum">26</td><td class="dttl">—</td><td>同上（対話の記録はあるけれど、結晶はこれから）</td></tr>
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day22 意図の宣言 なんとなくやってることをやめて、意図を口に出す"><td class="dnum">22</td><td class="dttl">意図の宣言</td><td>なんとなくやってることをやめて、意図を口に出す</td></tr><tr class="searchable" data-s="Day23 行動の決意 欲しいものを今日取りに行く。バス停まで歩く感じで"><td class="dnum">23</td><td class="dttl">行動の決意</td><td>欲しいものを今日取りに行く。バス停まで歩く感じで</td></tr><tr class="searchable nowrow" data-s="Day24 所有の決意 「手に入ったらどんな気分か」だけ考える。希望も不安も捨てる"><td class="dnum">24</td><td class="dttl">所有の決意<span class="nowtag">いまここ</span></td><td>「手に入ったらどんな気分か」だけ考える。希望も不安も捨てる</td></tr><tr class="searchable" data-s="Day25 世界の大掃除 家か職場を掃除していらないものを捨てる。恐怖・不満・恨みも"><td class="dnum">25</td><td class="dttl">世界の大掃除</td><td>家か職場を掃除していらないものを捨てる。恐怖・不満・恨みも</td></tr><tr class="searchable" data-s="Day26 成功の波 良かった感覚を思い出して、小さい吉兆を拾う"><td class="dnum">26</td><td class="dttl">成功の波</td><td>良かった感覚を思い出して、小さい吉兆を拾う</td></tr><tr class="searchable" data-s="Day27 鏡に映ったものを追いかける 現実を変えようとせず、自分の考えのほうを変える"><td class="dnum">27</td><td class="dttl">鏡に映ったものを追いかける</td><td>現実を変えようとせず、自分の考えのほうを変える</td></tr><tr class="searchable" data-s="Day28 映像の創造 ゴールの映像を、退屈でも繰り返す。奇跡じゃなくて作業"><td class="dnum">28</td><td class="dttl">映像の創造</td><td>ゴールの映像を、退屈でも繰り返す。奇跡じゃなくて作業</td></tr>
     </table></div>
-  </div>
-  <div class="note">
-    🌊 <b>今日の見どころ：</b>Day1が「目覚め」から始まって、Day21で「判決を下す」まで来る流れ。<b>気づく→力を取り戻す→自分の基準を立てる→意図して動く</b>の順に組まれています。並べて見ると、この本がちゃんと設計されているのが分かります。
+  </details>
+  <details class="wk">
+    <summary style="background:#FDEFF4;color:#C4517A">
+      <b>第5週</b><span>世界との関わり方を変える</span><em>Day29-35</em>
+    </summary>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day29 世界よ、思いどおりになれ! 欲しがるのをやめて、先に与える"><td class="dnum">29</td><td class="dttl">世界よ、思いどおりになれ!</td><td>欲しがるのをやめて、先に与える</td></tr><tr class="searchable" data-s="Day30 世界よ、私をどうぞお好きなように! 会う人の望みを、実現させてあげる方向に1個動く"><td class="dnum">30</td><td class="dttl">世界よ、私をどうぞお好きなように!</td><td>会う人の望みを、実現させてあげる方向に1個動く</td></tr><tr class="searchable" data-s="Day31 牡蠣のような反応 イラッとしたとき、反射じゃなく選んで反応する"><td class="dnum">31</td><td class="dttl">牡蠣のような反応</td><td>イラッとしたとき、反射じゃなく選んで反応する</td></tr><tr class="searchable" data-s="Day32 決定者の意図 何が起きても「結局アドバンテージになる」と言い切る"><td class="dnum">32</td><td class="dttl">決定者の意図</td><td>何が起きても「結局アドバンテージになる」と言い切る</td></tr><tr class="searchable" data-s="Day33 振り子の規範 従わなくていい常識を1個破る。破る権利は自分にある"><td class="dnum">33</td><td class="dttl">振り子の規範</td><td>従わなくていい常識を1個破る。破る権利は自分にある</td></tr><tr class="searchable" data-s="Day34 トランサーフィンの原則 自分も他人も、そのままでいさせる"><td class="dnum">34</td><td class="dttl">トランサーフィンの原則</td><td>自分も他人も、そのままでいさせる</td></tr><tr class="searchable" data-s="Day35 重要性の引き下げ 感情と戦うんじゃなく、元の「重要視」を下げる"><td class="dnum">35</td><td class="dttl">重要性の引き下げ</td><td>感情と戦うんじゃなく、元の「重要視」を下げる</td></tr>
+    </table></div>
+  </details>
+  <details class="wk">
+    <summary style="background:#FBF3E4;color:#A87C2E">
+      <b>第6週</b><span>流れに乗る</span><em>Day36-42</em>
+    </summary>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day36 戦いに終止符を打つ 要求するのをやめて、静かに受け取る"><td class="dnum">36</td><td class="dttl">戦いに終止符を打つ</td><td>要求するのをやめて、静かに受け取る</td></tr><tr class="searchable" data-s="Day37 コーディネーションの原則 「うまくいけば素晴らしい、いかなくてもそれで素晴らしい」"><td class="dnum">37</td><td class="dttl">コーディネーションの原則</td><td>「うまくいけば素晴らしい、いかなくてもそれで素晴らしい」</td></tr><tr class="searchable" data-s="Day38 世界は私を気づかってくれる いいことも悪いことも、声に出して宣言する"><td class="dnum">38</td><td class="dttl">世界は私を気づかってくれる</td><td>いいことも悪いことも、声に出して宣言する</td></tr><tr class="searchable" data-s="Day39 流れに逆らう 一日かけて、自分が何回反論・拒否・訂正したか数える"><td class="dnum">39</td><td class="dttl">流れに逆らう</td><td>一日かけて、自分が何回反論・拒否・訂正したか数える</td></tr><tr class="searchable" data-s="Day40 バリアントの流れに沿う 「一番簡単なやり方は？」と聞く。人の提案をすぐ断らない"><td class="dnum">40</td><td class="dttl">バリアントの流れに沿う</td><td>「一番簡単なやり方は？」と聞く。人の提案をすぐ断らない</td></tr><tr class="searchable" data-s="Day41 「思い出す」という習慣 困った時「これ明晰夢だ」と思い出す"><td class="dnum">41</td><td class="dttl">「思い出す」という習慣</td><td>困った時「これ明晰夢だ」と思い出す</td></tr><tr class="searchable" data-s="Day42 固定観念を打ち破る 制限を刷り込んでくる言葉を全部スルーする"><td class="dnum">42</td><td class="dttl">固定観念を打ち破る</td><td>制限を刷り込んでくる言葉を全部スルーする</td></tr>
+    </table></div>
+  </details>
+  <details class="wk">
+    <summary style="background:#EAF6F2;color:#3E8C77">
+      <b>第7週</b><span>ゴールを描く</span><em>Day43-49</em>
+    </summary>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day43 ビジュアライゼーション 自分の仕事を褒めて、そのままゴールのコマを頭で流す"><td class="dnum">43</td><td class="dttl">ビジュアライゼーション</td><td>自分の仕事を褒めて、そのままゴールのコマを頭で流す</td></tr><tr class="searchable" data-s="Day44 映画のコマ ゴール達成後の日常を流す。夢想じゃなく作業として"><td class="dnum">44</td><td class="dttl">映画のコマ</td><td>ゴール達成後の日常を流す。夢想じゃなく作業として</td></tr><tr class="searchable" data-s="Day45 目的への道 「どうやって」を考えない。郵便を取りに行く感じで進む"><td class="dnum">45</td><td class="dttl">目的への道</td><td>「どうやって」を考えない。郵便を取りに行く感じで進む</td></tr><tr class="searchable" data-s="Day46 扉 疲れ果てるならその扉は違う。気楽で熱が出るほうが自分の扉"><td class="dnum">46</td><td class="dttl">扉</td><td>疲れ果てるならその扉は違う。気楽で熱が出るほうが自分の扉</td></tr><tr class="searchable" data-s="Day47 共依存的な関係 執着してるものを1個ゆるめる。誰とも比べない"><td class="dnum">47</td><td class="dttl">共依存的な関係</td><td>執着してるものを1個ゆるめる。誰とも比べない</td></tr><tr class="searchable" data-s="Day48 愛の探求 理想の相手といる場面を思い浮かべる。仮面をつけない"><td class="dnum">48</td><td class="dttl">愛の探求</td><td>理想の相手といる場面を思い浮かべる。仮面をつけない</td></tr><tr class="searchable" data-s="Day49 振り子の弱体化 嫌なことが起きたら、いつもと逆の反応をする"><td class="dnum">49</td><td class="dttl">振り子の弱体化</td><td>嫌なことが起きたら、いつもと逆の反応をする</td></tr>
+    </table></div>
+  </details>
+  <details class="wk">
+    <summary style="background:#F1EDFA;color:#6A57A0">
+      <b>第8週</b><span>自分が決める側に回る</span><em>Day50-56</em>
+    </summary>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day50 振り子の崩壊 嫌なことを「あるね」と認めて、無関心に通り過ぎる"><td class="dnum">50</td><td class="dttl">振り子の崩壊</td><td>嫌なことを「あるね」と認めて、無関心に通り過ぎる</td></tr><tr class="searchable" data-s="Day51 理解不可能な無限 仕組みが分からなくても使えばいい"><td class="dnum">51</td><td class="dttl">理解不可能な無限</td><td>仕組みが分からなくても使えばいい</td></tr><tr class="searchable" data-s="Day52 「永遠」の入口に立つ門番 「私には能力があり価値がある。自分がそう決めたから」"><td class="dnum">52</td><td class="dttl">「永遠」の入口に立つ門番</td><td>「私には能力があり価値がある。自分がそう決めたから」</td></tr><tr class="searchable" data-s="Day53 自分の運命を形作る 運命のせいにしてることを1個、自分の舵に戻す"><td class="dnum">53</td><td class="dttl">自分の運命を形作る</td><td>運命のせいにしてることを1個、自分の舵に戻す</td></tr><tr class="searchable" data-s="Day54 魂の怠慢 未来を人に決めてもらうのをやめる"><td class="dnum">54</td><td class="dttl">魂の怠慢</td><td>未来を人に決めてもらうのをやめる</td></tr><tr class="searchable" data-s="Day55 決定者の考え方 何を考えるかより、どんな色で考えるか"><td class="dnum">55</td><td class="dttl">決定者の考え方</td><td>何を考えるかより、どんな色で考えるか</td></tr><tr class="searchable" data-s="Day56 世界に対する不満 不満を「私の世界は私を守ってくれる」に言い換える"><td class="dnum">56</td><td class="dttl">世界に対する不満</td><td>不満を「私の世界は私を守ってくれる」に言い換える</td></tr>
+    </table></div>
+  </details>
+  <details class="wk">
+    <summary style="background:#FDEFF4;color:#C4517A">
+      <b>第9週</b><span>自分の目的を掘る</span><em>Day57-63</em>
+    </summary>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day57 劣等感 隠してる欠点を1個そのまま出す"><td class="dnum">57</td><td class="dttl">劣等感</td><td>隠してる欠点を1個そのまま出す</td></tr><tr class="searchable" data-s="Day58 私はこれで十分 自分に質問して、自分で答える。権威に頼らない"><td class="dnum">58</td><td class="dttl">私はこれで十分</td><td>自分に質問して、自分で答える。権威に頼らない</td></tr><tr class="searchable" data-s="Day59 意思決定 決断した時、魂が心地よかったかを確かめる"><td class="dnum">59</td><td class="dttl">意思決定</td><td>決断した時、魂が心地よかったかを確かめる</td></tr><tr class="searchable" data-s="Day60 夜明けの星のざわめき 理屈より、決めた時の不快感を信号として使う"><td class="dnum">60</td><td class="dttl">夜明けの星のざわめき</td><td>理屈より、決めた時の不快感を信号として使う</td></tr><tr class="searchable" data-s="Day61 借り物の目的 「本当に望んでる？　望んでる自分でいたいだけ？」と問う"><td class="dnum">61</td><td class="dttl">借り物の目的</td><td>「本当に望んでる？　望んでる自分でいたいだけ？」と問う</td></tr><tr class="searchable" data-s="Day62 あなた自身の目的 「何に情熱を感じる？」を制限なしで書き出す"><td class="dnum">62</td><td class="dttl">あなた自身の目的</td><td>「何に情熱を感じる？」を制限なしで書き出す</td></tr><tr class="searchable" data-s="Day63 意図の舵を取る 「私は望まない。願わない。ただ意図する」"><td class="dnum">63</td><td class="dttl">意図の舵を取る</td><td>「私は望まない。願わない。ただ意図する」</td></tr>
+    </table></div>
+  </details>
+  <details class="wk">
+    <summary style="background:#FBF3E4;color:#A87C2E">
+      <b>第10週</b><span>自分らしさを出す</span><em>Day64-70</em>
+    </summary>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day64 魂の帆 押しつけられた目的を捨てて、自分の目的を探す"><td class="dnum">64</td><td class="dttl">魂の帆</td><td>押しつけられた目的を捨てて、自分の目的を探す</td></tr><tr class="searchable" data-s="Day65 悲観主義 問題を探す代わりに解決策を探す。泣き言をやめる"><td class="dnum">65</td><td class="dttl">悲観主義</td><td>問題を探す代わりに解決策を探す。泣き言をやめる</td></tr><tr class="searchable" data-s="Day66 支え つらい時「ああ、君が振り子か」と笑いかける"><td class="dnum">66</td><td class="dttl">支え</td><td>つらい時「ああ、君が振り子か」と笑いかける</td></tr><tr class="searchable" data-s="Day67 台本の変更 観察者として見て、世界に自由にやらせる。時々だけ直す"><td class="dnum">67</td><td class="dttl">台本の変更</td><td>観察者として見て、世界に自由にやらせる。時々だけ直す</td></tr><tr class="searchable" data-s="Day68 魂を入れる箱 苦しむために生きてない、と自分に許可を出す"><td class="dnum">68</td><td class="dttl">魂を入れる箱</td><td>苦しむために生きてない、と自分に許可を出す</td></tr><tr class="searchable" data-s="Day69 理想化 重要度を上げない・人を偶像にしない・現実を取り繕わない"><td class="dnum">69</td><td class="dttl">理想化</td><td>重要度を上げない・人を偶像にしない・現実を取り繕わない</td></tr><tr class="searchable" data-s="Day70 無条件の愛 自分に向けられた気持ちを、ありがたく受け取る"><td class="dnum">70</td><td class="dttl">無条件の愛</td><td>自分に向けられた気持ちを、ありがたく受け取る</td></tr>
+    </table></div>
+  </details>
+  <details class="wk">
+    <summary style="background:#EAF6F2;color:#3E8C77">
+      <b>第11週</b><span>ゴールへ</span><em>Day71-78</em>
+    </summary>
+    <div class="tablewrap"><table class="dtable">
+      <tr><th style="width:13%">Day</th><th style="width:33%">原題</th><th>やること</th></tr>
+      <tr class="searchable" data-s="Day71 比較による二極化 「標準じゃない」を「私はこれで十分」に変える"><td class="dnum">71</td><td class="dttl">比較による二極化</td><td>「標準じゃない」を「私はこれで十分」に変える</td></tr><tr class="searchable" data-s="Day72 唯一無二の魂 誰かのコピーをやめて、自分の変なところを出す"><td class="dnum">72</td><td class="dttl">唯一無二の魂</td><td>誰かのコピーをやめて、自分の変なところを出す</td></tr><tr class="searchable" data-s="Day73 ケチな理性 理性が「その目的は無理だ」と説得してくるのを聞かない"><td class="dnum">73</td><td class="dttl">ケチな理性</td><td>理性が「その目的は無理だ」と説得してくるのを聞かない</td></tr><tr class="searchable" data-s="Day74 欲ばりな魂 不可能っぽいものを堂々と要求する"><td class="dnum">74</td><td class="dttl">欲ばりな魂</td><td>不可能っぽいものを堂々と要求する</td></tr><tr class="searchable" data-s="Day75 お金 ないお金じゃなく、今あるお金に集中する"><td class="dnum">75</td><td class="dttl">お金</td><td>ないお金じゃなく、今あるお金に集中する</td></tr><tr class="searchable" data-s="Day76 コンフォート・ゾーン 不安になる規模の望みを、繰り返し頭で流して慣らす"><td class="dnum">76</td><td class="dttl">コンフォート・ゾーン</td><td>不安になる規模の望みを、繰り返し頭で流して慣らす</td></tr><tr class="searchable" data-s="Day77 仲間 身の回りのものを、味方として扱う"><td class="dnum">77</td><td class="dttl">仲間</td><td>身の回りのものを、味方として扱う</td></tr><tr class="searchable" data-s="Day78 守護天使 守護天使を作って、感謝を伝える"><td class="dnum">78</td><td class="dttl">守護天使</td><td>守護天使を作って、感謝を伝える</td></tr>
+    </table></div>
+  </details></div>
+  <div class="note" style="margin-top:16px;">
+    🌊 <b>通して見ると分かること：</b>Day1「目覚め」から始まって、Day35「重要性の引き下げ」、Day49「振り子の弱体化」、Day66「振り子に笑いかける」——<b>同じテーマが、段階を上げて3回戻ってくる</b>ように組まれています。いきなりDay66をやろうとしても効かない理由が、この並びに書いてあります。
   </div>
 </section>
 
 <!-- 4 3冊 -->
-<section id="books">
+<section id="books" data-tab="words">
   <h2><span class="num">6</span>で、どの本から読むの？</h2>
   <p class="lead">同じ著者（ヴァジム・ゼランド）ですが、役割がはっきり違います。</p>
 
@@ -635,7 +817,7 @@
 </section>
 
 <!-- 5 Day結晶 -->
-<section id="days">
+<section id="days" data-tab="oke">
   <h2><span class="num">7</span>28日やってみた人の、結晶</h2>
   <p class="lead">本の要約ではありません。おけもんが2026年8月4日から毎日実践して、自分の言葉になったところだけ。ここが今日いちばん話せるところだと思います。</p>
 
@@ -665,7 +847,7 @@
 </section>
 
 <!-- 6 問い -->
-<section id="questions">
+<section id="questions" data-tab="talk">
   <h2><span class="num">8</span>「意味わからん」で終わらせない問い</h2>
   <p class="lead">正解を当てる問いではありません。全部、自分の話に着地できるものだけ選びました。</p>
 
@@ -745,9 +927,14 @@
     if(!q){
       targets.forEach(t=>t.el.classList.remove('hidden-by-search'));
       document.querySelectorAll('section').forEach(s=>s.classList.remove('hidden-by-search'));
+      document.querySelectorAll('section[data-tab]').forEach(sec=>{
+        sec.classList.toggle('tabon', sec.dataset.tab===CURTAB);
+      });
       hits.textContent='';
       return;
     }
+    // 検索中は全タブ横断
+    document.querySelectorAll('section[data-tab]').forEach(sec=>sec.classList.add('tabon'));
     let n=0;
     targets.forEach(t=>{
       const hit = t.text.indexOf(q) !== -1;
@@ -761,10 +948,31 @@
       const anyVisible = Array.from(inner).some(e=>!e.classList.contains('hidden-by-search'));
       sec.classList.toggle('hidden-by-search', !anyVisible);
     });
-    hits.textContent = n ? ('「'+q+'」に触れているカード：'+n+'件（消えた章は、その言葉が出てこない章です）')
+    hits.textContent = n ? ('「'+q+'」に触れているカード：'+n+'件（全タブを横断して探しています）')
                          : ('「'+q+'」は、この地図には出てきませんでした。原書のほうで探すやつかも。');
   }
   document.getElementById('q').addEventListener('input', runSearch);
+
+  // ==== タブ ====
+  const TABDESC = {start:"この本ぜんぶが入っている1枚の絵と、いちばん太い一本",
+    tufti:"5つの道具と、全40章の一言解説",
+    days78:"1日1テーマ×78日。おけもんが走っている本",
+    words:"難しい言葉のほどき方と、どれから読むか",
+    oke:"実際にやった人の言葉", talk:"3人で話すための火種8枚"};
+  let CURTAB="start";
+  function goTab(k){
+    CURTAB=k;
+    document.querySelectorAll('.tb').forEach(b=>b.classList.toggle('on', b.dataset.go===k));
+    document.querySelectorAll('section[data-tab]').forEach(sec=>{
+      sec.classList.toggle('tabon', sec.dataset.tab===k);
+    });
+    document.getElementById('tabhint').textContent = TABDESC[k]||'';
+    document.getElementById('q').value=''; runSearch();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+  document.querySelectorAll('.tb').forEach(b=>{ b.onclick=()=>goTab(b.dataset.go); });
+  goTab('start');
+
 </script>
 </body>
 </html>
