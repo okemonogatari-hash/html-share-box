@@ -1128,5 +1128,38 @@
     window.addEventListener('scroll', () => { backBtn.classList.toggle('visible', window.scrollY > 400); }, { passive: true });
   }
 </script>
+
+<!-- reveal-guard v1 (2026-09-14): 演出で隠した本文が出てこない事故の保険。
+     閾値0の第二観測＋直リンク時は演出を諦めて即表示＋1.5秒/6秒の保険タイマー。
+     起源＝ますまるさん取説が横2000pxの画面で真っ白（TOP10章11,862px×閾値0.08＝949px必要）。
+     正本＝ゆいCPO/コーチング事業/【コンポーネントカタログ】取説機能の系譜.md §フェードイン -->
+<script>
+(function(){
+  var SEL='.fade-in,.reveal,.stagger';
+  var cls={};
+  try{
+    for(var i=0;i<document.styleSheets.length;i++){
+      var rules; try{rules=document.styleSheets[i].cssRules}catch(e){continue}
+      if(!rules) continue;
+      for(var j=0;j<rules.length;j++){
+        var st=rules[j].selectorText; if(!st) continue;
+        var re=/\.(?:fade-in|reveal|stagger)\.([a-zA-Z_-]+)/g, m;
+        while((m=re.exec(st))){ if(m[1]!=='stagger'&&m[1]!=='fade-in'&&m[1]!=='reveal') cls[m[1]]=1 }
+      }
+    }
+  }catch(e){}
+  var names=Object.keys(cls); if(!names.length) names=['is-visible','visible'];
+  function show(el){ for(var k=0;k<names.length;k++) el.classList.add(names[k]) }
+  function all(){ var els=document.querySelectorAll(SEL); for(var k=0;k<els.length;k++) show(els[k]) }
+  if(location.hash){ all() }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ show(e.target); io.unobserve(e.target) } }) },{threshold:0});
+    var els=document.querySelectorAll(SEL); for(var k=0;k<els.length;k++) io.observe(els[k]);
+  } else { all() }
+  setTimeout(function(){ var els=document.querySelectorAll(SEL), vh=window.innerHeight; for(var k=0;k<els.length;k++){ var r=els[k].getBoundingClientRect(); if(r.top<vh*1.5) show(els[k]) } },1500);
+  setTimeout(all,6000);
+  window.addEventListener('hashchange',all);
+})();
+</script>
 </body>
 </html>
