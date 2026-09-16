@@ -1739,9 +1739,13 @@ function renderClaimIt(){
   var screen = textareaScreen({
     field:"claimIt",
     badge:"claim",
-    badgeLabel:"Gallup公式の問い",
-    question:"「" + displayName() + "」が、過去、あなたの成功に役立ったのはいつですか？",
-    placeholder:"具体的な場面を1つ思い出して書いてみてください"
+    badgeLabel: OFFKAI ? "満たされていた時" : "Gallup公式の問い",
+    question: OFFKAI
+      ? ("「" + displayName() + "」が満たされていたのは、どんな時ですか？")
+      : ("「" + displayName() + "」が、過去、あなたの成功に役立ったのはいつですか？"),
+    placeholder: OFFKAI
+      ? "うまくいった話でなくて大丈夫です。あの時は良かったな、と思い出した場面を1つ"
+      : "具体的な場面を1つ思い出して書いてみてください"
   });
   var rescue = renderRescueToggle("claimit");
   if(rescue){
@@ -1751,6 +1755,20 @@ function renderClaimIt(){
   return screen;
 }
 function renderThanks(){
+  if(OFFKAI){
+    var screen = textareaScreen({
+      field:"thanks",
+      badge:"okemon",
+      badgeLabel:"渇いていた時",
+      question:"逆に、「" + displayName() + "」が渇いていたのは、どんな時ですか？",
+      placeholder:"気が乗らなかった、しんどかった、やってるのに満たされなかった…など",
+      required:false
+    });
+    var hint = el("p", {class:"hint"}, ["失敗した話でなくて大丈夫です。思い浮かばなければ、空欄のまま「つぎへ」でも進めます。"]);
+    var f = screen.querySelector(".field");
+    if(f && f.parentNode) f.parentNode.insertBefore(hint, f);
+    return screen;
+  }
   return textareaScreen({
     field:"thanks",
     badge:"okemon",
@@ -1910,8 +1928,8 @@ function buildOffkaiPrompt(){
     L.push("自分の言葉で呼ぶなら：「" + state.nickname.trim() + "」");
   }
   L.push("・強く共感した説明：" + safe(state.nameIt,"未記入"));
-  L.push("・過去、自分の成功に役立った場面：" + safe(state.claimIt,"未記入"));
-  L.push("・この資質に感謝するとしたら：" + safe(state.thanks,"未記入"));
+  L.push("・この資質が満たされていた時：" + safe(state.claimIt,"未記入"));
+  L.push("・この資質が渇いていた時：" + safe(state.thanks,"未記入"));
   L.push("・これから意図的に使う方法：① " + safe(state.aim1,"未記入") + " ／ ② " + safe(state.aim2,"未記入"));
   L.push("・" + (OFFKAI ? OFFKAI.span : "これから") + "に試すと決めたこと：" + safe(state.expChoiceText,"未記入"));
   L.push("");
@@ -1928,7 +1946,7 @@ function buildOffkaiPrompt(){
   L.push("・3つとも答え終わったら、いちばん上の私の資質情報をもとに、次の3点を教えてください。");
   L.push("　① この行動リストは、私の資質だと続きそうか");
   L.push("　② 止まるとしたら、どの資質が原因になりそうか");
-  L.push("　③ 同じ目的のまま、入り口だけ変えるとしたらどうするか");
+  L.push("　③ 同じ目的のまま、入り口だけ変えるとしたらどうするか（上の「満たされていた時」に近づける形で）");
   L.push("・出品するサービスや商品が含まれる場合は、資質との相性と、強みを活かせる行動も教えてください。");
   L.push("");
   L.push("【守ってほしいこと】");
@@ -2030,8 +2048,9 @@ function renderDone(){
 
   container.appendChild(el("div", {class:"desc-box echo-box"}, [
     el("strong", {}, ["今日、あなたが話した言葉"]),
-    el("p", {}, ["Name it：" + safe(state.nameIt, "（まだ書いていません）")]),
-    el("p", {}, ["Claim it：" + safe(state.claimIt, "（まだ書いていません）")])
+    el("p", {}, [(OFFKAI ? "自分らしいところ：" : "Name it：") + safe(state.nameIt, "（まだ書いていません）")]),
+    el("p", {}, [(OFFKAI ? "満たされていた時：" : "Claim it：") + safe(state.claimIt, "（まだ書いていません）")]),
+    (OFFKAI ? el("p", {}, ["渇いていた時：" + safe(state.thanks, "（まだ書いていません）")]) : el("span", {}, []))
   ]));
   container.appendChild(el("p", {class:"hint"}, ["この中の言葉を、そのまま下の空欄に当てはめてみてください。埋まらないところは空欄のままでOKです。"]));
 
