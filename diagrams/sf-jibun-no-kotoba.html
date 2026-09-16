@@ -895,6 +895,26 @@ function restoreFromBackup(){
   window.scrollTo(0,0);
 }
 
+/* ============== オフ会モード（URLパラメータで分岐・無指定なら従来どおり） ============== */
+var OFFKAI = (function(){
+  try{
+    var m = (location.search || "").match(/[?&]offkai=([^&]+)/);
+    var v = m ? decodeURIComponent(m[1]) : "";
+    if(v === "20260927"){
+      return {
+        id: "20260927",
+        eyebrow: "9/27 コラボオフ会",
+        title: "ストファイ × 稼げや祭りの目標設定",
+        goal: "今日のゴールは、資質を1つ「自分の言葉」に変えて、それを持ったまま10月の目標をつくることです。",
+        time: "このワークは15分。このあと1時間、その言葉を使ってAIと目標を組み立てます。",
+        span: "10月",
+        spanLong: "10月の稼げや祭り"
+      };
+    }
+  }catch(e){}
+  return null;
+})();
+
 /* ============== flattened steps ============== */
 /* 各ステップは id / applicable(state) を持つ。表示中身は render()で分岐 */
 var STEPS = [
@@ -1060,11 +1080,17 @@ function renderRescueToggle(kind){
     if(ta2 && ta2.hint){
       body.appendChild(el("p", {}, ["たとえばこの資質は——" + ta2.hint]));
     }
-    body.appendChild(el("p", {}, ["明日すでにある予定に、この資質を1つ乗せるなら？（例：ミーティングで、買い物で、家族との時間で）"]));
+    body.appendChild(el("p", {}, [OFFKAI
+      ? ("すでにある" + OFFKAI.span + "の予定に、この資質を1つ乗せるなら？（例：オフ会で、人に会うときに、作業の時間に）")
+      : "明日すでにある予定に、この資質を1つ乗せるなら？（例：ミーティングで、買い物で、家族との時間で）"]));
     if(ta2 && ta2.joy){
-      body.appendChild(el("p", {}, ["この資質が喜ぶ時間（" + ta2.joy + "）を、明日どこかに10分つくるなら？"]));
+      body.appendChild(el("p", {}, [OFFKAI
+        ? ("この資質が喜ぶ時間（" + ta2.joy + "）を、" + OFFKAI.span + "のどこかに10分つくるなら？")
+        : ("この資質が喜ぶ時間（" + ta2.joy + "）を、明日どこかに10分つくるなら？")]));
     } else {
-      body.appendChild(el("p", {}, ["この強みが喜ぶ時間を、明日どこかに10分つくるなら？"]));
+      body.appendChild(el("p", {}, [OFFKAI
+        ? ("この強みが喜ぶ時間を、" + OFFKAI.span + "のどこかに10分つくるなら？")
+        : "この強みが喜ぶ時間を、明日どこかに10分つくるなら？"]));
     }
     body.appendChild(el("p", {}, ["誰かのために使うなら、誰に・何をしますか？"]));
     body.appendChild(el("p", {class:"rescue-note"}, ["大きなことでなくて大丈夫。さっき話した過去の成功を、もう1回だけ意図的にやるのも立派な1つです。"]));
@@ -1184,10 +1210,24 @@ function renderWelcome(){
     kids.push(resumeBox);
   }
 
-  kids.push(el("span", {class:"eyebrow"}, ["Study Session"]));
-  kids.push(el("h1", {}, ["読んだだけで終わらせないストレングスファインダー活用会"]));
-  kids.push(el("p", {}, ["今日のゴールは、資質を1つ、「レポートの言葉」から「自分の言葉」に変えて持って帰ることです。"]));
-  kids.push(el("p", {}, ["所要時間の目安は15分です。"]));
+  if(OFFKAI){
+    kids.push(el("span", {class:"eyebrow"}, [OFFKAI.eyebrow]));
+    kids.push(el("h1", {}, [OFFKAI.title]));
+    kids.push(el("p", {}, [OFFKAI.goal]));
+    kids.push(el("p", {}, [OFFKAI.time]));
+    kids.push(el("div", {class:"desc-box", style:"margin:14px 0;"}, [
+      el("strong", {}, ["今日の流れ"]),
+      el("p", {}, ["① このワークで、資質を1つ自分の言葉にする（15分）"]),
+      el("p", {}, ["② 出てきた言葉を持って、AIと目標・現在地・行動リストをつくる（60分）"]),
+      el("p", {}, ["③ できたものを見せ合う（30分）"]),
+      el("p", {class:"hint", style:"margin-top:8px;"}, ["最後に、②へそのまま貼れるプロンプトが出ます。手で書き写す必要はありません。"])
+    ]));
+  } else {
+    kids.push(el("span", {class:"eyebrow"}, ["Study Session"]));
+    kids.push(el("h1", {}, ["読んだだけで終わらせないストレングスファインダー活用会"]));
+    kids.push(el("p", {}, ["今日のゴールは、資質を1つ、「レポートの言葉」から「自分の言葉」に変えて持って帰ることです。"]));
+    kids.push(el("p", {}, ["所要時間の目安は15分です。"]));
+  }
   kids.push(el("div", {class:"phil-line"}, [el("span", {class:"phil-tag gallup"}, ["[Gallup公式]"]), "結果を保存して終わる診断ではなく、才能を意識的に使い、練習・知識・技能への投資を通じて強みへ育てる開発ツールです。"]));
   kids.push(el("div", {class:"phil-line"}, [el("span", {class:"phil-tag okemon"}, ["[おけもん式]"]), "テストで分かるのは、あなた特有の34資質の並び順。上位資質は完成品ではなく、まず知ることから始まる出発点として扱います。"]));
   kids.push(el("p", {class:"hint"}, ["考え込まず、パッと答えるのがちょうどいいです。診断のときと同じ直感でOKです。"]));
@@ -1736,8 +1776,12 @@ function renderAim(){
   row = navRow({nextDisabled: !state.aim1.trim() && !state.aim2.trim()});
   return card([
     el("span", {class:"eyebrow aim"}, ["Gallup公式の問い"]),
-    el("div", {class:"question"}, ["これからもっと意図的に「" + displayName() + "」を利用できる方法を2つ挙げてください。"]),
-    el("p", {class:"hint"}, ["［おけもん式の解釈］Name it→Claim it→Aim itは1回で終わりではなく、そのつど足りない段階を確認しながら回していくサイクルです。"]),
+    el("div", {class:"question"}, [OFFKAI
+      ? ("これから" + OFFKAI.spanLong + "に向けて、もっと意図的に「" + displayName() + "」を使える方法を2つ挙げてください。")
+      : ("これからもっと意図的に「" + displayName() + "」を利用できる方法を2つ挙げてください。")]),
+    el("p", {class:"hint"}, [OFFKAI
+      ? "いま思いつく範囲でOKです。このあとAIと壁打ちしながら、もっと具体的にしていきます。"
+      : "［おけもん式の解釈］Name it→Claim it→Aim itは1回で終わりではなく、そのつど足りない段階を確認しながら回していくサイクルです。"]),
     renderRescueToggle("aim"),
     el("div", {class:"field"}, [el("label", {class:"field-label"}, ["方法1"]), i1]),
     el("div", {class:"field"}, [el("label", {class:"field-label"}, ["方法2"]), i2]),
@@ -1759,12 +1803,12 @@ function renderExp(){
       state.expChoice = only;
       saveState();
     }
-    container.appendChild(el("div", {class:"question"}, ["さきほどの案を、明日試してみましょう。"]));
+    container.appendChild(el("div", {class:"question"}, [OFFKAI ? ("さきほどの案を、" + OFFKAI.span + "に試してみましょう。") : "さきほどの案を、明日試してみましょう。"]));
     if(only){
       container.appendChild(el("div", {class:"desc-box"}, [only]));
     }
   } else {
-    container.appendChild(el("div", {class:"question"}, ["さきほどの2案から、明日試す1つを選んでください。"]));
+    container.appendChild(el("div", {class:"question"}, [OFFKAI ? ("さきほどの2案から、" + OFFKAI.span + "に試す1つを選んでください。") : "さきほどの2案から、明日試す1つを選んでください。"]));
     var list = el("div", {class:"pick-list"});
     options.forEach(function(opt){
       var btn = el("button", {type:"button", class:"pick-item" + (state.expChoiceText===opt?" is-selected":"")}, [opt]);
@@ -1790,7 +1834,7 @@ function renderExp(){
   });
   container.appendChild(el("div", {class:"field", style:"margin-top:10px;"}, [customInput]));
 
-  var noteInput = el("textarea", {placeholder:"例：明日の朝礼で、Aさんに。最後まで話を聞けたら合格"});
+  var noteInput = el("textarea", {placeholder: OFFKAI ? "例：10月の第1週に。声をかけられたら合格" : "例：明日の朝礼で、Aさんに。最後まで話を聞けたら合格"});
   noteInput.value = state.expNote || "";
   noteInput.addEventListener("input", function(){ state.expNote = noteInput.value; saveState(); });
   container.appendChild(el("div", {class:"field", style:"margin-top:16px;"}, [
@@ -1819,7 +1863,7 @@ function buildCopyAll(){
   lines.push("");
   lines.push("【資質】" + displayName());
   lines.push("");
-  lines.push("【明日の実験カード】");
+  lines.push(OFFKAI ? ("【" + OFFKAI.span + "の作戦カード】") : "【明日の実験カード】");
   lines.push("すること：" + safe(state.expChoiceText,""));
   lines.push("メモ（いつ・どこで・目印など）：" + safe(state.expNote,""));
   lines.push("");
@@ -1838,6 +1882,52 @@ function buildHonninLine(){
     return "本人レポート：\n" + report.slice(0,4000) + "\n";
   }
   return "本人レポート：（手元にあります。必要なら求めてください）\n";
+}
+/* ---- 9/27オフ会：目標設定の壁打ちへ渡すプロンプト ---- */
+function buildOffkaiPrompt(){
+  var L = [];
+  L.push("# 私の資質（さっきのワークで出したものです）");
+  if(state.hasResults===true && state.top5.length===5){
+    L.push("ストレングスファインダー TOP5：" + state.top5.join("・"));
+  } else {
+    L.push("ストレングスファインダー：未受験。今日は仮の強み「" + safe(state.customName, displayName()) + "」で進めました");
+  }
+  L.push("今日いちばん自分を説明していると思った資質：" + safe(displayName(),"未記入"));
+  if(state.nickname && state.nickname.trim()){
+    L.push("自分の言葉で呼ぶなら：「" + state.nickname.trim() + "」");
+  }
+  L.push("・強く共感した説明：" + safe(state.nameIt,"未記入"));
+  L.push("・過去、自分の成功に役立った場面：" + safe(state.claimIt,"未記入"));
+  L.push("・この資質に感謝するとしたら：" + safe(state.thanks,"未記入"));
+  L.push("・これから意図的に使う方法：① " + safe(state.aim1,"未記入") + " ／ ② " + safe(state.aim2,"未記入"));
+  L.push("・" + (OFFKAI ? OFFKAI.span : "これから") + "に試すと決めたこと：" + safe(state.expChoiceText,"未記入"));
+  L.push("");
+  L.push("# お願いしたいこと");
+  L.push("10月の「稼げや祭り」に向けて、");
+  L.push("1. 達成したい目標");
+  L.push("2. 現在の状態");
+  L.push("3. 行動リスト");
+  L.push("を一緒に決めたいです。");
+  L.push("");
+  L.push("【進め方】");
+  L.push("・上の1〜3を、この順に1つずつ質問してください。まとめて聞かないでください。");
+  L.push("・私が答えたら、次の質問へ進んでください。");
+  L.push("・3つとも答え終わったら、いちばん上の私の資質情報をもとに、次の3点を教えてください。");
+  L.push("　① この行動リストは、私の資質だと続きそうか");
+  L.push("　② 止まるとしたら、どの資質が原因になりそうか");
+  L.push("　③ 同じ目的のまま、入り口だけ変えるとしたらどうするか");
+  L.push("・出品するサービスや商品が含まれる場合は、資質との相性と、強みを活かせる行動も教えてください。");
+  L.push("");
+  L.push("【守ってほしいこと】");
+  L.push("・私が言っていないことを、私の性格として決めつけないでください。");
+  L.push("・「この資質だからできない」という言い方はしないでください。やり方はいくつもあるはずなので、選択肢を出してください。");
+  L.push("・資質の説明より、私が上に書いた自分の言葉を優先してください。");
+  L.push("・断定ではなく「〜かもしれません」「〜ではどうですか」と、私が考えられる形で返してください。");
+  L.push("");
+  L.push("【このあとの流れ】");
+  L.push("・途中で「一覧にして」と言ったら、そこまでの1〜3を一覧で出してください。");
+  L.push("・最後に「HTMLにして」と言ったら、決まった1〜3を単一ファイル・外部依存なし・スマホでも読めるHTMLにしてください。");
+  return L.join("\n");
 }
 function buildDeepDivePrompt(){
   var top5Line;
@@ -1953,16 +2043,17 @@ function renderDone(){
     el("dt", {}, ["メモ（いつ・どこで・目印など）"]),
     el("dd", {}, [safe(state.expNote,"（未記入）")])
   ]);
-  container.appendChild(el("h3", {style:"font-size:15px;margin-top:20px;"}, ["明日の実験カード"]));
+  container.appendChild(el("h3", {style:"font-size:15px;margin-top:20px;"}, [OFFKAI ? (OFFKAI.span + "の作戦カード") : "明日の実験カード"]));
   container.appendChild(expCard);
 
-  var r1 = el("textarea", {placeholder:"（明日やってから書く）"});
+  var afterPh = OFFKAI ? "（やってから書く）" : "（明日やってから書く）";
+  var r1 = el("textarea", {placeholder: afterPh});
   r1.value = state.reflect1;
   r1.addEventListener("input", function(){ state.reflect1 = r1.value; saveState(); });
-  var r2 = el("textarea", {placeholder:"（明日やってから書く）"});
+  var r2 = el("textarea", {placeholder: afterPh});
   r2.value = state.reflect2;
   r2.addEventListener("input", function(){ state.reflect2 = r2.value; saveState(); });
-  var r3 = el("textarea", {placeholder:"（明日やってから書く）"});
+  var r3 = el("textarea", {placeholder: afterPh});
   r3.value = state.reflect3;
   r3.addEventListener("input", function(){ state.reflect3 = r3.value; saveState(); });
   var reflectCard = el("div", {class:"reflect-card"}, [
@@ -1980,8 +2071,14 @@ function renderDone(){
   var fallback4 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
   var fallback5 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
 
-  var btn1 = el("button", {class:"btn btn-primary btn-block", type:"button"}, ["シェア用に1文だけコピー"]);
+  var btn1 = el("button", {class:"btn " + (OFFKAI ? "btn-outline" : "btn-primary") + " btn-block", type:"button"}, ["シェア用に1文だけコピー"]);
   btn1.addEventListener("click", function(){ copyText(buildSentence(), statusEl, fallback1); });
+  var fallback0 = el("textarea", {class:"fallback-textarea", style:"display:none;"});
+  var btn0 = null;
+  if(OFFKAI){
+    btn0 = el("button", {class:"btn btn-primary btn-block", type:"button"}, ["▶ この内容を持って、目標設定の壁打ちへ（コピー）"]);
+    btn0.addEventListener("click", function(){ copyText(buildOffkaiPrompt(), statusEl, fallback0); });
+  }
   var btn2 = el("button", {class:"btn btn-outline btn-block", type:"button"}, ["全部コピー（メモ用）"]);
   btn2.addEventListener("click", function(){ copyText(buildCopyAll(), statusEl, fallback2); });
   var btn4 = el("button", {class:"btn btn-outline btn-block", type:"button"}, ["この1文だけ、AIに整えてもらう（コピー）"]);
@@ -2008,7 +2105,17 @@ function renderDone(){
   var btn3 = el("button", {class:"btn btn-outline btn-block", type:"button"}, ["AIでさらに深掘りする（プロンプトをコピー）"]);
   btn3.addEventListener("click", function(){ copyText(buildDeepDivePrompt(), statusEl, fallback3); });
 
-  container.appendChild(el("div", {class:"btnrow", style:"flex-direction:column;align-items:stretch;margin-top:22px;"}, [btn1, btn2, btn4, btn5, btn3]));
+  if(OFFKAI){
+    container.appendChild(el("div", {class:"desc-box", style:"margin-top:22px;"}, [
+      el("strong", {}, ["次にやること"]),
+      el("p", {}, ["下のボタンでコピーして、ClaudeかChatGPTに貼り付けてください。"]),
+      el("p", {}, ["あなたの資質の情報が入った状態で、AIが1つずつ質問してくれます。答えていくと、" + OFFKAI.spanLong + "の目標・現在地・行動リストができあがります。"]),
+      el("p", {class:"hint", style:"margin-top:8px;"}, ["最後に「HTMLにして」と言えば、1枚にまとまって持ち帰れます。"])
+    ]));
+  }
+  var btnList = OFFKAI ? [btn0, btn1, btn2, btn4, btn5, btn3] : [btn1, btn2, btn4, btn5, btn3];
+  container.appendChild(el("div", {class:"btnrow", style:"flex-direction:column;align-items:stretch;margin-top:" + (OFFKAI ? "14px" : "22px") + ";"}, btnList));
+  if(OFFKAI) container.appendChild(fallback0);
   if(reportCheckWrap) container.appendChild(reportCheckWrap);
   container.appendChild(statusEl);
   container.appendChild(fallback1);
