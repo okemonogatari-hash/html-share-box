@@ -794,6 +794,26 @@ function detectTop5FromText(text){
 }
 
 /* ============== state ============== */
+/* ============== オフ会モード（URLパラメータで分岐・無指定なら従来どおり） ============== */
+var OFFKAI = (function(){
+  try{
+    var m = (location.search || "").match(/[?&]offkai=([^&]+)/);
+    var v = m ? decodeURIComponent(m[1]) : "";
+    if(v === "20260927"){
+      return {
+        id: "20260927",
+        eyebrow: "9/27 コラボオフ会",
+        title: "ストファイ × 稼げや祭りの目標設定",
+        goal: "今日のゴールは、資質を1つ「自分の言葉」に変えて、それを持ったまま10月の目標をつくることです。",
+        time: "このワークは15分。このあと1時間、その言葉を使ってAIと目標を組み立てます。",
+        span: "10月",
+        spanLong: "10月の稼げや祭り"
+      };
+    }
+  }catch(e){}
+  return null;
+})();
+
 var STORAGE_KEY = "sf-jibun-no-kotoba-v1";
 var BACKUP_KEY = "sf-jibun-no-kotoba-backup-v1";
 var justReset = false; /* リセット直後のwelcome画面にだけ「消しました」通知を出すための一時フラグ（永続化しない） */
@@ -825,6 +845,19 @@ var defaultState = {
   lapCount: 1
 };
 var state = loadState();
+
+/* オフ会モードで開いたとき、前回と違う会なら「はじめに」から始める。
+   入力データは消さない（welcomeの「続きから再開する」で戻せる）。 */
+(function(){
+  if(!OFFKAI) return;
+  try{
+    if(state.offkaiId !== OFFKAI.id){
+      state.offkaiId = OFFKAI.id;
+      state.stepIndex = 0;
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+    }
+  }catch(e){}
+})();
 
 function loadState(){
   try{
@@ -894,26 +927,6 @@ function restoreFromBackup(){
   render();
   window.scrollTo(0,0);
 }
-
-/* ============== オフ会モード（URLパラメータで分岐・無指定なら従来どおり） ============== */
-var OFFKAI = (function(){
-  try{
-    var m = (location.search || "").match(/[?&]offkai=([^&]+)/);
-    var v = m ? decodeURIComponent(m[1]) : "";
-    if(v === "20260927"){
-      return {
-        id: "20260927",
-        eyebrow: "9/27 コラボオフ会",
-        title: "ストファイ × 稼げや祭りの目標設定",
-        goal: "今日のゴールは、資質を1つ「自分の言葉」に変えて、それを持ったまま10月の目標をつくることです。",
-        time: "このワークは15分。このあと1時間、その言葉を使ってAIと目標を組み立てます。",
-        span: "10月",
-        spanLong: "10月の稼げや祭り"
-      };
-    }
-  }catch(e){}
-  return null;
-})();
 
 /* ============== flattened steps ============== */
 /* 各ステップは id / applicable(state) を持つ。表示中身は render()で分岐 */
