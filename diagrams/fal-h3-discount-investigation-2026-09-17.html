@@ -99,7 +99,10 @@
 
     .share{margin-top:42px;background:var(--yellow-pale);border:1.5px solid #e3c57e;border-radius:18px;padding:21px}
     .share h2{font-size:21px;margin-bottom:8px}
-    .share blockquote{margin:0;color:#543d11;font-size:15px}
+    .prompt-intro{margin:0 0 14px;color:#543d11;font-size:15px}
+    .try-prompt{margin:0;padding:17px;border:1px solid #d7bd7e;border-radius:12px;background:#fffefa;color:#283438;
+      font:13px/1.75 "SFMono-Regular",Consolas,"Hiragino Sans",monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+    .prompt-note{margin:11px 0 0;color:#6a5428;font-size:13px}
     .copy-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:15px}
     .copy{border:1px solid var(--blue);background:var(--blue);color:#fff;border-radius:9px;padding:9px 14px;font-weight:850;font-size:13px}
     .copy-status{font-size:13px;color:var(--green);min-height:1.8em}
@@ -185,10 +188,21 @@
   </section>
 
   <section class="share reveal">
-    <h2>ひとことでシェアするなら</h2>
-    <blockquote id="share-text">私はfal.aiのAPIをつないで、MiniMax H3 Max Turboで動画を作っています。今は9月30日まで50%オフで、768pの15秒動画なら1回約45円です。</blockquote>
+    <h2>自分のパソコンで試すなら</h2>
+    <p class="prompt-intro">下のプロンプトをコピーして、CodexやClaude Codeに貼り付けてください。</p>
+    <pre class="try-prompt" id="try-prompt">このパソコンでfal.aiのAPIを使い、MiniMax H3 Max TurboのImage to Videoを試したいです。
+
+1. fal.aiの公式ドキュメントで、現在のエンドポイントと入力項目を確認してください。
+2. 環境変数 FAL_KEY が設定済みか、値を画面に表示せず確認してください。未設定なら、fal.aiでAPIキーを発行し、このパソコンの環境変数へ安全に設定する方法を案内してください。
+3. 動画の元にする画像ファイルと、動かし方の希望を私に聞いてください。
+4. minimax/h3-max-turbo/image-to-video を使い、まずは768p・5秒の動画を1本作る準備をしてください。
+5. 有料の生成を実行する直前に、現在の公式料金から見積額を示して、私の確認を取ってください。確認するまでは生成しないでください。
+6. 完了したら、MP4の保存場所と、実際に使った設定を教えてください。
+
+APIキーはチャット、コード、Git、ログへ直接書かず、fal.aiの認証以外には送信しないでください。</pre>
+    <p class="prompt-note">※ 768p・5秒なら、現在のキャンペーン価格で約15円です（1ドル＝150円換算）。</p>
     <div class="copy-row">
-      <button class="copy" id="copy" type="button">この文章をコピー</button>
+      <button class="copy" id="copy" type="button">試すプロンプトをコピー</button>
       <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
     </div>
   </section>
@@ -222,7 +236,7 @@
   });
 
   document.getElementById('copy').addEventListener('click', async () => {
-    const text = document.getElementById('share-text').textContent.trim();
+    const text = document.getElementById('try-prompt').textContent.trim();
     try {
       await navigator.clipboard.writeText(text);
     } catch (_) {
