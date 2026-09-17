@@ -4,569 +4,234 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="falのH3 Max割引を、Xの原投稿とfal公式モデルページから確認した手順を、使ったサイト・確認方法・APIの違いまで図解します。">
-  <title>falの「4分の1→半額」をどう確認した？｜調査ルート完全図解</title>
+  <meta name="description" content="fal.aiのAPIでMiniMax H3 Max Turboを使う流れと、キャンペーン中の動画生成費用をやさしく紹介します。">
+  <title>fal APIなら、15秒動画が約45円｜いまの費用感</title>
   <!--
-    目的: fal H3 Maxの割引変更について、第三者が同じ根拠を辿れるようにする。
-    読者: 生成AI動画に興味がある一般読者。公開情報だけを掲載。
-    共有区分: URL共有（noindexは検索避けでありアクセス制限ではない）。
-    正例: あおいCDO/【土台】読み物HTML_2層レイアウト.html
-          outputs/eigyou-kaigi-2026-09-16/index.html
-    価格確認日: 2026-09-17 JST
-    重要: 動画生成APIは実行していない。調査・閲覧のみで、falの課金は発生していない。
+    目的: fal APIでの動画生成方法と、キャンペーン中の費用感をシンプルに共有する。
+    読者: AI動画を試してみたい人。
+    価格確認日: 2026-09-17 JST。
+    円換算: 1ドル=150円の概算。為替・決済手数料・再生成回数で変わる。
+    対象: minimax/h3-max-turbo/image-to-video。
   -->
-  <script>document.documentElement.classList.replace('no-js','js-ready');</script>
+  <script>document.documentElement.classList.replace('no-js','js');</script>
   <style>
     :root{
       color-scheme:light;
-      --ink:#182023;
-      --soft:#526064;
-      --faint:#536166;
-      --paper:#f5f3ed;
+      --ink:#192326;
+      --soft:#4f5e62;
+      --faint:#5d6b6f;
+      --paper:#f7f5ef;
       --card:#fffefa;
-      --line:#d8d7cf;
-      --blue:#176b87;
-      --blue-pale:#e6f3f7;
-      --amber:#a85b12;
-      --amber-pale:#fff0d9;
-      --green:#1f654f;
-      --green-pale:#e7f4ee;
-      --red:#a23d37;
-      --red-pale:#f9e9e7;
-      --navy:#17334a;
+      --line:#d8d9d2;
+      --blue:#116b88;
+      --blue-dark:#0d5269;
+      --blue-pale:#e5f3f7;
+      --yellow:#f2b84b;
+      --yellow-pale:#fff3d6;
+      --green:#25624d;
+      --green-pale:#e5f2eb;
     }
     *{box-sizing:border-box}
     html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
     body{
       margin:0;background:var(--paper);color:var(--ink);
       font-family:"Hiragino Sans","Yu Gothic UI","Yu Gothic",system-ui,sans-serif;
-      font-size:16px;line-height:1.85;overflow-wrap:anywhere;
+      font-size:16px;line-height:1.8;overflow-wrap:anywhere;
     }
-    a{color:var(--blue);text-underline-offset:.18em}
-    a:hover{text-decoration-thickness:2px}
-    button,input,select{font:inherit}
-    button{cursor:pointer}
-    .wrap{max-width:1240px;margin:0 auto;padding:0 18px 88px}
-    .col{width:100%;max-width:1240px;margin:0 auto}
-    .col > h2,.col > .h2sub,.col > p,.col > ul,.col > .note,.col > .mini-note,
-    .col > .source-list,.col > .foot,.col > .dialogue{
-      width:100%;max-width:780px;margin-left:auto;margin-right:auto;
-    }
-    .col > .route,.col > .compare,.col > .tool-grid,.col > .calc,.col > .decision,
-    .col > .evidence,.col > .summary-panel{
-      width:100%;max-width:1090px;margin-left:auto;margin-right:auto;
-    }
-    @media (max-width:1140px){
-      .col > .route,.col > .compare,.col > .tool-grid,.col > .calc,.col > .decision,
-      .col > .evidence,.col > .summary-panel{max-width:860px}
-    }
+    a{color:var(--blue-dark);text-underline-offset:.18em}
+    button{font:inherit;cursor:pointer}
+    .page{max-width:1120px;margin:0 auto;padding:0 18px 72px}
 
-    .hero{padding:54px 0 34px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+    .hero{padding:56px 0 34px;position:relative;overflow:hidden}
     .hero::after{
-      content:"";position:absolute;right:-90px;top:-120px;width:330px;height:330px;border-radius:50%;
-      background:radial-gradient(circle,rgba(23,107,135,.16),rgba(23,107,135,0) 68%);pointer-events:none;
+      content:"";position:absolute;right:-110px;top:-130px;width:360px;height:360px;border-radius:50%;
+      background:radial-gradient(circle,rgba(17,107,136,.16),rgba(17,107,136,0) 68%);pointer-events:none;
     }
-    .eyebrow{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}
-    .tag{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;
-      padding:5px 12px;background:rgba(255,254,250,.72);font-size:12.5px;font-weight:750;color:var(--soft)}
-    .tag.live{border-color:#8fbcad;color:var(--green);background:var(--green-pale)}
-    h1{font-size:clamp(28px,5.4vw,48px);line-height:1.28;letter-spacing:-.025em;
-      margin:0 0 16px;max-width:900px;text-wrap:balance;line-break:strict}
-    .lead{max-width:780px;margin:0;color:var(--soft);font-size:clamp(16px,2.4vw,19px);line-height:1.8;text-wrap:balance}
-    .answer-line{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:24px}
-    .answer-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;
-      background:var(--navy);color:#fff;font-size:14px;font-weight:800}
-    .answer-text{font-weight:800;font-size:17px;color:var(--navy)}
-    .meta{margin-top:19px;font-size:13px;color:var(--faint)}
+    .badge{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;
+      background:var(--green-pale);color:var(--green);border:1px solid #a9cdbd;font-size:13px;font-weight:800}
+    h1{font-size:clamp(31px,6vw,58px);line-height:1.22;letter-spacing:-.035em;
+      max-width:850px;margin:18px 0 16px;text-wrap:balance;line-break:strict}
+    h1 em{font-style:normal;color:var(--blue)}
+    .lead{max-width:760px;margin:0;color:var(--soft);font-size:clamp(17px,2.3vw,20px);text-wrap:balance}
+    .lead strong{color:var(--ink)}
+    .hero-note{margin:16px 0 0;font-size:13px;color:var(--faint)}
 
-    .jump{position:sticky;top:0;z-index:20;background:rgba(245,243,237,.94);backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--line);margin:0 calc(50% - 50vw)}
-    .jump-inner{max-width:1090px;margin:0 auto;padding:10px 18px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
-    .jump-inner::-webkit-scrollbar{display:none}
-    .jump a{white-space:nowrap;text-decoration:none;border:1px solid var(--line);background:var(--card);
-      color:var(--soft);border-radius:999px;padding:6px 11px;font-size:12.5px;font-weight:750}
-    .jump a:hover{border-color:var(--blue);color:var(--blue)}
+    .api-line{display:inline-flex;align-items:center;gap:8px;max-width:100%;margin-top:22px;padding:10px 13px;
+      border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--soft);font-size:13px}
 
-    h2{font-size:clamp(23px,3.7vw,31px);line-height:1.45;margin:72px 0 8px;font-weight:850;
-      letter-spacing:-.018em;text-wrap:balance;line-break:strict}
-    h2::before{content:"";display:inline-block;width:9px;height:28px;border-radius:3px;background:var(--blue);
-      margin-right:12px;vertical-align:-4px}
-    .h2sub{margin-top:0;margin-bottom:24px;color:var(--faint);font-size:14.5px}
-    h3{font-size:18px;line-height:1.5;margin:0 0 8px}
-    p{margin-top:0;margin-bottom:16px}
-    strong{font-weight:850}
+    .section{margin-top:46px}
+    h2{font-size:clamp(23px,4vw,32px);line-height:1.4;margin:0 0 8px;text-wrap:balance;line-break:strict}
+    .section-lead{margin:0 0 20px;color:var(--soft);max-width:740px}
+
+    .price-box{background:var(--card);border:1.5px solid var(--line);border-radius:20px;overflow:hidden}
+    .price-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+      padding:19px 21px;border-bottom:1px solid var(--line);background:#fbfcfa}
+    .price-head p{margin:0;color:var(--soft);font-size:14px}
+    .duration{display:flex;gap:5px;padding:4px;background:#e8eceb;border-radius:11px}
+    .duration button{border:0;background:transparent;border-radius:8px;padding:7px 13px;color:var(--soft);font-weight:800;font-size:13px}
+    .duration button[aria-pressed="true"]{background:#fff;color:var(--blue-dark);box-shadow:0 1px 5px rgba(0,0,0,.13)}
+    .prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;padding:21px}
+    .price-card{border:1.5px solid var(--line);border-radius:16px;padding:19px;background:var(--paper)}
+    .price-card.recommended{border:2px solid var(--blue);background:var(--blue-pale)}
+    .price-card .resolution{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:850}
+    .price-card .resolution span{font-size:12.5px;background:var(--blue);color:#fff;padding:3px 8px;border-radius:999px}
+    .yen{display:block;font-size:clamp(30px,5vw,44px);line-height:1.2;color:var(--blue-dark);font-weight:900;margin:13px 0 3px}
+    .dollar{font-size:13px;color:var(--faint)}
+    .price-card p{font-size:13.5px;color:var(--soft);margin:10px 0 0}
+    .price-foot{padding:14px 21px;background:var(--yellow-pale);border-top:1px solid #ead39e;color:#624919;font-size:13.5px}
+
+    .real{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-top:18px}
+    .real-main{background:var(--blue-dark);color:#fff;border-radius:19px;padding:23px}
+    .real-main small{display:block;color:#d7edf4;font-size:13px}
+    .real-main strong{display:block;font-size:clamp(34px,6vw,52px);line-height:1.2;margin:6px 0}
+    .real-main p{margin:0;color:#d7edf4;font-size:14px}
+    .real-list{display:grid;gap:10px}
+    .real-list div{display:flex;justify-content:space-between;align-items:center;gap:16px;background:var(--card);
+      border:1.5px solid var(--line);border-radius:13px;padding:13px 15px}
+    .real-list span{font-size:14px;color:var(--soft)}
+    .real-list b{font-size:17px;color:var(--blue-dark);white-space:nowrap}
+
+    details{margin-top:22px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px 17px}
+    summary{font-weight:850;color:var(--blue-dark);cursor:pointer}
+    details p{font-size:14px;color:var(--soft);margin:13px 0 0}
     code{font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;background:#edf0ef;border:1px solid #d7dddc;
-      padding:.13em .38em;border-radius:5px;color:#29414a}
+      padding:.14em .4em;border-radius:5px;color:#29414a}
 
-    .summary-panel{margin-top:34px;background:var(--card);border:1.5px solid var(--line);border-radius:18px;
-      padding:22px;display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:center}
-    .summary-panel h2{margin:0 0 10px;font-size:24px}
-    .summary-panel h2::before{display:none}
-    .summary-panel p{margin:0;color:var(--soft)}
-    .fraction-visual{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .fraction-card{border-radius:14px;padding:18px;text-align:center;border:1px solid var(--line)}
-    .fraction-card.old{background:var(--amber-pale);border-color:#e6bd83}
-    .fraction-card.now{background:var(--blue-pale);border-color:#9bc8d6}
-    .fraction-card small{display:block;color:var(--soft);font-size:12.5px}
-    .fraction-card b{display:block;font-size:30px;line-height:1.25;margin:4px 0;color:var(--navy)}
-    .fraction-card span{font-size:13px;color:var(--soft)}
+    .share{margin-top:42px;background:var(--yellow-pale);border:1.5px solid #e3c57e;border-radius:18px;padding:21px}
+    .share h2{font-size:21px;margin-bottom:8px}
+    .share blockquote{margin:0;color:#543d11;font-size:15px}
+    .copy-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:15px}
+    .copy{border:1px solid var(--blue);background:var(--blue);color:#fff;border-radius:9px;padding:9px 14px;font-weight:850;font-size:13px}
+    .copy-status{font-size:13px;color:var(--green);min-height:1.8em}
 
-    .route{margin-top:28px}
-    .route-head{display:flex;justify-content:space-between;gap:12px;align-items:end;margin-bottom:14px}
-    .route-head p{margin:0;color:var(--soft);font-size:14px}
-    .route-tabs{display:flex;gap:7px;flex-wrap:wrap}
-    .route-tab{border:1px solid var(--line);background:var(--card);color:var(--soft);border-radius:9px;
-      padding:7px 11px;font-weight:800;font-size:13px}
-    .route-tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
-    .route-track{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative}
-    .route-card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px;min-width:0;
-      transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
-    .route-card.active{border-color:var(--blue);box-shadow:0 9px 24px rgba(23,107,135,.13);transform:translateY(-4px)}
-    .route-card .n{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;
-      background:var(--blue-pale);color:var(--blue);font-weight:900;font-size:13px;margin-bottom:13px}
-    .route-card h3{font-size:16px}
-    .route-card p{font-size:13.5px;line-height:1.7;color:var(--soft);margin:0}
-    .route-card .method{display:inline-block;margin-top:12px;padding:3px 8px;border-radius:6px;background:#edf0ef;
-      color:#405056;font-size:12.5px;font-weight:800}
+    .sources{margin-top:42px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--faint)}
+    .sources p{margin:0 0 7px}
+    .sources a{margin-right:14px}
 
-    .tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:24px}
-    .tool{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:19px;position:relative}
-    .tool .label{display:inline-flex;padding:3px 9px;border-radius:999px;background:var(--blue-pale);color:var(--blue);
-      font-size:12.5px;font-weight:850;margin-bottom:11px}
-    .tool h3{font-size:17px}
-    .tool p{font-size:14px;line-height:1.75;color:var(--soft);margin-bottom:10px}
-    .tool ul{padding-left:1.2em;margin:0;color:var(--soft);font-size:13.5px}
-    .tool li{margin-bottom:5px}
-    .tool.no-run{border-color:#8fbcad;background:linear-gradient(180deg,var(--green-pale),var(--card) 70%)}
-    .tool.no-run .label{background:#d7eee4;color:var(--green)}
-
-    .dialogue{margin-top:22px;background:var(--amber-pale);border-left:4px solid var(--amber);border-radius:0 12px 12px 0;
-      padding:15px 17px;color:#66400f;font-size:14.5px}
-    .dialogue b{display:block;margin-bottom:4px}
-
-    .compare{margin-top:26px;background:var(--card);border:1.5px solid var(--line);border-radius:18px;overflow:hidden}
-    .compare-controls{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;
-      justify-content:space-between;gap:14px;flex-wrap:wrap}
-    .compare-controls p{margin:0;color:var(--soft);font-size:14px}
-    .switch{display:flex;background:#edf0ef;padding:4px;border-radius:10px;gap:4px}
-    .switch button{border:0;background:transparent;color:var(--soft);border-radius:7px;padding:7px 11px;font-size:13px;font-weight:850}
-    .switch button[aria-pressed="true"]{background:var(--card);color:var(--navy);box-shadow:0 1px 5px rgba(0,0,0,.12)}
-    .price-board{padding:22px 20px 24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-    .model-card{border:1px solid var(--line);border-radius:14px;padding:17px;background:#fbfcfa}
-    .model-card h3{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:16px}
-    .model-card h3 span{font-size:12.5px;color:var(--green);background:var(--green-pale);border-radius:999px;padding:3px 8px}
-    .bar-row{display:grid;grid-template-columns:56px 1fr 78px;gap:9px;align-items:center;margin-top:13px}
-    .bar-row label{font-size:12.5px;color:var(--soft);font-weight:800}
-    .bar-track{height:13px;background:#e7e9e6;border-radius:999px;overflow:hidden}
-    .bar{height:100%;border-radius:999px;background:var(--blue);width:25%;transition:width .3s ease}
-    .model-card.max .bar{background:var(--amber)}
-    .price{font-size:13px;font-weight:850;text-align:right;color:var(--navy)}
-    .compare-foot{padding:13px 20px;background:#f0f1ed;border-top:1px solid var(--line);font-size:12.5px;color:var(--soft)}
-
-    .calc{margin-top:26px;display:grid;grid-template-columns:.78fr 1.22fr;gap:18px;background:var(--navy);
-      color:#fff;border-radius:18px;padding:23px}
-    .calc h3{font-size:20px;margin-bottom:4px}
-    .calc .desc{color:#d3e0e6;font-size:13.5px;margin-bottom:17px}
-    .fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .field label{display:block;font-size:12.5px;color:#e4edf1;margin-bottom:4px}
-    .field input,.field select{width:100%;border:1px solid #668196;background:#fff;color:var(--ink);border-radius:9px;padding:9px 10px}
-    .calc-result{background:#fff;color:var(--ink);border-radius:14px;padding:20px;display:grid;align-content:center}
-    .calc-result small{color:var(--faint);font-size:12.5px}
-    .calc-result strong{font-size:clamp(30px,5vw,46px);line-height:1.2;color:var(--blue);display:block;margin:3px 0}
-    .calc-result p{font-size:13.5px;color:var(--soft);margin:0}
-
-    .evidence{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
-    .evidence article{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px}
-    .evidence .kind{font-size:12.5px;font-weight:850;letter-spacing:.06em;color:var(--faint);text-transform:uppercase}
-    .evidence h3{font-size:16px;margin-top:8px}
-    .evidence p{font-size:13.5px;color:var(--soft);line-height:1.75}
-    .evidence a{font-size:13px;font-weight:800}
-
-    .decision{margin-top:24px;border:1.5px solid #d9b071;border-radius:18px;background:var(--amber-pale);padding:21px}
-    .decision h3{font-size:18px;color:#70440c}
-    .decision-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin-top:14px}
-    .decision-item{background:rgba(255,255,255,.72);border:1px solid #e4c697;border-radius:12px;padding:15px}
-    .decision-item b{display:block;font-size:14px;margin-bottom:4px;color:#5c3c14}
-    .decision-item p{margin:0;color:#735937;font-size:13px;line-height:1.7}
-    .decision-arrow{font-size:24px;color:#854508;font-weight:900}
-
-    .note{margin-top:22px;border:1.5px solid #dfaaa6;background:var(--red-pale);border-radius:14px;padding:16px 18px;
-      color:#6f312c;font-size:14px}
-    .mini-note{margin-top:18px;font-size:13px;color:var(--faint)}
-    .source-list{padding-left:1.25em;color:var(--soft)}
-    .source-list li{margin-bottom:10px}
-    .source-list small{display:block;color:var(--faint)}
-    .copy-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-    .copy-btn{border:1px solid var(--blue);background:var(--blue);color:#fff;border-radius:9px;padding:9px 13px;font-weight:850;font-size:13px}
-    .copy-btn.secondary{background:var(--card);color:var(--blue)}
-    .copy-status{align-self:center;font-size:12.5px;color:var(--green);min-height:1.8em}
-    .foot{margin-top:68px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--faint)}
-
-    .js-ready .reveal{opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .45s ease}
-    .js-ready .reveal.visible{opacity:1;transform:none}
-    @media (prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto}.js-ready .reveal{opacity:1;transform:none;transition:none}
-      .route-card,.bar{transition:none}
+    .js .reveal{opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease}
+    .js .reveal.visible{opacity:1;transform:none}
+    @media (prefers-reduced-motion:reduce){.js .reveal{opacity:1;transform:none;transition:none}}
+    @media (max-width:760px){
+      .prices{grid-template-columns:1fr}
+      .real{grid-template-columns:1fr}
+      .price-card.recommended{order:-1}
     }
-    @media (max-width:820px){
-      .summary-panel,.calc{grid-template-columns:1fr}
-      .route-track{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .tool-grid,.price-board{grid-template-columns:1fr}
-      .evidence{grid-template-columns:1fr}
-      .decision-grid{grid-template-columns:1fr}.decision-arrow{transform:rotate(90deg);text-align:center}
-    }
-    @media (max-width:520px){
-      .wrap{padding-left:14px;padding-right:14px}
+    @media (max-width:420px){
+      .page{padding-left:14px;padding-right:14px}
       .hero{padding-top:38px}
-      .summary-panel{padding:17px}.fraction-visual{grid-template-columns:1fr 1fr;gap:8px}
-      .fraction-card{padding:13px 8px}.fraction-card b{font-size:24px}
-      .route-track{grid-template-columns:1fr}.route-tabs{display:none}
-      .route-card.active{transform:none}
-      .fields{grid-template-columns:1fr}
-      .calc{padding:18px}
-      .bar-row{grid-template-columns:50px 1fr 72px}
-      .jump-inner{padding-left:14px;padding-right:14px;flex-wrap:wrap;justify-content:center}
+      .price-head{padding:16px}.prices{padding:16px}
+      .duration{width:100%}.duration button{flex:1}
     }
   </style>
 </head>
 <body>
-<div class="wrap">
+<main class="page">
   <header class="hero">
-    <div class="col">
-      <div class="eyebrow">
-        <span class="tag">調査手順の公開メモ</span>
-        <span class="tag live">2026年9月17日確認</span>
-      </div>
-      <h1>falの「4分の1から半額へ」を、どう確認した？</h1>
-      <p class="lead">Xの投稿を見ただけで決めず、fal公式の元投稿とモデルページまでたどって価格を照合しました。ここでは、使ったサイト・確認方法・APIの違いを、同じ調査を再現できる順番で公開します。</p>
-      <div class="answer-line">
-        <span class="answer-chip">結論</span>
-        <span class="answer-text">75%オフ（通常の1/4）から、50%オフ（通常の1/2）へ。実質価格は前回の2倍。</span>
-      </div>
-      <p class="meta">調査対象：MiniMax H3 Max / H3 Max Turbo on fal　｜　動画生成は実行していません</p>
-    </div>
+    <span class="badge">現在のキャンペーン価格</span>
+    <h1>fal APIなら、<em>15秒動画が約45円</em></h1>
+    <p class="lead">私は<strong>fal.aiのAPI</strong>をつないで、MiniMax H3 Max Turboで動画を作っています。今は9月30日まで50%オフです。</p>
+    <p class="hero-note">768p・15秒を1回生成した場合／1ドル＝150円で概算</p>
+    <p class="api-line">使っているAPI：<code>minimax/h3-max-turbo/image-to-video</code></p>
   </header>
 
-  <nav class="jump" aria-label="ページ内ナビゲーション">
-    <div class="jump-inner">
-      <a href="#route">確認ルート</a>
-      <a href="#tools">サイトとAPI</a>
-      <a href="#prices">価格比較</a>
-      <a href="#calculator">料金計算</a>
-      <a href="#conflict">表記ゆれ</a>
-      <a href="#sources">一次情報</a>
-    </div>
-  </nav>
-
-  <main class="col">
-    <section class="summary-panel reveal" aria-labelledby="summary-title">
-      <div>
-        <h2 id="summary-title">最初に、言葉をそろえる</h2>
-        <p>「4分の1」は割引率ではなく、<strong>支払う価格が通常の25%</strong>という意味です。つまり75%オフ。たとえば通常100円なら、前回は25円、今回は50円です。今回の50%オフでは通常の半額を支払うため、前回と比べると2倍になります。</p>
-      </div>
-      <div class="fraction-visual" aria-label="前回と現在の価格比">
-        <div class="fraction-card old"><small>9月14日まで</small><b>1/4</b><span>75%オフ</span></div>
-        <div class="fraction-card now"><small>現在〜9月30日</small><b>1/2</b><span>50%オフ</span></div>
-      </div>
-    </section>
-
-    <h2 id="route">確認ルートは4段階</h2>
-    <p class="h2sub">人の感想 → 公式発表 → 公式価格 → 計算、の順に根拠を強くしました。</p>
-
-    <section class="route reveal" aria-label="調査の流れ">
-      <div class="route-head">
-        <p>ボタンを押すと、対応する確認箇所が強調されます。</p>
-        <div class="route-tabs" role="tablist" aria-label="確認ステップ">
-          <button class="route-tab" role="tab" aria-selected="true" data-step="0">1 投稿</button>
-          <button class="route-tab" role="tab" aria-selected="false" data-step="1">2 公式X</button>
-          <button class="route-tab" role="tab" aria-selected="false" data-step="2">3 価格ページ</button>
-          <button class="route-tab" role="tab" aria-selected="false" data-step="3">4 計算</button>
+  <section class="section reveal" aria-labelledby="price-title">
+    <h2 id="price-title">今は、これぐらいの費用感</h2>
+    <p class="section-lead">秒数を押すと金額が変わります。すべてH3 Max TurboのImage to Video、キャンペーン価格です。</p>
+    <div class="price-box">
+      <div class="price-head">
+        <p id="duration-label"><strong>15秒動画</strong>を1回作る場合</p>
+        <div class="duration" role="group" aria-label="動画の秒数">
+          <button type="button" data-seconds="5" aria-pressed="false">5秒</button>
+          <button type="button" data-seconds="10" aria-pressed="false">10秒</button>
+          <button type="button" data-seconds="15" aria-pressed="true">15秒</button>
         </div>
       </div>
-      <div class="route-track">
-        <article class="route-card active" data-card="0">
-          <div class="n">1</div><h3>きっかけの投稿を読む</h3>
-          <p>イケハヤさんの投稿本文と、引用されているfal公式投稿を確認。ここでは「安くなった」という観測と、引用元の所在をつかみました。</p>
-          <span class="method">ログイン済みブラウザ</span>
+      <div class="prices">
+        <article class="price-card">
+          <div class="resolution">480p</div>
+          <span class="yen" data-yen="480">約28円</span>
+          <span class="dollar" data-dollar="480">$0.1875</span>
+          <p>試作をたくさん回したいとき。</p>
         </article>
-        <article class="route-card" data-card="1">
-          <div class="n">2</div><h3>fal公式の元投稿へ移動</h3>
-          <p>引用カードではなく元投稿を開き、対象モデル・768p単価・期限を確認。さらにリンクされていた8月の発表も読みました。</p>
-          <span class="method">Xの公開ページ</span>
+        <article class="price-card recommended">
+          <div class="resolution">768p <span>よく使う</span></div>
+          <span class="yen" data-yen="768">約45円</span>
+          <span class="dollar" data-dollar="768">$0.30</span>
+          <p>画質と費用のバランスが取りやすいです。</p>
         </article>
-        <article class="route-card" data-card="2">
-          <div class="n">3</div><h3>fal公式モデルページを照合</h3>
-          <p>検索結果の要約だけで終えず、Turboと通常版のモデルページを直接開き、解像度別の現在単価を読みました。</p>
-          <span class="method">Web検索API＋公式ページ取得</span>
-        </article>
-        <article class="route-card" data-card="3">
-          <div class="n">4</div><h3>通常価格を基準に計算</h3>
-          <p>旧75%オフは通常価格×0.25、現在50%オフは×0.5。したがって現在価格÷旧価格＝2、と確認しました。</p>
-          <span class="method">ローカル計算</span>
+        <article class="price-card">
+          <div class="resolution">1080p</div>
+          <span class="yen" data-yen="1080">約90円</span>
+          <span class="dollar" data-dollar="1080">$0.60</span>
+          <p>仕上げの画質を上げたいとき。</p>
         </article>
       </div>
-    </section>
-
-    <h2 id="tools">どのサイトで、どんなAPIを使った？</h2>
-    <p class="h2sub">「閲覧に使った仕組み」と「falの動画生成API」を混ぜないのがポイントです。</p>
-
-    <section class="tool-grid reveal">
-      <article class="tool">
-        <span class="label">SITE 1</span>
-        <h3>X（x.com）</h3>
-        <p>投稿本文、引用元、投稿日時を<strong>ブラウザで閲覧</strong>しました。今回はX APIでデータを取得したのではありません。</p>
-        <ul>
-          <li>入口：イケハヤさんの投稿</li>
-          <li>一次情報：fal公式アカウントの投稿</li>
-          <li>確認方法：ページ上に表示された本文を読み取り</li>
-        </ul>
-      </article>
-      <article class="tool">
-        <span class="label">API 1</span>
-        <h3>ブラウザ操作API</h3>
-        <p>ログイン済みブラウザを安全に操作し、Xの投稿から引用元へ移動しました。投稿・いいね・返信などの書き込みはしていません。</p>
-        <ul>
-          <li>入力：ユーザーが共有したXのURL</li>
-          <li>出力：画面に表示された投稿本文とリンク</li>
-          <li>用途：原投稿の同一性確認</li>
-        </ul>
-      </article>
-      <article class="tool">
-        <span class="label">API 2</span>
-        <h3>Web検索・ページ取得API</h3>
-        <p><code>site:fal.ai</code>を含む検索で公式ドメインへ絞り、検索候補を見つけた後はモデルページ本文を直接取得しました。</p>
-        <ul>
-          <li>検索：H3 Max / Turbo / pricing / 768p / 480p</li>
-          <li>取得：fal.aiの公式モデルページ</li>
-          <li>用途：解像度別単価と注記の照合</li>
-        </ul>
-      </article>
-      <article class="tool no-run">
-        <span class="label">実行していない</span>
-        <h3>falの動画生成API</h3>
-        <p>モデルページにある次のエンドポイントは<strong>価格確認の対象</strong>ですが、生成リクエストは送っていません。</p>
-        <ul>
-          <li><code>minimax/h3-max/image-to-video</code></li>
-          <li><code>minimax/h3-max-turbo/image-to-video</code></li>
-          <li>生成0回・fal課金0ドル</li>
-        </ul>
-      </article>
-    </section>
-
-    <div class="dialogue reveal">
-      <b>つまり、どのAPIで値段を調べたの？</b>
-      Xはブラウザで原投稿を確認し、価格ページ探しにはWeb検索・ページ取得APIを使いました。これは、商品カタログを読むことと、レジで商品を買うことが別なのと同じです。falの動画生成APIそのものを叩いて価格を調べたわけではありません。
+      <div class="price-foot">現在は9月30日まで50%オフ。上の金額は、いま実際に使うときのキャンペーン価格です。</div>
     </div>
 
-    <h2 id="prices">旧価格と現在価格を比べる</h2>
-    <p class="h2sub">単位はすべて「出力動画1秒あたりの米ドル」。ボタンで表示を切り替えられます。</p>
-
-    <section class="compare reveal" aria-label="H3 Max価格比較">
-      <div class="compare-controls">
-        <p id="period-desc"><strong>旧キャンペーン：</strong>75%オフ（通常価格の25%）</p>
-        <div class="switch" role="group" aria-label="価格期間を切り替える">
-          <button type="button" aria-pressed="true" data-period="old">9/14まで</button>
-          <button type="button" aria-pressed="false" data-period="now">現在</button>
-          <button type="button" aria-pressed="false" data-period="list">通常価格</button>
-        </div>
-      </div>
-      <div class="price-board">
-        <article class="model-card turbo">
-          <h3>H3 Max Turbo <span>高速・低価格</span></h3>
-          <div class="bar-row"><label>480p</label><div class="bar-track"><div class="bar" data-bar="turbo-480"></div></div><div class="price" data-price="turbo-480">$0.00625</div></div>
-          <div class="bar-row"><label>768p</label><div class="bar-track"><div class="bar" data-bar="turbo-768"></div></div><div class="price" data-price="turbo-768">$0.01</div></div>
-          <div class="bar-row"><label>1080p</label><div class="bar-track"><div class="bar" data-bar="turbo-1080"></div></div><div class="price" data-price="turbo-1080">$0.02</div></div>
-        </article>
-        <article class="model-card max">
-          <h3>H3 Max <span>通常版</span></h3>
-          <div class="bar-row"><label>480p</label><div class="bar-track"><div class="bar" data-bar="max-480"></div></div><div class="price" data-price="max-480">$0.0125</div></div>
-          <div class="bar-row"><label>768p</label><div class="bar-track"><div class="bar" data-bar="max-768"></div></div><div class="price" data-price="max-768">$0.02</div></div>
-          <div class="bar-row"><label>1080p</label><div class="bar-track"><div class="bar" data-bar="max-1080"></div></div><div class="price" data-price="max-1080">$0.04</div></div>
-        </article>
-      </div>
-      <div class="compare-foot">棒の長さは各モデルの通常価格を100%として表示。現在価格は旧キャンペーン価格のちょうど2倍です。</div>
-    </section>
-
-    <section class="calc reveal" id="calculator" aria-labelledby="calc-title">
-      <div>
-        <h3 id="calc-title">いま生成したら、いくら？</h3>
-        <p class="desc">現在の50%オフ価格で概算します。参考入力や追加オプションの料金は含みません。</p>
-        <div class="fields">
-          <div class="field">
-            <label for="model">モデル</label>
-            <select id="model">
-              <option value="turbo">H3 Max Turbo</option>
-              <option value="max">H3 Max</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="resolution">解像度</label>
-            <select id="resolution">
-              <option value="480">480p</option>
-              <option value="768" selected>768p</option>
-              <option value="1080">1080p</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="seconds">1本の秒数</label>
-            <input id="seconds" type="number" min="1" max="120" step="1" value="15">
-          </div>
-          <div class="field">
-            <label for="count">本数</label>
-            <input id="count" type="number" min="1" max="100" step="1" value="1">
-          </div>
-        </div>
-      </div>
-      <div class="calc-result" aria-live="polite">
-        <small>現在の概算</small>
-        <strong id="calc-total">$0.30</strong>
-        <p id="calc-detail">Turbo・768p・15秒 × 1本（$0.02/秒）</p>
-      </div>
-    </section>
-
-    <h2 id="conflict">公式ページ同士で表記が違ったら？</h2>
-    <p class="h2sub">今回は、期限表記に明確な食い違いがありました。</p>
-
-    <section class="decision reveal">
-      <h3>価格はモデルページ、期限は最新のfal公式Xを採用</h3>
-      <div class="decision-grid">
-        <div class="decision-item">
-          <b>モデルページ</b>
-          <p>現在の50%オフ単価は掲載されている一方、期限が「September 31」となっていました。9月31日は存在しません。</p>
-        </div>
-        <div class="decision-arrow" aria-hidden="true">→</div>
-        <div class="decision-item">
-          <b>最新のfal公式X</b>
-          <p>9月30日までと明記。日付として成立し、最新発表でもあるため、期限はこちらを採用しました。</p>
-        </div>
-      </div>
-    </section>
-
-    <div class="note reveal"><strong>大事な区別：</strong>検索結果の要約、古いキャッシュ、モデルページの注記が食い違う場合があります。たとえば値札と店頭ポスターの日付が違うとき、どちらが新しいかを確かめるのと同じです。今回のような期間限定価格は、確認日と一次情報の日時をセットで残さないと、あとから同じ結論を再現できません。</div>
-
-    <h2>計算はこうした</h2>
-    <p class="h2sub">割引率の言い換えだけで、特別な料金APIは不要です。</p>
-    <section class="evidence reveal">
-      <article>
-        <span class="kind">OLD</span>
-        <h3>旧キャンペーン</h3>
-        <p>75%オフなので、支払額は通常価格の25%。</p>
-        <code>通常価格 × 0.25</code>
+    <div class="real">
+      <article class="real-main">
+        <small>私がよく使う 768p・15秒なら</small>
+        <strong>1本 約45円</strong>
+        <p>たとえば3パターン試すと、約135円です。</p>
       </article>
-      <article>
-        <span class="kind">NOW</span>
-        <h3>現在のキャンペーン</h3>
-        <p>50%オフなので、支払額は通常価格の50%。</p>
-        <code>通常価格 × 0.50</code>
-      </article>
-      <article>
-        <span class="kind">RATIO</span>
-        <h3>前回との比較</h3>
-        <p>同じ通常価格を基準にすると、現在は前回の2倍。</p>
-        <code>0.50 ÷ 0.25 = 2</code>
-      </article>
-    </section>
+      <div class="real-list">
+        <div><span>3パターン試す</span><b>約135円</b></div>
+        <div><span>15秒×4本で約1分</span><b>約180円</b></div>
+        <div><span>4本を各3回ずつ試す</span><b>約540円</b></div>
+      </div>
+    </div>
 
-    <h2 id="sources">確認した一次情報</h2>
-    <p class="h2sub">リンク先の価格は今後更新される可能性があります。このページの確認日は2026年9月17日です。</p>
-    <ul class="source-list">
-      <li><a href="https://x.com/ihayato/status/2100312640098853117" target="_blank" rel="noopener noreferrer">イケハヤさんの投稿</a><small>調査の入口。fal公式投稿を引用。</small></li>
-      <li><a href="https://x.com/fal/status/2099967319871258947" target="_blank" rel="noopener noreferrer">fal公式：50%オフを9月30日までとする投稿</a><small>H3 Max 768p $0.04/秒、Turbo 768p $0.02/秒。</small></li>
-      <li><a href="https://x.com/fal/status/2092710676431020376" target="_blank" rel="noopener noreferrer">fal公式：H3 Max発表時の投稿</a><small>当初の期間限定割引発表へ遡るために確認。</small></li>
-      <li><a href="https://fal.ai/models/minimax/h3-max-turbo/image-to-video" target="_blank" rel="noopener noreferrer">fal公式：H3 Max Turbo Image to Video</a><small>現在の解像度別単価と通常価格を確認。</small></li>
-      <li><a href="https://fal.ai/models/minimax/h3-max/image-to-video" target="_blank" rel="noopener noreferrer">fal公式：H3 Max Image to Video</a><small>現在の解像度別単価と通常価格を確認。</small></li>
-      <li><a href="https://fal.ai/minimax-h3-max" target="_blank" rel="noopener noreferrer">fal公式：H3 Maxの解説・価格ページ</a><small>75%のローンチ割引終了と通常価格表を確認。</small></li>
-    </ul>
+  </section>
 
-    <div class="mini-note">このページは公式情報を比較した調査メモであり、fal.aiの運営元による公式解説ではありません。価格は生成前に各エンドポイントで再確認してください。</div>
-
+  <section class="share reveal">
+    <h2>ひとことでシェアするなら</h2>
+    <blockquote id="share-text">私はfal.aiのAPIをつないで、MiniMax H3 Max Turboで動画を作っています。今は9月30日まで50%オフで、768pの15秒動画なら1回約45円です。</blockquote>
     <div class="copy-row">
-      <button class="copy-btn" type="button" id="copy-summary">結論をコピー</button>
-      <button class="copy-btn secondary" type="button" id="copy-method">調査手順をコピー</button>
+      <button class="copy" id="copy" type="button">この文章をコピー</button>
       <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
     </div>
+  </section>
 
-    <footer class="foot">
-      <p>制作・確認：2026年9月17日　｜　調査のみ。Xへの投稿、fal APIによる動画生成、課金操作は行っていません。</p>
-      <p>📚 図鑑：<code>あおいCDO/【土台】読み物HTML_2層レイアウト.html</code> と <code>outputs/eigyou-kaigi-2026-09-16/index.html</code> の2層レイアウト・流れ図を転用。</p>
-    </footer>
-  </main>
-</div>
+  <footer class="sources">
+    <p>価格確認：2026年9月17日。円換算は1ドル＝150円。実際の請求額は為替・決済手数料・再生成回数などで変わります。</p>
+    <p>
+      <a href="https://x.com/fal/status/2099967319871258947" target="_blank" rel="noopener noreferrer">fal公式のキャンペーン案内</a>
+      <a href="https://fal.ai/models/minimax/h3-max-turbo/image-to-video" target="_blank" rel="noopener noreferrer">fal公式のAPI・価格ページ</a>
+    </p>
+  </footer>
+</main>
 
 <script>
 (() => {
-  const prices = {
-    old: {
-      label: '<strong>旧キャンペーン：</strong>75%オフ（通常価格の25%）',
-      factor: 25,
-      values: {'turbo-480':.00625,'turbo-768':.01,'turbo-1080':.02,'max-480':.0125,'max-768':.02,'max-1080':.04}
-    },
-    now: {
-      label: '<strong>現在：</strong>50%オフ（通常価格の50%）・9月30日まで',
-      factor: 50,
-      values: {'turbo-480':.0125,'turbo-768':.02,'turbo-1080':.04,'max-480':.025,'max-768':.04,'max-1080':.08}
-    },
-    list: {
-      label: '<strong>通常価格：</strong>キャンペーン終了後の基準価格',
-      factor: 100,
-      values: {'turbo-480':.025,'turbo-768':.04,'turbo-1080':.08,'max-480':.05,'max-768':.08,'max-1080':.16}
-    }
-  };
-  const displayPrice = n => '$' + Number(n.toFixed(5)).toString();
+  const rates = {480:.0125,768:.02,1080:.04};
+  const yenRate = 150;
+  const dollarText = value => '$' + Number(value.toFixed(5)).toString();
 
-  document.querySelectorAll('[data-period]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const period = btn.dataset.period;
-      document.querySelectorAll('[data-period]').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-      document.getElementById('period-desc').innerHTML = prices[period].label;
-      Object.entries(prices[period].values).forEach(([key,value]) => {
-        document.querySelector(`[data-price="${key}"]`).textContent = displayPrice(value);
-        document.querySelector(`[data-bar="${key}"]`).style.width = prices[period].factor + '%';
+  document.querySelectorAll('[data-seconds]').forEach(button => {
+    button.addEventListener('click', () => {
+      const seconds = Number(button.dataset.seconds);
+      document.querySelectorAll('[data-seconds]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      document.getElementById('duration-label').innerHTML = `<strong>${seconds}秒動画</strong>を1回作る場合`;
+      Object.entries(rates).forEach(([resolution,rate]) => {
+        const dollars = rate * seconds;
+        document.querySelector(`[data-dollar="${resolution}"]`).textContent = dollarText(dollars);
+        document.querySelector(`[data-yen="${resolution}"]`).textContent = `約${Math.round(dollars * yenRate)}円`;
       });
     });
   });
 
-  document.querySelectorAll('.route-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const step = tab.dataset.step;
-      document.querySelectorAll('.route-tab').forEach(t => t.setAttribute('aria-selected', String(t === tab)));
-      document.querySelectorAll('.route-card').forEach(card => card.classList.toggle('active', card.dataset.card === step));
-    });
-  });
-
-  const current = prices.now.values;
-  const updateCalc = () => {
-    const model = document.getElementById('model').value;
-    const resolution = document.getElementById('resolution').value;
-    const seconds = Math.max(1, Number(document.getElementById('seconds').value) || 1);
-    const count = Math.max(1, Number(document.getElementById('count').value) || 1);
-    const rate = current[`${model}-${resolution}`];
-    const total = rate * seconds * count;
-    const modelName = model === 'turbo' ? 'Turbo' : 'H3 Max';
-    document.getElementById('calc-total').textContent = '$' + total.toFixed(total < 1 ? 3 : 2).replace(/0+$/,'').replace(/\.$/,'');
-    document.getElementById('calc-detail').textContent = `${modelName}・${resolution}p・${seconds}秒 × ${count}本（${displayPrice(rate)}/秒）`;
-  };
-  ['model','resolution','seconds','count'].forEach(id => document.getElementById(id).addEventListener('input', updateCalc));
-
-  const copyText = async (text, done) => {
+  document.getElementById('copy').addEventListener('click', async () => {
+    const text = document.getElementById('share-text').textContent.trim();
     try {
       await navigator.clipboard.writeText(text);
-      document.getElementById('copy-status').textContent = done;
     } catch (_) {
       const area = document.createElement('textarea');
       area.value = text; area.style.position = 'fixed'; area.style.opacity = '0';
       document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove();
-      document.getElementById('copy-status').textContent = done;
     }
-  };
-  document.getElementById('copy-summary').addEventListener('click', () => copyText(
-    'falのH3 Max系は、9月14日まで75%オフ（通常の4分の1）、現在は50%オフ（通常の半額）で9月30日まで。現在価格は前回の2倍です。',
-    '結論をコピーしました'
-  ));
-  document.getElementById('copy-method').addEventListener('click', () => copyText(
-    '確認手順：①Xで紹介投稿と引用元を読む ②fal公式Xの元投稿へ移動 ③Web検索でfal.ai公式モデルページを開く ④通常価格×0.25と×0.5を比較する。動画生成APIは実行せず、公開ページの料金欄だけを確認。',
-    '調査手順をコピーしました'
-  ));
+    document.getElementById('copy-status').textContent = 'コピーしました';
+  });
 
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
