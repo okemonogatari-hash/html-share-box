@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>特別支援の教室で、明日の朝から使えるAI</title>
+<meta name="robots" content="noindex">
+<style>
+:root{
+  color-scheme: light;
+  --ink:#2f2b28;
+  --ink-soft:#5d554e;
+  --ink-faint:#6f665e;
+  --accent-ink:#9c4426;
+  --paper:#fbf8f3;
+  --card:#ffffff;
+  --line:#e3dcd1;
+  --band:#f3ece1;
+  --tool:#2f6b57;
+  --tool-band:#e8f1ed;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.9;
+  overflow-wrap:anywhere;
+}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px 80px}
+.col{width:100%;max-width:1240px;margin-left:auto;margin-right:auto}
+.col > h2,.col > .h2sub,.col > h3,.col > p,.col > ul,.col > ol,
+.col > .say,.col > blockquote,.col > .scene,.col > .src,.col > .foot{
+  width:100%;max-width:760px;margin-left:auto;margin-right:auto;
+}
+.col > .tablewrap,.col > .cards,.col > .box,.col > .tool,.col > .plist{
+  width:100%;max-width:1080px;margin-left:auto;margin-right:auto;
+}
+.say p,.box p,.card p,.tool p{max-width:none}
+@media (max-width:1140px){
+  .col > .tablewrap,.col > .cards,.col > .box,.col > .tool,.col > .plist{max-width:820px}
+}
+
+.head{padding:44px 0 28px;border-bottom:2px solid var(--line);margin-bottom:30px}
+.kicker{
+  display:inline-block;font-size:13px;letter-spacing:.08em;color:var(--accent-ink);
+  border:1.5px solid var(--accent-ink);border-radius:999px;padding:3px 14px;margin-bottom:16px;
+}
+h1{
+  font-size:clamp(23px,5.4vw,38px);line-height:1.44;margin:0 0 14px;font-weight:800;
+  text-wrap:balance;line-break:strict;
+}
+h1 .nb{white-space:nowrap}
+.lead{font-size:16.5px;color:var(--ink-soft);margin:0 0 15px;max-width:760px}
+.meta{margin-top:18px;font-size:13.5px;color:var(--ink-faint);max-width:760px}
+
+h2{
+  font-size:clamp(20px,3.4vw,25px);line-height:1.5;margin:56px 0 6px;font-weight:800;
+  text-wrap:balance;line-break:strict;display:flex;align-items:center;gap:11px;
+}
+h2::before{content:"";flex:0 0 auto;width:7px;height:26px;border-radius:4px;background:var(--accent-ink)}
+.h2sub{margin:0 0 20px;font-size:14.5px;color:var(--ink-faint)}
+h3{font-size:17.5px;margin:30px 0 10px;font-weight:800;line-break:strict;text-wrap:balance}
+p{margin:0 0 15px}
+
+.scene{margin:20px 0;padding:11px 16px;border-left:3px solid var(--line);
+  font-size:14.5px;color:var(--ink-faint);line-height:1.85}
+.scene p{margin:0 0 7px}
+.scene p:last-child{margin:0}
+
+.say{display:flex;gap:13px;margin:0 0 17px;align-items:flex-start}
+.ava{flex:0 0 auto;width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;letter-spacing:.02em;
+  text-align:center;line-height:1.25}
+.bub{flex:1 1 auto;min-width:0;background:var(--card);border:1.5px solid var(--line);
+  border-radius:14px;padding:14px 17px}
+.bub .who{display:block;font-size:13.5px;font-weight:800;margin-bottom:5px}
+.bub p{margin:0 0 11px;font-size:15.5px}
+.bub p:last-child{margin-bottom:0}
+.bub strong{color:var(--accent-ink)}
+.a-1{background:#c1552f} .w-1{color:#c1552f}
+.a-2{background:#2f6b57} .w-2{color:#2f6b57}
+.a-3{background:#2b5f8e} .w-3{color:#2b5f8e}
+
+blockquote{margin:14px 0;padding:12px 16px;background:var(--band);
+  border-radius:12px;font-size:15px;color:var(--ink-soft);line-height:1.85}
+.bub blockquote{margin:11px 0}
+
+.tablewrap{overflow-x:auto;border:1.5px solid var(--line);border-radius:14px;
+  background:var(--card);margin:18px 0}
+table{border-collapse:collapse;width:100%;table-layout:fixed}
+th,td{padding:12px 14px;text-align:left;font-size:14.5px;border-bottom:1px solid var(--line);
+  line-height:1.75;vertical-align:top}
+th{background:var(--band);font-weight:800;font-size:13.5px}
+tr:last-child td{border-bottom:none}
+th.nw{white-space:nowrap}
+
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin:18px 0}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;
+  padding:17px 18px;min-width:0}
+.card h4{margin:0 0 8px;font-size:14px;color:var(--ink-faint);font-weight:700}
+.card p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.8}
+.card p + p{margin-top:10px}
+
+.box{background:var(--card);border:2px dashed var(--line);border-radius:16px;padding:20px;margin:22px 0}
+.box > .bl{display:inline-block;font-size:12.5px;font-weight:800;letter-spacing:.06em;
+  color:var(--ink-faint);background:var(--band);border-radius:8px;padding:3px 11px;margin-bottom:13px}
+.box > p:last-child,.box > div:last-child,.box > ul:last-child{margin-bottom:0}
+
+.src{font-size:13px;color:var(--ink-faint);margin-top:6px}
+.foot{margin-top:60px;padding-top:22px;border-top:2px solid var(--line);
+  font-size:13.5px;color:var(--ink-faint)}
+a{color:var(--accent-ink)}
+small{font-size:12.6px}
+ul,ol{padding-left:1.4em}
+li{margin-bottom:8px}
+code{font-size:13.5px;background:var(--band);border-radius:5px;padding:1px 5px}
+
+/* ━━━ ここから、触れる道具の部分 ━━━ */
+.tool{background:var(--card);border:2px solid var(--tool);border-radius:18px;
+  padding:20px 20px 24px;margin:26px 0}
+.tool > .tl{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.tool > .tl .n{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--tool);
+  color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center}
+.tool > .tl h3{margin:0;font-size:18.5px}
+.tool > .desc{font-size:14.5px;color:var(--ink-soft);margin:0 0 16px}
+
+.tbar{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px;align-items:center}
+.btn{font-family:inherit;font-size:14.5px;font-weight:700;color:var(--tool);
+  background:var(--tool-band);border:1.5px solid var(--tool);border-radius:10px;
+  padding:8px 15px;cursor:pointer;line-height:1.5;
+  transition:transform .12s ease, box-shadow .12s ease}
+.btn:hover{transform:translateY(-1px);box-shadow:0 2px 7px rgba(47,107,87,.22)}
+.btn:active{transform:translateY(0)}
+.btn[aria-pressed="true"]{background:var(--tool);color:#fff}
+.btn.sub{color:var(--ink-soft);border-color:var(--line);background:var(--band)}
+.hint{font-size:13.2px;color:var(--ink-faint);margin:0}
+
+/* きもちボード */
+.board{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(138px,1fr))}
+.chip{background:var(--card);border:3px solid var(--line);border-radius:16px;
+  padding:14px 8px 12px;text-align:center;cursor:pointer;min-width:0;
+  font-family:inherit;color:var(--ink);
+  transition:transform .12s ease, border-color .12s ease, box-shadow .12s ease}
+.chip:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(0,0,0,.09)}
+.chip.on{border-color:var(--tool);box-shadow:0 0 0 4px var(--tool-band)}
+.chip svg{width:46px;height:46px;display:block;margin:0 auto 7px}
+.chip .lb{display:block;font-size:15.5px;font-weight:800;line-height:1.4}
+.chip input{font-family:inherit;font-size:15px;font-weight:800;color:var(--ink);
+  width:100%;text-align:center;border:1.5px solid var(--tool);border-radius:8px;
+  padding:4px 5px;background:var(--card)}
+.saybar{margin-top:14px;background:var(--tool-band);border-radius:12px;padding:12px 15px;
+  font-size:16px;font-weight:700;color:var(--ink);min-height:48px}
+.saybar .ph{color:var(--ink-faint);font-weight:400;font-size:14.5px}
+
+/* みとおし */
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:flex;align-items:center;gap:12px;background:var(--card);
+  border:2px solid var(--line);border-radius:14px;padding:11px 14px;min-width:0;
+  transition:border-color .12s ease, box-shadow .12s ease}
+.step .mk{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:2.5px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;
+  color:var(--ink-faint);background:var(--card)}
+.step .nm{flex:1 1 auto;min-width:0;font-size:16px;font-weight:700;line-height:1.5}
+.step .tag{flex:0 0 auto;font-size:12.6px;font-weight:800;color:#fff;background:var(--tool);
+  border-radius:7px;padding:2px 9px}
+.step.now{border-color:var(--tool);box-shadow:0 0 0 4px var(--tool-band)}
+.step.done{border-style:dashed}
+.step.done .nm{color:var(--ink-faint);text-decoration:line-through}
+.step.done .mk{border-color:var(--tool);color:var(--tool)}
+.step input{font-family:inherit;font-size:15.5px;font-weight:700;color:var(--ink);
+  width:100%;border:1.5px solid var(--tool);border-radius:8px;padding:5px 8px;background:var(--card)}
+
+/* タイマー */
+.gauge{height:46px;border:2.5px solid var(--tool);border-radius:14px;overflow:hidden;
+  background:var(--tool-band);margin-bottom:12px}
+.gauge .fill{height:100%;width:100%;background:var(--tool);
+  transition:width .95s linear}
+.clock{font-size:clamp(34px,8vw,52px);font-weight:800;line-height:1.2;margin:0 0 4px;
+  font-variant-numeric:tabular-nums;color:var(--ink)}
+.clocklb{font-size:14px;color:var(--ink-faint);margin:0 0 14px}
+
+/* プロンプト帳 */
+.plist{margin:18px 0}
+.pr{background:var(--card);border:1.5px solid var(--line);border-radius:14px;
+  margin-bottom:12px;overflow:hidden}
+.pr > summary{cursor:pointer;padding:14px 17px;font-size:16px;font-weight:800;line-height:1.6;
+  list-style:none;display:flex;align-items:flex-start;gap:10px}
+.pr > summary::-webkit-details-marker{display:none}
+.pr > summary::before{content:"＋";flex:0 0 auto;color:var(--accent-ink);font-weight:800}
+.pr[open] > summary::before{content:"−"}
+.pr .in{padding:0 17px 17px}
+.pr .why{font-size:14.5px;color:var(--ink-soft);margin:0 0 12px}
+.ptxt{background:var(--band);border-radius:12px;padding:14px 16px;font-size:14.5px;
+  line-height:1.85;white-space:pre-wrap;color:var(--ink);margin:0 0 10px}
+.cpbtn{font-family:inherit;font-size:14px;font-weight:700;color:var(--accent-ink);
+  background:var(--card);border:1.5px solid var(--accent-ink);border-radius:10px;
+  padding:7px 14px;cursor:pointer;
+  transition:transform .12s ease, box-shadow .12s ease}
+.cpbtn:hover{transform:translateY(-1px);box-shadow:0 2px 7px rgba(156,68,38,.2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="head">
+  <div class="col">
+    <span class="kicker">2026-09-20 オフ会のおみやげ</span>
+    <h1><span class="nb">先生の手は2本しかない。</span><span class="nb">だからAIに3本目を</span></h1>
+    <p class="lead">特別支援の教室で、AIがいま何をやれるのかを集めました。読むだけのページにしたくなかったので、<strong>この画面の中で動く道具を3つ</strong>入れてあります。スマホでもそのまま触れます。インストールも、ログインも、お金もかかりません。</p>
+    <p class="meta">2026年9月20日／おけもんカンパニー（ゆい・あおい）がまとめました。事例は出典のURLと確認日を全部つけています。</p>
+  </div>
+</header>
+
+<main>
+<div class="col">
+
+<h2>まず、触ってみてください</h2>
+<p class="h2sub">下の3つは、この画面の中だけで動きます。書き換えた中身はお使いの端末に残り、どこにも送られません。</p>
+
+<p>特別支援の教室で使う道具は、その子に合わせて中身を変えられないと使えません。だから3つとも<strong>言葉を書き換えられる</strong>ようにしました。たとえば「トイレ」という札が、その子には「おてあらい」でないと通じないことがあります。そういうときに業者へ頼まなくていい、という状態を見ていただきたいんです。</p>
+
+<div class="tool">
+  <div class="tl"><span class="n">1</span><h3>きもちボード</h3></div>
+  <p class="desc">カードを押すと、その端末の声で読み上げます。言葉が出にくい子が「いま伝えたいこと」を押して渡すための板です。押した言葉は下の帯に並びます。</p>
+  <div class="tbar">
+    <button type="button" class="btn" id="bd-edit" aria-pressed="false">言葉を書き換える</button>
+    <button type="button" class="btn sub" id="bd-clear">帯を消す</button>
+    <button type="button" class="btn sub" id="bd-reset">最初の言葉に戻す</button>
+  </div>
+  <div class="board" id="board">
+    <button type="button" class="chip" data-w="トイレ">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#2f6b57" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="11" r="5"/><path d="M15 42V29h-3l4-9h16l4 9h-3v13"/><path d="M19 42h10"/></svg>
+      <span class="lb">トイレ</span>
+    </button>
+    <button type="button" class="chip" data-w="のみたい">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#2f6b57" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 12h20l-2.5 26a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3z"/><path d="M15.5 24h17"/></svg>
+      <span class="lb">のみたい</span>
+    </button>
+    <button type="button" class="chip" data-w="たべたい">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#2f6b57" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7v13a4 4 0 0 0 8 0V7"/><path d="M20 20v21"/><path d="M33 41V7c-4 2-5 7-5 12 0 4 2 6 5 6"/></svg>
+      <span class="lb">たべたい</span>
+    </button>
+    <button type="button" class="chip" data-w="いたい">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#2f6b57" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="18" width="34" height="12" rx="6" transform="rotate(-38 24 24)"/><path d="M22 22.5h.01M26 25.5h.01M22.5 27h.01M25.5 21h.01"/></svg>
+      <span class="lb">いたい</span>
+    </button>
+    <button type="button" class="chip" data-w="やすみたい">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#2f6b57" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 26h30"/><path d="M12 26v14M36 26v14"/><path d="M13 26V13a3 3 0 0 1 3-3h16a3 3 0 0 1 3 3v13"/></svg>
+      <span class="lb">やすみたい</span>
+    </button>
+    <button type="button" class="chip" data-w="てつだって">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#2f6b57" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 24V10a3 3 0 0 1 6 0v12"/><path d="M24 20a3 3 0 0 1 6 0v3"/><path d="M30 22a3 3 0 0 1 6 0v10c0 6-4 10-10 10h-3c-4 0-6-2-8-5l-5-8a3 3 0 0 1 5-3l3 4"/></svg>
+      <span class="lb">てつだって</span>
+    </button>
+    <button type="button" class="chip" data-w="うれしい">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#9c4426" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M17 20.5h.01M31 20.5h.01"/><path d="M16 29c2.5 3.5 5 5 8 5s5.5-1.5 8-5"/></svg>
+      <span class="lb">うれしい</span>
+    </button>
+    <button type="button" class="chip" data-w="いやだ">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#9c4426" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M17 21h.01M31 21h.01"/><path d="M17 33c2-3 4.5-4.5 7-4.5s5 1.5 7 4.5"/></svg>
+      <span class="lb">いやだ</span>
+    </button>
+    <button type="button" class="chip" data-w="わからない">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#9c4426" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 17a7 7 0 1 1 9 6.7c-1.3.5-2 1.7-2 3v1.3"/><path d="M24 37h.01"/></svg>
+      <span class="lb">わからない</span>
+    </button>
+    <button type="button" class="chip" data-w="できた">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#9c4426" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 25l9 9 19-20"/></svg>
+      <span class="lb">できた</span>
+    </button>
+  </div>
+  <div class="saybar" id="saybar"><span class="ph">ここに、押した言葉が並びます。</span></div>
+  <p class="hint" style="margin-top:12px">声が出ないときは、その端末に日本語の音声が入っていないか、まだ画面を一度も触っていないときです（ブラウザは最初の操作まで音を鳴らしません）。読み上げなしでも、板としてそのまま使えます。</p>
+</div>
+
+<div class="tool">
+  <div class="tl"><span class="n">2</span><h3>みとおしカード</h3></div>
+  <p class="desc">「いま何をしていて、次に何があって、いつ終わるのか」を1列に並べます。終わったカードを押すと線が引かれ、次のカードに「いま」の印が移ります。</p>
+  <div class="tbar">
+    <button type="button" class="btn" id="st-edit" aria-pressed="false">予定を書き換える</button>
+    <button type="button" class="btn sub" id="st-add">1つ足す</button>
+    <button type="button" class="btn sub" id="st-reset">全部やり直す</button>
+  </div>
+  <div class="steps" id="steps"></div>
+  <noscript><p class="hint">この道具は、画面の中で動く部分です。いまは動いていませんが、下の読み物はすべてお読みいただけます。</p></noscript>
+  <p class="hint" style="margin-top:12px">紙に印刷して貼る派の先生へ。書き換えた予定はこの端末に残るので、翌朝も同じ並びで開きます。</p>
+</div>
+
+<div class="tool">
+  <div class="tl"><span class="n">3</span><h3>のこりが見えるタイマー</h3></div>
+  <p class="desc">数字が読めなくても、色のついた帯が減っていくので「あとどれくらいか」が目で分かります。終わったら声でも知らせます。</p>
+  <div class="gauge"><div class="fill" id="tm-fill"></div></div>
+  <p class="clock" id="tm-clock">5:00</p>
+  <p class="clocklb" id="tm-lb">はじめる前です。</p>
+  <div class="tbar">
+    <button type="button" class="btn" data-min="1">1ぷん</button>
+    <button type="button" class="btn" data-min="3">3ぷん</button>
+    <button type="button" class="btn" data-min="5">5ふん</button>
+    <button type="button" class="btn" data-min="10">10ぷん</button>
+    <button type="button" class="btn sub" id="tm-stop">とめる</button>
+  </div>
+  <p class="hint">終わりの合図は「おしまいです」と読み上げます。音が出せない教室では、帯が空になることが合図になります。</p>
+</div>
+
+<h2>触ってみて、たぶん3つ引っかかったと思います</h2>
+<p class="h2sub">オフ会で実際に出た順に、先に答えておきます。</p>
+
+<div class="box">
+  <span class="bl">ひっかかり その1</span>
+  <p><strong>「こんなの、既にあるアプリの方がずっと良くできているのでは？」</strong></p>
+</div>
+
+<div class="say">
+  <div class="ava a-2">あおい</div>
+  <div class="bub">
+    <span class="who w-2">あおい（技術担当）</span>
+    <p>そのとおりです。専用アプリには絵記号が2,000語入っていて、ここには10枚しかありません。勝てません。</p>
+    <p>見ていただきたかったのは出来の良さではなく、<strong>これを作るのに1時間もかかっていない</strong>ことです。「うちの子に合う板が売っていない」と思ったとき、今は作る側に回れます。そこが去年までと違うところでした。</p>
+  </div>
+</div>
+
+<div class="box">
+  <span class="bl">ひっかかり その2</span>
+  <p><strong>「子どものことをAIに入力するのは、さすがにまずいのでは？」</strong></p>
+</div>
+
+<div class="say">
+  <div class="ava a-1">ゆい</div>
+  <div class="bub">
+    <span class="who w-1">ゆい（おけもんカンパニー）</span>
+    <p>まずいです。そこは譲らないでください。</p>
+    <p>ただ、名前も診断名も学校名も入れずに書ける相談は、思ったよりたくさんあります。下のプロンプト帳は全部、<strong>「Aさん」で始まる形</strong>にしてあります。AIに渡すのは状況だけで足ります。「誰が」は先生の頭の中だけにあればいい情報だからです。</p>
+    <p>それから、上の3つの道具は<strong>通信をしていません</strong>。書き換えた言葉は端末の中に残るだけで、私たちにも届きません。</p>
+  </div>
+</div>
+
+<div class="box">
+  <span class="bl">ひっかかり その3</span>
+  <p><strong>「AIが作った教材を、そのまま子どもに出していいのか？」</strong></p>
+</div>
+
+<div class="say">
+  <div class="ava a-1">ゆい</div>
+  <div class="bub">
+    <span class="who w-1">ゆい</span>
+    <p>出さないでください、というのが今日いちばん伝えたいところです。</p>
+    <p>AIが出すのは<strong>たたき台</strong>で、その子を知っているのは先生だけです。たとえるなら、給食の下ごしらえをやってくれる人が増えたようなものでした。味をみて塩を足すのは、やっぱり調理する人の仕事のままです。</p>
+    <p>ただ、下ごしらえが30分減ると、その30分はまるごと子どもの方を向く時間になります。減った時間で何をするかを決めるのは先生で、そこはAIに渡さなくていい部分です。</p>
+  </div>
+</div>
+
+<h2>コピーして、そのまま使えるプロンプト帳</h2>
+<p class="h2sub">ChatGPT・Gemini・Claude、どれでも同じように動きます。〔　〕の中だけ書き換えてお使いください。</p>
+
+<p>プロンプトは呪文ではなくて、<strong>新しく来た支援員さんへの引き継ぎメモ</strong>だと思ってください。何も知らない人に伝わる書き方をすれば、AIにもだいたい伝わります。下の6本は、どれも名前を書かない形にしてあります。</p>
+
+<div class="plist">
+
+<details class="pr" open>
+  <summary>1. その子の「好き」から、教材を作ってもらう</summary>
+  <div class="in">
+    <p class="why">特別支援でいちばん時間がかかるのが、一人ひとり違う教材づくりでした。好きなものを入り口にすると、同じ内容でも取り組む時間がのびます。</p>
+    <p class="ptxt">あなたは特別支援学校のベテラン教員です。
+以下の子ども（Aさんとします）に向けた教材のアイデアを5つ出してください。
+
+・学年：〔小学部3年〕
+・いま取り組んでいること：〔10までの数を数える〕
+・好きなもの：〔電車、特に新幹線〕
+・苦手なこと：〔ひらがなを書くこと、長い説明を聞くこと〕
+・集中が続く時間：〔だいたい5分〕
+
+条件：
+・5分で終わる分量にしてください
+・文字を書かずにできる形を優先してください
+・教室にあるもの（紙、magnet、タブレット）で作れるものにしてください
+・それぞれ「準備にかかる時間」も書いてください</p>
+    <button type="button" class="cpbtn">この文をコピーする</button>
+  </div>
+</details>
+
+<details class="pr">
+  <summary>2. ソーシャルストーリーを書いてもらう</summary>
+  <div class="in">
+    <p class="why">「なぜそうするのか」を短い物語の形で伝える方法です。場面ごとに1枚ずつ要るので、手書きだと追いつきません。</p>
+    <p class="ptxt">特別支援教育のソーシャルストーリーを作ってください。
+
+・場面：〔給食の前に手を洗う〕
+・読む子：〔小学部低学年、ひらがなは読める〕
+・いま起きていること：〔手を洗わずに席に戻ることがある〕
+
+書き方の条件：
+・1文を15文字くらいまでにしてください
+・全部で8文以内にしてください
+・「〜してはいけません」ではなく、してほしい行動を書いてください
+・最後は、その子ができたときの気持ちで終わってください
+・漢字にはふりがなをつけてください</p>
+    <button type="button" class="cpbtn">この文をコピーする</button>
+  </div>
+</details>
+
+<details class="pr">
+  <summary>3. 1つの課題を、3段階のスモールステップに割る</summary>
+  <div class="in">
+    <p class="why">同じ教室に、できる子とまだ難しい子が一緒にいます。3段階あると、その日の調子で先生が選べます。</p>
+    <p class="ptxt">次の課題を、難易度の違う3段階に分けてください。
+
+・もとの課題：〔自分の名前を書く〕
+・対象：〔小学部2年、鉛筆は握れる〕
+
+3段階それぞれについて、次を書いてください：
+・どこまでを先生が手伝うか
+・子どもが自分でやる部分はどこか
+・できたと判断する目安
+・つまずいたときに、1つ下の段階へどう戻すか
+
+ひとつ上の段階へ進む目安も書いてください。</p>
+    <button type="button" class="cpbtn">この文をコピーする</button>
+  </div>
+</details>
+
+<details class="pr">
+  <summary>4. 連絡帳・保護者への文の下書き</summary>
+  <div class="in">
+    <p class="why">伝えにくいことほど、書き出しで手が止まります。たたき台があると、直す作業から始められます。</p>
+    <p class="ptxt">保護者の方へお伝えする連絡帳の文案を3つ書いてください。
+
+・伝えたいこと：〔今日、友だちとおもちゃの取り合いになって、手が出てしまった〕
+・その前後の様子：〔午前中はとても落ち着いていた。給食の直前で空腹だったかもしれない〕
+・学校でこれからすること：〔取り合いになりそうな時間に、先生が近くにいるようにする〕
+
+条件：
+・保護者の方を責める書き方をしないでください
+・良かったところも必ず1つ入れてください
+・3〜5文にしてください
+・3案は、それぞれ柔らかさの度合いを変えてください</p>
+    <button type="button" class="cpbtn">この文をコピーする</button>
+  </div>
+</details>
+
+<details class="pr">
+  <summary>5. 行動の記録から、起きやすい場面を読む</summary>
+  <div class="in">
+    <p class="why">記録は取っているのに、読み返す時間がない——ここがいちばんAIの得意な形でした。</p>
+    <p class="ptxt">以下は、ある子ども（Aさん）の1週間の行動記録です。
+どんな時間・場面で起きやすいか、傾向を読んでください。
+
+〔ここに記録を貼ります。例：
+9/15 10:20 教室移動の前 大きな声が出る 5分
+9/15 14:05 帰りの支度 机に伏せる 10分
+9/16 10:15 教室移動の前 廊下で立ち止まる 3分
+…〕
+
+出してほしいもの：
+・共通点として言えそうなこと（3つまで）
+・それは記録から言えることか、推測かを分けて書いてください
+・記録が足りなくて判断できない点があれば、それも書いてください
+・次の1週間、どこを追加で記録すればはっきりするか</p>
+    <button type="button" class="cpbtn">この文をコピーする</button>
+  </div>
+</details>
+
+<details class="pr">
+  <summary>6. 指示の言葉を、短く・具体的に言い換える</summary>
+  <div class="in">
+    <p class="why">通らない指示は、長いか、抽象的かのどちらかでした。言い換えの候補が並ぶと、その子に届く形が選べます。</p>
+    <p class="ptxt">次の指示を、特別支援の子どもに伝わる形へ言い換えてください。
+
+・もとの指示：〔ちゃんと片付けてから並んでね〕
+・対象：〔小学部、口頭の指示は3語くらいまでなら通る〕
+
+条件：
+・言い換えを5つ出してください
+・1つは3語以内にしてください
+・「ちゃんと」「きちんと」のような、人によって意味が変わる言葉を使わないでください
+・それぞれ、絵や身ぶりで添えるとしたら何が合うかも書いてください</p>
+    <button type="button" class="cpbtn">この文をコピーする</button>
+  </div>
+</details>
+
+</div>
+
+<h2>いま、世の中で何が起きているか</h2>
+<p class="h2sub">2026年9月20日に、実際にページを開いて確かめたものだけを並べています。</p>
+
+<p>特別支援とAIの話は、この1年で「便利な道具が出た」から<strong>「先生の仕事の一部を、そのまま引き受ける」</strong>の側へ動きました。分かりやすいのは、熊本大学が10年近く積み上げてきた教材サイトが、AIの相談窓口を持ちはじめたことです。</p>
+
+<h3>日本の現場から</h3>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th class="nw" style="width:24%">名前</th><th style="width:44%">できること</th><th class="nw" style="width:16%">お金</th><th style="width:16%">確かめた日</th></tr></thead>
+<tbody>
+<tr>
+  <td><a href="https://teachu.educ.kumamoto-u.ac.jp/">Teach U</a><br><small>熊本大学</small></td>
+  <td>知的障害教育向けのデジタル教材サイトです。ブラウザで動く教材アプリが96本以上、ほかにPowerPoint教材、アニメーション入りの部品集「TU Parts」、ワークシート、カード教材が並びます。<strong>ライセンスがCC BY-NC-SA 4.0なので、ダウンロードして教室に合わせて作り変えられます。</strong>研究代表は熊本県立鹿本稲田支援学校の後藤匡敬先生です</td>
+  <td>無料</td>
+  <td>2026-09-20<br><small>サイトを開いて確認</small></td>
+</tr>
+<tr>
+  <td>特別支援教育を担当する先生のための生成AI活用ガイド<br><small>明治図書</small></td>
+  <td>2026年6月5日に出た本です。連絡帳の文、外国籍の保護者への案内、子どもの「好き」から作る指導案、個別のワークシート、オリジナル絵本まで扱っています。<strong>本で紹介した全プロンプトがスプレッドシートでダウンロードできる特典つき</strong>だと紹介記事に書かれていました</td>
+  <td>本を買う</td>
+  <td>2026-09-20<br><small><a href="https://edu.watch.impress.co.jp/docs/knowledge/kodomoit-booklab/2116618.html">こどもとITの紹介記事</a>で確認</small></td>
+</tr>
+<tr>
+  <td>学校現場における生成AIの利用について<br><small>文部科学省</small></td>
+  <td>パイロット校の一覧と、年度ごとの成果報告が置かれています。<strong>ただし目次のページで、特別支援に絞った事例までは今日は辿り着けませんでした。</strong>リンク先の各年度の報告を開く必要があります</td>
+  <td>無料</td>
+  <td>2026-09-20<br><small><a href="https://www.mext.go.jp/zyoukatsu/ai/case.html">目次ページ</a>だけ確認</small></td>
+</tr>
+<tr>
+  <td>生成AI活用事例77選<br><small>ガイアックス</small></td>
+  <td>現職の先生19名に聞き取りをして、小学校から高校までの事例を77本まとめたものが2026年8月28日に無償公開された、と教育メディアが報じていました。<strong>中身は今日まだ開けていません</strong></td>
+  <td>無料</td>
+  <td>2026-09-20<br><small><a href="https://reseed.resemom.jp/article/2026/08/28/14004.html">リシードの記事</a>の見出しのみ</small></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3>海外で動いているもの</h3>
+
+<p>海外で先に広がったのは、教材を作る道具より<strong>「大きすぎて手がつかないこと」を小さく割る道具</strong>でした。たとえばGoblin Toolsに「教室の大掃除をする」と打ち込むと、それを10個ほどの手順に割って返してきます。特別支援の教室で毎日やっていることに、ずいぶん近い動きです。</p>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th class="nw" style="width:24%">名前</th><th style="width:44%">できること</th><th class="nw" style="width:16%">お金</th><th style="width:16%">確かめた日</th></tr></thead>
+<tbody>
+<tr>
+  <td><a href="https://goblin.tools/">Goblin Tools</a></td>
+  <td>「大きすぎて手がつかないこと」を小さくする道具が9つ入っています。<strong>Magic ToDo</strong>はやることを細かい手順に割り、<strong>Estimator</strong>はそれぞれにかかる時間を見積もり、<strong>Formalizer</strong>は書いた文の調子を変え、<strong>Professor</strong>は分からないことを説明します。登録なしで使えて、アカウントを作ると履歴が端末間で同期します。<strong>日本語版の案内はページにありませんでした</strong></td>
+  <td>無料<br><small>登録は任意</small></td>
+  <td>2026-09-20<br><small>サイトを開いて確認</small></td>
+</tr>
+<tr>
+  <td>AAC × AI<br><small>意思伝達の支援</small></td>
+  <td>発話が難しい子の発話パターンをAIが解析して、その子が言おうとしていることを言語聴覚士が読み取る手助けをする、という使われ方が報じられています。教室では、先生の話をその場で視覚的な手順に変える使い方も挙がっていました</td>
+  <td>物による</td>
+  <td>2026-09-20<br><small><a href="https://edtechmagazine.com/k12/article/2026/02/how-ai-tools-can-support-special-education-students-and-teachers">EdTech Magazine</a>の記事で確認</small></td>
+</tr>
+<tr>
+  <td>IEPの事務を減らす動き</td>
+  <td>アメリカの個別教育計画（IEP）は書類の量が多く、目標の進捗管理・データ収集・文書作成にAIを使う流れが強まっています。<strong>AIそのものを、支援技術として計画に書き込む</strong>という考え方も出ています</td>
+  <td>物による</td>
+  <td>2026-09-20<br><small><a href="https://exceptionalchildren.org/blog/next-frontier-ai-special-education">CEC（米国特殊教育協議会）</a>のブログで確認</small></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="box">
+  <span class="bl">今日いちばんの発見</span>
+  <p>Teach Uが、<strong>ログインなしで使える相談窓口</strong>をサイトの中に持っていました。授業づくり、各種計画づくり、障害種別に応じた支援策の提案について、AIが相談役になるという作りです。教材をダウンロードするサイトが、相談できる場所に変わりはじめています。</p>
+  <p class="src">出典：Teach U の紹介記述（2026-09-20 に検索結果で確認）。実際の窓口の使い勝手までは、今日はこちらで試せていません。サイトの「生成AI」の項目からお試しください。</p>
+</div>
+
+<h2>ここだけは、渡さないでください</h2>
+<p class="h2sub">便利さの話をしたので、境目の話も同じ長さで。</p>
+
+<p>子どもの名前、診断名、学校名、保護者の名前、住所。<strong>これらを打ち込まないだけで、使える場面はほとんど減りません。</strong>上のプロンプト帳を「Aさん」で始まる形にしたのは、そのためでした。</p>
+
+<p>もうひとつ。勤務先の自治体や学校に、AIの使い方についての決まりがあるはずです。今日持ち帰っていただきたいのは道具そのものより、<strong>「これは学校の決まりの中でやれることか」を先に確かめる順番</strong>の方です。</p>
+
+<div class="cards">
+  <div class="card">
+    <h4>AIに渡していいもの</h4>
+    <p>場面、学年のめやす、いま取り組んでいる課題、好きなもののジャンル、困っている状況。</p>
+    <p>どれも「誰の話か」が分からない形で書けます。</p>
+  </div>
+  <div class="card">
+    <h4>先生の頭の中だけに置くもの</h4>
+    <p>名前、診断名、学校名、家庭の事情、写真、記録そのもののコピー。</p>
+    <p>ここが混ざらなければ、相談はできます。</p>
+  </div>
+  <div class="card">
+    <h4>AIに決めさせないもの</h4>
+    <p>その子に今日それを出すかどうか。保護者へ何をどう伝えるか。支援の方針。</p>
+    <p>下ごしらえまでがAIの仕事で、味をみるのは先生の仕事でした。</p>
+  </div>
+</div>
+
+<h2>明日の朝、どれか1つだけ</h2>
+<p class="h2sub">全部やろうとすると、たぶん何も始まりません。</p>
+
+<p>いちばん手前にあるのは、<strong>プロンプト帳の4番（連絡帳の下書き）</strong>だと思います。子どもの情報をほとんど渡さずに書けて、効果がその日のうちに分かるからです。書き出しの一文が出てくるだけで、手が動き始めます。</p>
+
+<p>それで「使える」と思えたら、次は1番（好きなものから教材）を試してみてください。ここが、特別支援でいちばん時間を取られていて、いちばんAIが得意な場所です。</p>
+
+<div class="box">
+  <span class="bl">おまけ</span>
+  <p>上の3つの道具は、ファイル1枚でできています。<strong>「うちのクラス用にこう変えたい」という要望があれば、その場で作り直せます。</strong>絵記号を増やす、色を変える、予定の数を増やす、音を消す——どれも15分もかかりません。</p>
+  <p>今日のオフ会で声をかけていただければ、その場で直したものをお渡しします。</p>
+</div>
+
+<div class="foot">
+  <p><strong>特別支援の教室で、明日の朝から使えるAI</strong>／2026年9月20日・おけもんカンパニー（ゆい・あおい）</p>
+  <p>このページに書いた事例は、すべて2026年9月20日に実際にページを開いて確かめました。開けなかったもの、見出しだけ読んだものは、表の中にそう書いてあります。<strong>書き写しは必ずずれるので、大事な判断をされるときは出典のリンクから原文をご確認ください。</strong></p>
+  <p><small>3つの道具は、この画面の中だけで動きます。書き換えた言葉と予定はお使いの端末に保存され、通信はしていません。読み上げにはブラウザに入っている音声合成を使っています。</small></p>
+</div>
+
+</div>
+</main>
+</div>
+<script>
+(function(){
+  'use strict';
+  var K_BOARD='tokushien-board-v1', K_STEPS='tokushien-steps-v1';
+  function lsGet(k){ try{ return window.localStorage.getItem(k); }catch(e){ return null; } }
+  function lsSet(k,v){ try{ window.localStorage.setItem(k,v); }catch(e){} }
+  function lsDel(k){ try{ window.localStorage.removeItem(k); }catch(e){} }
+
+  /* 読み上げ。音声が無い端末でも、板としてそのまま使える形にしてある */
+  function speak(text){
+    try{
+      if(!('speechSynthesis' in window)) return;
+      var u=new SpeechSynthesisUtterance(text);
+      u.lang='ja-JP'; u.rate=0.95; u.pitch=1.0;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    }catch(e){}
+  }
+
+  /* 押し間違いで消えないように、2度押しで確定する。confirm は使わない */
+  function armConfirm(btn, askLabel, run){
+    var base=btn.textContent, armed=false, t=null;
+    btn.addEventListener('click', function(){
+      if(!armed){
+        armed=true; btn.textContent=askLabel;
+        t=setTimeout(function(){ armed=false; btn.textContent=base; }, 4000);
+        return;
+      }
+      clearTimeout(t); armed=false; btn.textContent=base; run();
+    });
+  }
+
+  /* ━━━ 1. きもちボード ━━━ */
+  var board=document.getElementById('board');
+  if(board){
+    var chips=[].slice.call(board.querySelectorAll('.chip'));
+    var defaults=chips.map(function(c){ return c.getAttribute('data-w'); });
+    var saybar=document.getElementById('saybar');
+    var said=[];
+
+    function applyWords(words){
+      chips.forEach(function(c,i){
+        var w=words[i]; if(!w) return;
+        c.setAttribute('data-w', w);
+        var lb=c.querySelector('.lb'); if(lb) lb.textContent=w;
+        var ip=c.querySelector('input'); if(ip) ip.value=w;
+      });
+    }
+    var saved=lsGet(K_BOARD);
+    if(saved){ try{ applyWords(JSON.parse(saved)); }catch(e){} }
+
+    function renderSaid(){
+      if(!said.length){ saybar.innerHTML='<span class="ph">ここに、押した言葉が並びます。</span>'; return; }
+      saybar.textContent = said.join('　');
+    }
+    chips.forEach(function(c){
+      c.addEventListener('click', function(){
+        if(board.getAttribute('data-edit')==='1') return;
+        var w=c.getAttribute('data-w');
+        speak(w);
+        said.push(w); if(said.length>8) said.shift();
+        renderSaid();
+        c.classList.add('on');
+        setTimeout(function(){ c.classList.remove('on'); }, 700);
+      });
+    });
+
+    var bEdit=document.getElementById('bd-edit');
+    bEdit.addEventListener('click', function(){
+      var on = board.getAttribute('data-edit')==='1';
+      if(on){
+        board.removeAttribute('data-edit');
+        bEdit.setAttribute('aria-pressed','false');
+        bEdit.textContent='言葉を書き換える';
+        chips.forEach(function(c){
+          var ip=c.querySelector('input'); if(!ip) return;
+          var w=(ip.value||'').trim() || c.getAttribute('data-w');
+          c.setAttribute('data-w', w);
+          var sp=document.createElement('span'); sp.className='lb'; sp.textContent=w;
+          ip.parentNode.replaceChild(sp, ip);
+        });
+        lsSet(K_BOARD, JSON.stringify(chips.map(function(c){ return c.getAttribute('data-w'); })));
+      }else{
+        board.setAttribute('data-edit','1');
+        bEdit.setAttribute('aria-pressed','true');
+        bEdit.textContent='書き換えを終わる';
+        chips.forEach(function(c){
+          var lb=c.querySelector('.lb'); if(!lb) return;
+          var ip=document.createElement('input');
+          ip.type='text'; ip.value=c.getAttribute('data-w');
+          ip.setAttribute('aria-label','カードの言葉');
+          ip.addEventListener('click', function(ev){ ev.stopPropagation(); });
+          lb.parentNode.replaceChild(ip, lb);
+        });
+      }
+    });
+    document.getElementById('bd-clear').addEventListener('click', function(){ said=[]; renderSaid(); });
+    armConfirm(document.getElementById('bd-reset'), 'ほんとうに戻す？', function(){
+      lsDel(K_BOARD); applyWords(defaults); said=[]; renderSaid();
+    });
+  }
+
+  /* ━━━ 2. みとおしカード ━━━ */
+  var stepsEl=document.getElementById('steps');
+  if(stepsEl){
+    var DEFAULT_STEPS=['あさの かい','こくご','やすみ じかん','さんすう','きゅうしょく','そうじ','かえりの かい'];
+    var items=[];
+    var savedS=lsGet(K_STEPS);
+    if(savedS){ try{ items=JSON.parse(savedS); }catch(e){} }
+    if(!items.length) items=DEFAULT_STEPS.map(function(n){ return {name:n, done:false}; });
+
+    var editing=false;
+    function save(){ lsSet(K_STEPS, JSON.stringify(items)); }
+    function render(){
+      stepsEl.innerHTML='';
+      var nowIdx=-1;
+      for(var i=0;i<items.length;i++){ if(!items[i].done){ nowIdx=i; break; } }
+      items.forEach(function(it, i){
+        var row=document.createElement('div');
+        row.className='step' + (it.done?' done':'') + (i===nowIdx?' now':'');
+        var mk=document.createElement('span');
+        mk.className='mk'; mk.textContent = it.done ? '✓' : String(i+1);
+        row.appendChild(mk);
+        if(editing){
+          var ip=document.createElement('input');
+          ip.type='text'; ip.value=it.name; ip.setAttribute('aria-label','よていの なまえ');
+          ip.addEventListener('input', function(){ items[i].name=ip.value; save(); });
+          var wrap=document.createElement('span'); wrap.className='nm'; wrap.appendChild(ip);
+          row.appendChild(wrap);
+        }else{
+          var nm=document.createElement('span'); nm.className='nm'; nm.textContent=it.name;
+          row.appendChild(nm);
+          if(i===nowIdx){ var tg=document.createElement('span'); tg.className='tag'; tg.textContent='いま'; row.appendChild(tg); }
+          row.style.cursor='pointer';
+          row.addEventListener('click', function(){
+            items[i].done = !items[i].done; save(); render();
+            if(items[i].done) speak(it.name + '、おわりました');
+          });
+        }
+        stepsEl.appendChild(row);
+      });
+    }
+    render();
+
+    var sEdit=document.getElementById('st-edit');
+    sEdit.addEventListener('click', function(){
+      editing=!editing;
+      sEdit.setAttribute('aria-pressed', editing?'true':'false');
+      sEdit.textContent = editing ? '書き換えを終わる' : '予定を書き換える';
+      render();
+    });
+    document.getElementById('st-add').addEventListener('click', function(){
+      items.push({name:'あたらしい よてい', done:false}); save(); render();
+    });
+    armConfirm(document.getElementById('st-reset'), 'ほんとうに やり直す？', function(){
+      lsDel(K_STEPS);
+      items=DEFAULT_STEPS.map(function(n){ return {name:n, done:false}; });
+      save(); render();
+    });
+  }
+
+  /* ━━━ 3. のこりが見えるタイマー ━━━ */
+  var fill=document.getElementById('tm-fill');
+  if(fill){
+    var clock=document.getElementById('tm-clock'), lb=document.getElementById('tm-lb');
+    var total=300, left=300, timer=null;
+    function fmt(s){ var m=Math.floor(s/60), r=s%60; return m+':'+(r<10?'0':'')+r; }
+    function paint(){
+      clock.textContent=fmt(left);
+      fill.style.width = (total>0 ? Math.max(0, left/total*100) : 0) + '%';
+    }
+    function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+    function start(min){
+      stop(); total=min*60; left=total; paint();
+      lb.textContent='うごいています。';
+      timer=setInterval(function(){
+        left--; 
+        if(left<=0){ left=0; paint(); stop(); lb.textContent='おしまいです。'; speak('おしまいです'); return; }
+        paint();
+      }, 1000);
+    }
+    [].slice.call(document.querySelectorAll('[data-min]')).forEach(function(b){
+      b.addEventListener('click', function(){ start(parseInt(b.getAttribute('data-min'),10)); });
+    });
+    document.getElementById('tm-stop').addEventListener('click', function(){
+      stop(); lb.textContent='とまっています。';
+    });
+    paint();
+  }
+
+  /* ━━━ プロンプトのコピー ━━━ */
+  [].slice.call(document.querySelectorAll('.cpbtn')).forEach(function(b){
+    var base=b.textContent;
+    b.addEventListener('click', function(){
+      var box=b.parentNode.querySelector('.ptxt'); if(!box) return;
+      var text=box.textContent;
+      /* 失敗したときに「コピーしました」と出さない。書けたことを確かめてから言う */
+      function done(ok){
+        b.textContent = ok ? 'コピーしました' : '長押しで選んでコピーしてください';
+        setTimeout(function(){ b.textContent=base; }, 2400);
+      }
+      function fallback(){
+        var ok=false;
+        try{
+          var ta=document.createElement('textarea');
+          ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px';
+          document.body.appendChild(ta); ta.focus(); ta.select();
+          ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+        }catch(e){ ok=false; }
+        done(!!ok);
+      }
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(function(){ done(true); }, fallback);
+          return;
+        }
+      }catch(e){}
+      fallback();
+    });
+  });
+})();
+</script>
+</body>
+</html>
