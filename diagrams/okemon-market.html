@@ -159,13 +159,43 @@ h2{font-size:clamp(23px,3.8vw,31px);margin-bottom:14px}
 footer{border-top:1px solid var(--line);padding:34px 0 48px;font-size:12.5px;color:var(--muted)}
 footer a{color:var(--muted)}
 h1,h2,h3{text-wrap:balance}
+/* FAQ: native disclosure works without JavaScript */
+#session,#faq{scroll-margin-top:85px}
+details.qbox{padding:0}
+details.qbox summary.q{cursor:pointer;list-style:none;margin:0;padding:21px 52px 21px 24px;position:relative;line-height:1.7}
+details.qbox summary::-webkit-details-marker{display:none}
+details.qbox summary::after{content:'＋';position:absolute;right:22px;top:21px;color:var(--primary);font-family:sans-serif}
+details.qbox[open] summary::after{content:'−'}
+details.qbox[open] summary{border-bottom:1px solid var(--line-soft)}
+.qbox .answer{padding:18px 24px 23px}
+.qbox .answer a{display:inline;overflow-wrap:anywhere}
+summary:focus-visible,a:focus-visible{outline:3px solid var(--indigo);outline-offset:4px}
+.faq-shortcut{display:inline-block;margin-top:23px;font-size:14px;font-weight:700;text-underline-offset:4px}
+@media(max-width:480px){details.qbox summary.q{font-size:15px;padding-left:18px}.qbox .answer{padding:16px 18px 21px}}
+/* Fit: expectations, not labels for people */
+#fit{scroll-margin-top:85px}
+.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
+.fit-card{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--green);border-radius:var(--radius-lg);padding:26px}
+.fit-card h3{font-size:20px;color:var(--green);min-height:64px}
+.fit-caution{border-top-color:var(--bronze)}
+.fit-caution h3{color:var(--bronze)}
+.fit-card ul{list-style:none;padding:0;margin:14px 0 0}
+.fit-card li{padding:17px 0;border-top:1px solid var(--line-soft)}
+.fit-card li:last-child{padding-bottom:0}
+.fit-card strong{display:block;font-size:15px;line-height:1.8}
+.fit-card li span{display:block;font-size:13.5px;color:var(--muted);margin-top:7px}
+.fit-welcome{padding:22px 24px;background:var(--paper-deep);border-radius:var(--radius);font-size:14px;margin:24px 0}
+.fit-philosophy{border-top:1px solid var(--line);padding-top:23px;margin-top:28px}
+.fit-philosophy h3{font-size:18px}.fit-philosophy p{font-size:14px;color:var(--muted)}
+@media(max-width:760px){.fit-grid{grid-template-columns:1fr}.fit-card{padding:23px}.fit-card h3{min-height:0}.fit-welcome{padding:20px}}
 </style>
 
 <header class="topbar">
   <a class="brand" href="#top"><i>okm</i>おけもんスキルマーケット室</a>
   <nav class="navl">
     <a href="#diff">2つの違い</a>
-    <a href="#session">セッションの中身</a>
+    <a href="#fit">こんな方に</a>
+    <a href="#faq">よくある質問</a>
     <a href="#menu">メニュー</a>
     <a href="#flow">当日までの流れ</a>
   </nav>
@@ -176,6 +206,8 @@ h1,h2,h3{text-wrap:balance}
     <span class="eyebrow">welcome to okemon's room</span>
     <h1>自分のことが、<br><em>ちょっと分かる部屋</em>。</h1>
     <p>ここは、おけもんがリベシティのスキルマーケットでやっている「個性診断」と「ストレングスファインダー解説」の入口です。<strong>どちらも、あなたの中にもう在るものに、名前をつけていく時間</strong>。まずは気になるドアから、どうぞ😊</p>
+    <a class="faq-shortcut" href="#fit" style="margin-right:20px">こんな方におすすめ ↓</a>
+    <a class="faq-shortcut" href="#faq">「適職はわかる？」など、よくある質問へ ↓</a>
     <div class="doors">
       <a class="door" href="./cq-guide.html">
         <span class="ic">📘</span>
@@ -284,29 +316,61 @@ h1,h2,h3{text-wrap:balance}
   </div>
 </section>
 
-<section id="session" style="background:var(--paper-deep)">
+<section id="fit">
   <div class="wrap">
-    <span class="eyebrow">what happens in the session</span>
-    <h2>セッションでは、何をするの？</h2>
-    <p class="lede">よくいただく質問に、先に答えておきますね。<strong>資質やタイプの名前を言い合って終わり、にはしません。</strong>おけもんの役目は、結果を「あなたの日常の言葉」に翻訳するところです。</p>
-    <div class="qa">
-      <div class="qbox">
-        <div class="q">向いている職業・働き方は分かりますか？</div>
-        <p><strong>職業名がポンと出てくる「適職診断」ではありません。</strong>そのかわり、「どんな環境なら力が出て、どんな場面でしんどくなるか」が具体的に見えてきます。同じ職業でも、<strong>あなたのやり方でやったほうがうまくいく</strong>——そこまで一緒に落とします。</p>
-      </div>
-      <div class="qbox">
-        <div class="q">人との関わり方も見てもらえますか？</div>
-        <p>ここは<strong>個性診断がいちばん得意なところ</strong>です。自分が相手にどう見えているか、なぜあの人と噛み合わないのか。グラフを指さしながら話せるので、自分責めではなく「受け取り方が違うだけ」として扱えるようになります。</p>
-      </div>
-      <div class="qbox">
-        <div class="q">自分で結果を見て、AIに聞いてみたのですが…</div>
-        <p>とてもいい入り方だと思います😊　そのうえで、<strong>「合っているかどうか」は、あなたの実際の出来事と照らして初めて決まります。</strong>セッションでは「その資質が働いたのは、いつ、どの場面でしたか？」と一緒に探していきます。読んで納得した理解が、<strong>自分の記憶と結びついた確信</strong>に変わるところまでが目的です。</p>
-      </div>
-      <div class="qbox">
-        <div class="q">2つを合わせると、何が変わりますか？</div>
-        <p>「どう受け取るか（CQ）」×「どう動くか（SF）」で、<strong>自分の輪郭が立体になります。</strong>たとえば同じ資質を持っていても、受け取り方が違えば出方も変わる。片方だけでは説明できなかった「自分のクセ」に、説明がつきます。</p>
-      </div>
+    <span class="eyebrow">is this session for you?</span>
+    <h2>こんな方におすすめです</h2>
+    <p class="lede">この時間で大切にしているのは、自分の特徴を知り、ご自身が望む日常にどう活かすかを考えること。今の気持ちに合うか、確かめてみてください。</p>
+    <div class="fit-grid">
+      <article class="fit-card">
+        <h3>一緒に考えてみたい方へ</h3>
+        <ul>
+          <li><strong>「自分の強みがわからない」を、経験から整理したい</strong><span>当たり前にやっていることや、うれしかった出来事から手がかりを探します。</span></li>
+          <li><strong>診断結果を、仕事や暮らしで活かしてみたい</strong><span>資質名を知るだけでなく、自分に合う取り組み方や小さな工夫を考えます。</span></li>
+          <li><strong>自分と相手の違いを知り、関わり方を工夫したい</strong><span>「誰が悪いか」より、受け取り方の違いや伝え方に目を向けます。</span></li>
+          <li><strong>大切にしたいことを言葉にして、自分で選びたい</strong><span>転職・働き方・これからの暮らしを、ご自身の価値観と照らして考えます。</span></li>
+        </ul>
+      </article>
+      <article class="fit-card fit-caution">
+        <h3>こんな期待をお持ちの方には<br>おすすめしません</h3>
+        <ul>
+          <li><strong>適職や人生の正解を、代わりに決めてほしい</strong><span>選ぶための整理はお手伝いしますが、職業や進路を断定するサービスではありません。</span></li>
+          <li><strong>受けるだけで、本音が確定したり人生が変わったりしてほしい</strong><span>気づきをきっかけに、日常で試し、振り返ることを大切にしています。</span></li>
+          <li><strong>結果で人の優劣をつけたり、相手を決めつけたりしたい</strong><span>グラフや資質名は、違いを理解して活かすための手がかりです。</span></li>
+          <li><strong>自分の経験に関係なく、断言してほしい</strong><span>結果だけで言い切らず、「自分にはどう当てはまるか」を対話で確かめます。</span></li>
+        </ul>
+      </article>
     </div>
+    <p class="fit-welcome"><strong>まだ目標が決まっていない、うまく話せない、自信がない。そんな方も大丈夫です。</strong><br>最初から答えや行動計画を用意する必要はありません。「少し自分を知ってみたい」というところから、ご一緒に考えましょう😊</p>
+    <div class="fit-philosophy">
+      <h3>この案内の土台にある考え方</h3>
+      <p><a href="https://www.gallup.com/cliftonstrengths/en/652478/leveraging-strengths-based-development-in-your-coaching.aspx">Gallupは、才能を学習や実践で強みに育てること</a>を重視しています。<a href="https://cqa.or.jp/">CQAは、自分と相手の違いを理解すること</a>を、<a href="https://site.libecity.com/content/valuesmap">リベシティの価値観マップは、自分の幸せや選ぶ軸を考えること</a>を大切にしています。</p>
+      <p>おけもんも、結果を受け取って終わりではなく、<strong>ご自身の言葉で理解して、これからに活かす時間</strong>をご一緒したいと思っています。</p>
+      <p class="note">上の「おすすめ」は、公式の考え方を踏まえた、おけもんのセッション案内です。各団体が定めた利用条件ではありません。</p>
+    </div>
+  </div>
+</section>
+
+<section id="session" style="background:var(--paper-deep)">
+  <div class="wrap" id="faq">
+    <span class="eyebrow">questions before your session</span>
+    <h2>よくある質問</h2>
+    <p class="lede">申し込む前に気になることを、まとめました。気になる質問を開いてみてください😊</p>
+    <div class="qa">
+      <details class="qbox" open><summary class="q">適職はわかりますか？</summary><div class="answer"><p><strong>「あなたに向いている職業はこれ」と、職業名が決まるものではありません。</strong>結果とこれまでの経験を重ねて、自然に力を発揮しやすい取り組み方や、働くうえで大切にしたい条件を整理します。同じ職業でも仕事内容や環境はさまざま。仕事を選ぶときや、今の仕事のやり方を工夫するときの材料として使えます。</p></div></details>
+      <details class="qbox"><summary class="q">本当にやりたいことや、本音がわかりますか？</summary><div class="answer"><p><strong>結果だけで、本音ややりたいことが必ず見つかるとはお約束できません。</strong>「ついやってしまうこと」「うれしかった経験」「違和感があった場面」を一緒に振り返り、ご自身の気持ちを言葉にするお手伝いをします。診断結果は、会話を始める手がかりです。</p></div></details>
+      <details class="qbox"><summary class="q">個性診断・ストレングス・価値観マップは、何が違いますか？</summary><div class="answer"><p>ざっくり言うと、<strong>個性診断（CQ）は「どう受け取り、人と関わるか」、ストレングスは「自然に出る才能をどう活かすか」、価値観マップは「何を大切に、どう生きたいか」</strong>を見る入口です。重なる部分もありますが、扱う問いが違います。<br><a href="../self-understanding-6f3547f416eb/">3つの違いを、具体例つきで読む →</a></p></div></details>
+      <details class="qbox"><summary class="q">転職先や進路を決めた後に受けても、意味はありますか？</summary><div class="answer"><p><strong>決めた後も、これからの働き方や人との関わり方を考える材料にできます。</strong>自己理解を全部終えてからでないと選べない、ということではありません。ただし、決断の前後で気持ちや回答への影響が全くないとは言い切れません。迷っていることがあれば、今の気持ちを短くメモしておくと、後から一緒に振り返れます。</p></div></details>
+      <details class="qbox"><summary class="q">結果が悪かったり、弱みばかり見つかったりしませんか？</summary><div class="answer"><p><strong>人としての良し悪しを採点する時間ではありません。</strong>CQはグラフが大きいほど良い、というものではなく、ストレングスの下位資質も、それだけで弱みとは決まりません。困っている場面があれば、得意の使い方や周囲との協力、環境の工夫を一緒に考えます。</p></div></details>
+      <details class="qbox"><summary class="q">結果に「しっくりこない」ところがあっても大丈夫？</summary><div class="answer"><p><strong>その違和感も、ぜひ聞かせてください。</strong>無理に「当たっている」と思わなくて大丈夫です。どの言葉が合わないのか、普段はどう感じているのかを、具体的な場面と照らして読み解きます。納得できないことを、そのまま結論にしません。</p></div></details>
+      <details class="qbox"><summary class="q">人との関わり方も相談できますか？</summary><div class="answer"><p>はい。<strong>CQのグラフを手がかりに、自分の受け取り方や伝え方の傾向を考えられます。</strong>実際のやり取りを振り返り、どんな工夫ができそうかをご一緒に探します。相手が受検していない場合、その人の性格や本心をこちらから断定することはしません。</p></div></details>
+      <details class="qbox"><summary class="q">結果を読んだり、AIに聞いたりするのと何が違いますか？</summary><div class="answer"><p>自分で調べたりAIを使ったりするのも、理解の助けになります。セッションでは、<strong>「それはいつ、どんな場面で出ましたか？」と、ご自身の経験を聞きながら確かめていきます。</strong>一般的な説明を読むだけではつながらなかった部分を整理し、日常で試せる工夫を一緒に考える時間です。</p></div></details>
+      <details class="qbox"><summary class="q">2つとも受けたほうがいいですか？　どれを選べばいい？</summary><div class="answer"><p><strong>最初から全部そろえる必要はありません。</strong>人との関わり方を考えたいならCQ、手元のストレングスの結果を活かしたいなら単体解説、両方の視点で整理したいならセットが候補です。大切にしたいことを言葉にしたい場合は、価値観マップについてもご相談ください。迷ったら、今気になっていることをそのまま教えてください😊</p></div></details>
+      <details class="qbox"><summary class="q">初めてでも大丈夫？　うまく話せる自信がありません。</summary><div class="answer"><p><strong>きれいに説明できなくても大丈夫です。</strong>「何となくモヤモヤしている」「結果を読んでもよくわからない」というところから始められます。話せる範囲で、最近の出来事や気になった言葉を一つずつ伺います。話したくないことを無理に話す必要はありません。</p></div></details>
+      <details class="qbox"><summary class="q">申し込む前に診断を受けておく必要はありますか？</summary><div class="answer"><p><strong>まだ受けていなくても、まずはご相談いただけます。</strong>すでに結果がある場合は、そのことをお知らせください。必要な受検や結果の共有方法は、選んだメニューに合わせてご案内します。ストレングスの受検とセッションは別なので、受検費を含むかどうかも出品ページでご確認ください。</p></div></details>
+      <details class="qbox"><summary class="q">オンラインでも受けられますか？　料金はどこで確認できますか？</summary><div class="answer"><p><strong>オンラインのメニューもあります。</strong>対面とオンラインでは出品ページが異なるため、ご希望の方法でご確認ください。料金・所要時間・含まれる内容は、<strong>各出品ページの最新表示</strong>をご覧ください。<br><a href="https://skill.libecity.com/services/344">オンライン：個性診断 × SF解説セット</a> ／ <a href="https://skill.libecity.com/services/29611">オンライン：ストレングス単体解説</a><br><a href="./shindan-menu-guide.html">対面を含めて、相談するメニューを選ぶ →</a></p></div></details>
+    </div>
+    <p class="note">診断の目的や活用については、<a href="https://cqa.or.jp/">CQA公式</a>・<a href="https://www.gallup.com/cliftonstrengths/en/249455/specific-career-best-match-top-cliftonstrengths.aspx">Gallup公式（適職について）</a>・<a href="https://site.libecity.com/content/valuesmap">リベシティ公式（価値観マップ）</a>を参照し、おけもんの言葉で説明しています。</p>
   </div>
 </section>
 
@@ -370,7 +434,7 @@ h1,h2,h3{text-wrap:balance}
   <div class="wrap">
     <span class="eyebrow">how it goes</span>
     <h2>当日までの流れ</h2>
-    <p class="lede">やることは多くありません。準備もいりません。</p>
+    <p class="lede">お申し込み後、必要な受検や結果の共有方法をご案内します。</p>
     <div class="flow">
       <div class="f"><h3>スキルマーケットからご依頼</h3><p>「ご相談だけ」でも大丈夫です。リベシティのDMで気軽にどうぞ。</p></div>
       <div class="f"><h3>日程を決める</h3><p>予約カレンダーのリンクをお送りするので、空いている枠を選んでください。オンライン（Google Meet）か、大阪近郊なら対面も選べます。</p></div>
