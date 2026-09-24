@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>AIシェア会 9月の振り返り</title>
+<meta name="description" content="2026年9月24日のAIシェア会で出た話を、驚いた順に並べた振り返りページです。Opus 5.5の実演、AIの3兄弟、長いチャットの話、スキルとハーネス、本棚、次の一歩まで。">
+<meta property="og:title" content="AIシェア会 9月の振り返り">
+<meta property="og:description" content="KIDさんのOpus 5.5実演から、AIの3兄弟、スキルはレシピ集、ハーネス、本棚まで。2026/9/24">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<!--
+  土台：あおいCDO/【土台】読み物HTML_2層レイアウト.html（読む列760／広い列1080）
+  ライト固定（配布物。読み手のOSがダークでも明るく届けるため）
+  出典：コンテキスト/トランスクリプト原液/MTG/2026-09-24_AIシェア会_Geminiメモ＋文字起こし_原液.md
+-->
+<style>
+:root{
+  color-scheme: light;
+  /* 文字色は4系統 */
+  --ink:#2f2b28;
+  --ink-soft:#5d554e;
+  --ink-faint:#6f665e;
+  --accent-ink:#9c4426;
+
+  --paper:#fbf8f3;
+  --card:#ffffff;
+  --line:#e3dcd1;
+  --band:#f3ece1;
+  --hero:#fdf1e4;
+
+  /* 3兄弟の色（白文字でも白地の文字でも比4.5以上：土台の話し手色から） */
+  --t-chat:#2b5f8e;
+  --t-work:#2f6b57;
+  --t-agent:#71519e;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  font-size:16.5px;line-height:1.9;overflow-wrap:anywhere;font-weight:500;
+}
+a{color:var(--accent-ink)}
+small{font-size:12.6px}
+strong{font-weight:900}
+
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px 80px}
+.col{width:100%;max-width:1240px;margin-left:auto;margin-right:auto}
+.col > h2,.col > .h2sub,.col > h3,.col > p,.col > ul,.col > ol,
+.col > .say,.col > blockquote,.col > .scene,.col > .src,.col > .foot{
+  width:100%;max-width:760px;margin-left:auto;margin-right:auto;
+}
+.col > .tablewrap,.col > .cards,.col > .box,.col > .flow,.col > .brothers,.col > .nest,.col > .shelf,.col > .toc{
+  width:100%;max-width:1080px;margin-left:auto;margin-right:auto;
+}
+.say p,.box p,.card p{max-width:none}
+@media (max-width:1140px){
+  .col > .tablewrap,.col > .cards,.col > .box,.col > .flow,.col > .brothers,.col > .nest,.col > .shelf,.col > .toc{max-width:820px}
+}
+
+/* ヒーロー */
+.hero{background:var(--hero);border-bottom:2px solid var(--line);margin:0 -16px 34px;padding:0 16px}
+.hero .col{padding:52px 0 40px}
+.kicker{display:inline-block;font-size:13.5px;letter-spacing:.08em;color:var(--accent-ink);
+  border:1.5px solid var(--accent-ink);border-radius:999px;padding:3px 14px;margin-bottom:18px;background:#fff}
+h1{word-break:keep-all;font-size:clamp(27px,5.6vw,44px);line-height:1.42;margin:0 0 16px;font-weight:900;
+  text-wrap:balance;line-break:strict;max-width:900px}
+.lead{font-size:17px;color:var(--ink-soft);margin:0 0 18px;max-width:760px}
+.people{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.people li{background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:3px 13px;font-size:14px;color:var(--ink-soft)}
+.meta{margin:16px 0 0;font-size:13.5px;color:var(--ink-faint)}
+
+/* 目次 */
+.toc{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px;margin:0 auto 10px}
+.toc .bl{font-size:13px;font-weight:900;color:var(--ink-faint);letter-spacing:.06em;margin:0 0 8px}
+.toc ol{margin:0;padding-left:1.4em;columns:2 300px;column-gap:28px}
+.toc li{margin:0 0 4px;font-size:15px;break-inside:avoid}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--line)}
+
+h2{word-break:keep-all;font-size:clamp(21px,3.6vw,27px);line-height:1.5;margin:62px 0 6px;font-weight:900;
+  text-wrap:balance;line-break:strict;display:flex;align-items:flex-start;gap:11px}
+h2::before{content:"";flex:0 0 auto;width:7px;height:1.35em;margin-top:.1em;border-radius:4px;background:var(--accent-ink)}
+.h2sub{margin:0 0 20px;font-size:14.5px;color:var(--ink-faint)}
+h3{word-break:keep-all;font-size:18px;margin:30px 0 10px;font-weight:900;line-break:strict;text-wrap:balance}
+p{margin:0 0 15px}
+ul,ol{margin:0 0 15px;padding-left:1.3em}
+li{margin:0 0 6px}
+
+/* 吹き出し */
+.say{display:flex;gap:13px;margin:0 0 16px;align-items:flex-start}
+.ava{flex:0 0 auto;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:900;color:#fff;text-align:center;line-height:1.2}
+.bub{flex:1 1 auto;min-width:0;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:13px 17px}
+.bub .who{display:block;font-size:13.5px;font-weight:900;margin-bottom:4px}
+.bub p{margin:0 0 9px;font-size:16px}
+.bub p:last-child{margin-bottom:0}
+.a-kid{background:#c1552f} .w-kid{color:#c1552f}
+.a-sa{background:#b3175a} .w-sa{color:#b3175a}
+.a-ti{background:#2f6b57} .w-ti{color:#2f6b57}
+.a-ok{background:#2b5f8e} .w-ok{color:#2b5f8e}
+.a-wa{background:#7a5810} .w-wa{color:#7a5810}
+
+blockquote{margin:14px 0;padding:12px 16px;background:var(--band);border-radius:12px;font-size:15.5px;color:var(--ink-soft)}
+
+/* 数字カード */
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:18px 0 24px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:17px 18px;min-width:0}
+.card h4{margin:0 0 6px;font-size:14px;color:var(--ink-faint);font-weight:700}
+.card .big{font-size:30px;font-weight:900;line-height:1.25;color:var(--accent-ink);display:block;margin-bottom:6px}
+.card p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.8}
+.cards.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cards.five{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:760px){ .cards.four{grid-template-columns:repeat(2,minmax(0,1fr))} .cards.five{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:520px){ .cards.four{grid-template-columns:minmax(0,1fr)} }
+
+/* 流れ図 */
+.flow{display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr));margin:18px 0 24px;padding:0;list-style:none;counter-reset:st}
+.flow li{position:relative;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px 15px 15px;margin:0;min-width:0;counter-increment:st}
+.flow li::before{content:counter(st);display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;
+  background:var(--accent-ink);color:#fff;font-size:14px;font-weight:900;margin-bottom:8px}
+.flow li b{display:block;font-size:15.5px;line-height:1.55;margin-bottom:4px}
+.flow li span{display:block;font-size:14px;color:var(--ink-soft);line-height:1.75}
+.flow.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:760px){ .flow,.flow.three{grid-template-columns:minmax(0,1fr)} }
+
+/* 3兄弟 */
+.brothers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 12px}
+.bro{background:var(--card);border:2px solid var(--line);border-radius:16px;overflow:hidden;min-width:0;display:flex;flex-direction:column}
+.bro .top{padding:12px 16px;color:#fff}
+.bro .top .step{display:block;font-size:13px;letter-spacing:.06em;font-weight:700}
+.bro .top .name{display:block;font-size:21px;font-weight:900;line-height:1.4}
+.bro.chat .top{background:var(--t-chat)} .bro.chat{border-color:var(--t-chat)}
+.bro.work .top{background:var(--t-work)} .bro.work{border-color:var(--t-work)}
+.bro.agent .top{background:var(--t-agent)} .bro.agent{border-color:var(--t-agent)}
+.bro .pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-bottom:1.5px solid var(--line)}
+.bro .pair div{padding:10px 14px;min-width:0}
+.bro .pair div + div{border-left:1.5px solid var(--line)}
+.bro .pair small{display:block;color:var(--ink-faint);font-size:12.6px;line-height:1.5}
+.bro .pair b{display:block;font-size:16px;line-height:1.5}
+.bro .what{padding:12px 16px 14px;font-size:14.5px;color:var(--ink-soft);line-height:1.8;margin:0}
+.bro.chat .pair b{color:var(--t-chat)} .bro.work .pair b{color:var(--t-work)} .bro.agent .pair b{color:var(--t-agent)}
+@media (max-width:760px){ .brothers{grid-template-columns:minmax(0,1fr)} }
+
+/* 入れ子（ハーネス） */
+.nest{margin:18px 0 24px}
+.ring{border-radius:18px;padding:14px 16px 16px;border:2px solid}
+.ring > .lab{display:block;font-weight:900;font-size:17px;line-height:1.5}
+.ring > .note{display:block;font-size:14px;color:var(--ink-soft);line-height:1.75;margin-bottom:10px}
+.ring.r1{background:#f6f1fb;border-color:var(--t-agent)} .ring.r1 > .lab{color:var(--t-agent)}
+.ring.r2{background:#eef5f1;border-color:var(--t-work)} .ring.r2 > .lab{color:var(--t-work)}
+.ring.r3{background:#fff;border-color:var(--t-chat);margin-bottom:0} .ring.r3 > .lab{color:var(--t-chat)} .ring.r3 > .note{margin-bottom:0}
+
+/* ボックス */
+.box{background:var(--card);border:2px dashed var(--line);border-radius:16px;padding:20px;margin:22px 0}
+.box > .bl{display:inline-block;font-size:12.8px;font-weight:900;letter-spacing:.06em;color:var(--ink-faint);background:var(--band);border-radius:8px;padding:3px 11px;margin-bottom:12px}
+.box ol,.box ul{margin-bottom:0}
+.box > p:last-child{margin-bottom:0}
+.box.solid{border-style:solid;border-color:var(--accent-ink);background:#fffaf5}
+
+/* 比べる2枚 */
+.vs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:0 0 20px}
+.vs > div{border-radius:14px;padding:14px 16px;min-width:0}
+.vs .old{background:var(--band)}
+.vs .new{background:#eef5f1}
+.vs b{display:block;font-size:15.5px;margin-bottom:4px}
+.vs p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.8}
+@media (max-width:600px){ .vs{grid-template-columns:minmax(0,1fr)} }
+
+/* 本棚 */
+.shelf{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));margin:18px 0 12px}
+.book{background:var(--card);border:1.5px solid var(--line);border-left:6px solid var(--accent-ink);border-radius:12px;padding:13px 15px;min-width:0}
+.book .t{display:block;font-weight:900;font-size:16px;line-height:1.55}
+.book .au{display:block;font-size:13.5px;color:var(--ink-faint);line-height:1.6;margin-bottom:6px}
+.book p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.75}
+
+/* 表 */
+.tablewrap{overflow-x:auto;border:1.5px solid var(--line);border-radius:14px;background:var(--card);margin:18px 0}
+table{border-collapse:collapse;width:100%;table-layout:fixed}
+th,td{padding:12px 14px;text-align:left;font-size:15px;border-bottom:1px solid var(--line);line-height:1.75;vertical-align:top}
+th{background:var(--band);font-weight:900;font-size:14px}
+tr:last-child td{border-bottom:none}
+td b{font-weight:900}
+@media (max-width:600px){
+  table,thead,tbody,tr,th,td{display:block;width:100%}
+  thead{display:none}
+  tr{border-bottom:1px solid var(--line);padding:6px 0}
+  tr:last-child{border-bottom:none}
+  td{border-bottom:none;padding:4px 14px}
+  td:first-child{font-weight:900;padding-top:10px}
+}
+
+.next{background:var(--hero);border:2px solid var(--accent-ink);border-radius:18px;padding:20px 22px;margin:26px auto 0}
+.next .when{display:block;word-break:keep-all;font-size:clamp(22px,4.4vw,30px);font-weight:900;line-height:1.45;color:var(--accent-ink);margin:2px 0 6px}
+.next p{margin:0 0 8px}
+.next p:last-child{margin:0}
+
+.src{font-size:13.5px;color:var(--ink-faint);margin-top:6px}
+.foot{margin-top:64px;padding-top:22px;border-top:2px solid var(--line);font-size:13.5px;color:var(--ink-faint)}
+.foot p{margin:0 0 10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="col">
+    <span class="kicker">AIシェア会 2026.9.24（木）21:30〜</span>
+    <h1>資料づくりの<wbr>常識が、<wbr>ひと晩で<wbr>変わった<wbr>回でした</h1>
+    <p class="lead">9月のAIシェア会で出た話を、みんなが声を上げた順に並べました。録画を見返すときの目次にも使えるように、話が出た時刻を添えています。</p>
+    <ul class="people" aria-label="参加者">
+      <li>KIDさん</li><li>さなえさん</li><li>てぃさん（Tasukuさん）</li><li>渡邉さん（初参加）</li><li>おけもん</li>
+    </ul>
+    <p class="meta">Google Meet・約1時間40分／まとめ：おけもんカンパニー りん</p>
+  </div>
+</header>
+
+<main>
+<div class="col">
+
+<nav class="toc" aria-label="目次">
+  <p class="bl">この回で出た話</p>
+  <ol>
+    <li><a href="#s1">KIDさんのOpus 5.5実演</a></li>
+    <li><a href="#s2">AIの3兄弟という整理</a></li>
+    <li><a href="#s3">長いチャットでAIが鈍くなる話</a></li>
+    <li><a href="#s4">スキルはレシピ集</a></li>
+    <li><a href="#s5">ハーネスとCLAUDE.md</a></li>
+    <li><a href="#s6">てぃさんの思考法インストール</a></li>
+    <li><a href="#s7">おけもんの遊んだ1ヶ月</a></li>
+    <li><a href="#s8">ほかに出た話</a></li>
+    <li><a href="#s9">今日の本棚</a></li>
+    <li><a href="#s10">次の一歩と次回の日程</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1">KIDさんの<wbr>Opus 5.5実演に、<wbr>全員が<wbr>声を<wbr>上げました</h2>
+<p class="h2sub">録画 05:38〜／13:47〜／18:25〜</p>
+
+<p>2日前に出たばかりのOpus 5.5で、KIDさんが「AirPodsをどれにするか」を相談しました。やったことは、前回おけもんが話した<strong>「細かく指示せず、目的とゴールだけ渡す」</strong>です。AIのほうから使い方や好みを質問してきて、それに答えていったら、一流企業のプレゼンのような資料が一発で出てきました。腕のいい店員さんに接客されたみたいな資料です。</p>
+
+<ol class="flow">
+  <li><b>Opus 5.5に切り替える</b><span>「イヤホンを買い替えたい。予算は3万円」と目的だけ伝えます</span></li>
+  <li><b>AIが質問してくる</b><span>移動中の使い方や、カナル型が好きかどうかを聞き出してくれます</span></li>
+  <li><b>「まとめて」と頼む</b><span>「プレゼンにまとめて」で、スペック表、ノイキャンやバッテリーの差、使う場面まで入った資料になります</span></li>
+  <li><b>結論が営業してくる</b><span>「5,000円足すだけで全然違います」と、Pro 3を強く勧めてきました</span></li>
+</ol>
+
+<div class="cards four">
+  <div class="card"><h4>作るのにかかった時間</h4><span class="big">約10分</span><p>スーツ選びの資料は、体感10分ほどで出てきたそうです</p></div>
+  <div class="card"><h4>スーツ選びの資料</h4><span class="big">約20ページ</span><p>身長・体重・予算を入れて「写真多めで」と頼んだだけ。写真もネットのフリー素材から拾ってきました</p></div>
+  <div class="card"><h4>予算より上の提案</h4><span class="big">+5,000円</span><p>予算を超えてでもPro 3を勧める、説得力のある提案でした</p></div>
+  <div class="card"><h4>職場で浮いた時間</h4><span class="big">約300時間</span><p>社内のAI勉強会と、標準作業書をプロンプトで作れるようにして出た効率化です</p></div>
+</div>
+
+<div class="say"><div class="ava a-ok">おけ<br>もん</div><div class="bub"><span class="who w-ok">おけもん</span><p>すげえプレゼンじゃないですか、もうこれ。欲しくなりますね。</p></div></div>
+<div class="say"><div class="ava a-sa">さなえ</div><div class="bub"><span class="who w-sa">さなえさん</span><p>AIで作るのは普通になってきたけど、あんなに分かりやすく作られてるのは初めて見て、結構感動しました。</p></div></div>
+<div class="say"><div class="ava a-kid">KID</div><div class="bub"><span class="who w-kid">KIDさん</span><p>このデザインと提案力はやばい。もうググってる場合じゃないですね。</p></div></div>
+
+<p>スーツの資料はKeynoteで出てきて、PowerPointにも変換できるそうです。KIDさんの言葉を借りると、Google検索では一般的な情報しか来ないけれど、<strong>自分の情報を詳しく入れるほど「自分のための資料」になる</strong>のがClaude Codeのいいところです。</p>
+
+<h3>職場では、<wbr>1から<wbr>教える<wbr>勉強会を<wbr>始めていました</h3>
+<p>KIDさんは職場で社員向けのAI勉強会を開き、メールの検索や議事録といった身近な使い方から1つずつ教えています。今は、必要な項目を入れるだけで標準作業書（誰でも同じ仕事ができるようにする手順書）ができるプロンプトまで進みました。約300時間の効率化が出て、上司からも「もっと進めてほしい」と言われたそうです。</p>
+
+<h2 id="s2">AIには<wbr>3兄弟が<wbr>いる、<wbr>という<wbr>整理が<wbr>生まれました</h2>
+<p class="h2sub">録画 11:23〜／32:59〜　渡邉さんの「GPTのワークとClaude Codeは似たものですか？」から</p>
+
+<p>初参加の渡邉さんの質問に、おけもんが答えた整理です。ClaudeにもChatGPTにも、同じ役割の3種類があります。<strong>スライドを作るだけなら、真ん中のワーク型でも十分作れます。</strong></p>
+
+<div class="brothers">
+  <div class="bro chat">
+    <div class="top"><span class="step">1 ｜ いちばん身近</span><span class="name">チャット型</span></div>
+    <div class="pair"><div><small>Claude</small><b>Claude</b></div><div><small>ChatGPT</small><b>ChatGPT</b></div></div>
+    <p class="what">文章を入れると文章で返してくれます。調べものや相談、「どれを買えばいい？」はここから。</p>
+  </div>
+  <div class="bro work">
+    <div class="top"><span class="step">2 ｜ まんなか</span><span class="name">ワーク型</span></div>
+    <div class="pair"><div><small>Claude</small><b>Cowork</b></div><div><small>ChatGPT</small><b>Work</b></div></div>
+    <p class="what">ファイルやアプリをまたいで、資料やスライドを仕上げるところまでやってくれます。</p>
+  </div>
+  <div class="bro agent">
+    <div class="top"><span class="step">3 ｜ いちばん深い</span><span class="name">エージェント型</span></div>
+    <div class="pair"><div><small>Claude</small><b>Claude Code</b></div><div><small>ChatGPT</small><b>Codex</b></div></div>
+    <p class="what">パソコンの中で実際に作業します。ホームページ、資料、ツールづくり、フォルダの掃除まで。</p>
+  </div>
+</div>
+
+<p>お店で言えば、チャット型は相談カウンター、ワーク型は資料を仕上げてくれる工房、エージェント型はパソコンの前に座って手を動かしてくれる職人さんです。KIDさんの使い分けも分かりやすい見本でした。会社ではチャット型のClaudeを使い、家ではClaude Codeで書籍コーチングや資料づくりをしています。<strong>「深い作業をしてもらう時はエージェント」</strong>という分け方です。</p>
+
+<div class="say"><div class="ava a-wa">渡邉</div><div class="bub"><span class="who w-wa">渡邉さん</span><p>さっきの資料はちょっと衝撃でした。私もちょっと学んで、指示で作りたいと思います。</p></div></div>
+
+<h2 id="s3">長いチャットで、<wbr>AIが<wbr>「バカになる」<wbr>理由を<wbr>話しました</h2>
+<p class="h2sub">録画 34:43〜41:02</p>
+
+<p>KIDさんはClaude Codeで、100冊のうち約60冊ぶんの書籍コーチングを続けてきました。チャットがいっぱいになったので「コーチング2」を新しく立てたら、前のチャットで育ててきた感じが消えてしまったそうです。</p>
+
+<div class="say"><div class="ava a-kid">KID</div><div class="bub"><span class="who w-kid">KIDさん</span><p>30冊、40冊とやると、僕のことを分かってくれてる相棒みたいだったんです。それが杓子定規になって、ちょっと他人っぽいな、と。</p></div></div>
+<div class="say"><div class="ava a-ok">おけ<br>もん</div><div class="bub"><span class="who w-ok">おけもん</span><p>あの頃のお前はどこに行ったんだ、みたいな。</p></div></div>
+
+<p>さなえさんからは「Claude Codeの下に出る『何%使ってる』の表示、私いつも90%くらいなんですけど、あれが原因ですか？」という質問も出ました。おけもんの答えはこうです。人間は相手のことを覚えていますが、AIは返事をするたびに、そのチャットの最初から全部を読み直しています。<strong>長いチャットは、返事のたびに日記を1ページ目から読み返してから話し始めるようなもの</strong>なので、重くなるのは当然なんですね。</p>
+
+<div class="box solid">
+  <span class="bl">その場で出たコツ</span>
+  <ol>
+    <li><strong>やることがはっきりしたら、チャットを切り替えます。</strong>長いほど処理も重く、使う量も増えます。</li>
+    <li><strong>全部を渡すより「今日はこの本の分だけ取ってきて」と頼みます。</strong>必要な時に必要な分を取りに行けるのが、AIにとっていちばん楽な形です。</li>
+    <li><strong>良かった頃の回答を見本にさせます。</strong>「前はそういう返し方じゃなかったから、良かった時の回答を取ってきて」と言うと、今のAIは過去のやりとりまでたどってくれます。</li>
+    <li><strong>別のAIにも見てもらいます。</strong>AIは出た直後がいちばん賢く、混んでくると調子が落ちることがあります。おけもんはClaude Codeで作ったものを、ChatGPTのProモデルにレビューさせています。</li>
+  </ol>
+</div>
+
+<p>KIDさんも「もっと僕の物語を引き出して」「そんなめんどくさい質問の仕方はしないで」と辛口のフィードバックを入れていくうちに、少しずつ前のチャットの感じに戻ってきたそうです。</p>
+
+<h2 id="s4">スキルは<wbr>レシピ集なので、<wbr>ときどき<wbr>棚卸しします</h2>
+<p class="h2sub">録画 28:01〜30:51　さなえさんの「スキルを足すほどアホになってる気がする」から</p>
+
+<p>さなえさんは、土台を読んでから案件ごとのルールを読む、という階層を組んでいます。それでも、たまに土台を読まずにスキルを動かす子がいるそうです。おけもんは、スキルを料理のレシピ集にたとえて説明しました。</p>
+
+<div class="say"><div class="ava a-ok">おけ<br>もん</div><div class="bub"><span class="who w-ok">おけもん</span><p>1回おいしいカレーができたら、次もおいしく作れるようにメモに残しておく。次の子も「前の子はこうやってたんやな」と真似できる。それがスキルです。</p><p>でも、近くにもっと安くておいしいお肉のスーパーができたのに、「10km先の古いスーパーまで自転車で買いに行く」というルールが残ってたりするんです。</p></div></div>
+
+<div class="vs">
+  <div class="old"><b>古いレシピが残ったまま</b><p>スキルが太るほどAIは楽をしたがり、どこを読めばいいか迷います。おけもんの森でも、昔の「スマホで見られるように」というルールのせいで、巻物みたいな縦長の資料をしばらく作り続けていました。</p></div>
+  <div class="new"><b>モデルが変わったら見直す</b><p>新しいモデルに「私のスキル、量が多すぎて読めてないものはない？変なもの取ってきてない？」と聞いてみます。「私はこういう出力がほしい」も一緒に伝えます。</p></div>
+</div>
+
+<p>ちなみにさなえさんは、ふだんのお掃除は「より正確に早く、より良くなるように」とClaude Codeに丸投げしているそうです。Opus 5.5が出た今が、ちょうどいい見直しどきです。</p>
+
+<h2 id="s5">ハーネスと<wbr>CLAUDE.mdは、<wbr>AIが<wbr>走るための<wbr>土台です</h2>
+<p class="h2sub">録画 51:04〜57:30　てぃさんがデジライズの「ハーネス入門」講座で学んだこと</p>
+
+<p>ハーネスは、もともと馬につける道具のことです。てぃさんの整理では、プロンプトが終わったわけではなく、<strong>プロンプトはもっと大きな「環境づくり」の中の一部</strong>になりました。</p>
+
+<div class="nest" aria-label="ハーネスの入れ子">
+  <div class="ring r1"><span class="lab">ハーネス</span><span class="note">AIがうまく走れるように、走る場所を整えること。馬で言うと鞍や手綱にあたります。フォルダを整える、いらないものを捨てる、CLAUDE.mdを細く保つ、も全部ここです</span>
+    <div class="ring r2"><span class="lab">コンテキスト</span><span class="note">AIに渡す背景情報。どの資料を、どこまで読ませるか</span>
+      <div class="ring r3"><span class="lab">プロンプト</span><span class="note">その場で書く指示の文章</span></div>
+    </div>
+  </div>
+</div>
+
+<p>講座の最初の課題は「掃除」でした。掃除ができたらフォルダの階層を整え、そのうえで繰り返している作業をスキルにします。てぃさんが「もういいよ、全部消して」と頼んだら、Claude Codeが<strong>3年前にどこかへ行ってしまった簿記3級の合格証の画像</strong>を「これ消していいんですか？」と見つけてくれました。それ以来、「全部捨てて」と言っても「まずは確認しますね」と聞いてくれるようになったそうです。</p>
+
+<p>おけもんは、CLAUDE.mdを「AIの中にある憲法」と説明しました。今は<strong>少なければ少ないほどいい</strong>と言われていて、上のほうから読まれるので、大事なことほど上に置きます。</p>
+
+<h2 id="s6">てぃさんは、<wbr>人の<wbr>思考法を<wbr>AIに<wbr>覚えさせていました</h2>
+<p class="h2sub">録画 57:30〜01:04:30</p>
+
+<p>宣伝会議のキャッチコピーのコンテストに向けて、てぃさんはあるライターさんの考え方を借りています。Xのスペースで聞いた「客室乗務員を、思い出を届ける仕事ではなく、目的地まで無事に送り届ける保安要員だと考える」という切り口が面白かったのがきっかけです。</p>
+
+<ol class="flow">
+  <li><b>スペースの音声を保存</b><span>面白いと思った人の話を、まるごと手元に置きます</span></li>
+  <li><b>NotebookLMに入れる</b><span>「この人の思考法を構造化して」と頼みます</span></li>
+  <li><b>Claude Codeに覚えさせる</b><span>「この人の思考法でやりたいから覚えて」と渡します</span></li>
+  <li><b>コピーを壁打ちする</b><span>その思考法を使いながら、キャッチコピーを一緒に考えます</span></li>
+</ol>
+
+<p>もうひとつは、KIDさんから教わった書籍コーチングです。『7つの習慣』でやってみたら、「重要だけど緊急でないことに使った時間は？」と聞かれて「48分かな」と答えたところ、「それ、8月4日と8月10日にも同じこと言ってますよ」と返ってきました。</p>
+
+<div class="say"><div class="ava a-ti">てぃ</div><div class="bub"><span class="who w-ti">てぃさん</span><p>CLAUDE.mdに「忖度しないで」「根拠なく褒めないで」と書いてたんですけど、それってコーチングじゃなくて呪文やろ、って僕キレたんですよ。</p></div></div>
+
+<p>好きな作家の文章を書き写すうちに自分の文章が変わっていくのと同じで、コーチも言葉の置き方で育ちます。てぃさんが「まず僕が言ったことを受け止めて」と書き換えたら、2回目はずっと話しやすくなりました。KIDさんからは「こうしてほしい、という形で育てると、10冊20冊こなすうちに心地いいコーチになりますよ」とアドバイスがありました。</p>
+
+<div class="say"><div class="ava a-ti">てぃ</div><div class="bub"><span class="who w-ti">てぃさん</span><p>ふざけてる時とか妄想してる時に、いちばんAIの想像力が働くなと思います。</p></div></div>
+
+<p>界隈のノリでアイドルゲームを作ったり、AIで絵本を作っている方の新作（9月20日刊行）にてぃさんのアイデアが採用されて、本人役のヒーローとして登場したりもしています。てぃさんはこれを「僕なりのサードドア」と呼んでいました。</p>
+
+<h2 id="s7">おけもんの<wbr>1ヶ月は、<wbr>ひたすら<wbr>遊んでいました</h2>
+<p class="h2sub">録画 01:07:37〜01:18:13</p>
+
+<p>新しいモデルが出るたびにできることが増えるので、この1ヶ月は仕事に役立つかより、理科の実験みたいにとにかく遊んでいたそうです。</p>
+
+<div class="cards five">
+  <div class="card"><h4>1ヶ月をカレンダーに</h4><p>「私この1ヶ月で何してた？」とAIに聞いたら、日ごとのカレンダーにまとめてくれました。</p></div>
+  <div class="card"><h4>飛び出す文字の動画</h4><p>Opus 5.5で、文字が動いて飛び出す動画をその日のうちに作れました。</p></div>
+  <div class="card"><h4>回せる3Dのカピバラ</h4><p>ChatGPT 6にBlenderを動かしてもらい、くるくる回せる商品紹介ページを作ってみました。</p></div>
+  <div class="card"><h4>本の座談会</h4><p>NotebookLMに本や、その人の考え方を入れ、Claude Codeが読みに行く形で『メタスキル』や孫子に自分の悩みを相談させました。</p></div>
+  <div class="card"><h4>AI社員の声で起きる</h4><p>新しい音声モデルで、朝になると社員の声が「おはよう」と起こしてくれます。</p></div>
+</div>
+
+<div class="say"><div class="ava a-sa">さなえ</div><div class="bub"><span class="who w-sa">さなえさん</span><p>え、これ文章で記事にしたらめっちゃおもろいですね。</p></div></div>
+
+<p>座談会の形にしているのは、フェルミ漫画大学のように「分からない人が質問して、答えが返ってくる」会話のほうが頭に入りやすいからだそうです。そしておけもんは、Xで「このやり方で100万円」という話を見て悩んだ時期を経て、<strong>面白さに全振りする</strong>と決めました。</p>
+
+<div class="say"><div class="ava a-ok">おけ<br>もん</div><div class="bub"><span class="who w-ok">おけもん</span><p>AI界のでんじろう先生になったらいいんじゃないかと思って。こんなおもろいものがあるんだよ、って伝えるほうがいいなと思って、そっちに全振りしてます。</p></div></div>
+
+<p>「なりたい人はいますか？」という話にもなりました。てぃさんは「面白くありたい、人を喜ばせたい」、KIDさんはAIコーチングで出てきた「自分の好きや得意で誰かを幸せにした者、ここに眠る」という墓碑銘、さなえさんはニーチェでした。みんなそれぞれ、自分なりの面白い生き方を探している回でした。</p>
+
+<h2 id="s8">ほかにも、<wbr>こんな話が<wbr>出ました</h2>
+
+<ul>
+  <li><strong>面談の喋り方マニュアル</strong>（34:43〜）：さなえさんは案件に応募する時の面談に向けて、話し方のマニュアルをAIで作っています。</li>
+  <li><strong>AI画像と著作権</strong>（26:13〜）：既存のイラストをスクショしてAIでなぞった画像が、Xで問題になっていた話です。一から生成するのとは違い、元ネタを取り込んで変えるのはアウトになり得ます。文章よりデザインのほうが目に見える分、世間の抵抗感も強いという話でした。</li>
+  <li><strong>世間とのギャップ</strong>（19:22〜）：年初にてぃさんとおけもんが参加したAIのイベントでは、名刺の整理や社内アプリの話が中心だったそうです。KIDさんも、会社員向けのClaude Code本やAnthropicの公式講座を一通り見て「初心者にはおすすめ、でもここの話のほうが先に行っている」と話していました。</li>
+  <li><strong>お金の流れを見る</strong>（30:51〜）：渡邉さんは「多くの企業が投資しているのはサステナブルとAI」という見方から、今AIに気づけてよかったと話してくれました。</li>
+</ul>
+
+<h2 id="s9">今日<wbr>出てきた本を、<wbr>棚に<wbr>並べました</h2>
+<p class="h2sub">録画 02:39〜／23:43〜／41:02〜／01:27:21〜　Slackでの本のシェアもいつでも歓迎です</p>
+
+<div class="shelf">
+  <div class="book"><span class="t">サードドア</span><span class="au">アレックス・バナヤン／東洋経済新報社</span><p>KIDさんの「ここ最近でいちばん心に響いた本」。先月てぃさんが紹介した1冊で、おけもんが次回までに読んできます。</p></div>
+  <div class="book"><span class="t">資本主義と、生きていく。</span><span class="au">品川皓亮／大和書房</span><p>さなえさんの強い推し。COTEN RADIOの調査チームの方が書いた、歴史や宗教から資本主義をひもとく読みやすい本です。</p></div>
+  <div class="book"><span class="t">奪われた集中力</span><span class="au">ヨハン・ハリ／作品社</span><p>さなえさんが前に紹介して、てぃさんが今6割まで読み進めています。</p></div>
+  <div class="book"><span class="t">イン・ザ・メガチャーチ</span><span class="au">朝井リョウ／日本経済新聞出版</span><p>おけもんのおすすめで、さなえさんが読んだ小説。いくつかの話が少しずつつながる構成です。<small>（書名は録音の聞き取りから推定しています）</small></p></div>
+  <div class="book"><span class="t">すごいジャーナリング</span><span class="au">菊地大樹／サンクチュアリ出版</span><p>おけもんが読んでいる本。手書きは続かないので、Claude Codeで毎日続けられる日記アプリを作ろうとしています。</p></div>
+  <div class="book"><span class="t">メタスキル</span><span class="au">深津貴之・けんすう・尾原和啓</span><p>おけもんの「本の座談会」の材料になった1冊です。</p></div>
+  <div class="book"><span class="t">罪と罰（漫画版）</span><span class="au">ドストエフスキー</span><p>てぃさんが中田敦彦さんのYouTube大学で知って購入。原作が難しいなら漫画でいい、という考え方に共感したそうです。</p></div>
+  <div class="book"><span class="t">ニーチェの本いろいろ</span><span class="au">超訳 ニーチェの言葉／史上最強の哲学入門（飲茶）ほか</span><p>さなえさんの枕元の1冊と、表紙が『刃牙』の板垣恵介さんという哲学入門。KIDさんも超訳を読んでいました。</p></div>
+  <div class="book"><span class="t">失敗の本質（入門版）</span><span class="au">さなえさんが並行して読書中</span><p>KIDさんは文庫の本書を去年読んで「細かい戦術まで書いてあって難しいけど面白かった」そうです。</p></div>
+  <div class="book"><span class="t">コーチングに入れた本たち</span><span class="au">てぃさんの書籍コーチング</span><p>7つの習慣、人を動かす、夢をかなえるゾウ、嫌われる勇気、GIVE &amp; TAKE ほか。KIDさんは昨日『夢をかなえるゾウ』でコーチングしたそうです。</p></div>
+</div>
+
+<h2 id="s10">次の一歩と、<wbr>次回の<wbr>日程です</h2>
+<p class="h2sub">会の中で「やってみます」と出たものを、人ごとにまとめました</p>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th style="width:24%">だれ</th><th style="width:76%">やってみること</th></tr></thead>
+<tbody>
+<tr><td>さなえさん</td><td>次回の招待を送ります。渡邉さんにSlackの案内も届けます。スキルの棚卸しを、新しいモデルに相談してみるのもおすすめです。</td></tr>
+<tr><td>KIDさん</td><td>来週オーダースーツを作りに行きます。できあがったら写真をシェアしてもらえる予定です。</td></tr>
+<tr><td>てぃさん</td><td>書籍コーチングを10冊、20冊と育てていきます。『罪と罰』の感想も楽しみです。</td></tr>
+<tr><td>渡邉さん</td><td>AIへの指示の出し方を学んで、自分で資料を作ってみます。</td></tr>
+<tr><td>おけもん</td><td>『サードドア』を読んで次回に感想を話します。Opus 5.5でKIDさん式のプレゼンを作ってみます。ChatGPT側の同じ機能を、渡邉さんに分かるように紹介します。</td></tr>
+<tr><td>みんな</td><td>AIに興味がありそうな人がいたら、気軽に誘ってください。本のシェアはSlackやXでいつでもどうぞ。</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="next">
+  <p>次回のAIシェア会</p>
+  <span class="when">2026年<wbr>10月22日（木）<wbr>21:30〜</span>
+  <p>招待はさなえさんから届きます。来週はさなえさんとみのるんさんの振り返りスペース（21:30〜）もあります。</p>
+</div>
+
+<div class="foot">
+  <p>このページは、Google MeetのGeminiメモと文字起こし（どちらも自動生成）を、録音の文字起こし本文で確かめながらまとめました。発言は読みやすく整えています。聞き違いや、載せないでほしいところがあれば、Slackで気軽に教えてください。</p>
+  <p><small>確かめたこと：Opus 5.5の発表日（Anthropic公式ニュース、2026年9月22日）／『資本主義と、生きていく。』（大和書房の書籍ページ）／『イン・ザ・メガチャーチ』（日本経済新聞出版の書籍ページ）。それ以外の書誌は書店・書評サイトで確認しています。</small></p>
+  <p><small>まとめ：おけもんカンパニー りん（2026-09-25）</small></p>
+</div>
+
+</div>
+</main>
+</div>
+</body>
+</html>
