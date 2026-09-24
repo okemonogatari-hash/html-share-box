@@ -77,12 +77,23 @@
     }
     .seal .seal-play { width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: grid; place-items: center; flex: none; }
     .seal .seal-play::before { content: ""; margin-left: 4px; border-left: 14px solid var(--navy); border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
-    .seal .t { font-weight: 900; font-size: clamp(18px, 2.4vw, 24px); letter-spacing: .04em; line-height: 1.3; }
+    .seal .t { display: flex; flex-direction: column; gap: 14px; font-weight: 900; font-size: clamp(18px, 2.4vw, 24px); letter-spacing: .04em; line-height: 1.5; }
     .seal .t small { display: block; font-size: 13px; font-weight: 700; color: var(--gold); letter-spacing: .1em; }
     .seal .sec { font-weight: 900; color: var(--gold); }
+    .seal .ln { display: block; line-height: 1.5; }
+    .seal .en { display: block; font-size: 13px; font-weight: 700; color: var(--gold); letter-spacing: .1em; line-height: 1.2; }
+    .seal .t small { line-height: 1.2; margin-bottom: 2px; }
     .digest-video { margin-top: 22px; border-radius: 22px; overflow: hidden; border: 6px solid #fff; box-shadow: 0 18px 40px rgba(43,38,64,.2); background: #F4EBDD; }
     .digest-video video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
     .digest-note { margin-top: 10px; font-size: 13.5px; color: var(--ink-soft); }
+
+
+    .movies { display: grid; gap: 18px; margin-top: 22px; grid-template-columns: minmax(0, 1fr); }
+    .movie { margin: 0; }
+    .movie .digest-video { margin-top: 0; }
+    .movie figcaption { margin-top: 10px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.7; }
+    .movie figcaption b { color: var(--ink); display: block; font-size: 16px; }
+    @media (min-width: 1100px) { .movies { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); align-items: start; } }
 
     /* ===== 表紙 ===== */
     .cover { padding-top: 40px; }
@@ -255,14 +266,21 @@
 </head>
 <body>
 
-<!-- 一番上：30秒ダイジェスト -->
+<!-- 一番上：作品集ムービー＋30秒ダイジェスト -->
 <section class="page digest" id="digest">
   <div class="inner">
-    <p class="seal"><span class="seal-play" aria-hidden="true"></span><span class="t"><small>MONTHLY DIGEST</small><span class="sec">30秒</span>でわかる！おけもんの1ヶ月</span></p>
-    <div class="digest-video">
-      <video controls playsinline preload="metadata" poster="friend-share-g-XsCiGC0MzIvWvDSc-assets/digest30-poster.jpg" width="1280" height="720"><source src="friend-share-g-XsCiGC0MzIvWvDSc-assets/digest30.mp4" type="video/mp4"></video>
+    <p class="seal"><span class="seal-play" aria-hidden="true"></span><span class="t"><span class="en">MONTHLY REPORT MOVIE</span><span class="ln">こんなん作ったよ！<span class="sec">1ヶ月の作品集</span></span></span></p>
+    <div class="movies">
+      <figure class="movie main">
+        <div class="digest-video"><video controls playsinline preload="metadata" poster="friend-share-g-XsCiGC0MzIvWvDSc-assets/works-poster.jpg" width="1280" height="720"><source src="friend-share-g-XsCiGC0MzIvWvDSc-assets/works.mp4" type="video/mp4"></video></div>
+        <figcaption><b>作品集ムービー（46秒）</b>青春18きっぷ → 新宿AIオフ会 → 妄想ムービー → カピバラ集 → アップルのCMをTTP → Astraでいろいろ → 福岡で植松努さん</figcaption>
+      </figure>
+      <figure class="movie sub">
+        <div class="digest-video"><video controls playsinline preload="metadata" poster="friend-share-g-XsCiGC0MzIvWvDSc-assets/digest30-poster.jpg" width="1280" height="720"><source src="friend-share-g-XsCiGC0MzIvWvDSc-assets/digest30.mp4" type="video/mp4"></video></div>
+        <figcaption><b>30秒でわかる！おけもんの1ヶ月</b>今日みずやんが教えてくれた無料ツール「JIZURA（字面）」で、文字が飛び出す動画に。</figcaption>
+      </figure>
     </div>
-    <p class="digest-note">文字が飛び出す動画は、今日みずやんが教えてくれた無料ツール「JIZURA（字面）」でつくりました。曲はおけもんがSunoでつくった「Sky Drop」。</p>
+    <p class="digest-note">曲はどちらも、おけもんがSunoでつくった「Sky Drop」。妄想ムービーの女の子は、AIでつくった架空のキャラクターです。</p>
   </div>
 </section>
 
