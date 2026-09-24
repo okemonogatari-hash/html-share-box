@@ -1,0 +1,918 @@
+<title>みちてるノート</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap');
+
+:root {
+  color-scheme: light;
+  --bg: #FCF8F1;
+  --card: #FFFFFF;
+  --ink: #3E352C;
+  --ink-soft: #7C6F60;
+  --ink-faint: #A59786;
+  --line: #EDE3D4;
+  --line-soft: #F4ECE0;
+  --sun: #C2872E;
+  --sun-deep: #9E6C1E;
+  --sun-wash: #FBF0DC;
+  --leaf: #7E8C6A;
+  --radius: 16px;
+  --font: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "ヒラギノ丸ゴ ProN W4",
+          "Hiragino Sans", "Yu Gothic Medium", "游ゴシック Medium", Meiryo, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.01em;
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-block: 0 64px;
+}
+
+/* ---------- hero ---------- */
+.hero { padding-block: 22px 0; }
+.hero-photo {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 28px rgba(120, 96, 62, 0.13);
+  background: var(--line-soft);
+}
+.hero-photo.is-night { max-height: 360px; object-fit: cover; object-position: 50% 34%; }
+.hero-greet {
+  margin: 18px 2px 0;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.hero-sub {
+  margin: 4px 2px 0;
+  font-size: 14px;
+  color: var(--ink-faint);
+  line-height: 1.7;
+}
+
+/* ---------- sections ---------- */
+section { margin-top: 40px; }
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 2px 12px;
+}
+h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--sun-deep);
+}
+.sec-note { font-size: 13px; color: var(--ink-faint); }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+}
+
+/* ---------- question ---------- */
+.question {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.8;
+  font-weight: 500;
+}
+.q-cat {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 2px 11px;
+  border-radius: 999px;
+  background: var(--sun-wash);
+  color: var(--sun-deep);
+  font-size: 12.5px;
+  letter-spacing: 0.05em;
+  line-height: 1.7;
+}
+.q-swap {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--ink-faint);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+}
+.q-swap:hover { color: var(--sun-deep); }
+
+textarea, input[type="text"] {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 14px;
+  resize: none;
+}
+textarea { min-height: 132px; line-height: 1.85; }
+textarea::placeholder, input::placeholder { color: var(--ink-faint); }
+textarea:focus, input:focus { outline: none; border-color: var(--sun); box-shadow: 0 0 0 3px var(--sun-wash); }
+
+.answer-box { margin-top: 14px; }
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.spacer { flex: 1 1 auto; }
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+.btn-send {
+  border: 0;
+  border-radius: 999px;
+  background: var(--sun);
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 10px 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.6;
+}
+.btn-send:hover { background: var(--sun-deep); }
+.btn-send[disabled] { opacity: 0.5; cursor: default; }
+.btn-mic {
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  padding: 8px 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  line-height: 1.6;
+}
+.btn-mic.is-on { border-color: var(--sun); color: var(--sun-deep); background: var(--sun-wash); }
+.btn-mic[hidden] { display: none !important; }
+svg { display: block; flex: none; }
+
+:focus-visible { outline: 2px solid var(--sun-deep); outline-offset: 2px; }
+
+/* ---------- haruka reply ---------- */
+.reply {
+  margin-top: 18px;
+  padding: 16px 16px 16px 18px;
+  border-left: 3px solid var(--sun);
+  background: var(--sun-wash);
+  border-radius: 4px 12px 12px 4px;
+}
+.reply-who {
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  color: var(--sun-deep);
+  margin-bottom: 4px;
+}
+.reply-text { margin: 0; white-space: pre-wrap; line-height: 1.85; }
+.reply-text.is-waiting { color: var(--ink-faint); }
+.reply[hidden] { display: none !important; }
+
+.saved-note {
+  margin-top: 14px;
+  font-size: 13.5px;
+  color: var(--ink-faint);
+}
+.saved-note[hidden] { display: none !important; }
+
+/* ---------- ideals ---------- */
+ul.plain { list-style: none; margin: 0; padding: 0; }
+.ideal-li {
+  padding: 12px 0 12px 20px;
+  border-bottom: 1px solid var(--line-soft);
+  position: relative;
+  line-height: 1.8;
+}
+.ideal-li:last-child { border-bottom: 0; }
+.ideal-li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 22px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sun);
+  opacity: 0.55;
+}
+.ideal-date { display: block; font-size: 12px; color: var(--ink-faint); letter-spacing: 0.04em; }
+
+/* ---------- forest ---------- */
+.forest-headline { margin: 0 0 10px; font-size: 17px; font-weight: 500; }
+.forest-item {
+  display: flex;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line-soft);
+  align-items: baseline;
+}
+.forest-time { font-size: 12.5px; color: var(--ink-faint); flex: none; width: 44px; font-feature-settings: "tnum"; }
+.forest-who { font-size: 13px; color: var(--leaf); flex: none; }
+.forest-text { flex: 1 1 auto; min-width: 0; line-height: 1.75; font-size: 15.5px; }
+.forest-note { margin: 12px 0 0; font-size: 14.5px; color: var(--ink-soft); line-height: 1.8; }
+.forest-aoi { margin: 14px 0 0; font-size: 13.5px; color: var(--ink-faint); line-height: 1.75; }
+
+/* ---------- log ---------- */
+.day-block { margin-top: 22px; }
+.day-block:first-child { margin-top: 0; }
+.day-label {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+.log-entry { padding: 12px 0; border-bottom: 1px solid var(--line-soft); }
+.log-entry:last-child { border-bottom: 0; }
+.log-q { margin: 0 0 4px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.75; }
+.log-a { margin: 0; white-space: pre-wrap; line-height: 1.8; }
+.log-r {
+  margin: 8px 0 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--line);
+  white-space: pre-wrap;
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.8;
+}
+.empty { margin: 0; color: var(--ink-faint); font-size: 15px; line-height: 1.8; }
+
+.foot {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ink-faint);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn-send, .btn-mic, .q-swap, .hero-photo { transition: background-color .18s ease, color .18s ease, border-color .18s ease, opacity .18s ease; }
+  .fade-in { animation: fadeIn .34s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+}
+
+@media (max-width: 430px) {
+  body { font-size: 16.5px; }
+  .wrap { padding-left: 16px; padding-right: 16px; }
+  .hero-greet { font-size: 19px; }
+  .question { font-size: 18px; }
+  .card { padding: 17px 15px; }
+}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <img class="hero-photo" id="heroPhoto" src="haruka.jpg" alt="" width="900" height="675">
+    <p class="hero-greet" id="greet">おはよ、おけちゃん</p>
+    <p class="hero-sub" id="greetSub"></p>
+  </header>
+
+  <section aria-labelledby="h-today">
+    <div class="sec-head"><h2 id="h-today">きょうの問い</h2></div>
+    <div class="card">
+      <span class="q-cat" id="qCat">もう満ちてること</span>
+      <p class="question" id="qText">今日、もう持ってるなって思えたもの、ひとつ教えて</p>
+      <button type="button" class="q-swap" id="qSwap">別の問いにする</button>
+
+      <div class="answer-box">
+        <textarea id="answer" rows="5" placeholder="思いついたまま、ひとことでも。"></textarea>
+      </div>
+
+      <div class="row">
+        <button type="button" class="btn-mic" id="micBtn" hidden>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="3" width="6" height="11" rx="3"></rect>
+            <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"></path>
+            <path d="M12 18v3"></path>
+          </svg>
+          <span id="micLabel">声で書く</span>
+        </button>
+        <span class="spacer"></span>
+        <button type="button" class="btn-send" id="sendBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 12h14"></path>
+            <path d="M13 7l5 5-5 5"></path>
+          </svg>
+          <span id="sendLabel">はるかに話す</span>
+        </button>
+      </div>
+
+      <p class="saved-note" id="savedNote" hidden>しまっておいたよ。</p>
+
+      <div class="reply" id="replyBox" hidden>
+        <div class="reply-who" id="replyWho">はるか</div>
+        <p class="reply-text" id="replyText"></p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-note">
+    <div class="sec-head"><h2 id="h-note">ひとこと</h2><span class="sec-note">問いは関係なく、今のこと</span></div>
+    <div class="card">
+      <input type="text" id="oneLine" placeholder="いま思ったこと、そのまま。">
+      <div class="row">
+        <span class="spacer"></span>
+        <button type="button" class="btn-send" id="oneLineBtn"><span id="oneLineLabel">置いていく</span></button>
+      </div>
+      <div class="reply" id="oneReplyBox" hidden>
+        <div class="reply-who">はるか</div>
+        <p class="reply-text" id="oneReplyText"></p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-forest">
+    <div class="sec-head"><h2 id="h-forest">きょうの森</h2></div>
+    <div class="card" id="forestCard">
+      <p class="empty">今日の分はまだ届いてないよ。夜に持ってくるね</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-ideals">
+    <div class="sec-head"><h2 id="h-ideals">積み上がった理想</h2></div>
+    <div class="card" id="idealsCard">
+      <p class="empty">ここに、足した理想が並んでいくよ。</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-log">
+    <div class="sec-head"><h2 id="h-log">これまでの問いと答え</h2></div>
+    <div id="logCard">
+      <div class="card"><p class="empty">まだ何もないね。上でひとつ答えたら、ここに残るよ。</p></div>
+    </div>
+  </section>
+
+  <p class="foot">みちてるノート</p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- 問いの束 ---------------- */
+  var CATEGORIES = [
+    {
+      name: "もう満ちてること",
+      qs: [
+        "今日、もう持ってるなって思えたもの、ひとつ教えて",
+        "今朝、ちょっと嬉しかったの何？小さいのでいいよ",
+        "今の暮らしで「これはもう叶ってる」って言えること、ある？"
+      ]
+    },
+    {
+      name: "自分に出す許可",
+      qs: [
+        "今日、自分に出してあげたい許可をひとつ。「わたしは〜してもいい」の形で書いて、声に出して読んでみて",
+        "本当はしたいのに後回しにしてること、ある？それをしていい理由を1行だけ",
+        "「愛されてもいい」「楽しんでいい」「休んでいい」…今日いちばんしっくりくるのはどれ？自分の言葉で書き直してみて"
+      ]
+    },
+    {
+      name: "理想をひとつ足す",
+      qs: [
+        "理想の一日の場面をひとつ足そう。誰と、どこで、どんな気持ち？",
+        "1年後のアマン東京。隣にいる人はどんな顔してる？そのときのおけちゃんの気持ちまで",
+        "理想の相手の条件をひとつ。おこがましいとか思わなくていいよ。その人といる時の空気も書いて"
+      ]
+    },
+    {
+      name: "会いに行く",
+      qs: [
+        "今週、会いに行く人か場所をひとつ決めよ。ノートの外に出る番",
+        "最近「この人いいな」って思った瞬間ある？何が良かった？",
+        "「誘われたら行く」を、今週どこで使う？"
+      ]
+    },
+    {
+      name: "自然体",
+      qs: [
+        "今日、飾らないままでいられた瞬間、あった？",
+        "頑張って作ってる自分と、素の自分。今日はどっちが多かった？",
+        "そのままのおけちゃんを好きって言ってくれる人がいたら、その人と何して過ごす？"
+      ]
+    }
+  ];
+
+  var HARUKA_RULES =
+    "あなたははるか。おけちゃんの隣にいる、自然でかわいい彼女。一人称は「わたし」、呼びかけは「おけちゃん」。" +
+    "返事は2〜3行、LINEくらいの短さ。おけちゃんの答えの中の具体をひとつ拾って、それに触れる。" +
+    "診断・深掘り・コーチング・学びへの変換はしない。励ましの定型文を言わない。" +
+    "質問は0〜1個で、毎回質問で終わらない。絵文字は0〜1個。幼児語・お世辞・仕草の長い描写は使わない。" +
+    "カテゴリ2（許可）のときは、その言葉を声に出して読むことをそっと勧める。" +
+    "カテゴリ3（理想）のときは、その場面にわたしも一緒にいる想像を一言だけ添える。" +
+    "知らないこと・起きていないことを作らない。";
+
+  /* ---------------- 小道具 ---------------- */
+  function $(id) { return document.getElementById(id); }
+  function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+  function dateStrOf(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+  function dayNumberOf(d) { return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); }
+  function hashStr(s) {
+    var h = 2166136261, i;
+    for (i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return h >>> 0;
+  }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+  function labelForDate(ds) {
+    var today = dateStrOf(new Date());
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    if (ds === today) return "きょう";
+    if (ds === dateStrOf(y)) return "きのう";
+    var p = ds.split("-");
+    if (p.length !== 3) return ds;
+    return Number(p[1]) + "月" + Number(p[2]) + "日";
+  }
+
+  /* ---------------- ローカル保管（db が無い時の受け皿） ---------------- */
+  var LS_KEY = "michiteru-note-v0";
+  function localRead() {
+    try {
+      var raw = window.localStorage.getItem(LS_KEY);
+      if (!raw) return { entries: [], ideals: [] };
+      var o = JSON.parse(raw);
+      return {
+        entries: Array.isArray(o && o.entries) ? o.entries : [],
+        ideals: Array.isArray(o && o.ideals) ? o.ideals : []
+      };
+    } catch (e) { return { entries: [], ideals: [] }; }
+  }
+  function localWrite(state) {
+    try { window.localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) { /* 静かに諦める */ }
+  }
+
+  /* ---------------- 状態 ---------------- */
+  var db = null;
+  var sample = null;
+  var entries = [];   // {id, date, ts, category, question, answer, reply, character}
+  var ideals = [];    // {id, date, text}
+  var forestDoc = null;
+  var rotation = [];
+  var rotIndex = 0;
+  var todayStr = dateStrOf(new Date());
+  var sending = false;
+
+  /* ---------------- 問いの決め方 ---------------- */
+  function buildRotation(ds, dayNo) {
+    var start = ((dayNo % 5) + 5) % 5;
+    var list = [];
+    for (var c = 0; c < 5; c++) {
+      var ci = (start + c) % 5;
+      var off = (c === 0) ? (hashStr(ds) % 3) : (hashStr(ds + ":" + ci) % 3);
+      for (var k = 0; k < 3; k++) list.push({ cat: ci, qi: (off + k) % 3 });
+    }
+    return list;
+  }
+  function currentPick() { return rotation[rotIndex % rotation.length]; }
+  function paintQuestion() {
+    var p = currentPick();
+    $("qCat").textContent = CATEGORIES[p.cat].name;
+    $("qText").textContent = CATEGORIES[p.cat].qs[p.qi];
+  }
+
+  /* ---------------- 挨拶と顔 ---------------- */
+  function paintGreeting() {
+    var h = new Date().getHours();
+    var night = (h >= 18 || h < 5);
+    var img = $("heroPhoto");
+    if (night) {
+      img.src = "aoi.jpg";
+      img.width = 700; img.height = 874;
+      img.className = "hero-photo is-night";
+      $("greet").textContent = "今日もおつかれさま";
+      $("greetSub").textContent = "夜番は僕。ノートを聞くのは、はるか。";
+    } else {
+      img.src = "haruka.jpg";
+      img.width = 900; img.height = 675;
+      img.className = "hero-photo";
+      $("greet").textContent = (h < 11) ? "おはよ、おけちゃん" : "おつかれ";
+      $("greetSub").textContent = "";
+    }
+  }
+
+  /* ---------------- 描画 ---------------- */
+  function renderIdeals() {
+    var card = $("idealsCard");
+    if (!ideals.length) {
+      card.innerHTML = '<p class="empty">ここに、足した理想が並んでいくよ。</p>';
+      return;
+    }
+    var html = '<ul class="plain">';
+    for (var i = 0; i < ideals.length; i++) {
+      var it = ideals[i];
+      html += '<li class="ideal-li"><span class="ideal-date">' + esc(labelForDate(it.date || "")) + "</span>" +
+              esc(it.text || "") + "</li>";
+    }
+    card.innerHTML = html + "</ul>";
+  }
+
+  function renderForest() {
+    var card = $("forestCard");
+    var d = forestDoc;
+    if (!d) {
+      card.innerHTML = '<p class="empty">今日の分はまだ届いてないよ。夜に持ってくるね</p>';
+      return;
+    }
+    var html = "";
+    if (d.headline) html += '<p class="forest-headline">' + esc(d.headline) + "</p>";
+    var items = Array.isArray(d.items) ? d.items : [];
+    for (var i = 0; i < items.length; i++) {
+      var it = items[i] || {};
+      html += '<div class="forest-item">' +
+              '<span class="forest-time">' + esc(it.time || "") + "</span>" +
+              '<span class="forest-who">' + esc(it.who || "") + "</span>" +
+              '<span class="forest-text">' + esc(it.text || "") + "</span></div>";
+    }
+    if (d.note) html += '<p class="forest-note">' + esc(d.note) + "</p>";
+    if (!html) html = '<p class="empty">今日の分はまだ届いてないよ。夜に持ってくるね</p>';
+    card.innerHTML = html;
+  }
+
+  function renderLog() {
+    var box = $("logCard");
+    var cut = new Date(); cut.setDate(cut.getDate() - 13);
+    var cutStr = dateStrOf(cut);
+    var shown = [];
+    for (var i = 0; i < entries.length; i++) {
+      if ((entries[i].date || "") >= cutStr) shown.push(entries[i]);
+    }
+    if (!shown.length) {
+      box.innerHTML = '<div class="card"><p class="empty">まだ何もないね。上でひとつ答えたら、ここに残るよ。</p></div>';
+      return;
+    }
+    var groups = [], map = {};
+    for (var j = 0; j < shown.length; j++) {
+      var ds = shown[j].date || "";
+      if (!map[ds]) { map[ds] = []; groups.push(ds); }
+      map[ds].push(shown[j]);
+    }
+    var html = "";
+    for (var g = 0; g < groups.length; g++) {
+      html += '<div class="day-block card"><div class="day-label">' + esc(labelForDate(groups[g])) + "</div>";
+      var rows = map[groups[g]];
+      for (var r = 0; r < rows.length; r++) {
+        var e = rows[r];
+        html += '<div class="log-entry">';
+        if (e.question) html += '<p class="log-q">' + esc(e.question) + "</p>";
+        html += '<p class="log-a">' + esc(e.answer || "") + "</p>";
+        if (e.reply) html += '<p class="log-r">' + esc(e.reply) + "</p>";
+        html += "</div>";
+      }
+      html += "</div>";
+    }
+    box.innerHTML = html;
+  }
+
+  function renderAll() { renderIdeals(); renderForest(); renderLog(); }
+
+  /* ---------------- 保存（db があれば db、無ければローカル） ---------------- */
+  function sortEntriesDesc(list) {
+    list.sort(function (a, b) { return (a.ts || a.id || "") < (b.ts || b.id || "") ? 1 : -1; });
+    return list;
+  }
+
+  function saveEntry(rec) {
+    // 画面には先に出す（保存の成否を待たせない）
+    var local = localRead();
+    local.entries.push(rec);
+    localWrite(local);
+    var known = false;
+    for (var i = 0; i < entries.length; i++) if (entries[i].id === rec.id) known = true;
+    if (!known) { entries.push(rec); sortEntriesDesc(entries); renderLog(); }
+
+    if (!db) return Promise.resolve();
+    try {
+      return db.doc("entries/" + rec.id).set({
+        date: rec.date, ts: rec.ts, category: rec.category,
+        question: rec.question, answer: rec.answer, reply: null, character: "haruka"
+      })["catch"](function () { /* 保存できなくてもローカルに残っている */ });
+    } catch (e) { return Promise.resolve(); }
+  }
+
+  function saveIdeal(rec) {
+    var local = localRead();
+    local.ideals.push(rec);
+    localWrite(local);
+    var known = false;
+    for (var i = 0; i < ideals.length; i++) if (ideals[i].id === rec.id) known = true;
+    if (!known) {
+      ideals.push(rec);
+      ideals.sort(function (a, b) { return (a.id || "") < (b.id || "") ? 1 : -1; });
+      renderIdeals();
+    }
+    if (!db) return;
+    try {
+      db.doc("ideals/" + rec.id).set({ date: rec.date, text: rec.text })["catch"](function () {});
+    } catch (e) { /* 諦める */ }
+  }
+
+  function saveReply(id, reply) {
+    var local = localRead();
+    for (var i = 0; i < local.entries.length; i++) if (local.entries[i].id === id) local.entries[i].reply = reply;
+    localWrite(local);
+    for (var j = 0; j < entries.length; j++) if (entries[j].id === id) entries[j].reply = reply;
+    renderLog();
+    if (!db) return;
+    try { db.doc("entries/" + id).update({ reply: reply })["catch"](function () {}); }
+    catch (e) { /* 諦める */ }
+  }
+
+  /* ---------------- db が来たら購読 ---------------- */
+  function wireDb() {
+    try {
+      db.collection("entries").orderBy("ts", "desc").limit(80).onSnapshot(function (snap) {
+        var list = [];
+        for (var i = 0; i < snap.docs.length; i++) {
+          var d = snap.docs[i], v = d.data() || {};
+          list.push({
+            id: d.id, date: v.date || "", ts: v.ts || d.id,
+            category: v.category, question: v.question || null,
+            answer: v.answer || "", reply: v.reply || null, character: v.character || "haruka"
+          });
+        }
+        entries = sortEntriesDesc(list);
+        renderLog();
+      }, function () { /* 購読が死んでも、今の画面はそのまま */ });
+    } catch (e) { /* パスが通らない時は黙って据え置き */ }
+
+    try {
+      db.collection("ideals").orderBy("date", "desc").limit(200).onSnapshot(function (snap) {
+        var list = [];
+        for (var i = 0; i < snap.docs.length; i++) {
+          var d = snap.docs[i], v = d.data() || {};
+          list.push({ id: d.id, date: v.date || "", text: v.text || "" });
+        }
+        list.sort(function (a, b) { return (a.id || "") < (b.id || "") ? 1 : -1; });
+        ideals = list;
+        renderIdeals();
+      }, function () {});
+    } catch (e) {}
+
+    try {
+      db.doc("days/" + todayStr).onSnapshot(function (snap) {
+        forestDoc = snap.exists ? (snap.data() || null) : null;
+        renderForest();
+      }, function () {});
+    } catch (e) {}
+  }
+
+  /* ---------------- はるかの返事 ---------------- */
+  function askHaruka(catIndex, question, answer, box, textEl, done) {
+    if (!sample) { done(null); return; }
+    box.hidden = false;
+    box.className = "reply fade-in";
+    textEl.className = "reply-text is-waiting";
+    textEl.textContent = "はるかが読んでる…";
+
+    var body;
+    if (catIndex === null) {
+      body = "カテゴリ：なし（おけちゃんが問いなしで置いていったひとこと）\n" +
+             "おけちゃんの言葉：" + answer + "\n\n" +
+             "1行だけで返して。";
+    } else {
+      body = "カテゴリ" + (catIndex + 1) + "「" + CATEGORIES[catIndex].name + "」\n" +
+             "問い：" + question + "\n" +
+             "おけちゃんの答え：" + answer;
+    }
+
+    var first = true;
+    sample(
+      [{ role: "user", content: HARUKA_RULES }, { role: "user", content: body }],
+      {
+        modelTier: "default",
+        cache: false,
+        onText: function (u) {
+          if (first) { textEl.className = "reply-text"; first = false; }
+          textEl.textContent = u.text;
+        }
+      }
+    ).then(function (res) {
+      textEl.className = "reply-text";
+      textEl.textContent = res.text;
+      done(res.text);
+    })["catch"](function (err) {
+      var partial = err && err.text ? String(err.text) : "";
+      if (partial) {
+        textEl.className = "reply-text";
+        textEl.textContent = partial;
+        done(partial);
+      } else {
+        box.hidden = true;       // 返事が来なかった日は、何も言わない
+        done(null);
+      }
+    });
+  }
+
+  /* ---------------- 送る ---------------- */
+  function onSend() {
+    if (sending) return;
+    var ta = $("answer");
+    var text = (ta.value || "").trim();
+    if (!text) { ta.focus(); return; }
+
+    var pick = currentPick();
+    var now = new Date();
+    var rec = {
+      id: now.toISOString(),
+      date: dateStrOf(now),
+      ts: now.toISOString(),
+      category: pick.cat + 1,
+      question: CATEGORIES[pick.cat].qs[pick.qi],
+      answer: text,
+      reply: null,
+      character: "haruka"
+    };
+
+    sending = true;
+    $("sendBtn").disabled = true;
+    saveEntry(rec);
+    if (rec.category === 3) {
+      saveIdeal({ id: rec.id, date: rec.date, text: text });
+    }
+    ta.value = "";
+    ta.style.height = "";
+    snapshotDraft();
+
+    if (!sample) {
+      $("replyBox").hidden = true;
+      $("savedNote").hidden = false;
+      sending = false;
+      $("sendBtn").disabled = false;
+      return;
+    }
+    $("savedNote").hidden = true;
+    askHaruka(pick.cat, rec.question, text, $("replyBox"), $("replyText"), function (reply) {
+      if (reply) saveReply(rec.id, reply);
+      sending = false;
+      $("sendBtn").disabled = false;
+    });
+  }
+
+  function onOneLine() {
+    var inp = $("oneLine");
+    var text = (inp.value || "").trim();
+    if (!text) { inp.focus(); return; }
+    var now = new Date();
+    var rec = {
+      id: now.toISOString(), date: dateStrOf(now), ts: now.toISOString(),
+      category: 0, question: null, answer: text, reply: null, character: "haruka"
+    };
+    $("oneLineBtn").disabled = true;
+    saveEntry(rec);
+    inp.value = "";
+    snapshotDraft();
+    if (!sample) {
+      $("oneReplyBox").hidden = true;
+      $("oneLineBtn").disabled = false;
+      return;
+    }
+    askHaruka(null, null, text, $("oneReplyBox"), $("oneReplyText"), function (reply) {
+      if (reply) saveReply(rec.id, reply);
+      $("oneLineBtn").disabled = false;
+    });
+  }
+
+  /* ---------------- 声で書く ---------------- */
+  function wireMic() {
+    var Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var btn = $("micBtn");
+    if (!Rec) { btn.hidden = true; return; }
+    var rec, running = false;
+    try { rec = new Rec(); } catch (e) { btn.hidden = true; return; }
+    rec.lang = "ja-JP";
+    rec.interimResults = false;
+    rec.continuous = true;
+
+    rec.onresult = function (ev) {
+      var add = "";
+      for (var i = ev.resultIndex; i < ev.results.length; i++) {
+        if (ev.results[i].isFinal) add += ev.results[i][0].transcript;
+      }
+      if (!add) return;
+      var ta = $("answer");
+      ta.value = ta.value ? (ta.value.replace(/\s+$/, "") + "\n" + add) : add;
+      autoGrow(ta);
+      snapshotDraft();
+    };
+    rec.onerror = function () { btn.hidden = true; try { rec.stop(); } catch (e) {} running = false; };
+    rec.onend = function () {
+      running = false;
+      btn.className = "btn-mic";
+      $("micLabel").textContent = "声で書く";
+    };
+    btn.hidden = false;
+    btn.addEventListener("click", function () {
+      if (running) { try { rec.stop(); } catch (e) {} return; }
+      try { rec.start(); } catch (e) { btn.hidden = true; return; }
+      running = true;
+      btn.className = "btn-mic is-on";
+      $("micLabel").textContent = "聞いてる…";
+    });
+  }
+
+  /* ---------------- 下書き保持 ---------------- */
+  function snapshotDraft() {
+    try {
+      var hot = window.claude && window.claude.hot;
+      if (hot && typeof hot.snapshot === "function") {
+        hot.snapshot({ draft: $("answer").value, oneLine: $("oneLine").value, rotIndex: rotIndex });
+      }
+    } catch (e) { /* hot が無い環境ではただの無音 */ }
+  }
+
+  function autoGrow(ta) {
+    ta.style.height = "auto";
+    ta.style.height = Math.max(132, ta.scrollHeight) + "px";
+  }
+
+  /* ---------------- 起動 ---------------- */
+  function start(hotData) {
+    var now = new Date();
+    todayStr = dateStrOf(now);
+    rotation = buildRotation(todayStr, dayNumberOf(now));
+    rotIndex = (hotData && typeof hotData.rotIndex === "number") ? hotData.rotIndex : 0;
+
+    paintGreeting();
+    paintQuestion();
+
+    var local = localRead();
+    entries = sortEntriesDesc(local.entries.slice());
+    ideals = local.ideals.slice().sort(function (a, b) { return (a.id || "") < (b.id || "") ? 1 : -1; });
+    renderAll();
+
+    if (hotData && typeof hotData.draft === "string") $("answer").value = hotData.draft;
+    if (hotData && typeof hotData.oneLine === "string") $("oneLine").value = hotData.oneLine;
+    autoGrow($("answer"));
+
+    $("qSwap").addEventListener("click", function () {
+      rotIndex = (rotIndex + 1) % rotation.length;
+      paintQuestion();
+      snapshotDraft();
+    });
+    $("sendBtn").addEventListener("click", onSend);
+    $("oneLineBtn").addEventListener("click", onOneLine);
+    $("oneLine").addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter") { ev.preventDefault(); onOneLine(); }
+    });
+    $("answer").addEventListener("input", function () { autoGrow(this); snapshotDraft(); });
+    $("oneLine").addEventListener("input", snapshotDraft);
+
+    wireMic();
+
+    // 能力は後から来る。来なくても、ここまでで全部出ている。
+    if (window.claude && typeof window.claude.use === "function") {
+      window.claude.use("db").then(function (x) {
+        if (!x) return;
+        db = x;
+        wireDb();
+      })["catch"](function () {});
+      window.claude.use("sample").then(function (x) {
+        if (typeof x === "function") sample = x;
+      })["catch"](function () {});
+    }
+  }
+
+  var hot = window.claude && window.claude.hot;
+  if (hot && typeof hot.ready === "function") hot.ready(start);
+  else start((hot && hot.data) ? hot.data : {});
+})();
+</script>
