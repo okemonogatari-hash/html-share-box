@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>ChatGPTからCodexへ 第1回</title>
+<meta name="description" content="AIシェア会に来てくれた方向けの、ちいさな解説の第1回です。ChatGPTの3つのモード、ボイスモード、Codexの入れ方、ダウンロードフォルダの片付け、ブラウザでのお店探し、おけもんの実例まで。">
+<meta property="og:title" content="ChatGPTからCodexへ 第1回">
+<meta property="og:description" content="ChatGPTの今を知って、Codexで1個だけ頼んでみる。コピーして使える頼み方つき。2026/9/25時点">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<!--
+  シリーズ：AIシェア会 9/24 振り返り（friend-share-g-1D7yWAcHbZCLOdAJ.html・りん制作）の続き。書体・3兄弟の色・吹き出しを継承。
+  ライト固定（配布物。読み手のOSがダークでも明るく届ける）。
+  事実の出典：ゆいCPO/PJ_2026-09-25_新メンバー向けChatGPT_Codex入門/research/01〜03
+  片付けの頼み方は 2026-09-25 にダミーの20ファイルで実演済み（同PJの demo/ に記録）。
+-->
+<style>
+:root{
+  color-scheme: light;
+  --ink:#2f2b28;
+  --ink-soft:#5d554e;
+  --ink-faint:#6f665e;
+  --accent-ink:#9c4426;
+
+  --paper:#fbf8f3;
+  --card:#ffffff;
+  --line:#e3dcd1;
+  --band:#f3ece1;
+  --hero:#fdf1e4;
+  --mint:#eef5f1;
+  --lav:#f6f1fb;
+
+  --t-chat:#2b5f8e;
+  --t-work:#2f6b57;
+  --t-agent:#71519e;
+
+  --who-ok:#2b5f8e;
+  --who-aoi:#1f6570;
+  --who-yui:#a3325f;
+  --who-ha:#a8431f;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  font-size:16.5px;line-height:1.9;overflow-wrap:anywhere;font-weight:500;
+}
+a{color:var(--accent-ink)}
+small{font-size:12.6px}
+strong{font-weight:900}
+
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px 80px}
+.col{width:100%;max-width:1240px;margin-left:auto;margin-right:auto}
+.col > h2,.col > .h2sub,.col > h3,.col > p,.col > ul,.col > ol,
+.col > .say,.col > blockquote,.col > .src,.col > .foot,.col > .prompt,.col > .note{
+  width:100%;max-width:760px;margin-left:auto;margin-right:auto;
+}
+.col > .cards,.col > .box,.col > .brothers,.col > .route,.col > .steps,.col > .levels,.col > .pillar,.col > .safe,.col > .next,.col > .bridge,.col > .tablewrap{
+  width:100%;max-width:1080px;margin-left:auto;margin-right:auto;
+}
+.say p,.box p,.card p{max-width:none}
+@media (max-width:1140px){
+  .col > .cards,.col > .box,.col > .brothers,.col > .route,.col > .steps,.col > .levels,.col > .pillar,.col > .safe,.col > .next,.col > .bridge,.col > .tablewrap{max-width:820px}
+}
+
+/* ヒーロー */
+.hero{background:var(--hero);border-bottom:2px solid var(--line);margin:0 -16px 34px;padding:0 16px}
+.hero .col{padding:52px 0 40px}
+.kicker{display:inline-block;font-size:13.5px;letter-spacing:.08em;color:var(--accent-ink);
+  border:1.5px solid var(--accent-ink);border-radius:999px;padding:3px 14px;margin-bottom:18px;background:#fff}
+h1{word-break:keep-all;font-size:clamp(27px,5.6vw,44px);line-height:1.42;margin:0 0 16px;font-weight:900;
+  text-wrap:balance;line-break:strict;max-width:900px}
+.lead{font-size:17px;color:var(--ink-soft);margin:0 0 14px;max-width:760px}
+.meta{margin:10px 0 0;font-size:13.5px;color:var(--ink-faint)}
+
+/* しおり：行程と持ち物 */
+.shiori{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:14px;margin:26px 0 0;max-width:1080px}
+@media (max-width:760px){ .shiori{grid-template-columns:minmax(0,1fr)} }
+.ticket{background:#fff;border:2px dashed var(--accent-ink);border-radius:18px;padding:18px 20px;min-width:0}
+.ticket .bl{display:block;font-size:13px;font-weight:900;letter-spacing:.08em;color:var(--accent-ink);margin:0 0 8px}
+.route{list-style:none;margin:0;padding:0;counter-reset:st}
+.route li{counter-increment:st;position:relative;padding:0 0 10px 44px;margin:0;min-height:34px}
+.route li::before{content:counter(st);position:absolute;left:0;top:2px;width:30px;height:30px;border-radius:50%;
+  background:var(--accent-ink);color:#fff;font-weight:900;font-size:14px;line-height:30px;text-align:center}
+.route li::after{content:"";position:absolute;left:14px;top:34px;bottom:0;border-left:2px dotted var(--line)}
+.route li:last-child::after{display:none}
+.route a{display:block;color:var(--ink);text-decoration:none;font-weight:700;font-size:15.5px;line-height:1.6}
+.route .min{display:block;font-size:13px;color:var(--ink-faint);line-height:1.5}
+.bag ul{margin:0;padding-left:1.2em}
+.bag li{font-size:15px;margin:0 0 6px}
+.bag p{margin:10px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.75}
+
+h2{word-break:keep-all;font-size:clamp(21px,3.6vw,27px);line-height:1.5;margin:66px 0 6px;font-weight:900;
+  text-wrap:balance;line-break:strict;display:flex;align-items:flex-start;gap:11px}
+h2::before{content:"";flex:0 0 auto;width:7px;height:1.35em;margin-top:.1em;border-radius:4px;background:var(--accent-ink)}
+.h2sub{margin:0 0 20px;font-size:14.5px;color:var(--ink-faint)}
+h3{word-break:keep-all;font-size:18px;margin:30px 0 10px;font-weight:900;line-break:strict;text-wrap:balance}
+p{margin:0 0 15px}
+ul,ol{margin:0 0 15px;padding-left:1.3em}
+li{margin:0 0 6px}
+
+/* 吹き出し */
+.say{display:flex;gap:13px;margin:0 0 16px;align-items:flex-start}
+.ava{flex:0 0 auto;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:900;color:#fff;text-align:center;line-height:1.2}
+.bub{flex:1 1 auto;min-width:0;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:13px 17px}
+.bub .who{display:block;font-size:13.5px;font-weight:900;margin-bottom:4px}
+.bub p{margin:0 0 9px;font-size:16px}
+.bub p:last-child{margin-bottom:0}
+.a-ok{background:var(--who-ok)} .w-ok{color:var(--who-ok)}
+.a-aoi{background:var(--who-aoi)} .w-aoi{color:var(--who-aoi)}
+.a-yui{background:var(--who-yui)} .w-yui{color:var(--who-yui)}
+.a-ha{background:var(--who-ha)} .w-ha{color:var(--who-ha)}
+
+/* 3つのモード */
+.brothers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 14px}
+.bro{background:var(--card);border:2px solid var(--line);border-radius:16px;overflow:hidden;min-width:0;display:flex;flex-direction:column}
+.bro .top{padding:12px 16px;color:#fff}
+.bro .top .step{display:block;font-size:13px;letter-spacing:.06em;font-weight:700}
+.bro .top .name{display:block;font-size:21px;font-weight:900;line-height:1.4}
+.bro.chat .top{background:var(--t-chat)} .bro.chat{border-color:var(--t-chat)}
+.bro.work .top{background:var(--t-work)} .bro.work{border-color:var(--t-work)}
+.bro.agent .top{background:var(--t-agent)} .bro.agent{border-color:var(--t-agent)}
+.bro .like{display:block;padding:10px 16px 0;font-weight:900;font-size:15.5px}
+.bro.chat .like{color:var(--t-chat)} .bro.work .like{color:var(--t-work)} .bro.agent .like{color:var(--t-agent)}
+.bro .what{padding:4px 16px 14px;font-size:14.5px;color:var(--ink-soft);line-height:1.8;margin:0}
+@media (max-width:760px){ .brothers{grid-template-columns:minmax(0,1fr)} }
+.app{display:block;max-width:1080px;margin:0 auto 18px;background:var(--band);border-radius:14px;padding:12px 16px;font-size:15px;color:var(--ink-soft);text-align:center}
+@media (max-width:1140px){ .app{max-width:820px} }
+
+/* カード */
+.cards{display:grid;gap:14px;grid-template-columns:repeat(3,minmax(0,1fr));margin:18px 0 24px}
+@media (max-width:760px){ .cards{grid-template-columns:minmax(0,1fr)} }
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:17px 18px;min-width:0}
+.card h4{margin:0 0 6px;font-size:16px;color:var(--accent-ink);font-weight:900;line-height:1.5}
+.card p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.8}
+
+/* ボックス */
+.box{background:var(--card);border:2px dashed var(--line);border-radius:16px;padding:20px;margin:22px 0}
+.box > .bl{display:inline-block;font-size:12.8px;font-weight:900;letter-spacing:.06em;color:var(--ink-faint);background:var(--band);border-radius:8px;padding:3px 11px;margin-bottom:12px}
+.box ol,.box ul{margin-bottom:0}
+.box > p:last-child{margin-bottom:0}
+.box.solid{border-style:solid;border-color:var(--t-work);background:var(--mint)}
+
+/* 手順 */
+.steps{list-style:none;margin:18px 0 20px;padding:0;counter-reset:sp;display:grid;gap:10px}
+.steps li{counter-increment:sp;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:13px 16px 13px 58px;position:relative;margin:0;min-width:0}
+.steps li::before{content:counter(sp);position:absolute;left:14px;top:13px;width:30px;height:30px;border-radius:9px;
+  background:var(--t-agent);color:#fff;font-weight:900;font-size:15px;line-height:30px;text-align:center}
+.steps b{display:block;font-size:16px;line-height:1.6}
+.steps span{display:block;font-size:14.5px;color:var(--ink-soft);line-height:1.8}
+
+/* コピーできる頼み方 */
+.prompt{background:#fff;border:2px solid var(--t-agent);border-radius:16px;margin:16px auto 20px;overflow:hidden}
+.prompt .ph{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--lav);padding:9px 14px;border-bottom:1.5px solid var(--line)}
+.prompt .ph .lab{font-weight:900;font-size:14.5px;color:var(--t-agent);min-width:0}
+.copy{flex:0 0 auto;font:inherit;font-size:14px;font-weight:700;color:#fff;background:var(--t-agent);border:0;border-radius:999px;padding:6px 16px;cursor:pointer}
+.copy:focus-visible{outline:3px solid var(--accent-ink);outline-offset:2px}
+.prompt pre{margin:0;padding:14px 16px;white-space:pre-wrap;word-break:normal;overflow-wrap:anywhere;font-family:inherit;font-size:15.5px;line-height:1.85;color:var(--ink)}
+
+/* 表 */
+.tablewrap{overflow-x:auto;border:1.5px solid var(--line);border-radius:14px;background:var(--card);margin:18px 0}
+table{border-collapse:collapse;width:100%;table-layout:fixed}
+th,td{padding:12px 14px;text-align:left;font-size:15px;border-bottom:1px solid var(--line);line-height:1.75;vertical-align:top}
+th{background:var(--band);font-weight:900;font-size:14px}
+tr:last-child td{border-bottom:none}
+@media (max-width:600px){
+  table,thead,tbody,tr,th,td{display:block;width:100%}
+  thead{display:none}
+  tr{border-bottom:1px solid var(--line);padding:6px 0}
+  tr:last-child{border-bottom:none}
+  td{border-bottom:none;padding:4px 14px}
+  td:first-child{font-weight:900;padding-top:10px}
+}
+
+/* 3段 */
+.levels{display:grid;gap:14px;margin:18px 0 18px}
+.lv{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px 18px 8px;min-width:0}
+.lv .lvh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0 0 10px}
+.lv .lvh b{font-size:19px;font-weight:900;line-height:1.5}
+.lv .lvh span{font-size:13.5px;color:var(--ink-faint)}
+.lv.l1{border-color:var(--t-chat)} .lv.l1 .lvh b{color:var(--t-chat)}
+.lv.l2{border-color:var(--t-work)} .lv.l2 .lvh b{color:var(--t-work)}
+.lv.l3{border-color:var(--t-agent)} .lv.l3 .lvh b{color:var(--t-agent)}
+.ex{display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 10px}
+@media (max-width:760px){ .ex{grid-template-columns:minmax(0,1fr)} }
+.ex > div{background:var(--paper);border-radius:12px;padding:11px 14px;min-width:0}
+.ex .ask{display:block;font-weight:700;font-size:15px;line-height:1.7}
+.ex .did{display:block;font-size:14px;color:var(--ink-soft);line-height:1.75;margin-top:3px}
+.ex a{font-weight:700}
+
+/* 柱：連絡をまとめる */
+.pillar{background:var(--mint);border:2px solid var(--t-work);border-radius:18px;padding:18px 20px;margin:0 0 14px}
+.pillar .tag{display:inline-block;font-size:12.8px;font-weight:900;letter-spacing:.06em;color:#fff;background:var(--t-work);border-radius:8px;padding:3px 11px;margin-bottom:8px}
+.pillar h3{margin:0 0 8px;color:var(--t-work)}
+.flow{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0 14px;padding:0}
+@media (max-width:760px){ .flow{grid-template-columns:minmax(0,1fr)} }
+.flow li{background:#fff;border-radius:12px;padding:10px 13px;margin:0;min-width:0}
+.flow b{display:block;font-size:15px;line-height:1.6}
+.flow span{display:block;font-size:13.5px;color:var(--ink-soft);line-height:1.7}
+.pillar .first{background:#fff;border-radius:12px;padding:12px 15px;margin:0}
+.pillar .first b{display:block;font-size:15.5px;margin-bottom:4px}
+.pillar .first p{margin:0 0 6px;font-size:14.5px;color:var(--ink-soft);line-height:1.8}
+.pillar .first p:last-child{margin:0}
+
+/* 安心 */
+.safe{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 20px}
+@media (max-width:760px){ .safe{grid-template-columns:minmax(0,1fr)} }
+.safe > div{background:#fff;border:2px solid var(--accent-ink);border-radius:16px;padding:15px 17px;min-width:0}
+.safe b{display:block;font-size:17px;color:var(--accent-ink);line-height:1.5;margin-bottom:4px}
+.safe p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.8}
+
+/* 講座への橋 */
+.bridge{background:#fffaf5;border:2px solid var(--accent-ink);border-radius:18px;padding:18px 20px;margin:22px 0}
+.bridge .bl{display:block;font-size:13px;font-weight:900;letter-spacing:.06em;color:var(--accent-ink);margin:0 0 6px}
+.bridge h3{margin:0 0 10px}
+.bridge ol{margin:0 0 10px}
+.bridge p:last-child{margin:0}
+
+blockquote{margin:14px 0;padding:12px 16px;background:var(--band);border-radius:12px;font-size:15.5px;color:var(--ink-soft)}
+.note{font-size:14.5px;color:var(--ink-soft)}
+
+.next{background:var(--hero);border:2px solid var(--accent-ink);border-radius:18px;padding:20px 22px;margin:26px auto 0}
+.next .when{display:block;word-break:keep-all;font-size:clamp(22px,4.4vw,30px);font-weight:900;line-height:1.45;color:var(--accent-ink);margin:2px 0 6px}
+.next p{margin:0 0 8px}
+.next p:last-child{margin:0}
+
+.src{font-size:13.5px;color:var(--ink-faint);margin-top:6px}
+.foot{margin-top:64px;padding-top:22px;border-top:2px solid var(--line);font-size:13.5px;color:var(--ink-faint)}
+.foot p{margin:0 0 10px}
+.foot ul{padding-left:1.2em}
+.foot li{margin:0 0 4px}
+.route a,.pillar .first b,.lv .lvh b,.card h4,.steps b,.safe b,.flow b,.ticket .bl{word-break:auto-phrase}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="col">
+    <span class="kicker">AIシェア会 はじめての方へ｜第1回</span>
+    <h1>ChatGPTの<wbr>今を知って、<wbr>Codexに<wbr>1個だけ<wbr>頼んでみましょう</h1>
+    <p class="lead">渡邉さん、ようこそ。9/24のシェア会でおけもんが「ChatGPT側の同じ機能を紹介します」とお約束した、その1回目です。全部を覚えなくて大丈夫です。気になったところを1個だけ、試してみてください。</p>
+    <p class="meta">2026年9月25日時点の情報です。ChatGPTの画面や名前はよく変わるので、見当たらない時はChatGPT自身に「〇〇はどこ？」と聞いてみてください。</p>
+
+    <div class="shiori">
+      <div class="ticket">
+        <span class="bl">今日の行程</span>
+        <ol class="route">
+          <li><a href="#s1">ChatGPTの中にある3つのモード</a><span class="min">読む・3分</span></li>
+          <li><a href="#s2">ボイスモードで喋ってみる</a><span class="min">やってみる・5分</span></li>
+          <li><a href="#s3">Codexをパソコンに入れる</a><span class="min">やってみる・10分</span></li>
+          <li><a href="#s4">最初の1歩：ダウンロードフォルダの片付け</a><span class="min">やってみる・10分</span></li>
+          <li><a href="#s5">2歩目：ブラウザでお店探しを1個</a><span class="min">やってみる・10分</span></li>
+          <li><a href="#s6">おけもんの使い方をのぞいてみる</a><span class="min">読む・5分</span></li>
+          <li><a href="#s7">安心して任せるための約束</a><span class="min">読む・1分</span></li>
+          <li><a href="#s8">講座資料への橋と、次回のお知らせ</a><span class="min">読む・2分</span></li>
+        </ol>
+      </div>
+      <div class="ticket bag">
+        <span class="bl">持ちもの</span>
+        <ul>
+          <li>いま使っている、課金中のChatGPTアカウント</li>
+          <li>MacかWindowsのパソコン</li>
+          <li>片付けたいフォルダを1つ</li>
+        </ul>
+        <p>全部そろわなくても大丈夫です。行程の1と2は、スマホだけでもできます。</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="col">
+
+<h2 id="s1">ChatGPTには、<wbr>3つの<wbr>モードが<wbr>あります</h2>
+<p class="h2sub">9/24にお話しした「AIの3兄弟」の、ChatGPT側です</p>
+
+<p>渡邉さんが使っている「GPTワーク」は、正式には<strong>「ChatGPT Work」</strong>という名前です。今年の7月から、ChatGPTのパソコン用アプリの中で、Chat・Work・Codexの3つを切り替えて使う形になりました。</p>
+
+<div class="brothers">
+  <div class="bro chat">
+    <div class="top"><span class="step">1 ｜ いちばん身近</span><span class="name">Chat</span></div>
+    <span class="like">相談カウンター</span>
+    <p class="what">文章で聞くと、文章で返ってきます。調べもの、相談、文章の下書きはここから始めます。</p>
+  </div>
+  <div class="bro work">
+    <div class="top"><span class="step">2 ｜ まんなか</span><span class="name">Work</span></div>
+    <span class="like">資料を仕上げる工房</span>
+    <p class="what">ファイルやアプリをまたいで、スライド・表・文書を完成まで持っていきます。講座資料なら、まずここです。</p>
+  </div>
+  <div class="bro agent">
+    <div class="top"><span class="step">3 ｜ いちばん深い</span><span class="name">Codex</span></div>
+    <span class="like">パソコンの前に座る職人さん</span>
+    <p class="what">パソコンの中のファイルを実際に動かして、ブラウザやアプリの操作もします。</p>
+  </div>
+</div>
+<span class="app">3つとも、同じChatGPTアプリの中にいます。別のアプリを入れる必要はありません。</span>
+<p>お店で言えば、Chatは相談して帰る窓口、Workは頼んだ資料を仕上げて渡してくれる工房、Codexはこちらのパソコンの前に座って手を動かしてくれる職人さんです。同じお店の中で、奥へ進むほど任せられることが増えていきます。</p>
+
+<div class="box">
+  <span class="bl">「制限がかかる」のは、なぜ？</span>
+  <p>WorkはCodexと同じ仕組みで、作業の重さに合わせてプランの利用枠を使います。重い仕事を続けると、しばらく待つ時間が出ることがあります。普通のチャットとは、枠の数え方が別なんです。Plusプランなら、パソコン・Web・スマホのどこからでもWorkを使えます。</p>
+</div>
+
+<h2 id="s2">まずは、<wbr>ボイスモードで<wbr>喋って<wbr>みましょう</h2>
+<p class="h2sub">いちばん手軽で、いちばん「おっ」となるところです</p>
+
+<div class="say"><div class="ava a-ok">おけ<br>もん</div><div class="bub"><span class="who w-ok">おけもん</span><p>ChatGPTのボイスモード、音声対話がすごく滑らかになったよ。</p></div></div>
+
+<div class="cards">
+  <div class="card"><h4>聞きながら、話してくれます</h4><p>「Live」という方式では、こちらの声を聞きながら同時に話します。相づちや、途中での言い直しが自然に通ります。</p></div>
+  <div class="card"><h4>9/23からは、作業も頼めます</h4><p>音声のまま「Slackの新着を確認して」のように、つないだアプリの作業もお願いできるようになりました。</p></div>
+  <div class="card"><h4>Plusなら1日3時間</h4><p>24時間のうち3時間まで、Liveの音声が使えます。まずは5分、気軽に話しかけてみてください。</p></div>
+</div>
+
+<p>話してみると、電話で友だちとおしゃべりしているみたいな感覚に近いです。始め方は、入力欄の横にある音声のマークを押して、マイクを許可するだけです。方式は「設定 → Voice」で選べます。最初のお題は、こんな一言がおすすめです。</p>
+<blockquote>「今日あったことを3分話すから、明日やることを3つにまとめてくれる？」</blockquote>
+
+<h2 id="s3">Codexを、<wbr>パソコンに<wbr>入れて<wbr>みましょう</h2>
+<p class="h2sub">ここからはパソコンで。10分あれば入ります</p>
+
+<ol class="steps">
+  <li><b>ChatGPTのダウンロードページを開きます</b><span><a href="https://chatgpt.com/ja-JP/download/">https://chatgpt.com/ja-JP/download/</a> から、パソコン用のアプリを入れます。</span></li>
+  <li><b>いつものアカウントでサインインします</b><span>ここは自分の手で入力します。パスワードをAIに渡す場面はありません。</span></li>
+  <li><b>アプリの上のほうで「Codex」に切り替えます</b><span>Chat・Work・Codexの切り替えが並んでいます。</span></li>
+  <li><b>作業してほしいフォルダを1つ選びます</b><span>今日はダウンロードフォルダにします。Codexは、選んだフォルダの中で動きます。</span></li>
+  <li><b>権限の設定は「Ask for approval」のままにします</b><span>入力欄の下にある設定です。「承認を求める」という意味で、フォルダの外に出る操作やネットを使う時に、毎回「いい？」と聞いてくれます。慣れるまではこのままがいちばん安心です。旅館の仲居さんと同じで、お部屋（選んだフォルダ）の中のことは任せられて、外に出る時だけ声をかけてくれます。</span></li>
+</ol>
+<p class="note">黒い画面（ターミナル）から入れる版もありますが、そちらは開発者向けです。アプリだけで十分です。</p>
+
+<h2 id="s4">最初の1歩は、<wbr>ダウンロード<wbr>フォルダの<wbr>片付けです</h2>
+<p class="h2sub">消えても困らない場所で、Codexと練習します</p>
+
+<p>ダウンロードフォルダには、いつの間にかPDFや画像がたまっていきます。散らかっていても困らないけれど、片付くと気持ちいい。Codexとの最初の練習にぴったりの場所です。<strong>頼むのは2回に分けます。</strong>1回目は計画を見せてもらうだけ、2回目で移動です。引っ越しの見積もりみたいに、先に「どの箱を、どの部屋へ」を紙に書いてもらってから運んでもらう、という順番です。</p>
+
+<div class="prompt">
+  <div class="ph"><span class="lab">1回目　計画を見せてもらう</span><button class="copy" type="button" data-copy="p1">コピー</button></div>
+<pre id="p1">このフォルダ（ダウンロード）の中を見て、片付けの計画を立ててください。
+
+・今日は計画を見せてもらうところまでにしてください。移動・名前の変更・削除は、わたしが「OK」と言ってから始めてください。
+・何を、どのフォルダへ移す予定か、表で見せてください。
+・消してよさそうに見えるものも、消さずに「要確認」フォルダ行きにしてください。
+・最後に、全部で何個あって、どのフォルダに何個入る予定かを教えてください。</pre>
+</div>
+
+<p>表を見て、分け方が気に入らなければ「写真は1つのフォルダにまとめて」のように直してもらいます。納得できたら、2回目です。</p>
+
+<div class="prompt">
+  <div class="ph"><span class="lab">2回目　計画どおりに移動してもらう</span><button class="copy" type="button" data-copy="p2">コピー</button></div>
+<pre id="p2">OKです。さっきの計画どおりに進めてください。
+
+・やるのは「移動」だけにしてください。削除と上書きはしないでください。
+・迷うものは「要確認」フォルダへ入れてください。
+・終わったら、動かしたファイルの数と、最初の数と合っているかを報告してください。</pre>
+</div>
+
+<div class="box solid">
+  <span class="bl">ゆいが、架空のファイル20個で試しました（9/25）</span>
+  <p>本物のダウンロードフォルダではなく、練習用に作ったフォルダに「講座資料.pdf」「受講生アンケート.xlsx」「スクリーンショット」「インストーラー」など20個を入れて、上の2つの頼み方をそのまま送りました。使ったのは、ChatGPTアプリに入っているCodexです。</p>
+</div>
+<div class="tablewrap">
+<table>
+<thead><tr><th style="width:24%">送ったもの</th><th>Codexがしたこと</th></tr></thead>
+<tbody>
+<tr><td>1回目（計画だけ）</td><td>20個を「講座関連4／原稿2／写真・スクリーンショット4／動画・音声2／経理2／要確認6」に分ける表が出てきました。この時点では、ファイルは1つも動いていません。</td></tr>
+<tr><td>2回目（移動だけ）</td><td>20個すべてを移動して、「移動前20・移動後20で一致」と報告してきました。ゆいの側でも中身を1つずつ照らし合わせて、消えたものが0個だと確かめました。</td></tr>
+<tr><td>迷ったもの</td><td>「資料 (1).pdf」のような重複かもしれないファイルや、インストーラー、中身の分からないファイルは、消さずに「要確認」へ入れていました。</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="s5">2歩目は、<wbr>ブラウザでの<wbr>作業を<wbr>1個だけ<wbr>頼んでみます</h2>
+<p class="h2sub">いつも自分の手でやっている操作を、1つ渡してみます</p>
+
+<p>おすすめはお店探しです。お金も個人情報も動かないので、最後まで安心して見ていられます。WorkかCodexの画面で、次の文を送ってみてください。</p>
+
+<div class="prompt">
+  <div class="ph"><span class="lab">お店探しを、予約画面の手前まで</span><button class="copy" type="button" data-copy="p3">コピー</button></div>
+<pre id="p3">ブラウザを使って、梅田で金曜の19時から4人で入れる、落ち着いた和食のお店を3つ探してください。予算は1人5,000円くらいです。
+
+・空席と値段を表にしてください。
+・いちばん良さそうなお店は、予約画面の手前まで進めて止めてください。予約ボタンは、わたしが押します。</pre>
+</div>
+
+<div class="cards">
+  <div class="card"><h4>初めてのサイトは、聞いてくれます</h4><p>ChatGPTは、初めて使うサイトごとに「使っていい？」と確認します。</p></div>
+  <div class="card"><h4>送信と購入の前にも、聞いてくれます</h4><p>情報の送信・購入・削除のような大事な操作の前には、必ず確認が入る作りです。</p></div>
+  <div class="card"><h4>ブラウザの開き方</h4><p>WorkかCodexの画面で Cmd＋Shift＋B（Windowsは Ctrl＋Shift＋B）。文章で「ブラウザを使って」と書くだけでも動きます。</p></div>
+</div>
+
+<h2 id="s6">おけもんは、<wbr>こんなふうに<wbr>使っています</h2>
+<p class="h2sub">これはあくまで実例です。使えそうなところから、つまんでみてください</p>
+
+<p>この半年で、おけもんがCodexに自分で頼んだ会話は746本ありました。その中から、真似しやすい順に並べています。カギかっこの中は、実際に頼んだ言葉です。</p>
+
+<div class="levels">
+  <div class="lv l1">
+    <div class="lvh"><b>最初の1週間で</b><span>頼んだその日にできたもの</span></div>
+    <div class="ex">
+      <div><span class="ask">「今日の18時から梅田で4人、おいしい居酒屋を探して予約手前で止めて」</span><span class="did">空席と予算で3店に絞って、そのまま友だちへのDMに送ってくれました。6分でした。</span></div>
+      <div><span class="ask">「パソコン版のLINEで、友だちに『こんばんは』と送ってみて」</span><span class="did">LINEの画面を見て相手を選び、送る前に1回「いい？」と聞いてから送信。1分でした。</span></div>
+      <div><span class="ask">「明日のオフィスの予約を取って」</span><span class="did">空きを見て時間を選び、「予約を確定する」ボタンの直前で止まってくれました。</span></div>
+      <div><span class="ask">「課題図書が、近くの図書館にあるか見て」</span><span class="did">図書館ごとの貸出状況を表にして、読みたいリストにも入れてくれました。</span></div>
+    </div>
+  </div>
+
+  <div class="lv l2">
+    <div class="lvh"><b>慣れてきたら</b><span>1〜2週間さわってから</span></div>
+    <div class="ex">
+      <div><span class="ask">「朝一の新幹線、グリーン車で取ってみよう」</span><span class="did">ログインだけ自分で。列車・座席・金額を読み返して確かめてから、購入確定ボタンの直前で止まりました。</span></div>
+      <div><span class="ask">「来月の東京の予定を見て、ホテルを3つ候補に。予約確定の手前まで」</span><span class="did">カレンダーから日付を拾って比べ、予約フォームに日付と人数まで入力。名前と電話番号は自分で入れました。</span></div>
+      <div><span class="ask">「実際のCanvaをブラウザで動かして、かわいい素材とフォントでおたよりを」</span><span class="did">A4のおたよりをCanvaの中に作ってくれました。文字はあとから自分で直せる形のままです。</span></div>
+      <div><span class="ask">「最新のメールを見て、レンタルサーバーの解約を進めて」</span><span class="did">メールで契約を確かめて解約の手続きをし、受付メールが届いたところまで確認しました。</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="pillar">
+  <span class="tag">もう1本の柱</span>
+  <h3>連絡をまとめて、<wbr>次にやることを<wbr>一緒に決めて<wbr>もらいます</h3>
+  <div class="say"><div class="ava a-ok">おけ<br>もん</div><div class="bub"><span class="who w-ok">おけもん</span><p>私はいつも、SlackやChatworkの内容を読みに行ってもらって、お客さんからの新着と「ここから何をしたらいいか」をやり取りしているよ。</p></div></div>
+  <ol class="flow">
+    <li><b>読みに行く</b><span>SlackやChatworkなど、やり取りしている場所の新着をAIが拾います</span></li>
+    <li><b>用事にする</b><span>「返事が要る」「期日がある」ものを、やることの一覧に入れます</span></li>
+    <li><b>予定に入れる</b><span>日時が決まったものは、Googleカレンダーに登録します</span></li>
+    <li><b>朝に届く</b><span>翌朝「今日知りたいこと」の1枚にまとまって届き、それを見て一緒に決めます</span></li>
+  </ol>
+  <div class="first">
+    <b>最初の一歩は、GmailかLINEのどちらか1つから</b>
+    <p><strong>Gmailなら</strong>、Workの「プラグイン」でメールをつなぐと、「今週届いたメールで、返事が要るものを3つ教えて」と頼めます。つなげる相手は、アプリのプラグインの一覧で確かめてください。</p>
+    <p><strong>LINEなら</strong>、Codexの「コンピューター操作」でパソコン版LINEの画面を読んでもらえます。Macでは最初に、画面収録などの許可を自分で出します。</p>
+  </div>
+</div>
+
+<div class="levels">
+  <div class="lv l3">
+    <div class="lvh"><b>ここまで来ました</b><span>遊んでいたら、ここまで届いたもの</span></div>
+    <div class="ex">
+      <div><span class="ask">「この日本酒をBlenderで3Dにして、動く商品ページを作って。本気でふざけるがうちのモットー」</span><span class="did">くるっと回る3Dの商品ページになりました。<a href="https://okemon-ai-box.okemon.chatgpt.site/kapipara/">カピパラ酒のページを見る</a></span></div>
+      <div><span class="ask">「おけもんアイコンを立体にして、おもろい自己紹介を作って」</span><span class="did">仲間を捕まえるゲームつきの自己紹介サイトに。<a href="https://okemon-asobo.pages.dev/adventure">おけもんの大冒険を見る</a></span></div>
+      <div><span class="ask">毎朝9時に、夜行列車の空席を見に行く見張り</span><span class="did">決まった時間に、Codexが勝手に予約サイトを見に行って報告してくれます。</span></div>
+      <div><span class="ask">「動くLINEスタンプ、今日こそ完成させましょう！」</span><span class="did">何回も挫折して、やり方を調べ直して、6日かけてスマホのLINEの中で動くところまで。失敗も込みで、ここまで来られました。</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="say"><div class="ava a-ok">おけ<br>もん</div><div class="bub"><span class="who w-ok">おけもん</span><p>パソコンで頼む操作は、慣れてきたら全部Codexが代わりにやってくれるようになりますよ。LINEの送信も、Canvaを動かすのも。</p></div></div>
+
+<h2 id="s7">最後の1押しと<wbr>ログインは、<wbr>自分の手に<wbr>残ります</h2>
+<p class="h2sub">任せる範囲は、自分で決められます</p>
+
+<div class="safe">
+  <div><b>ログインは自分で</b><p>パスワードや確認コード、暗証番号は自分で入れます。おけもんもそうしています。</p></div>
+  <div><b>確定の1押しも自分で</b><p>予約・購入・送信のボタンは、自分で押します。ChatGPT側も、その前に必ず確認してくる作りです。</p></div>
+  <div><b>片付けは「移動だけ」で</b><p>消すのは、中身を見てから自分で。頼む時は「移動だけ・迷ったら要確認へ」で十分です。</p></div>
+</div>
+
+<h2 id="s8">渡邉さんの<wbr>講座資料なら、<wbr>ここから<wbr>始められます</h2>
+<p class="h2sub">第1回のしめくくりに、橋を1本かけておきます</p>
+
+<div class="bridge">
+  <span class="bl">ライター講座の資料づくりへ</span>
+  <h3>話した中身を、<wbr>スライドの<wbr>骨組みに<wbr>してもらう</h3>
+  <p>講座の資料を外注して、それでも納得できずにCanvaで作り直していた、とお話ししてくださいましたね。その「中身を考えて形にする」ところまでは、AIに任せられます。</p>
+  <ol>
+    <li>ボイスモードで、次の講座で伝えたいことを10分ほど喋ります</li>
+    <li>Workに「今の話を、受講生向けのスライド8枚の構成にして」と頼みます</li>
+    <li>気になるところだけ直して、最後の見た目はいつものCanvaで整えます</li>
+  </ol>
+  <p>いちばん大事な「何を伝えたいか」は、渡邉さんの声から始まります。</p>
+</div>
+
+<div class="next">
+  <p>次回のAIシェア会</p>
+  <span class="when">2026年<wbr>10月22日（木）<wbr>21:30〜</span>
+  <p>このページの第2回では、上の流れで講座資料を1本つくるところをご紹介する予定です。試してみて詰まったところは、Slackでいつでも聞いてください。「ここが分からなかった」が、次の回の材料になります。</p>
+</div>
+
+<div class="foot">
+  <p>このページの内容を、おけもんとAI社員の掛け合い動画にする準備もしています。</p>
+  <p><small>確かめた先（2026年9月25日）：ChatGPTの料金とプラン <a href="https://chatgpt.com/ja-JP/pricing/">https://chatgpt.com/ja-JP/pricing/</a>／ChatGPT Workの発表 <a href="https://openai.com/ja-JP/index/chatgpt-for-your-most-ambitious-work/">https://openai.com/ja-JP/index/chatgpt-for-your-most-ambitious-work/</a>／音声会話 <a href="https://help.openai.com/en/articles/20001274-chatgpt-voice">https://help.openai.com/en/articles/20001274-chatgpt-voice</a>／リリースノート（9/23の音声の更新） <a href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes">https://help.openai.com/en/articles/6825453-chatgpt-release-notes</a>／Codexの権限 <a href="https://learn.chatgpt.com/docs/sandboxing">https://learn.chatgpt.com/docs/sandboxing</a>／ブラウザ <a href="https://learn.chatgpt.com/docs/browser">https://learn.chatgpt.com/docs/browser</a></small></p>
+  <p><small>おけもんの実例は、Codexの会話の記録から拾いました。お客さんや友だちの名前、金額、予約番号は載せていません。</small></p>
+  <p><small>まとめ：おけもんカンパニー ゆい（2026-09-25）</small></p>
+</div>
+
+</div>
+</main>
+</div>
+<script>
+(function(){
+  function done(btn){var t=btn.textContent;btn.textContent="コピーしました";setTimeout(function(){btn.textContent=t;},1800);}
+  function fallback(text,btn){
+    var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");
+    ta.style.position="fixed";ta.style.top="0";ta.style.left="0";ta.style.opacity="0";
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");done(btn);}catch(e){btn.textContent="長押しでコピーしてください";}
+    document.body.removeChild(ta);
+  }
+  document.querySelectorAll(".copy").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var el=document.getElementById(btn.getAttribute("data-copy"));if(!el)return;
+      var text=el.textContent;
+      if(navigator.clipboard&&window.isSecureContext){
+        navigator.clipboard.writeText(text).then(function(){done(btn);},function(){fallback(text,btn);});
+      }else{fallback(text,btn);}
+    });
+  });
+})();
+</script>
+</body>
+</html>
