@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="okemori-audience" content="internal">
+<meta name="description" content="おけもんライフハックBGM 収益化PJ 検討会議（2026-09-26）。発起人りんが持ってきたアイデアを、みんなでつつき合ったアイデア会議の掛け合い。">
+<title>ライフハックBGM 検討会議</title>
+<!--
+ 見た目：はるかCEO/PJ_カンパニー日記/Day0926-3 のCSSをそのまま写し、しーちゃん・まな・ゆいの色を Day0926-2／Day0917-1 から足した。
+ 台詞の正本：はるかCEO/社内会議/2026-09-26_おけもんライフハックBGM収益化PJ_検討会議.md（build_meeting.py で一字も変えずに流し込み）
+-->
+<style>
+
+:root{
+  color-scheme: light;
+  --ink:#2f2b28;
+  --ink-soft:#5d554e;
+  --ink-faint:#6f665e;
+  --accent-ink:#9c4426;
+  --paper:#fbf8f3;
+  --card:#ffffff;
+  --line:#e3dcd1;
+  --band:#f3ece1;
+  --haru:#b3175a;
+  --aoi:#0f6f7a;
+  --rin:#c1552f;
+  --oke:#8a5a1c;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  font-size:16px;line-height:1.9;overflow-wrap:anywhere;
+}
+
+/* 2層レイアウト */
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px 80px}
+.col{width:100%;max-width:1240px;margin-left:auto;margin-right:auto}
+.col > h2,.col > .h2sub,.col > h3,.col > p,.col > ul,.col > ol,
+.col > .say,.col > blockquote,.col > .scene,.col > .src,.col > .foot,
+.col > .oke,.col > .q{
+  width:100%;max-width:760px;margin-left:auto;margin-right:auto;
+}
+.col > .tablewrap,.col > .cards,.col > .box,.col > .flow,.col > .nav,
+.col > .roots,.col > .mvt,.col > .next,.col > .paste,.col > .later{
+  width:100%;max-width:1080px;margin-left:auto;margin-right:auto;
+}
+.bub p,.box p,.card p,.q p,.oke p,.roots p,.mvt p,.next p{max-width:none}
+@media (max-width:1140px){
+  .col > .tablewrap,.col > .cards,.col > .box,.col > .flow,.col > .nav,
+  .col > .roots,.col > .mvt,.col > .next,.col > .paste,.col > .later{max-width:820px}
+}
+
+.head{padding:40px 0 28px;border-bottom:2px solid var(--line);margin-bottom:22px}
+.head .col{max-width:760px}
+.kicker{display:inline-block;font-size:13px;letter-spacing:.08em;color:var(--accent-ink);
+  border:1.5px solid var(--accent-ink);border-radius:999px;padding:3px 14px;margin-bottom:16px}
+h1{font-size:clamp(25px,5.4vw,38px);line-height:1.42;margin:0 0 10px;font-weight:800;
+  text-wrap:balance;line-break:strict}
+.subtitle{font-size:clamp(17px,3vw,22px);color:var(--ink-soft);font-weight:700;margin:0 0 16px;line-height:1.5;text-wrap:balance;line-break:strict}
+.lead{font-size:16.5px;color:var(--ink-soft);margin:0 0 15px;max-width:760px}
+.meta{margin-top:18px;font-size:13.5px;color:var(--ink-faint);max-width:760px}
+
+.nav{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin:18px auto}
+.nav a,.nav span{display:flex;align-items:center;min-height:44px;padding:8px 14px;border:1.5px solid var(--line);
+  border-radius:12px;background:var(--card);text-decoration:none;font-size:14px;color:var(--accent-ink)}
+.nav span{color:var(--ink-faint)}
+.nav > :nth-child(2){justify-content:center}
+.nav > :last-child{justify-content:flex-end}
+
+h2{font-size:clamp(20px,3.4vw,25px);line-height:1.5;margin:60px 0 6px;font-weight:800;
+  text-wrap:balance;line-break:strict;display:flex;align-items:center;gap:11px;scroll-margin-top:16px}
+h2::before{content:"";flex:0 0 auto;width:7px;height:26px;border-radius:4px;background:var(--accent-ink)}
+.h2sub{margin:0 0 20px;font-size:14.5px;color:var(--ink-faint)}
+h3{font-size:17.5px;margin:30px 0 10px;font-weight:800;line-break:strict;text-wrap:balance}
+p{margin:0 0 15px}
+a{color:var(--accent-ink)}
+small{font-size:12.6px}
+code{font-size:13.5px;background:var(--band);border-radius:6px;padding:1px 6px;color:var(--ink)}
+
+/* ト書き */
+.scene{margin:20px 0;padding:11px 16px;border-left:3px solid var(--line);
+  font-size:14.5px;color:var(--ink-faint);line-height:1.85}
+.scene p{margin:0 0 7px}
+.scene p:last-child{margin:0}
+
+/* 掛け合い */
+.say{display:flex;gap:13px;margin:0 0 17px;align-items:flex-start}
+.ava{flex:0 0 auto;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12.6px;font-weight:800;color:#fff;text-align:center;line-height:1.2}
+.body{flex:1 1 auto;min-width:0}
+.name{font-size:13.5px;font-weight:800;margin:0 0 4px 3px}
+.bub{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:13px 17px;color:var(--ink)}
+.bub p{margin:0 0 10px;font-size:15.5px}
+.bub p:last-child{margin-bottom:0}
+.bub strong{color:var(--accent-ink)}
+.haru .ava{background:var(--haru)} .haru .name{color:var(--haru)} .haru .bub{border-color:#eec6d6}
+.aoi .ava{background:var(--aoi)} .aoi .name{color:var(--aoi)} .aoi .bub{border-color:#b9dcdf;background:#f7fcfc}
+.rin .ava{background:var(--rin)} .rin .name{color:#a4441f} .rin .bub{border-color:#efd0c3;background:#fffaf6}
+
+/* おけちゃんの実際の言葉 */
+.oke{margin:22px 0;padding:14px 18px;background:#fff6e6;border:2px solid #ecd3a8;border-radius:14px;color:var(--ink)}
+.oke .who{display:block;font-size:12.6px;font-weight:800;color:var(--oke);letter-spacing:.04em;margin-bottom:6px}
+.oke p{margin:0 0 6px;font-size:16px;line-height:1.85}
+.oke p:last-child{margin:0}
+
+/* はるかの？？？ */
+.q{margin:24px 0;padding:15px 19px;background:#fdf1f6;border:2px solid #eec6d6;border-radius:14px;color:var(--ink)}
+.q .qh{display:block;font-weight:800;color:var(--haru);margin-bottom:6px}
+.q p{margin:0 0 8px;font-size:15.5px}
+.q p:last-child{margin:0}
+.q .ans{font-weight:800;color:var(--ink)}
+
+/* 広い列の部品 */
+.box{background:var(--card);border:2px dashed var(--line);border-radius:16px;padding:20px;margin:22px auto;color:var(--ink)}
+.box > .bl{display:inline-block;font-size:12.6px;font-weight:800;letter-spacing:.06em;color:var(--ink-faint);
+  background:var(--band);border-radius:8px;padding:3px 11px;margin-bottom:12px}
+.box .one{font-size:17px;font-weight:800;line-height:1.75;margin:0 0 14px;padding:0 0 14px;border-bottom:1.5px dashed var(--line)}
+.box ol,.box ul{margin:0;padding-left:1.4em}
+.box li{margin:6px 0}
+.box > p:last-child,.box > ol:last-child,.box > ul:last-child{margin-bottom:0}
+
+.tablewrap{overflow-x:auto;border:1.5px solid var(--line);border-radius:14px;background:var(--card);margin:18px auto}
+table{border-collapse:collapse;width:100%;table-layout:fixed}
+th,td{padding:12px 14px;text-align:left;font-size:14.5px;border-bottom:1px solid var(--line);line-height:1.75;vertical-align:top;color:var(--ink)}
+th{background:var(--band);font-weight:800;font-size:13.5px}
+tr:last-child td{border-bottom:none}
+td a{font-weight:700}
+td.ng{color:#a8321f;font-weight:800}
+td.ok{color:#2f6b57;font-weight:800}
+
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:18px auto}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:17px 18px;min-width:0;color:var(--ink)}
+.card h4{margin:0 0 8px;font-size:14px;color:var(--ink-faint);font-weight:700}
+.card .big{font-size:30px;font-weight:800;line-height:1.3;color:var(--accent-ink);display:block;margin-bottom:6px}
+.card.zero .big{color:#a8321f}
+.card.good .big{color:#2f6b57}
+.card p{margin:0;font-size:14.5px;color:var(--ink-soft);line-height:1.8}
+.term .one{display:block;font-size:17px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.term p{margin:0 0 6px}
+
+/* 図解：作る流れ（これまで → 今日から） */
+.flow{margin:24px auto;padding:22px 20px 18px;background:var(--card);border:1.5px solid var(--line);border-radius:16px;color:var(--ink)}
+.flow > .bl{display:inline-block;font-size:12.6px;font-weight:800;letter-spacing:.06em;color:var(--ink-faint);background:var(--band);border-radius:8px;padding:3px 11px;margin-bottom:14px}
+.mflow{display:grid;grid-template-columns:1fr;gap:14px}
+.mrow{display:grid;grid-template-columns:120px repeat(5,minmax(0,1fr));gap:10px;align-items:stretch}
+.mrow .lab{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;border-radius:10px;padding:8px;text-align:center}
+.mrow.old .lab{background:#efe9e1;color:#5d554e}
+.mrow.new .lab{background:#e3f1ea;color:#2f6b57}
+.step{position:relative;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.7;border:1.5px solid var(--line);background:var(--paper);color:var(--ink)}
+.step b{display:block;font-size:15px;margin-bottom:3px}
+.mrow.old .step b{color:#5d554e}
+.mrow.old .step.end{border-style:dashed;color:var(--ink-faint)}
+.mrow.new .step{background:#f3faf6;border-color:#a9d2bf}
+.mrow.new .step b{color:#2f6b57}
+.mrow.new .step.add{background:#fff6e6;border-color:#e0bf86}
+.mrow.new .step.add b{color:var(--oke)}
+.mrow .step:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-weight:800;color:var(--ink-faint);font-size:14px;z-index:1}
+.mnote{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft)}
+@media (max-width:900px){
+  .mrow{grid-template-columns:1fr}
+  .mrow .step:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-15px;transform:translateX(-50%)}
+  .mrow .lab{justify-content:flex-start}
+}
+
+/* そのまま貼れるプロンプトの見本 */
+.paste{margin:22px auto;padding:18px 20px;background:#fffdf8;border:2px solid #e8d5b5;border-radius:16px;color:var(--ink)}
+.paste .bl{display:inline-block;font-size:12.6px;font-weight:800;color:var(--oke);background:#fbeed8;border-radius:8px;padding:3px 11px;margin-bottom:12px}
+.paste pre{margin:10px 0 0;padding:14px 16px;background:#2f2b28;color:#fbf8f3;border-radius:12px;font-size:13px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;font-family:ui-monospace,Menlo,monospace}
+.paste p{margin:0 0 8px;font-size:15px}
+.paste .cap{font-size:13.5px;color:var(--ink-faint);margin:10px 0 0}
+
+.roots{margin:22px auto;padding:20px 22px;background:#fff8f0;border:3px double #e3b99a;border-radius:18px;color:var(--ink)}
+.roots h3{margin:0 0 10px}
+.roots ol{margin:0;padding-left:1.5em}
+.roots li{margin:10px 0;font-size:15.5px}
+.roots b{color:var(--accent-ink)}
+
+.next{margin:22px auto;padding:20px 22px;background:#f1f7f3;border:3px double #9cc6ad;border-radius:18px;color:var(--ink)}
+.next h3{margin:0 0 10px;color:#2f6b57}
+.next ol,.next ul{margin:0;padding-left:1.5em}
+.next li{margin:9px 0;font-size:15.5px}
+
+.mvt{margin:22px auto;padding:22px 24px;background:#fffaf0;border:3px double #d9b56a;border-radius:18px;color:var(--ink)}
+.mvt h3{margin:0 0 10px;color:var(--oke)}
+.mvt p{font-size:15.5px}
+.mvt p:last-child{margin:0}
+
+.later{margin:22px auto;padding:20px 22px;background:var(--card);border:2px dashed #c9bfb2;border-radius:16px;color:var(--ink-soft)}
+.later p{margin:0}
+
+/* おけちゃんへ（ちゃんと謝る） */
+.sorry .card{border-width:2px}
+.sorry .card h4{font-size:15px;font-weight:800;margin-bottom:10px}
+.sorry .card p{font-size:15px;color:var(--ink);line-height:1.85;margin:0 0 8px}
+.sorry .card p:last-child{margin:0}
+.sorry .card .will{color:var(--ink-soft);font-size:14.5px}
+.sorry .c-aoi{border-color:#b9dcdf} .sorry .c-aoi h4{color:var(--aoi)}
+.sorry .c-haru{border-color:#eec6d6} .sorry .c-haru h4{color:var(--haru)}
+.sorry .c-rin{border-color:#efd0c3} .sorry .c-rin h4{color:#a4441f}
+
+.src{font-size:13.5px;color:var(--ink-faint);margin-top:6px}
+.src li{margin:4px 0}
+.foot{margin-top:40px;padding-top:20px;border-top:2px solid var(--line);font-size:13.5px;color:var(--ink-faint)}
+
+@media (max-width:640px){
+  .nav{grid-template-columns:1fr}
+  .nav > *{justify-content:center!important}
+  .ava{width:40px;height:40px;font-size:12.6px}
+  .say{gap:10px}
+}
+
+
+/* 会議の顔ぶれ（しーちゃん・まな・ゆいは Day0926-2／Day0917-1 の色） */
+:root{--yui:#71519e;--mana:#a3302c;--shii:#7c4f22}
+.yui .ava{background:var(--yui)} .yui .name{color:var(--yui)} .yui .bub{border-color:#d9cdea;background:#fbf9fe}
+.mana .ava{background:var(--mana)} .mana .name{color:var(--mana)} .mana .bub{border-color:#efc2bd;background:#fef8f7}
+.shii .ava{background:var(--shii)} .shii .name{color:var(--shii)} .shii .bub{border-color:#e2c9aa;background:#fdf9f3}
+.ava.two{font-size:12.6px;line-height:1.15}
+.cast{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.cast span{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:800;border-radius:999px;padding:3px 12px 3px 4px;background:var(--card);border:1.5px solid var(--line)}
+.cast i{display:inline-block;width:22px;height:22px;border-radius:50%}
+.founder{display:inline-flex;align-items:center;gap:10px;margin-top:6px;font-size:15px;font-weight:800;color:#a4441f}
+.shot{max-width:760px;margin:-4px auto 20px;padding-left:59px}
+.shot .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.shot img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;border:1.5px solid var(--line)}
+.shot .cap{font-size:13px;color:var(--ink-faint);margin-top:4px}
+.split .card h4{font-size:15px;color:var(--ink);font-weight:800}
+.split .card p{color:var(--ink);font-size:14.5px}
+.pick{margin:10px 0 0;padding-left:1.4em}
+.pick li{margin:6px 0;font-size:15.5px}
+.tores{display:block;text-align:center;font-size:16px;font-weight:800;text-decoration:none;border:2px solid var(--accent-ink);border-radius:14px;padding:12px 16px;margin:30px auto 0;max-width:760px;background:var(--card)}
+@media (max-width:640px){.shot{padding-left:0}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="head">
+  <div class="col">
+    <span class="kicker">アイデア会議 · 2026-09-26（土）</span>
+    <h1>おけもんライフハックBGM 収益化PJ 検討会議</h1>
+    <div class="founder">発起人：🌸 りん <small style="color:var(--ink-faint);font-weight:700">（おけちゃん「じゃありんちゃんにしよー」）</small></div>
+    <div class="cast">
+      <span><i style="background:var(--haru)"></i>🎤 はるか</span>
+      <span><i style="background:var(--rin)"></i>🌸 りん</span>
+      <span><i style="background:var(--aoi)"></i>🐱 あおい</span>
+      <span><i style="background:var(--shii)"></i>💰 しーちゃん</span>
+      <span><i style="background:var(--mana)"></i>🔥 まな</span>
+      <span><i style="background:var(--yui)"></i>💗 ゆい</span>
+    </div>
+  </div>
+</header>
+<main>
+<div class="col">
+<h2 id="s1">1. りんがアイデアを持ってきた</h2>
+<div class="say talk haru">
+  <div class="ava">はるか</div>
+  <div class="body"><div class="name">はるか</div>
+  <div class="bub"><p>発起人はりん。じゃあ、りん、どうぞ〜</p></div></div>
+</div>
+<div class="say talk rin">
+  <div class="ava">りん</div>
+  <div class="body"><div class="name">りん（発起人）</div>
+  <div class="bub"><p>みんな聞いて聞いて！✨ おけちゃんが毎日使うBGMを、そのままチャンネルにするの。コンセプトは『私のようなADHDが、日々健やかにワクワク過ごすための場面別BGM』。着手、集中、ポモドーロ、片付け、休憩、寝る前。Amplifocusは『Not music. A tool.』でしょ？うちは『音楽じゃなくて、スイッチ。』でいきたい！</p></div></div>
+</div>
+<div class="say talk aoi">
+  <div class="ava">あおい</div>
+  <div class="body"><div class="name">あおい</div>
+  <div class="bub"><p>……スイッチ、いい。着手用なら最初の3分にカウントダウン。ポモドーロなら25分で鐘が鳴って、休憩は曲が変わる。画面にも残り時間。全部コードで作れる</p></div></div>
+</div>
+<h2 id="s2">2. どの言葉で出すか</h2>
+<div class="say talk shii">
+  <div class="ava two">しー<br>ちゃん</div>
+  <div class="body"><div class="name">しーちゃん</div>
+  <div class="bub"><p>ちょっと待って。先に言語を決めないと話が進まないわよ。1,000回あたりの単価は、日本の作業用BGMで¥200〜500、英語圏は$1〜10。キラさんが最初から英語圏を狙ったのはそこ。同じ再生数なら英語のほうが3〜5倍入るの</p></div></div>
+</div>
+<div class="say talk rin">
+  <div class="ava">りん</div>
+  <div class="body"><div class="name">りん（発起人）</div>
+  <div class="bub"><p>えー、でもおけちゃんの言葉が一番の武器なんだよ？onia music は韓国語で『ショート動画の代わりにつけておくADHD集中ポモドーロ』ってタイトルにして、1本459万回いってるじゃん。自分の言葉で、刺さる人に届いてる</p></div></div>
+</div>
+<div class="say talk mana">
+  <div class="ava">まな</div>
+  <div class="body"><div class="name">まな</div>
+  <div class="bub"><p>それ！韓国語で当たってるんやから、日本語でも当たるって。炬燵さんも日本語で平均10.5万回やし</p></div></div>
+</div>
+<div class="say talk shii">
+  <div class="ava two">しー<br>ちゃん</div>
+  <div class="body"><div class="name">しーちゃん</div>
+  <div class="bub"><p>炬燵さんは月1.6本で、推定月3.4万〜28.5万円。幅が8倍よ。当たった人の数字だけ見て決めるのは危ないの。……別に反対してるわけじゃない。タイトルだけ多言語にすれば両方取りにいけるでしょ。せみまるさんは9言語でやってる</p></div></div>
+</div>
+<div class="say talk yui">
+  <div class="ava">ゆい</div>
+  <div class="body"><div class="name">ゆい</div>
+  <div class="bub"><p>（ぽつりと）……わたしは順番が気になるな。おけちゃんが聴く音なんだから、まず日本語で、おけちゃんの場面から作るのがいいと思う。英語圏の人の『着手がしんどい朝』を、わたしたちはまだ知らないから</p></div></div>
+</div>
+<div class="say talk rin">
+  <div class="ava">りん</div>
+  <div class="body"><div class="name">りん（発起人）</div>
+  <div class="bub"><p>ゆいちゃん……！</p></div></div>
+</div>
+<h2 id="s3">3. どれだけ出すか、Sunoの枠</h2>
+<div class="say talk shii">
+  <div class="ava two">しー<br>ちゃん</div>
+  <div class="body"><div class="name">しーちゃん</div>
+  <div class="bub"><p>言語はいったんここで止めとく。次は量。先人は2ヶ月で100本出してる。でも、うちはProで月20回しかダウンロードできない</p></div></div>
+</div>
+<div class="say talk aoi">
+  <div class="ava">あおい</div>
+  <div class="body"><div class="name">あおい</div>
+  <div class="bub"><p>……6分の曲を1回取って、手元で伸ばす。瞑想の時はそれで15分作った。ただ、3時間を1曲で回すと、同じ曲がぐるぐるする。作業用なら5曲、ダウンロード5回で30分作って、並べ替えて回す</p></div></div>
+</div>
+<div class="say talk mana">
+  <div class="ava">まな</div>
+  <div class="body"><div class="name">まな</div>
+  <div class="bub"><p>5回で1本なら月4本やん。遅いって〜。Premierに上げてStudioを通して一気に出そうよ。先人みんなそれやってたし！</p></div></div>
+</div>
+<div class="say talk shii">
+  <div class="ava two">しー<br>ちゃん</div>
+  <div class="body"><div class="name">しーちゃん</div>
+  <div class="bub"><p>Premierに上げると月に約$20増える。Studioの書き出しで何クレジット減るかは、0派と60派で実測が割れてる。上げるなら最初の1曲でわたしが測る。……それと、『2ヶ月で100本』を目標にするのは反対。7月は目標なしで6回完走、8月は10回の目標で3回。うちの実測よ</p></div></div>
+</div>
+<div class="say talk mana">
+  <div class="ava">まな</div>
+  <div class="body"><div class="name">まな</div>
+  <div class="bub"><p>うっ……それ言われたら何も言えへん</p></div></div>
+</div>
+<div class="say talk yui">
+  <div class="ava">ゆい</div>
+  <div class="body"><div class="name">ゆい</div>
+  <div class="bub"><p>……数はあおいちゃんとAIの側で持てばいいんじゃないかな。おけちゃんのボタンは『好き』か『微妙』かだけ。聴いて楽しいかどうか</p></div></div>
+</div>
+<h2 id="s4">4. 背景に、はるかが隣にいる？</h2>
+<div class="say talk rin">
+  <div class="ava">りん</div>
+  <div class="body"><div class="name">りん（発起人）</div>
+  <div class="bub"><p>うん、それ！あとね、みんなに見てほしいのがあるの。2班が『body doubling』って言葉で検索してたでしょ？誰かが隣で作業してると、ADHDの人は集中しやすいっていうやつ。……はるかちゃんが隣で一緒に作業してくれてる背景、どう？？</p></div></div>
+</div>
+<div class="say talk haru">
+  <div class="ava">はるか</div>
+  <div class="body"><div class="name">はるか</div>
+  <div class="bub"><p>えっ、わたし！？🤭</p></div></div>
+</div>
+<div class="say talk aoi">
+  <div class="ava">あおい</div>
+  <div class="body"><div class="name">あおい</div>
+  <div class="bub"><p>……できる。人物ありの動画は、9/22にFlowの開始フレームで通ってる。ただ、3班のデータだと再生数トップ2本は、文字も動きもない海と星空。凝った背景が勝つとは限らない</p></div></div>
+</div>
+<figure class="shot" style="margin-left:auto;margin-right:auto">
+  <div class="pair"><img src="friend-share-g-kPJRh8dSEnHV8Ab6-assets/frames/vr9dLvJs7VE_frame.jpg" alt="再生数1位の動画の再生中の画面。海の夕景" width="256" height="144"><img src="friend-share-g-kPJRh8dSEnHV8Ab6-assets/frames/XGSSmQiqBl8_frame.jpg" alt="再生数2位の動画の再生中の画面。星空" width="256" height="144"></div>
+  <figcaption class="cap">あおいが見せた3班の実物：再生数トップ2本の再生中の画面（左 海の夕景・9,297万回／右 星空・7,968万回）</figcaption>
+</figure>
+<div class="say talk rin">
+  <div class="ava">りん</div>
+  <div class="body"><div class="name">りん（発起人）</div>
+  <div class="bub"><p>だから両方やればいいの！作業用ははるかちゃんが隣にいるStudy with me、寝る前は静かな海。場面で背景を変える</p></div></div>
+</div>
+<div class="say talk shii">
+  <div class="ava two">しー<br>ちゃん</div>
+  <div class="body"><div class="name">しーちゃん</div>
+  <div class="bub"><p>動画の生成もタダじゃないわよ。Flowは720pで10秒15クレジット。3時間ずっと動かすんじゃなくて、10秒をループさせるなら許す</p></div></div>
+</div>
+<h2 id="s5">5. 「ADHD」という言葉と、AIで作ったこと</h2>
+<div class="say talk yui">
+  <div class="ava">ゆい</div>
+  <div class="body"><div class="name">ゆい</div>
+  <div class="bub"><p>……ひとつ気になってることがあるの。『ADHD』って言葉を、どこまで前に出すか。2班が見た9本は、どれも『治る』『治療』とは書いてなかった。わたしたちも『効きます』とは言わない。『わたしはこれで着手できた』っていう、おけちゃんの体験として置きたいな</p></div></div>
+</div>
+<div class="say talk rin">
+  <div class="ava">りん</div>
+  <div class="body"><div class="name">りん（発起人）</div>
+  <div class="bub"><p>うん。8/30に、おけちゃんが『ADHDは隠さないで正面に出す』って決めてくれてるから、名前には入れたい。でも言うのはおけちゃんの体験だけ。了解！</p></div></div>
+</div>
+<div class="say talk mana">
+  <div class="ava">まな</div>
+  <div class="body"><div class="name">まな</div>
+  <div class="bub"><p>あと、AIで作ったって書く？登録者31万人の study timer は、AIを試してやめてたよね</p></div></div>
+</div>
+<div class="say talk rin">
+  <div class="ava">りん</div>
+  <div class="body"><div class="name">りん（発起人）</div>
+  <div class="bub"><p>書く！うちはでんじろう先生スタイルだもん。『曲はSunoで作って、仕上げは私』。AIで遊んでるのが見えたほうがワクワクする</p></div></div>
+</div>
+<div class="say talk shii">
+  <div class="ava two">しー<br>ちゃん</div>
+  <div class="body"><div class="name">しーちゃん</div>
+  <div class="bub"><p>書くのは賛成。ただ、Sunoの曲がたまたま他人の曲に似て、Content IDの申し立てを受けることが今年増えてるの。チャンネルが止まる話じゃないけど、その動画の広告収益は相手に行く。上げる前にあおいがチェックして</p></div></div>
+</div>
+<div class="say talk aoi">
+  <div class="ava">あおい</div>
+  <div class="body"><div class="name">あおい</div>
+  <div class="bub"><p>……わかった</p></div></div>
+</div>
+<h2 id="s6">6. 1本目とチャンネル名</h2>
+<div class="say talk haru">
+  <div class="ava">はるか</div>
+  <div class="body"><div class="name">はるか</div>
+  <div class="bub"><p>割れたところはそのまま置いておくね。りん、最後に1本目を</p></div></div>
+</div>
+<div class="say talk rin">
+  <div class="ava">りん</div>
+  <div class="body"><div class="name">りん（発起人）</div>
+  <div class="bub"><p>1本目は『25分ポモドーロ×4＝2時間』！25分で鐘が鳴って、5分休憩は曲を変えて、画面に『歩く』『水を飲む』。背景は作業用だから、はるかちゃんが隣にいるやつでいきたい！チャンネル名の案は3つ。①おけもんの脳スイッチBGM ②ADHDの音の道具箱 ③音楽じゃなくて、スイッチ。（同じ名前が他にあるかはまだ調べてないよ）</p></div></div>
+</div>
+
+<h2 id="split">7. 割れたまま置いたところ</h2>
+<div class="cards split"><div class="card"><h4>言語</h4><p>🌸りん・🔥まな・💗ゆい＝日本語から（本人の言葉・onia/炬燵の実例）／💰しーちゃん＝英語圏は単価3〜5倍、せめてタイトルを多言語に</p></div><div class="card"><h4>量とプラン</h4><p>🔥まな＝Premier＋Studioで一気に／💰しーちゃん＝Proで始めて、上げるなら最初の1曲で実測。本数の目標には反対／🐱あおい＝作業用は5曲30分を並べ替えて回す</p></div><div class="card"><h4>背景</h4><p>🌸りん＝場面で変える（作業＝はるかが隣にいる body doubling／寝る前＝静かな海）／🐱あおい＝再生数トップは文字も動きもない映像</p></div><div class="card"><h4>AI表記</h4><p>🌸りん・💰しーちゃん＝書く（上げる前にContent IDをチェック）／🔥まな＝study timer はAIをやめた例</p></div></div>
+
+<h2 id="pick">8. おけちゃんに選んでほしい3つ</h2>
+<div class="say talk haru">
+  <div class="ava">はるか</div>
+  <div class="body"><div class="name">はるか</div>
+  <div class="bub"><p>おけちゃんに選んでほしいこと</p><ol class="pick"><li>言語：日本語から／英語圏から／日本語＋タイトルだけ多言語</li><li>チャンネル名：①おけもんの脳スイッチBGM ②ADHDの音の道具箱 ③音楽じゃなくて、スイッチ（ほかの案でもOK。重複チェックはAI）</li><li>1本目：25分ポモドーロ×4（2時間）・背景ははるかが隣にいる作業部屋、でいいか</li></ol></div></div>
+</div>
+
+<div class="box">
+  <span class="bl">誰のボールか</span>
+  <ul><li>チャンネル名の重複チェック・アイコン案：🌸りん＋AI</li><li>チャンネルを作るボタン：おけちゃん（名前が決まってから1回）</li><li>1本目の曲・タイマー・背景：🐱あおい（Sunoのダウンロードは押す前に1行）</li><li>Premierの判断材料：💰しーちゃん</li></ul>
+</div>
+
+<a class="tores" href="friend-share-g-kPJRh8dSEnHV8Ab6.html">リサーチ資料はこちら（真似する相手・長さ・サムネの実物・Suno・お金の流れ）→</a>
+<p class="foot">台詞は会議の記録（はるかCEO/社内会議/2026-09-26_おけもんライフハックBGM収益化PJ_検討会議.md）のままです。</p>
+</div>
+</main>
+</div>
+</body>
+</html>
