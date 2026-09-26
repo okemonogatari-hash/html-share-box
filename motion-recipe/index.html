@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>モーションレシピ — ことばを1行、Opus 5.5 への注文書に</title>
+    <meta name="description" content="作りたい動画を、ふだんの言葉で1行。アプリが演出を選んで、Claude Code の Opus 5.5 にそのまま貼れる注文書（プロンプト）を作ります。" />
+    <meta property="og:title" content="モーションレシピ — ことばを1行、Opus 5.5 への注文書に" />
+    <meta property="og:description" content="作りたい動画を、ふだんの言葉で1行。演出はアプリが選びます。コピーして Claude Code に貼るだけ。" />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="b" /><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9" /></filter>
+      </defs>
+    </svg>
+
+    <header class="hero">
+      <div class="drop-logo" aria-hidden="true"><span class="drop"></span><span class="ring r1"></span><span class="ring r2"></span></div>
+      <h1><span class="t">モ</span><span class="t">ー</span><span class="t">シ</span><span class="t">ョ</span><span class="t">ン</span><span class="t">レ</span><span class="t">シ</span><span class="t">ピ</span></h1>
+      <p class="lead">作りたい動画を、ふだんの言葉で1行。<br />演出はアプリが選んで、<b>Claude Code の Opus 5.5</b> にそのまま貼れる注文書にします。</p>
+    </header>
+
+    <main>
+      <!-- 1. つくる -->
+      <section class="card make" id="make">
+        <label class="q" for="wish">どんな動画にしたい？</label>
+        <textarea id="wish" rows="3" placeholder="例：やさしくて、ちょっとワクワクする自己紹介"></textarea>
+        <div class="chips ideas" id="ideas" aria-label="例をえらぶ"></div>
+
+        <details class="more" id="more">
+          <summary>こだわる（えらばなければ、おまかせ）</summary>
+          <div class="field"><span class="fl">用途</span><div class="chips" id="f-purpose" data-single="1"></div></div>
+          <div class="field"><span class="fl">雰囲気（いくつでも）</span><div class="chips" id="f-moods"></div></div>
+          <div class="field"><span class="fl">長さ</span><div class="chips" id="f-seconds" data-single="1"></div></div>
+          <div class="field"><span class="fl">画面の形</span><div class="chips" id="f-aspect" data-single="1"></div></div>
+          <div class="field"><span class="fl">音</span><div class="chips" id="f-sound" data-single="1"></div></div>
+          <div class="field"><label class="fl" for="onscreen">画面に出したい言葉（名前・日付・キャッチコピーなど）</label><input id="onscreen" type="text" placeholder="例：おけもん／9月27日 読書会" /></div>
+        </details>
+
+        <div class="actions">
+          <button class="btn primary" id="go">レシピを作る</button>
+          <button class="btn ghost" id="omakase">ぜんぶおまかせ</button>
+        </div>
+      </section>
+
+      <!-- 2. レシピ -->
+      <section class="card recipe" id="recipe" hidden>
+        <p class="kicker">こんな1本にします</p>
+        <p class="direction" id="direction"></p>
+        <div class="tags" id="tags"></div>
+        <div class="palette" id="palette" aria-label="色"></div>
+
+        <div class="adjust" role="group" aria-label="調整">
+          <button class="btn chip-btn" data-adj="calm">もっと落ち着いて</button>
+          <button class="btn chip-btn" data-adj="bold">もっと大胆に</button>
+          <button class="btn chip-btn" data-adj="cute">もっとかわいく</button>
+          <button class="btn chip-btn" data-adj="wild">もっと攻めて</button>
+          <button class="btn chip-btn" data-adj="variant">別のレシピにする</button>
+        </div>
+        <p class="adjust-note" id="adjust-note"></p>
+
+        <div class="techs">
+          <p class="sub">今回アプリが選んだ演出</p>
+          <div class="tech-chips" id="tech-chips"></div>
+          <button class="btn link" id="show-techs" aria-expanded="false">今回の演出を見る ▾</button>
+          <div class="tech-cards" id="tech-cards" hidden></div>
+        </div>
+
+        <div class="prompt-wrap">
+          <div class="prompt-head">
+            <p class="sub">Opus 5.5 への注文書（プロンプト）</p>
+            <button class="btn primary small" id="copy">コピーする</button>
+          </div>
+          <pre class="prompt" id="prompt" tabindex="0"></pre>
+        </div>
+
+        <ol class="steps">
+          <li><span class="num">1</span><div><b>コピーする</b><br />上のボタンで注文書をコピー</div></li>
+          <li><span class="num">2</span><div><b>Claude Code で Opus 5.5 にする</b><br />Claude Code を開いて <code>/model opus</code> と送る</div></li>
+          <li><span class="num">3</span><div><b>貼って送る</b><br />作業フォルダに動く作品（HTML）ができて、ブラウザで開いてくれます</div></li>
+        </ol>
+        <div class="effort">
+          <p class="sub">エフォート（考える深さ）</p>
+          <div class="effort-row">
+            <div class="effort-box"><p class="eb-title">ふだんは <b>medium</b></p><p class="eb-text">Opus 5.5 の標準。これで十分きれいに作れます</p><button class="btn chip-btn cmd" data-cmd="/effort medium"><code>/effort medium</code> をコピー</button></div>
+            <div class="effort-box max"><p class="eb-title">ここぞの1本は <b>max</b></p><p class="eb-text">トークンを使ってでも、とことん良いのを作りたい日に</p><button class="btn chip-btn cmd" data-cmd="/effort max"><code>/effort max</code> をコピー</button></div>
+          </div>
+          <p class="fine">Claude Code は Claude の Pro・Max プランで使えます。モデルは <code>/model opus</code>（Opus 5.5）、エフォートは <code>/effort</code> だけ送るとつまみで選べます。</p>
+        </div>
+        <ul class="tips">
+          <li>仕上がりが違ったら、同じ会話で「もっとゆっくり」「文字を大きく」のように続けて頼めばOK</li>
+          <li>自分の写真やロゴ・キャラを使いたい時は、画像を作業フォルダに入れて「この画像（ファイル名）を使って」と書き足す</li>
+          <li>動画ファイルにしたい時は画面収録（Mac：⌘ + Shift + 5）。「MP4に書き出して」と頼む手もあります（道具の追加が要ることがあります）</li>
+        </ul>
+      </section>
+
+      <!-- 3. 作品集 -->
+      <section class="card gallery-sec" id="gallery">
+        <h2>おけもんが作ったモーショングラフィック</h2>
+        <p class="sec-lead">同じ Opus 5.5 たちと作った作品です。完成イメージの参考に。</p>
+        <div class="gallery" id="gallery-grid"><p class="muted">読み込み中…</p></div>
+      </section>
+
+      <!-- 4. 図鑑 -->
+      <section class="card zukan-sec" id="zukan">
+        <h2>演出の図鑑</h2>
+        <p class="sec-lead">アプリが選んでいる演出のぜんぶ。覚えなくて大丈夫です。気になったら、ことばに入れてみてください（例：「筆で」「3Dで」「ループで」）。</p>
+        <div class="zukan" id="zukan-grid"></div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>モーションレシピ ── 企画 おけもん／つくった人 葵（おけもんカンパニー・Claude Opus 5.5）</p>
+      <p>ことばは外に送りません。演出えらびは、このページの中だけで動いています。</p>
+    </footer>
+
+    <div class="modal" id="modal" hidden>
+      <div class="modal-body">
+        <button class="modal-close" id="modal-close" aria-label="閉じる">×</button>
+        <video id="modal-video" controls playsinline></video>
+        <div class="modal-text" id="modal-text"></div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="recipe.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
