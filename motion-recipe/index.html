@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 5C23 20 13 30 13 42a19 19 0 0 0 38 0C51 30 41 20 32 5z' fill='%231b1712'/%3E%3C/svg%3E" />
   </head>
   <body>
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
@@ -23,7 +24,7 @@
     <header class="hero">
       <div class="drop-logo" aria-hidden="true"><span class="drop"></span><span class="ring r1"></span><span class="ring r2"></span></div>
       <h1><span class="t">モ</span><span class="t">ー</span><span class="t">シ</span><span class="t">ョ</span><span class="t">ン</span><span class="t">レ</span><span class="t">シ</span><span class="t">ピ</span></h1>
-      <p class="lead">作りたい動画を、ふだんの言葉で1行。<br />演出はアプリが選んで、<b>Claude Code の Opus 5.5</b> にそのまま貼れる注文書にします。</p>
+      <p class="lead">作りたい動画を、ふだんの言葉で。<br />演出はアプリが選んで、<b>Claude Code の Opus 5.5</b> にそのまま貼れる注文書にします。</p>
     </header>
 
     <main>
@@ -39,14 +40,16 @@
 
       <!-- 1. つくる -->
       <section class="card make" id="make">
-        <label class="q" for="wish">こだわりたい人へ：どんな動画にしたい？</label>
+        <p class="kicker">こだわりたい人は、ここから</p>
+        <label class="q" for="wish">どんな動画にしたい？</label>
+        <p class="hint">ふだんの言葉で。1行でも、長くても大丈夫です。</p>
         <textarea id="wish" rows="3" placeholder="例：やさしくて、ちょっとワクワクする自己紹介"></textarea>
         <div class="chips ideas" id="ideas" aria-label="例をえらぶ"></div>
 
         <details class="more" id="more">
           <summary>こだわる（えらばなければ、おまかせ）</summary>
           <div class="field"><span class="fl">用途</span><div class="chips" id="f-purpose" data-single="1"></div></div>
-          <div class="field"><span class="fl">雰囲気（いくつでも）</span><div class="chips" id="f-moods"></div></div>
+          <div class="field"><span class="fl">雰囲気（2つまで）</span><div class="chips" id="f-moods"></div></div>
           <div class="field"><span class="fl">長さ</span><div class="chips" id="f-seconds" data-single="1"></div></div>
           <div class="field"><span class="fl">画面の形</span><div class="chips" id="f-aspect" data-single="1"></div></div>
           <div class="field"><span class="fl">音</span><div class="chips" id="f-sound" data-single="1"></div></div>
@@ -55,7 +58,7 @@
 
         <div class="actions">
           <button class="btn primary" id="go">レシピを作る</button>
-          <button class="btn ghost" id="omakase">ぜんぶおまかせ</button>
+          <button class="btn ghost" id="omakase">迷ったらおまかせ</button>
         </div>
       </section>
 
@@ -82,6 +85,16 @@
           <div class="tech-cards" id="tech-cards" hidden></div>
         </div>
 
+        <div class="howto">
+          <p class="sub">Claude Code で作る（上から順に）</p>
+          <ol class="steps">
+            <li><span class="num">1</span><div><b>作品用のフォルダで Claude Code を開く</b><br />空のフォルダ（例：デスクトップに motion）を作って、そこで開きます。デスクトップアプリなら「コード（Code）」→「ローカル（Local）」→「フォルダーを選択」でそのフォルダを選ぶ。<a href="https://code.claude.com/docs/en/desktop-quickstart" target="_blank" rel="noopener">はじめての方へ（公式）</a></div></li>
+            <li><span class="num">2</span><div><b><code>/model opus</code> と送る</b><br />これで Opus 5.5 になります<br /><button class="btn chip-btn cmd" data-cmd="/model opus"><code>/model opus</code> をコピー</button></div></li>
+            <li><span class="num">3</span><div><b>ここぞの1本だけ <code>/effort max</code></b><br />ふだんは最初の設定（medium）のままでOK。max はよく考えるぶん、プランの利用枠も多めに使います<br /><button class="btn chip-btn cmd" data-cmd="/effort max"><code>/effort max</code> をコピー</button></div></li>
+            <li><span class="num">4</span><div><b>下の注文書をコピーして、貼って送る</b><br />作業フォルダに motion.html ができて、ブラウザで開きます</div></li>
+          </ol>
+        </div>
+
         <div class="prompt-wrap">
           <div class="prompt-head">
             <p class="sub">Opus 5.5 への注文書（プロンプト）</p>
@@ -89,24 +102,11 @@
           </div>
           <pre class="prompt" id="prompt" tabindex="0"></pre>
         </div>
-
-        <ol class="steps">
-          <li><span class="num">1</span><div><b>コピーする</b><br />上のボタンで注文書をコピー</div></li>
-          <li><span class="num">2</span><div><b>Claude Code で Opus 5.5 にする</b><br />Claude Code を開いて <code>/model opus</code> と送る</div></li>
-          <li><span class="num">3</span><div><b>貼って送る</b><br />作業フォルダに動く作品（HTML）ができて、ブラウザで開いてくれます</div></li>
-        </ol>
-        <div class="effort">
-          <p class="sub">エフォート（考える深さ）</p>
-          <div class="effort-row">
-            <div class="effort-box"><p class="eb-title">ふだんは <b>medium</b></p><p class="eb-text">Opus 5.5 の標準。これで十分きれいに作れます</p><button class="btn chip-btn cmd" data-cmd="/effort medium"><code>/effort medium</code> をコピー</button></div>
-            <div class="effort-box max"><p class="eb-title">ここぞの1本は <b>max</b></p><p class="eb-text">トークンを使ってでも、とことん良いのを作りたい日に</p><button class="btn chip-btn cmd" data-cmd="/effort max"><code>/effort max</code> をコピー</button></div>
-          </div>
-          <p class="fine">Claude Code は Claude の Pro・Max プランで使えます。モデルは <code>/model opus</code>（Opus 5.5）、エフォートは <code>/effort</code> だけ送るとつまみで選べます。</p>
-        </div>
+        <p class="fine">Claude Code は Claude の Pro・Max プランで使えます。</p>
         <ul class="tips">
           <li>仕上がりが違ったら、同じ会話で「もっとゆっくり」「文字を大きく」のように続けて頼めばOK</li>
           <li>自分の写真やロゴ・キャラを使いたい時は、画像を作業フォルダに入れて「この画像（ファイル名）を使って」と書き足す</li>
-          <li>動画ファイルにしたい時は画面収録（Mac：⌘ + Shift + 5）。「MP4に書き出して」と頼む手もあります（道具の追加が要ることがあります）</li>
+          <li>動画ファイルにしたい時は画面収録（Mac：⌘ + Shift + 5）。パソコンの音は入らないことがあるので、音つきがほしい時は「音つきのMP4に書き出して」と頼んでみてください（道具の追加が要ることがあります）</li>
         </ul>
       </section>
 
@@ -120,8 +120,9 @@
       <!-- 4. 図鑑 -->
       <section class="card zukan-sec" id="zukan">
         <h2>演出の図鑑</h2>
-        <p class="sec-lead">アプリが選んでいる演出のぜんぶ。覚えなくて大丈夫です。気になったら、ことばに入れてみてください（例：「筆で」「3Dで」「ループで」）。</p>
+        <p class="sec-lead">アプリが選んでいる演出のぜんぶ。覚えなくて大丈夫です。気になったカードを押すと、その演出のことば（例：「筆で」「3Dで」）が入力欄に入ります。</p>
         <div class="zukan" id="zukan-grid"></div>
+        <button class="btn ghost small zukan-more" id="zukan-more">ぜんぶ見る</button>
       </section>
     </main>
 

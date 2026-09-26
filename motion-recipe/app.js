@@ -39,9 +39,12 @@
     glitch: `<div class="mid" data-t="FUTURE">FUTURE</div>`,
     texture: `<i class="tx"></i><div class="mid">和紙</div>`,
     beatsync: `<div class="eq"><i></i><i></i><i></i><i></i><i></i></div>`,
+    softsound: `<div class="eq"><i></i><i></i><i></i><i></i><i></i></div>`,
   };
-  function card(t, chosen) {
-    return `<article class="z-card${chosen ? " chosen" : ""}"><div class="stage d-${t.id}">${DEMO[t.id] || ""}</div><div class="z-text"><p class="z-name">${esc(t.name)}</p><p class="z-en">${esc(t.en)}</p><p class="z-plain">${esc(t.plain)}</p></div></article>`;
+  function card(t, chosen, pickable) {
+    const hint = pickable && t.hint ? `<p class="z-hint">押すと「${esc(t.hint)}」を入れる</p>` : "";
+    const attrs = pickable ? ` data-id="${t.id}" role="button" tabindex="0"` : "";
+    return `<article class="z-card${chosen ? " chosen" : ""}${pickable ? " pick" : ""}"${attrs}><div class="stage d-${t.id}">${DEMO[t.id] || ""}</div><div class="z-text"><p class="z-name">${esc(t.name)}</p><p class="z-en">${esc(t.en)}</p><p class="z-plain">${esc(t.plain)}</p>${hint}</div></article>`;
   }
 
   // 見えている見本だけ動かす
@@ -49,21 +52,28 @@
   const watch = (root) => io && root.querySelectorAll(".z-card").forEach((c) => { c.classList.add("paused"); io.observe(c); });
 
   // ---------------------------------------------------------------- 入力パーツ
-  const state = { text: "", purpose: "auto", moods: [], seconds: "auto", aspect: "auto", sound: "auto", onscreen: "", adjust: { calm: 0, bold: 0, cute: 0, wild: 0 }, variant: 0 };
+  const state = { text: "", purpose: "auto", moods: [], seconds: "auto", aspect: "auto", sound: "auto", onscreen: "", adjust: { calm: 0, bold: 0, cute: 0, wild: 0 }, variant: 0, last: "" };
+  // 書きかけの言葉は、この端末のこのブラウザにだけ残す（読み直しで消えないように）
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* 保存できなくても動く */ } },
+  };
+  const randomIdea = () => R.IDEAS[Math.floor(Math.random() * R.IDEAS.length)];
 
-  function chips(el, items, key, single) {
+  function chips(el, items, key, single, max) {
     el.innerHTML = items.map(([v, label]) => `<button type="button" class="chip" data-v="${esc(v)}" aria-pressed="${(single ? state[key] === v : state[key].includes(v)) ? "true" : "false"}">${esc(label)}</button>`).join("");
     el.addEventListener("click", (e) => {
       const b = e.target.closest(".chip");
       if (!b) return;
       const v = b.dataset.v;
       if (single) state[key] = v;
-      else state[key] = state[key].includes(v) ? state[key].filter((x) => x !== v) : [...state[key], v];
+      else if (state[key].includes(v)) state[key] = state[key].filter((x) => x !== v);
+      else state[key] = [...state[key], v].slice(-(max || 99)); // 上限を超えたら古いほうを外す
       el.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(single ? state[key] === c.dataset.v : state[key].includes(c.dataset.v))));
     });
   }
-  chips($("f-purpose"), [["auto", "おまかせ"], ...Object.entries(R.PURPOSES).map(([k, p]) => [k, p.label])], "purpose", true);
-  chips($("f-moods"), Object.entries(R.MOODS).map(([k, m]) => [k, m.label]), "moods", false);
+  chips($("f-purpose"), [["auto", "おまかせ"], ...Object.entries(R.PURPOSES).filter(([, p]) => !p.hidden).map(([k, p]) => [k, p.label])], "purpose", true);
+  chips($("f-moods"), R.MOOD_KEYS.map((k) => [k, R.MOODS[k].label]), "moods", false, 2);
   chips($("f-seconds"), [["auto", "おまかせ"], ["10", "10秒"], ["15", "15秒"], ["30", "30秒"]], "seconds", true);
   chips($("f-aspect"), [["auto", "おまかせ"], ["16:9", "横 16:9"], ["9:16", "縦 9:16"], ["1:1", "正方形"]], "aspect", true);
   chips($("f-sound"), [["auto", "おまかせ"], ["on", "あり"], ["off", "なし"]], "sound", true);
@@ -73,18 +83,31 @@
     const b = e.target.closest(".chip");
     if (!b) return;
     $("wish").value = b.textContent;
+    store.set("mr-wish", b.textContent);
     make(true);
   });
   let ph = 0;
   setInterval(() => { if (!$("wish").value && document.activeElement !== $("wish")) { ph = (ph + 1) % R.IDEAS.length; $("wish").placeholder = "例：" + R.IDEAS[ph]; } }, 3200);
 
   // ---------------------------------------------------------------- レシピ
+  let lastResult = null;
+  function whatChanged(a, b) {
+    const out = [];
+    const added = b.techniques.filter((t) => !a.techniques.includes(t)).map((t) => t.name);
+    const removed = a.techniques.filter((t) => !b.techniques.includes(t)).map((t) => t.name);
+    if (added.length) out.push(`演出（${removed.length ? removed.join("・") + " → " : "＋"}${added.join("・")}）`);
+    if (a.palette.join() !== b.palette.join()) out.push("色");
+    if (b.sound && a.bpm !== b.bpm) out.push(`テンポ ${a.bpm}→${b.bpm}`);
+    return out.length ? "変えたところ：" + out.join("・") : "変えたところ：なし";
+  }
   function make(reset) {
     state.text = $("wish").value.trim();
     state.onscreen = $("onscreen").value.trim();
-    if (reset) { state.adjust = { calm: 0, bold: 0, cute: 0, wild: 0 }; state.variant = 0; }
+    if (reset) { state.adjust = { calm: 0, bold: 0, cute: 0, wild: 0 }; state.variant = 0; state.last = ""; }
     const r = R.build(state);
-    render(r);
+    const changes = !reset && lastResult ? whatChanged(lastResult, r) : "";
+    lastResult = r;
+    render(r, changes);
     if (reset) {
       const sec = $("recipe");
       sec.hidden = false;
@@ -93,11 +116,13 @@
     }
   }
 
-  function render(r) {
+  function render(r, changes) {
     $("recipe").hidden = false;
     $("direction").textContent = r.direction;
-    const tags = [r.moodLabel, r.purposeLabel, `${r.seconds}秒`, r.aspect === "16:9" ? "横長" : r.aspect === "9:16" ? "縦長" : "正方形", r.sound ? `音あり・${r.bpm}BPM` : "音なし"];
-    if (r.onscreen) tags.push(`文字「${r.onscreen}」`);
+    const tags = [r.moodLabel, r.purposeLabel];
+    if (r.sceneLabel) tags.push(`${r.sceneLabel}の色`);
+    tags.push(`${r.seconds}秒`, r.aspect === "16:9" ? "横長" : r.aspect === "9:16" ? "縦長" : "正方形", r.sound ? `音あり・${r.bpm}BPM` : "音なし");
+    if (r.onscreen.length) tags.push(`文字「${r.onscreen.join("」「")}」`);
     $("tags").innerHTML = tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("");
     $("palette").innerHTML = r.palette.map((c) => `<span style="background:${c}" title="${c}"></span>`).join("");
     $("tech-chips").innerHTML = r.techniques.map((t) => `<span class="tech-chip">${esc(t.name)}</span>`).join("");
@@ -107,35 +132,41 @@
     const a = state.adjust, notes = [];
     for (const k of ["calm", "bold", "cute", "wild"]) if (a[k] > 0) notes.push(`${R.ADJUST_LABELS[k]}×${a[k]}`);
     if (state.variant) notes.push(`別のレシピ ${state.variant}`);
-    $("adjust-note").textContent = notes.length ? "調整：" + notes.join("・") : "";
+    $("adjust-note").innerHTML = [notes.length ? "調整：" + notes.join("・") : "", changes || ""].filter(Boolean).map(esc).join("<br />");
     // 図鑑の中で、今回えらんだ演出に印
     const ids = new Set(r.techniques.map((t) => t.id));
     document.querySelectorAll("#zukan-grid .z-card").forEach((c) => c.classList.toggle("chosen", ids.has(c.dataset.id)));
   }
 
   $("go").addEventListener("click", () => {
-    if (!$("wish").value.trim() && !$("onscreen").value.trim() && !state.moods.length && state.purpose === "auto") {
-      $("wish").value = R.IDEAS[Math.floor(Math.random() * R.IDEAS.length)];
-    }
+    const empty = !$("wish").value.trim() && !$("onscreen").value.trim() && !state.moods.length && state.purpose === "auto";
+    if (empty) { $("wish").value = randomIdea(); store.set("mr-wish", $("wish").value); }
     make(true);
+    if (empty) toast("例から1つ選んで作りました");
   });
+  // おまかせ：書いた言葉は消さない。こだわり（用途・雰囲気・長さ・画面・音）だけを、おまかせに戻す
   $("omakase").addEventListener("click", () => {
-    $("wish").value = "";
+    const had = $("wish").value.trim();
     state.purpose = "auto"; state.moods = []; state.seconds = "auto"; state.aspect = "auto"; state.sound = "auto";
     document.querySelectorAll(".more .chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.v === "auto")));
+    if (!had) { $("wish").value = randomIdea(); store.set("mr-wish", $("wish").value); }
     make(true);
+    toast(had ? "書いた言葉はそのまま、こだわりをおまかせにしました" : "例から1つ選んで作りました");
   });
+  $("wish").addEventListener("input", () => store.set("mr-wish", $("wish").value));
+  $("onscreen").addEventListener("input", () => store.set("mr-onscreen", $("onscreen").value));
   $("wish").addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) make(true); });
 
   document.querySelector(".adjust").addEventListener("click", (e) => {
     const b = e.target.closest("[data-adj]");
     if (!b) return;
     const k = b.dataset.adj, a = state.adjust;
-    if (k === "variant") state.variant++;
+    if (k === "variant") { state.variant++; state.last = ""; }
     else {
       a[k]++;
       if (k === "calm") a.bold = 0;
       if (k === "bold") a.calm = 0;
+      state.last = k;
     }
     make(false);
     const d = $("direction");
@@ -182,8 +213,22 @@
 
   // ---------------------------------------------------------------- 図鑑
   const order = ["hero", "trans", "feel", "atmos", "sound"];
-  $("zukan-grid").innerHTML = R.TECHNIQUES.slice().sort((a, b) => order.indexOf(a.role) - order.indexOf(b.role)).map((t) => card(t, false).replace('<article class="z-card"', `<article class="z-card" data-id="${t.id}"`)).join("");
+  $("zukan-grid").innerHTML = R.TECHNIQUES.slice().sort((a, b) => order.indexOf(a.role) - order.indexOf(b.role)).map((t) => card(t, false, true)).join("");
   watch($("zukan-grid"));
+  // カードを押すと、その演出の言葉を入力欄に足す（言葉に入っていれば、アプリが必ずその演出を入れる）
+  function addHint(id) {
+    const t = R.TECH[id];
+    if (!t || !t.hint) return;
+    const w = $("wish"), cur = w.value.trim();
+    if (!cur.includes(t.hint)) w.value = cur ? `${cur.replace(/[。、,.\s]+$/, "")}、${t.hint}` : t.hint;
+    store.set("mr-wish", w.value);
+    $("make").scrollIntoView({ behavior: "smooth", block: "start" });
+    toast(`「${t.hint}」を入れました`);
+  }
+  $("zukan-grid").addEventListener("click", (e) => { const c = e.target.closest(".z-card.pick"); if (c) addHint(c.dataset.id); });
+  $("zukan-grid").addEventListener("keydown", (e) => { const c = e.target.closest(".z-card.pick"); if (c && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); addHint(c.dataset.id); } });
+  $("zukan-grid").classList.add("collapsed");
+  $("zukan-more").addEventListener("click", () => { $("zukan-grid").classList.remove("collapsed"); $("zukan-more").hidden = true; });
 
   // ---------------------------------------------------------------- 作品集
   (window.MOTION_GALLERY ? Promise.resolve(window.MOTION_GALLERY) : fetch("gallery/gallery.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(r.status))))
@@ -220,4 +265,9 @@
   // ---------------------------------------------------------------- ?q= で開いたら、そのままレシピまで
   const q = new URLSearchParams(location.search).get("q");
   if (q) { $("wish").value = q; make(true); }
+  else {
+    const w = store.get("mr-wish"), o = store.get("mr-onscreen");
+    if (w) $("wish").value = w;
+    if (o) $("onscreen").value = o;
+  }
 })();
