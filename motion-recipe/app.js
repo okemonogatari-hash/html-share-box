@@ -169,6 +169,10 @@
     await copyText($("prompt").textContent);
     toast("コピーしました。Claude Code に貼ってね");
   });
+  $("copy-basic").addEventListener("click", async () => {
+    await copyText($("basic").textContent);
+    toast("コピーしました。Claude Code に貼ってね");
+  });
   document.addEventListener("click", async (e) => {
     const b = e.target.closest(".cmd");
     if (!b) return;
