@@ -186,8 +186,7 @@
   watch($("zukan-grid"));
 
   // ---------------------------------------------------------------- 作品集
-  fetch("gallery/gallery.json", { cache: "no-cache" })
-    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+  (window.MOTION_GALLERY ? Promise.resolve(window.MOTION_GALLERY) : fetch("gallery/gallery.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(r.status))))
     .then((list) => {
       const items = Array.isArray(list) ? list : list.items || [];
       if (!items.length) throw new Error("empty");
