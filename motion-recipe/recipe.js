@@ -227,7 +227,7 @@
     T({ id: "glitch", role: "atmos", name: "ちょっとだけノイズ", en: "Glitch (subtle)", plain: "画面が一瞬ざざっと乱れる、デジタルなノイズ", short: "一瞬だけデジタルなノイズが走り", prompt: "控えめなグリッチ：場面の切り替えで一瞬だけ色ずれやノイズを入れる（多用しない）", moods: { future: 3, cool: 2 }, purposes: { sns: 1, showreel: 1 }, keys: ["グリッチ", "ノイズ", "バグ", "サイバー", "ハッカー"], hint: "グリッチで" }),
     T({ id: "texture", role: "atmos", name: "紙や光の手ざわり", en: "Texture / Grain", plain: "紙の繊維や、うっすらした粒子で、画面に手ざわりが生まれる", short: "紙のような手ざわりの上で", prompt: "テクスチャ：紙の繊維やうっすらした粒子を画面にのせて、手ざわりを出す", moods: { wa: 3, emo: 3, calm: 2, cute: 1, elegant: 1, warm: 3 }, purposes: { poster: 1, intro: 1 }, keys: ["紙", "手ざわり", "手触り", "レトロ", "フィルム", "和紙"], hint: "紙の手ざわりで" }),
 
-    T({ id: "beatsync", role: "sound", name: "音に合わせて動く", en: "Beat Sync", plain: "リズムに合わせて形が弾み、場面が切り替わる", short: "", prompt: "ビートシンク：テンポを1つ決め、場面の切り替えや大事な動きを拍に合わせる。効果音も動きと同じ瞬間に鳴らす", moods: { pop: 2, exciting: 2, cool: 2, future: 1, genki: 2 }, purposes: { sns: 2, event: 2, showreel: 2 }, keys: ["ビート", "リズムに", "音に合わせ"], hint: "音に合わせて" }),
+    T({ id: "beatsync", role: "sound", name: "音に合わせて動く", en: "Beat Sync", plain: "リズムに合わせて形が弾み、場面が切り替わる", short: "", prompt: "ビートシンク：テンポを1つ決め、場面の切り替えや大事な動きを拍に合わせる。効果音も動きと同じ瞬間に鳴らす", moods: { pop: 2, exciting: 2, cool: 2, future: 1, genki: 2 }, purposes: { sns: 2, event: 2, showreel: 2 }, keys: ["ビート", "リズムに", "音に合わせ", "ジングル"], hint: "音に合わせて" }),
     T({ id: "softsound", role: "sound", name: "静かな音で寄り添う", en: "Soft Sound", plain: "やわらかいBGMと小さな効果音が、動きにそっと寄り添う", short: "", prompt: "やさしい音づくり：BGMは静かなパッドやオルゴールのような音にして、効果音は大事な瞬間だけ小さく鳴らす", moods: { calm: 3, elegant: 2, emo: 2, mystic: 2, warm: 2 }, purposes: { poster: 2, intro: 1 }, keys: ["オルゴール", "静かな音", "ピアノ"], hint: "静かな音で" }),
   ];
   // 正式名称（2026-09-27 おけもん「技法に関してはちゃんと正式名称載せておいてー。AIにしじするときに言葉を知っているかどうかも大事だから」）
@@ -291,7 +291,11 @@
   function count(text, word) {
     if (!word) return 0;
     let n = 0, i = 0;
-    while ((i = text.indexOf(word, i)) !== -1) { n++; i += word.length; }
+    while ((i = text.indexOf(word, i)) !== -1) {
+      // 「昭和の」「令和の」の「和の」を和の風情に数えない（2026-09-28：昭和レトロのCMが和風になった）
+      if (!(word[0] === "和" && i > 0 && "昭平令".includes(text[i - 1]))) n++;
+      i += word.length;
+    }
     return n;
   }
   function score(text, words) {
@@ -300,7 +304,8 @@
     return s;
   }
   // 日付・曜日は雰囲気の聞き取りから外す（「10月1日」の「月」が神秘的に当たっていた）
-  const DATE_RE = /[0-9〇一二三四五六七八九十]+\s*月\s*(?:[0-9〇一二三四五六七八九十]+\s*日)?|[0-9]+\s*日|(?:毎|今|来|先|翌|前|数|ヶ|か|カ)月|月(?:額|末|初|謝|曜|間|収|給|払)|[月火水木金土日]曜日?/g;
+  // 時刻（「夜9時」「21時半」）も外す：放送や開始の時刻は景色ではない（2026-09-28：水曜AIラジオの「夜9時」が夜の景色になった）
+  const DATE_RE = /[0-9〇一二三四五六七八九十]+\s*月\s*(?:[0-9〇一二三四五六七八九十]+\s*日)?|[0-9]+\s*日|(?:毎|今|来|先|翌|前|数|ヶ|か|カ)月|月(?:額|末|初|謝|曜|間|収|給|払)|[月火水木金土日]曜日?|(?:朝|昼|夜|夕方?|深夜|午前|午後)?\s*[0-9〇一二三四五六七八九十]+\s*時(?:半|\s*[0-9]+\s*分)?/g;
 
   function readWords(text) {
     const t = (text || "").normalize("NFKC");
