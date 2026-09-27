@@ -778,6 +778,362 @@ window.MOTION_WORLD = {
     "pop",
     "genki"
    ]
+  },
+  {
+   "id": "kevin-what-do-you-love",
+   "group": "ai",
+   "title": "紙飛行機で「好きなものは？」と聞く、クレヨン絵本のようなアニメ（全コマを JavaScript で描いた）",
+   "by": "Kevin Ngo",
+   "handle": "kevin_t_ngo",
+   "url": "https://x.com/kevin_t_ngo/status/2102437977435893771",
+   "date": "2026-09-23",
+   "seconds": 28,
+   "views": 632482,
+   "likes": 6041,
+   "hitokoto": "夜の町の窓辺で、女の子がノートに「what do you love?」と1語ずつ書き、紙飛行機に折って飛ばす。飛行機は点線を引いて町の上を渡り、オレンジの星形の Claude が受け取る。答えは、言葉・音楽・海・木・パン・雨・星…と「好きなもの」を0.5秒ずつ、背景の色を替えて次々に。最後は全部をハートに集めて返事を飛ばし、女の子がにっこりする28秒（正方形）。",
+   "traits": [
+    "クレヨンの塗りと、ちぎった紙のふちの手ざわり",
+    "ノートに手書きの字が1語ずつ書かれていく",
+    "紙飛行機が点線を引いて、場面から場面へ話を運ぶ",
+    "好きなものを0.5秒ずつ、背景の色を替えて次々に"
+   ],
+   "technique_ids": [
+    "brush",
+    "collage",
+    "matchcut",
+    "texture"
+   ],
+   "moods": [
+    "cute",
+    "warm"
+   ],
+   "aspect": "1:1"
+  },
+  {
+   "id": "drew-hand-drawn-wonders",
+   "group": "ai",
+   "title": "手描きの線で、DNA→ひまわり→銀河→地球と形を受け渡す短編（四角い生きものが見る世界）",
+   "by": "DreW",
+   "handle": "devteamdrew",
+   "url": "https://x.com/devteamdrew/status/2102436464323661880",
+   "date": "2026-09-23",
+   "seconds": 32,
+   "views": 1786809,
+   "likes": 9642,
+   "hitokoto": "生成りの紙の上を、足の生えたオレンジの四角い生きものが歩いてくる。そこから細胞・神経・プリズムの虹・DNA・ひまわり・鳥の群れ・銀河・ブラックホール・月から見た地球と、自然と宇宙の場面が手描きの線で次々に現れ、最後はまた紙の上で生きものが目を細める32秒。DNAのらせんを正面から見るとうずまきになり、そのまま種の並び→ひまわりへ、と前の形が次の形になる。",
+   "traits": [
+    "手描きの線と斜線の影（はじめと終わりは生成りの紙）",
+    "らせん→うずまき→ひまわりの種、と形を受け渡す",
+    "1〜2秒ごとに、細胞から宇宙まで大きさが飛ぶ",
+    "静かな出だしから、6秒で拍のある音楽が入る"
+   ],
+   "technique_ids": [
+    "pattern",
+    "particles",
+    "matchcut",
+    "texture"
+   ],
+   "moods": [
+    "mystic",
+    "emo"
+   ]
+  },
+  {
+   "id": "ex-nihilo-demoscene",
+   "group": "ai",
+   "title": "EX NIHILO（絵も音も、280KB の HTML 1枚から生まれるデモシーン）",
+   "by": "Justin Perea",
+   "handle": "JustinPerea",
+   "url": "https://x.com/JustinPerea/status/2102893186330841502",
+   "date": "2026-09-24",
+   "seconds": 43,
+   "views": 125419,
+   "likes": 1568,
+   "hitokoto": "黒い画面で光の粒が集まってはじけ、「every pixel. every sound.」。そこから MATTER（銀色の液体金属の玉がくっついては離れる）→ WORLD（雪山の頂へ飛んでいく）→ CITY（ネオンの街とトンネルを抜ける）→ COSMOS（ブラックホールへ寄る）と4章を渡り、光の点に戻って題名「EX NIHILO（無から）」で止まる43秒。Opus 5.5 に「自分をいちばん印象的に見せるデモを」とだけ頼み、約5時間で作らせた。",
+   "traits": [
+    "4章の見出しを左下に小さく（MATTER・WORLD・CITY・COSMOS）",
+    "液体金属・雪山・ネオンの街を、画像なしのコードで描く",
+    "カメラが奥へ飛び込み続け、最後は光の点に収束",
+    "シンセの音楽も同じ HTML から、章で曲調が変わる"
+   ],
+   "technique_ids": [
+    "camera3d",
+    "liquid",
+    "slowzoom",
+    "lightsweep"
+   ],
+   "moods": [
+    "future",
+    "mystic"
+   ]
+  },
+  {
+   "id": "returning-bird-ink",
+   "group": "ai",
+   "title": "The Returning Bird（ヴァイオリンの曲と一緒に作った、水墨画のようなアニメ）",
+   "by": "ℏεsam",
+   "handle": "Hesamation",
+   "url": "https://x.com/Hesamation/status/2103535326325055843",
+   "date": "2026-09-26",
+   "seconds": 62,
+   "views": 107090,
+   "likes": 667,
+   "hitokoto": "灰色の紙に墨の線が1本引かれて丘になり、小さな人が座る。種から木が枝分かれしながら育ち、空に墨がにじんで広がり、円が描かれて白く光り出す。曲が最高潮（ff）になると光があふれ、木に集まった黒い点が白い鳥の群れになって飛び立ち、また戻ってくる。最後に小さな人が手を上げる。左下には楽譜の強弱記号（p・mp・cresc.・ff）と演奏の指示が、曲に合わせて出る62秒。曲も絵も Opus 5.5 が作った。",
+   "traits": [
+    "灰色の紙に墨一色、空だけ墨がにじんで広がる",
+    "1本の線から地平線・丘・木が枝分かれして育つ",
+    "左下に強弱記号（p→ff）が曲に合わせて出る",
+    "ヴァイオリンの旋律だけで進む・カットなし"
+   ],
+   "technique_ids": [
+    "line",
+    "liquid",
+    "breathing",
+    "softsound"
+   ],
+   "moods": [
+    "calm",
+    "emo"
+   ],
+   "aspect": "1:1"
+  },
+  {
+   "id": "negroni-recipe",
+   "group": "ai",
+   "title": "30秒のカクテルレシピ（注ぐと液面が目盛りまで上がり、手順カードが進む）",
+   "by": "Rory Flynn",
+   "handle": "Ror_Fly",
+   "url": "https://x.com/Ror_Fly/status/2102853258582880547",
+   "date": "2026-09-24",
+   "seconds": 30,
+   "views": 73555,
+   "likes": 1014,
+   "hitokoto": "生成りの地に赤い太字の題名が1字ずつ打たれ、空のグラスの線が描かれる。氷が1個ずつ落ち、瓶が傾いて注ぐたびに液面が目盛り（1 oz・2 oz・3 oz）まで上がって色が赤く深まり、右のカードに手順と分量、下の6つの丸に進み具合が出る。混ぜる20秒のタイマー、オレンジの皮を落として「CIN CIN!」で止まる30秒（正方形・音なし）。画像1枚を渡して、Opus 5.5 が HTML で作った。",
+   "traits": [
+    "生成りの地に、手描き風の太い線と赤1色",
+    "瓶が傾いて注ぎ、液面が目盛りまで上がる",
+    "右に手順カード、下に6つの丸で進み具合",
+    "氷が1個ずつ落ち、最後は乾杯の一言で止まる"
+   ],
+   "technique_ids": [
+    "infographic",
+    "liquid",
+    "stagger",
+    "hold"
+   ],
+   "moods": [
+    "pop",
+    "warm"
+   ],
+   "sound": false,
+   "aspect": "1:1"
+  },
+  {
+   "id": "morse-colorful-ui",
+   "group": "ai",
+   "title": "押すと気持ちいいボタン集（押した所から、次の色が丸く広がる）",
+   "by": "Tommy D. Rossi",
+   "handle": "__morse",
+   "url": "https://x.com/__morse/status/2103485566570369333",
+   "date": "2026-09-25",
+   "seconds": 15,
+   "views": 22322,
+   "likes": 164,
+   "hitokoto": "ピンク・紫・水色・青・黄・オレンジと、画面いっぱいの色が1〜2秒ごとに替わる。真ん中の部品（絵文字のリアクション・星の評価・人数の増減・カレンダー・色選び・料金の切り替え・読み込みの輪・通知）をカーソルが押すたびに、押した所から次の色が丸く広がり、部品の形がそのまま次の部品へ変わっていく15秒（正方形）。",
+   "traits": [
+    "無地の鮮やかな背景に、大きな半透明の丸と角",
+    "押した場所から、次の色が丸く広がって場面が替わる",
+    "星が1つずつ灯り、選んだ絵文字がぽんと弾む",
+    "部品の形がそのまま次の部品に変わる・ポップな音"
+   ],
+   "technique_ids": [
+    "ui",
+    "colorwipe",
+    "spring",
+    "stagger"
+   ],
+   "moods": [
+    "pop",
+    "genki"
+   ],
+   "aspect": "1:1"
+  },
+  {
+   "id": "pixel-wizard",
+   "group": "ai",
+   "title": "ドット絵の魔法使い（杖を掲げて力をためてから、一気に放つループ）",
+   "by": "Majid Manzarpour",
+   "handle": "majidmanzarpour",
+   "url": "https://x.com/majidmanzarpour/status/2102476258948927543",
+   "date": "2026-09-23",
+   "seconds": 11,
+   "views": 438521,
+   "likes": 2531,
+   "hitokoto": "満月の夜、石の城壁に立つ赤い服のドット絵の魔法使い。杖を高く掲げると、先に青と紫の光の粒が渦を巻いて集まり、1.5秒ほどためてから杖を前へ突き出して一気に放つ。光が散って足もとが光り、また静かな立ち姿に戻る、をくり返す11秒（音なし）。",
+   "traits": [
+    "紺から紫の夜空、満月、石の城壁（ドット絵）",
+    "杖を掲げると光の粒が渦を巻き、1.5秒ほどためる",
+    "突き出した瞬間に、青い粒と輪が弾ける",
+    "静かな立ち姿に戻って、最初へつながる（音なし）"
+   ],
+   "technique_ids": [
+    "particles",
+    "anticipation",
+    "breathing",
+    "lightsweep"
+   ],
+   "moods": [
+    "cute",
+    "mystic"
+   ],
+   "sound": false
+  },
+  {
+   "id": "hira-anime-reel",
+   "group": "ai",
+   "title": "AIで作ったキャラに、ライムと紫の太い文字と影絵を重ねたショーリール",
+   "by": "hiraoku",
+   "handle": "2020_hira",
+   "url": "https://x.com/2020_hira/status/2103765908351295791",
+   "date": "2026-09-26",
+   "seconds": 15,
+   "views": 142478,
+   "likes": 2498,
+   "hitokoto": "黒地に「SHOW／REEL／2026」の縁取り文字、その前でキャラの影絵が拍ごとに白→薄紫→ライムと色を替える。白い帯が開いて巨大な「MOVE」、回る文字の輪の中でくるりと回転、縦の帯に並ぶ影と姿、放射線の上の「踊れ」と色ずれ、ポーズのマス目、と拍の頭で切り替わり「SHOW REEL 2026」で締める15秒。キャラの絵と動きは別のAI（Astra の画像→Grok の動画）で作り、Opus 5.5 が組み立てた。",
+   "traits": [
+    "ライム・紫・黒・白の4色、画面いっぱいの太い文字",
+    "切り抜いたキャラと、その影絵を並べて色を替える",
+    "白い帯が開いて文字が現れる・一瞬の色ずれ",
+    "128BPMほどの電子音楽、拍の頭ごとに切り替え"
+   ],
+   "technique_ids": [
+    "kinetic",
+    "collage",
+    "maskreveal",
+    "beatsync"
+   ],
+   "moods": [
+    "exciting",
+    "cool"
+   ]
+  },
+  {
+   "id": "see-the-sound-mv",
+   "group": "ai",
+   "title": "SEE THE SOUND（縦書きの日本語が128BPMで踊る、縦長のMV）",
+   "by": "IT navi",
+   "handle": "itnavi2022",
+   "url": "https://x.com/itnavi2022/status/2103416250743574988",
+   "date": "2026-09-25",
+   "seconds": 15,
+   "views": 15513,
+   "likes": 219,
+   "hitokoto": "縦長の画面の四隅に「SEE THE SOUND／128 BPM／F MINOR」と小節の数。縦書きの「聴こえる？」の下で波形が揺れ、黒地の「鼓動が速くなる。」では心電図の線と数字が76→128まで上がる。赤と黒の「もっと」が増えて数字の3・1をつくり、集中線の上の「踊れ」、斜めに流れる「DANCE・踊れ」、青地で音の棒からできた「音」、「FEEL THE BEAT」と続き、最後は「音を、見ろ。」で締める15秒。Opus 5.5 だけで70分。",
+   "traits": [
+    "縦長（9:16）、縦書きの日本語と極太の英字",
+    "生成り・黒・赤・青の画面が、拍の頭で替わる",
+    "波形や心電図の線が、言葉と一緒に動く",
+    "「速くなる」は速く、「踊れ」は踊る（128BPM）"
+   ],
+   "technique_ids": [
+    "semantic",
+    "kinetic",
+    "colorwipe",
+    "beatsync"
+   ],
+   "moods": [
+    "cool",
+    "exciting"
+   ],
+   "aspect": "9:16"
+  },
+  {
+   "id": "higgsfield-parallax-moon",
+   "group": "ai",
+   "title": "満月の夜の2.5Dパララックス（絵の層を、手前ほど速く動かす）",
+   "by": "Higgsfield AI",
+   "handle": "higgsfield_ai",
+   "url": "https://x.com/higgsfield_ai/status/2103964599737536831",
+   "date": "2026-09-27",
+   "seconds": 11,
+   "views": 11958,
+   "likes": 102,
+   "hitokoto": "左半分は作業画面（After Effects と指示のやりとり）、右半分が縦長の完成映像。大きな満月、浮世絵のような波と跳ねる鯉、雲に乗った招き猫、灯籠、山の重なり、鳥居と松の丘が層になっていて、カメラが上下に動くと手前の層ほど速く、奥ほどゆっくり動く。最後は満月へ寄って光が広がる11秒。絵は Higgsfield の画像生成、動きは Opus 5.5 が After Effects で付けた。",
+   "traits": [
+    "紫の夜空、満月、浮世絵のような波（縦長の完成映像）",
+    "山・波・丘・木を層に分け、手前ほど速く動かす",
+    "灯籠がゆっくり浮かび、小さな光がまたたく",
+    "最後は満月へ寄って、光が画面に広がる"
+   ],
+   "technique_ids": [
+    "collage",
+    "parallax",
+    "breathing",
+    "lightsweep"
+   ],
+   "moods": [
+    "wa",
+    "mystic"
+   ],
+   "aspect": "9:16"
+  },
+  {
+   "id": "himanshu-principles",
+   "group": "ai",
+   "title": "動きの基本を手書きの注釈で見せるショーリール（つぶれる・ためる・なめらかに止まる）",
+   "by": "Himanshu",
+   "handle": "himanshutwtxs",
+   "url": "https://x.com/himanshutwtxs/status/2103495232637882858",
+   "date": "2026-09-25",
+   "seconds": 15,
+   "views": 266614,
+   "likes": 1418,
+   "hitokoto": "白い紙に青いボールが落ちて、地面でむにっとつぶれ、跳ねるたびに残像と手書きの注釈（slow in・squash!・stretch）が付く。極太の「I MAKE THINGS MOVE.」、暗転して「SNAP」、直線の動き（linear = robotic）を赤線で消して ease in-out に直すグラフ、点の地面を流れる青い尾（follow-through）、ためてから満ちる輪（anticipation）と進み、「MOTION DESIGNER CLAUDE.」で止まる15秒。",
+   "traits": [
+    "白い地に青い玉と、赤・青の手書きの注釈",
+    "動きの基本を1つずつ、名前を書き込んで見せる",
+    "動きのグラフと残像で、速さの変化を見せる",
+    "128BPMほどの電子音楽、最後は名前で静止"
+   ],
+   "technique_ids": [
+    "kinetic",
+    "line",
+    "squash",
+    "anticipation"
+   ],
+   "moods": [
+    "pop",
+    "cool"
+   ]
+  },
+  {
+   "id": "shiraki-self-intro",
+   "group": "ai",
+   "title": "原稿を渡して作った自己紹介（黄・黒・生成りの日本語レイアウトと、数え上がる数字）",
+   "by": "しらき@パワポ図解",
+   "handle": "kumiko_shiraki",
+   "url": "https://x.com/kumiko_shiraki/status/2103771566982959414",
+   "date": "2026-09-26",
+   "seconds": 48,
+   "views": 17120,
+   "likes": 130,
+   "hitokoto": "生成りの地に黄色と黒の四角がすべり込み、名前の見出しが出る。四角からはみ出した線が床まで伸びる場面、「10年」の大きな数字とチェックの付く表、進み具合の棒、フォロワー数が0から7万まで数え上がる棒グラフ、地図の2点を結ぶ弧の線と、1場面に1つの話で進み、黄色一面の題名「AI時代のプレゼン制作術」で締める48秒。自己紹介の原稿を渡して「最高にお洒落なモーショングラフィックを」と頼み、Opus 5.5 が作った。",
+   "traits": [
+    "生成り・黄・黒の3色、日本語の太い見出しと小さな英字",
+    "1場面に言いたいこと1つ、左に見出し・右に図",
+    "数字が数え上がり、棒グラフが伸び、線が引かれる",
+    "静かな電子音楽の拍に合わせて、ゆっくり進む"
+   ],
+   "technique_ids": [
+    "infographic",
+    "line",
+    "maskreveal",
+    "hold"
+   ],
+   "moods": [
+    "elegant",
+    "calm"
+   ]
   }
  ]
 };

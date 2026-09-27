@@ -317,7 +317,8 @@
     while ((m = re.exec(t))) { const q = m[1].trim(); if (q && !quotes.includes(q)) quotes.push(q); }
     // 長さ・画面の形・音
     let seconds = null;
-    const sm = t.match(/(\d{1,3})\s*(秒|sec)/);
+    // 長さ：「15秒」「30秒の」。「0.5秒ずつ」「2秒ごと」のような間合いの数字は長さにしない（2026-09-27：古着屋のセールで「0.5秒ずつ」が5秒の長さになった）
+    const sm = t.match(/(?<![\d.．])(\d{1,3})\s*(?:秒|sec)(?!\s*(?:ずつ|ごと|おき|間隔|くらいずつ))/);
     if (sm) seconds = Math.max(5, Math.min(60, parseInt(sm[1], 10)));
     let aspect = null;
     if (/(縦長|縦型|縦向き|たて長|縦で|リール|ショート動画|ショーツ|TikTok|ティックトック|ストーリーズ|9:16)/i.test(t)) aspect = "9:16";
