@@ -241,32 +241,6 @@ window.MOTION_GALLERY = {
    ]
   },
   {
-   "id": "tsukkomi-intro",
-   "title": "おけもん自己紹介V3・AI社員のツッコミ版",
-   "hitokoto": "「Opus 5.5の力で自己紹介動画を」から生まれた、AI社員3人がしゃべってツッコむ紹介番組で、数字のカウントや「ポンコツ99%」のゲージで笑わせます。",
-   "techniques": [
-    "キャラの掛け合い字幕",
-    "数字やグラフが動く",
-    "少しずつ時間差で",
-    "粒・光・紙吹雪"
-   ],
-   "technique_ids": [
-    "infographic",
-    "stagger",
-    "particles"
-   ],
-   "aspect": "16:9",
-   "video": "tsukkomi-intro.mp4",
-   "poster": "tsukkomi-intro.jpg",
-   "gif": null,
-   "date": "2026-09-23",
-   "traits": [
-    "キャラがしゃべる番組の形",
-    "掛け合いとツッコミ",
-    "約100秒"
-   ]
-  },
-  {
    "id": "slide-intro",
    "title": "おけもん自己紹介V2（オリジナル動物版）",
    "hitokoto": "カードが1枚ずつ並び、写真がぽんと置かれ、動物たちが跳ねる“スライド型”の30秒自己紹介で、おけもんが実際にXとThreadsに投稿した1本です。",
