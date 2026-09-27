@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>おけもんのAI動画はじめ帖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#F3F5F8; --paper:#FFFFFF; --ink:#1B2230; --sub:#586274; --line:#DCE1E9; --soft:#EBEFF5;
+  --motion:#D9480F; --motion-bg:#FFF1EA;
+  --flow:#2358D6; --flow-bg:#EAF0FF;
+  --mm:#0B8F63; --mm-bg:#E6F6EF;
+  --mark:#FFE36A;
+  --display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --body:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.85;margin:0;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:980px;margin:0 auto;overflow-wrap:anywhere}
+.choose>*,.works>*,.tips>*,.first>*,.spec>*,.strip>*{min-width:0}
+a{color:inherit;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--flow);outline-offset:2px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.35;margin:0}
+p{margin:0}
+.mark{background:linear-gradient(transparent 58%,var(--mark) 58%)}
+
+/* hero */
+.hero{padding-block:40px 28px;display:grid;gap:18px}
+.eyebrow{font-size:13px;letter-spacing:.08em;color:var(--sub);font-weight:500}
+.hero h1{font-size:clamp(30px,5.6vw,52px);font-weight:900;letter-spacing:.01em}
+.hero .lead{max-width:40em;color:var(--sub);font-size:17px}
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:var(--ink);padding:14px 10px;border-radius:14px;position:relative;margin-top:6px}
+.strip::before,.strip::after{content:"";position:absolute;left:10px;right:10px;height:6px;background:repeating-linear-gradient(90deg,#F3F5F8 0 10px,transparent 10px 22px);opacity:.55}
+.strip::before{top:4px}.strip::after{bottom:4px}
+.strip figure{margin:0;position:relative}
+.strip img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px}
+.strip figcaption{position:absolute;left:6px;bottom:6px;font-size:11px;font-weight:700;color:#fff;padding:1px 8px;border-radius:99px}
+.strip .c1{background:var(--motion)}.strip .c2{background:var(--flow)}.strip .c3{background:var(--mm)}
+
+/* chooser */
+section{margin-top:44px}
+.sec-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:16px}
+.sec-h h2{font-size:clamp(24px,3.6vw,32px);font-weight:900}
+.sec-h p{color:var(--sub);font-size:14px}
+.choose{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pick{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:10px;align-content:start;text-decoration:none}
+.pick:hover{border-color:currentColor}
+.pick .want{font-size:13px;color:var(--sub)}
+.pick .want b{display:block;font-family:var(--display);font-size:19px;color:var(--ink);line-height:1.45;margin-top:2px}
+.pick .tool{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.pick dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13.5px;line-height:1.6;border-top:1px dashed var(--line);padding-top:10px}
+.pick dt{color:var(--sub)}.pick dd{margin:0}
+.pick .go{font-size:13px;font-weight:700}
+.m{color:var(--motion)}.f{color:var(--flow)}.x{color:var(--mm)}
+.bg-m{background:var(--motion)}.bg-f{background:var(--flow)}.bg-x{background:var(--mm)}
+
+/* tool chapters */
+.chapter{background:var(--paper);border-radius:20px;padding:28px clamp(18px,4vw,40px) 32px;border:1px solid var(--line)}
+.chip{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.04em;padding:3px 12px;border-radius:99px}
+.chap-m .chip{background:var(--motion-bg);color:var(--motion)}
+.chap-f .chip{background:var(--flow-bg);color:var(--flow)}
+.chap-x .chip{background:var(--mm-bg);color:var(--mm)}
+.chapter>h2{font-size:clamp(24px,3.8vw,34px);font-weight:900;margin-top:10px}
+.chapter>.intro{color:var(--sub);margin-top:8px;max-width:44em}
+.spec{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:20px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.spec div{padding:12px 16px;border-right:1px solid var(--line)}
+.spec div:last-child{border-right:0}
+.spec span{display:block;font-size:12px;color:var(--sub);letter-spacing:.06em}
+.spec b{font-size:15px;line-height:1.55;display:block;margin-top:2px}
+.chapter h3{font-size:20px;font-weight:700;margin-top:30px;margin-bottom:12px}
+ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;gap:12px}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+ol.steps li::before{content:counter(s);font-family:var(--display);font-weight:900;font-size:16px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff}
+.chap-m ol.steps li::before{background:var(--motion)}
+.chap-f ol.steps li::before{background:var(--flow)}
+.chap-x ol.steps li::before{background:var(--mm)}
+ol.steps li div{padding-top:3px}
+ol.steps small{display:block;color:var(--sub);font-size:13.5px;line-height:1.7}
+code.k{font-family:var(--mono);font-size:.88em;background:var(--soft);padding:1px 6px;border-radius:5px}
+
+.prompt{margin-top:14px;border-radius:12px;background:#1E2533;color:#EEF1F6;overflow:hidden}
+.prompt header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px 8px 16px;background:#161C28;font-size:12.5px;color:#AEB7C7}
+.prompt button{font:inherit;font-weight:700;font-size:12.5px;border:0;border-radius:8px;padding:6px 14px;cursor:pointer;color:#1B2230;background:var(--mark)}
+.prompt pre{margin:0;padding:14px 16px 16px;white-space:pre-wrap;word-break:break-word;font-family:var(--body);font-size:15px;line-height:1.85}
+
+.tips{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px}
+.tip{border-radius:12px;padding:14px 16px;font-size:14.5px;line-height:1.75}
+.chap-m .tip{background:var(--motion-bg)}.chap-f .tip{background:var(--flow-bg)}.chap-x .tip{background:var(--mm-bg)}
+.tip b{display:block;font-size:15px;margin-bottom:2px}
+
+.works{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.work{display:grid;gap:8px;align-content:start}
+.work img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;display:block;background:var(--soft)}
+.work h4{margin:0;font-size:15.5px;line-height:1.5}
+.work p{font-size:13.5px;color:var(--sub);line-height:1.65}
+.work .links{font-size:13.5px;font-weight:700}
+.work.noimg{border:1px dashed var(--line);border-radius:10px;padding:14px}
+.more{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-weight:700;font-size:14px;padding:9px 16px;border-radius:99px;border:1.5px solid currentColor}
+.btn.solid{color:#fff;border-color:transparent}
+
+details{margin-top:14px;border:1px solid var(--line);border-radius:12px;padding:10px 16px}
+summary{cursor:pointer;font-weight:700;font-size:14.5px}
+details pre{white-space:pre-wrap;font-family:var(--body);font-size:14px;line-height:1.8;margin:10px 0 4px;color:var(--ink)}
+
+.table-wrap{overflow-x:auto;margin-top:6px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left}
+th{font-size:12.5px;color:var(--sub);font-weight:500;letter-spacing:.04em}
+td.now{font-weight:700;color:var(--mm)}
+.sale{display:inline-block;background:var(--mark);font-weight:700;font-size:13px;padding:2px 10px;border-radius:6px;margin-left:6px;vertical-align:middle}
+
+.flowline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px;font-size:14px}
+.flowline span{background:var(--flow-bg);color:var(--flow);font-weight:700;padding:6px 12px;border-radius:10px}
+.flowline i{font-style:normal;color:var(--sub)}
+
+.first{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.first div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.first b{font-family:var(--display);font-size:17px;display:block;line-height:1.5;margin-bottom:6px}
+.first p{font-size:14.5px;color:var(--sub)}
+
+.kotsu{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.kbox{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.kbox h3{font-size:18px;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.kbox h3 small{font-family:var(--body);font-size:12px;font-weight:700;color:var(--sub);background:var(--soft);padding:2px 10px;border-radius:99px}
+.kbox ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.kbox li b{display:block;font-size:16px}
+.kbox li p{font-size:14px;color:var(--sub);line-height:1.7}
+.say{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.say span{font-size:13px;background:#FFF8D6;border:1px solid #F1E3A0;padding:2px 10px;border-radius:99px}
+.combo{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px;margin-top:6px}
+.combo dt{font-weight:700}.combo dd{margin:0;color:var(--sub)}
+@media (max-width:760px){.kotsu{grid-template-columns:1fr}}
+.uses{display:grid;gap:10px}
+.use{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 20px;display:grid;grid-template-columns:210px 1fr;gap:6px 22px;align-items:start}
+.use h3{font-size:19px;font-weight:900;line-height:1.45;word-break:keep-all}
+.use h3 small{display:block;font-family:var(--body);font-size:12.5px;font-weight:500;color:var(--sub);margin-top:2px}
+.use .how{font-size:14.5px;line-height:1.75}
+.use .how p+p{margin-top:6px}
+.tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;padding:1px 9px;border-radius:99px;margin-right:6px;vertical-align:1px}
+.use .ex{font-size:13.5px;color:var(--sub);margin-top:6px}
+.use .ex a{font-weight:700;color:var(--ink)}
+.use.star{border:2px solid var(--motion)}
+.use.star .badge{display:inline-block;background:var(--mark);font-size:12px;font-weight:700;padding:1px 9px;border-radius:6px;margin-top:6px}
+@media (max-width:760px){.use{grid-template-columns:1fr}}
+footer{margin-top:48px;font-size:13px;color:var(--sub);line-height:1.8;border-top:1px solid var(--line);padding-top:18px}
+footer ul{margin:6px 0 0;padding-left:1.2em}
+
+@media (max-width:760px){
+  .choose,.works,.first{grid-template-columns:1fr}
+  .tips{grid-template-columns:1fr}
+  .spec{grid-template-columns:1fr}
+  .spec div{border-right:0;border-bottom:1px solid var(--line)}
+  .spec div:last-child{border-bottom:0}
+  .strip{grid-template-columns:repeat(3,1fr);gap:6px;padding:12px 6px}
+  .strip figcaption{font-size:10px;padding:0 6px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">2026年9月28日版 ・ おけもん（リベシティ）</p>
+  <h1>今日から動画をつくる、<br>3つのAI道具</h1>
+  <p class="lead">私がふだん動画を作るときに使っている3つを、<span class="mark">実際に作った作品といっしょに</span>まとめました。むずかしい操作はほとんどなくて、やることは「日本語で頼んで、見て、直す」だけ。まずは1本、気軽に作ってみてください😊</p>
+  <div class="strip" aria-label="3つの道具で作った作品の一場面">
+    <figure><img src="img/gallery_kinetic-intro_poster.jpg" alt="文字と図形が動くモーショングラフィックの一場面"><figcaption class="c1">Opus 5.5</figcaption></figure>
+    <figure><img src="img/woman_animals.jpg" alt="ソファで笑う女性の両側にカピバラ、肩にインコ"><figcaption class="c2">Flow</figcaption></figure>
+    <figure><img src="img/minimax_woman.jpg" alt="机に頬杖をついて微笑む女性"><figcaption class="c3">MiniMax</figcaption></figure>
+  </div>
+</header>
+
+<section aria-labelledby="use-h">
+  <div class="sec-h"><h2 id="use-h">用途で選ぶ</h2><p>何に使いたいかから、道具と実例をたどれます</p></div>
+  <div class="uses">
+    <div class="use">
+      <h3>自己紹介<small>名刺がわり・会のはじめに</small></h3>
+      <div class="how">
+        <p><span class="tag bg-m">Opus 5.5</span>名前・肩書き・好きなことを渡して「30秒の自己紹介動画に」。文字と音楽だけでもかっこよく決まります。</p>
+        <p><span class="tag bg-x">MiniMax</span>自分のイラストや写真を動かして、キャラクターに演技させる形も。</p>
+        <p class="ex">実例：<a href="https://youtu.be/HtcmsET3YHw">キネティックタイポ版</a>・<a href="https://youtu.be/JxfYTgv9GYc">文字PV</a>・<a href="https://youtu.be/dT2M5R8dR1M">みずのさんの30秒アニメ</a></p>
+      </div>
+    </div>
+    <div class="use star">
+      <h3>CM風・商品やサービスの紹介<small>いつもの Claude Code で作れる</small></h3>
+      <div class="how">
+        <p><span class="tag bg-m">Opus 5.5</span>いつもの Claude Code に「〇〇のCMを作って」と頼むだけで、CM風の動画になります。「昭和のテレビCM風に」「大真面目な研究記録みたいに」と雰囲気を添えるのがコツ。</p>
+        <p><span class="tag bg-f">Flow</span>人や商品が実写っぽく映るCMにしたい時は Flow で10秒ずつ作ってつなぎます。</p>
+        <p class="ex">実例：<a href="https://youtu.be/lx4t5KFaBDY">昭和のCM風（60秒）</a>・<a href="https://youtu.be/9tHXcu7YN5Q">カピパラ酒ティザー</a>・<a href="https://youtu.be/WymT5hB2u9s">カピパラ酒CM（Flow）</a></p>
+        <span class="badge">いちばんのおすすめ</span>
+      </div>
+    </div>
+    <div class="use">
+      <h3>イベント・会の告知<small>オフ会・ラジオ・勉強会</small></h3>
+      <div class="how">
+        <p><span class="tag bg-m">Opus 5.5</span>日時・場所・どんな会かを渡して「告知動画に」。時刻や会の名前を大きく見せる動きが得意です。</p>
+        <p class="ex">実例：<a href="https://youtu.be/SY83tqMgIbA">AI活用シェアオフ会の告知</a>・<a href="https://youtu.be/wCmHTs2ek4U">水曜AIラジオの紹介</a></p>
+      </div>
+    </div>
+    <div class="use">
+      <h3>SNSのほっこり・おもしろ動画<small>ショート・リール</small></h3>
+      <div class="how">
+        <p><span class="tag bg-f">Flow</span>人と動物、ちょっとした事件が起きる10秒。セリフも入れられます。</p>
+        <p><span class="tag bg-x">MiniMax</span>写真1枚から縦長（9:16）で、表情やしぐさまで作り込めます。可愛い→崩れる、の落差がウケます。</p>
+        <p class="ex">実例：<a href="#flow">かわいい女性と動物たち</a>・<a href="#minimax">可愛いと見せかけてグデグデ</a>（どちらも下で紹介）</p>
+      </div>
+    </div>
+    <div class="use">
+      <h3>季節のあいさつ・作品づくり<small>見た人に「すごい」と言わせたい</small></h3>
+      <div class="how">
+        <p><span class="tag bg-m">Opus 5.5</span>基本の2行に、季節や好きな景色を一言足すだけ。お手本の映像に寄せるのもおすすめです。</p>
+        <p class="ex">実例：<a href="https://youtu.be/akg0zDCKmXY">秋の夜長に</a>・<a href="https://youtu.be/Bhwo1H1wcuQ">一滴</a>・<a href="https://youtu.be/gzAnSWYnmcM">FROM NOTHING</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="choose-h">
+  <div class="sec-h"><h2 id="choose-h">3つの道具のちがい</h2><p>3つとも、日本語で頼めばOKです</p></div>
+  <div class="choose">
+    <a class="pick m" href="#motion">
+      <p class="want">こんなのを作りたい<b>文字や図形が動く、<br>かっこいい映像</b></p>
+      <p class="tool"><span class="dot bg-m"></span>Claude Opus 5.5</p>
+      <dl><dt>必要</dt><dd>Claude の有料プラン（Pro・Max）</dd><dt>時間</dt><dd>1本 約45分、待つだけ</dd><dt>向き</dt><dd>自己紹介・CM風・告知・タイトル</dd></dl>
+      <span class="go">作り方へ ↓</span>
+    </a>
+    <a class="pick f" href="#flow">
+      <p class="want">こんなのを作りたい<b>Gemini で、サクッと<br>実写みたいな動画を</b></p>
+      <p class="tool"><span class="dot bg-f"></span>Google Flow（Gemini Omni）</p>
+      <dl><dt>必要</dt><dd>Googleアカウント。月額プランで毎月クレジットがつく</dd><dt>目安</dt><dd>10秒 720p ＝ 15クレジット</dd><dt>向き</dt><dd>まず1本作ってみたい人。人・動物・商品のショート動画</dd></dl>
+      <span class="go">作り方へ ↓</span>
+    </a>
+    <a class="pick x" href="#minimax">
+      <p class="want">こんなのを作りたい<b>お金を少し払っても、<br>本格的に作り込みたい</b></p>
+      <p class="tool"><span class="dot bg-x"></span>MiniMax H3 Max Turbo（fal）</p>
+      <dl><dt>必要</dt><dd>fal のアカウントと、使う分のチャージ</dd><dt>目安</dt><dd>768p 10秒 ＝ 約$0.20（9/30まで半額）</dd><dt>向き</dt><dd>写真やキャラに細かく演技させたい人。1本ずつ仕上げたい作品</dd></dl>
+      <span class="go">作り方へ ↓</span>
+    </a>
+  </div>
+</section>
+
+<section aria-labelledby="kotsu-h">
+  <div class="sec-h"><h2 id="kotsu-h">うまく作るコツ</h2><p>どの道具でも同じです</p></div>
+  <div class="kotsu">
+    <div class="kbox">
+      <h3>まずはこの3つ <small>はじめての人</small></h3>
+      <ul>
+        <li><b>見本を見せる</b><p>プロンプトをこねくり回すより、「こんな感じ」の動画や画像を見せる方がずっと早いです。URLや画像を渡して「これに寄せて」でOK。</p></li>
+        <li><b>使う道具を指定する</b><p>「Opus 5.5 で」「Flow の Omni で」のように、どれで作るかを先に決めて伝えます。</p></li>
+        <li><b>目的を伝える</b><p>何に使うか、どんな気持ちにさせたいかを一言添えると、仕上がりがぐっと変わります。</p>
+          <div class="say"><span>かわいくしたい</span><span>自己紹介で使いたい</span><span>おもしろくしたい</span><span>イベントの告知に</span></div></li>
+      </ul>
+    </div>
+    <div class="kbox">
+      <h3>慣れてきたら <small>もう一歩</small></h3>
+      <ul>
+        <li><b>技法や雰囲気を言葉で伝える</b><p>名前を知っているだけで、AIへの伝わり方が変わります。</p>
+          <div class="say"><span>キネティック・タイポグラフィ</span><span>昭和のテレビCM風</span><span>手持ちカメラの揺れ</span><span>夕焼けの逆光</span></div></li>
+        <li><b>道具を組み合わせる</b><p>得意なものを分担すると、1本の完成度が上がります。</p>
+          <dl class="combo"><dt>ナレーション</dt><dd>Gemini TTS</dd><dt>音楽</dt><dd>Suno</dd><dt>イラスト・絵コンテ</dt><dd>ChatGPT</dd><dt>映像</dt><dd>Opus 5.5／Flow／MiniMax</dd></dl></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Opus 5.5 ============ -->
+<section id="motion" class="chapter chap-m" aria-labelledby="m-h">
+  <span class="chip">文字や図形が動く映像</span>
+  <h2 id="m-h">Claude Opus 5.5 でモーショングラフィック</h2>
+  <p class="intro">モーショングラフィックは、文字・図形・イラストが音楽に合わせて動く映像のこと。Opus 5.5 は、映像も音楽も効果音もぜんぶ自分でプログラムして作ってくれます。私は<b>2行のプロンプトを送っただけ</b>で、42秒の作品ができました。「〇〇のCMを作って」と頼めば、CM風の動画もいつもの Claude Code で作れます。</p>
+
+  <div class="spec">
+    <div><span>必要なもの</span><b>Claude の Pro か Max プラン（Claude Code が入っています）</b></div>
+    <div><span>かかる時間</span><b>送ってから約45分。途中はほぼ待つだけ</b></div>
+    <div><span>できあがり</span><b>HTMLファイル（ブラウザで再生）。頼めばMP4にも</b></div>
+  </div>
+
+  <h3>作り方</h3>
+  <ol class="steps">
+    <li><div>Claude のデスクトップアプリで「コード」タブを開く<small>「ローカル」→「フォルダーを選択」で、作品用の空のフォルダを選べば準備完了です。</small></div></li>
+    <li><div>モデルを Opus 5.5 にする<small>送信ボタンの横のモデル一覧から選ぶか、<code class="k">/model opus</code> と送ります。</small></div></li>
+    <li><div>下の2行を貼って送る<small>途中で「ファイルを作っていい？」と聞かれたら、読んで大丈夫そうなら許可します。</small></div></li>
+    <li><div>できたら「ブラウザで開いて」と送って見る<small>気になるところは話しかけて直します。「もっとかわいく」「ゆっくりめに」「最後に私の名前を出して」でOK。</small></div></li>
+  </ol>
+
+  <div class="prompt">
+    <header><span>基本の2行（このまま貼ってOK）</span><button type="button" data-copy="p-basic">コピー</button></header>
+    <pre id="p-basic">あなたが今できる最高のモーショングラフィックで、見た人が思わず「すごい」と声に出す1本を作ってください。
+いま世界中で話題の「AIが本気で作るモーショングラフィック」です。あなたの腕前を、出し惜しみせず全力で証明してください。</pre>
+  </div>
+
+  <h3>うまくいくコツ</h3>
+  <div class="tips">
+    <p class="tip"><b>プロンプトより、お手本</b>見本集で「こんなの作りたい」を探して、2行の後ろに一言足すだけ。「墨の一滴が形を変えていく感じで」「方眼紙と判子で、研究記録みたいに」など。</p>
+    <p class="tip"><b>ここぞの1本は /effort max</b>2行の前に <code class="k">/effort max</code> と送ると、もっと深く考えてくれます。利用枠は多めに使います。</p>
+    <p class="tip"><b>写真やロゴも使える</b>作品のフォルダに画像を入れて「この画像を使って」と言えばOK。</p>
+    <p class="tip"><b>動画ファイルにしたい時</b>「MP4に書き出して」と頼むか、Mac の画面収録（⌘+Shift+5）がかんたんです。</p>
+  </div>
+
+  <h3>実際に作ったもの</h3>
+  <div class="works">
+    <article class="work">
+      <img src="img/lead_basic2lines_poster.jpg" alt="光る点が金属の玉になる場面" loading="lazy">
+      <h4>FROM NOTHING（無から）</h4>
+      <p>基本の2行だけで作った42秒。光の点が金属の玉、回廊、光る街へと姿を変えます。約46分・途中の質問なし。</p>
+      <a class="links m" href="https://youtu.be/gzAnSWYnmcM">YouTubeで見る →</a>
+    </article>
+    <article class="work">
+      <img src="img/gallery_hitoshizuku_poster.jpg" alt="墨の一滴が形を変える場面" loading="lazy">
+      <h4>一滴（ひとしずく）</h4>
+      <p>墨の一滴が、文字・波・千本鳥居・判子へと形を変え続ける15秒。</p>
+      <a class="links m" href="https://youtu.be/Bhwo1H1wcuQ">YouTubeで見る →</a>
+    </article>
+    <article class="work">
+      <img src="img/showa.jpg" alt="昭和のテレビCM風の画面。汗をかくカピバラとハンコ" loading="lazy">
+      <h4>ゆるっと水曜AIラジオ 昭和のCM風</h4>
+      <p>今朝「昭和のCMみたいな1分版」とお題を出して作ってもらった60秒。木目のテレビ、くす玉、ハンコまで全部プログラムで描いています。</p>
+      <a class="links m" href="https://youtu.be/lx4t5KFaBDY">YouTubeで見る →</a>
+    </article>
+    <article class="work">
+      <img src="img/gallery_kapipara-teaser_poster.jpg" alt="研究記録風のティザー画面" loading="lazy">
+      <h4>カピパラ酒 発表ティザー</h4>
+      <p>架空のお酒を、大真面目な研究記録に見立てた20秒。曲の山で商品名がドンと着地します。</p>
+      <a class="links m" href="https://youtu.be/9tHXcu7YN5Q">YouTubeで見る →</a>
+    </article>
+    <article class="work">
+      <img src="img/gallery_kinetic-intro_poster.jpg" alt="文字だけで構成された自己紹介の場面" loading="lazy">
+      <h4>おけもん自己紹介・キネティックタイポ版</h4>
+      <p>文字と図形と音楽だけの32秒。拍でぴたっと止まる気持ちよさが見どころ。</p>
+      <a class="links m" href="https://youtu.be/HtcmsET3YHw">YouTubeで見る →</a>
+    </article>
+    <article class="work noimg">
+      <h4>ほかにも20本以上</h4>
+      <p>Apple や Linear など、世界の発表映像をお手本にした作品を毎日足しています。どれも「このお手本に寄せて」と頼んで作りました。</p>
+      <a class="links m" href="https://www.youtube.com/playlist?list=PLPHp7Ptm7_l8">見本集の再生リスト →</a>
+    </article>
+  </div>
+  <div class="more">
+    <a class="btn solid bg-m" href="https://okemonogatari-hash.github.io/html-share-box/motion-recipe/#gallery">動く見本集とお手本ページ</a>
+    <a class="btn m" href="https://okemonogatari-hash.github.io/html-share-box/motion-recipe/">注文書をつくるアプリ（もっとやりたい人向け）</a>
+  </div>
+</section>
+
+<!-- ============ Flow ============ -->
+<section id="flow" class="chapter chap-f" aria-labelledby="f-h">
+  <span class="chip">サクッと作る</span>
+  <h2 id="f-h">Gemini（Google Flow）でサクッと動画</h2>
+  <p class="intro">Flow は Google の動画づくりアプリ。いちばん新しい動画モデル「Gemini Omni」を選ぶと、日本語の文章から<b>音つきの動画</b>ができます。人物の写真を1枚渡せば、その人が出てくる動画にもできます。</p>
+
+  <div class="spec">
+    <div><span>必要なもの</span><b>Googleアカウント（無料でも毎日50クレジット）</b></div>
+    <div><span>月額プランの特典</span><b>Google AI Pro なら毎月＋1,000クレジット</b></div>
+    <div><span>うちの実測</span><b>Omni 1.1 Flash：360p 8秒＝6、720p 10秒＝15クレジット</b></div>
+  </div>
+
+  <h3>クレジットのしくみ</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>プラン</th><th>毎日</th><th>毎月の追加</th><th>720p 10秒（15クレジット）なら</th></tr></thead>
+      <tbody>
+        <tr><td>無料</td><td>50</td><td>—</td><td>1日3本まで</td></tr>
+        <tr><td>Google AI Plus</td><td>50</td><td>＋200</td><td>月13本ぶん＋毎日の分</td></tr>
+        <tr><td>Google AI Pro</td><td>50</td><td>＋1,000</td><td>月66本ぶん＋毎日の分</td></tr>
+        <tr><td>Google AI Ultra</td><td>50</td><td>＋10,000〜</td><td>たっぷり</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13.5px;color:var(--sub);margin-top:8px">毎日の50は翌日に持ち越せません。月の分は請求日にリセットされます。無料のままだと、混む時間帯（日本時間の夜23時〜深夜2時ごろ）は作れないことがあります。モデルや画質で消費が変わるので、生成ボタンの横の数字を見てから押してください。</p>
+
+  <h3>作り方</h3>
+  <ol class="steps">
+    <li><div><a href="https://flow.google.com/">flow.google.com</a> を開いて、新しいプロジェクトを作る</div></li>
+    <li><div>モデルは Omni、画質はまず 360p にする<small>安く試して、気に入ったものだけ高画質で作り直すのが節約のコツ。</small></div></li>
+    <li><div>日本語で場面を頼む<small>①何が・どこで・どう動く ②光・雰囲気・カメラ ③音・セリフ、の順に書くと伝わりやすいです。下の見本をそのまま使ってもOK。</small></div></li>
+    <li><div>できた動画を見て、1か所だけ直す<small>「龍とカップはそのままに、光だけ夕焼けのオレンジに変えて」のように、変えたい所だけ伝えます。</small></div></li>
+    <li><div>気に入ったらダウンロード</div></li>
+  </ol>
+
+  <div class="prompt">
+    <header><span>見本：カップから生まれる小さな龍（今朝の実演・8秒）</span><button type="button" data-copy="p-flow">コピー</button></header>
+    <pre id="p-flow">朝の静かなカフェ。木のテーブルに置かれた白いコーヒーカップから、湯気でできた手のひらサイズの小さな龍が生まれる。龍はカップの上でゆっくり一周し、こちらを見て小さくうなずく。窓から柔らかい金色の朝日。実写映画のような質感に、少しだけ魔法を感じる雰囲気。カップの寄りから、カメラがゆっくり近づく。カットを切り替えない一続きの映像。静かな店内の環境音と、龍が動くときのかすかな鈴の音。セリフと画面の文字は入れない。</pre>
+  </div>
+
+  <h3>やってみて分かったこと</h3>
+  <div class="tips">
+    <p class="tip"><b>セリフは「」で書くとそのまま喋る</b>「ねえ、私の席なくなっちゃう」と書いたら、その通りに笑いながら言ってくれました。</p>
+    <p class="tip"><b>秒ごとに書くと、CMらしくなる</b>「0〜3秒：…」「3〜6秒：…」と時間割で書くと、その通りにカットが切り替わります。</p>
+    <p class="tip"><b>「ゆっくり・やさしく」を重ねすぎない</b>動きが小さくなって「場面が少し動いただけ」になりがち。CMっぽくしたい時は「画面全体が動く」と書きます。</p>
+    <p class="tip"><b>人物の写真を使うなら Flow で</b>同じ Omni でも Google Vids では、人物の写真を素材にすると3回とも弾かれました。Flow では通りました。</p>
+  </div>
+
+  <h3>30秒のCMにしたい時</h3>
+  <p style="max-width:44em">10秒ずつ3本作って、あとでつなぎます。はすきーさんがXで紹介していた作り方がとても分かりやすかったです。</p>
+  <div class="flowline" aria-label="30秒CMの流れ">
+    <span>画像AIで絵コンテ（9〜12コマ）</span><i>→</i><span>秒割りで10秒×3本</span><i>→</i><span>つなぐ</span><i>→</i><span>ナレーション・曲・文字をのせる</span>
+  </div>
+
+  <h3>実際に作ったもの</h3>
+  <div class="works">
+    <article class="work">
+      <img src="img/woman_animals.jpg" alt="ソファで笑う女性の両側にカピバラ、肩にインコ" loading="lazy">
+      <h4>かわいい女性と動物たち（10秒）</h4>
+      <p>今朝作った1本。カピバラ2匹とインコに席を取られて「ねえ、私の席なくなっちゃう」。写真1枚＋下のプロンプトで、720p・15クレジット・1回で完成。</p>
+      <p class="links f">YouTube未公開（プロンプトは下に）</p>
+    </article>
+    <article class="work">
+      <img src="img/kapipara_flow.jpg" alt="浴衣の女性がおちょこを持って話しかける場面" loading="lazy">
+      <h4>カピパラ酒CM・女性のナレーション版（30秒）</h4>
+      <p>架空のお酒のCM。Flow で10秒×3本を作ってつなぎ、ナレーション・曲・テロップをあとからのせました。</p>
+      <a class="links f" href="https://youtu.be/WymT5hB2u9s">YouTubeで見る →</a>
+    </article>
+    <article class="work">
+      <img src="img/kapipara_vids.jpg" alt="頭にタオルをのせて温泉につかるカピバラ" loading="lazy">
+      <h4>温泉とカピバラ・和の曲版（30秒）</h4>
+      <p>同じ Omni を Google Vids から使った人物なし版。絵コンテ→秒割りの型で、ほぼ指定どおりの秒でカットが切り替わりました。</p>
+      <a class="links f" href="https://youtu.be/WeTmT8ZZ9oc">YouTubeで見る →</a>
+    </article>
+  </div>
+  <details>
+    <summary>「かわいい女性と動物たち」の実際のプロンプトを見る</summary>
+    <pre>自然光の入る小さな温室カフェ。ベージュのリネンのソファに白い柔らかなニット姿の女性が座っている。彼氏が向かいでスマホを持って撮る目線。実写の質感。
+
+10秒、16:9、一続きのショット。最初は顔と上半身が入る構図、ゆっくり引いて膝とソファの両側を見せる。
+0〜3秒：女性がこちらを見て小さく微笑む。左からカピバラがゆっくり近づき、女性の膝に鼻先をそっと寄せる。女性が気づいて優しく撫でる。
+3〜6秒：小さな黄緑色のセキセイインコが右から羽ばたいて、女性の肩にそっととまる。女性が目だけで肩を見て、こらえきれず小さく笑う。
+6〜10秒：もう1匹のカピバラが右側から近づき、両側がもふもふでいっぱいになる。女性は幸せそうに困った顔でこちらを見て、自然な日本語の声で「ねえ、私の席なくなっちゃう」と笑いながら言う。
+
+動物は自然な体格で穏やか。人物の顔を動物で隠さない。環境音は葉擦れ、羽ばたき、インコの小さなさえずり、女性の自然な笑い声。BGM・字幕・カット切り替えなし。
+
+（実際は冒頭に「参照画像の女性と同じ顔を保つ」指定も入れて、写真を1枚渡しています）</pre>
+  </details>
+  <div class="more">
+    <a class="btn solid bg-f" href="https://www.youtube.com/playlist?list=PLX947ufNr_ps">AI動画作品集の再生リスト</a>
+    <a class="btn f" href="https://deepmind.google/models/gemini-omni/prompt-guide/">Google公式のプロンプトガイド</a>
+  </div>
+</section>
+
+<!-- ============ MiniMax ============ -->
+<section id="minimax" class="chapter chap-x" aria-labelledby="x-h">
+  <span class="chip">本格的に作り込む</span>
+  <h2 id="x-h">MiniMax H3 Max Turbo で写真を動かす <span class="sale">9/30まで半額</span></h2>
+  <p class="intro">中国の MiniMax 社の動画モデル「H3」を、動画AIをまとめて使えるサービス fal が、速く使えるように仕上げたもの。<b>多少お金を払っても本格的なものを作りたい人向け</b>です。写真1枚と文章から、秒単位の料金で動画を作れます。表情・しぐさ・セリフまで時間割で細かく指定でき、キャラクターに演技をさせるのが得意です。</p>
+
+  <div class="spec">
+    <div><span>必要なもの</span><b>fal のアカウントと、使う分のクレジット購入</b></div>
+    <div><span>料金の目安</span><b>768p 10秒で約$0.20／1080p 10秒で約$0.40（セール中）</b></div>
+    <div><span>うちの実例</span><b>30秒のアニメ自己紹介を 計$0.40 で</b></div>
+  </div>
+
+  <h3>料金（1秒あたり）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>画質</th><th>9/30まで</th><th>10秒なら</th><th>10月から</th></tr></thead>
+      <tbody>
+        <tr><td>480p</td><td class="now">$0.0125</td><td>約$0.13</td><td>$0.025</td></tr>
+        <tr><td>768p</td><td class="now">$0.02</td><td>約$0.20</td><td>$0.04</td></tr>
+        <tr><td>1080p</td><td class="now">$0.04</td><td>約$0.40</td><td>$0.08</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13.5px;color:var(--sub);margin-top:8px">fal 公式のモデルページの表記（「50% off」「The discount ends September 30」）を9月28日に確認。10月からは表の右の値段になります。</p>
+
+  <h3>作り方</h3>
+  <ol class="steps">
+    <li><div><a href="https://fal.ai/models/minimax/h3-max-turbo/image-to-video">fal のモデルページ</a>を開いて、アカウントを作る<small>使う分だけ先にクレジットを買っておく方式です。最初は少額で十分試せます。</small></div></li>
+    <li><div>動かしたい写真をアップして、プロンプトを書く<small>ページの画面から、そのまま試せます。縦動画にしたい時は縦横比を 9:16 に。</small></div></li>
+    <li><div>画質と秒数を選んで実行<small>まず 768p で。1回ごとに料金がかかるので、何本作るか先に決めておくと安心です。</small></div></li>
+    <li><div>Claude Code に頼む手もある<small>「fal の H3 Max Turbo で、この写真を768p・10秒で動かして。1回だけ」と頼むと、作って保存までしてくれます。fal のAPIキーは自分で作って設定します。</small></div></li>
+  </ol>
+
+  <h3>プロンプトの型</h3>
+  <div class="tips">
+    <p class="tip"><b>時間割で書く</b>「0〜4秒：瞬きして気づく」「4〜8秒：照れて笑う」のように区切ると、その順に動きます。</p>
+    <p class="tip"><b>写真のものは「そのまま」と書く</b>顔・髪・服・部屋・机の上の物まで、変えてほしくない物を並べて書きます。</p>
+    <p class="tip"><b>大きく動かさない</b>Turbo は大きな動きが苦手。カメラは固定でわずかな手ぶれ、動きは小さく。苦手なところを最初から避けると、きれいに仕上がります。</p>
+    <p class="tip"><b>セリフも入る</b>日本語のセリフを「」で書き、声の感じ（眠そうな若い女性の声、など）を添えます。</p>
+  </div>
+
+  <h3>実際に作ったもの</h3>
+  <div class="works">
+    <article class="work noimg">
+      <h4>みずのさん・30秒の自己紹介アニメ</h4>
+      <p>イラスト1枚から8カットの演技を作り、ナレーション・曲・文字をあとから合成。動画生成は試作込みで計$0.40でした。</p>
+      <a class="links x" href="https://youtu.be/dT2M5R8dR1M">YouTubeで見る →</a>
+    </article>
+    <article class="work">
+      <img src="img/minimax_woman.jpg" alt="机に頬杖をついて微笑む女性" loading="lazy">
+      <h4>かわいい女性「可愛いと見せかけてグデグデ」</h4>
+      <p>静止画1枚から15秒×2本をつないだ30秒。前半は可愛く、後半は「もう無理、飲み過ぎた」と崩れる。可愛いだけより、崩れる方が「一緒にいる感じ」が出ました。</p>
+      <p class="links x">YouTube未公開</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ first step ============ -->
+<section aria-labelledby="first-h">
+  <div class="sec-h"><h2 id="first-h">迷ったら、ここから</h2></div>
+  <div class="first">
+    <div><b class="f">Gemini でサクッと作りたい</b><p>Flow で 360p の8秒を1本。上の龍のプロンプトをそのまま貼るだけ。Google の月額プランがあれば、ついてくるクレジットで作れます。</p></div>
+    <div><b class="m">いつもの Claude Code で作りたい</b><p>2行を貼って、45分待つ。「〇〇のCMを作って」でCM風も。できたら「もっと〇〇に」と話しかけて直します。</p></div>
+    <div><b class="x">多少払っても本格的に作りたい</b><p>MiniMax H3 Max Turbo。9/30までは半額で、768p・10秒が約$0.20。時間割でしぐさやセリフまで作り込めます。</p></div>
+  </div>
+</section>
+
+<footer>
+  料金・クレジット・モデル名は2026年9月28日に確認した時点のものです。変わることがあるので、生成前にそれぞれの画面の表示を確かめてください。
+  <ul>
+    <li><a href="https://support.google.com/flow/answer/16526234?hl=en">Google Flow ヘルプ：クレジットの管理</a></li>
+    <li><a href="https://deepmind.google/models/gemini-omni/prompt-guide/">Google DeepMind：Gemini Omni プロンプトガイド</a></li>
+    <li><a href="https://fal.ai/models/minimax/h3-max-turbo/image-to-video">fal：MiniMax H3 Max Turbo（料金とセール期間）</a></li>
+    <li><a href="https://claude.com/pricing">Claude の料金（Claude Code は Pro・Max に含まれる）</a></li>
+    <li><a href="https://code.claude.com/docs/en/desktop-quickstart">Claude Code デスクトップアプリのはじめかた</a></li>
+  </ul>
+</footer>
+
+</div>
+
+<script>
+document.querySelectorAll('[data-copy]').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var el=document.getElementById(btn.getAttribute('data-copy'));
+    var text=el.innerText;
+    var done=function(){btn.textContent='コピーしました';setTimeout(function(){btn.textContent='コピー'},1800)};
+    var fallback=function(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='選択しました（⌘C）'};
+    try{navigator.clipboard.writeText(text).then(done,fallback)}catch(e){fallback()}
+  });
+});
+</script>
+</body>
+</html>
