@@ -230,6 +230,46 @@
     T({ id: "beatsync", role: "sound", name: "音に合わせて動く", en: "Beat Sync", plain: "リズムに合わせて形が弾み、場面が切り替わる", short: "", prompt: "ビートシンク：テンポを1つ決め、場面の切り替えや大事な動きを拍に合わせる。効果音も動きと同じ瞬間に鳴らす", moods: { pop: 2, exciting: 2, cool: 2, future: 1, genki: 2 }, purposes: { sns: 2, event: 2, showreel: 2 }, keys: ["ビート", "リズムに", "音に合わせ"], hint: "音に合わせて" }),
     T({ id: "softsound", role: "sound", name: "静かな音で寄り添う", en: "Soft Sound", plain: "やわらかいBGMと小さな効果音が、動きにそっと寄り添う", short: "", prompt: "やさしい音づくり：BGMは静かなパッドやオルゴールのような音にして、効果音は大事な瞬間だけ小さく鳴らす", moods: { calm: 3, elegant: 2, emo: 2, mystic: 2, warm: 2 }, purposes: { poster: 2, intro: 1 }, keys: ["オルゴール", "静かな音", "ピアノ"], hint: "静かな音で" }),
   ];
+  // 正式名称（2026-09-27 おけもん「技法に関してはちゃんと正式名称載せておいてー。AIにしじするときに言葉を知っているかどうかも大事だから」）
+  // [カタカナ, 英語, ほかの呼び方]。決め方と Gemini 3.1 Pro の監修は gallery-notes/formal_names_2026-09-27.md
+  const FORMAL = {
+    kinetic: ["キネティック・タイポグラフィ", "Kinetic Typography", "モーションタイポグラフィ"],
+    semantic: ["エクスプレッシブ・タイポグラフィ", "Expressive Typography", "セマンティック・タイポグラフィ"],
+    morph: ["モーフィング", "Morphing", "シェイプモーフ（Shape Morph）"],
+    line: ["ラインアニメーション", "Line Animation", "ストロークアニメーション、トリムパス（After Effects の Trim Paths）"],
+    brush: ["ハンドライティング・アニメーション", "Handwriting Animation", "ライトオン（Write-on）、書き順アニメーション"],
+    particles: ["パーティクル", "Particle Animation", "パーティクルエフェクト"],
+    pattern: ["ジェネラティブアート", "Generative Art", "プロシージャル・アニメーション（Procedural Animation）"],
+    camera3d: ["3Dカメラワーク", "3D Camera Move", "フライスルー（Fly-through）、カメラムーブ"],
+    infographic: ["インフォグラフィック・アニメーション", "Animated Infographics", "データビジュアライゼーション（Data Visualization）、カウントアップ"],
+    ui: ["UIアニメーション", "UI Animation", "プロダクトデモ（Product Demo）"],
+    collage: ["カットアウト・アニメーション", "Cutout Animation", "コラージュ・アニメーション"],
+    liquid: ["リキッドモーション", "Liquid Motion", "インクブリード（Ink Bleed）、流体アニメーション"],
+    geometric: ["シェイプアニメーション", "Shape Animation", "ジオメトリック・アニメーション"],
+    matchcut: ["マッチカット", "Match Cut", "マッチトランジション（Match Transition）"],
+    maskreveal: ["マスクリビール", "Mask Reveal", "トラックマット（Track Matte）、マットリビール"],
+    colorwipe: ["カラーワイプ", "Color Wipe", "ワイプ・トランジション、シェイプトランジション"],
+    parallax: ["パララックス", "Parallax", "2.5D、視差効果"],
+    slowzoom: ["プッシュイン", "Push-in", "ドリーイン（Dolly-in）、ケン・バーンズ・エフェクト（写真の時）"],
+    squash: ["スクワッシュ＆ストレッチ", "Squash and Stretch", "潰しと伸ばし（アニメーションの12原則）"],
+    spring: ["オーバーシュート", "Overshoot", "スプリング（Spring）、バウンス"],
+    stagger: ["スタッガー", "Stagger", "オフセット・アニメーション"],
+    anticipation: ["アンティシペーション", "Anticipation", "予備動作（アニメーションの12原則）"],
+    hold: ["ホールド", "Hold", "フリーズフレーム（Freeze Frame）、日本の「間」"],
+    breathing: ["ブリージング", "Breathing Animation", "パルス（Pulse）、シームレスループ"],
+    lightsweep: ["ライトスイープ", "Light Sweep", "シャイン（Shine）、グロー（Glow）"],
+    glitch: ["グリッチ", "Glitch", "色収差（Chromatic Aberration）、RGBずらし"],
+    texture: ["テクスチャオーバーレイ", "Texture Overlay", "フィルムグレイン（Film Grain）、ノイズ"],
+    beatsync: ["ビートシンク", "Beat Sync", "音ハメ、オーディオリアクティブ（音に反応して動かす時）"],
+    softsound: ["アンビエントサウンド", "Ambient Sound Design", "サウンドデザイン、環境音"],
+  };
+  for (const t of TECHNIQUES) {
+    const f = FORMAL[t.id];
+    t.formal = f[0]; t.en = f[1]; t.aka = f[2];
+    // 注文書の1行は「正式名称（英語）：何をするか」。元の見出し（「キネティック・タイポグラフィ：」など）は外して説明だけ残す
+    t.does = t.prompt.replace(/^[^：（「]{1,24}(（[^）]*）)?：/, "");
+    t.orderLine = `${t.formal}（${t.en}）：${t.does}`;
+  }
   const TECH = Object.fromEntries(TECHNIQUES.map((t) => [t.id, t]));
   const PICK = { hero: 2, trans: 1, feel: 2, atmos: 1 };
   const POOL = { hero: 6, trans: 3, feel: 4, atmos: 2 };
@@ -446,7 +486,7 @@
     L.push(r.direction);
     L.push("");
     L.push("■ 使ってほしい演出（これは出発点です。もっと良い見せ方を思いついたら、そちらを選んでかまいません）");
-    r.chosen.forEach((t, i) => L.push(`${i + 1}. ${t.prompt}`));
+    r.chosen.forEach((t, i) => L.push(`${i + 1}. ${t.orderLine}`));
     L.push("");
     L.push("■ 条件");
     L.push(`- 長さ：${r.seconds}秒　画面：${SIZE[r.aspect]}`);

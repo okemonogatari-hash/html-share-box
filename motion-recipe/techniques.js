@@ -32,11 +32,13 @@
         <div class="stage tb-stage d-${t.id}">${DEMO[t.id] || ""}</div>
         <div class="tb-body">
           <p class="tb-num">${n}</p>
-          <h3 class="tb-name">${esc(t.name)} <span>${esc(t.en)}</span></h3>
+          <h3 class="tb-name">${esc(t.name)}</h3>
+          <div class="tb-row tb-formal"><span class="tb-k">正式名称</span><div><b class="tb-formal-ja">${esc(t.formal)}</b><span class="tb-formal-en" lang="en">${esc(t.en)}</span>${t.aka ? `<p class="tb-aka">ほかの呼び方：${esc(t.aka)}</p>` : ""}
+            <div class="tb-actions"><button type="button" class="btn chip-btn" data-copy="${esc(t.formal)}（${esc(t.en)}）">正式名称をコピー</button></div></div></div>
           <div class="tb-row"><span class="tb-k">どんな技か</span><p>${esc(t.plain)}</p></div>
           ${moods.length || purposes.length ? `<div class="tb-row"><span class="tb-k">向いている</span><div class="tb-tags">${moods.map((x) => `<span class="tag">${esc(x)}</span>`).join("")}${purposes.map((x) => `<span class="tag p">${esc(x)}</span>`).join("")}</div></div>` : ""}
           ${hint}
-          <div class="tb-row"><span class="tb-k">注文書に入る文</span><blockquote>${esc(t.prompt)}</blockquote></div>
+          <div class="tb-row"><span class="tb-k">注文書に入る文</span><blockquote>${esc(t.orderLine)}</blockquote></div>
         </div>
       </article>`;
   }

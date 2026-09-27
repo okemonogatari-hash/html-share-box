@@ -80,7 +80,7 @@
     if (r.reference) tags.unshift(`お手本：${r.reference.title}`);
     $("tags").innerHTML = tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("");
     $("palette").innerHTML = r.palette.map((c) => `<span style="background:${c}" title="${c}"></span>`).join("");
-    $("tech-chips").innerHTML = r.techniques.map((t) => `<a class="tech-chip" href="techniques.html#t-${t.id}" target="_blank" rel="noopener">${esc(t.name)}</a>`).join("");
+    $("tech-chips").innerHTML = r.techniques.map((t) => `<a class="tech-chip" href="techniques.html#t-${t.id}" target="_blank" rel="noopener">${esc(t.name)}<small>${esc(t.formal)}</small></a>`).join("");
     $("prompt").textContent = r.prompt;
     const a = state.adjust, notes = [];
     for (const k of ["calm", "bold", "cute", "wild"]) if (a[k] > 0) notes.push(`${R.ADJUST_LABELS[k]}×${a[k]}`);
