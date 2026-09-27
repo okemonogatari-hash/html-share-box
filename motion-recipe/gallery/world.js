@@ -323,6 +323,96 @@ window.MOTION_WORLD = {
     "genki",
     "warm"
    ]
+  },
+  {
+   "id": "claude-opus-5-5",
+   "group": "pro",
+   "title": "Anthropic「Claude Opus 5.5」発表映像（地平線の弧と質感が次々に入れ替わる）",
+   "by": "Anthropic（@claudeai）",
+   "handle": "claudeai",
+   "url": "https://x.com/claudeai/status/2102435511222890900",
+   "whatships": "https://whatships.com/videos/claude-opus-5-5/",
+   "date": "2026-09-22",
+   "seconds": 20,
+   "views": 26825524,
+   "likes": 96074,
+   "hitokoto": "液体の金・葉っぱ・布・紙のコラージュ・設計図の線など、質感の違う面の「地平線の弧」が約0.5秒ごとに入れ替わる。弧の上に細い明朝で「There's / more to / discover」が1語ずつ置かれ、暗い地平線の光で始まり、同じ光に戻って終わる。",
+   "traits": [
+    "どの場面も同じ地平線の弧",
+    "質感だけが約0.5秒ごとに入れ替わる",
+    "弧の上に細い明朝の言葉が1語ずつ",
+    "暗い地平線の光で始まり、同じ光で終わる"
+   ],
+   "technique_ids": [
+    "matchcut",
+    "texture",
+    "hold",
+    "lightsweep"
+   ],
+   "moods": [
+    "elegant",
+    "mystic"
+   ]
+  },
+  {
+   "id": "fluoddity",
+   "group": "ai",
+   "title": "Fluoddity（光の粒が自分で集まって、細胞や星の形になる）",
+   "by": "oops_all_paperclips さん",
+   "handle": "OA_paperclips",
+   "url": "https://x.com/OA_paperclips/status/2093445516919279867",
+   "whatships": "https://whatships.com/videos/fluoddity/",
+   "date": "2026-08-28",
+   "seconds": 18,
+   "views": 10802,
+   "likes": 228,
+   "hitokoto": "黒地の真ん中で、光の粒が自分で集まって、糸を伸ばす玉・六角形の網・放射する光・星の群れへと姿を変えていく。最後は色の違う粒のかたまりが画面いっぱいに散らばって漂う。",
+   "traits": [
+    "黒地に光の粒だけ",
+    "粒が自分で集まって形をつくる",
+    "細胞→六角形→放射→星と姿を変える",
+    "最後は画面いっぱいに散らばる"
+   ],
+   "technique_ids": [
+    "particles",
+    "pattern",
+    "breathing",
+    "liquid"
+   ],
+   "moods": [
+    "mystic",
+    "future"
+   ]
+  },
+  {
+   "id": "glyph",
+   "group": "ai",
+   "title": "Glyph（色とりどりの立体の文字が、はずんで・食べられて・吸い込まれる）",
+   "by": "Poimandres（@pmndrs）",
+   "handle": "pmndrs",
+   "url": "https://x.com/pmndrs/status/2100980802091708818",
+   "whatships": "https://whatships.com/videos/glyph/",
+   "date": "2026-09-18",
+   "seconds": 15,
+   "views": 70795,
+   "likes": 861,
+   "hitokoto": "記号の模様を敷き詰めた生成りの地で、色とりどりの立体の文字「Glyph」がはずむ。トースターのような機械が文字を食べて進み、ブラックホールが残りを吸い込み、最後は黒地に星が散って終わる。",
+   "traits": [
+    "記号の模様を敷き詰めた生成りの地",
+    "色とりどりの立体の文字がはずむ",
+    "機械が文字を食べ、ブラックホールが吸い込む",
+    "最後は黒地に星"
+   ],
+   "technique_ids": [
+    "semantic",
+    "stagger",
+    "pattern",
+    "particles"
+   ],
+   "moods": [
+    "pop",
+    "exciting"
+   ]
   }
  ]
 };
