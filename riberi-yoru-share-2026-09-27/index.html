@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>今週のAIニュース ── 夜組シェア会</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+  /* ===== reset ===== */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  ul,ol{list-style:none;}
+  button{font:inherit;background:none;border:0;cursor:pointer;color:inherit;}
+  a{color:inherit;}
+
+  /* ===== tokens (single light theme, fixed) ===== */
+  :root{
+    --bg:#FFFBF3;
+    --surface:#FFFFFF;
+    --surface-deep:#FFF0DE;
+    --line:rgba(80,54,22,.14);
+    --line-soft:rgba(80,54,22,.08);
+
+    --ink:#3A2A1E;
+    --ink-soft:#5C4A3A;
+    --ink-faint:#7A6754;
+
+    --bronze:#C1521E;      /* 文字アクセント。白地で比5台・丸ゴシックの温かい橙 */
+    --gold:#F2A65A;        /* 装飾専用。太線・大きい飾りのみ */
+    --gold-on-dark:#FFC98C;/* 濃色地でのみ文字に使う軽量版 */
+
+    --primary:#E8672E;     /* 明るい珊瑚オレンジ・主役色 */
+    --primary-dark:#8A3417;
+    --primary-light:#FDE7D4;
+
+    --font-serif:"Hiragino Maru Gothic ProN","YuGothic Medium","Yu Gothic Medium","Hiragino Sans",sans-serif;
+    --font-sans:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","YuGothic",Meiryo,sans-serif;
+
+    --shadow-sm:0 4px 16px rgba(80,54,22,.08);
+    --shadow-md:0 14px 36px rgba(80,54,22,.14);
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-sans);
+    line-height:1.95;
+    font-size:18px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:var(--font-serif);
+    font-weight:700;
+    color:var(--ink);
+    text-wrap:balance;
+    line-break:strict;
+  }
+
+  small,.fine{font-size:12.5px;}
+
+  .accent{
+    text-decoration-line:underline;
+    text-decoration-color:var(--gold);
+    text-decoration-thickness:4px;
+    text-underline-offset:6px;
+  }
+  .bronze-text{color:var(--bronze);}
+
+  /* ===== app shell / deck mechanics ===== */
+  .app-shell{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .stage-wrap{
+    position:relative;
+    flex:1 1 auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding:28px;
+    min-height:0;
+  }
+
+  .stage{
+    position:relative;
+    width:100%;
+    background:var(--bg);
+    counter-reset:slidenum;
+  }
+  html.js-ready .stage{
+    width:1280px;
+    height:720px;
+    flex-shrink:0;
+    box-shadow:var(--shadow-md);
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--surface);
+  }
+
+  .slide{
+    position:relative;
+    width:100%;
+    counter-increment:slidenum;
+    border-bottom:1px solid var(--line);
+    padding:56px clamp(20px,6vw,64px);
+  }
+  html.js-ready .slide{
+    display:none;
+    position:absolute;
+    inset:0;
+    height:720px;
+    border-bottom:0;
+    padding:0;
+    overflow:hidden;
+  }
+  html.js-ready .slide.is-active{display:block;}
+
+  .slide--tint{background:var(--surface-deep);}
+
+  .slide-inner{
+    max-width:900px;
+    margin:0 auto;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:22px;
+    padding:0;
+  }
+  html.js-ready .slide-inner{padding:64px 64px;}
+
+  .eyebrow{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.16em;
+    color:var(--bronze);
+  }
+
+  .slide-badge{
+    position:absolute;right:22px;bottom:18px;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.04em;
+  }
+  .slide-badge::before{
+    content:counter(slidenum) " / 11";
+    font-size:12.5px;
+    color:var(--ink-faint);
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.04em;
+  }
+  html.js-ready .slide .slide-badge::before{
+    /* counter(slidenum) only increments for boxes that actually generate —
+       in JS mode 9 of 10 .slide elements are display:none, so the CSS
+       counter always resolves to 1 regardless of the real position.
+       JS writes the real "n / 10" text directly instead; see init below. */
+    content:none;
+  }
+
+  /* step reveal — fully visible with no JS; hidden-then-revealed once js-ready */
+  .slide [data-step]{opacity:1;transform:none;}
+  html.js-ready .slide [data-step]{
+    opacity:0;
+    transform:translateY(18px);
+    transition-property:opacity,transform;
+    transition-duration:.55s;
+    transition-timing-function:cubic-bezier(.22,.61,.36,1);
+  }
+  html.js-ready .slide [data-step].is-revealed{opacity:1;transform:translateY(0);}
+
+  /* ===== nav chrome ===== */
+  .deck-nav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    padding:14px 0 22px;
+    flex:0 0 auto;
+  }
+  html:not(.js-ready) .deck-nav{display:none;}
+
+  .nav-btn{
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--shadow-sm);
+    transition-property:background-color,border-color,transform;
+    transition-duration:.2s;
+    transition-timing-function:ease-out;
+  }
+  .nav-btn:hover{border-color:var(--bronze);}
+  .nav-btn:active{transform:scale(.94);}
+  .nav-btn svg{width:14px;height:14px;fill:var(--primary);}
+  .nav-btn:disabled{opacity:.3;cursor:default;}
+
+  .nav-help{
+    font-size:12.5px;
+    color:var(--ink-faint);
+    letter-spacing:.02em;
+  }
+
+  /* ===== presenter mode ===== */
+  .presenter-panel{display:none;}
+  body.presenter-on .app-shell{
+    display:grid;
+    grid-template-columns:minmax(0,1.35fr) minmax(320px,1fr);
+    grid-template-rows:1fr auto;
+    height:100vh;
+  }
+  body.presenter-on .stage-wrap{grid-column:1;grid-row:1;padding:20px;}
+  body.presenter-on .deck-nav{grid-column:1;grid-row:2;}
+  body.presenter-on .presenter-panel{
+    display:flex;
+    flex-direction:column;
+    grid-column:2;
+    grid-row:1 / span 2;
+    background:var(--primary-dark);
+    color:#F3F0E7;
+    padding:22px 22px 16px;
+    gap:16px;
+    overflow:hidden;
+  }
+
+  .pp-top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(243,240,231,.18);
+  }
+  .pp-elapsed-row{display:flex;align-items:baseline;gap:10px;}
+  .pp-elapsed{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--font-serif);}
+  .pp-elapsed-label{display:block;font-size:12.5px;color:rgba(243,240,231,.65);}
+  .pp-elapsed-reset{
+    padding:4px 12px;
+    border-radius:999px;
+    background:rgba(243,240,231,.1);
+    border:1px solid rgba(243,240,231,.28);
+    color:#F3F0E7;
+    font-size:12.5px;
+    font-weight:700;
+    transition-property:background-color,border-color;
+    transition-duration:.2s;
+    transition-timing-function:ease-out;
+  }
+  .pp-elapsed-reset:hover{background:rgba(243,240,231,.2);border-color:var(--gold-on-dark);}
+  .pp-target{text-align:right;}
+  .pp-target-value{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--gold-on-dark);}
+  .pp-target-label{display:block;font-size:12.5px;color:rgba(243,240,231,.65);}
+
+  .pp-next-label,.pp-script-label{
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.1em;
+    color:rgba(243,240,231,.6);
+    margin-bottom:8px;
+  }
+  .pp-next-thumb{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    background:var(--surface);
+    border-radius:8px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:var(--shadow-sm);
+  }
+  .pp-next-thumb .slide{
+    position:relative !important;
+    display:block !important;
+    inset:auto !important;
+    width:1280px;height:720px;
+    transform-origin:center center;
+    flex:none;
+  }
+  .pp-next-thumb [data-step]{opacity:1 !important;transform:none !important;}
+  .pp-next-empty{font-size:14px;color:var(--ink-faint);text-align:center;padding:0 12px;}
+
+  .pp-script{flex:1;min-height:0;display:flex;flex-direction:column;}
+  .pp-script-text{
+    flex:1;
+    overflow-y:auto;
+    font-size:16px;
+    line-height:1.85;
+    color:#F3F0E7;
+    padding-right:6px;
+  }
+
+  .pp-help{
+    font-size:12.5px;
+    color:rgba(243,240,231,.55);
+    border-top:1px solid rgba(243,240,231,.18);
+    padding-top:12px;
+    letter-spacing:.01em;
+  }
+
+  /* ===== edit mode ===== */
+  body.edit-on [data-editable]{
+    outline:1px dashed rgba(44,95,75,.35);
+    outline-offset:4px;
+    border-radius:4px;
+  }
+  body.edit-on [data-editable]:focus{
+    outline:1px dashed var(--bronze);
+    background:rgba(196,145,94,.08);
+  }
+  .edit-flag{
+    position:fixed;
+    top:14px;left:50%;
+    transform:translateX(-50%);
+    background:var(--bronze);
+    color:#fff;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.06em;
+    padding:6px 16px;
+    border-radius:999px;
+    display:none;
+    z-index:50;
+    box-shadow:var(--shadow-sm);
+  }
+  body.edit-on .edit-flag{display:block;}
+
+  /* ===== generic slide content patterns ===== */
+  .lede{font-size:clamp(22px,2.9vw,29px);color:var(--ink);}
+  h1.title{font-size:clamp(34px,4.9vw,52px);line-height:1.35;}
+  h2.headline{font-size:clamp(27px,3.8vw,38px);line-height:1.45;}
+
+  .meta-line{font-size:15px;color:var(--ink-soft);}
+  .meta-line + .meta-line{margin-top:4px;}
+
+  .quote-block{
+    border-left:4px solid var(--gold);
+    padding-left:22px;
+    font-family:var(--font-serif);
+    font-size:clamp(19px,2.6vw,24px);
+    color:var(--ink);
+  }
+  .quote-block cite{
+    display:block;
+    margin-top:10px;
+    font-family:var(--font-sans);
+    font-style:normal;
+    font-size:14px;
+    color:var(--ink-faint);
+  }
+
+  .step-list{display:flex;flex-direction:column;gap:14px;}
+  .step-list li{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    font-size:17px;
+    color:var(--ink);
+  }
+  .step-list li::before{
+    content:"";
+    flex:none;
+    width:9px;height:9px;
+    margin-top:8px;
+    background:var(--bronze);
+    transform:rotate(45deg);
+  }
+
+  .num-list{display:flex;flex-direction:column;gap:16px;counter-reset:numitem;}
+  .num-list li{
+    display:flex;gap:16px;align-items:flex-start;
+    font-size:17px;color:var(--ink);
+    counter-increment:numitem;
+  }
+  .num-list li::before{
+    content:counter(numitem);
+    flex:none;
+    width:30px;height:30px;
+    border-radius:50%;
+    background:var(--primary-light);
+    color:var(--primary);
+    font-family:var(--font-serif);
+    font-weight:700;
+    font-size:14px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  .flow-row{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;}
+  .flow-box{
+    flex:1 1 200px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:10px;
+    padding:20px 18px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .flow-box .fb-en{font-family:var(--font-serif);font-size:19px;font-weight:700;}
+  .flow-box .fb-ja{font-size:13px;color:rgba(255,255,255,.82);}
+  .flow-arrow{flex:none;display:flex;align-items:center;justify-content:center;width:34px;}
+  .flow-arrow svg{width:20px;height:20px;fill:var(--bronze);}
+
+  .callout{
+    background:var(--surface-deep);
+    border-radius:10px;
+    padding:16px 20px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+
+  .link-box{
+    background:var(--primary);
+    color:#fff;
+    border-radius:12px;
+    padding:20px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .link-box .lb-label{font-size:12.5px;letter-spacing:.1em;color:rgba(255,255,255,.75);}
+  .link-box .lb-url{
+    font-size:clamp(14px,2vw,17px);
+    word-break:break-all;
+    font-weight:700;
+    text-decoration-line:underline;
+    text-decoration-color:var(--gold);
+    text-decoration-thickness:3px;
+    text-underline-offset:4px;
+  }
+
+  .note-line{font-size:13.5px;color:var(--ink-faint);overflow-wrap:anywhere;}
+  /* a.note-line covers S10, where the link itself carries this class
+     (no separate wrapping element to be the "a" descendant of);
+     .note-line a still covers S7, where the link sits inside a <p class="note-line">. */
+  .note-line a,a.note-line{color:var(--bronze);text-decoration-line:underline;text-decoration-color:var(--bronze);text-decoration-thickness:1px;overflow-wrap:anywhere;}
+
+
+  /* ===== case slide (活用事例：画像＋文) ===== */
+  .case-grid{display:flex;gap:34px;align-items:center;}
+  @media (max-width:820px){.case-grid{flex-direction:column;}}
+  .case-photo{
+    flex:0 0 380px;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:var(--shadow-md);
+    border:1px solid var(--line);
+  }
+  .case-photo img{display:block;width:100%;height:auto;object-fit:cover;}
+  .case-text{flex:1 1 auto;display:flex;flex-direction:column;gap:12px;}
+  .case-text .headline{font-size:clamp(24px,3vw,32px);}
+  .case-text .lede{font-size:clamp(18px,2vw,21px);line-height:1.75;}
+  .case-tag{
+    display:inline-block;
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.04em;
+    padding:4px 12px;
+    border-radius:999px;
+    width:fit-content;
+  }
+
+  /* ===== S8 workshop / timer ===== */
+  .work-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start;}
+  @media (max-width:820px){.work-grid{grid-template-columns:1fr;}}
+
+  .timer-panel{
+    background:var(--primary-dark);
+    border-radius:14px;
+    padding:24px 22px;
+    color:#F3F0E7;
+    text-align:center;
+  }
+  .timer-display{
+    font-family:var(--font-serif);
+    font-size:clamp(52px,7vw,84px);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+    color:#F3F0E7;
+    transition-property:color;
+    transition-duration:.4s;
+    transition-timing-function:ease-out;
+  }
+  .timer-display.is-warn{color:var(--gold-on-dark);}
+  .timer-done-msg{
+    margin-top:8px;
+    font-size:16px;
+    font-weight:700;
+    color:var(--gold-on-dark);
+    display:none;
+  }
+  .timer-display.is-done + .timer-done-msg{display:block;}
+  .timer-controls{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-top:16px;
+    flex-wrap:wrap;
+  }
+  .timer-btn{
+    padding:9px 16px;
+    border-radius:999px;
+    background:rgba(243,240,231,.1);
+    color:#F3F0E7;
+    font-size:13.5px;
+    font-weight:700;
+    border:1px solid rgba(243,240,231,.28);
+    transition-property:background-color,border-color;
+    transition-duration:.2s;
+    transition-timing-function:ease-out;
+  }
+  .timer-btn:hover{background:rgba(243,240,231,.2);border-color:var(--gold);}
+  .timer-btn.primary{background:var(--gold-on-dark);color:var(--primary-dark);border-color:var(--gold-on-dark);}
+
+  .qa-list{display:flex;flex-direction:column;gap:12px;}
+  .qa-item{background:var(--surface-deep);border-radius:10px;padding:14px 16px;}
+  .qa-item .qa-tag{font-size:12.5px;font-weight:700;letter-spacing:.08em;color:var(--bronze);}
+  .qa-item .qa-q{font-size:15.5px;margin-top:3px;color:var(--ink);}
+
+  .kokoroe{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+  .kokoroe li{font-size:13.5px;color:var(--ink-soft);padding-left:16px;position:relative;}
+  .kokoroe li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--gold);}
+
+  .stage-chrome-label{
+    position:absolute;
+    left:22px;bottom:18px;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    letter-spacing:.02em;
+    z-index:2;
+  }
+  html:not(.js-ready) .stage-chrome-label{display:none;}
+
+  /* ===== print ===== */
+  @media print{
+    @page{size:landscape;margin:0;}
+    body.presenter-on .app-shell{display:block;}
+    .presenter-panel,.deck-nav,.edit-flag,.stage-chrome-label{display:none !important;}
+    .app-shell{display:block !important;height:auto !important;}
+    .stage-wrap{padding:0 !important;overflow:visible !important;display:block !important;}
+    .stage{
+      width:100% !important;height:auto !important;
+      box-shadow:none !important;border-radius:0 !important;
+      transform:none !important;
+    }
+    .slide{
+      display:block !important;
+      position:relative !important;
+      width:100% !important;height:100vh !important;
+      inset:auto !important;
+      page-break-after:always;
+      break-after:page;
+      overflow:hidden !important;
+    }
+    .slide:last-child{page-break-after:auto;}
+    .slide-inner{padding:48px 64px !important;}
+    .slide [data-step]{opacity:1 !important;transform:none !important;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="edit-flag">編集モード中 — E で戻る</div>
+
+  <div class="app-shell" id="appShell">
+    <div class="stage-wrap" id="stageWrap">
+      <div class="stage" id="stage">
+
+        <!-- S1 -->
+        <section class="slide is-active" data-slide data-minutes="0:00–0:01" id="s1">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>リベシティ「AI初心者サポートチャット🔰」</p>
+            <h1 class="title" data-editable>今週のAIニュース<br>夜組シェア会</h1>
+            <p class="meta-line" data-editable>2026年9月27日(日) 21:00–21:30</p>
+            <p class="meta-line" data-editable>おけもん主催</p>
+          </div>
+          <p class="script-src" hidden>「聞くだけ参加OK・出入り自由」を最初に伝える。目安0:00-0:01</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S2 -->
+        <section class="slide" data-slide data-minutes="0:01–0:03" id="s2">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>みずのさんの朝のAIニュース、<br><span class="accent">夜の人にも届いてる？</span></h2>
+            <ul class="step-list">
+              <li data-step="1" data-editable>みずのさん＝毎朝7:00〜7:30 oViceの朝もく会＋YouTubeで毎朝発信中</li>
+              <li data-step="2" data-editable>でも「夜の民を置いてけぼりにしちゃってる気がする」という声があった</li>
+              <li data-step="3" data-editable>今日は夜組バージョンで、今週の分を30分で一気に追いつく</li>
+            </ul>
+          </div>
+          <p class="script-src" hidden>朝型と夜型の生活リズムの違いに軽く触れて共感を取る。目安0:01-0:03</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S3 -->
+        <section class="slide slide--tint" data-slide data-minutes="0:03–0:08" id="s3">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>今週のニュース①</p>
+            <h2 class="headline" data-editable>最上位級の賢さが約4割安く<br><span class="accent">Claude Opus 5.5登場</span></h2>
+            <ol class="num-list">
+              <li data-step="1" data-editable>9/23、Anthropicの新モデル「Claude Opus 5.5」が登場</li>
+              <li data-step="2" data-editable>これまでの最上位モデルと同等以上の賢さを、より安く使える</li>
+              <li data-step="3" data-editable>9/26のまとめ動画では公式の「頼み方ガイド」も紹介された</li>
+            </ol>
+            <div class="callout" data-step="4" data-editable>
+              <strong>出典</strong>：みずのさん「9/23のAIトピックスのまとめ」<br><a class="note-line" href="https://youtu.be/ZqOdatBLtgc?list=PLUVBxyXtQumI" target="_blank" rel="noopener">https://youtu.be/ZqOdatBLtgc</a>／「9/26のAIトピックスのまとめ」<a class="note-line" href="https://youtu.be/kXF4v1Hbfr0?list=PLUVBxyXtQumI" target="_blank" rel="noopener">https://youtu.be/kXF4v1Hbfr0</a>
+            </div>
+            <p class="lede" data-step="5" data-editable>夜組が嬉しいところ：エフォート設定は「medium」から測り直す。以前の「よく考えて」の指示はもう不要。</p>
+          </div>
+          <p class="script-src" hidden>出典の動画名を口頭で伝える。詳細はmizuno-ai-news.pages.devにまとまっていると案内。目安0:03-0:08</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S4 -->
+        <section class="slide" data-slide data-minutes="0:08–0:13" id="s4">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>今週のニュース②</p>
+            <h2 class="headline" data-editable>判断だけする専用AI「Jev」<br>画像も判断できる<span class="accent">DJevに進化</span></h2>
+            <ol class="num-list">
+              <li data-step="1" data-editable>9/20の動画でJevが初登場。「合ってる／違う」を1回0.02円・0.2秒で判定する専用モデル</li>
+              <li data-step="2" data-editable>9/22の動画でJevの解説＋画像・カメラ映像も判断できる「DJev」が紹介</li>
+              <li data-step="3" data-editable>声でMacを操作するJevデモ、Stagehand×Jevでブラウザ操作が最大11倍速という報告も</li>
+            </ol>
+            <div class="callout" data-step="4" data-editable>
+              <strong>出典</strong>：みずのさん「9/20のAIトピックス」<a class="note-line" href="https://youtu.be/4fjLsVTaLCo?list=PLUVBxyXtQumI" target="_blank" rel="noopener">https://youtu.be/4fjLsVTaLCo</a>／「9/22のAIトピックス」<a class="note-line" href="https://youtu.be/NOfYHUYybEg?list=PLUVBxyXtQumI" target="_blank" rel="noopener">https://youtu.be/NOfYHUYybEg</a>
+            </div>
+            <p class="lede" data-step="5" data-editable>夜組が嬉しいところ：「賢いAIに全部任せる」じゃなく「小さい判断だけ超高速に任せる」という新しい役割分担が生まれた。</p>
+          </div>
+          <p class="script-src" hidden>Jevは判定専用でDOOMやマリオを遊ばせる遊びも世界で流行っていることに軽く触れる。目安0:08-0:13</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S5 -->
+        <section class="slide slide--tint" data-slide data-minutes="0:13–0:18" id="s5">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>今週のニュース③</p>
+            <h2 class="headline" data-editable>Claude Codeのクラウド機能が正式版に<br><span class="accent">無料クレジットは10/7まで</span></h2>
+            <ol class="num-list">
+              <li data-step="1" data-editable>9/26の動画で、Claude Codeのクラウド機能（PCを閉じても裏で作業が進む）が正式版に</li>
+              <li data-step="2" data-editable>無料クレジットが配布中。受け取り期限は10/7まで</li>
+              <li data-step="3" data-editable>5時間の利用上限に当たっても、作業がぶつ切りにならないよう改善された</li>
+            </ol>
+            <div class="callout" data-step="4" data-editable>
+              <strong>出典</strong>：みずのさん「9/26のAIトピックスのまとめ」<a class="note-line" href="https://youtu.be/kXF4v1Hbfr0?list=PLUVBxyXtQumI" target="_blank" rel="noopener">https://youtu.be/kXF4v1Hbfr0</a>
+            </div>
+            <p class="lede" data-step="5" data-editable>夜組が嬉しいところ：まだ受け取ってない人は、10/7までにボタンを押すだけで得。</p>
+          </div>
+          <p class="script-src" hidden>期限を強調。今夜のうちにメモしてもらう。目安0:13-0:18</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S6 -->
+        <section class="slide" data-slide data-minutes="0:18–0:20" id="s6">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>夜組がまず1個やるなら<br><span class="accent">これ</span></h2>
+            <div class="callout" data-step="1" data-editable>
+              <strong>Claude Codeのクラウド機能の無料クレジットを、10/7までに受け取る</strong>
+            </div>
+            <ul class="step-list">
+              <li data-step="2" data-editable>Claude Codeを開いて、クラウド機能の案内を確認する</li>
+              <li data-step="3" data-editable>無料クレジットを受け取るだけ（使うのは後でいい）</li>
+              <li data-step="4" data-editable>期限だけ、今夜のうちにメモしておく</li>
+            </ul>
+          </div>
+          <p class="script-src" hidden>今夜これだけやっておけば損しない、と伝える。目安0:18-0:20</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S7 -->
+        <section class="slide slide--tint" data-slide data-minutes="0:20–0:22" id="s7">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>おけもんの活用事例①</p>
+            <div class="case-grid">
+              <div class="case-photo" data-step="1"><img src="assets/glass-alembic.png" alt="硝子のアランビック"></div>
+              <div class="case-text">
+                <h2 class="headline" data-editable>硝子のアランビック<br><span class="accent">120粒を、ガラスの中で見る</span></h2>
+                <p class="lede" data-step="2" data-editable>依頼は「クオリティーにもこだわりつつ」の一言だけ。AstraとThree.jsで、卵型の貯留槽と透明ならせんを、実際の物理演算込みで自作した。</p>
+                <div class="link-box" data-step="3">
+                  <span class="lb-label">遊べます</span>
+                  <span class="lb-url">https://okemonogatari-hash.github.io/html-share-box/glass-alembic/</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="script-src" hidden>実際に画面共有で少し操作して見せる。目安0:20-0:22</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S8 -->
+        <section class="slide" data-slide data-minutes="0:22–0:24" id="s8">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>おけもんの活用事例②</p>
+            <div class="case-grid">
+              <div class="case-photo" data-step="1"><img src="assets/capy-island.png" alt="カピバラ版クラブペンギン"></div>
+              <div class="case-text">
+                <h2 class="headline" data-editable>カピバラ版クラブペンギン<br><span class="accent">Opus 5.5で一発勝負</span></h2>
+                <p class="lede" data-step="2" data-editable>海外の作品を見て「TTPして」の一言だけ。本家コードは見ず、須磨の浜・ゆず湯の日本版に。44項目中、初回で41通過。</p>
+                <div class="link-box" data-step="3">
+                  <span class="lb-label">遊べます</span>
+                  <span class="lb-url">https://okemonogatari-hash.github.io/html-share-box/capy-island/</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="script-src" hidden>Opus 5.5が一発でどこまで書けるかの驚きを伝える。目安0:22-0:24</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S9 -->
+        <section class="slide slide--tint" data-slide data-minutes="0:24–0:26" id="s9">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>おけもんの活用事例③</p>
+            <div class="case-grid">
+              <div class="case-photo" data-step="1"><img src="assets/motion-recipe-app.jpg" alt="モーションレシピ"></div>
+              <div class="case-text">
+                <h2 class="headline" data-editable>「基本の2行」だけで<br><span class="accent">モーショングラフィックが完成</span></h2>
+                <p class="lede" data-step="2" data-editable>指示は基本の2行だけ。Claude CodeのOpus 5.5が約46分・質問なしで「FROM NOTHING」42秒を完成させた。</p>
+                <div class="link-box" data-step="3">
+                  <span class="lb-label">試せます</span>
+                  <span class="lb-url">https://okemonogatari-hash.github.io/html-share-box/motion-recipe/</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="script-src" hidden>「これ以上シンプルにならない」という驚きを伝える。目安0:24-0:26</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S10 -->
+        <section class="slide" data-slide data-minutes="0:26–0:28" id="s10">
+          <div class="slide-inner">
+            <p class="eyebrow" data-editable>おけもんの活用事例④</p>
+            <div class="case-grid">
+              <div class="case-photo" data-step="1"><img src="assets/keychain-figurines.jpg" alt="アイコンキーホルダーのフィギュア"></div>
+              <div class="case-text">
+                <h2 class="headline" data-editable>元アイコンが<br><span class="accent">立体のキーホルダーに</span></h2>
+                <p class="lede" data-step="2" data-editable>元アイコン4枚から、AstraがBlenderで立体モデリング。印刷用データ（STL）まで自動で書き出した。</p>
+                <p class="note-line" data-step="3" data-editable>2026-09-26制作・実機印刷は未検証</p>
+              </div>
+            </div>
+          </div>
+          <p class="script-src" hidden>「見た目」で終わらず「物になる」ところが驚きどころ。目安0:26-0:28</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <!-- S11 -->
+        <section class="slide slide--tint" data-slide data-minutes="0:28–0:30" id="s11">
+          <div class="slide-inner">
+            <h2 class="headline" data-editable>明日の朝は、<br><span class="accent">みずのさんの朝もく会</span>で</h2>
+            <ol class="num-list">
+              <li data-step="1" data-editable>毎朝7:00〜7:30 oViceでAI初心者相談会＆朝もく会（みずのさん主催）</li>
+              <li data-step="2" data-editable>みずのさんのYouTube「AIの今が10分でわかる」で毎朝の続きを</li>
+              <li data-step="3" data-editable>毎週水曜21:00 oVice水曜AIラジオ（みずの×おけもん）</li>
+            </ol>
+            <div class="link-box" data-step="4">
+              <span class="lb-label">今週の記事まとめ</span>
+              <span class="lb-url">https://mizuno-ai-news.pages.dev/</span>
+            </div>
+            <p class="lede" data-step="5" data-editable>今日わからなかったこと、気になったことはこのチャットにどうぞ。おけもんも一緒に遊びます。</p>
+          </div>
+          <p class="script-src" hidden>朝もく会・YouTube・水曜ラジオへの導線を口頭でも案内。目安0:28-0:30</p>
+          <div class="slide-badge"></div>
+        </section>
+
+        <div class="stage-chrome-label">今週のAIニュース 夜組シェア会 ・ 2026-09-27</div>
+      </div>
+    </div>
+
+    <div class="deck-nav">
+      <button class="nav-btn" id="navPrev" type="button" aria-label="前へ">
+        <svg viewBox="0 0 24 24"><path d="M22 11H5.8l6.1-6.1L10 3l-9 9 9 9 1.9-1.9L5.8 13H22z"/></svg>
+      </button>
+      <span class="nav-help">← → / Space で進む・戻る　P 発表者　E 編集　F 全画面</span>
+      <button class="nav-btn" id="navNext" type="button" aria-label="次へ">
+        <svg viewBox="0 0 24 24"><path d="M2 11h16.2l-6.1-6.1L14 3l9 9-9 9-1.9-1.9 6.1-6.1H2z"/></svg>
+      </button>
+    </div>
+
+    <aside class="presenter-panel" id="presenterPanel" aria-hidden="true">
+      <div class="pp-top">
+        <div>
+          <div class="pp-elapsed-row">
+            <span class="pp-elapsed" id="ppElapsed">00:00</span>
+            <button class="pp-elapsed-reset" id="ppElapsedReset" type="button" aria-label="経過時間をリセット">リセット</button>
+          </div>
+          <span class="pp-elapsed-label">開始からの経過</span>
+        </div>
+        <div class="pp-target">
+          <span class="pp-target-value" id="ppTarget">0:00–0:02</span>
+          <span class="pp-target-label">このスライドの目安</span>
+        </div>
+      </div>
+      <div>
+        <p class="pp-next-label">次のスライド</p>
+        <div class="pp-next-thumb" id="ppNextThumb"></div>
+      </div>
+      <div class="pp-script">
+        <p class="pp-script-label">台本</p>
+        <div class="pp-script-text" id="ppScriptText"></div>
+      </div>
+      <p class="pp-help">← → 進む / P 発表者 / E 編集 / F フルスクリーン / 印刷 ⌘P<br>画面共有はウィンドウ指定で（全画面共有だと台本が映ります）</p>
+    </aside>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+  document.documentElement.classList.add('js-ready');
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var currentIndex = 0;
+  var currentStep = 0;
+
+  /* CSS counter(slidenum) only increments for boxes that actually generate;
+     once js-ready hides 9 of 10 .slide elements with display:none, the
+     counter always resolves to 1 no matter which slide is showing. Write
+     the real "n / 10" text directly instead (each slide's number never
+     changes, so this only needs to run once). */
+  slides.forEach(function(s, i){
+    var badge = s.querySelector('.slide-badge');
+    if(badge) badge.textContent = (i + 1) + ' / ' + total;
+  });
+
+  function stepsOf(slide){
+    var nums = Array.prototype.map.call(slide.querySelectorAll('[data-step]'), function(el){
+      return parseInt(el.getAttribute('data-step'), 10) || 0;
+    });
+    return nums.length ? Math.max.apply(null, nums) : 0;
+  }
+
+  function applySteps(slide, step){
+    Array.prototype.forEach.call(slide.querySelectorAll('[data-step]'), function(el){
+      var n = parseInt(el.getAttribute('data-step'), 10) || 0;
+      el.classList.toggle('is-revealed', n <= step);
+    });
+  }
+
+  function renderScript(slide){
+    var src = slide.querySelector('.script-src');
+    var el = document.getElementById('ppScriptText');
+    el.textContent = src ? src.textContent.trim() : '';
+    document.getElementById('ppTarget').textContent = slide.getAttribute('data-minutes') || '';
+  }
+
+  function fitBox(container, inner){
+    if(!container || !inner) return;
+    var cw = container.clientWidth, ch = container.clientHeight;
+    if(!cw || !ch) return;
+    var scale = Math.min(cw/1280, ch/720);
+    inner.style.transform = 'scale(' + scale + ')';
+  }
+
+  function fitStage(){
+    fitBox(document.getElementById('stageWrap'), document.getElementById('stage'));
+  }
+
+  function renderNextThumb(){
+    var host = document.getElementById('ppNextThumb');
+    host.innerHTML = '';
+    if(currentIndex >= total - 1){
+      var empty = document.createElement('p');
+      empty.className = 'pp-next-empty';
+      empty.textContent = 'これで最後のスライドです';
+      host.appendChild(empty);
+      return;
+    }
+    var clone = slides[currentIndex + 1].cloneNode(true);
+    clone.classList.add('is-active');
+    clone.removeAttribute('aria-hidden');
+    Array.prototype.forEach.call(clone.querySelectorAll('[contenteditable]'), function(el){
+      el.removeAttribute('contenteditable');
+    });
+    host.appendChild(clone);
+    fitBox(host, clone);
+  }
+
+  function goTo(index, step){
+    index = Math.max(0, Math.min(total - 1, index));
+    slides.forEach(function(s, i){
+      s.classList.toggle('is-active', i === index);
+      s.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+    });
+    currentIndex = index;
+    currentStep = typeof step === 'number' ? step : 0;
+    applySteps(slides[currentIndex], currentStep);
+    renderScript(slides[currentIndex]);
+    document.getElementById('navPrev').disabled = (currentIndex === 0 && currentStep === 0);
+    document.getElementById('navNext').disabled = (currentIndex === total - 1 && currentStep >= stepsOf(slides[currentIndex]));
+    if(document.body.classList.contains('presenter-on')) renderNextThumb();
+  }
+
+  function advance(allowLocked){
+    var slide = slides[currentIndex];
+    /* data-lock-advance (S8, the 25分ワークタイマー) means only the physical
+       ArrowRight key may move the deck forward — a stray click on the stage
+       or a Space bar press must not fire S9 in front of the room. Callers
+       that are the ArrowRight keydown pass allowLocked===true explicitly;
+       every other caller (stage click, Space, the on-screen ▶ button) calls
+       advance() with no argument and is blocked while this slide is active. */
+    if(allowLocked !== true && slide.hasAttribute('data-lock-advance')) return;
+    var max = stepsOf(slide);
+    if(currentStep < max){
+      currentStep++;
+      applySteps(slide, currentStep);
+      document.getElementById('navPrev').disabled = false;
+      /* goTo() syncs navNext.disabled on slide change, but stepping
+         within a slide (this branch) used to leave the stale value from
+         the previous sync in place. On a deck's final slide/final step
+         that meant navNext stayed enabled one step too long — recompute
+         it here the same way goTo() does. */
+      document.getElementById('navNext').disabled = (currentIndex === total - 1 && currentStep >= max);
+    } else if(currentIndex < total - 1){
+      goTo(currentIndex + 1, 0);
+    }
+  }
+
+  function back(){
+    if(currentStep > 0){
+      currentStep--;
+      applySteps(slides[currentIndex], currentStep);
+    } else if(currentIndex > 0){
+      goTo(currentIndex - 1, stepsOf(slides[currentIndex - 1]));
+    }
+  }
+
+  document.getElementById('navNext').addEventListener('click', function(){ advance(); });
+  document.getElementById('navPrev').addEventListener('click', back);
+
+  document.getElementById('stageWrap').addEventListener('click', function(e){
+    if(document.body.classList.contains('edit-on')) return;
+    var blocked = e.target.closest('a,button,[contenteditable]');
+    if(blocked) return;
+    advance();
+  });
+
+  function isTypingTarget(el){
+    if(!el) return false;
+    if(el.isContentEditable) return true;
+    var tag = el.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA';
+  }
+
+  function togglePresenter(force){
+    var on = typeof force === 'boolean' ? force : !document.body.classList.contains('presenter-on');
+    document.body.classList.toggle('presenter-on', on);
+    document.getElementById('presenterPanel').setAttribute('aria-hidden', on ? 'false' : 'true');
+    /* Reading clientWidth/Height right after a class toggle is always
+       synchronously correct in a real browser (the browser forces a
+       reflow on demand) — no need to defer to a later frame. The old
+       requestAnimationFrame wrapper here only added a delay before the
+       stage was resized to fit the new (grid, narrower) layout. */
+    fitStage();
+    if(on) renderNextThumb();
+  }
+
+  function toggleEdit(force){
+    var on = typeof force === 'boolean' ? force : !document.body.classList.contains('edit-on');
+    document.body.classList.toggle('edit-on', on);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-editable]'), function(el){
+      if(el.getAttribute('data-editable') === 'false') return;
+      if(on){
+        el.setAttribute('contenteditable', 'true');
+        el.setAttribute('spellcheck', 'false');
+      } else {
+        el.removeAttribute('contenteditable');
+      }
+    });
+  }
+
+  function toggleFullscreen(){
+    if(document.fullscreenElement){
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen().catch(function(){});
+    }
+  }
+
+  window.addEventListener('keydown', function(e){
+    if(isTypingTarget(document.activeElement)) return;
+    switch(e.key){
+      case 'ArrowRight':
+        e.preventDefault();
+        advance(true); /* the one input that still works on a locked slide */
+        break;
+      case ' ':
+        e.preventDefault();
+        advance();
+        break;
+      case 'ArrowLeft':
+        e.preventDefault();
+        back();
+        break;
+      case 'p': case 'P':
+        togglePresenter();
+        break;
+      case 'e': case 'E':
+        toggleEdit();
+        break;
+      case 'f': case 'F':
+        toggleFullscreen();
+        break;
+    }
+  });
+
+  window.addEventListener('resize', function(){
+    fitStage();
+    if(document.body.classList.contains('presenter-on')) renderNextThumb();
+  });
+
+  /* ---- overall elapsed timer (presenter panel) ---- */
+  var startedAt = Date.now();
+  function tickElapsed(){
+    var s = Math.floor((Date.now() - startedAt) / 1000);
+    var mm = Math.floor(s / 60);
+    var ss = s % 60;
+    document.getElementById('ppElapsed').textContent =
+      String(mm).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+  }
+  setInterval(tickElapsed, 1000);
+  tickElapsed();
+  document.getElementById('ppElapsedReset').addEventListener('click', function(){
+    startedAt = Date.now();
+    tickElapsed();
+  });
+
+  /* ---- workshop countdown (S8) ---- */
+  var TOTAL = 25 * 60;
+  var remaining = TOTAL;
+  var running = false;
+  var endAt = null;
+  var timerId = null;
+  var display = document.getElementById('timerDisplay');
+
+  function renderTimer(){
+    var r = Math.max(0, remaining);
+    var mm = Math.floor(r / 60);
+    var ss = r % 60;
+    display.textContent = String(mm).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+    display.classList.toggle('is-warn', r <= 300 && r > 0);
+    display.classList.toggle('is-done', r <= 0);
+  }
+
+  function tickTimer(){
+    if(!running) return;
+    remaining = Math.max(0, Math.round((endAt - Date.now()) / 1000));
+    renderTimer();
+    if(remaining <= 0){
+      running = false;
+      clearInterval(timerId);
+    }
+  }
+
+  function startTimer(){
+    if(remaining <= 0) return;
+    running = true;
+    endAt = Date.now() + remaining * 1000;
+    clearInterval(timerId);
+    timerId = setInterval(tickTimer, 250);
+  }
+  function pauseTimer(){
+    running = false;
+    clearInterval(timerId);
+  }
+  function resetTimer(){
+    running = false;
+    clearInterval(timerId);
+    remaining = TOTAL;
+    renderTimer();
+  }
+  function bumpTimer(deltaSec){
+    remaining = Math.max(0, remaining + deltaSec);
+    if(running) endAt = Date.now() + remaining * 1000;
+    renderTimer();
+  }
+
+  /* This template's own S8 always has the timer slide, so `display` is
+     always truthy here — the guard changes nothing for the template itself.
+     It exists because decks copied from this template sometimes drop the
+     timer slide entirely (no timer needed for that talk). Without the
+     guard, the unconditional getElementById('timerStart') below returns
+     null on such a deck and .addEventListener throws, aborting the rest
+     of this IIFE — including goTo(0,0)/fitStage() at the very bottom —
+     and the whole deck renders blank. */
+  if(display){
+    document.getElementById('timerStart').addEventListener('click', startTimer);
+    document.getElementById('timerPause').addEventListener('click', pauseTimer);
+    document.getElementById('timerReset').addEventListener('click', resetTimer);
+    document.getElementById('timerMinus').addEventListener('click', function(){ bumpTimer(-60); });
+    document.getElementById('timerPlus').addEventListener('click', function(){ bumpTimer(60); });
+    renderTimer();
+  }
+
+  /* ---- init ---- */
+  goTo(0, 0);
+  fitStage();
+})();
+</script>
+</body>
+</html>
