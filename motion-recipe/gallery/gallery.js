@@ -1,8 +1,39 @@
 window.MOTION_GALLERY = {
  "title": "おけもんがつくったモーショングラフィック集",
- "updated": "2026-09-26",
- "count": 7,
+ "updated": "2026-09-27",
+ "count": 8,
  "items": [
+  {
+   "id": "from-nothing",
+   "title": "FROM NOTHING（無から）— 基本の2行だけで作った42秒",
+   "date": "2026-09-26",
+   "aspect": "16:9",
+   "hitokoto": "記事の基本の2行だけを Claude Code の Opus 5.5 に送った結果。光の点が液体金属になり、どこまでも続く回廊、光る街へと変わって、最後は「画像0・動画0・音源0」の種明かし。途中の質問なし・約46分。",
+   "techniques": [
+    "形が変身する",
+    "3Dの中をカメラが進む",
+    "音に合わせて動く",
+    "文字が主役で動く"
+   ],
+   "technique_ids": [
+    "morph",
+    "camera3d",
+    "beatsync",
+    "kinetic"
+   ],
+   "traits": [
+    "暗闇の光の点から始まる",
+    "液体金属→回廊→光る街と姿を変える",
+    "最後に種明かし",
+    "42秒・音も全部コード"
+   ],
+   "prompt": {
+    "text": "あなたが今できる最高のモーショングラフィックで、見た人が思わず「すごい」と声に出す1本を作ってください。\nいま世界中で話題の「AIが本気で作るモーショングラフィック」です。あなたの腕前を、出し惜しみせず全力で証明してください。",
+    "note": "記事の基本の2行（Claude Code・Opus 5.5・エフォートはそのまま）"
+   },
+   "video": "from-nothing.mp4",
+   "poster": "from-nothing.jpg"
+  },
   {
    "id": "hitoshizuku",
    "title": "一滴（ひとしずく）— 葵のモーションリール",
@@ -23,7 +54,44 @@ window.MOTION_GALLERY = {
    "video": "hitoshizuku.mp4",
    "poster": "hitoshizuku.jpg",
    "gif": "hitoshizuku.gif",
-   "date": "2026-09-26"
+   "date": "2026-09-26",
+   "traits": [
+    "墨の一滴が最後まで形を変え続ける",
+    "書き順どおりの筆",
+    "和柄と千本鳥居の3D",
+    "15秒・音楽も効果音もコード"
+   ],
+   "prompt": {
+    "text": "make a dynamic 15-second motion graphics video that shows what an incredible motion designer you are, like it's your showreel for a résumé. go all out.",
+    "note": "Stephan Livera さんのプロンプトをそのまま（Claude Code・Opus 5.5・effort max）"
+   }
+  },
+  {
+   "id": "jonetsu-intro",
+   "title": "おけもん・ドキュメンタリー風の自己紹介（スカイドロップ版）",
+   "date": "2026-09-26",
+   "aspect": "16:9",
+   "hitokoto": "深夜のドキュメンタリー番組の温度で、道に3秒で迷う人が、自分に迷った人の道案内をしている30秒。くるくる迷う方位磁針が、最後に「ワクワク」で止まる。声は Google の最新の読み上げ、曲はおけもんの自作曲スカイドロップ。",
+   "techniques": [
+    "意味どおりに動く文字",
+    "前の形が次の形になる",
+    "数字やグラフが動く",
+    "音に合わせて動く"
+   ],
+   "technique_ids": [
+    "semantic",
+    "matchcut",
+    "infographic",
+    "beatsync"
+   ],
+   "traits": [
+    "方位磁針がくり返し出てくる",
+    "低い落ち着いたナレーション",
+    "曲のサビを山場の一言にぶつける",
+    "30秒"
+   ],
+   "video": "jonetsu-intro.mp4",
+   "poster": "jonetsu-intro.jpg"
   },
   {
    "id": "kapipara-teaser",
@@ -45,7 +113,13 @@ window.MOTION_GALLERY = {
    "video": "kapipara-teaser.mp4",
    "poster": "kapipara-teaser.jpg",
    "gif": "kapipara-teaser.gif",
-   "date": "2026-09-17"
+   "date": "2026-09-17",
+   "traits": [
+    "方眼紙と判子の“大真面目な研究記録”",
+    "数字のカウントアップ",
+    "曲の山で商品名がドンと着地",
+    "20秒"
+   ]
   },
   {
    "id": "kinetic-intro",
@@ -67,7 +141,13 @@ window.MOTION_GALLERY = {
    "video": "kinetic-intro.mp4",
    "poster": "kinetic-intro.jpg",
    "gif": "kinetic-intro.gif",
-   "date": "2026-09-15"
+   "date": "2026-09-15",
+   "traits": [
+    "文字と図形と音楽だけ",
+    "0m→215mと数え上がる",
+    "拍でぴたっと止まる",
+    "32秒"
+   ]
   },
   {
    "id": "jizura-intro",
@@ -89,7 +169,12 @@ window.MOTION_GALLERY = {
    "video": "jizura-intro.mp4",
    "poster": "jizura-intro.jpg",
    "gif": null,
-   "date": "2026-09-24"
+   "date": "2026-09-24",
+   "traits": [
+    "歌詞のように文字が踊る",
+    "拍にぴったり絵を重ねる",
+    "30秒"
+   ]
   },
   {
    "id": "tsukkomi-intro",
@@ -110,7 +195,12 @@ window.MOTION_GALLERY = {
    "video": "tsukkomi-intro.mp4",
    "poster": "tsukkomi-intro.jpg",
    "gif": null,
-   "date": "2026-09-23"
+   "date": "2026-09-23",
+   "traits": [
+    "キャラがしゃべる番組の形",
+    "掛け合いとツッコミ",
+    "約100秒"
+   ]
   },
   {
    "id": "slide-intro",
@@ -130,7 +220,12 @@ window.MOTION_GALLERY = {
    "video": "slide-intro.mp4",
    "poster": "slide-intro.jpg",
    "gif": null,
-   "date": "2026-09-10"
+   "date": "2026-09-10",
+   "traits": [
+    "カードと写真が並んでいく",
+    "スライドの形",
+    "30秒"
+   ]
   }
  ]
 };

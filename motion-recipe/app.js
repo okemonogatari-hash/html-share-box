@@ -49,10 +49,10 @@
 
   // 見えている見本だけ動かす
   const io = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("paused", !e.isIntersecting)), { rootMargin: "80px" }) : null;
-  const watch = (root) => io && root.querySelectorAll(".z-card").forEach((c) => { c.classList.add("paused"); io.observe(c); });
+  const watch = (root) => io && root.querySelectorAll(".z-card, .w-card").forEach((c) => { c.classList.add("paused"); io.observe(c); });
 
   // ---------------------------------------------------------------- 入力パーツ
-  const state = { text: "", purpose: "auto", moods: [], seconds: "auto", aspect: "auto", sound: "auto", onscreen: "", adjust: { calm: 0, bold: 0, cute: 0, wild: 0 }, variant: 0, last: "" };
+  const state = { text: "", purpose: "auto", moods: [], seconds: "auto", aspect: "auto", sound: "auto", onscreen: "", adjust: { calm: 0, bold: 0, cute: 0, wild: 0 }, variant: 0, last: "", reference: null };
   // 書きかけの言葉は、この端末のこのブラウザにだけ残す（読み直しで消えないように）
   const store = {
     get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -123,6 +123,7 @@
     if (r.sceneLabel) tags.push(`${r.sceneLabel}の色`);
     tags.push(`${r.seconds}秒`, r.aspect === "16:9" ? "横長" : r.aspect === "9:16" ? "縦長" : "正方形", r.sound ? `音あり・${r.bpm}BPM` : "音なし");
     if (r.onscreen.length) tags.push(`文字「${r.onscreen.join("」「")}」`);
+    if (r.reference) tags.unshift(`お手本：${r.reference.title}`);
     $("tags").innerHTML = tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("");
     $("palette").innerHTML = r.palette.map((c) => `<span style="background:${c}" title="${c}"></span>`).join("");
     $("tech-chips").innerHTML = r.techniques.map((t) => `<span class="tech-chip">${esc(t.name)}</span>`).join("");
@@ -230,33 +231,114 @@
   $("zukan-grid").classList.add("collapsed");
   $("zukan-more").addEventListener("click", () => { $("zukan-grid").classList.remove("collapsed"); $("zukan-more").hidden = true; });
 
-  // ---------------------------------------------------------------- 作品集
+  // ---------------------------------------------------------------- 作品集（おけもんが作った／世界のお手本）
+  const fmtViews = (n) => (n >= 10000 ? `${Math.round(n / 1000) / 10}万` : n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, "")}千` : String(n));
+  const fmtSec = (s) => (s >= 60 ? `${Math.floor(s / 60)}分${s % 60 ? (s % 60) + "秒" : ""}` : `${s}秒`);
+  let okItems = [], worldItems = [];
+  const baseUrl = location.href.split("#")[0].split("?")[0].replace(/[^/]*$/, "");
+
+  function setReference(ref) {
+    state.reference = ref;
+    $("ref-pill").hidden = !ref;
+    if (ref) $("ref-title").textContent = ref.title;
+  }
+  $("ref-clear").addEventListener("click", () => { setReference(null); toast("お手本を外しました"); });
+
+  function okCard(g, i) {
+    const tags = (g.traits && g.traits.length ? g.traits : g.techniques || []).slice(0, 4);
+    const prompt = g.prompt ? `<button type="button" class="btn link small" data-showprompt="${i}">使ったプロンプト</button>
+        <div class="g-prompt" id="gp-${i}" hidden><pre>${esc(g.prompt.text)}</pre><p class="fine">${esc(g.prompt.note || "")}</p><button type="button" class="btn chip-btn" data-copyprompt="${i}">このプロンプトをコピー</button></div>` : "";
+    return `<article class="g-card">
+        <button type="button" class="g-thumb" data-play="${i}" aria-label="再生：${esc(g.title)}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')"></button>
+        <div class="g-text">
+          <p class="g-title">${esc(g.title)}</p>
+          <p class="g-desc">${esc(g.hitokoto || g.desc || "")}</p>
+          <div class="g-tags">${tags.map((x) => `<span>${esc(x)}</span>`).join("")}</div>
+          <div class="g-actions"><button type="button" class="btn chip-btn ref-btn" data-ref="ok:${i}">これをお手本に作る</button>${prompt}</div>
+        </div>
+      </article>`;
+  }
+  function worldCard(w, i) {
+    const meta = [w.views ? `${fmtViews(w.views)}表示` : "", w.seconds ? fmtSec(w.seconds) : ""].filter(Boolean).join("・");
+    const demos = (w.technique_ids || []).filter((id) => DEMO[id]).slice(0, 2);
+    const stages = demos.length ? `<p class="w-stage-cap">近い演出（うちの見本）</p><div class="w-stages">${demos.map((id) => `<div class="w-stage"><div class="stage d-${id}">${DEMO[id]}</div><span>${esc(R.TECH[id].name)}</span></div>`).join("")}</div>` : "";
+    return `<article class="w-card">
+        ${stages}
+        <div class="w-head"><span class="w-badge ${w.group === "ai" ? "ai" : "pro"}">${w.group === "ai" ? "AI・コード" : "プロ"}</span><span class="w-meta">${esc(meta)}</span></div>
+        <p class="w-title">${esc(w.title)}</p>
+        <p class="w-by">${esc(w.by)}${w.date ? `・${esc(w.date)}` : ""}</p>
+        <p class="w-desc">${esc(w.hitokoto || "")}</p>
+        <div class="g-tags">${(w.traits || []).map((x) => `<span>${esc(x)}</span>`).join("")}</div>
+        <div class="g-actions"><a class="btn chip-btn" href="${esc(w.url)}" target="_blank" rel="noopener">投稿を見る ↗</a><button type="button" class="btn chip-btn ref-btn" data-ref="w:${i}">これをお手本に作る</button></div>
+      </article>`;
+  }
+
   (window.MOTION_GALLERY ? Promise.resolve(window.MOTION_GALLERY) : fetch("gallery/gallery.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(r.status))))
     .then((list) => {
-      const items = Array.isArray(list) ? list : list.items || [];
-      if (!items.length) throw new Error("empty");
-      $("gallery-grid").innerHTML = items.map((g, i) => `
-        <button class="g-card" data-i="${i}">
-          <div class="g-thumb" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')"></div>
-          <div class="g-text">
-            <p class="g-title">${esc(g.title)}</p>
-            <p class="g-desc">${esc(g.desc || g.hitokoto || "")}</p>
-            <div class="g-tags">${(g.techniques || []).slice(0, 4).map((t) => `<span>${esc(t)}</span>`).join("")}</div>
-          </div>
-        </button>`).join("");
-      $("gallery-grid").addEventListener("click", (e) => {
-        const b = e.target.closest(".g-card");
-        if (!b) return;
-        const g = items[+b.dataset.i];
-        const v = $("modal-video");
-        v.src = "gallery/" + (g.video || g.id + ".mp4");
-        v.poster = "gallery/" + (g.poster || g.id + ".jpg");
-        $("modal-text").innerHTML = `<b>${esc(g.title)}</b>　${esc(g.desc || g.hitokoto || "")}`;
-        $("modal").hidden = false;
-        v.play().catch(() => {});
-      });
+      okItems = Array.isArray(list) ? list : list.items || [];
+      if (!okItems.length) throw new Error("empty");
+      $("gallery-grid").innerHTML = okItems.map(okCard).join("");
     })
     .catch(() => { $("gallery-grid").innerHTML = `<p class="muted">作品集はただいま準備中です。</p>`; });
+
+  const W = window.MOTION_WORLD;
+  if (W && W.items) {
+    worldItems = W.items;
+    if (W.tip) $("world-tip").innerHTML = `💡 ${esc(W.tip.text)}（<a href="${esc(W.tip.url)}" target="_blank" rel="noopener">${esc(W.tip.by)}</a>）`;
+    $("world-grid").innerHTML = (W.groups || [{ id: "ai" }, { id: "pro" }]).map((grp) => {
+      const cards = worldItems.map((w, i) => (w.group === grp.id ? worldCard(w, i) : "")).join("");
+      return cards ? `<p class="w-group">${esc(grp.label || "")}</p><div class="w-grid">${cards}</div>` : "";
+    }).join("");
+    watch($("world-grid"));
+    if (W.more) $("world-more").innerHTML = `<a href="${esc(W.more.url)}" target="_blank" rel="noopener">${esc(W.more.label)} ↗</a>`;
+  } else {
+    $("world-grid").innerHTML = `<p class="muted">世界のお手本はただいま準備中です。</p>`;
+  }
+
+  $("gallery").addEventListener("click", async (e) => {
+    const play = e.target.closest("[data-play]");
+    if (play) {
+      const g = okItems[+play.dataset.play];
+      const v = $("modal-video");
+      v.src = "gallery/" + (g.video || g.id + ".mp4");
+      v.poster = "gallery/" + (g.poster || g.id + ".jpg");
+      $("modal-text").innerHTML = `<b>${esc(g.title)}</b>　${esc(g.hitokoto || g.desc || "")}`;
+      $("modal").hidden = false;
+      v.play().catch(() => {});
+      return;
+    }
+    const sp = e.target.closest("[data-showprompt]");
+    if (sp) { const box = $("gp-" + sp.dataset.showprompt); box.hidden = !box.hidden; return; }
+    const cp = e.target.closest("[data-copyprompt]");
+    if (cp) { await copyText(okItems[+cp.dataset.copyprompt].prompt.text); toast("プロンプトをコピーしました。Claude Code に貼ってね"); return; }
+    const rb = e.target.closest("[data-ref]");
+    if (rb) {
+      const [kind, idx] = rb.dataset.ref.split(":");
+      const it = kind === "ok" ? okItems[+idx] : worldItems[+idx];
+      setReference({
+        title: it.title,
+        by: kind === "ok" ? "おけもん" : it.by,
+        url: kind === "ok" ? baseUrl + "gallery/" + (it.video || it.id + ".mp4") : it.url,
+        traits: it.traits || [], technique_ids: it.technique_ids || [], moods: it.moods || [],
+      });
+      $("make").scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => $("wish").focus({ preventScroll: true }), 400);
+      toast("お手本をセットしました。作りたいものを書いて「レシピを作る」");
+    }
+  });
+
+  // タブ
+  function selectTab(which) {
+    const world = which === "world";
+    $("tab-okemon").setAttribute("aria-selected", String(!world));
+    $("tab-world").setAttribute("aria-selected", String(world));
+    $("panel-okemon").hidden = world;
+    $("panel-world").hidden = !world;
+  }
+  $("tab-okemon").addEventListener("click", () => selectTab("okemon"));
+  $("tab-world").addEventListener("click", () => selectTab("world"));
+  if (location.hash === "#world") { selectTab("world"); setTimeout(() => $("gallery").scrollIntoView({ block: "start" }), 300); }
+
   const closeModal = () => { const v = $("modal-video"); v.pause(); v.removeAttribute("src"); v.load(); $("modal").hidden = true; };
   $("modal-close").addEventListener("click", closeModal);
   $("modal").addEventListener("click", (e) => { if (e.target === $("modal")) closeModal(); });

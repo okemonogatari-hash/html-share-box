@@ -8,6 +8,11 @@
  * - 用途が読めない時は「短い映像作品」。署名で締めるのは名前を入れた時だけ
  * - 自分で選んだ雰囲気は推測より必ず上。言葉の中の決め手（数字・筆・3D…）は必ず演出に入れる
  * - 「別のレシピ」は主役の演出と色を本当に入れ替える。調整ボタンは演出を最低1つ動かす
+ *
+ * 2026-09-27 お手本（作品集から選んだ1本）を注文書に入れられるように
+ * おけちゃん「プロンプトをこねくるよりも、お手本見せた方がはやいから。作りたい人も直感的にこんなの作りたいって選びやすいでしょ」
+ * - お手本の特徴（テンポ・文字・切り替え・色）を注文書に書き、お手本の演出は必ず入れる
+ * - Rexan Wong さん（2026-09-26）：参考なしだと Opus は「中央の文字・グラデ背景・全部フェードイン」に落ちる。お手本はペースと文字と切り替えを渡す
  */
 (function (root) {
   "use strict";
@@ -294,11 +299,13 @@
   };
 
   function build(input) {
-    const opts = Object.assign({ text: "", purpose: "auto", moods: [], seconds: "auto", aspect: "auto", sound: "auto", onscreen: "", adjust: {}, variant: 0, last: "" }, input || {});
+    const opts = Object.assign({ text: "", purpose: "auto", moods: [], seconds: "auto", aspect: "auto", sound: "auto", onscreen: "", adjust: {}, variant: 0, last: "", reference: null }, input || {});
+    const ref = opts.reference && opts.reference.title ? opts.reference : null;
     const heard = readWords(opts.text);
     const adj = Object.assign({ calm: 0, bold: 0, cute: 0, wild: 0 }, opts.adjust);
     const variant = Math.max(0, opts.variant | 0);
-    const picked = (opts.moods || []).filter((k) => MOODS[k]).slice(0, 2);
+    // 自分で選んだ雰囲気が無ければ、お手本の雰囲気を借りる
+    const picked = ((opts.moods && opts.moods.length ? opts.moods : ref && ref.moods) || []).filter((k) => MOODS[k]).slice(0, 2);
 
     // 雰囲気：rank＝並び（後から押した調整 ＞ 自分で選んだ ＞ 言葉からの推測）、W＝演出の点数に使う重み
     const rank = {}, W = {};
@@ -343,6 +350,8 @@
       return { t, s };
     });
     const S = Object.fromEntries(scored.map((x) => [x.t.id, x.s]));
+    // お手本の演出は必ず入れる（言葉の決め手より先・調整ボタンより後）
+    if (ref && ref.technique_ids) for (const id of ref.technique_ids) if (TECH[id] && !forced.has(id)) forced.set(id, 1.5);
     // 調整ボタン：そのボタンを1回前に押した時のレシピに入っていない候補を、必ず1つ入れる（押すたびに演出が動く）
     for (const k of ["calm", "bold", "cute", "wild"]) {
       if (!(adj[k] > 0)) continue;
@@ -402,8 +411,8 @@
     const d4 = ["calm", "bold", "cute", "wild"].filter((k) => adj[k] > 0).map((k) => ADJUST_LINES[k]).join("");
     const direction = `${d1}${d2}${d3}${d4}${P.end(endWord)}。`;
 
-    const prompt = composePrompt({ text: opts.text, purpose, loop: !!P.loop, seconds, aspect, sound, soft: soundTech === TECH.softsound, bpm, palette: pal.c, paletteWords, onscreen, direction, chosen, wild: adj.wild > 0, quiet });
-    return { purpose, purposeLabel: P.label, moods: moodOrder.slice(0, 3), moodLabel, scene, sceneLabel: scene ? SCENES[scene].label : "", seconds, aspect, sound, bpm, palette: pal.c, paletteWords, onscreen, direction, heroes, techniques: chosen, prompt };
+    const prompt = composePrompt({ text: opts.text, purpose, loop: !!P.loop, seconds, aspect, sound, soft: soundTech === TECH.softsound, bpm, palette: pal.c, paletteWords, onscreen, direction, chosen, wild: adj.wild > 0, quiet, ref });
+    return { purpose, purposeLabel: P.label, moods: moodOrder.slice(0, 3), moodLabel, scene, sceneLabel: scene ? SCENES[scene].label : "", seconds, aspect, sound, bpm, palette: pal.c, paletteWords, onscreen, direction, heroes, techniques: chosen, reference: ref, prompt };
   }
 
   // 調整の「1回前」を何度も組み立てるので、同じ注文は覚えておく
@@ -422,8 +431,16 @@
     L.push("いま世界中で話題の「AIが本気で作るモーショングラフィック」です。あなたの腕前を、出し惜しみせず全力で証明してください。");
     L.push("");
     L.push("■ 作りたいもの（本人の言葉）");
-    L.push(r.text && r.text.trim() ? r.text.trim() : "おまかせ。あなたがいちばん得意な見せ方で");
+    L.push(r.text && r.text.trim() ? r.text.trim() : r.ref ? "おまかせ。下のお手本の雰囲気で、あなたがいちばん得意な見せ方で" : "おまかせ。あなたがいちばん得意な見せ方で");
     L.push("");
+    if (r.ref) {
+      L.push("■ お手本（この1本のテンポ・文字・切り替えに寄せる）");
+      L.push(`- お手本：${r.ref.title}${r.ref.by ? `（${r.ref.by}）` : ""}${r.ref.url ? ` ${r.ref.url}` : ""}`);
+      if (r.ref.traits && r.ref.traits.length) L.push(`- 特徴：${r.ref.traits.join("／")}`);
+      L.push("- 動画が見られなくても大丈夫。上の特徴に寄せて作る。お手本の色・ロゴ・言葉・キャラはそのまま使わず、「作りたいもの」に置きかえる");
+      L.push("- 作業フォルダにお手本のスクリーンショットがあれば、それも見て寄せる");
+      L.push("");
+    }
     L.push("■ 仕上がりのイメージ");
     L.push(r.direction);
     L.push("");

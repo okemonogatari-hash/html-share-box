@@ -43,6 +43,7 @@
         <p class="kicker">こだわりたい人は、ここから</p>
         <label class="q" for="wish">どんな動画にしたい？</label>
         <p class="hint">ふだんの言葉で。1行でも、長くても大丈夫です。</p>
+        <div class="ref-pill" id="ref-pill" hidden><span>お手本：<b id="ref-title"></b></span><button type="button" id="ref-clear" aria-label="お手本を外す">×</button></div>
         <textarea id="wish" rows="3" placeholder="例：やさしくて、ちょっとワクワクする自己紹介"></textarea>
         <div class="chips ideas" id="ideas" aria-label="例をえらぶ"></div>
 
@@ -112,9 +113,20 @@
 
       <!-- 3. 作品集 -->
       <section class="card gallery-sec" id="gallery">
-        <h2>おけもんが作ったモーショングラフィック</h2>
-        <p class="sec-lead">同じ Opus 5.5 たちと作った作品です。完成イメージの参考に。</p>
-        <div class="gallery" id="gallery-grid"><p class="muted">読み込み中…</p></div>
+        <h2>モーショングラフィック集</h2>
+        <p class="sec-lead">作りたいものに近い1本を選んで「これをお手本に作る」を押すと、そのテンポや切り替えに寄せた注文書になります。</p>
+        <div class="tabs" role="tablist" aria-label="作品集">
+          <button type="button" class="tab" role="tab" id="tab-okemon" aria-selected="true" aria-controls="panel-okemon">おけもんが作った</button>
+          <button type="button" class="tab" role="tab" id="tab-world" aria-selected="false" aria-controls="panel-world">世界のお手本</button>
+        </div>
+        <div class="tab-panel" id="panel-okemon" role="tabpanel" aria-labelledby="tab-okemon">
+          <div class="gallery" id="gallery-grid"><p class="muted">読み込み中…</p></div>
+        </div>
+        <div class="tab-panel" id="panel-world" role="tabpanel" aria-labelledby="tab-world" hidden>
+          <p class="world-tip" id="world-tip"></p>
+          <div id="world-grid"></div>
+          <p class="world-more" id="world-more"></p>
+        </div>
       </section>
 
       <!-- 4. 図鑑 -->
@@ -142,6 +154,7 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="gallery/gallery.js"></script>
+    <script src="gallery/world.js"></script>
     <script src="recipe.js"></script>
     <script src="app.js"></script>
   </body>
