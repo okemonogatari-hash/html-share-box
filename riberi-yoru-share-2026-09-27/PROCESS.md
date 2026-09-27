@@ -32,3 +32,22 @@
 ## 作り直し方
 - ニュース内容を差し替える時は `index.html` 内の `<!-- S3 -->`〜`<!-- S5 -->` を編集するか、Eキーの編集モードで直接書き換えて保存（コピー）。
 - 活用事例を差し替える時は `assets/` に新しい画像を追加し、`<!-- S7 -->`〜`<!-- S10 -->` の `img src` と本文を差し替える。
+
+## 音声（2026-09-27 追記）
+### 裏取り
+- 本人が指摘した2点（Opus 5.5「約4割安く」／Claude Codeクラウド無料クレジット期限10/7）を公式で確認。
+  - Opus 5.5：`https://www.anthropic.com/news/claude-opus-5-5` に「costs 40% less to run than Opus 5」「at default settings it will cost 40% less than Opus 5 on typical workloads」と明記（Opus5比較の一次情報）。list価格自体は `claude.com/pricing` で $5→$4/$25→$20（20%）だが、これはtypical workload込みの数字ではなく別の見方。スライドの「約4割安く」は公式の主張どおりなので**修正不要**。
+  - 無料クレジット期限：一次のAnthropicブログ本文には直接当たれなかったが、複数の独立ニュース媒体（bleepingcomputer / ghacks / madrobot 等）が揃って「claim by Oct 7, 11:59PM PT・残高失効はNov 4」と報じており、みずのさん投稿の「10/7まで」と一致。**修正不要**（出典を公式1本に絞れなかった点は未解決として最終報告に記載）。
+- 台本・スライド本文は変更していない。
+
+### 読み上げ音声
+- 声はCAST.md正本の「はるか」＝Fishクローン（お手本 `読書ノート/78日間トランサーフィン実践マニュアル/朗読/voice/ref_haruka_aman_4s_mono24k.wav`）。
+- **Gemini TTSではなくFish clone（`POST https://api.fish.audio/v1/tts`, model: `s2.1-pro-free`）を使った**——Geminiのプリセット声・ボイスデザインでは、はるかの実際のクローン音声（既存の参照wav）を再現できないため（CAST.md記載の「Geminiで同じ声が出せない場合は、CAST.mdに書いてある方法に従う」を適用）。無料モデルなので課金は発生していない。
+- 各スライドの台本は、発表者台本（`.script-src`＝進行メモ）とスライド本文から、耳で聞いてわかる話し言葉に書き起こし直した（URL・記号は読ませない）。生成スクリプト・原文は `/private/tmp/.../scratchpad/scripts.json` に控え（セッション限りの作業ファイル）。
+- 生成後、`ffmpeg -af ebur128` で実測LUFSを測り、`volume=+X dB` で全スライド **-18 LUFS** に正規化（`make_talk.py` と同じ手法）。音声ファイルは `assets/audio/s1.mp3`〜`s11.mp3`。
+- 秒数（正規化後）：s1=10.4s／s2=15.7s／s3=28.7s／s4=35.4s／s5=25.5s／s6=16.3s／s7=16.1s／s8=17.3s／s9=15.7s／s10=16.7s／s11=26.4s。合計 約224秒（3分44秒）。
+
+### 載せ方
+- 各 `<section class="slide">` に `data-audio="assets/audio/sN.mp3"` を付与。
+- `#audioToggle`（既定OFF）とAキーで自動再生トグル。ONの間、`goTo()`でスライドが変わるたびにそのスライドの音声を頭から再生（ページ読み込み時・ステップ内の小刻みな表示では再生しない＝「→で進めた時」だけ）。
+- 内部ブラウザで動作確認済み（ローカルサーバ経由。トグルON→s1再生→→キーでs2へ自動切替→Aキーで停止、をJSで実測）。
