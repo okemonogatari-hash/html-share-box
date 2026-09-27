@@ -114,7 +114,7 @@ window.MOTION_GALLERY = {
     "pattern",
     "camera3d"
    ],
-   "aspect": "16:9（横長）",
+   "aspect": "16:9",
    "video": "hitoshizuku.mp4",
    "poster": "hitoshizuku.jpg",
    "gif": "hitoshizuku.gif",
@@ -173,7 +173,7 @@ window.MOTION_GALLERY = {
     "beatsync",
     "texture"
    ],
-   "aspect": "16:9（横長）",
+   "aspect": "16:9",
    "video": "kapipara-teaser.mp4",
    "poster": "kapipara-teaser.jpg",
    "gif": "kapipara-teaser.gif",
@@ -201,7 +201,7 @@ window.MOTION_GALLERY = {
     "infographic",
     "geometric"
    ],
-   "aspect": "16:9（横長）",
+   "aspect": "16:9",
    "video": "kinetic-intro.mp4",
    "poster": "kinetic-intro.jpg",
    "gif": "kinetic-intro.gif",
@@ -229,7 +229,7 @@ window.MOTION_GALLERY = {
     "spring",
     "particles"
    ],
-   "aspect": "16:9（横長）",
+   "aspect": "16:9",
    "video": "jizura-intro.mp4",
    "poster": "jizura-intro.jpg",
    "gif": null,
@@ -255,7 +255,7 @@ window.MOTION_GALLERY = {
     "stagger",
     "particles"
    ],
-   "aspect": "16:9（横長）",
+   "aspect": "16:9",
    "video": "tsukkomi-intro.mp4",
    "poster": "tsukkomi-intro.jpg",
    "gif": null,
@@ -280,7 +280,7 @@ window.MOTION_GALLERY = {
     "collage",
     "spring"
    ],
-   "aspect": "16:9（横長）",
+   "aspect": "16:9",
    "video": "slide-intro.mp4",
    "poster": "slide-intro.jpg",
    "gif": null,

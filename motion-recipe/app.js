@@ -80,7 +80,7 @@
     if (r.reference) tags.unshift(`お手本：${r.reference.title}`);
     $("tags").innerHTML = tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("");
     $("palette").innerHTML = r.palette.map((c) => `<span style="background:${c}" title="${c}"></span>`).join("");
-    $("tech-chips").innerHTML = r.techniques.map((t) => `<a class="tech-chip" href="techniques.html#t-${t.id}" target="_blank" rel="noopener">${esc(t.name)}<small>${esc(t.formal)}</small></a>`).join("");
+    $("tech-chips").innerHTML = r.techniques.map((t) => `<a class="tech-chip" href="techniques.html#t-${t.id}" target="_blank" rel="opener">${esc(t.name)}<small>${esc(t.formal)}</small></a>`).join("");
     $("prompt").textContent = r.prompt;
     const a = state.adjust, notes = [];
     for (const k of ["calm", "bold", "cute", "wild"]) if (a[k] > 0) notes.push(`${R.ADJUST_LABELS[k]}×${a[k]}`);
@@ -171,6 +171,7 @@
 
   function setReference(ref) {
     state.reference = ref;
+    store.set("mr-ref", ref ? JSON.stringify(ref) : ""); // 技法集から戻っても、お手本が消えないように
     $("ref-pill").hidden = !ref;
     if (ref) $("ref-title").textContent = ref.title;
   }
@@ -281,6 +282,9 @@
     const w = store.get("mr-wish"), o = store.get("mr-onscreen");
     if (w) $("wish").value = w;
     if (o) $("onscreen").value = o;
+    try { const saved = store.get("mr-ref"); if (saved) setReference(JSON.parse(saved)); } catch (e) { /* 読めなければお手本なしで始める */ }
     if (add) setTimeout(() => addWord(add), 300);
   }
+  // 技法集のタブ（このページから開いたもの）の「この言葉で作る」：元のタブに言葉を足し、レシピを作ってあれば作り直す。お手本と調整はそのまま
+  window.MR_addWord = (word) => { addWord(word); if (!$("recipe").hidden) make(false); };
 })();

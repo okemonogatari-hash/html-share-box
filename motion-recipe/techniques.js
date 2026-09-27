@@ -67,6 +67,20 @@
     clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("on"), 2000);
   }
   document.addEventListener("click", async (e) => {
+    // アプリのタブから開いた時は、そのタブに言葉を足してこのタブを閉じる（タブが2つにならず、お手本と調整も消えない）
+    const add = e.target.closest("a.ref-btn[href*='?add=']");
+    if (add) {
+      let op = null;
+      try { op = window.opener && !window.opener.closed && typeof window.opener.MR_addWord === "function" ? window.opener : null; } catch (err) { op = null; }
+      if (op) {
+        e.preventDefault();
+        const word = new URL(add.href).searchParams.get("add");
+        op.MR_addWord(word);
+        toast(`アプリのタブに「${word}」を足しました`);
+        setTimeout(() => { window.close(); }, 900);
+        return;
+      }
+    }
     const b = e.target.closest("[data-copy]");
     if (!b) return;
     try { await navigator.clipboard.writeText(b.dataset.copy); } catch (err) { /* コピーできない環境でも止めない */ }

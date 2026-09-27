@@ -371,15 +371,20 @@
     // 画面に出す言葉：欄に書いたもの（／で区切る）＋「」で囲んだ言葉
     const onscreen = (opts.onscreen || "").split(/[／/\n]+/).map((s) => s.trim()).filter(Boolean);
     for (const q of heard.quotes) if (!onscreen.includes(q)) onscreen.push(q);
+    // 画面に出す言葉を書いていない時は、金額・割合・人数などの数字も画面に出す（「3万円」「36万円」。秒・分は長さの指定なので外す）
+    if (!(opts.onscreen || "").trim()) for (const m of heard.text.normalize("NFKC").matchAll(/\d[\d,.]*\s*(?:[万億]?円|[%％]|人|回|倍|位)/g)) { const v = m[0].replace(/\s+/g, ""); if (!onscreen.some((o) => o.includes(v))) onscreen.push(v); }
     const endWord = heard.quotes.length ? heard.quotes[heard.quotes.length - 1] : onscreen[0] || "";
 
     // 技法の点数
-    const forced = new Map(); // id → 優先度（大きいほど先）
+    // id → 優先度（大きいほど先）。言葉で名指しした技法（KW）は、お手本・調整ボタンより先で、役割の枠からもはみ出して必ず入れる
+    // （2026-09-27 読者テスト：お手本を選ぶと「数字がカウントアップして」「筆で」が消え、「必ず入ります」が守られなかった）
+    const KW = 5;
+    const forced = new Map();
     const scored = TECHNIQUES.map((t) => {
       let s = 0;
       for (const [k, w] of Object.entries(W)) s += w * (t.moods[k] || 0);
       s += 1.6 * (t.purposes[purpose] || 0);
-      if (t.keys && t.keys.some((w) => heard.plain.includes(w.normalize("NFKC")))) { s += 4; forced.set(t.id, 1); }
+      if (t.keys && t.keys.some((w) => heard.plain.includes(w.normalize("NFKC")))) { s += 4; forced.set(t.id, KW); }
       if (adj.calm > 0 && ["glitch", "colorwipe", "camera3d", "anticipation", "spring", "beatsync"].includes(t.id)) s -= 3 * adj.calm;
       if (adj.calm > 0 && BOOST.calm.includes(t.id)) s += 2.5 * adj.calm;
       if (adj.bold > 0 && BOOST.bold.includes(t.id)) s += 2.5 * adj.bold;
@@ -390,23 +395,30 @@
       return { t, s };
     });
     const S = Object.fromEntries(scored.map((x) => [x.t.id, x.s]));
-    // お手本の演出は必ず入れる（言葉の決め手より先・調整ボタンより後）
+    // お手本の演出も入れる（言葉で名指しした技法より後・調整ボタンより後）
     if (ref && ref.technique_ids) for (const id of ref.technique_ids) if (TECH[id] && !forced.has(id)) forced.set(id, 1.5);
     // 調整ボタン：そのボタンを1回前に押した時のレシピに入っていない候補を、必ず1つ入れる（押すたびに演出が動く）
+    // 名指しの技法で枠が埋まった役割には、調整ボタンの候補を置かない（置いても押し出されて、押した効果が見えなくなる）
+    const namedIn = {};
+    for (const [id, pr] of forced) if (pr === KW) namedIn[TECH[id].role] = (namedIn[TECH[id].role] || 0) + 1;
+    const hasRoom = (id) => (namedIn[TECH[id].role] || 0) < PICK[TECH[id].role];
     for (const k of ["calm", "bold", "cute", "wild"]) {
       if (!(adj[k] > 0)) continue;
       const prevAdj = Object.assign({}, adj, { [k]: adj[k] - 1 });
       const before = new Set(buildCached(Object.assign({}, opts, { adjust: prevAdj })).techniques.map((t) => t.id));
-      const ranked = BOOST[k].slice().sort((a, b) => S[b] - S[a]);
+      const roomy = BOOST[k].filter(hasRoom);
+      const ranked = (roomy.length ? roomy : BOOST[k]).slice().sort((a, b) => S[b] - S[a]);
       const fresh = ranked.filter((id) => !before.has(id));
-      forced.set(fresh.length ? fresh[0] : ranked[0], k === opts.last ? 3 : 2); // 最後に押したボタンがいちばん先
+      const pick = fresh.length ? fresh[0] : ranked[0];
+      if (forced.get(pick) !== KW) forced.set(pick, k === opts.last ? 3 : 2); // 最後に押したボタンが、調整の中ではいちばん先
     }
 
     // 役割ごとに選ぶ。必ず入れるもの → 残りは上位の候補から「別のレシピ」の回数ずらして選ぶ
     function pickRole(role) {
       const n = PICK[role];
       const list = scored.filter((x) => x.t.role === role).sort((a, b) => b.s - a.s);
-      const must = list.filter((x) => forced.has(x.t.id)).sort((a, b) => forced.get(b.t.id) - forced.get(a.t.id) || b.s - a.s).slice(0, n).map((x) => x.t);
+      const named = list.filter((x) => forced.get(x.t.id) === KW).length;
+      const must = list.filter((x) => forced.has(x.t.id)).sort((a, b) => forced.get(b.t.id) - forced.get(a.t.id) || b.s - a.s).slice(0, Math.max(n, named)).map((x) => x.t);
       const rest = list.filter((x) => !must.includes(x.t)).slice(0, POOL[role]).map((x) => x.t);
       const need = n - must.length, out = must.slice();
       if (need > 0 && rest.length) {
@@ -424,7 +436,9 @@
     const P = PURPOSES[purpose];
     const seconds = opts.seconds !== "auto" && opts.seconds ? Number(opts.seconds) : heard.seconds || (P.loop ? 10 : 15);
     // お手本の画面の形・音は、自分で選んでいない時だけ引き継ぐ（音の無いお手本に BGM を足さない）
-    const aspect = opts.aspect !== "auto" && opts.aspect ? opts.aspect : heard.aspect || (ref && ref.aspect) || (purpose === "sns" ? "9:16" : "16:9");
+    const refAspect = ref && ref.aspect ? (String(ref.aspect).match(/\d+:\d+/) || [])[0] : null;
+    const aspect0 = opts.aspect !== "auto" && opts.aspect ? opts.aspect : heard.aspect || refAspect || (purpose === "sns" ? "9:16" : "16:9");
+    const aspect = ["16:9", "9:16", "1:1"].includes(aspect0) ? aspect0 : "16:9";
     const sound = opts.sound !== "auto" ? opts.sound === "on" || opts.sound === true : heard.sound !== null ? heard.sound : ref && ref.sound === false ? false : true;
     const quiet = QUIET.includes(topMood) || scene === "night" || adj.calm > 0;
     const second = moodOrder[1] || topMood;
