@@ -345,9 +345,9 @@ window.MOTION_WORLD = {
    ],
    "technique_ids": [
     "matchcut",
-    "texture",
+    "kinetic",
     "hold",
-    "lightsweep"
+    "texture"
    ],
    "moods": [
     "elegant",
@@ -377,7 +377,7 @@ window.MOTION_WORLD = {
     "particles",
     "pattern",
     "breathing",
-    "liquid"
+    "stagger"
    ],
    "moods": [
     "mystic",
@@ -405,13 +405,378 @@ window.MOTION_WORLD = {
    ],
    "technique_ids": [
     "semantic",
-    "stagger",
     "pattern",
-    "particles"
+    "stagger",
+    "spring"
    ],
    "moods": [
     "pop",
     "exciting"
+   ]
+  },
+  {
+   "id": "kimi-k3-teaser",
+   "group": "pro",
+   "title": "Kimi K3 の予告映像（筆の「道」が墨の粒にほどけ、月と古い線画になる）",
+   "by": "Kimi.ai（Moonshot AI）",
+   "handle": "Kimi_Moonshot",
+   "url": "https://x.com/Kimi_Moonshot/status/2081757327146045450",
+   "whatships": "https://whatships.com/videos/kimi-k3-open-weights/",
+   "date": "2026-07-27",
+   "seconds": 15,
+   "views": 1121058,
+   "likes": 13728,
+   "hitokoto": "生成りの紙に、昔の書体の字が筆で書かれて今の「道」に変わり、その墨が粒にほどけて、柱→アーチ→三つの球→月と姿を変えていく。月のまわりに機械や建物の古い線画が集まり、最後は細い文字の名前だけで締める15秒。",
+   "traits": [
+    "生成りの紙に墨一色（差し色なし）",
+    "昔の書体の字が、筆で今の「道」に書き変わる",
+    "墨が粒にほどけ、柱→アーチ→球→月と組み直る",
+    "低い電子音が約2秒ごとにふくらむ・カットなし"
+   ],
+   "technique_ids": [
+    "brush",
+    "particles",
+    "matchcut",
+    "texture"
+   ],
+   "moods": [
+    "wa",
+    "mystic"
+   ]
+  },
+  {
+   "id": "next-ipod-blueprint",
+   "group": "pro",
+   "title": "Founders Inc「次の iPod をつくるのは誰？」（写真・設計図・X線が、同じ形のまま入れ替わる）",
+   "by": "Founders Inc",
+   "handle": "fdotinc",
+   "url": "https://x.com/fdotinc/status/2092780175176175804",
+   "whatships": "https://whatships.com/videos/next-ipod/",
+   "date": "2026-08-27",
+   "seconds": 17,
+   "views": 14662,
+   "likes": 276,
+   "hitokoto": "手に持った iPod が、青焼きの設計図、X線写真、サーモグラフィのような色の透視図へと、同じ形・同じ位置のまま次々に入れ替わる17秒。ホイールの丸が光の輪になり、設計図の曲名リストに寄り、いろいろな場所で持たれた写真が0.1秒ずつ流れたあと、特許の図面と飾り文字の1語で止まる。",
+   "traits": [
+    "鮮やかな青の地に、白い線の設計図とざらつき",
+    "同じ形・同じ位置のまま、写真→設計図→X線→擬似カラー",
+    "強い電子音（約103BPM）、切り替えは0.4秒前後",
+    "最後は特許の図面と、飾り文字の1語で止まる"
+   ],
+   "technique_ids": [
+    "line",
+    "matchcut",
+    "hold",
+    "texture"
+   ],
+   "moods": [
+    "emo",
+    "cool"
+   ]
+  },
+  {
+   "id": "wonder-challenge",
+   "group": "pro",
+   "title": "Wonder のデザインチャレンジ告知（とろけるパステルの上に、大きな文字と賞金）",
+   "by": "Wonder",
+   "handle": "usewonder",
+   "url": "https://x.com/usewonder/status/2071641597402284078",
+   "whatships": "https://whatships.com/videos/wonder-design-challenge/",
+   "date": "2026-06-29",
+   "seconds": 13,
+   "views": 43961,
+   "likes": 173,
+   "hitokoto": "ピンクと水色がとろけ合うパステルのグラデーションが、ゆっくり流れ続ける13秒。その上に横に広い黒い大文字、賞金の数字、紫のカーソルが打つ一言が順に出て、最後は黒い画面にロゴ2つで締める。",
+   "traits": [
+    "ピンク・水色・桃色がとろけ合うグラデーションが流れる",
+    "横に広い黒い大文字が、ぼかしからくっきり現れて止まる",
+    "紫のカーソルが入力欄に一言を打ち、枠が広がる",
+    "明るい電子音（約100BPM）、最後は黒地にロゴ2つ"
+   ],
+   "technique_ids": [
+    "liquid",
+    "kinetic",
+    "maskreveal",
+    "hold"
+   ],
+   "moods": [
+    "cute",
+    "elegant"
+   ]
+  },
+  {
+   "id": "animate-text",
+   "group": "ai",
+   "title": "文字アニメの見本帳 animate-text（色の面が切り替わり、言葉が意味どおりに動く）",
+   "by": "Pixel Point",
+   "handle": "alex_barashkov",
+   "url": "https://x.com/alex_barashkov/status/2055276192106774738",
+   "whatships": "https://whatships.com/videos/animate-text/",
+   "date": "2026-05-15",
+   "seconds": 16,
+   "views": 76100,
+   "likes": 995,
+   "hitokoto": "白→青→緑→黒と画面いっぱいの色がパッと切り替わるたびに、短い言葉が1語ずつ・1字ずつ現れては消える。後半は6つのマスで文字の動きの見本が同時に流れ、「左へ押し出す」「上から積む」「そっと引く」など、どの言葉も書いてあるとおりに動く16秒。",
+   "traits": [
+    "画面いっぱいの色（白・青・緑・黒）が約0.8秒ごとに切り替わる",
+    "言葉は1〜3語だけ、1語ずつ・1字ずつ出て消える",
+    "6つのマスで、別々の文字の動きが時間差で流れる",
+    "言葉がその意味どおりに動く（左へ押す・上から積む）"
+   ],
+   "technique_ids": [
+    "semantic",
+    "kinetic",
+    "maskreveal",
+    "stagger"
+   ],
+   "moods": [
+    "pop",
+    "cool"
+   ]
+  },
+  {
+   "id": "bnb-six-years",
+   "group": "pro",
+   "title": "BNB Chain の6周年（黒と黄色、値段の数字がスロットのように回る）",
+   "by": "BNB Chain",
+   "handle": "BNBCHAIN",
+   "url": "https://x.com/BNBCHAIN/status/2094757311080444274",
+   "whatships": "https://whatships.com/videos/bnb-chain-six-years/",
+   "date": "2026-09-01",
+   "seconds": 54,
+   "views": 814038,
+   "likes": 2102,
+   "hitokoto": "黒と黄色だけの画面で、はみ出すほど巨大な文字の前を金色のコインが回り、値段の数字がスロットのように縦に流れる。「5X」「LONG」などの大きな文字、1個ずつ並ぶアイコン、横に流れる増減の％を語りの声に合わせて見せ、黄色い四角が画面いっぱいに広がって場面を替える。最後は黄色い光の中に「6」とロゴの54秒。",
+   "traits": [
+    "黒と黄色の2色、背景に画面からはみ出す巨大な文字",
+    "値段の数字がスロットのように縦に回って入れ替わる",
+    "アイコンが1個ずつ並び、増減の％が横に流れ続ける",
+    "黄色い四角が広がって場面が替わる・語りの声つき"
+   ],
+   "technique_ids": [
+    "infographic",
+    "kinetic",
+    "colorwipe",
+    "stagger"
+   ],
+   "moods": [
+    "exciting",
+    "genki"
+   ]
+  },
+  {
+   "id": "jina-ocr",
+   "group": "ai",
+   "title": "jina-ocr-v1 の発表（英字と漢字のマス目が、雲のように流れる）",
+   "by": "Jina AI",
+   "handle": "JinaAI_",
+   "url": "https://x.com/JinaAI_/status/2100617174985638364",
+   "whatships": "https://whatships.com/videos/jina-ocr-v1/",
+   "date": "2026-09-17",
+   "seconds": 15,
+   "views": 156721,
+   "likes": 1531,
+   "hitokoto": "黒い画面いっぱいに英字・記号・漢字が等間隔のマス目で並び、雲のようなまとまりがゆっくり形を変えながら流れては消える15秒（音なし）。真ん中の白い太字の名前だけは、最後まで動かない。",
+   "traits": [
+    "黒地に、灰色の小さな英字・記号・漢字のマス目",
+    "文字のまとまりが雲のように形を変えながら流れる",
+    "真ん中の白い太字の名前は、最後まで動かない",
+    "カットなし・音なしで、同じ調子のまま流れ続ける"
+   ],
+   "technique_ids": [
+    "pattern",
+    "breathing",
+    "hold",
+    "texture"
+   ],
+   "moods": [
+    "calm",
+    "future"
+   ],
+   "sound": false
+  },
+  {
+   "id": "elevenlabs-reception",
+   "group": "pro",
+   "title": "ElevenLabs「Reception」の紹介（切り抜いた物と言葉が散らばる、電話受付のAI）",
+   "by": "ElevenLabs",
+   "handle": "ElevenLabs",
+   "url": "https://x.com/ElevenLabs/status/2100262886916358361",
+   "whatships": "https://whatships.com/videos/elevenlabs-reception/",
+   "date": "2026-09-16",
+   "seconds": 33,
+   "views": 2311733,
+   "likes": 4973,
+   "hitokoto": "方眼の白い地に、英語の言葉が1語ずつばらばらの位置に置かれ、そのまわりにハサミ・ボトル・工事の三角コーン・キーボードなど、切り抜いた物の写真が散らばる。四角いモザイクの青緑の上で鳴る電話、光る丸、ぼけた緑の上のチャットと続き、黒地の一文とロゴで締める33秒。",
+   "traits": [
+    "方眼の白い地に、1語ずつばらばらの位置に置かれる言葉",
+    "切り抜いた物の写真（ハサミ・コーン・椅子など）が散らばる",
+    "四角いモザイクの青緑、光る丸、ぼけた緑へと場面が変わる",
+    "語りの声に合わせて言葉が出る・電話のベルの音"
+   ],
+   "technique_ids": [
+    "collage",
+    "kinetic",
+    "stagger",
+    "texture"
+   ],
+   "moods": [
+    "warm",
+    "calm"
+   ]
+  },
+  {
+   "id": "knob-keyboard-3d",
+   "group": "pro",
+   "title": "キーボード「KNOB」の3D映像（実物のような質感を、接写でなめる）",
+   "by": "Isaev Workshop（Mark Vassilevskiy さんの紹介）",
+   "handle": "MarkKnd",
+   "url": "https://x.com/MarkKnd/status/2078185821279224163",
+   "whatships": "https://whatships.com/videos/kimi-3-couldve-never-done-this/",
+   "date": "2026-07-17",
+   "seconds": 19,
+   "views": 219466,
+   "likes": 1465,
+   "hitokoto": "木の棚の作業机から始まり、白と朱色のキーボードの3Dにカメラがぐっと寄って、キーの丸み・小さな画面・つまみを接写でなめていく19秒（音なし）。キーが青く光る場面、浮かんだ本体のまわりを半透明のオレンジのリボンが回る場面を経て、製品名と制作スタジオのロゴで終わる。",
+   "traits": [
+    "白・灰・朱色のキーボードを、実物のような質感の3Dで",
+    "カメラがキーや画面に接写で寄り、ゆっくりなめる",
+    "桃色の地に浮かぶ本体と、まわりを回る半透明のリボン",
+    "カットは7回だけ、最後は白地にロゴ（音なし）"
+   ],
+   "technique_ids": [
+    "camera3d",
+    "slowzoom",
+    "hold",
+    "lightsweep"
+   ],
+   "moods": [
+    "elegant",
+    "warm"
+   ],
+   "sound": false
+  },
+  {
+   "id": "geometry-nodes-curves",
+   "group": "ai",
+   "title": "手順どおりに育つ、光る曲線（Blender のジオメトリーノード）",
+   "by": "Cartesian_C（3DxDEV さんの紹介）",
+   "handle": "3DxDEV7",
+   "url": "https://x.com/3DxDEV7/status/2058812912194531833",
+   "whatships": "https://whatships.com/videos/geometry-nodes-blender/",
+   "date": "2026-05-25",
+   "seconds": 15,
+   "views": 868825,
+   "likes": 13310,
+   "hitokoto": "暗い灰色の3Dの作業画面で、オレンジに光る曲線が根や触手のように伸びていく15秒（正方形・音なし）。最初に完成形を見せ、点をまく→根を生やす→遠い線を消す→中心へ集める→長さをそろえる→うねらせる、と画面の下に手順の名前が出るたびに形が育っていく。",
+   "traits": [
+    "暗い灰色の3D空間に、オレンジに光る細い曲線だけ",
+    "点→根→束→うねりと、手順ごとに形が育つ",
+    "画面の下に手順の名前（英語）が1つずつ出る",
+    "最初に完成形、それから作り方（カットなし・音なし）"
+   ],
+   "technique_ids": [
+    "line",
+    "pattern",
+    "stagger",
+    "lightsweep"
+   ],
+   "moods": [
+    "mystic",
+    "future"
+   ],
+   "sound": false,
+   "aspect": "1:1"
+  },
+  {
+   "id": "recraft-v4-1",
+   "group": "ai",
+   "title": "Recraft V4.1 の発表（極太の斜体の見出しと、音に合わせて切り替わる作例）",
+   "by": "Recraft",
+   "handle": "recraftai",
+   "url": "https://x.com/recraftai/status/2054948927124693416",
+   "whatships": "https://whatships.com/videos/recraft-v4-1/",
+   "date": "2026-05-14",
+   "seconds": 30,
+   "views": 3339919,
+   "likes": 553,
+   "hitokoto": "灰色の地に、黒い極太の斜体の見出し（「もっと美しく」「なめらかなグラデーション」など）が1語ずつ組み上がり、そのまわりに小さな画像がはじけるように散らばる。見出しの合間に写真・3D・イラストの作例が約0.5秒ずつ音に合わせて切り替わり、最後は縦に引き伸ばした巨大な「MORE」で締める30秒。",
+   "traits": [
+    "灰色の地に黒い極太の斜体、見出しは1語ずつ組み上がる",
+    "見出しのまわりに、小さな画像がはじけるように散らばる",
+    "作例が約0.5秒ずつ、低音の強い音に合わせて切り替わる",
+    "最後は縦に引き伸ばした巨大な1語で締める"
+   ],
+   "technique_ids": [
+    "kinetic",
+    "collage",
+    "hold",
+    "beatsync"
+   ],
+   "moods": [
+    "exciting",
+    "cool"
+   ]
+  },
+  {
+   "id": "tldraw-flash",
+   "group": "pro",
+   "title": "tldraw flash の発表（ホワイトボードに、手描きの文字が1字ずつ飛んでくる）",
+   "by": "tldraw",
+   "handle": "tldraw",
+   "url": "https://x.com/tldraw/status/2095148758304743852",
+   "whatships": "https://whatships.com/videos/tldraw-flash/",
+   "date": "2026-09-02",
+   "seconds": 14,
+   "views": 107402,
+   "likes": 900,
+   "hitokoto": "お絵かきツールの画面の中で、ペンで描いた棒人間がホワイトボードの前を行き来し、手描きの文字が1字ずつ飛んできて「flash」が並ぶ14秒（音なし）。最後にサイトの名前が左から現れ、赤い斜めの手描きで「順番待ち受付中」と添える。",
+   "traits": [
+    "白地に黒いペンの線だけ、差し色は赤の手描き1つ",
+    "手描きの文字が1字ずつ飛んできて、ボードに並ぶ",
+    "サイト名は左から少しずつ現れる",
+    "最後は赤い斜めの一言、棒人間が手を振って止まる"
+   ],
+   "technique_ids": [
+    "kinetic",
+    "maskreveal",
+    "stagger",
+    "hold"
+   ],
+   "moods": [
+    "cute",
+    "pop"
+   ],
+   "sound": false
+  },
+  {
+   "id": "lottielab-burp",
+   "group": "pro",
+   "title": "Lottielab「Burp」の発表（虹色の枠が脈打ち、虹の柱がロゴになる）",
+   "by": "Lottielab",
+   "handle": "LottielabHQ",
+   "url": "https://x.com/LottielabHQ/status/1970480133854171408",
+   "whatships": "https://whatships.com/videos/lottielab-burp/",
+   "date": "2025-09-23",
+   "seconds": 33,
+   "views": 360431,
+   "likes": 3187,
+   "hitokoto": "白い画面の真ん中に入力欄のカードがあり、打ち込む言葉が変わるたびに、上下の虹色の四角い枠がふくらんだり縮んだりして色を入れ替える。できあがった広告の例が音に合わせて次々に出て、虹のしま模様のカードを経て、最後は黒い弧の器と虹の柱が組み合わさってロゴになる33秒。",
+   "traits": [
+    "白地に、虹色（赤・橙・黄・緑・青・紫）のしま模様だけが強い色",
+    "入力欄のまわりで、虹色の四角い枠が脈打つようにふくらむ",
+    "作例が約0.6秒ずつ、音に合わせて切り替わる",
+    "最後は黒い弧の器と虹の柱が組み合わさってロゴになる"
+   ],
+   "technique_ids": [
+    "geometric",
+    "ui",
+    "breathing",
+    "beatsync"
+   ],
+   "moods": [
+    "pop",
+    "genki"
    ]
   }
  ]
