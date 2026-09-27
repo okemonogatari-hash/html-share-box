@@ -310,11 +310,11 @@
     for (const [k, p] of Object.entries(PURPOSES)) { const s = score(plain, p.words); if (s) purposes[k] = s; }
     if (/[0-9,]+\s*円/.test(t)) purposes.shop = (purposes.shop || 0) + 2;
     for (const [k, sc] of Object.entries(SCENES)) { const s = score(plain, sc.words); if (s) scenes[k] = s; }
-    // 画面に出したい言葉：「」『』"" で囲まれた部分
+    // 画面に出したい言葉：「」『』"" で囲まれた部分。書いたままの字で拾う（NFKC を通すと「！」「？」「＠」が半角に変わる・2026-09-28）
     const quotes = [];
-    const re = /[「『"“]([^」』"”]{1,40})[」』"”]/g;
+    const re = /[「『"“＂]([^」』"”＂]{1,40})[」』"”＂]/g;
     let m;
-    while ((m = re.exec(t))) { const q = m[1].trim(); if (q && !quotes.includes(q)) quotes.push(q); }
+    while ((m = re.exec(text || ""))) { const q = m[1].trim(); if (q && !quotes.includes(q)) quotes.push(q); }
     // 長さ・画面の形・音
     let seconds = null;
     // 長さ：「15秒」「30秒の」。「0.5秒ずつ」「2秒ごと」のような間合いの数字は長さにしない（2026-09-27：古着屋のセールで「0.5秒ずつ」が5秒の長さになった）
@@ -415,11 +415,16 @@
     }
 
     // 役割ごとに選ぶ。必ず入れるもの → 残りは上位の候補から「別のレシピ」の回数ずらして選ぶ
+    // 名指しの技法は枠の外に足す。お手本の技法を入れ替えるのは調整ボタンだけで、名指しの技法には押し出させない（役割ごとに枠＋1まで）
+    // （2026-09-28：X のお手本「好きなものを1つ教えて」で、言葉の「集まって」がお手本の主役の手書き文字を注文書から消していた）
     function pickRole(role) {
       const n = PICK[role];
       const list = scored.filter((x) => x.t.role === role).sort((a, b) => b.s - a.s);
-      const named = list.filter((x) => forced.get(x.t.id) === KW).length;
-      const must = list.filter((x) => forced.has(x.t.id)).sort((a, b) => forced.get(b.t.id) - forced.get(a.t.id) || b.s - a.s).slice(0, Math.max(n, named)).map((x) => x.t);
+      const pr = (x) => forced.get(x.t.id) || 0;
+      const named = list.filter((x) => pr(x) === KW);
+      const adjs = list.filter((x) => pr(x) >= 2 && pr(x) < KW).sort((a, b) => pr(b) - pr(a) || b.s - a.s).slice(0, Math.max(0, n - named.length));
+      const refs = list.filter((x) => pr(x) === 1.5).slice(0, Math.max(0, Math.min(n - adjs.length, n + 1 - named.length - adjs.length)));
+      const must = [...named, ...adjs, ...refs].map((x) => x.t);
       const rest = list.filter((x) => !must.includes(x.t)).slice(0, POOL[role]).map((x) => x.t);
       const need = n - must.length, out = must.slice();
       if (need > 0 && rest.length) {
