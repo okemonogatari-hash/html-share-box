@@ -5,52 +5,6 @@
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  // ---------------------------------------------------------------- 小さな動く見本
-  const P = (n) => Array.from({ length: n }, (_, i) => {
-    const a = (i / n) * Math.PI * 2, d = 44 + (i % 3) * 10;
-    return `<i class="p" style="--x:${Math.round(Math.cos(a) * d)}px;--y:${Math.round(Math.sin(a) * d * 0.7)}px;animation-delay:${(i % 4) * 0.08}s;background:${["#e4472f", "#ffc75f", "#1f3668", "#3bb58a"][i % 4]}"></i>`;
-  }).join("");
-  const DEMO = {
-    kinetic: `<div class="mid"><span>う</span><span>ご</span><span>く</span></div>`,
-    semantic: `<div class="row r1">ゆっくり</div><div class="row r2">はやく</div>`,
-    morph: `<div class="mid"></div>`,
-    line: `<svg viewBox="0 0 220 112" preserveAspectRatio="xMidYMid meet"><path d="M20 70 C 50 10, 80 10, 100 56 S 150 104, 200 40" /></svg>`,
-    brush: `<svg viewBox="0 0 220 112" preserveAspectRatio="xMidYMid meet"><path class="s1" d="M70 42 L150 38" /><path class="s2" d="M110 16 L110 100" /><path class="s3" d="M108 44 Q 92 78 66 94" /></svg>`,
-    particles: P(12),
-    pattern: `<div class="pat"></div>`,
-    camera3d: `<div class="scene"><div class="gate"></div><div class="gate"></div><div class="gate"></div><div class="gate"></div></div>`,
-    infographic: `<div class="bars"><i style="height:40%"></i><i style="height:65%"></i><i style="height:50%"></i><i style="height:92%"></i></div><div class="num"></div>`,
-    ui: `<div class="phone"><i></i><i></i><b></b></div>`,
-    collage: `<i class="pp"></i><i class="pp"></i><i class="pp"></i>`,
-    liquid: `<div class="goo"><i></i><i></i></div>`,
-    geometric: `<i class="sh"></i><i class="sh"></i><i class="sh"></i>`,
-    matchcut: `<i class="fill"></i>`,
-    maskreveal: `<div class="mid">新登場</div>`,
-    colorwipe: `<i class="pn"></i><i class="pn"></i><i class="pn"></i>`,
-    parallax: `<i class="ly l1"></i><i class="ly l2"></i><i class="ly l3"></i>`,
-    slowzoom: `<i class="ph"></i>`,
-    squash: `<i class="floor"></i><i class="ball"></i>`,
-    spring: `<i class="box"></i>`,
-    stagger: `<div class="bs"><i></i><i></i><i></i><i></i><i></i><i></i></div>`,
-    anticipation: `<i class="ball"></i>`,
-    hold: `<i class="dot"></i>`,
-    breathing: `<i class="c"></i>`,
-    lightsweep: `<div class="plate">GOLD</div>`,
-    glitch: `<div class="mid" data-t="FUTURE">FUTURE</div>`,
-    texture: `<i class="tx"></i><div class="mid">和紙</div>`,
-    beatsync: `<div class="eq"><i></i><i></i><i></i><i></i><i></i></div>`,
-    softsound: `<div class="eq"><i></i><i></i><i></i><i></i><i></i></div>`,
-  };
-  function card(t, chosen, pickable) {
-    const hint = pickable && t.hint ? `<p class="z-hint">押すと「${esc(t.hint)}」を入れる</p>` : "";
-    const attrs = pickable ? ` data-id="${t.id}" role="button" tabindex="0"` : "";
-    return `<article class="z-card${chosen ? " chosen" : ""}${pickable ? " pick" : ""}"${attrs}><div class="stage d-${t.id}">${DEMO[t.id] || ""}</div><div class="z-text"><p class="z-name">${esc(t.name)}</p><p class="z-en">${esc(t.en)}</p><p class="z-plain">${esc(t.plain)}</p>${hint}</div></article>`;
-  }
-
-  // 見えている見本だけ動かす
-  const io = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("paused", !e.isIntersecting)), { rootMargin: "80px" }) : null;
-  const watch = (root) => io && root.querySelectorAll(".z-card, .w-card").forEach((c) => { c.classList.add("paused"); io.observe(c); });
-
   // ---------------------------------------------------------------- 入力パーツ
   const state = { text: "", purpose: "auto", moods: [], seconds: "auto", aspect: "auto", sound: "auto", onscreen: "", adjust: { calm: 0, bold: 0, cute: 0, wild: 0 }, variant: 0, last: "", reference: null };
   // 書きかけの言葉は、この端末のこのブラウザにだけ残す（読み直しで消えないように）
@@ -126,17 +80,12 @@
     if (r.reference) tags.unshift(`お手本：${r.reference.title}`);
     $("tags").innerHTML = tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("");
     $("palette").innerHTML = r.palette.map((c) => `<span style="background:${c}" title="${c}"></span>`).join("");
-    $("tech-chips").innerHTML = r.techniques.map((t) => `<span class="tech-chip">${esc(t.name)}</span>`).join("");
-    $("tech-cards").innerHTML = r.techniques.map((t) => card(t, false)).join("");
-    watch($("tech-cards"));
+    $("tech-chips").innerHTML = r.techniques.map((t) => `<a class="tech-chip" href="techniques.html#t-${t.id}" target="_blank" rel="noopener">${esc(t.name)}</a>`).join("");
     $("prompt").textContent = r.prompt;
     const a = state.adjust, notes = [];
     for (const k of ["calm", "bold", "cute", "wild"]) if (a[k] > 0) notes.push(`${R.ADJUST_LABELS[k]}×${a[k]}`);
     if (state.variant) notes.push(`別のレシピ ${state.variant}`);
     $("adjust-note").innerHTML = [notes.length ? "調整：" + notes.join("・") : "", changes || ""].filter(Boolean).map(esc).join("<br />");
-    // 図鑑の中で、今回えらんだ演出に印
-    const ids = new Set(r.techniques.map((t) => t.id));
-    document.querySelectorAll("#zukan-grid .z-card").forEach((c) => c.classList.toggle("chosen", ids.has(c.dataset.id)));
   }
 
   $("go").addEventListener("click", () => {
@@ -174,13 +123,6 @@
     d.animate([{ opacity: 0.2, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 380, easing: "cubic-bezier(.22,1,.36,1)" });
   });
 
-  $("show-techs").addEventListener("click", () => {
-    const c = $("tech-cards"), open = c.hidden;
-    c.hidden = !open;
-    $("show-techs").setAttribute("aria-expanded", String(open));
-    $("show-techs").textContent = open ? "今回の演出をとじる ▴" : "今回の演出を見る ▾";
-  });
-
   function toast(msg) {
     const t = $("toast");
     t.textContent = msg;
@@ -212,24 +154,14 @@
     toast(b.dataset.cmd + " をコピーしました");
   });
 
-  // ---------------------------------------------------------------- 図鑑
-  const order = ["hero", "trans", "feel", "atmos", "sound"];
-  $("zukan-grid").innerHTML = R.TECHNIQUES.slice().sort((a, b) => order.indexOf(a.role) - order.indexOf(b.role)).map((t) => card(t, false, true)).join("");
-  watch($("zukan-grid"));
-  // カードを押すと、その演出の言葉を入力欄に足す（言葉に入っていれば、アプリが必ずその演出を入れる）
-  function addHint(id) {
-    const t = R.TECH[id];
-    if (!t || !t.hint) return;
+  // 技法集（techniques.html）の「この言葉で作る」から来た時：その言葉を入力欄に足す
+  function addWord(word) {
     const w = $("wish"), cur = w.value.trim();
-    if (!cur.includes(t.hint)) w.value = cur ? `${cur.replace(/[。、,.\s]+$/, "")}、${t.hint}` : t.hint;
+    if (!cur.includes(word)) w.value = cur ? `${cur.replace(/[。、,.\s]+$/, "")}、${word}` : word;
     store.set("mr-wish", w.value);
     $("make").scrollIntoView({ behavior: "smooth", block: "start" });
-    toast(`「${t.hint}」を入れました`);
+    toast(`「${word}」を入れました`);
   }
-  $("zukan-grid").addEventListener("click", (e) => { const c = e.target.closest(".z-card.pick"); if (c) addHint(c.dataset.id); });
-  $("zukan-grid").addEventListener("keydown", (e) => { const c = e.target.closest(".z-card.pick"); if (c && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); addHint(c.dataset.id); } });
-  $("zukan-grid").classList.add("collapsed");
-  $("zukan-more").addEventListener("click", () => { $("zukan-grid").classList.remove("collapsed"); $("zukan-more").hidden = true; });
 
   // ---------------------------------------------------------------- 作品集（おけもんが作った／世界のお手本）
   const fmtViews = (n) => (n >= 10000 ? `${Math.round(n / 1000) / 10}万` : n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, "")}千` : String(n));
@@ -260,10 +192,7 @@
   }
   function worldCard(w, i) {
     const meta = [w.views ? `${fmtViews(w.views)}表示` : "", w.seconds ? fmtSec(w.seconds) : ""].filter(Boolean).join("・");
-    const demos = (w.technique_ids || []).filter((id) => DEMO[id]).slice(0, 2);
-    const stages = demos.length ? `<p class="w-stage-cap">近い演出（うちの見本）</p><div class="w-stages">${demos.map((id) => `<div class="w-stage"><div class="stage d-${id}">${DEMO[id]}</div><span>${esc(R.TECH[id].name)}</span></div>`).join("")}</div>` : "";
     return `<article class="w-card">
-        ${stages}
         <div class="w-head"><span class="w-badge ${w.group === "ai" ? "ai" : "pro"}">${w.group === "ai" ? "AI・コード" : "プロ"}</span><span class="w-meta">${esc(meta)}</span></div>
         <p class="w-title">${esc(w.title)}</p>
         <p class="w-by">${esc(w.by)}${w.date ? `・${esc(w.date)}` : ""}</p>
@@ -289,7 +218,6 @@
       const cards = worldItems.map((w, i) => (w.group === grp.id ? worldCard(w, i) : "")).join("");
       return cards ? `<p class="w-group">${esc(grp.label || "")}</p><div class="w-grid">${cards}</div>` : "";
     }).join("");
-    watch($("world-grid"));
     if (W.more) $("world-more").innerHTML = `<a href="${esc(W.more.url)}" target="_blank" rel="noopener">${esc(W.more.label)} ↗</a>`;
   } else {
     $("world-grid").innerHTML = `<p class="muted">世界のお手本はただいま準備中です。</p>`;
@@ -345,11 +273,13 @@
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("modal").hidden) closeModal(); });
 
   // ---------------------------------------------------------------- ?q= で開いたら、そのままレシピまで
-  const q = new URLSearchParams(location.search).get("q");
+  const params = new URLSearchParams(location.search);
+  const q = params.get("q"), add = params.get("add");
   if (q) { $("wish").value = q; make(true); }
   else {
     const w = store.get("mr-wish"), o = store.get("mr-onscreen");
     if (w) $("wish").value = w;
     if (o) $("onscreen").value = o;
+    if (add) setTimeout(() => addWord(add), 300);
   }
 })();

@@ -24,10 +24,28 @@
     <header class="hero">
       <div class="drop-logo" aria-hidden="true"><span class="drop"></span><span class="ring r1"></span><span class="ring r2"></span></div>
       <h1><span class="t">モ</span><span class="t">ー</span><span class="t">シ</span><span class="t">ョ</span><span class="t">ン</span><span class="t">レ</span><span class="t">シ</span><span class="t">ピ</span></h1>
-      <p class="lead">作りたい動画を、ふだんの言葉で。<br />演出はアプリが選んで、<b>Claude Code の Opus 5.5</b> にそのまま貼れる注文書にします。</p>
+      <p class="lead">AIが作ったモーショングラフィックを見て、作りたい1本を選ぶ。<br />そのまま <b>Claude Code の Opus 5.5</b> に貼れる注文書にします。</p>
     </header>
 
     <main>
+      <!-- 1. 作品集（主役） -->
+      <section class="card gallery-sec" id="gallery">
+        <h2>モーショングラフィック集</h2>
+        <p class="sec-lead">作りたいものに近い1本を選んで「これをお手本に作る」を押すと、そのテンポや切り替えに寄せた注文書になります。</p>
+        <div class="tabs" role="tablist" aria-label="作品集">
+          <button type="button" class="tab" role="tab" id="tab-okemon" aria-selected="true" aria-controls="panel-okemon">おけもんが作った</button>
+          <button type="button" class="tab" role="tab" id="tab-world" aria-selected="false" aria-controls="panel-world">世界のお手本</button>
+        </div>
+        <div class="tab-panel" id="panel-okemon" role="tabpanel" aria-labelledby="tab-okemon">
+          <div class="gallery" id="gallery-grid"><p class="muted">読み込み中…</p></div>
+        </div>
+        <div class="tab-panel" id="panel-world" role="tabpanel" aria-labelledby="tab-world" hidden>
+          <p class="world-tip" id="world-tip"></p>
+          <div id="world-grid"></div>
+          <p class="world-more" id="world-more"></p>
+        </div>
+      </section>
+
       <!-- 0. いちばん簡単な方法 -->
       <section class="card quick" id="quick">
         <p class="kicker">いちばん簡単な方法</p>
@@ -80,10 +98,8 @@
         <p class="adjust-note" id="adjust-note"></p>
 
         <div class="techs">
-          <p class="sub">今回アプリが選んだ演出</p>
+          <p class="sub">今回アプリが選んだ演出 <span class="sub-note">（押すと技法集で見られます）</span></p>
           <div class="tech-chips" id="tech-chips"></div>
-          <button class="btn link" id="show-techs" aria-expanded="false">今回の演出を見る ▾</button>
-          <div class="tech-cards" id="tech-cards" hidden></div>
         </div>
 
         <div class="howto">
@@ -111,30 +127,11 @@
         </ul>
       </section>
 
-      <!-- 3. 作品集 -->
-      <section class="card gallery-sec" id="gallery">
-        <h2>モーショングラフィック集</h2>
-        <p class="sec-lead">作りたいものに近い1本を選んで「これをお手本に作る」を押すと、そのテンポや切り替えに寄せた注文書になります。</p>
-        <div class="tabs" role="tablist" aria-label="作品集">
-          <button type="button" class="tab" role="tab" id="tab-okemon" aria-selected="true" aria-controls="panel-okemon">おけもんが作った</button>
-          <button type="button" class="tab" role="tab" id="tab-world" aria-selected="false" aria-controls="panel-world">世界のお手本</button>
-        </div>
-        <div class="tab-panel" id="panel-okemon" role="tabpanel" aria-labelledby="tab-okemon">
-          <div class="gallery" id="gallery-grid"><p class="muted">読み込み中…</p></div>
-        </div>
-        <div class="tab-panel" id="panel-world" role="tabpanel" aria-labelledby="tab-world" hidden>
-          <p class="world-tip" id="world-tip"></p>
-          <div id="world-grid"></div>
-          <p class="world-more" id="world-more"></p>
-        </div>
-      </section>
-
-      <!-- 4. 図鑑 -->
-      <section class="card zukan-sec" id="zukan">
-        <h2>演出の図鑑</h2>
-        <p class="sec-lead">アプリが選んでいる演出のぜんぶ。覚えなくて大丈夫です。気になったカードを押すと、その演出のことば（例：「筆で」「3Dで」）が入力欄に入ります。</p>
-        <div class="zukan" id="zukan-grid"></div>
-        <button class="btn ghost small zukan-more" id="zukan-more">ぜんぶ見る</button>
+      <!-- 4. 技法集（別ページ・教科書） -->
+      <section class="card textbook-link" id="textbook">
+        <h2>技法集（教科書）</h2>
+        <p class="sec-lead">アプリが選んでいる29の技法を、動く見本つきの教科書にまとめました。覚えなくて大丈夫。「筆で」「3Dで」のように言葉に書き足すと、その技法が必ず入ります。</p>
+        <a class="btn primary" href="techniques.html">技法集を開く →</a>
       </section>
     </main>
 
