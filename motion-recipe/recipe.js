@@ -383,8 +383,9 @@
     // 長さ・画面・音・テンポ
     const P = PURPOSES[purpose];
     const seconds = opts.seconds !== "auto" && opts.seconds ? Number(opts.seconds) : heard.seconds || (P.loop ? 10 : 15);
-    const aspect = opts.aspect !== "auto" && opts.aspect ? opts.aspect : heard.aspect || (purpose === "sns" ? "9:16" : "16:9");
-    const sound = opts.sound !== "auto" ? opts.sound === "on" || opts.sound === true : heard.sound !== null ? heard.sound : true;
+    // お手本の画面の形・音は、自分で選んでいない時だけ引き継ぐ（音の無いお手本に BGM を足さない）
+    const aspect = opts.aspect !== "auto" && opts.aspect ? opts.aspect : heard.aspect || (ref && ref.aspect) || (purpose === "sns" ? "9:16" : "16:9");
+    const sound = opts.sound !== "auto" ? opts.sound === "on" || opts.sound === true : heard.sound !== null ? heard.sound : ref && ref.sound === false ? false : true;
     const quiet = QUIET.includes(topMood) || scene === "night" || adj.calm > 0;
     const second = moodOrder[1] || topMood;
     let bpm = MOODS[topMood].bpm * 0.65 + MOODS[second].bpm * 0.35;

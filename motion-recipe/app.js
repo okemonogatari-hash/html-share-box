@@ -248,6 +248,7 @@
         by: kind === "ok" ? "おけもん" : it.by,
         url: kind === "ok" ? baseUrl + "gallery/" + (it.video || it.id + ".mp4") : it.url,
         traits: it.traits || [], technique_ids: it.technique_ids || [], moods: it.moods || [],
+        sound: it.sound, aspect: it.aspect,
       });
       $("make").scrollIntoView({ behavior: "smooth", block: "start" });
       setTimeout(() => $("wish").focus({ preventScroll: true }), 400);
