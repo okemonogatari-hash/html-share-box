@@ -67,3 +67,14 @@
 - Gemini分をやり直す時：`GEMINI_API_KEY`（`~/.zshrc`）で `models/gemini-3.8-flash-tts:generateContent`、`speechConfig.voiceConfig.prebuiltVoiceConfig.voiceName="Leda"`。無料枠は16:00 JSTごろリセット・1日10回・25秒間隔。
 - Fish分をやり直す時：`読書ノート/78日間トランサーフィン実践マニュアル/朗読/scripts/make_talk.py` と同じ道（`voice/ref_haruka_aman_4s_mono24k.wav` をクローン参照に）。
 - s7〜s11をGeminiに差し替えたくなったら、翌日の無料枠リセット後に同じ台本（`assets/audio_fish/` に退避したFish版はバックアップとして残す）で撃ち直す。
+
+### 読み上げ音声（2026-09-27 16:20頃 s7〜s11をGeminiへ差し替え）
+- 16:00 JSTの無料枠リセット後、s7〜s11（Fish残留分）をGemini TTS（Leda）へ撃ち直した。5本とも1回で成功・429なし。
+- 台本の作り方：s7〜s11の元の台本ファイルは残っていなかったため、`assets/audio_fish/`（Fish版＝退避済みバックアップ）を`/opt/homebrew/bin/whisper --model base --language ja`（一部small modelでも二重確認）で文字起こしし、その内容と`index.html`の本文（eyebrow・headline・lede・num-list・script-src）を突き合わせて、事実・数字・固有名詞（Astra／Three.js／須磨の浜・ゆず湯／44項目中41通過／Opus 5.5・約46分／Blender／oVice水曜AIラジオ等）を変えずに読み上げ用の台本を復元した。Whisperの誤認識（例：「硝子」→「少子/章性」「Astra」→「アストラ/エスラ」等）は`index.html`の原文で訂正。s1〜s6（Gemini版）のwhisper文字起こしで確認した口語のトーン（「〜だよ」「〜の」「〜だからね」）に合わせた。
+- 送ったリクエスト本文はスクリプトの日本語テキストのみ。スタイル指示（英語・日本語とも）は一切本文に混ぜていない——前回「Say in a warm…」が冒頭で読み上げられた失敗を踏まえ、プリセット音声名（`voiceName: "Leda"`）だけで指定し、`speech_metadata`等の別欄にも何も入れなかった。
+- 生成直後に全5本を`/opt/homebrew/bin/whisper --model base --language ja`で冒頭～全文を確認。英語の指示文らしき言葉の混入は無し（内容は送った台本どおりで、固有名詞のASR誤認識のみ）。
+- 台本の文字数：s7=95／s8=96／s9=86／s10=107／s11=156（計540字）。
+- 生成（wav）→ffmpegの`ebur128`で実測LUFS→`volume=+XdB,alimiter=limit=0.89`で正規化→mp3化（44.1kHz・mono・128kbps、既存s1〜s6と同じフォーマット）。実測LUFS（正規化後）：s7〜s11とも-18.5 LUFS（s1〜s6は-18.6〜-19.0 LUFSの範囲なので、この工程で±1dB以内に揃っている）。
+- 秒数（正規化後・置き換え後）：s7=16.1s／s8=16.6s／s9=14.7s／s10=16.6s／s11=24.8s（置き換え前のFish残留分：16.1／17.3／15.7／16.7／26.4秒とほぼ同尺）。
+- `assets/audio/s7.mp3`〜`s11.mp3`を置き換え済み。`assets/audio_fish/`のFish版バックアップはそのまま保持（削除していない）。
+- git commit/pushは実施していない（公開は別の人が行う）。
