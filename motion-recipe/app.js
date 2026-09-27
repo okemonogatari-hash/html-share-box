@@ -182,7 +182,7 @@
     const prompt = g.prompt ? `<button type="button" class="btn link small" data-showprompt="${i}">使ったプロンプト</button>
         <div class="g-prompt" id="gp-${i}" hidden><pre>${esc(g.prompt.text)}</pre><p class="fine">${esc(g.prompt.note || "")}</p><button type="button" class="btn chip-btn" data-copyprompt="${i}">このプロンプトをコピー</button></div>` : "";
     return `<article class="g-card">
-        <button type="button" class="g-thumb" data-play="${i}" aria-label="再生：${esc(g.title)}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')"></button>
+        <button type="button" class="g-thumb${g.aspect && g.aspect !== "16:9" ? " fit" : ""}" data-play="${i}" aria-label="再生：${esc(g.title)}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')"></button>
         <div class="g-text">
           <p class="g-title">${esc(g.title)}</p>
           <p class="g-desc">${esc(g.hitokoto || g.desc || "")}</p>
