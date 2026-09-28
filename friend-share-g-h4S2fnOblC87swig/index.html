@@ -115,22 +115,22 @@ section{position:relative}
 
 /* 動画 */
 .movie{background:var(--ink)}
-.movie .grid{display:grid;gap:34px;align-items:center;grid-template-areas:"head" "phone" "body"}
-.mhead{grid-area:head}.mbody{grid-area:body}
-.mbody .p{margin-top:0}
-@media(min-width:900px){.movie .grid{grid-template-columns:minmax(0,420px) minmax(0,1fr);grid-template-areas:"phone head" "phone body";gap:28px 72px;align-content:center}.mhead{align-self:end}.mbody{align-self:start}}
-.phone{position:relative;width:min(100%,400px);margin:0 auto;aspect-ratio:9/16;border-radius:30px;overflow:hidden;background:#000;box-shadow:0 0 0 1px #2d3440,0 0 0 9px #0b0f13,0 0 0 10px #2d3440,0 30px 80px rgba(0,0,0,.6),0 0 90px rgba(247,172,27,.14)}
-.phone video{width:100%;height:100%;object-fit:cover;background:#000}
-.phone .play{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:10px;padding-bottom:18%;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.72));border:0;color:#fff;font-family:var(--jp);font-weight:800;font-size:16px;cursor:pointer}
-.phone .play .ring{width:78px;height:78px;border-radius:50%;background:var(--orange);display:grid;place-items:center;box-shadow:0 0 0 10px rgba(247,172,27,.25)}
-.js-ready .phone .play .ring{animation:pulse 2.2s ease-in-out infinite}
-.phone .play .ring::after{content:"";border-left:24px solid #000;border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:6px}
+.mtop{display:grid;gap:18px;align-items:end}
+.mtop .p{margin-top:0}
+@media(min-width:900px){.mtop{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:56px}}
+.screen{position:relative;margin-top:36px;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#000;box-shadow:0 0 0 1px #2d3440,0 30px 80px rgba(0,0,0,.6),0 0 110px rgba(247,172,27,.16)}
+.screen video{width:100%;height:100%;object-fit:cover;background:#000}
+.screen .play{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:flex-end;padding:clamp(12px,3vw,26px);background:linear-gradient(160deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%);border:0;cursor:pointer}
+.screen .play .pill{display:inline-flex;align-items:center;gap:10px;background:rgba(0,0,0,.72);border:1.5px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 16px 6px 6px;color:#fff;font-family:var(--jp);font-weight:800;font-size:clamp(13px,3.4vw,16px);backdrop-filter:blur(6px)}
+.screen .play .ring{width:clamp(38px,9vw,50px);aspect-ratio:1;border-radius:50%;background:var(--orange);display:grid;place-items:center;box-shadow:0 0 0 6px rgba(247,172,27,.25)}
+.js-ready .screen .play .ring{animation:pulse 2.2s ease-in-out infinite}
+.screen .play .ring::after{content:"";border-left:clamp(12px,2.8vw,16px) solid #000;border-top:clamp(8px,1.8vw,10px) solid transparent;border-bottom:clamp(8px,1.8vw,10px) solid transparent;margin-left:4px}
 @keyframes pulse{50%{box-shadow:0 0 0 18px rgba(247,172,27,0)}}
-.phone.playing .play{display:none}
-.words{display:flex;flex-direction:column;gap:6px;margin-top:26px}
-.words b{font-family:var(--jp);font-weight:900;font-size:clamp(34px,8.5vw,64px);line-height:1.15;display:flex;align-items:baseline;gap:16px}
+.screen.playing .play{display:none}
+.words{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;margin-top:30px}
+.words b{font-family:var(--jp);font-weight:900;font-size:clamp(30px,7vw,60px);line-height:1.15;display:flex;align-items:baseline;gap:12px}
 .words b i{font-family:var(--en);font-weight:800;font-size:.42em;color:var(--orange);letter-spacing:.1em}
-.movie .note{margin-top:22px;font-size:14px;color:var(--sub)}
+@media(max-width:600px){.words{flex-direction:column}}
 
 /* 設計図 */
 .bp{background:
@@ -228,7 +228,7 @@ footer .cp{margin-top:10px;font-size:12.5px}
 footer .logo{font-size:20px;color:var(--text);display:inline-block;margin-bottom:10px}
 
 @media(prefers-reduced-motion:reduce){
-  .js-ready .hero .bg img,.js-ready .marq .track,.js-ready .phone .play .ring{animation:none}
+  .js-ready .hero .bg img,.js-ready .marq .track,.js-ready .screen .play .ring{animation:none}
   .js-ready .hero h1 .l>span,.js-ready .weld{animation-duration:.01s;animation-delay:0s}
   .js-ready .rv{transition:none;opacity:1;transform:none}
   .js-ready .bp-fig .draw path{transition:none;stroke-dashoffset:0;fill-opacity:1;stroke-width:0}
@@ -276,22 +276,22 @@ footer .logo{font-size:20px;color:var(--text);display:inline-block;margin-bottom
 </div></div>
 
 <section class="movie sec" id="movie">
-  <div class="wrap grid">
-    <div class="phone rv" id="phone" style="grid-area:phone">
-      <video id="pv" playsinline muted preload="metadata" poster="media/prominent-promo_poster.jpg" src="media/prominent-promo_720.mp4"></video>
-      <button class="play" id="play" type="button" aria-label="音つきで再生"><span class="ring"></span>音つきで再生</button>
-    </div>
-    <div class="mhead">
-      <div class="label rv">Movie</div>
-      <h2 class="h2 rv">1粒の火花から、<br><span class="o">1台</span>ができるまで。</h2>
-    </div>
-    <div class="mbody">
-      <p class="p rv">設計図の線から、削って、溶接して、曲げて、叩いて。プロミネントの設備と手の仕事を30秒で。音を出して見てください。</p>
-      <div class="words rv">
-        <b>カスタム<i>CUSTOM</i></b>
-        <b>レストア<i>RESTORE</i></b>
-        <b>リビルト<i>REBUILD</i></b>
+  <div class="wrap">
+    <div class="mtop">
+      <div>
+        <div class="label rv">Movie</div>
+        <h2 class="h2 rv">1粒の火花から、<br><span class="o">1台</span>ができるまで。</h2>
       </div>
+      <p class="p rv">設計図の線から、削って、溶接して、曲げて、叩いて。プロミネントの設備と手の仕事を30秒で。音を出して見てください。</p>
+    </div>
+    <div class="screen rv" id="phone">
+      <video id="pv" playsinline muted preload="metadata" poster="media/prominent-promo_wide_poster.jpg" src="media/prominent-promo_wide_720.mp4"></video>
+      <button class="play" id="play" type="button" aria-label="音つきで再生"><span class="pill"><span class="ring"></span>音つきで再生</span></button>
+    </div>
+    <div class="words rv">
+      <b>カスタム<i>CUSTOM</i></b>
+      <b>レストア<i>RESTORE</i></b>
+      <b>リビルト<i>REBUILD</i></b>
     </div>
   </div>
 </section>
