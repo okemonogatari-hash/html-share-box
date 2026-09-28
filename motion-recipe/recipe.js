@@ -112,7 +112,7 @@
     },
     exciting: {
       adv: "ワクワクするように", adj: "ワクワクする", noun: "ワクワク感", label: "ワクワク",
-      words: ["ワクワク", "わくわく", "ドキドキ", "どきどき", "期待", "始まる", "はじまる", "スタート", "オープン", "挑戦", "冒険", "発表", "新発売", "いよいよ", "カウントダウン", "爆発", "全力"],
+      words: ["ワクワク", "わくわく", "ドキドキ", "どきどき", "期待", "始まる", "はじまる", "スタート", "オープン", "挑戦", "冒険", "発表", "新発売", "いよいよ", "カウントダウン", "爆発", "全力", "脳汁", "大当たり", "当たった", "当たる瞬間", "激アツ", "フィーバー", "キュイン", "キュイーン", "パトランプ", "回転灯", "パチスロ", "パチンコ", "スロット台", "スロットマシン", "ジャックポット", "ブラックアウト", "プレミア演出"],
       palettes: [
         { c: ["#FFF8F0", "#FF5A36", "#1E2A78", "#FFC93C"], w: "明るい白に、朱赤と紺、ひとさじの黄色" },
         { c: ["#0F1020", "#FF2E63", "#08D9D6", "#EAEAEA"], w: "夜のステージの暗さに、ピンクとシアンのライト" },
@@ -204,7 +204,7 @@
     T({ id: "particles", end: "光の粒が集まっては弾ける", role: "hero", name: "粒・光・紙吹雪", en: "Particles", plain: "小さな粒が集まって形になったり、ぱっと散ったりする", short: "光の粒が集まっては弾けて", prompt: "パーティクル：小さな粒（光・紙吹雪・星）が集まって形になり、また散る", moods: { mystic: 3, future: 2, pop: 2, exciting: 2, cute: 1, calm: 1, emo: 1, genki: 1 }, purposes: { celebrate: 3, event: 2, showreel: 2, poster: 2 }, keys: ["キラキラ", "きらきら", "粒", "紙吹雪", "星", "花火", "パーティクル", "蛍", "ホタル"], hint: "光の粒で" }),
     T({ id: "pattern", end: "模様が波のように広がる", role: "hero", name: "模様が自分で育つ", en: "Generative Pattern", plain: "模様やタイルが波のように広がって、画面全体が生きもののように動く", short: "模様が波のように広がって", prompt: "ジェネラティブ・パターン：模様（和柄・タイル・グリッド）がコードで生まれ、波のように広がってうねる", moods: { wa: 3, future: 2, pop: 2, calm: 1, mystic: 2, elegant: 1 }, purposes: { poster: 3, showreel: 2, sns: 1 }, keys: ["模様", "柄", "パターン", "タイル", "青海波", "幾何学"], hint: "模様が広がって" }),
     T({ id: "camera3d", end: "カメラが3Dの奥へ飛び込む", role: "hero", name: "3Dの中をカメラが進む", en: "3D Camera Fly-through", plain: "画面の奥へ奥へと、カメラが3Dの空間を進んでいく", short: "カメラが3Dの奥へ飛び込み", prompt: "3Dカメラ移動：three.js などで奥行きのある空間を作り、カメラが中を進んでいく", moods: { future: 3, cool: 3, mystic: 2, exciting: 3, wa: 1, genki: 1 }, purposes: { showreel: 3, event: 2, sns: 2 }, keys: ["3D", "立体", "奥行き", "トンネル", "宇宙"], hint: "3Dで" }),
-    T({ id: "infographic", end: "数字やグラフが気持ちよく伸びる", role: "hero", name: "数字やグラフが動く", en: "Kinetic Infographics", plain: "数字がカウントアップし、グラフが伸びて、説明がすっと入る", short: "数字やグラフが気持ちよく伸びて", prompt: "キネティック・インフォグラフィック：数字のカウントアップ、グラフが伸びる動きで、情報を気持ちよく見せる", moods: { future: 2, cool: 1, elegant: 1, pop: 1, genki: 3 }, purposes: { explain: 3, shop: 1, event: 1 }, keys: ["数字", "グラフ", "データ", "実績", "割合", "%", "ランキング", "カウント", "増えて", "増える"], hint: "数字がカウントアップして" }),
+    T({ id: "infographic", end: "数字やグラフが気持ちよく伸びる", role: "hero", name: "数字やグラフが動く", en: "Kinetic Infographics", plain: "数字がカウントアップし、グラフが伸びて、説明がすっと入る", short: "数字やグラフが気持ちよく伸びて", prompt: "キネティック・インフォグラフィック：数字のカウントアップ、グラフが伸びる動きで、情報を気持ちよく見せる", moods: { future: 2, cool: 1, elegant: 1, pop: 1, genki: 3 }, purposes: { explain: 3, shop: 1, event: 1 }, keys: ["数字", "グラフ", "インフォグラフィック", "データ", "実績", "割合", "%", "ランキング", "カウント", "増えて", "増える"], hint: "数字がカウントアップして" }),
     T({ id: "ui", end: "アプリの画面が動いて使い方を見せる", role: "hero", name: "画面やボタンが動く", en: "UI Motion", plain: "スマホやパソコンの画面が動いて、使っている様子を見せる", short: "アプリの画面が動いて使い方を見せ", prompt: "UIモーション：架空のスマホやPCの画面を作り、ボタンやカードが動いて操作の流れを見せる", moods: { future: 2, pop: 1, cool: 1, elegant: 1 }, purposes: { shop: 1, explain: 2, sns: 1 }, keys: ["アプリの", "サイトの", "ボタン", "操作", "UI", "使い方"], hint: "アプリの画面で" }),
     T({ id: "collage", end: "切り抜いた紙がぺたぺた重なる", role: "hero", name: "切り抜いた紙を重ねる", en: "Paper Cut / Collage", plain: "紙を切り抜いて貼ったような重なりが、ぺたぺた動く", short: "切り抜いた紙がぺたぺた重なって", prompt: "ペーパーカット／コラージュ：紙を切り抜いたような形が重なり、影つきで貼られたり剥がれたりする", moods: { cute: 3, emo: 2, pop: 2, calm: 1, warm: 3, genki: 1 }, purposes: { intro: 2, celebrate: 2, event: 2, shop: 1 }, keys: ["切り絵", "コラージュ", "切り抜", "付箋", "スクラップ", "ペーパー"], hint: "切り絵風に" }),
     T({ id: "liquid", end: "色がインクのようににじみ広がる", role: "hero", name: "とろける・にじむ", en: "Liquid / Ink Bleed", plain: "インクがにじんだり、液体のようにとろけて形が変わる", short: "色がインクのようににじみ広がって", prompt: "リキッド表現：インクがにじむ、しずくが落ちて広がる、液体のように形がとろける", moods: { calm: 2, mystic: 2, wa: 2, elegant: 2, emo: 2, cute: 1, warm: 1 }, purposes: { poster: 2, showreel: 2, shop: 1 }, keys: ["にじ", "滲", "インク", "しずく", "雫", "水彩", "とろけ", "液体"], hint: "インクがにじむように" }),
@@ -220,14 +220,14 @@
     T({ id: "spring", role: "feel", name: "ビョンと行き過ぎて戻る", en: "Spring / Overshoot", plain: "目標を少し行き過ぎてから、バネのように戻って止まる", short: "バネのように行き過ぎて戻り", prompt: "スプリング：目標の位置を少し行き過ぎてから戻る、バネの動き", moods: { cute: 3, pop: 3, exciting: 2, cool: 1, genki: 3 }, purposes: { sns: 2, event: 2, intro: 1, shop: 1 }, keys: ["バネ", "ばね", "ビョン", "びよん"], hint: "バネみたいに" }),
     T({ id: "stagger", role: "feel", name: "少しずつ時間差で", en: "Stagger", plain: "たくさんの物が、ほんの少しずつ遅れて順番に動く", short: "少しずつ時間差で順番に動き", prompt: "スタッガー：複数の要素をほんの少しずつ時間差で動かし、波のような流れを作る", moods: { elegant: 2, cool: 2, pop: 2, calm: 1, future: 2, cute: 1, warm: 1, genki: 1 }, purposes: { explain: 2, event: 2, intro: 1, shop: 1 }, keys: ["順番に", "時間差"], hint: "少しずつ時間差で" }),
     T({ id: "anticipation", role: "feel", name: "動く前に、ためる", en: "Anticipation", plain: "大きく動く前に、いったん逆にぐっとためる", short: "ぐっとためてから一気に動き", prompt: "予備動作（アンティシペーション）：大きく動く前に、いったん反対にためる", moods: { exciting: 3, cool: 2, pop: 2, cute: 1, genki: 2 }, purposes: { sns: 2, showreel: 2, event: 1 }, keys: ["ためて", "ためる", "溜め"], hint: "ぐっとためてから" }),
-    T({ id: "hold", role: "feel", name: "ピタッと止めて見せる", en: "Hold (Ma)", plain: "動きをピタッと止めて、見せたいものを一瞬しっかり見せる。日本でいう「間」", short: "大事なところでピタッと止まり", prompt: "間（ホールド）：見せたい瞬間は動きをピタッと止めて、一拍しっかり見せる", moods: { wa: 3, elegant: 3, cool: 2, calm: 1, warm: 1 }, purposes: { shop: 2, showreel: 2, intro: 1 }, keys: ["ピタッと", "静止", "止めて"], hint: "ピタッと止めて" }),
+    T({ id: "hold", role: "feel", name: "ピタッと止めて見せる", en: "Hold (Ma)", plain: "動きをピタッと止めて、見せたいものを一瞬しっかり見せる。日本でいう「間」", short: "大事なところでピタッと止まり", prompt: "間（ホールド）：見せたい瞬間は動きをピタッと止めて、一拍しっかり見せる", moods: { wa: 3, elegant: 3, cool: 2, calm: 1, warm: 1 }, purposes: { shop: 2, showreel: 2, intro: 1 }, keys: ["ピタッと", "静止", "止めて", "暗転", "ブラックアウト", "フリーズ"], hint: "ピタッと止めて" }),
     T({ id: "breathing", role: "feel", name: "呼吸するように動く", en: "Breathing", plain: "ふくらんで、しぼんで。ずっと見ていられる、呼吸のような動き", short: "呼吸するようにゆっくりふくらんで", prompt: "ブリージング：光や形が、呼吸のようにゆっくりふくらんでしぼむ（ループ作品なら、切れ目なくつなぐ）", moods: { calm: 3, mystic: 2, elegant: 1, emo: 1, warm: 1 }, purposes: { poster: 3 }, keys: ["ループ", "待ち受け", "壁紙", "作業用", "呼吸"], hint: "呼吸するように" }),
 
-    T({ id: "lightsweep", role: "atmos", name: "きらっと光が走る", en: "Light Sweep / Glow", plain: "光が表面をすっと横切って、きらっと輝く", short: "光がきらっと表面を走り", prompt: "ライトスイープ：光の筋が表面を横切ってきらっと輝く。光のにじみ（グロー）も少し", moods: { elegant: 3, future: 3, cool: 2, mystic: 2, exciting: 1, warm: 1 }, purposes: { shop: 3, showreel: 1, event: 1 }, keys: ["ネオン", "キラッ", "きらっ", "輝", "ゴールド", "光が走"], hint: "きらっと光らせて" }),
+    T({ id: "lightsweep", role: "atmos", name: "きらっと光が走る", en: "Light Sweep / Glow", plain: "光が表面をすっと横切って、きらっと輝く", short: "光がきらっと表面を走り", prompt: "ライトスイープ：光の筋が表面を横切ってきらっと輝く。光のにじみ（グロー）も少し", moods: { elegant: 3, future: 3, cool: 2, mystic: 2, exciting: 1, warm: 1 }, purposes: { shop: 3, showreel: 1, event: 1 }, keys: ["ネオン", "キラッ", "きらっ", "輝", "ゴールド", "光が走", "パトランプ", "回転灯"], hint: "きらっと光らせて" }),
     T({ id: "glitch", role: "atmos", name: "ちょっとだけノイズ", en: "Glitch (subtle)", plain: "画面が一瞬ざざっと乱れる、デジタルなノイズ", short: "一瞬だけデジタルなノイズが走り", prompt: "控えめなグリッチ：場面の切り替えで一瞬だけ色ずれやノイズを入れる（多用しない）", moods: { future: 3, cool: 2 }, purposes: { sns: 1, showreel: 1 }, keys: ["グリッチ", "ノイズ", "バグ", "サイバー", "ハッカー"], hint: "グリッチで" }),
     T({ id: "texture", role: "atmos", name: "紙や光の手ざわり", en: "Texture / Grain", plain: "紙の繊維や、うっすらした粒子で、画面に手ざわりが生まれる", short: "紙のような手ざわりの上で", prompt: "テクスチャ：紙の繊維やうっすらした粒子を画面にのせて、手ざわりを出す", moods: { wa: 3, emo: 3, calm: 2, cute: 1, elegant: 1, warm: 3 }, purposes: { poster: 1, intro: 1 }, keys: ["紙", "手ざわり", "手触り", "レトロ", "フィルム", "和紙"], hint: "紙の手ざわりで" }),
 
-    T({ id: "beatsync", role: "sound", name: "音に合わせて動く", en: "Beat Sync", plain: "リズムに合わせて形が弾み、場面が切り替わる", short: "", prompt: "ビートシンク：テンポを1つ決め、場面の切り替えや大事な動きを拍に合わせる。効果音も動きと同じ瞬間に鳴らす", moods: { pop: 2, exciting: 2, cool: 2, future: 1, genki: 2 }, purposes: { sns: 2, event: 2, showreel: 2 }, keys: ["ビート", "リズムに", "音に合わせ", "ジングル"], hint: "音に合わせて" }),
+    T({ id: "beatsync", role: "sound", name: "音に合わせて動く", en: "Beat Sync", plain: "リズムに合わせて形が弾み、場面が切り替わる", short: "", prompt: "ビートシンク：テンポを1つ決め、場面の切り替えや大事な動きを拍に合わせる。効果音も動きと同じ瞬間に鳴らす", moods: { pop: 2, exciting: 2, cool: 2, future: 1, genki: 2 }, purposes: { sns: 2, event: 2, showreel: 2 }, keys: ["ビート", "リズムに", "音に合わせ", "ジングル", "キュイン", "キュイーン", "効果音"], hint: "音に合わせて" }),
     T({ id: "softsound", role: "sound", name: "静かな音で寄り添う", en: "Soft Sound", plain: "やわらかいBGMと小さな効果音が、動きにそっと寄り添う", short: "", prompt: "やさしい音づくり：BGMは静かなパッドやオルゴールのような音にして、効果音は大事な瞬間だけ小さく鳴らす", moods: { calm: 3, elegant: 2, emo: 2, mystic: 2, warm: 2 }, purposes: { poster: 2, intro: 1 }, keys: ["オルゴール", "静かな音", "ピアノ"], hint: "静かな音で" }),
   ];
   // 正式名称（2026-09-27 おけもん「技法に関してはちゃんと正式名称載せておいてー。AIにしじするときに言葉を知っているかどうかも大事だから」）
@@ -293,7 +293,12 @@
     let n = 0, i = 0;
     while ((i = text.indexOf(word, i)) !== -1) {
       // 「昭和の」「令和の」の「和の」を和の風情に数えない（2026-09-28：昭和レトロのCMが和風になった）
-      if (!(word[0] === "和" && i > 0 && "昭平令".includes(text[i - 1]))) n++;
+      const showaWa = word[0] === "和" && i > 0 && "昭平令".includes(text[i - 1]);
+      // 「モーショングラフィック」の「グラフ」を数字のグラフに数えない（2026-09-28：脳汁のお題が「数字やグラフが伸びる」になった）
+      const graphic = word === "グラフ" && text.startsWith("ィック", i + word.length);
+      // 「絵柄」「図柄」「人柄」の「柄」を模様に数えない（同日：パチスロの絵柄が「模様が波のように広がる」になった）
+      const eGara = word === "柄" && i > 0 && "絵図人間手".includes(text[i - 1]);
+      if (!showaWa && !graphic && !eGara) n++;
       i += word.length;
     }
     return n;
@@ -330,7 +335,9 @@
     else if (/(正方形|スクエア|1:1)/i.test(t)) aspect = "1:1";
     else if (/(横長|横型|横向き|YouTube|ユーチューブ|16:9|プレゼン|スライド)/i.test(t)) aspect = "16:9";
     let sound = null;
-    if (/(無音|音なし|音無し|サイレント)/.test(t)) sound = false;
+    // 「無音のあと、ズンと一撃」のように、演出の中の無音（間）は「音なし」ではない（2026-09-28：ブラックアウトの注文書が音なしになった）
+    const tn = t.replace(/(無音|サイレント)(の(あと|後|間|まま|中|時間|瞬間)|になっ|から|→)/g, "");
+    if (/(無音|音なし|音無し|サイレント)/.test(tn)) sound = false;
     else if (/(音|BGM|効果音|音楽|ビート|リズム)/.test(t)) sound = true;
     return { text: t, plain, moods, purposes, scenes, quotes, seconds, aspect, sound };
   }
@@ -390,7 +397,7 @@
       let s = 0;
       for (const [k, w] of Object.entries(W)) s += w * (t.moods[k] || 0);
       s += 1.6 * (t.purposes[purpose] || 0);
-      if (t.keys && t.keys.some((w) => heard.plain.includes(w.normalize("NFKC")))) { s += 4; forced.set(t.id, KW); }
+      if (t.keys && t.keys.some((w) => count(heard.plain, w.normalize("NFKC")) > 0)) { s += 4; forced.set(t.id, KW); }
       if (adj.calm > 0 && ["glitch", "colorwipe", "camera3d", "anticipation", "spring", "beatsync"].includes(t.id)) s -= 3 * adj.calm;
       if (adj.calm > 0 && BOOST.calm.includes(t.id)) s += 2.5 * adj.calm;
       if (adj.bold > 0 && BOOST.bold.includes(t.id)) s += 2.5 * adj.bold;
