@@ -32,7 +32,8 @@ window.MOTION_GALLERY = {
     "note": "記事の基本の2行（Claude Code・Opus 5.5・エフォートはそのまま）"
    },
    "video": "from-nothing.mp4",
-   "poster": "from-nothing.jpg"
+   "poster": "from-nothing.jpg",
+   "genre": "cool"
   },
   {
    "id": "otehon-apple-asobi",
@@ -63,7 +64,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま（作りたいものの一文は、おけもんの「AIは最高の遊び道具」という考えから）。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-apple-asobi.mp4",
-   "poster": "otehon-apple-asobi.jpg"
+   "poster": "otehon-apple-asobi.jpg",
+   "genre": "art"
   },
   {
    "id": "otehon-linear-kanau",
@@ -96,7 +98,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま（作りたいものの一文は、おけもんの「妄想→語る→作る→見せる→叶う」から）。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames、3Dは three.js。お手本の動画をコマと音で見てから寄せた"
    },
    "video": "otehon-linear-kanau.mp4",
-   "poster": "otehon-linear-kanau.jpg"
+   "poster": "otehon-linear-kanau.jpg",
+   "genre": "cool"
   },
   {
    "id": "otehon-kimochi-zukan",
@@ -127,7 +130,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-kimochi-zukan.mp4",
-   "poster": "otehon-kimochi-zukan.jpg"
+   "poster": "otehon-kimochi-zukan.jpg",
+   "genre": "cute"
   },
   {
    "id": "otehon-compass",
@@ -158,7 +162,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-compass.mp4",
-   "poster": "otehon-compass.jpg"
+   "poster": "otehon-compass.jpg",
+   "genre": "cool"
   },
   {
    "id": "otehon-recipe-demo",
@@ -189,7 +194,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-recipe-demo.mp4",
-   "poster": "otehon-recipe-demo.jpg"
+   "poster": "otehon-recipe-demo.jpg",
+   "genre": "friendly"
   },
   {
    "id": "otehon-four-faces",
@@ -220,7 +226,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-four-faces.mp4",
-   "poster": "otehon-four-faces.jpg"
+   "poster": "otehon-four-faces.jpg",
+   "genre": "cool"
   },
   {
    "id": "otehon-lab-shelf",
@@ -251,7 +258,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-lab-shelf.mp4",
-   "poster": "otehon-lab-shelf.jpg"
+   "poster": "otehon-lab-shelf.jpg",
+   "genre": "friendly"
   },
   {
    "id": "otehon-why-play",
@@ -282,7 +290,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-why-play.mp4",
-   "poster": "otehon-why-play.jpg"
+   "poster": "otehon-why-play.jpg",
+   "genre": "art"
   },
   {
    "id": "otehon-horizon",
@@ -313,7 +322,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-horizon.mp4",
-   "poster": "otehon-horizon.jpg"
+   "poster": "otehon-horizon.jpg",
+   "genre": "art"
   },
   {
    "id": "otehon-offkai",
@@ -344,7 +354,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-offkai.mp4",
-   "poster": "otehon-offkai.jpg"
+   "poster": "otehon-offkai.jpg",
+   "genre": "friendly"
   },
   {
    "id": "otehon-retro-game",
@@ -375,7 +386,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-retro-game.mp4",
-   "poster": "otehon-retro-game.jpg"
+   "poster": "otehon-retro-game.jpg",
+   "genre": "cool"
   },
   {
    "id": "otehon-mizuyan",
@@ -406,7 +418,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-mizuyan.mp4",
-   "poster": "otehon-mizuyan.jpg"
+   "poster": "otehon-mizuyan.jpg",
+   "genre": "cute"
   },
   {
    "id": "otehon-tsubu",
@@ -437,7 +450,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-tsubu.mp4",
-   "poster": "otehon-tsubu.jpg"
+   "poster": "otehon-tsubu.jpg",
+   "genre": "art"
   },
   {
    "id": "otehon-suiyo-radio",
@@ -468,7 +482,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-suiyo-radio.mp4",
-   "poster": "otehon-suiyo-radio.jpg"
+   "poster": "otehon-suiyo-radio.jpg",
+   "genre": "friendly"
   },
   {
    "id": "showa-radio-cm",
@@ -499,7 +514,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの注文書から（おけちゃんのお題を言葉にして組んだ）。お手本は世界の1本ではなく「昭和のテレビCM」という型。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames"
    },
    "video": "showa-radio-cm.mp4",
-   "poster": "showa-radio-cm.jpg"
+   "poster": "showa-radio-cm.jpg",
+   "genre": "friendly"
   },
   {
    "id": "otehon-asobo",
@@ -530,7 +546,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-asobo.mp4",
-   "poster": "otehon-asobo.jpg"
+   "poster": "otehon-asobo.jpg",
+   "genre": "cute"
   },
   {
    "id": "otehon-aki-yonaga",
@@ -561,7 +578,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-aki-yonaga.mp4",
-   "poster": "otehon-aki-yonaga.jpg"
+   "poster": "otehon-aki-yonaga.jpg",
+   "genre": "art"
   },
   {
    "id": "otehon-watch-repair",
@@ -592,7 +610,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-watch-repair.mp4",
-   "poster": "otehon-watch-repair.jpg"
+   "poster": "otehon-watch-repair.jpg",
+   "genre": "cool"
   },
   {
    "id": "otehon-gelato",
@@ -623,7 +642,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-gelato.mp4",
-   "poster": "otehon-gelato.jpg"
+   "poster": "otehon-gelato.jpg",
+   "genre": "friendly"
   },
   {
    "id": "otehon-onomatopoeia",
@@ -654,7 +674,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-onomatopoeia.mp4",
-   "poster": "otehon-onomatopoeia.jpg"
+   "poster": "otehon-onomatopoeia.jpg",
+   "genre": "cute"
   },
   {
    "id": "otehon-gym-6th",
@@ -685,7 +706,8 @@ window.MOTION_GALLERY = {
     "note": "アプリの「これをお手本に作る」で出た注文書そのまま。作ったのはうちの手足（Claude Code・Opus 5.5）で、書き出しは HyperFrames。お手本の動画をコマで見てから寄せた"
    },
    "video": "otehon-gym-6th.mp4",
-   "poster": "otehon-gym-6th.jpg"
+   "poster": "otehon-gym-6th.jpg",
+   "genre": "cool"
   },
   {
    "id": "hitoshizuku",
@@ -717,7 +739,8 @@ window.MOTION_GALLERY = {
    "prompt": {
     "text": "make a dynamic 15-second motion graphics video that shows what an incredible motion designer you are, like it's your showreel for a résumé. go all out.",
     "note": "Stephan Livera さんのプロンプトをそのまま（Claude Code・Opus 5.5・effort max）"
-   }
+   },
+   "genre": "art"
   },
   {
    "id": "jonetsu-intro",
@@ -744,7 +767,8 @@ window.MOTION_GALLERY = {
     "30秒"
    ],
    "video": "jonetsu-intro.mp4",
-   "poster": "jonetsu-intro.jpg"
+   "poster": "jonetsu-intro.jpg",
+   "genre": "cool"
   },
   {
    "id": "kapipara-teaser",
@@ -772,7 +796,8 @@ window.MOTION_GALLERY = {
     "数字のカウントアップ",
     "曲の山で商品名がドンと着地",
     "20秒"
-   ]
+   ],
+   "genre": "friendly"
   },
   {
    "id": "kinetic-intro",
@@ -800,7 +825,8 @@ window.MOTION_GALLERY = {
     "0m→215mと数え上がる",
     "拍でぴたっと止まる",
     "32秒"
-   ]
+   ],
+   "genre": "cute"
   },
   {
    "id": "jizura-intro",
@@ -827,7 +853,8 @@ window.MOTION_GALLERY = {
     "歌詞のように文字が踊る",
     "拍にぴったり絵を重ねる",
     "30秒"
-   ]
+   ],
+   "genre": "cool"
   },
   {
    "id": "slide-intro",
@@ -852,7 +879,8 @@ window.MOTION_GALLERY = {
     "カードと写真が並んでいく",
     "スライドの形",
     "30秒"
-   ]
+   ],
+   "genre": "cute"
   }
  ]
 };

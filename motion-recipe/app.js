@@ -177,16 +177,42 @@
   }
   $("ref-clear").addEventListener("click", () => { setReference(null); toast("お手本を外しました"); });
 
+  // 見本集のさがし方（2026-09-28 おけちゃん「見本集がごちゃついてきたから解説はトグルで開閉しよう」「検索機能やタグがほしいね」）
+  // ジャンルは棚の gallery.json の genre、技法は technique_ids（正式名称で見せる）
+  const GENRES = { cute: "かわいい", friendly: "親しみ", cool: "かっこいい", art: "アート", practical: "実用", business: "ビジネス" };
+  const filt = { q: "", genre: "", tech: "" };
+  const norm = (s) => String(s || "").normalize("NFKC").toLowerCase();
+  const techName = (id) => (R.TECH[id] ? R.TECH[id].formal : "");
+  function haystack(it) {
+    const ids = it.technique_ids || [];
+    return norm([it.title, it.hitokoto, it.desc, it.by, (it.traits || []).join(" "), (it.techniques || []).join(" "),
+      ids.map(techName).join(" "), ids.map((id) => (R.TECH[id] ? R.TECH[id].name : "")).join(" "), GENRES[it.genre] || ""].join(" "));
+  }
+  function hits(it, useGenre) {
+    if (filt.tech && !(it.technique_ids || []).includes(filt.tech)) return false;
+    if (useGenre && filt.genre && it.genre !== filt.genre) return false;
+    const words = norm(filt.q).split(/\s+/).filter(Boolean);
+    if (!words.length) return true;
+    const h = it.__h || (it.__h = haystack(it));
+    return words.every((w) => h.includes(w));
+  }
+  const techChips = (it) => (it.technique_ids || []).filter((id) => R.TECH[id]).slice(0, 2) // 主役の2つだけ（残りは「技法で絞る」とお手本の注文書に）
+    .map((id) => `<button type="button" class="t-chip${filt.tech === id ? " on" : ""}" data-tech="${esc(id)}" title="この技法の作品だけ見る">${esc(techName(id))}</button>`).join("");
+
   function okCard(g, i) {
     const tags = (g.traits && g.traits.length ? g.traits : g.techniques || []).slice(0, 4);
     const prompt = g.prompt ? `<button type="button" class="btn link small" data-showprompt="${i}">使ったプロンプト</button>
         <div class="g-prompt" id="gp-${i}" hidden><pre>${esc(g.prompt.text)}</pre><p class="fine">${esc(g.prompt.note || "")}</p><button type="button" class="btn chip-btn" data-copyprompt="${i}">このプロンプトをコピー</button></div>` : "";
+    const genre = GENRES[g.genre] ? `<button type="button" class="genre-badge g-${esc(g.genre)}" data-genre="${esc(g.genre)}" title="このジャンルの作品だけ見る">${esc(GENRES[g.genre])}</button>` : "";
     return `<article class="g-card">
         <button type="button" class="g-thumb${g.aspect && g.aspect !== "16:9" ? " fit" : ""}" data-play="${i}" aria-label="再生：${esc(g.title)}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')"></button>
         <div class="g-text">
           <p class="g-title">${esc(g.title)}</p>
-          <p class="g-desc">${esc(g.hitokoto || g.desc || "")}</p>
-          <div class="g-tags">${tags.map((x) => `<span>${esc(x)}</span>`).join("")}</div>
+          <div class="g-labels">${genre}${techChips(g)}</div>
+          <details class="g-more"><summary>解説を読む</summary>
+            <p class="g-desc">${esc(g.hitokoto || g.desc || "")}</p>
+            <div class="g-tags">${tags.map((x) => `<span>${esc(x)}</span>`).join("")}</div>
+          </details>
           <div class="g-actions"><button type="button" class="btn chip-btn ref-btn" data-ref="ok:${i}">これをお手本に作る</button>${prompt}</div>
         </div>
       </article>`;
@@ -197,34 +223,80 @@
         <div class="w-head"><span class="w-badge ${w.group === "ai" ? "ai" : "pro"}">${w.group === "ai" ? "AI・コード" : "プロ"}</span><span class="w-meta">${esc(meta)}</span></div>
         <p class="w-title">${esc(w.title)}</p>
         <p class="w-by">${esc(w.by)}${w.date ? `・${esc(w.date)}` : ""}</p>
-        <p class="w-desc">${esc(w.hitokoto || "")}</p>
-        <div class="g-tags">${(w.traits || []).map((x) => `<span>${esc(x)}</span>`).join("")}</div>
+        <div class="g-labels">${techChips(w)}</div>
+        <details class="g-more"><summary>解説を読む</summary>
+          <p class="w-desc">${esc(w.hitokoto || "")}</p>
+          <div class="g-tags">${(w.traits || []).map((x) => `<span>${esc(x)}</span>`).join("")}</div>
+        </details>
         <div class="g-actions"><a class="btn chip-btn" href="${esc(w.url)}" target="_blank" rel="noopener">投稿を見る ↗</a><button type="button" class="btn chip-btn ref-btn" data-ref="w:${i}">これをお手本に作る</button></div>
       </article>`;
+  }
+
+  const NONE = `<p class="muted">見つかりませんでした。ことばやタグを変えてみてね。</p>`;
+  function renderOk() {
+    if (!okItems.length) return;
+    $("gallery-grid").innerHTML = okItems.map((g, i) => (hits(g, true) ? okCard(g, i) : "")).join("") || NONE;
+  }
+  function renderWorld() {
+    if (!worldItems.length) return;
+    const W2 = window.MOTION_WORLD;
+    $("world-grid").innerHTML = (W2.groups || [{ id: "ai" }, { id: "pro" }]).map((grp) => {
+      const cards = worldItems.map((w, i) => (w.group === grp.id && hits(w, false) ? worldCard(w, i) : "")).join("");
+      return cards ? `<p class="w-group">${esc(grp.label || "")}</p><div class="w-grid">${cards}</div>` : "";
+    }).join("") || NONE;
+  }
+  function renderCount() {
+    const world = !$("panel-world").hidden;
+    const list = world ? worldItems : okItems;
+    const n = list.filter((it) => hits(it, !world)).length;
+    const narrowed = filt.q.trim() || filt.tech || (!world && filt.genre);
+    $("g-count").textContent = list.length ? (narrowed ? `${list.length}本中 ${n}本` : `${list.length}本`) : "";
+    $("g-genres").hidden = world; // ジャンルは「おけもんが作った」の棚だけ
+  }
+  const renderAll = () => { renderOk(); renderWorld(); renderCount(); };
+  function setupFilters() {
+    const present = Object.keys(GENRES).filter((k) => okItems.some((g) => g.genre === k));
+    $("g-genres").innerHTML = [["", "すべて"], ...present.map((k) => [k, GENRES[k]])]
+      .map(([k, label]) => `<button type="button" class="chip g-genre-chip${k ? " g-" + k : ""}" data-genre="${k}" aria-pressed="${filt.genre === k}">${esc(label)}</button>`).join("");
+    const count = {};
+    [...okItems, ...worldItems].forEach((it) => (it.technique_ids || []).forEach((id) => { if (R.TECH[id]) count[id] = (count[id] || 0) + 1; }));
+    $("g-tech").innerHTML = `<option value="">技法で絞る（すべて）</option>` + Object.entries(count).sort((a, b) => b[1] - a[1])
+      .map(([id, n]) => `<option value="${esc(id)}">${esc(techName(id))}（${n}）</option>`).join("");
+    $("g-tech").value = filt.tech;
+  }
+  function setGenre(k) {
+    filt.genre = k;
+    $("g-genres").querySelectorAll("[data-genre]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.genre === k)));
+    renderAll();
+  }
+  function setTech(id) { filt.tech = filt.tech === id ? "" : id; $("g-tech").value = filt.tech; renderAll(); }
+  $("g-search").addEventListener("input", () => { filt.q = $("g-search").value; renderAll(); });
+  $("g-tech").addEventListener("change", () => { filt.tech = $("g-tech").value; renderAll(); });
+
+  const W = window.MOTION_WORLD;
+  if (W && W.items) {
+    worldItems = W.items;
+    if (W.tip) $("world-tip").innerHTML = `💡 ${esc(W.tip.text)}（<a href="${esc(W.tip.url)}" target="_blank" rel="noopener">${esc(W.tip.by)}</a>）`;
+    renderWorld();
+    if (W.more) $("world-more").innerHTML = `<a href="${esc(W.more.url)}" target="_blank" rel="noopener">${esc(W.more.label)} ↗</a>`;
+  } else {
+    $("world-grid").innerHTML = `<p class="muted">世界のお手本はただいま準備中です。</p>`;
   }
 
   (window.MOTION_GALLERY ? Promise.resolve(window.MOTION_GALLERY) : fetch("gallery/gallery.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(r.status))))
     .then((list) => {
       okItems = Array.isArray(list) ? list : list.items || [];
       if (!okItems.length) throw new Error("empty");
-      $("gallery-grid").innerHTML = okItems.map(okCard).join("");
+      setupFilters();
+      renderAll();
     })
     .catch(() => { $("gallery-grid").innerHTML = `<p class="muted">作品集はただいま準備中です。</p>`; });
 
-  const W = window.MOTION_WORLD;
-  if (W && W.items) {
-    worldItems = W.items;
-    if (W.tip) $("world-tip").innerHTML = `💡 ${esc(W.tip.text)}（<a href="${esc(W.tip.url)}" target="_blank" rel="noopener">${esc(W.tip.by)}</a>）`;
-    $("world-grid").innerHTML = (W.groups || [{ id: "ai" }, { id: "pro" }]).map((grp) => {
-      const cards = worldItems.map((w, i) => (w.group === grp.id ? worldCard(w, i) : "")).join("");
-      return cards ? `<p class="w-group">${esc(grp.label || "")}</p><div class="w-grid">${cards}</div>` : "";
-    }).join("");
-    if (W.more) $("world-more").innerHTML = `<a href="${esc(W.more.url)}" target="_blank" rel="noopener">${esc(W.more.label)} ↗</a>`;
-  } else {
-    $("world-grid").innerHTML = `<p class="muted">世界のお手本はただいま準備中です。</p>`;
-  }
-
   $("gallery").addEventListener("click", async (e) => {
+    const tb = e.target.closest("[data-tech]");
+    if (tb) { setTech(tb.dataset.tech); return; }
+    const gb = e.target.closest("[data-genre]");
+    if (gb) { setGenre(gb.dataset.genre); return; }
     const play = e.target.closest("[data-play]");
     if (play) {
       const g = okItems[+play.dataset.play];
@@ -264,6 +336,7 @@
     $("tab-world").setAttribute("aria-selected", String(world));
     $("panel-okemon").hidden = world;
     $("panel-world").hidden = !world;
+    renderCount();
   }
   $("tab-okemon").addEventListener("click", () => selectTab("okemon"));
   $("tab-world").addEventListener("click", () => selectTab("world"));
