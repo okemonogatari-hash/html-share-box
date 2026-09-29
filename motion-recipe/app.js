@@ -180,16 +180,19 @@
   // 見本集のさがし方（2026-09-28 おけちゃん「見本集がごちゃついてきたから解説はトグルで開閉しよう」「検索機能やタグがほしいね」）
   // ジャンルは棚の gallery.json の genre、技法は technique_ids（正式名称で見せる）
   const GENRES = { cute: "かわいい", friendly: "親しみ", cool: "かっこいい", art: "アート", practical: "実用", business: "ビジネス" };
-  const filt = { q: "", genre: "", tech: "" };
+  // 用途の札（2026-09-30 相談役 Fable の改善案3「入口を用途に」）。gallery.json の purpose。日付のあるお知らせ＝告知、日付のない紹介＝紹介
+  const PURPOSES = { announce: "告知", introduce: "紹介", selfintro: "自己紹介", howto: "手順・レシピ", quote: "名言・ことば", season: "季節のあいさつ", explain: "解説", reel: "ショーリール" };
+  const filt = { q: "", genre: "", tech: "", purpose: "" };
   const norm = (s) => String(s || "").normalize("NFKC").toLowerCase();
   const techName = (id) => (R.TECH[id] ? R.TECH[id].formal : "");
   function haystack(it) {
     const ids = it.technique_ids || [];
     return norm([it.title, it.hitokoto, it.desc, it.by, (it.traits || []).join(" "), (it.techniques || []).join(" "),
-      ids.map(techName).join(" "), ids.map((id) => (R.TECH[id] ? R.TECH[id].name : "")).join(" "), GENRES[it.genre] || ""].join(" "));
+      ids.map(techName).join(" "), ids.map((id) => (R.TECH[id] ? R.TECH[id].name : "")).join(" "), GENRES[it.genre] || "", PURPOSES[it.purpose] || ""].join(" "));
   }
   function hits(it, useGenre) {
     if (filt.tech && !(it.technique_ids || []).includes(filt.tech)) return false;
+    if (useGenre && filt.purpose && it.purpose !== filt.purpose) return false;
     if (useGenre && filt.genre && it.genre !== filt.genre) return false;
     const words = norm(filt.q).split(/\s+/).filter(Boolean);
     if (!words.length) return true;
@@ -209,7 +212,8 @@
   function makingLine(g) {
     const m = g.making;
     if (!m || !(m.minutes > 0) || !(m.fixes >= 0)) return "";
-    return `<p class="g-making" title="${esc(`出どころ：${m.src || "PROCESS.md"}。直し＝評価役・外の目・本人の指摘で作り直した回数`)}">作るのにかかった時間 約${esc(m.minutes)}分・直し${esc(m.fixes)}回</p>`;
+    // 「AIが作った時間」と添える（2026-09-30 Fable：読者がプロンプトを貼って作る時間とは別物）
+    return `<p class="g-making" title="${esc(`出どころ：${m.src || "PROCESS.md"}。AI（うちの手足）が着工から書き出しまでにかかった時間で、プロンプトを貼って作る時間とは別。直し＝評価役・外の目・本人の指摘で作り直した回数`)}">作るのにかかった時間 約${esc(m.minutes)}分<span class="g-making-note">（AIが作った時間）</span><span class="g-nw">・直し${esc(m.fixes)}回</span></p>`;
   }
   function okCard(g, i) {
     const meta = thumbMeta(g);
@@ -263,12 +267,17 @@
     const world = !$("panel-world").hidden;
     const list = world ? worldItems : okItems;
     const n = list.filter((it) => hits(it, !world)).length;
-    const narrowed = filt.q.trim() || filt.tech || (!world && filt.genre);
+    const narrowed = filt.q.trim() || filt.tech || (!world && (filt.genre || filt.purpose));
     $("g-count").textContent = list.length ? (narrowed ? `${list.length}本中 ${n}本` : `${list.length}本`) : "";
-    $("g-genres").hidden = world; // ジャンルは「おけもんが作った」の棚だけ
+    $("g-genres").hidden = world; // ジャンルと用途は「おけもんが作った」の棚だけ
+    $("g-purposes").hidden = world;
   }
   const renderAll = () => { renderOk(); renderWorld(); renderCount(); };
   function setupFilters() {
+    const pcount = {};
+    okItems.forEach((g) => { if (PURPOSES[g.purpose]) pcount[g.purpose] = (pcount[g.purpose] || 0) + 1; });
+    $("g-purposes").innerHTML = `<span class="g-plabel" aria-hidden="true">何に使う？</span>` + [["", "すべて"], ...Object.keys(PURPOSES).filter((k) => pcount[k]).map((k) => [k, PURPOSES[k]])]
+      .map(([k, label]) => `<button type="button" class="chip g-purpose-chip" data-purpose="${k}" aria-pressed="${filt.purpose === k}">${esc(label)}${k ? `<span class="g-pn">${pcount[k]}</span>` : ""}</button>`).join("");
     const present = Object.keys(GENRES).filter((k) => okItems.some((g) => g.genre === k));
     $("g-genres").innerHTML = [["", "すべて"], ...present.map((k) => [k, GENRES[k]])]
       .map(([k, label]) => `<button type="button" class="chip g-genre-chip${k ? " g-" + k : ""}" data-genre="${k}" aria-pressed="${filt.genre === k}">${esc(label)}</button>`).join("");
@@ -281,6 +290,11 @@
   function setGenre(k) {
     filt.genre = k;
     $("g-genres").querySelectorAll("[data-genre]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.genre === k)));
+    renderAll();
+  }
+  function setPurpose(k) {
+    filt.purpose = k;
+    $("g-purposes").querySelectorAll("[data-purpose]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.purpose === k)));
     renderAll();
   }
   function setTech(id) { filt.tech = filt.tech === id ? "" : id; $("g-tech").value = filt.tech; renderAll(); }
@@ -319,9 +333,10 @@
     v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
   }
   function clearFilters() {
-    filt.q = ""; filt.genre = ""; filt.tech = "";
+    filt.q = ""; filt.genre = ""; filt.tech = ""; filt.purpose = "";
     $("g-search").value = ""; $("g-tech").value = "";
     $("g-genres").querySelectorAll("[data-genre]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.genre === "")));
+    $("g-purposes").querySelectorAll("[data-purpose]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.purpose === "")));
   }
 
   // お手本と並べて見る（2026-09-29 Xの作品集から取り入れ案1）。左にお手本の元の投稿（X の埋め込み）、右におけもん版。スマホでは上下
@@ -411,6 +426,8 @@
   $("gallery").addEventListener("click", async (e) => {
     const tb = e.target.closest("[data-tech]");
     if (tb) { setTech(tb.dataset.tech); return; }
+    const pb = e.target.closest("[data-purpose]");
+    if (pb) { setPurpose(pb.dataset.purpose); return; }
     const gb = e.target.closest("[data-genre]");
     if (gb) { setGenre(gb.dataset.genre); return; }
     const play = e.target.closest("[data-play]");
