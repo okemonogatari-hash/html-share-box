@@ -199,13 +199,19 @@
   const techChips = (it) => (it.technique_ids || []).filter((id) => R.TECH[id]).slice(0, 2) // 主役の2つだけ（残りは「技法で絞る」とお手本の注文書に）
     .map((id) => `<button type="button" class="t-chip${filt.tech === id ? " on" : ""}" data-tech="${esc(id)}" title="この技法の作品だけ見る">${esc(techName(id))}</button>`).join("");
 
+  // サムネの小さなラベル（秒数・縦横）。世界のお手本の「・」区切りと同じ書き方（2026-09-29 Xの作品集から取り入れ案4）
+  const ASPECT_LABEL = { "16:9": "横長", "9:16": "縦長", "1:1": "正方形" };
+  const thumbMeta = (g) => [g.seconds ? fmtSec(g.seconds) : "", ASPECT_LABEL[g.aspect] || ""].filter(Boolean).join("・");
+  // 1本ずつ開けるURL（…/#w-<id>）。X投稿に1作品ずつ貼れるように（同 取り入れ案3）
+  const workUrl = (g) => `${baseUrl}#w-${g.id}`;
   function okCard(g, i) {
+    const meta = thumbMeta(g);
     const tags = (g.traits && g.traits.length ? g.traits : g.techniques || []).slice(0, 4);
     const prompt = g.prompt ? `<button type="button" class="btn link small" data-showprompt="${i}">使ったプロンプト</button>
         <div class="g-prompt" id="gp-${i}" hidden><pre>${esc(g.prompt.text)}</pre><p class="fine">${esc(g.prompt.note || "")}</p><button type="button" class="btn chip-btn" data-copyprompt="${i}">このプロンプトをコピー</button></div>` : "";
     const genre = GENRES[g.genre] ? `<button type="button" class="genre-badge g-${esc(g.genre)}" data-genre="${esc(g.genre)}" title="このジャンルの作品だけ見る">${esc(GENRES[g.genre])}</button>` : "";
-    return `<article class="g-card">
-        <button type="button" class="g-thumb${g.aspect && g.aspect !== "16:9" ? " fit" : ""}" data-play="${i}" aria-label="再生：${esc(g.title)}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')"></button>
+    return `<article class="g-card" id="w-${esc(g.id)}">
+        <button type="button" class="g-thumb${g.aspect && g.aspect !== "16:9" ? " fit" : ""}" data-play="${i}" aria-label="再生：${esc(g.title)}${meta ? `（${esc(meta)}）` : ""}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')">${meta ? `<span class="g-meta" aria-hidden="true">${esc(meta)}</span>` : ""}</button>
         <div class="g-text">
           <p class="g-title">${esc(g.title)}</p>
           <div class="g-labels">${genre}${techChips(g)}</div>
@@ -213,7 +219,7 @@
             <p class="g-desc">${esc(g.hitokoto || g.desc || "")}</p>
             <div class="g-tags">${tags.map((x) => `<span>${esc(x)}</span>`).join("")}</div>
           </details>
-          <div class="g-actions"><button type="button" class="btn chip-btn ref-btn" data-ref="ok:${i}">これをお手本に作る</button>${prompt}</div>
+          <div class="g-actions"><button type="button" class="btn chip-btn ref-btn" data-ref="ok:${i}">これをお手本に作る</button><button type="button" class="btn link small" data-copylink="${i}" title="${esc(workUrl(g))}">この作品のリンクをコピー</button>${prompt}</div>
         </div>
       </article>`;
   }
@@ -289,8 +295,40 @@
       if (!okItems.length) throw new Error("empty");
       setupFilters();
       renderAll();
+      openFromHash();
     })
     .catch(() => { $("gallery-grid").innerHTML = `<p class="muted">作品集はただいま準備中です。</p>`; });
+
+  function openWork(i) {
+    const g = okItems[i];
+    const v = $("modal-video");
+    v.muted = false;
+    v.src = "gallery/" + (g.video || g.id + ".mp4");
+    v.poster = "gallery/" + (g.poster || g.id + ".jpg");
+    $("modal-text").innerHTML = `<b>${esc(g.title)}</b>　${esc(g.hitokoto || g.desc || "")}`;
+    $("modal").hidden = false;
+    // リンクから来た時は音つき自動再生が止められることがあるので、その時は消音で動かす（音はプレーヤーで戻せる）
+    v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
+  }
+  // #w-<id> で開いた時：その作品までスクロールして再生。絞り込みで隠れていたら絞り込みを解く
+  function openFromHash() {
+    const m = /^#w-(.+)$/.exec(location.hash);
+    if (!m || !okItems.length) return;
+    const id = decodeURIComponent(m[1]);
+    const i = okItems.findIndex((g) => g.id === id);
+    if (i < 0) { toast("その作品は棚に見つかりませんでした"); return; }
+    if (!hits(okItems[i], true)) {
+      filt.q = ""; filt.genre = ""; filt.tech = "";
+      $("g-search").value = ""; $("g-tech").value = "";
+      $("g-genres").querySelectorAll("[data-genre]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.genre === "")));
+    }
+    selectTab("okemon");
+    renderAll();
+    const card = document.getElementById("w-" + id);
+    if (card) card.scrollIntoView({ block: "center" });
+    openWork(i);
+  }
+  window.addEventListener("hashchange", openFromHash);
 
   $("gallery").addEventListener("click", async (e) => {
     const tb = e.target.closest("[data-tech]");
@@ -298,16 +336,9 @@
     const gb = e.target.closest("[data-genre]");
     if (gb) { setGenre(gb.dataset.genre); return; }
     const play = e.target.closest("[data-play]");
-    if (play) {
-      const g = okItems[+play.dataset.play];
-      const v = $("modal-video");
-      v.src = "gallery/" + (g.video || g.id + ".mp4");
-      v.poster = "gallery/" + (g.poster || g.id + ".jpg");
-      $("modal-text").innerHTML = `<b>${esc(g.title)}</b>　${esc(g.hitokoto || g.desc || "")}`;
-      $("modal").hidden = false;
-      v.play().catch(() => {});
-      return;
-    }
+    if (play) { openWork(+play.dataset.play); return; }
+    const cl = e.target.closest("[data-copylink]");
+    if (cl) { await copyText(workUrl(okItems[+cl.dataset.copylink])); toast("この作品のリンクをコピーしました。Xにそのまま貼れます"); return; }
     const sp = e.target.closest("[data-showprompt]");
     if (sp) { const box = $("gp-" + sp.dataset.showprompt); box.hidden = !box.hidden; return; }
     const cp = e.target.closest("[data-copyprompt]");
