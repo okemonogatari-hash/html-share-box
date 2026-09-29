@@ -73,6 +73,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-apple-asobi.jpg",
    "genre": "art",
    "seconds": 30,
+   "ref_url": "https://x.com/ilyamiskov/status/2095655279820001767",
+   "ref_world_id": "apple-wonderful-tools",
    "making": {
     "minutes": 55,
     "fixes": 0,
@@ -113,6 +115,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-linear-kanau.jpg",
    "genre": "cool",
    "seconds": 30,
+   "ref_url": "https://x.com/BhaskarVisuals/status/2092251902385807543",
+   "ref_world_id": "linear-launch-film",
    "making": {
     "minutes": 95,
     "fixes": 0,
@@ -151,6 +155,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-kimochi-zukan.jpg",
    "genre": "cute",
    "seconds": 15,
+   "ref_url": "https://x.com/benjitaylor/status/2087227155076046995",
+   "ref_world_id": "grok-bot-icon",
    "making": {
     "minutes": 125,
     "fixes": 1,
@@ -189,6 +195,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-compass.jpg",
    "genre": "cool",
    "seconds": 15,
+   "ref_url": "https://x.com/stephanlivera/status/2103315922098470926",
+   "ref_world_id": "stephan-opus55",
    "making": {
     "minutes": 155,
     "fixes": 1,
@@ -227,6 +235,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-recipe-demo.jpg",
    "genre": "friendly",
    "seconds": 15,
+   "ref_url": "https://x.com/timkochjar/status/2092278549679886507",
+   "ref_world_id": "claude-code-remotion",
    "making": {
     "minutes": 160,
     "fixes": 1,
@@ -264,7 +274,9 @@ window.MOTION_GALLERY = {
    "video": "otehon-four-faces.mp4",
    "poster": "otehon-four-faces.jpg",
    "genre": "cool",
-   "seconds": 15
+   "seconds": 15,
+   "ref_url": "https://x.com/benjitaylor/status/2082515001949221152",
+   "ref_world_id": "benji-launch-reel"
   },
   {
    "id": "otehon-lab-shelf",
@@ -298,6 +310,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-lab-shelf.jpg",
    "genre": "friendly",
    "seconds": 15,
+   "ref_url": "https://x.com/Varcyyyy/status/2090184114083447165",
+   "ref_world_id": "pixelframe-cosmos",
    "making": {
     "minutes": 90,
     "fixes": 2,
@@ -336,6 +350,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-why-play.jpg",
    "genre": "art",
    "seconds": 35,
+   "ref_url": "https://x.com/starks_arq/status/2095531141105340890",
+   "ref_world_id": "capcut-spectrum",
    "making": {
     "minutes": 105,
     "fixes": 1,
@@ -374,6 +390,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-horizon.jpg",
    "genre": "art",
    "seconds": 15,
+   "ref_url": "https://x.com/claudeai/status/2102435511222890900",
+   "ref_world_id": "claude-opus-5-5",
    "making": {
     "minutes": 90,
     "fixes": 1,
@@ -412,6 +430,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-offkai.jpg",
    "genre": "friendly",
    "seconds": 15,
+   "ref_url": "https://x.com/stevelauda_/status/2101855047412031533",
+   "ref_world_id": "zingage-showreel",
    "making": {
     "minutes": 75,
     "fixes": 1,
@@ -450,6 +470,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-retro-game.jpg",
    "genre": "cool",
    "seconds": 15,
+   "ref_url": "https://x.com/alex_barashkov/status/2084313374393835699",
+   "ref_world_id": "databricks-reel",
    "making": {
     "minutes": 140,
     "fixes": 1,
@@ -488,6 +510,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-mizuyan.jpg",
    "genre": "cute",
    "seconds": 15,
+   "ref_url": "https://x.com/tldraw/status/2095148758304743852",
+   "ref_world_id": "tldraw-flash",
    "making": {
     "minutes": 100,
     "fixes": 1,
@@ -525,7 +549,9 @@ window.MOTION_GALLERY = {
    "video": "otehon-tsubu.mp4",
    "poster": "otehon-tsubu.jpg",
    "genre": "art",
-   "seconds": 15
+   "seconds": 15,
+   "ref_url": "https://x.com/OA_paperclips/status/2093445516919279867",
+   "ref_world_id": "fluoddity"
   },
   {
    "id": "otehon-suiyo-radio",
@@ -559,6 +585,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-suiyo-radio.jpg",
    "genre": "friendly",
    "seconds": 15,
+   "ref_url": "https://x.com/MarkKnd/status/2078185821279224163",
+   "ref_world_id": "knob-keyboard-3d",
    "making": {
     "minutes": 120,
     "fixes": 1,
@@ -635,6 +663,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-asobo.jpg",
    "genre": "cute",
    "seconds": 15,
+   "ref_url": "https://x.com/pmndrs/status/2100980802091708818",
+   "ref_world_id": "glyph",
    "making": {
     "minutes": 105,
     "fixes": 1,
@@ -673,6 +703,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-aki-yonaga.jpg",
    "genre": "art",
    "seconds": 15,
+   "ref_url": "https://x.com/Kimi_Moonshot/status/2081757327146045450",
+   "ref_world_id": "kimi-k3-teaser",
    "making": {
     "minutes": 95,
     "fixes": 1,
@@ -710,7 +742,9 @@ window.MOTION_GALLERY = {
    "video": "otehon-watch-repair.mp4",
    "poster": "otehon-watch-repair.jpg",
    "genre": "cool",
-   "seconds": 15
+   "seconds": 15,
+   "ref_url": "https://x.com/fdotinc/status/2092780175176175804",
+   "ref_world_id": "next-ipod-blueprint"
   },
   {
    "id": "otehon-gelato",
@@ -744,6 +778,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-gelato.jpg",
    "genre": "friendly",
    "seconds": 15,
+   "ref_url": "https://x.com/usewonder/status/2071641597402284078",
+   "ref_world_id": "wonder-challenge",
    "making": {
     "minutes": 95,
     "fixes": 1,
@@ -781,7 +817,9 @@ window.MOTION_GALLERY = {
    "video": "otehon-onomatopoeia.mp4",
    "poster": "otehon-onomatopoeia.jpg",
    "genre": "cute",
-   "seconds": 15
+   "seconds": 15,
+   "ref_url": "https://x.com/alex_barashkov/status/2055276192106774738",
+   "ref_world_id": "animate-text"
   },
   {
    "id": "otehon-gym-6th",
@@ -815,6 +853,8 @@ window.MOTION_GALLERY = {
    "poster": "otehon-gym-6th.jpg",
    "genre": "cool",
    "seconds": 15,
+   "ref_url": "https://x.com/BNBCHAIN/status/2094757311080444274",
+   "ref_world_id": "bnb-six-years",
    "making": {
     "minutes": 80,
     "fixes": 1,
@@ -1079,6 +1119,8 @@ window.MOTION_GALLERY = {
    "poster": "capy-step.jpg",
    "genre": "cute",
    "seconds": 15,
+   "ref_url": "https://x.com/2020_hira/status/2103765908351295791",
+   "ref_world_id": "hira-anime-reel",
    "making": {
     "minutes": 25,
     "fixes": 1,
@@ -1116,7 +1158,9 @@ window.MOTION_GALLERY = {
    "video": "melon-soda.mp4",
    "poster": "melon-soda.jpg",
    "genre": "friendly",
-   "seconds": 30
+   "seconds": 30,
+   "ref_url": "https://x.com/Ror_Fly/status/2102853258582880547",
+   "ref_world_id": "negroni-recipe"
   },
   {
    "id": "blackout",
@@ -1225,7 +1269,9 @@ window.MOTION_GALLERY = {
    "video": "konekone-ui.mp4",
    "poster": "konekone-ui.jpg",
    "genre": "cute",
-   "seconds": 15
+   "seconds": 15,
+   "ref_url": "https://x.com/__morse/status/2103485566570369333",
+   "ref_world_id": "morse-colorful-ui"
   },
   {
    "id": "kids-art-class",
@@ -1258,7 +1304,9 @@ window.MOTION_GALLERY = {
    "video": "kids-art-class.mp4",
    "poster": "kids-art-class.jpg",
    "genre": "friendly",
-   "seconds": 16
+   "seconds": 16,
+   "ref_url": "https://x.com/LottielabHQ/status/1970480133854171408",
+   "ref_world_id": "lottielab-burp"
   },
   {
    "id": "hitoshizuku",
@@ -1293,6 +1341,8 @@ window.MOTION_GALLERY = {
    },
    "genre": "art",
    "seconds": 15,
+   "ref_url": "https://x.com/stephanlivera/status/2103315922098470926",
+   "ref_world_id": "stephan-opus55",
    "making": {
     "minutes": 100,
     "fixes": 2,

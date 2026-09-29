@@ -227,13 +227,13 @@
             <p class="g-desc">${esc(g.hitokoto || g.desc || "")}</p>
             <div class="g-tags">${tags.map((x) => `<span>${esc(x)}</span>`).join("")}</div>
           </details>
-          <div class="g-actions"><button type="button" class="btn chip-btn ref-btn" data-ref="ok:${i}">これをお手本に作る</button><button type="button" class="btn link small" data-copylink="${i}" title="${esc(workUrl(g))}">この作品のリンクをコピー</button>${prompt}</div>
+          <div class="g-actions"><button type="button" class="btn chip-btn ref-btn" data-ref="ok:${i}">これをお手本に作る</button>${g.ref_url ? `<button type="button" class="btn chip-btn cmp-btn" data-compare="${i}">お手本と並べて見る</button>` : ""}<button type="button" class="btn link small" data-copylink="${i}" title="${esc(workUrl(g))}">この作品のリンクをコピー</button>${prompt}</div>
         </div>
       </article>`;
   }
   function worldCard(w, i) {
     const meta = [w.views ? `${fmtViews(w.views)}表示` : "", w.seconds ? fmtSec(w.seconds) : ""].filter(Boolean).join("・");
-    return `<article class="w-card">
+    return `<article class="w-card" id="r-${esc(w.id)}">
         <div class="w-head"><span class="w-badge ${w.group === "ai" ? "ai" : "pro"}">${w.group === "ai" ? "AI・コード" : "プロ"}</span><span class="w-meta">${esc(meta)}</span></div>
         <p class="w-title">${esc(w.title)}</p>
         <p class="w-by">${esc(w.by)}${w.date ? `・${esc(w.date)}` : ""}</p>
@@ -318,6 +318,80 @@
     // リンクから来た時は音つき自動再生が止められることがあるので、その時は消音で動かす（音はプレーヤーで戻せる）
     v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
   }
+  function clearFilters() {
+    filt.q = ""; filt.genre = ""; filt.tech = "";
+    $("g-search").value = ""; $("g-tech").value = "";
+    $("g-genres").querySelectorAll("[data-genre]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.genre === "")));
+  }
+
+  // お手本と並べて見る（2026-09-29 Xの作品集から取り入れ案1）。左にお手本の元の投稿（X の埋め込み）、右におけもん版。スマホでは上下
+  // お手本の動画ファイルは他の人の作品なので棚に置かない。埋め込みが読めない時も、元の投稿へのリンクは見えたまま
+  let cmpToken = 0, xLoader = null;
+  function loadX() {
+    if (window.twttr && window.twttr.widgets && window.twttr.widgets.createTweet) return Promise.resolve(window.twttr);
+    if (!xLoader) {
+      xLoader = new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = "https://platform.twitter.com/widgets.js"; s.async = true; s.charset = "utf-8";
+        s.onload = () => (window.twttr && window.twttr.widgets ? resolve(window.twttr) : reject(new Error("no widgets")));
+        s.onerror = () => { xLoader = null; reject(new Error("load")); };
+        document.head.appendChild(s);
+      });
+    }
+    return xLoader;
+  }
+  function openCompare(i) {
+    const g = okItems[i];
+    const wi = worldItems.findIndex((w) => w.id === g.ref_world_id);
+    const w = worldItems[wi] || {};
+    const tok = ++cmpToken;
+    $("cmp-ref-cap").innerHTML = `<span>お手本</span>${esc(w.by || "元の投稿")}${w.title ? `「${esc(w.title)}」` : ""}`;
+    $("cmp-ok-cap").innerHTML = `<span class="ok">おけもん版</span>${esc(g.title)}`;
+    const box = $("cmp-embed");
+    box.classList.remove("loaded");
+    box.innerHTML = `<a class="cmp-fallback" href="${esc(g.ref_url)}" target="_blank" rel="noopener">X で元の投稿を見る ↗<small>${esc(g.ref_url)}</small></a><p class="cmp-status" id="cmp-status">X の投稿を読み込んでいます…</p>`;
+    $("cmp-open").href = g.ref_url;
+    $("cmp-world").hidden = wi < 0;
+    $("cmp-world").dataset.wi = String(wi);
+    const v = $("cmp-video");
+    v.muted = true;
+    v.src = "gallery/" + (g.video || g.id + ".mp4");
+    v.poster = "gallery/" + (g.poster || g.id + ".jpg");
+    $("cmp").hidden = false;
+    $("cmp-close").focus({ preventScroll: true });
+    v.play().catch(() => {});
+    const fail = () => { const s = $("cmp-status"); if (tok === cmpToken && s) s.textContent = "埋め込みを読み込めませんでした。上のリンクから X で見られます"; };
+    const id = (/\/status\/(\d+)/.exec(g.ref_url) || [])[1];
+    if (!id) { fail(); return; }
+    const timer = setTimeout(fail, 10000);
+    loadX()
+      .then((tw) => tw.widgets.createTweet(id, box, { dnt: true, conversation: "none", align: "center", lang: "ja" }))
+      .then((el) => {
+        clearTimeout(timer);
+        if (tok !== cmpToken) { if (el) el.remove(); return; }
+        if (el) box.classList.add("loaded"); else fail();
+      })
+      .catch(() => { clearTimeout(timer); fail(); });
+  }
+  function closeCompare() {
+    cmpToken++;
+    const v = $("cmp-video"); v.pause(); v.removeAttribute("src"); v.load();
+    $("cmp-embed").innerHTML = ""; // 埋め込みの動画も止める
+    $("cmp").hidden = true;
+  }
+  $("cmp-close").addEventListener("click", closeCompare);
+  $("cmp").addEventListener("click", (e) => { if (e.target === $("cmp")) closeCompare(); });
+  $("cmp-world").addEventListener("click", () => {
+    const w = worldItems[+$("cmp-world").dataset.wi];
+    closeCompare();
+    if (!w) return;
+    if (!hits(w, false)) clearFilters();
+    selectTab("world");
+    renderAll();
+    const card = document.getElementById("r-" + w.id);
+    if (card) { card.scrollIntoView({ block: "center" }); card.classList.add("flash"); setTimeout(() => card.classList.remove("flash"), 2400); }
+  });
+
   // #w-<id> で開いた時：その作品までスクロールして再生。絞り込みで隠れていたら絞り込みを解く
   function openFromHash() {
     const m = /^#w-(.+)$/.exec(location.hash);
@@ -325,11 +399,7 @@
     const id = decodeURIComponent(m[1]);
     const i = okItems.findIndex((g) => g.id === id);
     if (i < 0) { toast("その作品は棚に見つかりませんでした"); return; }
-    if (!hits(okItems[i], true)) {
-      filt.q = ""; filt.genre = ""; filt.tech = "";
-      $("g-search").value = ""; $("g-tech").value = "";
-      $("g-genres").querySelectorAll("[data-genre]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.genre === "")));
-    }
+    if (!hits(okItems[i], true)) clearFilters();
     selectTab("okemon");
     renderAll();
     const card = document.getElementById("w-" + id);
@@ -345,6 +415,8 @@
     if (gb) { setGenre(gb.dataset.genre); return; }
     const play = e.target.closest("[data-play]");
     if (play) { openWork(+play.dataset.play); return; }
+    const cmp = e.target.closest("[data-compare]");
+    if (cmp) { openCompare(+cmp.dataset.compare); return; }
     const cl = e.target.closest("[data-copylink]");
     if (cl) { await copyText(workUrl(okItems[+cl.dataset.copylink])); toast("この作品のリンクをコピーしました。Xにそのまま貼れます"); return; }
     const sp = e.target.closest("[data-showprompt]");
@@ -384,7 +456,11 @@
   const closeModal = () => { const v = $("modal-video"); v.pause(); v.removeAttribute("src"); v.load(); $("modal").hidden = true; };
   $("modal-close").addEventListener("click", closeModal);
   $("modal").addEventListener("click", (e) => { if (e.target === $("modal")) closeModal(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("modal").hidden) closeModal(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (!$("modal").hidden) closeModal();
+    if (!$("cmp").hidden) closeCompare();
+  });
 
   // ---------------------------------------------------------------- ?q= で開いたら、そのままレシピまで
   const params = new URLSearchParams(location.search);
