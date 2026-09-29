@@ -204,6 +204,13 @@
   const thumbMeta = (g) => [g.seconds ? fmtSec(g.seconds) : "", ASPECT_LABEL[g.aspect] || ""].filter(Boolean).join("・");
   // 1本ずつ開けるURL（…/#w-<id>）。X投稿に1作品ずつ貼れるように（同 取り入れ案3）
   const workUrl = (g) => `${baseUrl}#w-${g.id}`;
+  // 作るのにかかった時間・直しの回数（同 取り入れ案2）。数字は作品フォルダの PROCESS.md から読めた作品だけ gallery.json の making に入っている
+  // 直し＝評価役・外の目・本人から作品への指摘で作り直した回数（自分で見つけて直した分は数えない）
+  function makingLine(g) {
+    const m = g.making;
+    if (!m || !(m.minutes > 0) || !(m.fixes >= 0)) return "";
+    return `<p class="g-making" title="${esc(`出どころ：${m.src || "PROCESS.md"}。直し＝評価役・外の目・本人の指摘で作り直した回数`)}">作るのにかかった時間 約${esc(m.minutes)}分・直し${esc(m.fixes)}回</p>`;
+  }
   function okCard(g, i) {
     const meta = thumbMeta(g);
     const tags = (g.traits && g.traits.length ? g.traits : g.techniques || []).slice(0, 4);
@@ -215,6 +222,7 @@
         <div class="g-text">
           <p class="g-title">${esc(g.title)}</p>
           <div class="g-labels">${genre}${techChips(g)}</div>
+          ${makingLine(g)}
           <details class="g-more"><summary>解説を読む</summary>
             <p class="g-desc">${esc(g.hitokoto || g.desc || "")}</p>
             <div class="g-tags">${tags.map((x) => `<span>${esc(x)}</span>`).join("")}</div>

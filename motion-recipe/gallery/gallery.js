@@ -34,7 +34,12 @@ window.MOTION_GALLERY = {
    "video": "from-nothing.mp4",
    "poster": "from-nothing.jpg",
    "genre": "cool",
-   "seconds": 42
+   "seconds": 42,
+   "making": {
+    "minutes": 46,
+    "fixes": 0,
+    "src": "oneliner-test/PROCESS.md 冒頭の一言（途中の質問なし・約46分）"
+   }
   },
   {
    "id": "otehon-apple-asobi",
@@ -67,7 +72,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-apple-asobi.mp4",
    "poster": "otehon-apple-asobi.jpg",
    "genre": "art",
-   "seconds": 30
+   "seconds": 30,
+   "making": {
+    "minutes": 55,
+    "fixes": 0,
+    "src": "PROCESS.md「流れ（2026-09-27）」11:52→12:4x"
+   }
   },
   {
    "id": "otehon-linear-kanau",
@@ -102,7 +112,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-linear-kanau.mp4",
    "poster": "otehon-linear-kanau.jpg",
    "genre": "cool",
-   "seconds": 30
+   "seconds": 30,
+   "making": {
+    "minutes": 95,
+    "fixes": 0,
+    "src": "PROCESS.md「流れ（2026-09-27）」11:52→14:25（13:2x〜14:25 の通信の中断を除く）"
+   }
   },
   {
    "id": "otehon-kimochi-zukan",
@@ -135,7 +150,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-kimochi-zukan.mp4",
    "poster": "otehon-kimochi-zukan.jpg",
    "genre": "cute",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 125,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-27）」18:4x→20:49・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "otehon-compass",
@@ -168,7 +188,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-compass.mp4",
    "poster": "otehon-compass.jpg",
    "genre": "cool",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 155,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-27）」18:2x→20:58・「評価役の指摘と直したこと（2026-09-27 20:4x）」"
+   }
   },
   {
    "id": "otehon-recipe-demo",
@@ -201,7 +226,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-recipe-demo.mp4",
    "poster": "otehon-recipe-demo.jpg",
    "genre": "friendly",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 160,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-27）」18:28→21:10・「評価役の指摘と直したこと（2026-09-27 21時）」"
+   }
   },
   {
    "id": "otehon-four-faces",
@@ -267,7 +297,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-lab-shelf.mp4",
    "poster": "otehon-lab-shelf.jpg",
    "genre": "friendly",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 90,
+    "fixes": 2,
+    "src": "PROCESS.md「流れ（2026-09-27）」20:43→22:1x（21:4x 外の目）・「評価役の指摘と直したこと（2026-09-27 22時）」"
+   }
   },
   {
    "id": "otehon-why-play",
@@ -300,7 +335,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-why-play.mp4",
    "poster": "otehon-why-play.jpg",
    "genre": "art",
-   "seconds": 35
+   "seconds": 35,
+   "making": {
+    "minutes": 105,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-27）」20:28→22:1x・「評価役の指摘と直したこと（40秒版 → 34.6秒版）」"
+   }
   },
   {
    "id": "otehon-horizon",
@@ -333,7 +373,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-horizon.mp4",
    "poster": "otehon-horizon.jpg",
    "genre": "art",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 90,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-27）」22:07→23:04・「残っていない物」23:3x 評価役の指摘でポスターを替えた"
+   }
   },
   {
    "id": "otehon-offkai",
@@ -366,7 +411,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-offkai.mp4",
    "poster": "otehon-offkai.jpg",
    "genre": "friendly",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 75,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-27）」22:00→23:15・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "otehon-retro-game",
@@ -399,7 +449,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-retro-game.mp4",
    "poster": "otehon-retro-game.jpg",
    "genre": "cool",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 140,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-27）」21:2x→23:4x・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "otehon-mizuyan",
@@ -432,7 +487,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-mizuyan.mp4",
    "poster": "otehon-mizuyan.jpg",
    "genre": "cute",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 100,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-27〜28）」22:4x→00:23・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "otehon-tsubu",
@@ -498,7 +558,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-suiyo-radio.mp4",
    "poster": "otehon-suiyo-radio.jpg",
    "genre": "friendly",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 120,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-27〜28）」23:0x→1:0x・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "showa-radio-cm",
@@ -531,7 +596,12 @@ window.MOTION_GALLERY = {
    "video": "showa-radio-cm.mp4",
    "poster": "showa-radio-cm.jpg",
    "genre": "friendly",
-   "seconds": 60
+   "seconds": 60,
+   "making": {
+    "minutes": 70,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」06:0x→07:17・「2026-09-28 夜：語りを Gemini TTS に差し替えた」（本人の言葉で）"
+   }
   },
   {
    "id": "otehon-asobo",
@@ -564,7 +634,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-asobo.mp4",
    "poster": "otehon-asobo.jpg",
    "genre": "cute",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 105,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」00:09→01:5x・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "otehon-aki-yonaga",
@@ -597,7 +672,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-aki-yonaga.mp4",
    "poster": "otehon-aki-yonaga.jpg",
    "genre": "art",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 95,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」00:30→02:05・「評価役の指摘と直したこと（判定は「棚に出す」）」"
+   }
   },
   {
    "id": "otehon-watch-repair",
@@ -663,7 +743,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-gelato.mp4",
    "poster": "otehon-gelato.jpg",
    "genre": "friendly",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 95,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」01:1x→05:53（02:25〜05:28 の電池切れを除く）・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "otehon-onomatopoeia",
@@ -729,7 +814,12 @@ window.MOTION_GALLERY = {
    "video": "otehon-gym-6th.mp4",
    "poster": "otehon-gym-6th.jpg",
    "genre": "cool",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 80,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」02:16→06:48（02:25〜05:35 の電池切れと 06:41〜06:44 の待ちを除く）・「評価役の指摘と直したこと（判定は「直してから出す」）」"
+   }
   },
   {
    "id": "business-intro",
@@ -762,7 +852,12 @@ window.MOTION_GALLERY = {
    "video": "business-intro.mp4",
    "poster": "business-intro.jpg",
    "genre": "business",
-   "seconds": 30
+   "seconds": 30,
+   "making": {
+    "minutes": 125,
+    "fixes": 2,
+    "src": "PROCESS.md「流れ（2026-09-28）」08:42→10:47・「外の目の指摘と直したこと」「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "combo-insta-live",
@@ -795,7 +890,12 @@ window.MOTION_GALLERY = {
    "video": "combo-insta-live.mp4",
    "poster": "combo-insta-live.jpg",
    "genre": "cute",
-   "seconds": 30
+   "seconds": 30,
+   "making": {
+    "minutes": 155,
+    "fixes": 2,
+    "src": "PROCESS.md「流れ（2026-09-28）」08:41→11:1x・「評価役の指摘と直したこと」「名前を外した」（本人の言葉で）"
+   }
   },
   {
    "id": "combo-tiktok",
@@ -828,7 +928,12 @@ window.MOTION_GALLERY = {
    "video": "combo-tiktok.mp4",
    "poster": "combo-tiktok.jpg",
    "genre": "cute",
-   "seconds": 18
+   "seconds": 18,
+   "making": {
+    "minutes": 140,
+    "fixes": 2,
+    "src": "PROCESS.md「流れ（2026-09-28）」11:3x→13:57（12:5x 外の目）・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "quote-tired",
@@ -861,7 +966,12 @@ window.MOTION_GALLERY = {
    "video": "quote-tired.mp4",
    "poster": "quote-tired.jpg",
    "genre": "friendly",
-   "seconds": 39
+   "seconds": 39,
+   "making": {
+    "minutes": 115,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」11:0x→13:00・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "quote-nietzsche",
@@ -894,7 +1004,12 @@ window.MOTION_GALLERY = {
    "video": "quote-nietzsche.mp4",
    "poster": "quote-nietzsche.jpg",
    "genre": "cool",
-   "seconds": 40
+   "seconds": 40,
+   "making": {
+    "minutes": 90,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」12:14→13:45・「評価役の指摘と直したこと（2026-09-28）」"
+   }
   },
   {
    "id": "quote-adler",
@@ -925,7 +1040,12 @@ window.MOTION_GALLERY = {
    "video": "quote-adler.mp4",
    "poster": "quote-adler.jpg",
    "genre": "friendly",
-   "seconds": 40
+   "seconds": 40,
+   "making": {
+    "minutes": 165,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」14:1x→21:50（15:1x〜15:51 の眠りと 16:08〜20:20 の停止を除く）・「評価役の指摘と直したこと（2026-09-28）」"
+   }
   },
   {
    "id": "capy-step",
@@ -958,7 +1078,12 @@ window.MOTION_GALLERY = {
    "video": "capy-step.mp4",
    "poster": "capy-step.jpg",
    "genre": "cute",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 25,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」18:3x→19:02・「評価役の指摘と直したこと（2026-09-28 夜・判定「棚に出す」）」"
+   }
   },
   {
    "id": "melon-soda",
@@ -1024,7 +1149,12 @@ window.MOTION_GALLERY = {
    "video": "blackout.mp4",
    "poster": "blackout.jpg",
    "genre": "cool",
-   "seconds": 16
+   "seconds": 16,
+   "making": {
+    "minutes": 60,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」21:0x→22:05・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "kyuin-lamp",
@@ -1057,7 +1187,12 @@ window.MOTION_GALLERY = {
    "video": "kyuin-lamp.mp4",
    "poster": "kyuin-lamp.jpg",
    "genre": "friendly",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 70,
+    "fixes": 1,
+    "src": "PROCESS.md「流れ（2026-09-28）」21:0x→22:14・「評価役の指摘と直したこと」"
+   }
   },
   {
    "id": "konekone-ui",
@@ -1157,7 +1292,12 @@ window.MOTION_GALLERY = {
     "note": "Stephan Livera さんのプロンプトをそのまま（Claude Code・Opus 5.5・effort max）"
    },
    "genre": "art",
-   "seconds": 15
+   "seconds": 15,
+   "making": {
+    "minutes": 100,
+    "fixes": 2,
+    "src": "fullpower-showreel の PROCESS.md「流れ（2026-09-26）」07:1x→12:16（08:45〜12:0x の「つづき」待ちを除く）・本人の直し 08:0x と 13:3x"
+   }
   },
   {
    "id": "jonetsu-intro",
@@ -1186,7 +1326,12 @@ window.MOTION_GALLERY = {
    "video": "jonetsu-intro.mp4",
    "poster": "jonetsu-intro.jpg",
    "genre": "cool",
-   "seconds": 30
+   "seconds": 30,
+   "making": {
+    "minutes": 70,
+    "fixes": 2,
+    "src": "PROCESS.md「流れ（2026-09-26）」18:42→19:54（19:2x 外の目）・「スカイドロップ版」（本人の言葉で）"
+   }
   },
   {
    "id": "kapipara-teaser",
