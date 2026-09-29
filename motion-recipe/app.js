@@ -24,7 +24,28 @@
       else if (state[key].includes(v)) state[key] = state[key].filter((x) => x !== v);
       else state[key] = [...state[key], v].slice(-(max || 99)); // 上限を超えたら古いほうを外す
       el.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(single ? state[key] === c.dataset.v : state[key].includes(c.dataset.v))));
+      updateMoreNow();
     });
+  }
+  // 「こだわる」の1つを外から選ぶ（お手本の長さ・画面の形を引き継ぐ時）。10・15・30秒に無い長さ（24秒など）は、その長さの札を1つ足す
+  function pick(key, v) {
+    const el = $("f-" + key);
+    el.querySelectorAll(".chip[data-extra]").forEach((c) => { if (c.dataset.v !== v) c.remove(); });
+    if (!el.querySelector(`.chip[data-v="${v}"]`)) el.insertAdjacentHTML("beforeend", `<button type="button" class="chip" data-extra="1" data-v="${esc(v)}">${esc(v)}秒</button>`);
+    state[key] = v;
+    el.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.v === v)));
+    updateMoreNow();
+  }
+  // 閉じていても、いま何を選んでいるかが見出しで分かるように
+  const ASPECT_WORD = { "16:9": "横長", "9:16": "縦長", "1:1": "正方形" };
+  function updateMoreNow() {
+    const now = [];
+    if (state.purpose !== "auto" && R.PURPOSES[state.purpose]) now.push(R.PURPOSES[state.purpose].label);
+    state.moods.forEach((k) => { if (R.MOODS[k]) now.push(R.MOODS[k].label); });
+    if (state.seconds !== "auto") now.push(`${state.seconds}秒`);
+    if (state.aspect !== "auto") now.push(ASPECT_WORD[state.aspect] || state.aspect);
+    if (state.sound !== "auto") now.push(state.sound === "on" ? "音あり" : "音なし");
+    $("more-now").textContent = now.length ? `（いま：${now.join("・")}）` : "（えらばなければ、おまかせ）";
   }
   chips($("f-purpose"), [["auto", "おまかせ"], ...Object.entries(R.PURPOSES).filter(([, p]) => !p.hidden).map(([k, p]) => [k, p.label])], "purpose", true);
   chips($("f-moods"), R.MOOD_KEYS.map((k) => [k, R.MOODS[k].label]), "moods", false, 2);
@@ -38,8 +59,16 @@
     if (!b) return;
     $("wish").value = b.textContent;
     store.set("mr-wish", b.textContent);
+    showDraftNote("");
+    fitWish();
     make(true);
   });
+  // 下書きが長い時は、入力欄を中身の高さまで広げる（3行のままだと下書きの途中までしか見えない）
+  function fitWish() {
+    const w = $("wish");
+    w.style.height = "";
+    if (w.scrollHeight > w.clientHeight) w.style.height = Math.min(w.scrollHeight + 4, 300) + "px";
+  }
   let ph = 0;
   setInterval(() => { if (!$("wish").value && document.activeElement !== $("wish")) { ph = (ph + 1) % R.IDEAS.length; $("wish").placeholder = "例：" + R.IDEAS[ph]; } }, 3200);
 
@@ -99,11 +128,12 @@
     const had = $("wish").value.trim();
     state.purpose = "auto"; state.moods = []; state.seconds = "auto"; state.aspect = "auto"; state.sound = "auto";
     document.querySelectorAll(".more .chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.v === "auto")));
+    updateMoreNow();
     if (!had) { $("wish").value = randomIdea(); store.set("mr-wish", $("wish").value); }
     make(true);
     toast(had ? "書いた言葉はそのまま、こだわりをおまかせにしました" : "例から1つ選んで作りました");
   });
-  $("wish").addEventListener("input", () => store.set("mr-wish", $("wish").value));
+  $("wish").addEventListener("input", () => { store.set("mr-wish", $("wish").value); fitWish(); });
   $("onscreen").addEventListener("input", () => store.set("mr-onscreen", $("onscreen").value));
   $("wish").addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) make(true); });
 
@@ -169,13 +199,68 @@
   let okItems = [], worldItems = [];
   const baseUrl = location.href.split("#")[0].split("?")[0].replace(/[^/]*$/, "");
 
+  const refAspect = (r) => (r && r.aspect ? (String(r.aspect).match(/\d+:\d+/) || [""])[0] : "");
+  const refSeconds = (r) => (r && r.seconds ? String(r.seconds) : "");
   function setReference(ref) {
+    const prev = state.reference;
     state.reference = ref;
     store.set("mr-ref", ref ? JSON.stringify(ref) : ""); // 技法集から戻っても、お手本が消えないように
     $("ref-pill").hidden = !ref;
     if (ref) $("ref-title").textContent = ref.title;
+    // お手本の長さ・画面の形を「こだわる」に引き継ぐ（2026-09-30 Fable：30秒のお手本でも15秒に戻っていた）。
+    // お手本を外した・替えた時、前のお手本から引き継いだままの物はおまかせに戻す（自分で選び直した物はそのまま）
+    for (const [key, of] of [["seconds", refSeconds], ["aspect", refAspect]]) {
+      if (of(ref)) pick(key, of(ref));
+      else if (of(prev) && state[key] === of(prev)) pick(key, "auto");
+    }
+    if (!ref) showDraftNote("");
   }
   $("ref-clear").addEventListener("click", () => { setReference(null); toast("お手本を外しました"); });
+
+  // 「これをお手本に作る」：お手本をセットし、そのカードの「作りたいもの」を編集できる下書きとして入力欄に入れる（2026-09-30 Fable の詰まり1）
+  // 自分で書いた言葉がある時は消さずに残し、「お手本の文に入れかえる」を出す。前の下書き・例のままなら入れかえる
+  let pendingDraft = "";
+  function putDraft(text) {
+    $("wish").value = text;
+    store.set("mr-wish", text);
+    store.set("mr-draft", text);
+    fitWish();
+  }
+  function showDraftNote(mode) {
+    $("draft-note").hidden = !mode;
+    $("ideas").hidden = mode === "draft"; // 下書きが入っている間は「例」を隠す（押すと下書きが例に置きかわるので）
+    if (!mode) return;
+    const ref = state.reference || {};
+    const carry = [refSeconds(ref) ? `長さ ${refSeconds(ref)}秒` : "", ASPECT_WORD[refAspect(ref)] ? `画面の形 ${ASPECT_WORD[refAspect(ref)]}` : ""].filter(Boolean).join("・");
+    $("draft-msg").innerHTML = (mode === "draft"
+      ? "お手本の「作りたいもの」を下書きに入れました。<b>ここを自分のお店・自分の話に書きかえてください。</b>"
+      : "書いた言葉はそのままにしました。お手本の文を下書きにしたい時は、下のボタンで入れかえられます。")
+      + (carry ? `<span class="draft-carry">${esc(carry)}も、お手本に合わせました（「こだわる」で変えられます）</span>` : "");
+    $("draft-swap").hidden = mode !== "kept";
+  }
+  $("draft-swap").addEventListener("click", () => { if (pendingDraft) putDraft(pendingDraft); showDraftNote("draft"); $("wish").focus({ preventScroll: true }); });
+  function useAsReference(kind, idx) {
+    const it = kind === "ok" ? okItems[idx] : worldItems[idx];
+    if (!it) return;
+    const sec = Math.round(Number(it.seconds) || 0);
+    setReference({
+      title: it.title,
+      by: kind === "ok" ? "おけもん" : it.by,
+      url: kind === "ok" ? baseUrl + "gallery/" + (it.video || it.id + ".mp4") : it.url,
+      traits: it.traits || [], technique_ids: it.technique_ids || [], moods: it.moods || [],
+      sound: it.sound, aspect: it.aspect,
+      seconds: sec >= 5 && sec <= 60 ? sec : null, // 1分を超える世界のお手本は、長さを引き継がない
+    });
+    const draft = R.draftOf(it);
+    const cur = $("wish").value.trim();
+    const replace = !cur || cur === (store.get("mr-draft") || "").trim() || R.IDEAS.includes(cur);
+    pendingDraft = draft;
+    if (draft && replace) putDraft(draft);
+    showDraftNote(!draft ? "" : replace ? "draft" : "kept");
+    $("make").scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => $("wish").focus({ preventScroll: true }), 400);
+    toast(draft && replace ? "お手本と下書きを入れました" : "お手本をセットしました");
+  }
 
   // 見本集のさがし方（2026-09-28 おけちゃん「見本集がごちゃついてきたから解説はトグルで開閉しよう」「検索機能やタグがほしいね」）
   // ジャンルは棚の gallery.json の genre、技法は technique_ids（正式名称で見せる）
@@ -271,6 +356,7 @@
     $("g-count").textContent = list.length ? (narrowed ? `${list.length}本中 ${n}本` : `${list.length}本`) : "";
     $("g-genres").hidden = world; // ジャンルと用途は「おけもんが作った」の棚だけ
     $("g-purposes").hidden = world;
+    showFlow();
   }
   const renderAll = () => { renderOk(); renderWorld(); renderCount(); };
   function setupFilters() {
@@ -297,6 +383,13 @@
     $("g-purposes").querySelectorAll("[data-purpose]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.purpose === k)));
     renderAll();
   }
+  // 用途の札を押したら、札のすぐ下に「選ぶ→作る」の流れを1行で（2026-09-30 Fable の詰まり3）
+  function showFlow() {
+    const k = filt.purpose;
+    $("g-flow").hidden = !k || !$("panel-world").hidden;
+    if (!k) return;
+    $("g-flow-what").textContent = `「${PURPOSES[k]}」の${okItems.filter((g) => hits(g, true)).length}本から`;
+  }
   function setTech(id) { filt.tech = filt.tech === id ? "" : id; $("g-tech").value = filt.tech; renderAll(); }
   $("g-search").addEventListener("input", () => { filt.q = $("g-search").value; renderAll(); });
   $("g-tech").addEventListener("change", () => { filt.tech = $("g-tech").value; renderAll(); });
@@ -321,13 +414,19 @@
     })
     .catch(() => { $("gallery-grid").innerHTML = `<p class="muted">作品集はただいま準備中です。</p>`; });
 
+  // 再生の窓（2026-09-30 Fable：スマホで #w-<id> を開くと、長い黒い説明が画面からはみ出して、動画の上と×・ボタンが隠れていた）
+  // 窓は画面の高さに収め（動画が縮む）、説明は題名＋「解説を読む」にたたむ。窓の中にも「これをお手本に作る」を置く
+  let modalIdx = -1;
   function openWork(i) {
     const g = okItems[i];
+    modalIdx = i;
     const v = $("modal-video");
     v.muted = false;
+    v.style.aspectRatio = /^\d+:\d+$/.test(g.aspect || "") ? g.aspect.replace(":", " / ") : "16 / 9"; // 読み込む前から形を取っておく（ガタつかない）
     v.src = "gallery/" + (g.video || g.id + ".mp4");
     v.poster = "gallery/" + (g.poster || g.id + ".jpg");
-    $("modal-text").innerHTML = `<b>${esc(g.title)}</b>　${esc(g.hitokoto || g.desc || "")}`;
+    const desc = g.hitokoto || g.desc || "";
+    $("modal-text").innerHTML = `<p class="modal-title" id="modal-title">${esc(g.title)}</p>${desc ? `<details class="modal-more"${matchMedia("(min-width: 760px)").matches ? " open" : ""}><summary>解説を読む</summary><p>${esc(desc)}</p></details>` : ""}`;
     $("modal").hidden = false;
     // リンクから来た時は音つき自動再生が止められることがあるので、その時は消音で動かす（音はプレーヤーで戻せる）
     v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
@@ -441,20 +540,7 @@
     const cp = e.target.closest("[data-copyprompt]");
     if (cp) { await copyText(okItems[+cp.dataset.copyprompt].prompt.text); toast("プロンプトをコピーしました。Claude Code に貼ってね"); return; }
     const rb = e.target.closest("[data-ref]");
-    if (rb) {
-      const [kind, idx] = rb.dataset.ref.split(":");
-      const it = kind === "ok" ? okItems[+idx] : worldItems[+idx];
-      setReference({
-        title: it.title,
-        by: kind === "ok" ? "おけもん" : it.by,
-        url: kind === "ok" ? baseUrl + "gallery/" + (it.video || it.id + ".mp4") : it.url,
-        traits: it.traits || [], technique_ids: it.technique_ids || [], moods: it.moods || [],
-        sound: it.sound, aspect: it.aspect,
-      });
-      $("make").scrollIntoView({ behavior: "smooth", block: "start" });
-      setTimeout(() => $("wish").focus({ preventScroll: true }), 400);
-      toast("お手本をセットしました。作りたいものを書いて「レシピを作る」");
-    }
+    if (rb) { const [kind, idx] = rb.dataset.ref.split(":"); useAsReference(kind, +idx); }
   });
 
   // タブ
@@ -472,6 +558,8 @@
 
   const closeModal = () => { const v = $("modal-video"); v.pause(); v.removeAttribute("src"); v.load(); $("modal").hidden = true; };
   $("modal-close").addEventListener("click", closeModal);
+  $("modal-close2").addEventListener("click", closeModal);
+  $("modal-ref").addEventListener("click", () => { const i = modalIdx; closeModal(); useAsReference("ok", i); });
   $("modal").addEventListener("click", (e) => { if (e.target === $("modal")) closeModal(); });
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
@@ -488,6 +576,8 @@
     if (w) $("wish").value = w;
     if (o) $("onscreen").value = o;
     try { const saved = store.get("mr-ref"); if (saved) setReference(JSON.parse(saved)); } catch (e) { /* 読めなければお手本なしで始める */ }
+    if (state.reference && w && w === store.get("mr-draft")) showDraftNote("draft"); // 下書きのまま読み直した時も、書きかえの一言を出す
+    fitWish();
     if (add) setTimeout(() => addWord(add), 300);
   }
   // 技法集のタブ（このページから開いたもの）の「この言葉で作る」：元のタブに言葉を足し、レシピを作ってあれば作り直す。お手本と調整はそのまま

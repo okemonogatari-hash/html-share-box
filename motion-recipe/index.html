@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=20260930d" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 5C23 20 13 30 13 42a19 19 0 0 0 38 0C51 30 41 20 32 5z' fill='%231b1712'/%3E%3C/svg%3E" />
   </head>
   <body>
@@ -40,6 +40,11 @@
         <div class="g-filter" id="g-filter">
           <!-- 用途の札（2026-09-30 相談役 Fable の改善案3）：入口を「何に使うか」から。ジャンル・技法より上 -->
           <div class="g-purposes" id="g-purposes" role="group" aria-label="用途で絞る"></div>
+          <!-- 札を押したら、その下に「選ぶ→作る」の流れを1行で（2026-09-30 Fable の詰まり3） -->
+          <div class="g-flow" id="g-flow" hidden>
+            <p class="g-flow-line"><b id="g-flow-what"></b>、気に入った1本の「これをお手本に作る」を押す <span aria-hidden="true">→</span> 入力欄の下書きを自分の話に書きかえる <span aria-hidden="true">→</span> 注文書をコピー</p>
+            <a class="btn small g-flow-go" href="#make">入力欄へ ↓</a>
+          </div>
           <input type="search" id="g-search" class="g-search" placeholder="さがす（例：カピバラ・3D・告知・ラジオ）" aria-label="作品をことばでさがす" autocomplete="off">
           <div class="g-genres" id="g-genres" role="group" aria-label="ジャンルで絞る"></div>
           <select id="g-tech" class="g-tech-select" aria-label="技法で絞る"><option value="">技法で絞る（すべて）</option></select>
@@ -71,11 +76,12 @@
         <label class="q" for="wish">どんな動画にしたい？</label>
         <p class="hint">ふだんの言葉で。1行でも、長くても大丈夫です。</p>
         <div class="ref-pill" id="ref-pill" hidden><span>お手本：<b id="ref-title"></b></span><button type="button" id="ref-clear" aria-label="お手本を外す">×</button></div>
+        <div class="draft-note" id="draft-note" role="status" hidden><p id="draft-msg"></p><button type="button" class="btn link small" id="draft-swap" hidden>お手本の文に入れかえる</button></div>
         <textarea id="wish" rows="3" placeholder="例：やさしくて、ちょっとワクワクする自己紹介"></textarea>
         <div class="chips ideas" id="ideas" aria-label="例をえらぶ"></div>
 
         <details class="more" id="more">
-          <summary>こだわる（えらばなければ、おまかせ）</summary>
+          <summary>こだわる<span class="more-now" id="more-now">（えらばなければ、おまかせ）</span></summary>
           <div class="field"><span class="fl">用途</span><div class="chips" id="f-purpose" data-single="1"></div></div>
           <div class="field"><span class="fl">雰囲気（2つまで）</span><div class="chips" id="f-moods"></div></div>
           <div class="field"><span class="fl">長さ</span><div class="chips" id="f-seconds" data-single="1"></div></div>
@@ -118,6 +124,7 @@
             <li><span class="num">2</span><div><b><code>/model opus</code> と送る</b><br />これで Opus 5.5 になります<br /><button class="btn chip-btn cmd" data-cmd="/model opus"><code>/model opus</code> をコピー</button></div></li>
             <li><span class="num">3</span><div><b>ここぞの1本だけ <code>/effort max</code></b><br />ふだんは最初の設定（medium）のままでOK。max はよく考えるぶん、プランの利用枠も多めに使います<br /><button class="btn chip-btn cmd" data-cmd="/effort max"><code>/effort max</code> をコピー</button></div></li>
             <li><span class="num">4</span><div><b>下の注文書をコピーして、貼って送る</b><br />作業フォルダに motion.html ができて、ブラウザで開きます</div></li>
+            <li class="step-wide"><span class="num">5</span><div><b>動画にする</b><br />いちばん手軽なのは画面収録。Mac なら <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>5</kbd> で「選択部分を収録」を選び、動画の枠を囲んで収録します。パソコンの音は入らないことがあるので、音つきがほしい時は同じ会話で「音つきのMP4に書き出して」と頼んでください（書き出しの道具の追加が要ることがあります）<br /><button class="btn chip-btn cmd" data-cmd="音つきのMP4に書き出して">「音つきのMP4に書き出して」をコピー</button></div></li>
           </ol>
         </div>
 
@@ -132,7 +139,6 @@
         <ul class="tips">
           <li>仕上がりが違ったら、同じ会話で「もっとゆっくり」「文字を大きく」のように続けて頼めばOK</li>
           <li>自分の写真やロゴ・キャラを使いたい時は、画像を作業フォルダに入れて「この画像（ファイル名）を使って」と書き足す</li>
-          <li>動画ファイルにしたい時は画面収録（Mac：⌘ + Shift + 5）。パソコンの音は入らないことがあるので、音つきがほしい時は「音つきのMP4に書き出して」と頼んでみてください（道具の追加が要ることがあります）</li>
         </ul>
       </section>
 
@@ -150,10 +156,11 @@
     </footer>
 
     <div class="modal" id="modal" hidden>
-      <div class="modal-body">
+      <div class="modal-body" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <button class="modal-close" id="modal-close" aria-label="閉じる">×</button>
         <video id="modal-video" controls playsinline></video>
         <div class="modal-text" id="modal-text"></div>
+        <div class="modal-actions"><button type="button" class="btn primary small" id="modal-ref">これをお手本に作る</button><button type="button" class="btn small modal-close2" id="modal-close2">閉じる</button></div>
       </div>
     </div>
 
@@ -178,9 +185,9 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="gallery/gallery.js"></script>
-    <script src="gallery/world.js"></script>
-    <script src="recipe.js"></script>
-    <script src="app.js"></script>
+    <script src="gallery/gallery.js?v=20260930d"></script>
+    <script src="gallery/world.js?v=20260930d"></script>
+    <script src="recipe.js?v=20260930d"></script>
+    <script src="app.js?v=20260930d"></script>
   </body>
 </html>

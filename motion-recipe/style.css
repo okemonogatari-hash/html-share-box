@@ -472,3 +472,47 @@ a.tech-chip:hover { background: #eef2fb; }
   .g-search { flex-basis: 100%; }
   .g-tech-select { flex: 1 1 auto; }
 }
+
+/* ---------- 2026-09-30 相談役 Fable の詰まり（選ぶ→貼る→作れた） ---------- */
+/* 1. 「これをお手本に作る」の下書きの一言 */
+.draft-note { margin: 0 0 8px; background: #fff7f4; border: 1.5px dashed var(--shu); border-radius: 12px; padding: 8px 12px; font-size: 14px; line-height: 1.6; color: var(--ink); }
+.draft-note[hidden] { display: none; }
+.draft-note p { margin: 0; }
+.draft-note b { color: var(--shu); }
+.draft-carry { display: block; margin-top: 2px; font-size: 13px; color: var(--ink2); }
+.draft-note .btn.link { padding: 4px 0 0; min-height: 0; }
+.more-now { font-weight: 500; }
+/* 2. 手順の5段目（動画にする）は横いっぱい */
+.howto .steps li.step-wide { grid-column: 1 / -1; }
+kbd { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; background: #fff; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 0 6px; }
+/* 3. 用途の札の直下に「選ぶ→作る」 */
+.g-flow { flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; background: var(--paper2); border-radius: 12px; padding: 8px 12px; }
+.g-flow[hidden] { display: none; }
+.g-flow-line { flex: 1 1 260px; margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink); text-wrap: pretty; }
+.g-flow-line b { color: var(--shu); }
+.g-flow-go { flex: none; border-color: var(--shu); color: var(--shu); background: #fff; }
+/* 3b. 再生の窓：画面の高さに収め、説明はたたむ。動画が縮んで、×と下のボタンは見えたまま */
+.modal-body { display: flex; flex-direction: column; max-height: calc(100dvh - 32px); }
+.modal-body video { flex: 0 1 auto; min-height: 0; height: auto; object-fit: contain; }
+.modal-text { flex: none; max-height: 32vh; overflow: auto; overscroll-behavior: contain; padding: 10px 14px 4px; line-height: 1.6; }
+.modal-title { margin: 0; font-weight: 900; font-size: 15px; }
+.modal-more { margin-top: 2px; }
+.modal-more summary { cursor: pointer; font-size: 13px; font-weight: 700; color: #cfe0ff; list-style: none; padding: 4px 0; display: inline-block; }
+.modal-more summary::-webkit-details-marker { display: none; }
+.modal-more summary::before { content: "▸ "; }
+.modal-more[open] summary::before { content: "▾ "; }
+.modal-more p { margin: 2px 0 4px; font-size: 13.5px; color: #e9e2d4; }
+.modal-actions { flex: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 14px 14px; }
+.modal-actions .modal-close2 { background: transparent; border-color: rgba(255, 255, 255, 0.55); color: #f3ede0; }
+@media (max-width: 560px) {
+  .modal { padding: 12px; }
+  .modal-body { max-height: calc(100dvh - 24px); }
+  .modal-actions .btn { flex: 1 1 auto; }
+}
+/* 下書きが入っている間は「例」の札を隠して、「レシピを作る」を近くに */
+.ideas[hidden] { display: none; }
+/* スマホの知らせ（トースト）は上に出す。下は親指で押すボタン（レシピを作る・お手本に作る・動画のつまみ）がある所なので、かぶらないように */
+@media (max-width: 560px) {
+  .toast { top: calc(10px + env(safe-area-inset-top, 0px)); bottom: auto; transform: translate(-50%, -30px); font-size: 14px; padding: 8px 14px; }
+  .toast.on { transform: translate(-50%, 0); }
+}

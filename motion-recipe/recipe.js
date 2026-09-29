@@ -561,8 +561,27 @@
     "夕焼けみたいに少し切ない、旅の思い出",
   ];
 
+  // 「これをお手本に作る」で入力欄に入れる下書き（2026-09-30 相談役 Fable：押しても入力欄が空で、何を書けばいいか分からなかった）
+  // 棚の注文書に「■ 作りたいもの（本人の言葉）」があればその中身。無ければ解説（hitokoto）から、作り方の話（何分・送った結果・声は…）を除いた文を140字まで
+  const WANT_HEAD = "■ 作りたいもの（本人の言葉）";
+  const MAKING_TALK = /(結果|途中の質問|声は|曲は|語りは|投稿した|お手本|おけもん版|寄せた|Claude|Opus)/;
+  function draftOf(item) {
+    const it = item || {};
+    const text = String((it.prompt && it.prompt.text) || "");
+    const at = text.indexOf(WANT_HEAD);
+    if (at >= 0) {
+      const body = text.slice(at + WANT_HEAD.length).trim().split(/\n\s*\n|\n■/)[0].trim();
+      if (body) return body;
+    }
+    const sents = String(it.hitokoto || it.desc || "").split(/(?<=。)/).map((s) => s.trim()).filter(Boolean);
+    const keep = sents.filter((s) => !MAKING_TALK.test(s));
+    let out = "";
+    for (const s of keep.length ? keep : sents) { if (out && (out + s).length > 140) break; out += s; }
+    return out;
+  }
+
   const MOOD_KEYS = ["cute", "cool", "calm", "warm", "genki", "elegant", "future", "emo", "pop", "wa", "exciting", "mystic"];
-  const api = { MOODS, MOOD_KEYS, SCENES, PURPOSES, TECHNIQUES, TECH, ADJUST_LABELS, IDEAS, readWords, build };
+  const api = { MOODS, MOOD_KEYS, SCENES, PURPOSES, TECHNIQUES, TECH, ADJUST_LABELS, IDEAS, readWords, build, draftOf };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.MotionRecipe = api;
 })(typeof window !== "undefined" ? window : globalThis);
