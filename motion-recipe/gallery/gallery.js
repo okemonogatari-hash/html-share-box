@@ -1843,7 +1843,11 @@ window.MOTION_GALLERY = {
    },
    "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵はコードで作っています。音はありません）",
    "preview_at": 5.0,
-   "preview": "preview/stream-wait.mp4"
+   "preview": "preview/stream-wait.mp4",
+   "hidden": {
+    "why": "2026-10-01 朝：名前を伏せた Fable の採点で wow 0・cheap 2（新しい基準は wow 2 以上・cheap 1 以下）。夜の便で速く作った1本。直してから戻す",
+    "at": "2026-10-01"
+   }
   },
   {
    "id": "recruit",
@@ -1883,7 +1887,11 @@ window.MOTION_GALLERY = {
    },
    "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
    "preview_at": 5.0,
-   "preview": "preview/recruit.mp4"
+   "preview": "preview/recruit.mp4",
+   "hidden": {
+    "why": "2026-10-01 朝：名前を伏せた Fable の採点で wow 1・cheap 2（新しい基準は wow 2 以上・cheap 1 以下）。夜の便で速く作った1本。直してから戻す",
+    "at": "2026-10-01"
+   }
   },
   {
    "id": "birthday-card",
@@ -1927,7 +1935,11 @@ window.MOTION_GALLERY = {
    },
    "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
    "preview_at": 5.0,
-   "preview": "preview/birthday-card.mp4"
+   "preview": "preview/birthday-card.mp4",
+   "hidden": {
+    "why": "2026-10-01 朝：名前を伏せた Fable の採点で wow 2・cheap 2（新しい基準は wow 2 以上・cheap 1 以下）。夜の便で速く作った1本。直してから戻す",
+    "at": "2026-10-01"
+   }
   },
   {
    "id": "maintenance-notice",
@@ -1971,7 +1983,11 @@ window.MOTION_GALLERY = {
    },
    "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
    "preview_at": 8.5,
-   "preview": "preview/maintenance-notice.mp4"
+   "preview": "preview/maintenance-notice.mp4",
+   "hidden": {
+    "why": "2026-10-01 朝：名前を伏せた Fable の採点で wow 1・cheap 2（新しい基準は wow 2 以上・cheap 1 以下）。夜の便で速く作った1本。直してから戻す",
+    "at": "2026-10-01"
+   }
   },
   {
    "id": "hitoshizuku",
@@ -2209,8 +2225,8 @@ window.MOTION_GALLERY = {
   "ids": [
    "seed-to-flower",
    "halloween",
-   "ask-oneline"
+   "pottery-intro"
   ],
-  "_why": "2026-09-30 夜 Fable：用意なし・短い・直し0〜1・用途がばらける3本を棚の上に。再現テストを待たず、済んだ物に後から印を足す"
+  "_why": "2026-09-30 夜 Fable：用意なし・短い・直し0〜1・用途がばらける3本を棚の上に。再現テストを待たず、済んだ物に後から印を足す。2026-10-01：AIに頼む前の1行（Fable 採点 wow1・cheap2「読むだけの動画」）を、土と、30年。（wow2・cheap0）に入れ替えた"
  }
 };

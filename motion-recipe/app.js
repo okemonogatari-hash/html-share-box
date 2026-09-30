@@ -471,7 +471,7 @@
 
   (window.MOTION_GALLERY ? Promise.resolve(window.MOTION_GALLERY) : fetch("gallery/gallery.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(r.status))))
     .then((list) => {
-      okItems = Array.isArray(list) ? list : list.items || [];
+      okItems = (Array.isArray(list) ? list : list.items || []).filter((g) => !g.hidden); // hidden＝棚から下げた作品（直してから戻す・2026-10-01）
       galleryFirst = Array.isArray(list) ? null : list.first || null;
       if (!okItems.length) throw new Error("empty");
       setupFilters();
