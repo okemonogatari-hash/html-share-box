@@ -20,9 +20,9 @@
     <meta name="twitter:description" content="おけもんのノウハウ図書館の記事から生まれた、リベのみんなの作品を紹介する棚です。" />
     <meta name="twitter:image" content="https://okemonogatari-hash.github.io/html-share-box/community-works/assets/community-cover.jpg" />
     <meta name="twitter:image:alt" content="みんなの作ってみたが集まる作品棚" />
-    <link rel="stylesheet" href="style.css?v=20260930-4" />
+    <link rel="stylesheet" href="style.css?v=20260930-5" />
     <script src="config.js" defer></script>
-    <script src="app.js?v=20260930-4" defer></script>
+    <script src="app.js?v=20260930-5" defer></script>
   </head>
   <body>
     <header class="hero">
@@ -54,6 +54,31 @@
           <p class="section-note">投稿で共有された作品を紹介しています。気になった作品から、作者や元の投稿へ。</p>
         </div>
         <p class="load-state" id="load-state" role="status" aria-live="polite">作品を読み込み中…</p>
+        <div class="works-toolbar" aria-label="作品を探す・投稿する">
+          <div class="works-controls">
+            <div class="works-control">
+              <label for="works-sort">並び順</label>
+              <select id="works-sort" aria-controls="works-grid">
+                <option value="newest">新しい順</option>
+                <option value="author">作者名順</option>
+                <option value="oldest">古い順</option>
+              </select>
+            </div>
+            <div class="works-control">
+              <label for="works-author">作者・紹介者</label>
+              <select id="works-author" aria-controls="works-grid">
+                <option value="">すべての作者・紹介者</option>
+              </select>
+            </div>
+          </div>
+          <div class="works-toolbar-action">
+            <p class="works-count" id="works-count" role="status" aria-live="polite">作品を読み込み中…</p>
+            <button class="toolbar-post-button" id="toolbar-show-submit" type="button" aria-controls="submit-panel" aria-expanded="false">
+              作品を投稿する <span aria-hidden="true">＋</span>
+            </button>
+          </div>
+        </div>
+        <p class="works-encouragement">初めての1本も、途中の試作も、作り直しも歓迎。</p>
         <div class="works-grid" id="works-grid" aria-busy="true"></div>
         <div class="more-works-row" id="more-works-row" hidden>
           <button class="more-works-button" id="more-works" type="button">もっと見る</button>
@@ -173,11 +198,29 @@
               <small id="description-error" class="field-error" hidden></small>
             </div>
           </div>
+          <details class="optional-links">
+            <summary>元の投稿やプレビュー画像があれば追加する（任意）</summary>
+            <div class="optional-links-grid">
+              <div class="form-field">
+                <label for="source-url-input">元のつぶやき・チャットURL</label>
+                <input id="source-url-input" name="sourceUrl" type="url" inputmode="url" maxlength="2048" placeholder="https://…" aria-describedby="source-url-help source-url-error" />
+                <small class="field-help" id="source-url-help">リベシティのチャット投稿かつぶやきのURLが分かる場合だけ入力してください。</small>
+                <small class="field-error" id="source-url-error" hidden></small>
+              </div>
+              <div class="form-field">
+                <label for="poster-input">プレビュー画像URL</label>
+                <input id="poster-input" name="poster" type="url" inputmode="url" maxlength="2048" placeholder="https://…" aria-describedby="poster-help poster-error" />
+                <small class="field-help" id="poster-help">画像のURLが分かる場合だけ。GIFもプレビューに使えます。</small>
+                <small class="field-error" id="poster-error" hidden></small>
+              </div>
+            </div>
+            <p class="optional-links-note">どちらも空欄で投稿できます。画像やGIFがなくても作品を投稿できます。</p>
+          </details>
           <div class="consent-field">
             <input id="consent-input" name="consent" type="checkbox" required aria-describedby="consent-help consent-error" />
             <div>
-              <label for="consent-input">私は自分の作品を投稿します。この棚のURLを知っている人に、投稿内容・作品URL・リベのプロフィールアイコンを共有します。</label>
-              <small id="consent-help" class="field-help">投稿すると、この棚に作品名・作者名・URL・説明・アイコン画像が表示されます。投稿したブラウザから取り下げられます。ブラウザの保存データを消すと、取り下げ情報も消えます。</small>
+              <label for="consent-input">私は自分の作品を投稿します。この棚のURLを知っている人に、投稿内容・作品URL・任意で追加した元投稿URLやプレビュー画像URL・リベのプロフィールアイコンを共有します。</label>
+              <small id="consent-help" class="field-help">投稿すると、この棚に作品名・作者名・URL・説明・アイコン画像と、入力した場合は元投稿URL・プレビュー画像が表示されます。投稿したブラウザから取り下げられます。ブラウザの保存データを消すと、取り下げ情報も消えます。</small>
               <small id="consent-error" class="field-error" hidden></small>
             </div>
           </div>

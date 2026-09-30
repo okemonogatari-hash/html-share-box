@@ -3,6 +3,9 @@
 
   const grid = document.getElementById("works-grid");
   const loadState = document.getElementById("load-state");
+  const countSummary = document.getElementById("works-count");
+  const authorFilter = document.getElementById("works-author");
+  const sortSelect = document.getElementById("works-sort");
   const moreRow = document.getElementById("more-works-row");
   const moreButton = document.getElementById("more-works");
   const panel = document.getElementById("submit-panel");
@@ -13,12 +16,18 @@
   const promptStatus = document.getElementById("prompt-status");
   const showManualFormButton = document.getElementById("show-manual-form");
   const backToAiPromptButton = document.getElementById("back-to-ai-prompt");
-  const openButtons = [document.getElementById("show-submit"), document.getElementById("hero-show-submit")].filter(Boolean);
+  const openButtons = [
+    document.getElementById("show-submit"),
+    document.getElementById("hero-show-submit"),
+    document.getElementById("toolbar-show-submit"),
+  ].filter(Boolean);
   const form = document.getElementById("submit-form");
   const submitButton = document.getElementById("submit-button");
   const submitStatus = document.getElementById("submit-status");
   const apiNotice = document.getElementById("api-notice");
   const profileInput = document.getElementById("profile-input");
+  const sourceUrlInput = document.getElementById("source-url-input");
+  const posterInput = document.getElementById("poster-input");
   const workUrlInput = document.getElementById("work-url-input");
   const workUrlField = document.getElementById("work-url-field");
   const fileUploadFields = document.getElementById("file-upload-fields");
@@ -45,6 +54,8 @@
   let activeUploadRecord = null;
   let uploadUiRecords = [];
   let formBusy = false;
+  let activeAuthorId = "";
+  let activeSort = "newest";
 
   function element(tag, className, text) {
     const node = document.createElement(tag);
@@ -76,10 +87,11 @@
       "",
       "## 作品情報を確認する",
       "- 現在の会話と作業コンテキストから、作品名・作品URLまたは手元のMP4/HTMLファイル・どんなふうに作ったかの説明を整理してください。確認できた情報を本人に聞き直さず、分からない項目だけ確認してください。",
-      "- 作者名とリベのプロフィールURLが確認できない場合も、上の不足項目とまとめて一度に本人へ質問してください。推測で補わないでください。プロフィールURLは https://libecity.com/user_profile/<会員ID> の形式に限ります。",
+      "- 作者名とリベのプロフィールURLが確認できない場合は、会話内の情報、ユーザーが示したURL、または現在確認できる本人のライブプロフィールから取得してください。会員IDを推測・生成したり、無関係な検索結果から特定したりしてはいけません。確認できなければ不足項目とまとめて本人へ一度に質問してください。プロフィールURLは https://libecity.com/user_profile/<会員ID> の形式に限ります。",
       "- 作品URLがある場合は従来どおりURLで投稿できます。公開URLがなくても、ユーザー本人のローカルMP4または自己完結HTMLをこの棚のアップロードAPIへ直接送れます。MP4/HTMLが手元にある時は公開URLの作成を求めないでください。ローカルファイルが見つからない場合だけ、URLまたはファイルの場所を確認してください。",
+      "- 元のリベシティのつぶやき・チャットURL（sourceUrl）とプレビュー画像URL（poster）は任意です。sourceUrlは https://libecity.com/room_list または https://libecity.com/tweet/all のURLだけを、現在の会話や作業コンテキストで確認できる場合に使ってください。外部検索で探したり推測したりしないでください。不明でも投稿を止めず、本人に必須情報として質問しないでください。posterは確認できる公開HTTPS画像URLがある場合だけ使い、GIFも設定できます。GIFは作品ファイルそのものの代わりではなく任意のプレビューです。プロフィール画像とは別の項目です。",
       "- HTMLは依存する画像・音・CSS・JavaScriptを1ファイルにまとめます。外部CDN、外部fetch、evalを使うHTMLは投稿しません。MP4の再エンコードが必要なら、元ファイルを保持したうえで本人に確認してください。",
-      "- 公開されるのは作者名、プロフィールURL、プロフィール画像、作品名、作品URL、説明です。共有範囲はこの棚のURLを知る人です。これらを共有する依頼と矛盾がないことを確認してください。",
+      "- 公開されるのは作者名、プロフィールURL、プロフィール画像、作品名、作品URL、説明と、入力した場合は元投稿URL・プレビュー画像URLです。共有範囲はこの棚のURLを知る人です。これらを共有する依頼と矛盾がないことを確認してください。",
       "- ノウハウ図書館の記事や他の投稿から文章を引用せず、ユーザー本人の作品の説明だけを使ってください。プロフィールアイコンURLは送信不要です。",
       "",
       "## APIの共通条件",
@@ -89,7 +101,7 @@
       "- URL投稿の重複とみなすのは、同じリベプロフィール会員IDかつ正規化した作品URLが一致するときだけです。作品URLはURLとして正規化しますが、path・query・fragmentは意味を保ち、www.や末尾スラッシュも一律には変えません。utm_*等の明らかな計測用queryのみ除けます。YouTubeは youtu.be/<ID>、youtube.com/watch?v=<ID>、youtube.com/shorts/<ID> を同じ動画IDとして比べます。作者名や作品名だけでは重複扱いしません。seed/APIのどちらかに一致する掲載があればPOSTせず、そのカードを案内してください。",
       "",
       "## HTTPS作品URLを投稿する場合",
-      "1. 重複がなく、必須項目と公開意図が確認できたら POST <APIベースURL>/api/works を呼びます。Content-Type は application/json。body は author, profile, title, workUrl, description, consent:true のJSONです。アイコンはプロフィールから取得されます。author/titleは各100字以内、descriptionは1〜500字、workUrlはHTTPS、profileは指定形式を守ってください。",
+      "1. 重複がなく、必須項目と公開意図が確認できたら POST <APIベースURL>/api/works を呼びます。Content-Type は application/json。body は author, profile, title, workUrl, description, consent:true を含むJSONです。sourceUrlとposterは確認済みのHTTPS URLがある場合だけ任意で含めます。アイコンはプロフィールから取得されます。author/titleは各100字以内、descriptionは1〜500字、workUrlはHTTPS、profileは指定形式を守ってください。",
       "2. curlまたはPythonなど利用できるHTTP手段を使います。CloudflareでPython既定User-Agentが403になる場合は、User-Agentに curl/8.7.1 を明示するか、curlを使ってください。409なら再投稿せず、seedと全GETページを再確認します。一致が見つかれば既存カードを案内し、見つからなければ競合として報告します。",
       "3. POSTが201で {work, deleteToken} を返したら、token値を画面・チャット・コマンド出力・ログへ絶対に出さず、apiUrl・work.id・tokenを作業フォルダとGit管理の外にあるローカル秘密ファイルへ保存します。ディレクトリは所有者のみアクセス可能（chmod 700相当）、ファイルは所有者だけ読み書き可能（chmod 600相当）にし、保存後に読み戻して一致を確認してください。tokenを含む応答JSON全体は表示しません。",
       "4. 秘密ファイルへの保存または権限確認に失敗したら、受け取ったtokenで直ちに DELETE <APIベースURL>/api/works/<work.id> を呼び、GETでも作品が消えたことを確かめてください。token保存後はOrigin付きGETを読み直し、work.idが掲載されていることを確認します。",
@@ -97,7 +109,7 @@
       "## 手元のMP4/HTMLファイルを投稿する場合",
       "1. 形式と大きさを確認します。MP4は video/mp4 で20MiB以下、HTML/HTMは text/html で2MiB以下、0 byteは不可です。作品名など必須情報と本人の投稿意図を確認します。HTMLは外部CDN・外部fetch・evalを使わず、必要な素材とコードを1ファイルにまとめます。",
       "2. tokenと再開に必要な情報を、作業フォルダとGit管理の外にある秘密ディレクトリ（chmod 700相当）と秘密ファイル（chmod 600相当）へ保存する準備を先に整えます。",
-      "3. POST <APIベースURL>/api/uploads に Content-Type: application/json で {author,profile,title,description,consent:true,fileName,fileType:'mp4'|'html',fileSize} を送り、201の {id,workId,deleteToken,uploadUrl,publishUrl,statusUrl,expiresAt} を受け取ります。idはupload-UUID、workIdは公開後のcommunity-UUIDです。tokenを含む応答は表示しません。apiUrl、id、workId、token、各URL、期限、ファイル名・形式・サイズを秘密ファイルへ保存し、権限と読み戻しの一致を確認してから次へ進みます。秘密保存に失敗した場合は、受け取ったtokenで直ちに DELETE <APIベースURL>/api/uploads/<id> を呼んで準備を取り消し、以降のPUTをしません。",
+      "3. POST <APIベースURL>/api/uploads に Content-Type: application/json で {author,profile,title,description,consent:true,fileName,fileType:'mp4'|'html',fileSize} を送り、確認済みのsourceUrlとposterがあれば任意で同じbodyに含めます。201の {id,workId,deleteToken,uploadUrl,publishUrl,statusUrl,expiresAt} を受け取ります。idはupload-UUID、workIdは公開後のcommunity-UUIDです。tokenを含む応答は表示しません。apiUrl、id、workId、token、各URL、期限、ファイル名・形式・サイズを秘密ファイルへ保存し、権限と読み戻しの一致を確認してから次へ進みます。秘密保存に失敗した場合は、受け取ったtokenで直ちに DELETE <APIベースURL>/api/uploads/<id> を呼んで準備を取り消し、以降のPUTをしません。",
       "4. 同じupload id・tokenのまま PUT <uploadUrl> へファイルの生バイナリを送ります。Content-TypeはMP4なら video/mp4、HTMLなら text/html。AuthorizationとOriginを付け、multipart/form-dataやbase64にはしません。200 {state:'ready'} を確認した後、POST <publishUrl> をBearer付きで呼びます。公開APIでは準備した情報からworkが作られ、201または再試行時200で {work} が返ります。work.idが準備時workIdと同じことを確かめます。",
       "5. 保存後はOrigin付きGET <APIベースURL>/api/works を読み直し、同じidのworkが掲載されたことを確認します。公開URLはAPIが返すwork.workUrlを使います。ファイル投稿で公開URLの作成を本人に求めないでください。",
       "6. PUTやpublishの通信が不確かな時は、秘密ファイルの同じstatusUrlをBearer付きGETして状態を確認します。続ける時も同じupload id・uploadUrl・publishUrlを使い、準備POSTを作り直しません。readyならpublishだけを再試行します。pendingなら同じファイル名・形式・サイズを確認して同じuploadUrlへ再試行します。uploadingとretryAfterSecondsが返ったら指定秒数待ってstatusUrlを再確認し、readyまたはpendingへ変わるまで重ねてPUTしません。期限切れは404/410で確認して報告します。",
@@ -126,6 +138,31 @@
       return url.protocol === "https:" ? url.href : "";
     } catch (_) {
       return "";
+    }
+  }
+
+  function isPublicHttpsUrl(value) {
+    if (typeof value !== "string" || !value.trim()) return false;
+    try {
+      const url = new URL(value.trim());
+      const hostname = url.hostname;
+      return url.protocol === "https:"
+        && !url.username && !url.password && !url.port
+        && hostname.includes(".")
+        && !/^(localhost|127\.|0\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.)/.test(hostname)
+        && !hostname.includes(":");
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function sourceUrlAllowed(value) {
+    if (!isPublicHttpsUrl(value)) return false;
+    try {
+      const url = new URL(value.trim());
+      return url.hostname === "libecity.com" && ["/room_list", "/tweet/all"].includes(url.pathname);
+    } catch (_) {
+      return false;
     }
   }
 
@@ -315,6 +352,18 @@
     body.append(author);
 
     const actions = element("div", "card-actions");
+    const memberId = profileMemberId(work.profile);
+    if (memberId) {
+      const authorWorksButton = element("button", "author-filter-button", "この作者の作品を見る");
+      authorWorksButton.type = "button";
+      authorWorksButton.setAttribute("aria-pressed", String(activeAuthorId === memberId));
+      authorWorksButton.addEventListener("click", () => {
+        activeAuthorId = memberId;
+        renderWorks("");
+        authorFilter.focus({ preventScroll: true });
+      });
+      actions.append(authorWorksButton);
+    }
     const workLink = externalLink(work.workUrl, "work-link", "作品を見る");
     if (workLink) actions.append(workLink);
     const sourceLink = externalLink(work.sourceUrl, "source-link", work.sourceLabel || "元の投稿を見る");
@@ -374,6 +423,107 @@
     return uniqueWorks(preferred, apiWorks, seedWorks);
   }
 
+  function profileMemberId(value) {
+    if (typeof value !== "string" || !value.trim()) return "";
+    try {
+      const url = new URL(value.trim());
+      if (url.protocol !== "https:" || url.hostname !== "libecity.com" || url.port || url.username || url.password || url.search || url.hash) return "";
+      const segments = url.pathname.split("/").filter(Boolean);
+      if (segments.length !== 2 || segments[0] !== "user_profile") return "";
+      const id = decodeURIComponent(segments[1]).trim();
+      return id && !/[/?#]/.test(id) ? id.normalize("NFC") : "";
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function workAuthorName(work) {
+    return typeof work.author === "string" && work.author.trim() ? work.author.trim() : "作者";
+  }
+
+  function workDateValue(work) {
+    if (typeof work.date !== "string" || !work.date.trim()) return null;
+    const value = Date.parse(work.date.trim());
+    return Number.isFinite(value) ? value : null;
+  }
+
+  function sortWorksByDate(works, direction) {
+    return works.map((work, index) => ({ work, index, date: workDateValue(work) }))
+      .sort((left, right) => {
+        if (left.date === null && right.date !== null) return 1;
+        if (left.date !== null && right.date === null) return -1;
+        if (left.date !== null && right.date !== null && left.date !== right.date) {
+          return direction === -1 ? right.date - left.date : left.date - right.date;
+        }
+        return left.index - right.index;
+      })
+      .map((entry) => entry.work);
+  }
+
+  function authorGroupsFor(works) {
+    const groups = new Map();
+    for (const work of works) {
+      const id = profileMemberId(work.profile);
+      if (!id) continue;
+      let group = groups.get(id);
+      if (!group) {
+        group = { id, works: [], representativeName: workAuthorName(work), representativeDate: null };
+        groups.set(id, group);
+      }
+      group.works.push(work);
+      const date = workDateValue(work);
+      if (date !== null && (group.representativeDate === null || date > group.representativeDate)) {
+        group.representativeDate = date;
+        group.representativeName = workAuthorName(work);
+      }
+    }
+    const collator = new Intl.Collator("ja", { sensitivity: "base", numeric: true });
+    return Array.from(groups.values()).sort((left, right) =>
+      collator.compare(left.representativeName, right.representativeName) || left.id.localeCompare(right.id));
+  }
+
+  function updateAuthorFilterOptions(groups) {
+    const allOption = element("option", "", "すべての作者・紹介者");
+    allOption.value = "";
+    authorFilter.replaceChildren(allOption);
+    for (const group of groups) {
+      const option = element("option", "", `${group.representativeName}（${group.works.length}作品）`);
+      option.value = group.id;
+      authorFilter.append(option);
+    }
+    if (activeAuthorId && !groups.some((group) => group.id === activeAuthorId)) activeAuthorId = "";
+    authorFilter.value = activeAuthorId;
+    sortSelect.value = activeSort;
+  }
+
+  function visibleWorksFor(works, groups) {
+    if (activeAuthorId) {
+      const group = groups.find((item) => item.id === activeAuthorId);
+      return group ? sortWorksByDate(group.works, activeSort === "oldest" ? 1 : -1) : [];
+    }
+    if (activeSort === "author") {
+      const groupedIds = new Set(groups.flatMap((group) => group.works.map(workId)));
+      const collator = new Intl.Collator("ja", { sensitivity: "base", numeric: true });
+      const ungrouped = works.map((work, index) => ({ work, index, date: workDateValue(work) }))
+        .filter((entry) => !groupedIds.has(workId(entry.work)))
+        .sort((left, right) => collator.compare(workAuthorName(left.work), workAuthorName(right.work))
+          || (left.date === null && right.date !== null ? 1 : 0)
+          || (left.date !== null && right.date === null ? -1 : 0)
+          || (left.date !== null && right.date !== null ? right.date - left.date : 0)
+          || left.index - right.index)
+        .map((entry) => entry.work);
+      return [...groups.flatMap((group) => sortWorksByDate(group.works, -1)), ...ungrouped];
+    }
+    return sortWorksByDate(works, activeSort === "oldest" ? 1 : -1);
+  }
+
+  function updateCountSummary(works, groups, visible) {
+    const parts = [`読み込み済み：${works.length}作品・${groups.length}人の作者・紹介者`, `表示中：${visible.length}作品`];
+    const selected = groups.find((group) => group.id === activeAuthorId);
+    if (selected) parts.push(`この作者の作品：${selected.works.length}件`);
+    countSummary.textContent = `${parts.join(" ／ ")}。`;
+  }
+
   function setLoadMessage(message) {
     if (!message) {
       loadState.hidden = true;
@@ -386,10 +536,15 @@
 
   function renderWorks(message) {
     const works = orderedWorks();
-    grid.replaceChildren(...works.map(makeCard));
+    const groups = authorGroupsFor(works);
+    updateAuthorFilterOptions(groups);
+    const visibleWorks = visibleWorksFor(works, groups);
+    grid.replaceChildren(...visibleWorks.map(makeCard));
     grid.setAttribute("aria-busy", "false");
+    updateCountSummary(works, groups, visibleWorks);
     if (message) setLoadMessage(message);
     else if (!works.length) setLoadMessage("掲載作品はまだありません。");
+    else if (!visibleWorks.length) setLoadMessage("条件に合う作品はありません。");
     else setLoadMessage("");
     moreRow.hidden = !apiBaseUrl || !nextCursor;
     moreButton.disabled = loadingMore;
@@ -659,11 +814,7 @@
     else if (typeof value === "string" && field.maxLength > 0 && value.length > field.maxLength) message = `${label}は${field.maxLength}字以内で入力してください。`;
     else if (value && rules.profile && !validProfileUrl(value)) message = "https://libecity.com/user_profile/会員ID のURLを入力してください。";
     else if (value && rules.https) {
-      try {
-        if (new URL(value).protocol !== "https:") message = `https:// で始まる${label}を入力してください。`;
-      } catch (_) {
-        message = `有効な${label}を入力してください。`;
-      }
+      if (!isPublicHttpsUrl(value)) message = `公開されている有効なHTTPSの${label}を入力してください。`;
     }
     setFieldError(field, errorId, message);
     return !message;
@@ -757,6 +908,18 @@
         if (!firstInvalid) firstInvalid = field;
       }
     }
+    if (!validateField(sourceUrlInput, "source-url-error", "元の投稿URL", { https: true })) {
+      valid = false;
+      if (!firstInvalid) firstInvalid = sourceUrlInput;
+    } else if (sourceUrlInput.value.trim() && !sourceUrlAllowed(sourceUrlInput.value)) {
+      setFieldError(sourceUrlInput, "source-url-error", "元の投稿URLにはリベシティのチャット投稿かつぶやきのURLを入力してください。");
+      valid = false;
+      if (!firstInvalid) firstInvalid = sourceUrlInput;
+    }
+    if (!validateField(posterInput, "poster-error", "プレビュー画像URL", { https: true })) {
+      valid = false;
+      if (!firstInvalid) firstInvalid = posterInput;
+    }
     if (currentEntryMode() === "url") {
       if (!validateField(workUrlInput, "work-url-error", "作品URL", { required: true, https: true })) {
         valid = false;
@@ -783,9 +946,27 @@
     field.addEventListener(field.type === "checkbox" ? "change" : "input", update);
   }
 
+  sourceUrlInput.addEventListener("input", () => {
+    if (sourceUrlInput.getAttribute("aria-invalid") === "true") validateSourceUrl();
+  });
+  posterInput.addEventListener("input", () => {
+    if (posterInput.getAttribute("aria-invalid") === "true") validateField(posterInput, "poster-error", "プレビュー画像URL", { https: true });
+  });
+
+  function validateSourceUrl() {
+    if (!validateField(sourceUrlInput, "source-url-error", "元の投稿URL", { https: true })) return false;
+    if (sourceUrlInput.value.trim() && !sourceUrlAllowed(sourceUrlInput.value)) {
+      setFieldError(sourceUrlInput, "source-url-error", "元の投稿URLにはリベシティのチャット投稿かつぶやきのURLを入力してください。");
+      return false;
+    }
+    return true;
+  }
+
   function clearFieldErrors() {
     for (const [field, errorId] of validation) setFieldError(field, errorId, "");
     setFieldError(workUrlInput, "work-url-error", "");
+    setFieldError(sourceUrlInput, "source-url-error", "");
+    setFieldError(posterInput, "poster-error", "");
     setFileError("");
   }
 
@@ -854,8 +1035,21 @@
     if (lastOpener) lastOpener.focus();
   }
 
+  function cardForWork(id) {
+    let card = document.getElementById(cardId(id));
+    if (!card) {
+      const target = orderedWorks().find((work) => workId(work) === String(id));
+      if (target) {
+        activeAuthorId = profileMemberId(target.profile);
+        renderWorks("");
+        card = document.getElementById(cardId(id));
+      }
+    }
+    return card;
+  }
+
   function revealWork(id) {
-    const card = document.getElementById(cardId(id));
+    const card = cardForWork(id);
     if (!card) return;
     const fragment = cardId(id);
     try {
@@ -871,7 +1065,7 @@
     if (!window.location.hash.startsWith("#work-")) return;
     let id = window.location.hash.slice(1);
     try { id = decodeURIComponent(id); } catch (_) { /* leave the literal fragment */ }
-    const card = document.getElementById(id);
+    const card = cardForWork(id);
     if (card) card.scrollIntoView({ block: "center" });
   }
 
@@ -903,7 +1097,7 @@
     activeUploadRecord = record || null;
     const lockFields = [
       document.getElementById("author-input"), profileInput, document.getElementById("title-input"),
-      document.getElementById("description-input"), consentInput,
+      document.getElementById("description-input"), sourceUrlInput, posterInput, consentInput,
       ...Array.from(form.querySelectorAll('input[name="entryMode"]')),
     ];
     for (const field of lockFields) field.disabled = Boolean(activeUploadRecord);
@@ -912,6 +1106,8 @@
       profileInput.value = activeUploadRecord.profile;
       document.getElementById("title-input").value = activeUploadRecord.title;
       document.getElementById("description-input").value = activeUploadRecord.description;
+      sourceUrlInput.value = activeUploadRecord.sourceUrl || "";
+      posterInput.value = activeUploadRecord.poster || "";
       consentInput.checked = true;
       form.querySelector('input[name="entryMode"][value="file"]').checked = true;
       updateEntryMode();
@@ -1237,13 +1433,18 @@
   }
 
   function formValues() {
-    return {
+    const values = {
       author: document.getElementById("author-input").value.trim(),
       profile: profileInput.value.trim(),
       title: document.getElementById("title-input").value.trim(),
       description: document.getElementById("description-input").value.trim(),
       consent: true,
     };
+    const sourceUrl = sourceUrlInput.value.trim();
+    const poster = posterInput.value.trim();
+    if (sourceUrl) values.sourceUrl = safeHttpsUrl(sourceUrl) || sourceUrl;
+    if (poster) values.poster = safeHttpsUrl(poster) || poster;
+    return values;
   }
 
   async function submitFileWork() {
@@ -1472,6 +1673,14 @@
   }
   document.getElementById("close-submit").addEventListener("click", closeSubmitPanel);
   document.getElementById("cancel-submit").addEventListener("click", closeSubmitPanel);
+  authorFilter.addEventListener("change", () => {
+    activeAuthorId = authorFilter.value;
+    renderWorks("");
+  });
+  sortSelect.addEventListener("change", () => {
+    activeSort = sortSelect.value;
+    renderWorks("");
+  });
   copyPromptButton.addEventListener("click", copyAiPrompt);
   showManualFormButton.addEventListener("click", showManualEntry);
   backToAiPromptButton.addEventListener("click", () => {
