@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="color-scheme" content="light">
+<title>LINE予約が、こうやってアプリになっていく</title>
+<style>
+:root{
+  --paper:#fbf7ee;
+  --card:#ffffff;
+  --ink:#2a2622;
+  --sub:#574f46;
+  --line:#e3d9c6;
+  --green:#1b6f45;
+  --green-soft:#e4f3e8;
+  --green-mid:#bfe3cb;
+  --orange:#a94a1c;
+  --orange-soft:#fdeee2;
+  --yellow:#fff1b3;
+  --blue:#255f8f;
+  --blue-soft:#e6f0f8;
+  --gray-soft:#ecebe8;
+  --gray-ink:#4a4744;
+  --shadow:0 2px 0 rgba(42,38,34,.06),0 8px 24px rgba(42,38,34,.06);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fbf7ee;background:var(--paper);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;
+  font-size:17px;line-height:1.85;letter-spacing:.02em;overflow-wrap:anywhere;line-break:strict}
+a{color:var(--blue);text-underline-offset:3px}
+img,svg{max-width:100%}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.read{max-width:760px}
+section{padding:40px 0 8px}
+h1,h2,h3,h4,.sub,.fig-title,.st-cap b,.node b,.checks .q b,.trio .kc .l,.split td:first-child,.road b{text-wrap:balance;word-break:auto-phrase}
+h2{font-size:clamp(23px,5.4vw,32px);line-height:1.45;margin:0 0 14px;letter-spacing:.03em}
+h3{font-size:20px;line-height:1.5;margin:30px 0 10px}
+p{margin:0 0 14px}
+.kicker{display:inline-block;font-size:16px;font-weight:700;color:var(--green);background:var(--green-soft);border-radius:999px;padding:4px 14px;margin-bottom:10px}
+.lead{font-size:18px;color:var(--sub)}
+.note{font-size:16px;color:var(--sub)}
+.cap{font-size:16px;color:var(--sub);margin:10px 0 0;padding-left:12px;border-left:4px solid var(--green-mid)}
+strong{font-weight:700}
+.ib{display:inline-block}
+mark{background:linear-gradient(transparent 55%,var(--yellow) 55%);color:inherit;padding:0 2px}
+
+/* 表紙 */
+.cover{padding-top:28px;padding-bottom:18px}
+.cover .to{font-size:16px;color:var(--sub);margin:0 0 12px}
+.sister{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:8px 18px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-weight:700;font-size:16px;text-decoration:none;margin:0 0 18px;border:2px solid #c9dcec}
+.cover .card{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:30px 22px 26px;position:relative;overflow:hidden}
+.cover .card::before{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:var(--green-soft)}
+.cover .card::after{content:"";position:absolute;right:40px;bottom:-70px;width:150px;height:150px;border-radius:50%;background:var(--orange-soft)}
+.cover h1{position:relative;z-index:1;font-size:clamp(30px,8vw,52px);line-height:1.35;margin:0 0 12px;letter-spacing:.02em}
+.cover .sub{position:relative;z-index:1;font-size:clamp(18px,4.4vw,22px);color:var(--green);font-weight:700;margin:0 0 18px}
+.cover .meta{position:relative;z-index:1;font-size:16px;color:var(--sub);margin:0}
+.toc{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 0;padding:0;list-style:none}
+.toc a{display:flex;align-items:center;min-height:48px;padding:8px 16px;border-radius:999px;background:var(--card);border:2px solid var(--line);color:var(--ink);text-decoration:none;font-size:16px;font-weight:700}
+.toc a span{color:var(--green);margin-right:6px}
+
+/* 図の枠 */
+.fig{background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:20px 16px;margin:18px 0 6px}
+.fig-title{font-size:18px;font-weight:700;margin:0 0 12px;color:var(--ink)}
+
+/* 1 作り方の4段 */
+.road{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.road li{border-radius:18px;padding:16px 16px 14px;position:relative;border:2px solid var(--line);background:#fffdf8}
+.road li + li{margin-top:34px}
+.road li + li::before{content:"";position:absolute;left:50%;top:-26px;border-left:10px solid transparent;border-right:10px solid transparent;border-top:14px solid var(--ink);transform:translateX(-50%);opacity:.55}
+.road li + li::after{content:"";position:absolute;left:50%;top:-32px;width:4px;height:10px;background:var(--ink);opacity:.55;transform:translateX(-50%)}
+.road .rn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;font-weight:700;font-size:18px;margin-right:8px;vertical-align:middle}
+.road b{font-size:19px;vertical-align:middle}
+.road p{font-size:16px;color:var(--sub);margin:8px 0 0;line-height:1.65}
+.road .tag{display:inline-block;font-size:16px;font-weight:700;border-radius:999px;padding:2px 12px;margin-top:10px}
+.road .done{background:var(--green-soft);border-color:var(--green-mid)}
+.road .done .tag{background:var(--card);color:var(--green)}
+.road .here{background:var(--green-soft);border-color:var(--green);border-width:3px}
+.road .here .tag{background:var(--yellow);color:var(--ink)}
+.road .next{border-style:dashed;background:var(--card)}
+.road .next .rn{background:var(--card);color:var(--orange);border:3px solid var(--orange)}
+.road .next .tag{background:var(--orange-soft);color:var(--orange)}
+@media (min-width:820px){
+  .road{flex-direction:row;gap:36px}
+  .road li{flex:1 1 0;min-width:0}
+  .road .rn{display:flex;margin:0 0 8px}
+  .road b{display:block}
+  .road li + li{margin-top:0}
+  .road li + li::before{left:-26px;top:50%;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:14px solid var(--ink);border-right:0;transform:translateY(-50%)}
+  .road li + li::after{left:-34px;top:50%;width:10px;height:4px;transform:translateY(-50%)}
+}
+
+/* LINE画面モック */
+.phone{width:100%;max-width:340px;margin:0 auto;border:10px solid #2c2c2c;border-radius:40px;background:#e9eef3;overflow:hidden;box-shadow:var(--shadow)}
+.phone .bar{background:#fff;padding:12px 16px;font-weight:700;font-size:17px;border-bottom:1px solid #d7dde3;display:flex;align-items:center;gap:10px;line-height:1.4}
+.phone .bar i{display:inline-block;width:34px;height:34px;border-radius:50%;background:var(--green-soft);border:2px solid var(--green-mid);flex:none}
+.phone .bar i.o{background:var(--orange-soft);border-color:#f2d2bb}
+.phone .talk{padding:16px 14px 18px;min-height:180px}
+.bubble{background:#fff;border-radius:18px;border-top-left-radius:4px;padding:12px 14px;font-size:17px;line-height:1.6;max-width:92%;margin:0 0 10px}
+.bubble.me{background:#c9efb4;margin-left:auto;border-radius:18px;border-top-right-radius:4px;width:fit-content}
+.bubble .hitokoto{display:block;margin-top:8px;padding:8px 10px;border-radius:10px;background:var(--orange-soft);color:var(--ink);font-size:16px}
+.bubble .hitokoto b{color:var(--orange);font-size:16px;display:block}
+.sys{font-size:16px;color:var(--sub);text-align:center;margin:0 0 10px}
+.qr{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px 12px;background:#e9eef3;border-top:1px dashed #c6cfd8}
+.qr span{display:inline-flex;align-items:center;min-height:44px;padding:6px 14px;border-radius:999px;background:#fff;border:2px solid var(--green-mid);color:var(--green);font-weight:700;font-size:16px;line-height:1.3}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;background:#fff;border-top:1px solid #d7dde3}
+.menu div{min-height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:19px;line-height:1.3;padding:6px}
+.menu .m1{grid-column:1/3;min-height:78px;background:var(--green);color:#fff;font-size:22px}
+.menu .m2{background:var(--green-soft);color:var(--green);border:2px solid var(--green-mid)}
+.menu .m3{background:var(--orange-soft);color:var(--orange);border:2px solid #f2d2bb}
+.tap{outline:4px solid var(--orange);outline-offset:2px}
+@media (max-width:359px){.menu div{font-size:16px}.menu .m1{font-size:20px}.phone .talk{padding:14px 10px 16px}}
+.menu .m1.tap{outline-color:#e0892f}
+.finger{margin-right:4px}
+.tcard{background:#fff;border-radius:16px;overflow:hidden;max-width:92%;margin:0 0 10px}
+.tcard .tt{padding:12px 14px 10px;font-size:17px;line-height:1.55}
+.tcard .tt b{display:block;color:var(--orange)}
+.tcard .tb.tap{outline:0;box-shadow:inset 0 0 0 4px var(--orange)}
+.tcard .tb{display:flex;align-items:center;justify-content:center;min-height:46px;border-top:1px solid #dfe4e9;color:var(--blue);font-weight:700;font-size:17px}
+
+/* 状態の切り替え（JSが動くと1枚ずつ。動かなくても全部が縦に読める） */
+.flow-tabs{display:none;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.flow-tabs button,.flow-nav button{font:inherit;font-size:16px;font-weight:700;min-height:48px;padding:6px 16px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.flow-tabs button[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.flow-nav{display:none;justify-content:space-between;gap:10px;margin:16px 0 0}
+.flow-nav button:disabled{opacity:.45;cursor:default}
+.js-ready .flow-tabs,.js-ready .flow-nav{display:flex}
+.states{list-style:none;margin:0;padding:0;display:grid;gap:28px}
+.js-ready .states .state:not(.on){display:none}
+.state{display:grid;gap:18px;align-items:center}
+.st-cap{margin:0}
+.st-cap .cnt{display:inline-block;font-size:16px;font-weight:700;background:var(--orange-soft);color:var(--orange);border-radius:999px;padding:2px 12px;margin-bottom:6px}
+.st-cap b{display:block;font-size:21px;line-height:1.5;margin:0 0 8px}
+.st-cap span{display:block;font-size:17px;color:var(--sub);line-height:1.75}
+@media (min-width:820px){.state{grid-template-columns:minmax(0,1fr) 340px}.state .phone{order:2}}
+.tally{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0}
+.tally div{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:10px 16px;font-size:16px;color:var(--sub)}
+.tally b{display:block;font-size:26px;color:var(--green);line-height:1.3}
+
+/* 小さなモック2つ（変更・電話） */
+.pair{display:grid;gap:18px;margin:14px 0 0}
+@media (min-width:820px){.pair{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pair .box .phone{margin-top:10px}
+
+/* 院長の3コマ */
+.trio{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column}
+.trio > li{position:relative}
+.trio > li + li{margin-top:44px}
+.trio > li + li::before{content:"";position:absolute;left:50%;top:-32px;border-left:12px solid transparent;border-right:12px solid transparent;border-top:16px solid var(--ink);transform:translateX(-50%);opacity:.55}
+.trio .kc{font-size:18px;font-weight:700;margin:0 0 10px;display:flex;justify-content:center;align-items:center;gap:8px;line-height:1.45}
+.trio .kc .n{flex:none;display:inline-flex;width:32px;height:32px;border-radius:50%;background:var(--orange);color:#fff;align-items:center;justify-content:center;font-size:17px}
+.trio .kc .l{min-width:0}
+.trio .kc.g .n{background:var(--green)}
+@media (min-width:980px){
+  .trio{flex-direction:row;gap:40px;align-items:flex-start}
+  .trio > li{flex:1 1 0;min-width:0}
+  .trio > li + li{margin-top:0}
+  .trio > li + li::before{left:-30px;top:200px;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:16px solid var(--ink);border-right:0;transform:none}
+}
+
+/* カード列 */
+.cards{display:grid;gap:14px;margin:14px 0 0}
+@media (min-width:820px){.cards.c3{grid-template-columns:repeat(3,minmax(0,1fr))}.cards.c2{grid-template-columns:repeat(2,minmax(0,1fr))}.cards.c4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1000px){.cards.c4{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.box{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:18px 18px 14px}
+.box h4{font-size:19px;line-height:1.5;margin:0 0 8px}
+.box .pill{display:inline-block;font-size:16px;font-weight:700;border-radius:999px;padding:2px 12px;margin:0 0 8px;background:var(--green-soft);color:var(--green)}
+.box .pill.o{background:var(--orange-soft);color:var(--orange)}
+.box .pill.b{background:var(--blue-soft);color:var(--blue)}
+.box ul{margin:0;padding-left:1.2em}
+.box li{margin:0 0 6px}
+.box p{font-size:17px}
+.box p:last-child{margin-bottom:0}
+
+/* 台帳 */
+.sheet{border:2px solid #cfd8cf;border-radius:14px;overflow:hidden;background:#fff}
+.sheet table{width:100%;border-collapse:collapse;font-size:16px;line-height:1.55}
+.sheet th{background:#eef3ee;text-align:left;font-weight:700;padding:10px 10px;border-bottom:2px solid #cfd8cf;white-space:nowrap}
+.sheet td{padding:10px 10px;border-bottom:1px solid #e3e8e3;vertical-align:top}
+.sheet tr.kari td{background:#fff9dc}
+.sheet tr.kakutei td{background:#f1f9f3}
+.sheet tr.cancel td{background:#f5f4f2;color:var(--gray-ink)}
+.chip{display:inline-block;font-weight:700;border-radius:999px;padding:1px 10px;white-space:nowrap}
+.chip.k{background:var(--yellow);color:var(--ink);border:1px solid #e6cf6a}
+.chip.t{background:var(--green-mid);color:#10462b}
+.chip.c{background:var(--gray-soft);color:var(--gray-ink);border:1px solid #cfccc6}
+.tabs{display:flex;flex-wrap:wrap;gap:0;background:#eef3ee;border-top:2px solid #cfd8cf}
+.tabs span{font-size:16px;padding:8px 14px;border-right:1px solid #cfd8cf;color:var(--sub)}
+.tabs span.on{background:#fff;color:var(--green);font-weight:700}
+@media (max-width:760px){
+  .sheet thead{display:none}
+  .sheet tr{display:block;border-bottom:2px solid #cfd8cf;padding:6px 0}
+  .sheet td{display:grid;grid-template-columns:6.8em minmax(0,1fr);gap:8px;border:0;padding:4px 12px}
+  .sheet td::before{content:attr(data-l);font-weight:700;color:var(--sub)}
+  .sheet td .chip{justify-self:start;white-space:normal}
+}
+
+/* 仕組みの絵 */
+.arch{display:grid;gap:0;justify-items:stretch}
+.node{background:#fffdf8;border:2px solid var(--line);border-radius:18px;padding:14px 16px}
+.node b{display:block;font-size:19px;line-height:1.45}
+.node small{display:block;font-size:16px;color:var(--sub);line-height:1.6;margin-top:4px}
+.node .ic{font-size:26px;line-height:1;margin-bottom:6px;display:block}
+.node.line{background:var(--green-soft);border-color:var(--green-mid)}
+.node.gas{background:var(--blue-soft);border-color:#c9dcec}
+.node.sh{background:#f1f9f3;border-color:var(--green-mid)}
+.people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.arr{display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;font-size:16px;color:var(--sub);font-weight:700}
+.arr i{font-style:normal;font-size:28px;color:var(--ink);opacity:.6;line-height:1}
+.arr .h{display:none}
+@media (min-width:980px){
+  .arch{grid-template-columns:minmax(0,1.1fr) 76px minmax(0,1fr) 76px minmax(0,1fr) 76px minmax(0,1fr);align-items:center}
+  .node{padding:12px 12px}
+  .node b{font-size:17px}
+  .arr span{white-space:nowrap}
+  .people{grid-template-columns:1fr}
+  .arr{flex-direction:column;gap:2px;min-height:0;text-align:center}
+  .arr .v{display:none}
+  .arr .h{display:inline}
+}
+.also{margin:14px 0 0;background:var(--card);border-radius:16px;padding:12px 16px;border:2px dashed var(--green-mid);font-size:17px}
+
+/* 通数メーター */
+.meter{display:flex;height:34px;border-radius:10px;overflow:hidden;border:2px solid var(--ink);margin:6px 0 12px}
+.meter span{height:100%}
+.meter .a{width:20%;background:var(--green)}
+.meter .b{width:20%;background:#4f9a6f}
+.meter .c{width:10%;background:#e0892f}
+.meter .d{width:20%;background:repeating-linear-gradient(45deg,#f5c9a4 0 8px,#fdeee2 8px 16px)}
+.meter .e{width:30%;background:#fff}
+.legend{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.legend li{display:flex;gap:10px;align-items:flex-start;font-size:17px;line-height:1.55}
+.legend i{flex:none;width:22px;height:22px;border-radius:6px;border:2px solid var(--ink);margin-top:3px}
+.legend .a{background:var(--green)}.legend .b{background:#4f9a6f}.legend .c{background:#e0892f}
+.legend .d{background:repeating-linear-gradient(45deg,#f5c9a4 0 5px,#fdeee2 5px 10px)}.legend .e{background:#fff}
+.scale{display:flex;justify-content:space-between;font-size:16px;color:var(--sub);margin-top:-6px}
+
+/* 10問チェック */
+.checks{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+@media (min-width:900px){.checks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.checks label{display:flex;gap:14px;align-items:flex-start;background:var(--card);border-radius:16px;padding:14px 16px;min-height:56px;cursor:pointer;box-shadow:var(--shadow);height:100%}
+.checks input{flex:none;width:28px;height:28px;margin:4px 0 0;accent-color:#1b6f45}
+.checks .q{display:block}
+.checks .q b{display:block;font-size:18px;line-height:1.55}
+.checks .q .now{display:block;font-size:16px;margin-top:6px;line-height:1.65}
+.checks .q .now em{font-style:normal;font-weight:700;color:var(--green)}
+.checks .q .if{display:block;font-size:16px;color:var(--sub);margin-top:4px;line-height:1.65}
+.checks .q .if em{font-style:normal;font-weight:700;color:var(--orange)}
+.checks input:checked + .q b{text-decoration:line-through;text-decoration-color:var(--green-mid);text-decoration-thickness:3px}
+
+/* ロードマップ */
+.who-key{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 6px}
+.w{display:inline-flex;align-items:center;gap:4px;font-size:16px;font-weight:700;border-radius:999px;padding:1px 10px;white-space:nowrap;line-height:1.6}
+.w.i{background:var(--orange-soft);color:var(--orange)}
+.w.c{background:var(--blue-soft);color:var(--blue)}
+.w.o{background:var(--green-soft);color:var(--green)}
+.demo{background:var(--green);color:#fff;border-radius:24px;padding:22px 20px;margin:18px 0 6px;box-shadow:var(--shadow)}
+.demo .dk{display:inline-block;background:var(--yellow);color:var(--ink);font-weight:700;font-size:16px;border-radius:999px;padding:2px 12px;margin:0 0 8px}
+.demo h3{margin:0 0 8px;font-size:clamp(21px,5vw,27px);color:#fff}
+.demo p{margin:0 0 8px;font-size:17px}
+.demo p:last-child{margin:0}
+.chap{display:grid;gap:14px;margin:18px 0 0}
+@media (min-width:900px){.chap{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ch{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:16px 16px 10px;border-top:8px solid var(--green-mid)}
+.ch.lab{border-top-color:#e0892f}
+.ch.later{border-top-color:var(--line);background:#fffdf8}
+.ch .chn{font-size:16px;font-weight:700;color:var(--sub);margin:0}
+.ch h4{font-size:20px;line-height:1.45;margin:2px 0 4px}
+.ch .why{font-size:16px;color:var(--sub);margin:0 0 8px;line-height:1.65}
+.tasks{list-style:none;margin:0;padding:0}
+.tasks li{display:grid;grid-template-columns:3.2em minmax(0,1fr);gap:4px 8px;padding:10px 0;border-top:1px dashed var(--line);font-size:16px;line-height:1.65}
+.tasks .tn{font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
+.tasks .ws{grid-column:2;display:flex;flex-wrap:wrap;gap:6px}
+.tasks li.ms{background:var(--yellow);border-radius:12px;padding:10px 8px;border-top:0;margin:4px 0}
+.tasks li.ms .tn{color:var(--ink)}
+.flag{display:inline-block;font-weight:700;color:var(--orange)}
+
+/* 1週間 */
+.week{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:12px}
+.week li{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:14px 16px;border-left:8px solid var(--green-mid)}
+.week li.hot{border-left-color:#e0892f;background:#fffaf2}
+.week .d{display:block;font-size:20px;font-weight:700;color:var(--green)}
+.week li.hot .d{color:var(--orange)}
+.week .t{display:block;font-size:16px;font-weight:700;color:var(--sub);margin:2px 0 6px}
+.week p{font-size:16px;line-height:1.7;margin:0}
+@media (min-width:980px){
+  .week{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .week li{border-left:0;border-top:8px solid var(--green-mid)}
+  .week li.hot{border-top-color:#e0892f}
+}
+
+/* 味気ない */
+.voices{display:grid;gap:16px;margin:14px 0 0}
+@media (min-width:900px){.voices{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.voice-card{background:#e9eef3;border-radius:22px;padding:16px 14px}
+.voice-card .vn{font-size:16px;font-weight:700;color:var(--green);margin:0 0 8px}
+.voice-card .bubble{max-width:100%}
+.split{width:100%;border-collapse:separate;border-spacing:0 8px;font-size:17px;line-height:1.6}
+.split th{font-size:16px;color:var(--sub);text-align:left;padding:0 10px}
+.split td{background:var(--card);padding:12px 12px;vertical-align:top}
+.split td:first-child{border-radius:14px 0 0 14px;font-weight:700}
+.split td:last-child{border-radius:0 14px 14px 0}
+.split .y{color:var(--green);font-weight:700}
+.split .m{color:var(--orange);font-weight:700}
+@media (max-width:640px){
+  .split thead{display:none}
+  .split tr{display:block;background:var(--card);border-radius:14px;margin:0 0 10px;padding:8px 4px}
+  .split td{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:8px;background:none;padding:4px 10px;border-radius:0!important}
+  .split td::before{content:attr(data-l);font-weight:700;color:var(--sub);font-size:16px}
+  .split td:first-child{display:block;font-size:18px}
+  .split td:first-child::before{content:none}
+}
+
+/* 出典・未確認 */
+.src{list-style:none;margin:10px 0 0;padding:0}
+.src li{padding:10px 0;border-bottom:1px dashed var(--line);font-size:16px;line-height:1.65}
+.src a{display:inline-flex;align-items:center;min-height:44px;padding:0 2px}
+.unk{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px}
+.unk li{background:var(--card);border-radius:14px;padding:12px 16px;font-size:16px;line-height:1.7;border:1px solid var(--line)}
+.unk li b{color:var(--orange)}
+.unk li .how{display:block;color:var(--sub);margin-top:4px}
+
+footer{padding:40px 0 56px;text-align:center;color:var(--sub);font-size:16px}
+footer .sign{font-size:20px;font-weight:700;color:var(--ink);margin:0 0 4px}
+.top-link{display:inline-flex;align-items:center;min-height:48px;padding:6px 20px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;font-weight:700;margin:0 6px 18px}
+</style>
+</head>
+<body>
+
+<header class="wrap cover" id="top">
+  <p class="to">ちーちゃんへ。前に渡した資料の、続きの1枚です。</p>
+  <a class="sister" href="https://okemonogatari-hash.github.io/html-share-box/friend-share-g-94animn4JnYCGRlc.html">1枚目（提案）はこちら　→</a>
+  <div class="card">
+    <h1>LINE予約が、<br>こうやって<span class="ib">アプリに</span><span class="ib">なっていく</span></h1>
+    <p class="sub">仮の仕様書と、実装のタスクリスト</p>
+    <p class="meta">2026年9月30日　おけもん</p>
+  </div>
+  <ul class="toc" aria-label="もくじ">
+    <li><a href="#s1"><span>1</span>作り方の4段</a></li>
+    <li><a href="#s2"><span>2</span>おばあちゃんの画面</a></li>
+    <li><a href="#s3"><span>3</span>院長さんの画面</a></li>
+    <li><a href="#s4"><span>4</span>台帳</a></li>
+    <li><a href="#s5"><span>5</span>しくみ</a></li>
+    <li><a href="#s6"><span>6</span>院長さんに聞く10問</a></li>
+    <li><a href="#s7"><span>7</span>作る順番</a></li>
+    <li><a href="#s8"><span>8</span>味気なくしない</a></li>
+    <li><a href="#s9"><span>9</span>安全のこと</a></li>
+    <li><a href="#s10"><span>10</span>まだ分からないこと</a></li>
+  </ul>
+</header>
+
+<main>
+
+<!-- 1 作り方の4段 -->
+<section class="wrap" id="s1">
+  <span class="kicker">1　作り方の4段</span>
+  <h2>アプリは、この4段でできあがっていきます</h2>
+  <p class="read">いきなりプログラムを書くのではなく、紙の上で「何のために・何を・どの順で」を決めてから作ります。家を建てる時に、柱より先に間取り図を描くのと同じで、紙の段階なら何度でも消しゴムで直せます。いまは3段目まで紙ができたところで、次がいよいよ作る段です。</p>
+  <div class="fig" role="group" aria-label="作り方の4段の図">
+    <ol class="road">
+      <li class="done"><span class="rn">1</span><b>リーンキャンバス</b>
+        <p>困りごと・お客さん・届けたい価値を1枚にまとめる紙。1枚目の資料に載せたものです。</p>
+        <span class="tag">済み</span></li>
+      <li class="done"><span class="rn">2</span><b>仕様書</b>
+        <p>画面に出る言葉、ボタンの数、台帳の列まで決めた設計図です。</p>
+        <span class="tag">済み（仮）</span></li>
+      <li class="here"><span class="rn">3</span><b>タスクリスト</b>
+        <p>設計図を、半日以内で終わる作業45個に切り分けたものです。</p>
+        <span class="tag">いまここ</span></li>
+      <li class="next"><span class="rn">4</span><b>AIと一緒に実装</b>
+        <p>タスクを上から1つずつ、AIと一緒に作って動かします。</p>
+        <span class="tag">つぎ</span></li>
+    </ol>
+  </div>
+  <p class="cap">2段目と3段目は、院長さんのお話をまだ聞けていないので「たぶんこうだろう」という仮の答えで書いています。6章の10問で、本当の答えに置き換えていきます。</p>
+</section>
+
+<!-- 2 おばあちゃんの画面 -->
+<section class="wrap" id="s2">
+  <span class="kicker">2　おばあちゃんの画面</span>
+  <h2>ボタンを3回押すだけで、次の予約が送れます</h2>
+  <p class="read">お客さんが使うのは、ふだんのLINEのトーク画面だけです。文字は1文字も打ちません。下の画面は、80歳の常連さんが施術のあとに「いつもの火曜10時」を予約する流れです。<mark>オレンジの枠がついたボタン</mark>が、その時に押すボタンです。</p>
+
+  <div class="fig" data-flow role="group" aria-label="お客さんの予約の流れ">
+    <p class="fig-title">予約の流れ（4つの場面）</p>
+    <div class="flow-tabs" aria-label="場面をえらぶ">
+      <button type="button">① 予約する</button>
+      <button type="button">② いつもの</button>
+      <button type="button">③ はい、送る</button>
+      <button type="button">④ 返事がくる</button>
+    </div>
+    <ol class="states">
+      <li class="state">
+        <p class="st-cap"><span class="cnt">押すのは1回目</span><b>画面の下の「予約する」を押します</b><span>トーク画面の下には、いつも大きなボタンが3つ出ています（LINEでは「リッチメニュー」と呼ぶ機能です）。いちばん大きいのが「予約する」です。</span></p>
+        <div class="phone" aria-label="LINEの画面の例：リッチメニュー">
+          <div class="bar"><i></i>○○整体</div>
+          <div class="talk">
+            <p class="sys">10月5日（月） 14:30</p>
+            <div class="bubble">山田さん、きょうもおつかれさまでした。次の予約は、下の「予約する」からどうぞ。</div>
+          </div>
+          <div class="menu" aria-label="画面下の3つのボタン">
+            <div class="m1 tap"><span class="finger" aria-hidden="true">👆</span>予約する</div>
+            <div class="m2">変更・<br>キャンセル</div>
+            <div class="m3">電話する</div>
+          </div>
+        </div>
+      </li>
+      <li class="state">
+        <p class="st-cap"><span class="cnt">押すのは2回目</span><b>「いつもの」を押します</b><span>「次はいつにしますか？」と聞かれ、トークの下に丸いボタンが並びます。いちばん左のボタンは、院長さんが台帳に入れておいた「いつもの曜日と時間」です。明日・あさって・別の日も選べます。</span></p>
+        <div class="phone" aria-label="LINEの画面の例：日をえらぶ">
+          <div class="bar"><i></i>○○整体</div>
+          <div class="talk">
+            <div class="bubble me">予約する</div>
+            <div class="bubble">次はいつにしますか？</div>
+          </div>
+          <div class="qr" aria-label="丸いボタン">
+            <span class="tap"><span class="finger" aria-hidden="true">👆</span>いつもの（火曜 10時）</span>
+            <span>明日</span><span>あさって</span><span>別の日</span><span>やめる</span>
+          </div>
+        </div>
+      </li>
+      <li class="state">
+        <p class="st-cap"><span class="cnt">押すのは3回目</span><b>日付を見て「はい、送る」を押します</b><span>日付は「10月6日（火）」のように、月・日・曜日を全部書いて見せます。「明日っていつだっけ」と数えなくて済むようにするためです。違っていたら「やりなおす」で戻れます。</span></p>
+        <div class="phone" aria-label="LINEの画面の例：確認">
+          <div class="bar"><i></i>○○整体</div>
+          <div class="talk">
+            <div class="bubble me">いつもの（火曜 10時）</div>
+            <div class="bubble"><b>10月6日（火）10時</b> でお願いします。これで送りますか？</div>
+          </div>
+          <div class="qr" aria-label="丸いボタン">
+            <span class="tap"><span class="finger" aria-hidden="true">👆</span>はい、送る</span>
+            <span>やりなおす</span>
+          </div>
+        </div>
+      </li>
+      <li class="state">
+        <p class="st-cap"><span class="cnt">あとは待つだけ</span><b>「受け付けました」と届き、院長さんの返事を待ちます</b><span>ここではまだ「仮の予約」です。院長さんが施術の合間にOKを押すと、院長さんのひとこと入りの確定の返事が届きます（次の章）。返事が遅くても、予約は消えません。</span></p>
+        <div class="phone" aria-label="LINEの画面の例：受付と確定">
+          <div class="bar"><i></i>○○整体</div>
+          <div class="talk">
+            <div class="bubble me">はい、送る</div>
+            <div class="bubble">受け付けました。院長が確認して、すぐ返事します。返事が来るまで何もしなくて大丈夫です。</div>
+            <p class="sys">15:10</p>
+            <div class="bubble">山田さん、10月6日（火）10時、お待ちしてます。<span class="hitokoto"><b>院長のひとこと</b>先週の腰、ぼちぼちですか？</span></div>
+          </div>
+        </div>
+      </li>
+    </ol>
+    <div class="flow-nav">
+      <button type="button" data-prev>← まえの場面</button>
+      <button type="button" data-next>つぎの場面 →</button>
+    </div>
+  </div>
+
+  <div class="tally" aria-label="この予約でしたこと">
+    <div><b>3回</b>押したボタン</div>
+    <div><b>0文字</b>打った文字</div>
+    <div><b>0個</b>入れたアプリ</div>
+  </div>
+
+  <h3>予定が変わった時と、電話したい時も同じ形です</h3>
+  <div class="pair">
+    <div class="box">
+      <span class="pill">変更・キャンセル</span>
+      <h4>「変更・キャンセル」を押すと、いまの予約が出ます</h4>
+      <p>「キャンセルする／別の日にする／そのまま」から選びます。キャンセルは「よろしいですか？」ともう一度聞いてから取り消して、院長さんにも知らせます。</p>
+      <div class="phone" aria-label="LINEの画面の例：変更・キャンセル">
+        <div class="bar"><i></i>○○整体</div>
+        <div class="talk">
+          <div class="bubble me">変更・キャンセル</div>
+          <div class="bubble">いまの予約：<b>10月6日（火）10時</b>。どうしますか？</div>
+        </div>
+        <div class="qr" aria-label="丸いボタン"><span>キャンセルする</span><span>別の日にする</span><span>そのまま</span></div>
+      </div>
+    </div>
+    <div class="box">
+      <span class="pill o">電話する</span>
+      <h4>迷ったら、いつでも「電話する」で院に電話できます</h4>
+      <p>右下の「電話する」は、どの場面でも画面の下に出ています。押した先は電話アプリで、いつもの番号にそのままつながる作りです。開かないスマホのために、番号も文字で返します。</p>
+      <div class="phone" aria-label="LINEの画面の例：電話する">
+        <div class="bar"><i></i>○○整体</div>
+        <div class="talk">
+          <div class="bubble">電話番号：06-xxxx-xxxx（押すとかかります）</div>
+          <p class="sys">電話アプリがひらきます</p>
+        </div>
+        <div class="menu" aria-label="画面下の3つのボタン">
+          <div class="m1">予約する</div>
+          <div class="m2">変更・<br>キャンセル</div>
+          <div class="m3 tap"><span class="finger" aria-hidden="true">👆</span>電話する</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 院長の画面 -->
+<section class="wrap" id="s3">
+  <span class="kicker">3　院長さんの画面</span>
+  <h2>院長さんは、施術の合間にOKを押すだけです</h2>
+  <p class="read">予約が入ると、院長さんのLINEにボタン付きの知らせが届きます。受付の机にそっと置かれたメモみたいなもので、電話と違って施術中に鳴りっぱなしにはならず、手が空いた時に見れば間に合います。OKを押す前にひとこと打っておけば、それがそのまま確定の返事に載る仕組みです。</p>
+
+  <div class="fig" role="group" aria-label="院長さんがOKしてお客さんに届くまで">
+    <ol class="trio">
+      <li>
+        <p class="kc"><span class="n">1</span><span class="l">院長さんに知らせが届く</span></p>
+        <div class="phone" aria-label="院長さんのLINE：仮予約の知らせ">
+          <div class="bar"><i class="o"></i>○○整体（院長用）</div>
+          <div class="talk">
+            <div class="tcard">
+              <div class="tt"><b>【仮予約】</b>山田花子さん<br>10/6（火）10時</div>
+              <div class="tb">OK</div>
+              <div class="tb">別の日を提案</div>
+              <div class="tb">電話する</div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <p class="kc"><span class="n">2</span><span class="l">ひとこと打って、OKを押す</span></p>
+        <div class="phone" aria-label="院長さんのLINE：ひとことを打ってOK">
+          <div class="bar"><i class="o"></i>○○整体（院長用）</div>
+          <div class="talk">
+            <div class="bubble me">先週の腰、ぼちぼちですか？</div>
+            <div class="tcard">
+              <div class="tt"><b>【仮予約】</b>山田花子さん<br>10/6（火）10時</div>
+              <div class="tb tap"><span class="finger" aria-hidden="true">👆</span>OK</div>
+              <div class="tb">別の日を提案</div>
+              <div class="tb">電話する</div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <p class="kc g"><span class="n">3</span><span class="l">お客さんに確定の返事が届く</span></p>
+        <div class="phone" aria-label="お客さんのLINE：確定の返事">
+          <div class="bar"><i></i>○○整体</div>
+          <div class="talk">
+            <div class="bubble">山田さん、10月6日（火）10時、お待ちしてます。<span class="hitokoto"><b>院長のひとこと</b>先週の腰、ぼちぼちですか？</span></div>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </div>
+  <p class="cap">ひとことは空でもかまいません。打たなければ、決まった文だけが届きます。</p>
+
+  <div class="cards c2">
+    <div class="box">
+      <span class="pill o">その日は埋まっている時</span>
+      <h4>「別の日を提案」で、院長さんが候補を打ちます</h4>
+      <p>たとえば「10/7（水）10時か、10/8（木）の午後なら空いてます」。お客さんには「それでいい／電話する」の2つのボタンが出て、「それでいい」を押せば確定です。</p>
+    </div>
+    <div class="box">
+      <span class="pill b">施術が立てこんだ時</span>
+      <h4>1時間返事がなければ、院長さんにだけもう一度知らせます</h4>
+      <p>お客さんには何も送りません。仮の予約は台帳に残ったままなので、遅れても予約が消えることはありません。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 台帳 -->
+<section class="wrap" id="s4">
+  <span class="kicker">4　台帳のイメージ</span>
+  <h2>LINEの予約も電話の予約も、1枚の表に並びます</h2>
+  <p class="read">台帳はGoogleのスプレッドシート1冊です。LINEの予約は自動で1行増え、電話で受けた予約は院長さんがスマホのフォームで打ちます。紙の手帳と、スマホのメモと、LINEの履歴に散らばっていた予約が、ここ1か所にまとまります。</p>
+  <div class="fig" role="group" aria-label="スプレッドシートの予約シートの例">
+    <p class="fig-title">シート「予約」の例（10月5日 午後の様子）</p>
+    <div class="sheet">
+      <table>
+        <thead><tr><th>予約ID</th><th>受付</th><th>経路</th><th>お名前</th><th>希望日・時間</th><th>状態</th><th>院長のひとこと</th></tr></thead>
+        <tbody>
+          <tr class="cancel"><td data-l="予約ID">R2026-0139</td><td data-l="受付">10/3 18:20</td><td data-l="経路">LINE</td><td data-l="お名前">鈴木さん</td><td data-l="希望日・時間">10/6（火）午後</td><td data-l="状態"><span class="chip c">キャンセル</span></td><td data-l="院長のひとこと">―</td></tr>
+          <tr class="kakutei"><td data-l="予約ID">R2026-0141</td><td data-l="受付">10/4 09:10</td><td data-l="経路">LINE</td><td data-l="お名前">佐藤さん</td><td data-l="希望日・時間">10/8（木）11:00</td><td data-l="状態"><span class="chip t">確定</span></td><td data-l="院長のひとこと">膝の調子、また聞かせてね</td></tr>
+          <tr class="kakutei"><td data-l="予約ID">R2026-0142</td><td data-l="受付">10/5 13:50</td><td data-l="経路">電話</td><td data-l="お名前">田中さん</td><td data-l="希望日・時間">10/7（水）午前</td><td data-l="状態"><span class="chip t">確定</span></td><td data-l="院長のひとこと">―</td></tr>
+          <tr class="kari"><td data-l="予約ID">R2026-0143</td><td data-l="受付">10/5 14:32</td><td data-l="経路">LINE</td><td data-l="お名前">山田花子さん</td><td data-l="希望日・時間">10/6（火）10:00</td><td data-l="状態"><span class="chip k">仮（OK待ち）</span></td><td data-l="院長のひとこと">（OKの時に入る）</td></tr>
+        </tbody>
+      </table>
+      <div class="tabs" aria-label="シートの一覧"><span class="on">予約</span><span>客</span><span>設定</span><span>着信</span><span>週次</span><span>実験A</span></div>
+    </div>
+  </div>
+  <p class="cap">色は黄色＝仮、緑＝確定、灰色＝キャンセルです。色が見分けにくくても分かるように、状態は必ず文字でも書きます。</p>
+  <div class="cards c3">
+    <div class="box"><span class="pill">客</span><p>お客さんごとの「いつもの曜日・時間」。これが「いつもの」ボタンの中身になります。本名は院長さんが入れます。</p></div>
+    <div class="box"><span class="pill">設定</span><p>営業日、電話番号、返事の文面、今月送った通数。ここを変えれば、プログラムを触らずに文面を直せます。</p></div>
+    <div class="box"><span class="pill o">着信・週次・実験A</span><p>効き目を測るためのシートです。施術中の電話の回数や、おばあちゃんが一人でできたかを記録します。</p></div>
+  </div>
+</section>
+
+<!-- 5 しくみ -->
+<section class="wrap" id="s5">
+  <span class="kicker">5　しくみの絵</span>
+  <h2>裏では、4つの無料の道具がつながって動きます</h2>
+  <p class="read">お客さんと院長さんが触るのはLINEだけです。院の中で言えば、LINE公式アカウントが受付の窓口、Googleの無料の小さなプログラムが受付係、スプレッドシートが予約帳にあたります。借りるサーバーも、月々の支払いもありません。</p>
+  <div class="fig" role="group" aria-label="しくみの図">
+    <div class="arch">
+      <div class="people">
+        <div class="node line"><span class="ic" aria-hidden="true">📱</span><b>お客さんのLINE</b><small>ボタンを押すだけ</small></div>
+        <div class="node line"><span class="ic" aria-hidden="true">📱</span><b>院長さんのLINE</b><small>OKを押す・ひとこと</small></div>
+      </div>
+      <div class="arr" aria-hidden="true"><i class="v">⇅</i><i class="h">⇄</i><span>やりとり</span></div>
+      <div class="node line"><span class="ic" aria-hidden="true">💬</span><b>LINE公式<wbr>アカウント</b><small>院の窓口。無料プラン</small></div>
+      <div class="arr" aria-hidden="true"><i class="v">⇅</i><i class="h">⇄</i><span>知らせる</span></div>
+      <div class="node gas"><span class="ic" aria-hidden="true">⚙️</span><b>Google Apps Script</b><small>受付係のプログラム。台帳の中で動く</small></div>
+      <div class="arr" aria-hidden="true"><i class="v">⇅</i><i class="h">⇄</i><span>書く・読む</span></div>
+      <div class="node sh"><span class="ic" aria-hidden="true">📋</span><b>スプレッドシート</b><small>唯一の台帳。院長さんもスマホで開ける</small></div>
+    </div>
+    <p class="also">院長さんは、台帳のスプレッドシートもスマホのアプリで直接開けます。電話の予約はフォームから、ここに1行足します。</p>
+  </div>
+
+  <h3>月0円で回る理由</h3>
+  <div class="cards c4">
+    <div class="box"><span class="pill">その1</span><p>LINE公式アカウントには<strong>月0円のプラン</strong>があり、院から送る知らせが月200通まで無料です。</p></div>
+    <div class="box"><span class="pill">その2</span><p>お客さんがボタンを押した時の<strong>その場の返事は、通数に数えません</strong>。数えるのは院から先に送る知らせだけです。</p></div>
+    <div class="box"><span class="pill">その3</span><p>数えるのは1つの予約で<strong>2通</strong>。院長さんへの知らせ1通と、お客さんへの確定の返事1通です。</p></div>
+    <div class="box"><span class="pill">その4</span><p>月に40件の予約なら<strong>80通</strong>。Googleのプログラムとスプレッドシートも無料で使えます。</p></div>
+  </div>
+  <div class="fig" role="group" aria-label="月200通の使いみちの見込み">
+    <p class="fig-title">月200通の使いみち（月40予約の見込み）</p>
+    <div class="meter" aria-hidden="true"><span class="a"></span><span class="b"></span><span class="c"></span><span class="d"></span><span class="e"></span></div>
+    <div class="scale" aria-hidden="true"><span>0通</span><span>100通</span><span>200通</span></div>
+    <ul class="legend">
+      <li><i class="a"></i><span>院長さんへの知らせ　40通</span></li>
+      <li><i class="b"></i><span>お客さんへの確定の返事　40通</span></li>
+      <li><i class="c"></i><span>1時間返事がない時の再通知　20通くらい</span></li>
+      <li><i class="d"></i><span>前日のお知らせ（あとで足す機能）　40通まで</span></li>
+      <li><i class="e"></i><span>余り　60通くらい。150通を超えそうな月は、院長さんへの知らせを無料のメールに切り替えます</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 6 10問 -->
+<section class="wrap" id="s6">
+  <span class="kicker">6　ちーちゃんが院長さんに聞く10問</span>
+  <h2>この10問の答えで、設計図が本物になります</h2>
+  <p class="read">いまの設計図は、10問すべてに「たぶんこう」という仮の答えを置いて書いています。聞けた問いからチェックを入れてください。<mark>仮の答えと違っていたら、それが一番ありがたい情報</mark>です。どこを直せばいいかも、あわせて書いておきました。</p>
+  <ul class="checks">
+    <li><label><input type="checkbox"><span class="q"><b>1. 1日の予約は何件？ 施術中の電話は何回くらい？</b><span class="now"><em>いまの仮の答え</em>　予約8〜12件、施術中の電話は2〜3回</span><span class="if"><em>外れたら</em>　電話が0〜1回なら困りごとは小さめ。「電話がどれだけ減ったか」の目標を見直します</span></span></label></li>
+    <li><label><input type="checkbox"><span class="q"><b>2. 電話の用件で多いのは？</b><span class="now"><em>いまの仮の答え</em>　変更・キャンセル＞当日の連絡＞新しい予約</span><span class="if"><em>外れたら</em>　新しいお客さんが多ければ、「はじめての方」の入口を厚くします</span></span></label></li>
+    <li><label><input type="checkbox"><span class="q"><b>3. いまの予約台帳は？</b><span class="now"><em>いまの仮の答え</em>　紙の手帳1冊</span><span class="if"><em>外れたら</em>　もう予約アプリを使っているなら、スプレッドシートは作らずそれに合わせます</span></span></label></li>
+    <li><label><input type="checkbox"><span class="q"><b>4. LINEでやりとりしている常連さんは何人？ 院長さんのLINEは個人用？</b><span class="now"><em>いまの仮の答え</em>　10〜20人。個人のLINEで、院の公式アカウントはまだ無い</span><span class="if"><em>外れたら</em>　公式アカウントがもうあれば準備が3つ減ります。50人を超えるなら通数を計算し直します</span></span></label></li>
+    <li><label><input type="checkbox"><span class="q"><b>5. 「いつもの曜日・時間」で来る人はどのくらい？</b><span class="now"><em>いまの仮の答え</em>　7割</span><span class="if"><em>外れたら</em>　3割以下なら「いつもの」ボタンを外して、「明日／あさって／別の日」を上に出します</span></span></label></li>
+    <li><label><input type="checkbox"><span class="q"><b>6. 施術のメニューと時間は？</b><span class="now"><em>いまの仮の答え</em>　1種類・60分</span><span class="if"><em>外れたら</em>　メニューを選ぶ1手が増えます。お客さんごとに「いつものメニュー」を覚えさせて、3回以内を守ります</span></span></label></li>
+    <li><label><input type="checkbox"><span class="q"><b>7. ご家族が代わりに連絡してくることは？</b><span class="now"><em>いまの仮の答え</em>　月に数回ある</span><span class="if"><em>外れたら</em>　無ければ「ご家族の代理予約」をまるごと外します</span></span></label></li>
+    <li><label><input type="checkbox"><span class="q"><b>8. 自動の返事で、これは嫌という口調は？</b><span class="now"><em>いまの仮の答え</em>　「〜でございます」のような固い敬語は嫌。ふだんの話し言葉がいい</span><span class="if"><em>外れたら</em>　固い敬語がよければ、8章の受付文3案を書き直します</span></span></label></li>
+    <li><label><input type="checkbox"><span class="q"><b>9. 払えるのは、月にいくらまで？</b><span class="now"><em>いまの仮の答え</em>　まずは0円でお試し</span><span class="if"><em>外れたら</em>　払えるなら、LINEの月5,000円のプランも候補に戻します</span></span></label></li>
+    <li><label><input type="checkbox"><span class="q"><b>10. 電話の自動化は、どこまでならいい？</b><span class="now"><em>いまの仮の答え</em>　留守電の案内まではOK。AIの声で答えるのは、いまは無し</span><span class="if"><em>外れたら</em>　AIの声もOKなら、この先に4段目を足します。いまの設計はそのまま使えます</span></span></label></li>
+  </ul>
+  <p class="cap">チェックは、このページを開いている間だけ残ります。聞いた答えはメモして、おけもんに送ってください。</p>
+</section>
+
+<!-- 7 ロードマップ -->
+<section class="wrap" id="s7">
+  <span class="kicker">7　作る順番</span>
+  <h2>45個の作業を、7つのまとまりで進めます</h2>
+  <p class="read">45個と聞くと多く見えますが、1つは半日以内で終わる大きさです。料理のレシピで言うと「野菜を切る」「お湯をわかす」くらいまで刻んであります。誰がやるかも決めてあり、ちーちゃんの出番は主に「聞く」と「記録する」です。</p>
+  <div class="who-key" aria-label="担当の見かた">
+    <span class="w i">🙋 院長さん</span><span class="w c">🤝 ちーちゃん</span><span class="w o">🛠 おけもん</span>
+  </div>
+
+  <div class="demo">
+    <span class="dk">最初の見せ場</span>
+    <h3>デモ案1「押すだけ予約」は、T15までで材料がそろいます</h3>
+    <p>プログラムはまだ使いません。LINE公式アカウントに3つのボタンを置き、返事は院長さんが手で打つ版です。作る手間は半日ほどで、T16で院長さんのスマホを使って通しで見せられます。</p>
+    <p>院長さんへの聞き取り（T01〜T03）を待たずに、練習用のアカウントで先に組んでおけます。</p>
+  </div>
+
+  <div class="chap">
+    <div class="ch">
+      <p class="chn">0章　T01〜T08</p>
+      <h4>準備：聞き取り・アカウント・台帳</h4>
+      <p class="why">院長さんのお話を聞きながら、LINEの窓口と台帳の箱を用意します。</p>
+      <ol class="tasks">
+        <li><span class="tn">T01</span><span>院長さんに10問を聞き、仮の答えを本物に置き換える</span><span class="ws"><span class="w c">🤝</span></span></li>
+        <li><span class="tn">T02</span><span>いまの電話の数を、1週間「正」の字で数えはじめる</span><span class="ws"><span class="w i">🙋</span></span></li>
+        <li><span class="tn">T03</span><span>いまの紙の台帳の写真を1枚もらい、台帳の列と見比べる</span><span class="ws"><span class="w c">🤝</span></span></li>
+        <li><span class="tn">T04</span><span>院のLINE公式アカウントを無料プランでつくり、名前とアイコンを決める</span><span class="ws"><span class="w i">🙋</span><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T05</span><span>LINEの開発者向け画面で、プログラム用の入口を開き、鍵を控える</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T06</span><span>あいさつ文をオン、手で返すチャットをオンにする</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T07</span><span>練習用の公式アカウントをもう1つつくる（院のアカウントを壊さないため）</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T08</span><span>台帳のスプレッドシートをつくる。共有は院長さんとおけもんだけ</span><span class="ws"><span class="w o">🛠</span></span></li>
+      </ol>
+    </div>
+    <div class="ch">
+      <p class="chn">1章　T09〜T12</p>
+      <h4>土台：LINEと台帳をつなぐ</h4>
+      <p class="why">裏で受付係をするプログラムを置き、LINEからの知らせが届くかを確かめます。</p>
+      <ol class="tasks">
+        <li><span class="tn">T09</span><span>台帳にくっつくプログラム（Google Apps Script）を用意し、鍵を専用の保管場所へ入れる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T10</span><span>LINEからの知らせを受け取り、本物かどうかを確かめる部分をつくる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T11</span><span>練習用アカウントに話しかけて「受信しました」と返るか確かめる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T12</span><span>届いた出来事を、記録用のシートに1行ずつ残す</span><span class="ws"><span class="w o">🛠</span></span></li>
+      </ol>
+    </div>
+    <div class="ch">
+      <p class="chn">2章　T13〜T19</p>
+      <h4>段階1：大きな3つのボタンと、院長さんの手返し</h4>
+      <p class="why">プログラムを使わない版です。ここで院長さんに一度見てもらいます。</p>
+      <ol class="tasks">
+        <li><span class="tn">T13</span><span>ボタンの画像をつくる（大きな3区画・太い字・白地に黒）</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T14</span><span>3つのボタンを登録。「電話する」で電話がかかるかを、ここで確かめる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T15</span><span>あいさつ文を登録。受付文の3案を院長さんに読んでもらい、言わない言葉を消す</span><span class="ws"><span class="w o">🛠</span><span class="w i">🙋</span></span></li>
+        <li class="ms"><span class="tn">T16</span><span><span class="flag">デモ案1の完成</span>　院長さんのスマホで、友だち追加→3つのボタン→院長さんの口調で返す、を通しで1回</span><span class="ws"><span class="w o">🛠</span><span class="w c">🤝</span></span></li>
+        <li><span class="tn">T17</span><span>文字サイズを「特大」にして、どの文も崩れないか見る</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T18</span><span>院長さんに管理用のアプリを入れ、チャットで返す練習をする（5分）</span><span class="ws"><span class="w i">🙋</span><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T19</span><span>院内にQRコードを貼り、施術のあとに友だち追加を手伝う段取りを決める</span><span class="ws"><span class="w i">🙋</span></span></li>
+      </ol>
+    </div>
+    <div class="ch lab">
+      <p class="chn">3章　T20〜T24</p>
+      <h4>実験A：常連さん5人に、一人で予約してもらう</h4>
+      <p class="why">5人中4人が手助けなしで送れたら合格です。止まった場所があれば、そこを直してもう一度。</p>
+      <ol class="tasks">
+        <li><span class="tn">T20</span><span>常連さん5人（80歳前後を2人以上）を選び、日を決める</span><span class="ws"><span class="w i">🙋</span><span class="w c">🤝</span></span></li>
+        <li><span class="tn">T21</span><span>記録用のシートを用意する（年代、できたか、止まった所、かかった秒数）</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T22</span><span>本番。施術のあと「次の予約をこれで送ってみて」。院長さんは口を出さず、ちーちゃんが記録</span><span class="ws"><span class="w i">🙋</span><span class="w c">🤝</span></span></li>
+        <li><span class="tn">T23</span><span>受付文の3案を3人に読んでもらい、選ばれた案に決める</span><span class="ws"><span class="w c">🤝</span></span></li>
+        <li><span class="tn">T24</span><span>合格かどうかを判定し、だめなら直す場所ともう一度の日を決める</span><span class="ws"><span class="w o">🛠</span><span class="w c">🤝</span></span></li>
+      </ol>
+    </div>
+    <div class="ch">
+      <p class="chn">4章　T25〜T39</p>
+      <h4>段階2：仮予約・院長さんのOK・台帳を自動に</h4>
+      <p class="why">2章と3章の画面は、ここで作ります。いちばん作業が多いまとまりです。</p>
+      <ol class="tasks">
+        <li><span class="tn">T25</span><span>友だち追加で「客」シートに自動で登録。院長さんが本名と「いつもの」を入れる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T26</span><span>「予約する」で日の選択肢を出す。日付は「10月6日（火）」の形で見せる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T27</span><span>時間帯→確認（はい、送る／やりなおす）の流れをつくる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T28</span><span>「はい、送る」で台帳に仮の1行を足し、受付文を返す</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T29</span><span>院長さんに、OK／別の日を提案／電話する のボタン付きの知らせを送る</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T30</span><span>OKで確定にして、ひとこと入りの確定の返事を送る</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T31</span><span>「別の日を提案」の候補をお客さんへ届け、「それでいい」で確定にする</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T32</span><span>1時間返事がなければ、院長さんにだけもう一度知らせる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T33</span><span>変更・キャンセルの流れをつくり、院長さんにも知らせる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T34</span><span>電話で受けた予約を打つフォーム（名前・日・時間帯・メモ）をつくる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T35</span><span>月に送った通数を自動で数え、150通でメールに切り替えるスイッチをつける</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T36</span><span>ボタン以外の文字には「院長が見て返事します」だけ返し、院長さんに知らせる</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T37</span><span>練習用アカウントで、予約・OK・別の日・キャンセル・途中で放置、を通しで試す</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li class="ms"><span class="tn">T38</span><span><span class="flag">デモ案2</span>　院のアカウントに切り替えて、院長さんに見せる</span><span class="ws"><span class="w o">🛠</span><span class="w c">🤝</span></span></li>
+        <li><span class="tn">T39</span><span>鍵の置き場所・共有の範囲・1年で消す段取りを点検する</span><span class="ws"><span class="w o">🛠</span></span></li>
+      </ol>
+    </div>
+    <div class="ch lab">
+      <p class="chn">5章　T40〜T42</p>
+      <h4>実験B：2週間、台帳を1つにして回す</h4>
+      <p class="why">2週間で抜けが0〜1件、院長さんから「紙のほうが楽」が出なければ合格です。</p>
+      <ol class="tasks">
+        <li><span class="tn">T40</span><span>電話の予約はフォームで、LINEの予約は自動で台帳へ。2週間続ける（紙と並べて使ってよい）</span><span class="ws"><span class="w i">🙋</span></span></li>
+        <li><span class="tn">T41</span><span>毎週末、院長さんと台帳を見比べ、抜けやダブりを数える</span><span class="ws"><span class="w c">🤝</span></span></li>
+        <li><span class="tn">T42</span><span>2週間で判定。施術中の電話の数も、始める前と比べる</span><span class="ws"><span class="w o">🛠</span><span class="w c">🤝</span></span></li>
+      </ol>
+    </div>
+    <div class="ch later">
+      <p class="chn">6章　T43〜T45</p>
+      <h4>あとで：お知らせ・ご家族・留守電</h4>
+      <p class="why">2つの実験が合格してから足します。</p>
+      <ol class="tasks">
+        <li><span class="tn">T43</span><span>前日のお知らせ（予約した人にだけ1通。オン・オフを切り替えられる）</span><span class="ws"><span class="w o">🛠</span></span></li>
+        <li><span class="tn">T44</span><span>ご家族の代理予約（名前を入れてもらい、院長さんが1回だけ承認）</span><span class="ws"><span class="w o">🛠</span><span class="w i">🙋</span></span></li>
+        <li><span class="tn">T45</span><span>留守電の案内に「LINEでも予約できます」を入れる。院長さんが録音</span><span class="ws"><span class="w i">🙋</span></span></li>
+      </ol>
+    </div>
+  </div>
+
+  <h3>最初の1週間は、この順で動きます</h3>
+  <ol class="week">
+    <li><span class="d">月・火</span><span class="t">箱をつくる</span><p>アカウント2つ・鍵・台帳（T04 T05 T07 T08）。院長さんは電話の「正」の字を始め（T02）、ちーちゃんは10問を聞きに行きます（T01）。</p></li>
+    <li><span class="d">火・水</span><span class="t">ボタンをつくる</span><p>ボタンの画像・登録・文面（T13 T14 T15）。「電話する」で電話がかかるかを、ここで確かめます。</p></li>
+    <li class="hot"><span class="d">水・木</span><span class="t">デモ案1が動く</span><p>院長さんのスマホで通して、特大の文字でも見て、チャットで返す練習（T16 T17 T18）。</p></li>
+    <li><span class="d">木・金</span><span class="t">裏の配線</span><p>プログラムとLINEをつなぐ（T09〜T12）。10問の答えで、仮の答えを書きかえます。</p></li>
+    <li><span class="d">金・週末</span><span class="t">実験Aの支度</span><p>常連さん5人と日程、記録用のシート（T20 T21）。翌週の本番に向けて段取りを渡します。</p></li>
+  </ol>
+</section>
+
+<!-- 8 味気ない -->
+<section class="wrap" id="s8">
+  <span class="kicker">8　「味気ない」を残さない</span>
+  <h2>自動にするのは受付まで。最後は院長さんの言葉で返します</h2>
+  <p class="read">院長さんの「AI対応は味気ないからなぁ」には、返事の言葉を院長さんの口調にすることで応えます。まずは口調を変えて書いてみた受付文が、下の3つです。院長さんに選んでもらい、常連さんにも読んでもらって決めます。</p>
+  <div class="voices">
+    <div class="voice-card"><p class="vn">案1　ていねい寄り</p><div class="bubble">予約、受け付けました。院長が確認して、すぐお返事しますね。返事が来るまで何もしなくて大丈夫です。</div></div>
+    <div class="voice-card"><p class="vn">案2　いつもの調子</p><div class="bubble">はいはい、10月6日（火）10時ね。ちょっと待ってて、確認したらすぐ返すわ。</div></div>
+    <div class="voice-card"><p class="vn">案3　短く</p><div class="bubble">10月6日（火）10時、受けました。確認して返事します。</div></div>
+  </div>
+  <p class="cap">確定の返事の終わりに「※自動で送っています」とは書きません。締めくくりは院長さんの名前です。「承知いたしました」のような、院長さんがふだん使わない言葉も外します。</p>
+
+  <h3>自動と、院長さんの手の線引き</h3>
+  <table class="split">
+    <thead><tr><th>場面</th><th>自動</th><th>院長さんが手で</th></tr></thead>
+    <tbody>
+      <tr><td>受け付けた瞬間の「受け付けました」</td><td data-l="自動"><span class="y">自動で返す</span></td><td data-l="院長さん">―</td></tr>
+      <tr><td>確定の返事</td><td data-l="自動"><span class="y">決まった部分は自動</span></td><td data-l="院長さん"><span class="m">ひとことは院長さん</span>（なくてもよい）</td></tr>
+      <tr><td>別の日の提案</td><td data-l="自動">―</td><td data-l="院長さん"><span class="m">院長さんが候補を打つ</span></td></tr>
+      <tr><td>キャンセルの返事</td><td data-l="自動"><span class="y">自動で返す</span></td><td data-l="院長さん">続けてひとこと足すのは自由</td></tr>
+      <tr><td>体調の相談・雑談・ボタン以外の文字</td><td data-l="自動">「院長が見て返事します」だけ</td><td data-l="院長さん"><span class="m">院長さんが返す</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 9 安全 -->
+<section class="wrap" id="s9">
+  <span class="kicker">9　安全のこと</span>
+  <h2>預かる情報は少なく、置き場所は1つにします</h2>
+  <div class="cards c4">
+    <div class="box"><span class="pill">集める情報</span><p>LINEの名前、本名、予約の日時だけです。電話番号は入れなくてもよく、体調のことは「腰」くらいの短いメモまでにします。</p></div>
+    <div class="box"><span class="pill">置き場所</span><p>スプレッドシート1冊だけ。見られるのは院長さんとおけもんの2人で、「リンクを知っている人は誰でも」にはしません。</p></div>
+    <div class="box"><span class="pill o">1年で消す</span><p>予約は来院日から1年で消します。年に1回、おけもんが消す係を引き受けます（仮）。</p></div>
+    <div class="box"><span class="pill b">鍵はコードに書かない</span><p>LINEとつなぐ鍵は、プログラムの専用の保管場所に入れます。LINEから届いた知らせは、鍵で本物かどうかを確かめてから受け付けます。</p></div>
+  </div>
+</section>
+
+<!-- 10 未確認 -->
+<section class="wrap" id="s10">
+  <span class="kicker">10　まだ分からないこと</span>
+  <h2>実物で確かめるまで、決めつけないことがあります</h2>
+  <p class="read">公式のページで確かめきれなかったことは、作る時に実物で試して決めます。だめだった時の代わりの手も、先に用意してあります。</p>
+  <ul class="unk">
+    <li><b>未確認</b>　LINE公式アカウントの管理画面から、「電話する」ボタンに電話番号のリンクを登録できるか。<span class="how">T14で実物で試します。できなければ、押すと電話番号を文字で返す形にします。</span></li>
+    <li><b>未確認</b>　Googleのプログラムを窓口にした時、LINE側の「接続を確かめる」ボタンが失敗することがある、という話。本物の予約は届くそうですが、ほかの人の記事で読んだだけです。<span class="how">T11で実物で試して、どうなったかを記録します。</span></li>
+    <li><b>未確認</b>　お客さんへの「その場の返事」を、何分以内に返せば通数に数えずに済むか。<span class="how">公式の説明を見つけられていません。受け取ったらすぐ返す作りにしておきます。</span></li>
+    <li><b>未確認</b>　院長さんが手で返すチャットと、自動の受付係を同時にオンにできるか。<span class="how">ほかの人の記事ではできるとありますが、公式の説明はまだ見つけられていません。T11で一緒に確かめます。</span></li>
+    <li><b>仮の答え</b>　6章の10問の答えは、すべて仮置きです。<span class="how">ちーちゃんが院長さんに聞いた答えで置き換えます。</span></li>
+  </ul>
+
+  <h3>出典（確認日はすべて2026年9月30日）</h3>
+  <ul class="src">
+    <li>LINE公式アカウントの料金（月0円・無料のメッセージ200通・追加の購入は不可／その場の返事は数えない）：<a href="https://www.lycbiz.com/jp/service/line-official-account/plan/">LINEヤフー for Business</a></li>
+    <li>メッセージの数え方（応答の返事はカウントしない）：<a href="https://developers.line.biz/ja/tips/2026/05/28/how-to-count-messages/">LINE Developers</a></li>
+    <li>LINEから届いた知らせが本物かを確かめる方法（署名の検証）：<a href="https://developers.line.biz/ja/docs/messaging-api/verify-webhook-signature/">LINE Developers</a></li>
+    <li>Google Apps Script の無料で使える量：<a href="https://developers.google.com/apps-script/guides/services/quotas">Google for Developers</a></li>
+    <li>比べて見送った置き場所の候補：<a href="https://developers.cloudflare.com/workers/platform/limits/">Cloudflare Workers</a>／<a href="https://render.com/docs/free">Render</a>（台帳と同じ場所で動くことを優先して、Google Apps Script にしました）</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <a class="top-link" href="#top">いちばん上へ戻る</a>
+  <a class="top-link" href="https://okemonogatari-hash.github.io/html-share-box/friend-share-g-94animn4JnYCGRlc.html">1枚目（提案）へ</a>
+  <p class="sign">おけもん</p>
+  <p>2026年9月30日　仮の設計図です。院長さんのお話を聞いて、ここから一緒に直していきます。</p>
+</footer>
+
+<script>
+(function(){
+  var flows=document.querySelectorAll('[data-flow]');
+  for(var f=0;f<flows.length;f++){(function(root){
+    var st=root.querySelectorAll('.state'),tb=root.querySelectorAll('.flow-tabs button'),
+        pv=root.querySelector('[data-prev]'),nx=root.querySelector('[data-next]'),i=0;
+    if(!st.length||!pv||!nx)return;
+    function show(n){
+      i=Math.max(0,Math.min(st.length-1,n));
+      for(var k=0;k<st.length;k++){st[k].classList.toggle('on',k===i);}
+      for(var k=0;k<tb.length;k++){tb[k].setAttribute('aria-pressed',k===i?'true':'false');}
+      pv.disabled=(i===0);nx.disabled=(i===st.length-1);
+    }
+    for(var k=0;k<tb.length;k++){(function(n){tb[n].addEventListener('click',function(){show(n);});})(k);}
+    function keep(){var r=root.getBoundingClientRect();if(r.top<0){root.scrollIntoView({block:'start'});}}
+    pv.addEventListener('click',function(){show(i-1);keep();});
+    nx.addEventListener('click',function(){show(i+1);keep();});
+    show(0);
+    root.classList.add('js-ready');
+  })(flows[f]);}
+})();
+</script>
+</body>
+</html>
