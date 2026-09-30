@@ -20,9 +20,9 @@
     <meta name="twitter:description" content="おけもんのノウハウ図書館の記事から生まれた、リベのみんなの作品を紹介する棚です。" />
     <meta name="twitter:image" content="https://okemonogatari-hash.github.io/html-share-box/community-works/assets/community-cover.jpg" />
     <meta name="twitter:image:alt" content="みんなの作ってみたが集まる作品棚" />
-    <link rel="stylesheet" href="style.css?v=20260930-2" />
+    <link rel="stylesheet" href="style.css?v=20260930-3" />
     <script src="config.js" defer></script>
-    <script src="app.js?v=20260930-2" defer></script>
+    <script src="app.js?v=20260930-3" defer></script>
   </head>
   <body>
     <header class="hero">
@@ -60,6 +60,14 @@
         </div>
       </section>
 
+      <aside class="creation-guide" aria-labelledby="creation-guide-title">
+        <div>
+          <h2 class="creation-guide-title" id="creation-guide-title">自分でも作ってみたくなったら</h2>
+          <p>この棚の作品づくりのきっかけになった、短いプロンプトと作り方をまとめています。</p>
+        </div>
+        <a class="creation-guide-link" href="https://library.libecity.com/articles/01M3FRGG2CMZPW89CPEXHSZH9D" target="_blank" rel="noopener noreferrer">作り方を見てみる ↗</a>
+      </aside>
+
       <section class="share-callout" aria-labelledby="share-title">
         <div class="callout-spark" aria-hidden="true">✦</div>
         <div class="callout-copy">
@@ -85,10 +93,30 @@
           </div>
           <button class="close-submit" id="close-submit" type="button" aria-label="投稿フォームを閉じる">×</button>
         </div>
-        <p class="submit-intro">ご自身が作った作品のURLを投稿できます。ファイルのアップロードはありません。</p>
+        <p class="submit-intro">作品の共有はAIに任せる方法と、自分で入力する方法から選べます。</p>
         <p class="api-notice" id="api-notice" role="status" hidden></p>
         <p class="submit-status" id="submit-status" role="status" aria-live="polite" hidden></p>
-        <form id="submit-form" novalidate>
+        <div class="ai-prompt-panel" id="ai-prompt-panel">
+          <h3 class="prompt-heading">AIに投稿してもらう</h3>
+          <ol class="prompt-steps">
+            <li>下のプロンプトをコピー</li>
+            <li>CodexまたはClaude Codeに貼り付ける</li>
+            <li>AIから不足情報を聞かれたら答える</li>
+          </ol>
+          <div class="prompt-actions">
+            <button class="submit-button" id="copy-posting-prompt" type="button">投稿用プロンプトをコピー</button>
+            <button class="cancel-button" id="show-manual-form" type="button">自分で入力する</button>
+          </div>
+          <label class="prompt-label" for="ai-posting-prompt">AIに渡すプロンプト全文</label>
+          <textarea class="prompt-textarea" id="ai-posting-prompt" rows="8" readonly spellcheck="false" aria-describedby="prompt-help"></textarea>
+          <small class="field-help" id="prompt-help">いまの作業内容を見て、分からない項目だけAIが確認します。</small>
+          <p class="prompt-status" id="prompt-status" role="status" aria-live="polite" hidden></p>
+        </div>
+        <div class="manual-entry-toolbar" id="manual-entry-toolbar" hidden>
+          <p>投稿内容を自分で入力できます。</p>
+          <button class="cancel-button" id="back-to-ai-prompt" type="button">AIで投稿する</button>
+        </div>
+        <form id="submit-form" novalidate hidden>
           <div class="form-grid">
             <div class="form-field">
               <label for="author-input">作者名 <span class="required-tag">必須</span></label>

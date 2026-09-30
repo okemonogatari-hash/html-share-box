@@ -6,6 +6,13 @@
   const moreRow = document.getElementById("more-works-row");
   const moreButton = document.getElementById("more-works");
   const panel = document.getElementById("submit-panel");
+  const aiPromptPanel = document.getElementById("ai-prompt-panel");
+  const manualEntryToolbar = document.getElementById("manual-entry-toolbar");
+  const aiPromptTextarea = document.getElementById("ai-posting-prompt");
+  const copyPromptButton = document.getElementById("copy-posting-prompt");
+  const promptStatus = document.getElementById("prompt-status");
+  const showManualFormButton = document.getElementById("show-manual-form");
+  const backToAiPromptButton = document.getElementById("back-to-ai-prompt");
   const openButtons = [document.getElementById("show-submit"), document.getElementById("hero-show-submit")].filter(Boolean);
   const form = document.getElementById("submit-form");
   const submitButton = document.getElementById("submit-button");
@@ -47,6 +54,36 @@
   }
 
   const apiBaseUrl = configuredApiBase();
+
+  function buildAiPostingPrompt() {
+    const apiBase = apiBaseUrl || "未設定です。設定が入るまでAPIリクエストは実行しないでください。";
+    return [
+      "あなたは、ユーザー本人が作った作品を「みんなの『作ってみた』棚」へ登録する作業を手伝うAIです。ユーザー本人が共有を依頼した作品だけを投稿してください。",
+      "",
+      "## 作品情報を確認する",
+      "- 現在の会話と作業コンテキストから、作品名・作品URL・どんなふうに作ったかの説明を整理してください。確認できた情報を本人に聞き直さず、分からない項目だけ確認してください。",
+      "- 作者名とリベのプロフィールURLが確認できない場合も、上の不足項目とまとめて一度に本人へ質問してください。推測で補わないでください。プロフィールURLは https://libecity.com/user_profile/<会員ID> の形式に限ります。",
+      "- 作品URLはHTTPSの公開URLが必要です。作品が未公開なら、本人の許可なく公開・アップロードせず、公開済みURLを用意できるか本人に確認してください。ファイルのアップロードや他者の作品の投稿はしません。",
+      "- 公開されるのは作者名、プロフィールURL、プロフィール画像、作品名、作品URL、説明です。共有範囲はこの棚のURLを知る人です。これらを共有する依頼と矛盾がないことを確認してください。",
+      "- ノウハウ図書館の記事や他の投稿から文章を引用せず、ユーザー本人の作品の説明だけを使ってください。プロフィールアイコンURLは送信不要です。",
+      "",
+      "## 投稿手順",
+      "1. APIのベースURLは次の値を使います：" + apiBase,
+      "2. 全てのAPI要求（GET、POST、DELETE）に Origin: https://okemonogatari-hash.github.io を付けます。まず公開seed https://okemonogatari-hash.github.io/html-share-box/community-works/works.json と GET <APIベースURL>/api/works の両方を読み、APIのnextCursorがあれば before=<URLエンコードしたカーソル> で最後まで取得します。",
+      "3. 重複とみなすのは、同じリベプロフィール会員IDかつ正規化した作品URLが一致するときだけです。作品URLはURLとして正規化しますが、path・query・fragmentは意味を保ち、www.や末尾スラッシュも一律には変えません。utm_*等の明らかな計測用queryのみ除けます。YouTubeは youtu.be/<ID>、youtube.com/watch?v=<ID>、youtube.com/shorts/<ID> を同じ動画IDとして比べます。作者名や作品名だけでは重複扱いしません。seed/APIのどちらかに一致する掲載があればPOSTせず、そのカードを案内してください。",
+      "4. 重複がなく、必須項目と公開意図が確認できたら POST <APIベースURL>/api/works を呼びます。Content-Type は application/json、Origin は https://okemonogatari-hash.github.io にします。body は author, profile, title, workUrl, description, consent:true のJSONです。アイコンはプロフィールから取得されます。author/titleは各100字以内、descriptionは1〜500字、workUrlはHTTPS、profileは指定形式を守ってください。",
+      "5. curlまたはPythonなど利用できるHTTP手段を使います。CloudflareでPython既定User-Agentが403になる場合は、User-Agentに curl/8.7.1 を明示するか、curlを使ってください。403時に別のURLやAPIへ送らないでください。",
+      "6. 409なら再投稿せず、seedと全GETページを再確認します。一致が見つかれば既存の掲載URLを案内し、見つからなければ競合として報告します。",
+      "7. POSTが201で {work, deleteToken} を返したら、token値を画面・チャット・コマンド出力・ログへ絶対に出さず、メモリ上で扱ってください。apiUrl、work.id、tokenを作業フォルダとGit管理の外にあるローカル秘密ファイルへ保存し、ディレクトリは所有者のみアクセス可能、ファイルは chmod 600 相当にしてください。tokenを含む応答JSON全体を表示しないでください。",
+      "8. 秘密ファイルへの保存ができない、または権限を確認できない場合は、受け取ったtokenで直ちに DELETE <APIベースURL>/api/works/<work.id> を Authorization: Bearer <token> と Origin: https://okemonogatari-hash.github.io 付きで呼び、GETでもOriginを付けて作品が消えたことを確かめてください。投稿だけ残して終わらないでください。",
+      "9. 保存後にOrigin: https://okemonogatari-hash.github.io を付けてGETを読み直し、work.idが掲載されていることを確認します。nextCursorがある場合は続きも確認します。",
+      "10. 取り下げ依頼があったら、秘密ファイルのtokenで DELETE <APIベースURL>/api/works/<id> を Authorization: Bearer <token> と Origin: https://okemonogatari-hash.github.io 付きで実行し、同じOrigin付きGETで該当IDが消えたことを確認します。tokenを紛失していたら推測・再発行せず、管理者への取り下げ依頼が必要と伝えてください。",
+      "",
+      "投稿を確認できたら、tokenを含めず、共有ページURL https://okemonogatari-hash.github.io/html-share-box/community-works/#work-<URLエンコードしたwork.id> と掲載結果を本人に伝えてください。GETで確認できなければ、成功と断言せず状態を分けて説明してください。",
+    ].join("\n");
+  }
+
+  aiPromptTextarea.value = buildAiPostingPrompt();
 
   function safeWebUrl(value) {
     if (typeof value !== "string" || !value.trim()) return "";
@@ -486,8 +523,42 @@
     for (const [field, errorId] of validation) setFieldError(field, errorId, "");
   }
 
+  function showAiPrompt() {
+    aiPromptPanel.hidden = false;
+    manualEntryToolbar.hidden = true;
+    form.hidden = true;
+    promptStatus.textContent = "";
+    promptStatus.hidden = true;
+  }
+
+  function showManualEntry() {
+    aiPromptPanel.hidden = true;
+    manualEntryToolbar.hidden = false;
+    form.hidden = false;
+    document.getElementById("author-input").focus();
+  }
+
+  async function copyAiPrompt() {
+    promptStatus.textContent = "";
+    promptStatus.hidden = true;
+    try {
+      const clipboard = window.navigator && window.navigator.clipboard;
+      if (!window.isSecureContext || !clipboard || typeof clipboard.writeText !== "function") throw new Error("clipboard unavailable");
+      await clipboard.writeText(aiPromptTextarea.value);
+      promptStatus.textContent = "プロンプトをコピーしました。CodexまたはClaude Codeに貼り付けてください。";
+    } catch (_) {
+      aiPromptTextarea.focus();
+      aiPromptTextarea.select();
+      aiPromptTextarea.setSelectionRange(0, aiPromptTextarea.value.length);
+      promptStatus.textContent = "自動コピーできませんでした。選択された全文をコピーしてCodexまたはClaude Codeに貼り付けてください。";
+    }
+    promptStatus.hidden = false;
+  }
+
   function openSubmitPanel(button) {
     lastOpener = button;
+    showAiPrompt();
+    setSubmitStatus("", false);
     panel.hidden = false;
     for (const openButton of openButtons) openButton.setAttribute("aria-expanded", "true");
     panel.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -666,6 +737,12 @@
   }
   document.getElementById("close-submit").addEventListener("click", closeSubmitPanel);
   document.getElementById("cancel-submit").addEventListener("click", closeSubmitPanel);
+  copyPromptButton.addEventListener("click", copyAiPrompt);
+  showManualFormButton.addEventListener("click", showManualEntry);
+  backToAiPromptButton.addEventListener("click", () => {
+    showAiPrompt();
+    copyPromptButton.focus();
+  });
   form.addEventListener("submit", submitWork);
   moreButton.addEventListener("click", loadMoreWorks);
 
