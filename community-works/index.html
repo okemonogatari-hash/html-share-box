@@ -20,9 +20,9 @@
     <meta name="twitter:description" content="おけもんのノウハウ図書館の記事から生まれた、リベのみんなの作品を紹介する棚です。" />
     <meta name="twitter:image" content="https://okemonogatari-hash.github.io/html-share-box/community-works/assets/community-cover.jpg" />
     <meta name="twitter:image:alt" content="みんなの作ってみたが集まる作品棚" />
-    <link rel="stylesheet" href="style.css?v=20260930-3" />
+    <link rel="stylesheet" href="style.css?v=20260930-4" />
     <script src="config.js" defer></script>
-    <script src="app.js?v=20260930-3" defer></script>
+    <script src="app.js?v=20260930-4" defer></script>
   </head>
   <body>
     <header class="hero">
@@ -32,7 +32,7 @@
         <div class="hero-inner">
           <p class="eyebrow"><span class="eyebrow-mark" aria-hidden="true">✳</span> リベのみんなの作品棚</p>
           <h1>みんなの<br class="mobile-break" /><span>「作ってみた」棚</span></h1>
-          <p class="intro">おけもんのノウハウ図書館の記事から生まれた、リベのみんなの作品。</p>
+          <p class="intro">おけもんのノウハウ図書館の記事から生まれた、リベのみんなの作品。公開URLがなくても、MP4やHTMLをそのままシェアできます。</p>
           <button class="hero-post-button" id="hero-show-submit" type="button" aria-controls="submit-panel" aria-expanded="false">
             作品を投稿する <span aria-hidden="true">＋</span>
           </button>
@@ -73,7 +73,7 @@
         <div class="callout-copy">
           <p class="section-kicker">NEXT IS YOURS</p>
           <h2 id="share-title">あなたの「作ってみた」も見せてね</h2>
-          <p>作った本人がここに投稿できます。AI初心者サポートチャットでも、作品URLとどんなふうに作ったかをシェアしてね。</p>
+          <p>作った本人がここに投稿できます。AI初心者サポートチャットでも、作品や作り方をシェアしてね。</p>
         </div>
         <div class="callout-actions">
           <button class="share-button" id="show-submit" type="button" aria-controls="submit-panel" aria-expanded="false">
@@ -93,9 +93,13 @@
           </div>
           <button class="close-submit" id="close-submit" type="button" aria-label="投稿フォームを閉じる">×</button>
         </div>
-        <p class="submit-intro">作品の共有はAIに任せる方法と、自分で入力する方法から選べます。</p>
+        <p class="submit-intro">作品の共有はAIに任せる方法と、自分で入力する方法から選べます。公開URLがなくても、MP4やHTMLをそのままシェアできます。</p>
         <p class="api-notice" id="api-notice" role="status" hidden></p>
         <p class="submit-status" id="submit-status" role="status" aria-live="polite" hidden></p>
+        <div class="upload-resume" id="upload-resume" aria-live="polite" hidden>
+          <h3>続きから投稿</h3>
+          <div class="upload-resume-list" id="upload-resume-list"></div>
+        </div>
         <div class="ai-prompt-panel" id="ai-prompt-panel">
           <h3 class="prompt-heading">AIに投稿してもらう</h3>
           <ol class="prompt-steps">
@@ -117,6 +121,14 @@
           <button class="cancel-button" id="back-to-ai-prompt" type="button">AIで投稿する</button>
         </div>
         <form id="submit-form" novalidate hidden>
+          <fieldset class="entry-mode-switch">
+            <legend>共有方法</legend>
+            <div class="entry-mode-options">
+              <label class="entry-mode-option"><input type="radio" name="entryMode" value="file" checked /><span>ファイルを送る</span></label>
+              <label class="entry-mode-option"><input type="radio" name="entryMode" value="url" /><span>URLを貼る</span></label>
+            </div>
+            <p class="field-help">MP4やHTMLは、公開URLを用意せずそのまま投稿できます。</p>
+          </fieldset>
           <div class="form-grid">
             <div class="form-field">
               <label for="author-input">作者名 <span class="required-tag">必須</span></label>
@@ -137,7 +149,18 @@
               <small id="title-help" class="field-help">100字まで</small>
               <small id="title-error" class="field-error" hidden></small>
             </div>
-            <div class="form-field">
+            <div class="form-field form-field-wide" id="file-upload-fields">
+              <label for="work-file-input">作品ファイル <span class="required-tag">必須</span></label>
+              <input id="work-file-input" name="workFile" type="file" accept=".mp4,.html,.htm,video/mp4,text/html" aria-describedby="work-file-help work-file-error" />
+              <small id="work-file-help" class="field-help">MP4は20MBまで、HTMLは2MBまで。HTMLは画像や音も含めて1ファイルにまとめてください。分からなければ「投稿用に1ファイルにまとめて」とAIに頼めます。</small>
+              <details class="file-technical-help">
+                <summary>HTMLの投稿条件を詳しく見る</summary>
+                <p>安全のため、外部CDN・外部fetch・evalを使うHTMLは投稿できません。</p>
+              </details>
+              <small id="work-file-error" class="field-error" hidden></small>
+              <div class="file-preview" id="file-preview" hidden></div>
+            </div>
+            <div class="form-field" id="work-url-field" hidden>
               <label for="work-url-input">作品URL <span class="required-tag">必須</span></label>
               <input id="work-url-input" name="workUrl" type="url" inputmode="url" maxlength="2048" placeholder="https://…" required aria-describedby="work-url-help work-url-error" />
               <small id="work-url-help" class="field-help">https:// で始まるURL。URLだけを投稿できます。</small>

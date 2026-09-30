@@ -20,9 +20,18 @@
   const apiNotice = document.getElementById("api-notice");
   const profileInput = document.getElementById("profile-input");
   const workUrlInput = document.getElementById("work-url-input");
+  const workUrlField = document.getElementById("work-url-field");
+  const fileUploadFields = document.getElementById("file-upload-fields");
+  const workFileInput = document.getElementById("work-file-input");
+  const filePreview = document.getElementById("file-preview");
+  const uploadResume = document.getElementById("upload-resume");
+  const uploadResumeList = document.getElementById("upload-resume-list");
   const consentInput = document.getElementById("consent-input");
   const API_LOAD_ERROR = "投稿作品を読み込めませんでした。再読み込みしてください。";
   const tokenPrefix = "community-works:delete-token:";
+  const uploadPrefix = "community-works:upload:";
+  const MAX_MP4_BYTES = 20 * 1024 * 1024;
+  const MAX_HTML_BYTES = 2 * 1024 * 1024;
   const removedIds = new Set();
   const memoryTokens = new Map();
   let seedWorks = [];
@@ -31,6 +40,11 @@
   let nextCursor = null;
   let loadingMore = false;
   let lastOpener = null;
+  let selectedFile = null;
+  let selectedPreviewUrl = "";
+  let activeUploadRecord = null;
+  let uploadUiRecords = [];
+  let formBusy = false;
 
   function element(tag, className, text) {
     const node = document.createElement(tag);
@@ -61,25 +75,35 @@
       "あなたは、ユーザー本人が作った作品を「みんなの『作ってみた』棚」へ登録する作業を手伝うAIです。ユーザー本人が共有を依頼した作品だけを投稿してください。",
       "",
       "## 作品情報を確認する",
-      "- 現在の会話と作業コンテキストから、作品名・作品URL・どんなふうに作ったかの説明を整理してください。確認できた情報を本人に聞き直さず、分からない項目だけ確認してください。",
+      "- 現在の会話と作業コンテキストから、作品名・作品URLまたは手元のMP4/HTMLファイル・どんなふうに作ったかの説明を整理してください。確認できた情報を本人に聞き直さず、分からない項目だけ確認してください。",
       "- 作者名とリベのプロフィールURLが確認できない場合も、上の不足項目とまとめて一度に本人へ質問してください。推測で補わないでください。プロフィールURLは https://libecity.com/user_profile/<会員ID> の形式に限ります。",
-      "- 作品URLはHTTPSの公開URLが必要です。作品が未公開なら、本人の許可なく公開・アップロードせず、公開済みURLを用意できるか本人に確認してください。ファイルのアップロードや他者の作品の投稿はしません。",
+      "- 作品URLがある場合は従来どおりURLで投稿できます。公開URLがなくても、ユーザー本人のローカルMP4または自己完結HTMLをこの棚のアップロードAPIへ直接送れます。MP4/HTMLが手元にある時は公開URLの作成を求めないでください。ローカルファイルが見つからない場合だけ、URLまたはファイルの場所を確認してください。",
+      "- HTMLは依存する画像・音・CSS・JavaScriptを1ファイルにまとめます。外部CDN、外部fetch、evalを使うHTMLは投稿しません。MP4の再エンコードが必要なら、元ファイルを保持したうえで本人に確認してください。",
       "- 公開されるのは作者名、プロフィールURL、プロフィール画像、作品名、作品URL、説明です。共有範囲はこの棚のURLを知る人です。これらを共有する依頼と矛盾がないことを確認してください。",
       "- ノウハウ図書館の記事や他の投稿から文章を引用せず、ユーザー本人の作品の説明だけを使ってください。プロフィールアイコンURLは送信不要です。",
       "",
-      "## 投稿手順",
-      "1. APIのベースURLは次の値を使います：" + apiBase,
-      "2. 全てのAPI要求（GET、POST、DELETE）に Origin: https://okemonogatari-hash.github.io を付けます。まず公開seed https://okemonogatari-hash.github.io/html-share-box/community-works/works.json と GET <APIベースURL>/api/works の両方を読み、APIのnextCursorがあれば before=<URLエンコードしたカーソル> で最後まで取得します。",
-      "3. 重複とみなすのは、同じリベプロフィール会員IDかつ正規化した作品URLが一致するときだけです。作品URLはURLとして正規化しますが、path・query・fragmentは意味を保ち、www.や末尾スラッシュも一律には変えません。utm_*等の明らかな計測用queryのみ除けます。YouTubeは youtu.be/<ID>、youtube.com/watch?v=<ID>、youtube.com/shorts/<ID> を同じ動画IDとして比べます。作者名や作品名だけでは重複扱いしません。seed/APIのどちらかに一致する掲載があればPOSTせず、そのカードを案内してください。",
-      "4. 重複がなく、必須項目と公開意図が確認できたら POST <APIベースURL>/api/works を呼びます。Content-Type は application/json、Origin は https://okemonogatari-hash.github.io にします。body は author, profile, title, workUrl, description, consent:true のJSONです。アイコンはプロフィールから取得されます。author/titleは各100字以内、descriptionは1〜500字、workUrlはHTTPS、profileは指定形式を守ってください。",
-      "5. curlまたはPythonなど利用できるHTTP手段を使います。CloudflareでPython既定User-Agentが403になる場合は、User-Agentに curl/8.7.1 を明示するか、curlを使ってください。403時に別のURLやAPIへ送らないでください。",
-      "6. 409なら再投稿せず、seedと全GETページを再確認します。一致が見つかれば既存の掲載URLを案内し、見つからなければ競合として報告します。",
-      "7. POSTが201で {work, deleteToken} を返したら、token値を画面・チャット・コマンド出力・ログへ絶対に出さず、メモリ上で扱ってください。apiUrl、work.id、tokenを作業フォルダとGit管理の外にあるローカル秘密ファイルへ保存し、ディレクトリは所有者のみアクセス可能、ファイルは chmod 600 相当にしてください。tokenを含む応答JSON全体を表示しないでください。",
-      "8. 秘密ファイルへの保存ができない、または権限を確認できない場合は、受け取ったtokenで直ちに DELETE <APIベースURL>/api/works/<work.id> を Authorization: Bearer <token> と Origin: https://okemonogatari-hash.github.io 付きで呼び、GETでもOriginを付けて作品が消えたことを確かめてください。投稿だけ残して終わらないでください。",
-      "9. 保存後にOrigin: https://okemonogatari-hash.github.io を付けてGETを読み直し、work.idが掲載されていることを確認します。nextCursorがある場合は続きも確認します。",
-      "10. 取り下げ依頼があったら、秘密ファイルのtokenで DELETE <APIベースURL>/api/works/<id> を Authorization: Bearer <token> と Origin: https://okemonogatari-hash.github.io 付きで実行し、同じOrigin付きGETで該当IDが消えたことを確認します。tokenを紛失していたら推測・再発行せず、管理者への取り下げ依頼が必要と伝えてください。",
+      "## APIの共通条件",
+      "- APIベースURLは次の値だけを使います：" + apiBase,
+      "- コードから送るすべてのAPI要求（GET、POST、PUT、DELETE）に Origin: https://okemonogatari-hash.github.io を付けます。ブラウザfetchではOriginをブラウザに任せます。Bearer tokenが必要なendpointには Authorization: Bearer <token> を付けます。応答全体やtoken値を画面・チャット・コマンド出力・ログへ出さないでください。403時に別のURLやAPIへ送らないでください。",
+      "- まず公開seed https://okemonogatari-hash.github.io/html-share-box/community-works/works.json と GET <APIベースURL>/api/works の両方を読み、APIのnextCursorがあれば before=<URLエンコードしたカーソル> で最後まで取得します。",
+      "- URL投稿の重複とみなすのは、同じリベプロフィール会員IDかつ正規化した作品URLが一致するときだけです。作品URLはURLとして正規化しますが、path・query・fragmentは意味を保ち、www.や末尾スラッシュも一律には変えません。utm_*等の明らかな計測用queryのみ除けます。YouTubeは youtu.be/<ID>、youtube.com/watch?v=<ID>、youtube.com/shorts/<ID> を同じ動画IDとして比べます。作者名や作品名だけでは重複扱いしません。seed/APIのどちらかに一致する掲載があればPOSTせず、そのカードを案内してください。",
       "",
-      "投稿を確認できたら、tokenを含めず、共有ページURL https://okemonogatari-hash.github.io/html-share-box/community-works/#work-<URLエンコードしたwork.id> と掲載結果を本人に伝えてください。GETで確認できなければ、成功と断言せず状態を分けて説明してください。",
+      "## HTTPS作品URLを投稿する場合",
+      "1. 重複がなく、必須項目と公開意図が確認できたら POST <APIベースURL>/api/works を呼びます。Content-Type は application/json。body は author, profile, title, workUrl, description, consent:true のJSONです。アイコンはプロフィールから取得されます。author/titleは各100字以内、descriptionは1〜500字、workUrlはHTTPS、profileは指定形式を守ってください。",
+      "2. curlまたはPythonなど利用できるHTTP手段を使います。CloudflareでPython既定User-Agentが403になる場合は、User-Agentに curl/8.7.1 を明示するか、curlを使ってください。409なら再投稿せず、seedと全GETページを再確認します。一致が見つかれば既存カードを案内し、見つからなければ競合として報告します。",
+      "3. POSTが201で {work, deleteToken} を返したら、token値を画面・チャット・コマンド出力・ログへ絶対に出さず、apiUrl・work.id・tokenを作業フォルダとGit管理の外にあるローカル秘密ファイルへ保存します。ディレクトリは所有者のみアクセス可能（chmod 700相当）、ファイルは所有者だけ読み書き可能（chmod 600相当）にし、保存後に読み戻して一致を確認してください。tokenを含む応答JSON全体は表示しません。",
+      "4. 秘密ファイルへの保存または権限確認に失敗したら、受け取ったtokenで直ちに DELETE <APIベースURL>/api/works/<work.id> を呼び、GETでも作品が消えたことを確かめてください。token保存後はOrigin付きGETを読み直し、work.idが掲載されていることを確認します。",
+      "",
+      "## 手元のMP4/HTMLファイルを投稿する場合",
+      "1. 形式と大きさを確認します。MP4は video/mp4 で20MiB以下、HTML/HTMは text/html で2MiB以下、0 byteは不可です。作品名など必須情報と本人の投稿意図を確認します。HTMLは外部CDN・外部fetch・evalを使わず、必要な素材とコードを1ファイルにまとめます。",
+      "2. tokenと再開に必要な情報を、作業フォルダとGit管理の外にある秘密ディレクトリ（chmod 700相当）と秘密ファイル（chmod 600相当）へ保存する準備を先に整えます。",
+      "3. POST <APIベースURL>/api/uploads に Content-Type: application/json で {author,profile,title,description,consent:true,fileName,fileType:'mp4'|'html',fileSize} を送り、201の {id,workId,deleteToken,uploadUrl,publishUrl,statusUrl,expiresAt} を受け取ります。idはupload-UUID、workIdは公開後のcommunity-UUIDです。tokenを含む応答は表示しません。apiUrl、id、workId、token、各URL、期限、ファイル名・形式・サイズを秘密ファイルへ保存し、権限と読み戻しの一致を確認してから次へ進みます。秘密保存に失敗した場合は、受け取ったtokenで直ちに DELETE <APIベースURL>/api/uploads/<id> を呼んで準備を取り消し、以降のPUTをしません。",
+      "4. 同じupload id・tokenのまま PUT <uploadUrl> へファイルの生バイナリを送ります。Content-TypeはMP4なら video/mp4、HTMLなら text/html。AuthorizationとOriginを付け、multipart/form-dataやbase64にはしません。200 {state:'ready'} を確認した後、POST <publishUrl> をBearer付きで呼びます。公開APIでは準備した情報からworkが作られ、201または再試行時200で {work} が返ります。work.idが準備時workIdと同じことを確かめます。",
+      "5. 保存後はOrigin付きGET <APIベースURL>/api/works を読み直し、同じidのworkが掲載されたことを確認します。公開URLはAPIが返すwork.workUrlを使います。ファイル投稿で公開URLの作成を本人に求めないでください。",
+      "6. PUTやpublishの通信が不確かな時は、秘密ファイルの同じstatusUrlをBearer付きGETして状態を確認します。続ける時も同じupload id・uploadUrl・publishUrlを使い、準備POSTを作り直しません。readyならpublishだけを再試行します。pendingなら同じファイル名・形式・サイズを確認して同じuploadUrlへ再試行します。uploadingとretryAfterSecondsが返ったら指定秒数待ってstatusUrlを再確認し、readyまたはpendingへ変わるまで重ねてPUTしません。期限切れは404/410で確認して報告します。",
+      "7. 未公開uploadを取りやめる時は DELETE <APIベースURL>/api/uploads/<upload id> をBearerとOrigin付きで実行します。公開後の取り下げは従来どおり DELETE <APIベースURL>/api/works/<workId> をBearerとOrigin付きで実行し、GETで消えたことを確認します。tokenを紛失していたら推測・再発行せず、管理者への取り下げ依頼が必要と伝えてください。",
+      "",
+      "成功したらtokenを含めず、共有ページURL https://okemonogatari-hash.github.io/html-share-box/community-works/#work-<URLエンコードしたwork.id> と掲載結果を本人に伝えてください。取り下げも同じAIに頼めること、秘密ファイルの場所（token値なし）も伝えてください。GETで確認できなければ、成功と断言せず状態を分けて説明してください。",
     ].join("\n");
   }
 
@@ -138,7 +162,28 @@
     if (mediaElement && mediaElement.isConnected) mediaElement.remove();
     if (media.querySelector(".media-fallback")) return;
     const fallback = element("div", "media-fallback");
-    fallback.append(element("span", "media-fallback-copy", "プレビューを表示できませんでした。"));
+    const isUploadedVideo = work.uploaded === true && work.mediaType === "mp4";
+    fallback.append(element("span", "media-fallback-copy", isUploadedVideo
+      ? "保存済み・再生準備中です。少し待って開き直してください。"
+      : "プレビューを表示できませんでした。"));
+    if (isUploadedVideo) {
+      const retry = element("button", "media-retry-button", "再読み込み");
+      retry.type = "button";
+      retry.addEventListener("click", () => {
+        fallback.remove();
+        const video = document.createElement("video");
+        video.controls = true;
+        video.preload = "none";
+        video.playsInline = true;
+        video.src = safeWebUrl(work.workUrl);
+        video.setAttribute("aria-label", `${work.title || "作品"}の動画`);
+        video.addEventListener("error", () => mediaFallback(media, work, video));
+        video.addEventListener("pointerdown", () => { video.preload = "metadata"; video.load(); }, { once: true });
+        video.addEventListener("keydown", () => { video.preload = "metadata"; video.load(); }, { once: true });
+        media.append(video);
+      });
+      fallback.append(retry);
+    }
     const link = externalLink(work.workUrl, "media-fallback-link", "元の作品を開く ↗");
     if (link) fallback.append(link);
     media.append(fallback);
@@ -150,8 +195,25 @@
     media.setAttribute("aria-label", `${title}のプレビュー`);
     const poster = safeWebUrl(work.poster);
     const mediaUrl = safeWebUrl(work.mediaUrl);
+    const isUploadedMp4 = work.uploaded === true && work.mediaType === "mp4";
+    const isUploadedHtml = work.uploaded === true && work.mediaType === "html";
 
-    if (mediaUrl) {
+    if (isUploadedHtml) {
+      media.setAttribute("aria-label", `${title}のHTML作品`);
+      media.append(element("span", "media-file-placeholder", "HTML作品"));
+    } else if (isUploadedMp4 && safeWebUrl(work.workUrl)) {
+      const video = document.createElement("video");
+      video.controls = true;
+      video.preload = "none";
+      video.playsInline = true;
+      video.src = safeWebUrl(work.workUrl);
+      if (poster) video.poster = poster;
+      video.setAttribute("aria-label", `${title}の動画`);
+      video.addEventListener("error", () => mediaFallback(media, work, video));
+      video.addEventListener("pointerdown", () => { video.preload = "metadata"; video.load(); }, { once: true });
+      video.addEventListener("keydown", () => { video.preload = "metadata"; video.load(); }, { once: true });
+      media.append(video);
+    } else if (mediaUrl) {
       const video = document.createElement("video");
       video.controls = true;
       video.preload = "none";
@@ -176,6 +238,8 @@
 
     if (typeof work.kind === "string" && work.kind.trim()) {
       media.append(element("span", "kind-badge", work.kind.trim()));
+    } else if (isUploadedMp4 || isUploadedHtml) {
+      media.append(element("span", "kind-badge", isUploadedMp4 ? "MP4" : "HTML"));
     }
     return media;
   }
@@ -342,6 +406,9 @@
     } catch (_) {
       // APIが本文を返さない場合はHTTP状態だけを表示する。
     }
+    for (const token of memoryTokens.values()) {
+      if (token) detail = detail.split(token).join("[非表示]");
+    }
     if (detail.trim()) return `${fallback}：${detail.trim().slice(0, 220)}`;
     return `${fallback}（HTTP ${response.status}）`;
   }
@@ -360,6 +427,23 @@
       works: data.works.filter((work) => work && typeof work === "object" && !Array.isArray(work)),
       nextCursor: data.nextCursor === undefined || data.nextCursor === null || data.nextCursor === "" ? null : String(data.nextCursor),
     };
+  }
+
+  async function findApiWorkById(id) {
+    let cursor = null;
+    let firstPage = null;
+    const seenCursors = new Set();
+    for (let pageIndex = 0; pageIndex < 200; pageIndex += 1) {
+      const page = await readApiWorks(cursor);
+      if (!firstPage) firstPage = page;
+      const found = page.works.find((work) => workId(work) === String(id));
+      if (found) return { work: found, firstPage };
+      if (!page.nextCursor) return { work: null, firstPage };
+      if (seenCursors.has(page.nextCursor)) throw new Error("作品一覧のページを続けて確認できませんでした。");
+      seenCursors.add(page.nextCursor);
+      cursor = page.nextCursor;
+    }
+    throw new Error("作品一覧のページ数が多く、最後まで確認できませんでした。");
   }
 
   async function readSeedWorks() {
@@ -446,6 +530,101 @@
     }
   }
 
+  function uploadStorageKey(id) {
+    return uploadPrefix + String(id);
+  }
+
+  function apiEndpointUrl(value) {
+    if (typeof value !== "string" || !value.trim() || !apiBaseUrl) return "";
+    try {
+      const url = new URL(value.trim(), `${apiBaseUrl}/`);
+      const base = new URL(apiBaseUrl);
+      if (url.origin !== base.origin || url.username || url.password || url.hash) return "";
+      return url.href;
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function uploadRecordIsValid(record) {
+    return Boolean(record && typeof record === "object"
+      && typeof record.id === "string" && record.id.startsWith("upload-")
+      && typeof record.workId === "string" && record.workId.startsWith("community-")
+      && typeof record.deleteToken === "string" && record.deleteToken
+      && apiEndpointUrl(record.uploadUrl) && apiEndpointUrl(record.publishUrl) && apiEndpointUrl(record.statusUrl)
+      && typeof record.fileName === "string" && (record.fileType === "mp4" || record.fileType === "html")
+      && Number.isInteger(record.fileSize) && record.fileSize > 0);
+  }
+
+  function persistUploadRecord(record) {
+    if (!uploadRecordIsValid(record)) return false;
+    const tokenKey = tokenStorageKey(record.workId);
+    const uploadKey = uploadStorageKey(record.id);
+    const { deleteToken, ...publicRecord } = record;
+    const serialized = JSON.stringify(publicRecord);
+    try {
+      window.localStorage.setItem(tokenKey, deleteToken);
+      window.localStorage.setItem(uploadKey, serialized);
+      const storedRecord = window.localStorage.getItem(uploadKey);
+      const parsed = storedRecord ? JSON.parse(storedRecord) : null;
+      const readToken = window.localStorage.getItem(tokenKey);
+      const matches = storedRecord === serialized && readToken === deleteToken
+        && parsed && parsed.id === record.id && parsed.workId === record.workId;
+      if (matches) memoryTokens.set(record.workId, deleteToken);
+      return Boolean(matches);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function getStoredUploadRecords() {
+    const records = [];
+    try {
+      for (let index = 0; index < window.localStorage.length; index += 1) {
+        const key = window.localStorage.key(index);
+        if (!key || !key.startsWith(uploadPrefix)) continue;
+        try {
+          const stored = JSON.parse(window.localStorage.getItem(key));
+          const record = stored && typeof stored === "object"
+            ? { ...stored, deleteToken: window.localStorage.getItem(tokenStorageKey(stored.workId)) || "" }
+            : null;
+          if (uploadRecordIsValid(record) && uploadStorageKey(record.id) === key) records.push(record);
+        } catch (_) {
+          // Ignore malformed local recovery entries without exposing their contents.
+        }
+      }
+    } catch (_) {
+      // The storage preflight will explain whether recovery can be offered.
+    }
+    return records;
+  }
+
+  function clearUploadRecord(record, removeToken) {
+    if (!record) return;
+    try { window.localStorage.removeItem(uploadStorageKey(record.id)); } catch (_) { /* the server state can still be reported */ }
+    if (removeToken) {
+      try { window.localStorage.removeItem(tokenStorageKey(record.workId)); } catch (_) { /* keep the in-memory token only for this page */ }
+      memoryTokens.delete(record.workId);
+    }
+    if (activeUploadRecord && activeUploadRecord.id === record.id) {
+      setActiveUploadRecord(null);
+      selectedFile = null;
+      workFileInput.value = "";
+      clearFilePreview();
+    }
+    uploadUiRecords = uploadUiRecords.filter((item) => item.id !== record.id);
+    renderUploadResume();
+  }
+
+  async function cancelUploadRequest(record) {
+    const url = apiEndpointUrl(`/api/uploads/${encodeURIComponent(record.id)}`);
+    if (!url) throw new Error("投稿の取りやめ先を確認できませんでした。");
+    return fetch(url, {
+      method: "DELETE",
+      headers: { Accept: "application/json", Authorization: `Bearer ${record.deleteToken}` },
+    });
+  }
+
   function setSubmitStatus(message, isError) {
     submitStatus.textContent = message;
     submitStatus.hidden = !message;
@@ -494,10 +673,80 @@
     [document.getElementById("author-input"), "author-error", "作者名", { required: true }],
     [profileInput, "profile-error", "プロフィールURL", { required: true, profile: true }],
     [document.getElementById("title-input"), "title-error", "作品名", { required: true }],
-    [workUrlInput, "work-url-error", "作品URL", { required: true, https: true }],
     [document.getElementById("description-input"), "description-error", "作品の説明", { required: true }],
     [consentInput, "consent-error", "公開範囲", { required: true, requiredMessage: "投稿内容と公開範囲を確認し、チェックを入れてください。" }],
   ];
+
+  function currentEntryMode() {
+    const selected = form.querySelector('input[name="entryMode"]:checked');
+    return selected ? selected.value : "file";
+  }
+
+  function updateEntryMode() {
+    const mode = currentEntryMode();
+    const fileMode = mode === "file";
+    fileUploadFields.hidden = !fileMode;
+    workUrlField.hidden = fileMode;
+    workFileInput.required = fileMode;
+    workUrlInput.required = !fileMode;
+    if (workUrlInput.getAttribute("aria-invalid") === "true" && fileMode) {
+      setFieldError(workUrlInput, "work-url-error", "");
+    }
+    if (!fileMode) setFileError("");
+  }
+
+  function fileType(file) {
+    if (!file || typeof file.name !== "string") return "";
+    const extension = file.name.toLowerCase().split(".").pop();
+    if (extension === "mp4") return "mp4";
+    if (extension === "html" || extension === "htm") return "html";
+    return "";
+  }
+
+  function fileTypeError(file) {
+    if (!file) return "作品ファイルを選んでください。";
+    if (!file.size) return "0 byteのファイルは投稿できません。";
+    const type = fileType(file);
+    if (!type) return "MP4、HTML、HTMのファイルを選んでください。";
+    if (type === "mp4" && file.size > MAX_MP4_BYTES) return "MP4は20MB以下のファイルを選んでください。";
+    if (type === "html" && file.size > MAX_HTML_BYTES) return "HTMLは2MB以下のファイルを選んでください。";
+    if (file.type && file.type !== "application/octet-stream" && file.type !== (type === "mp4" ? "video/mp4" : "text/html")) {
+      return type === "mp4" ? "MP4形式のファイルを選んでください。" : "HTML形式のファイルを選んでください。";
+    }
+    return "";
+  }
+
+  function setFileError(message) {
+    const error = document.getElementById("work-file-error");
+    workFileInput.setAttribute("aria-invalid", message ? "true" : "false");
+    error.textContent = message || "";
+    error.hidden = !message;
+  }
+
+  function clearFilePreview() {
+    if (selectedPreviewUrl) URL.revokeObjectURL(selectedPreviewUrl);
+    selectedPreviewUrl = "";
+    filePreview.replaceChildren();
+    filePreview.hidden = true;
+  }
+
+  function showFilePreview(file) {
+    clearFilePreview();
+    if (!file) return;
+    const name = element("span", "file-preview-name", `${file.name}（${Math.ceil(file.size / 1024)}KB）`);
+    filePreview.append(name);
+    if (fileType(file) === "mp4" && !fileTypeError(file)) {
+      selectedPreviewUrl = URL.createObjectURL(file);
+      const video = document.createElement("video");
+      video.controls = true;
+      video.preload = "metadata";
+      video.playsInline = true;
+      video.src = selectedPreviewUrl;
+      video.setAttribute("aria-label", `${file.name}のローカルプレビュー`);
+      filePreview.append(video);
+    }
+    filePreview.hidden = false;
+  }
 
   function validateForm() {
     let valid = true;
@@ -507,6 +756,21 @@
         valid = false;
         if (!firstInvalid) firstInvalid = field;
       }
+    }
+    if (currentEntryMode() === "url") {
+      if (!validateField(workUrlInput, "work-url-error", "作品URL", { required: true, https: true })) {
+        valid = false;
+        if (!firstInvalid) firstInvalid = workUrlInput;
+      }
+      setFileError("");
+    } else {
+      const fileError = fileTypeError(selectedFile);
+      setFileError(fileError);
+      if (fileError) {
+        valid = false;
+        if (!firstInvalid) firstInvalid = workFileInput;
+      }
+      setFieldError(workUrlInput, "work-url-error", "");
     }
     if (firstInvalid) firstInvalid.focus();
     return valid;
@@ -521,7 +785,26 @@
 
   function clearFieldErrors() {
     for (const [field, errorId] of validation) setFieldError(field, errorId, "");
+    setFieldError(workUrlInput, "work-url-error", "");
+    setFileError("");
   }
+
+  form.querySelectorAll('input[name="entryMode"]').forEach((input) => input.addEventListener("change", updateEntryMode));
+  workUrlInput.addEventListener("input", () => {
+    if (workUrlInput.getAttribute("aria-invalid") === "true") validateField(workUrlInput, "work-url-error", "作品URL", { required: true, https: true });
+  });
+  workFileInput.addEventListener("change", () => {
+    selectedFile = workFileInput.files && workFileInput.files[0] ? workFileInput.files[0] : null;
+    showFilePreview(selectedFile);
+    setFileError(fileTypeError(selectedFile));
+    if (activeUploadRecord && selectedFile) {
+      const matches = selectedFile.name === activeUploadRecord.fileName
+        && selectedFile.size === activeUploadRecord.fileSize
+        && fileType(selectedFile) === activeUploadRecord.fileType;
+      if (!matches) setFileError("最初に選んだファイルと同じ名前・形式・サイズのファイルを選んでください。");
+    }
+  });
+  updateEntryMode();
 
   function showAiPrompt() {
     aiPromptPanel.hidden = false;
@@ -607,32 +890,446 @@
     return confirmed;
   }
 
-  async function submitWork(event) {
-    event.preventDefault();
-    setSubmitStatus("", false);
-    if (!apiBaseUrl) {
-      setSubmitStatus("投稿機能は公開前の準備中です。", true);
+  function setFormBusy(busy, label) {
+    formBusy = Boolean(busy);
+    form.setAttribute("aria-busy", formBusy ? "true" : "false");
+    submitButton.disabled = formBusy || !apiBaseUrl;
+    if (label) submitButton.textContent = label;
+    else if (activeUploadRecord) submitButton.textContent = activeUploadRecord.state === "ready" ? "公開を続ける" : "続きから投稿する";
+    else submitButton.textContent = "棚に投稿する";
+  }
+
+  function setActiveUploadRecord(record) {
+    activeUploadRecord = record || null;
+    const lockFields = [
+      document.getElementById("author-input"), profileInput, document.getElementById("title-input"),
+      document.getElementById("description-input"), consentInput,
+      ...Array.from(form.querySelectorAll('input[name="entryMode"]')),
+    ];
+    for (const field of lockFields) field.disabled = Boolean(activeUploadRecord);
+    if (activeUploadRecord) {
+      document.getElementById("author-input").value = activeUploadRecord.author;
+      profileInput.value = activeUploadRecord.profile;
+      document.getElementById("title-input").value = activeUploadRecord.title;
+      document.getElementById("description-input").value = activeUploadRecord.description;
+      consentInput.checked = true;
+      form.querySelector('input[name="entryMode"][value="file"]').checked = true;
+      updateEntryMode();
+    }
+    setFormBusy(formBusy);
+  }
+
+  function sameSelectedFile(record, file) {
+    return Boolean(file && file.name === record.fileName && file.size === record.fileSize && fileType(file) === record.fileType);
+  }
+
+  function setUploadUiRecord(record, state, extra) {
+    const updated = { ...record, state, ...(extra || {}) };
+    const position = uploadUiRecords.findIndex((item) => item.id === record.id);
+    if (position >= 0) uploadUiRecords[position] = { ...updated, uiState: state };
+    else uploadUiRecords.push({ ...updated, uiState: state });
+    if (persistUploadRecord(updated)) {
+      memoryTokens.set(updated.workId, updated.deleteToken);
+    }
+    if (activeUploadRecord && activeUploadRecord.id === updated.id) activeUploadRecord = updated;
+    renderUploadResume();
+    return updated;
+  }
+
+  async function readUploadStatus(record) {
+    const url = apiEndpointUrl(record.statusUrl);
+    if (!url) throw new Error("投稿の状態を確認できませんでした。");
+    const response = await fetch(url, {
+      headers: { Accept: "application/json", Authorization: `Bearer ${record.deleteToken}` },
+      cache: "no-store",
+    });
+    if (response.status === 404 || response.status === 410) {
+      const expiredError = new Error("投稿の受付期限が過ぎました。ファイルを選び直して投稿してください。");
+      expiredError.expired = true;
+      throw expiredError;
+    }
+    if (!response.ok) throw new Error(await responseError(response, "投稿の状態を確認できませんでした"));
+    let data;
+    try { data = await response.json(); } catch (_) { throw new Error("投稿の状態を読み取れませんでした。"); }
+    const state = data && (data.state || (data.upload && data.upload.state) || data.status);
+    if (!["pending", "uploading", "ready", "published", "cancelled", "expired"].includes(state)) {
+      throw new Error("投稿の状態を読み取れませんでした。");
+    }
+    if (data.workId && String(data.workId) !== record.workId) throw new Error("投稿先の情報が一致しませんでした。");
+    const nestedUpload = data.upload && typeof data.upload === "object" ? data.upload : {};
+    return {
+      state,
+      retryAfterSeconds: Number.isFinite(Number(data.retryAfterSeconds ?? nestedUpload.retryAfterSeconds))
+        ? Math.max(0, Number(data.retryAfterSeconds ?? nestedUpload.retryAfterSeconds)) : 0,
+      work: data.work && typeof data.work === "object" && !Array.isArray(data.work)
+        ? data.work
+        : (nestedUpload.work && typeof nestedUpload.work === "object" && !Array.isArray(nestedUpload.work) ? nestedUpload.work : null),
+    };
+  }
+
+  function resumeMessageFor(record) {
+    const state = record.uiState || record.state || "unknown";
+    if (state === "ready") return "ファイルの準備ができています。続きを公開できます。";
+    if (state === "pending") return "同じファイルを選び直すと、続きから投稿できます。";
+    if (state === "uploading") return record.retryAfterSeconds
+      ? `ファイルの送信中です。約${record.retryAfterSeconds}秒後に状態をもう一度確認してください。`
+      : "ファイルの送信中です。少し待ってから状態をもう一度確認してください。";
+    if (state === "published") return "公開済みです。棚への掲載を確認できます。";
+    return "投稿の状態を確認できません。通信を確かめて、続きから投稿してください。";
+  }
+
+  function renderUploadResume() {
+    uploadResumeList.replaceChildren();
+    const records = uploadUiRecords.filter((record) => record && !["cancelled", "expired"].includes(record.uiState || record.state));
+    uploadResume.hidden = records.length === 0;
+    for (const record of records) {
+      const item = element("div", "upload-resume-item");
+      const copy = element("div", "upload-resume-copy");
+      copy.append(element("span", "upload-resume-title", record.title || record.fileName || "作品"));
+      copy.append(element("span", "upload-resume-note", resumeMessageFor(record)));
+      const actions = element("div", "upload-resume-actions");
+      const continueButton = element("button", "submit-button", "続きから投稿");
+      continueButton.type = "button";
+      const cancelButton = element("button", "cancel-button", "取りやめ");
+      cancelButton.type = "button";
+      continueButton.disabled = Boolean(record.busy) || !apiBaseUrl;
+      cancelButton.disabled = Boolean(record.busy) || !apiBaseUrl;
+      continueButton.addEventListener("click", () => continueUploadRecord(record.id));
+      cancelButton.addEventListener("click", () => cancelSavedUpload(record.id));
+      actions.append(continueButton, cancelButton);
+      item.append(copy, actions);
+      uploadResumeList.append(item);
+    }
+  }
+
+  async function verifyPublishedUpload(record, work) {
+    if (!work || workId(work) !== record.workId) {
+      setSubmitStatus("公開結果の作品番号が一致しません。状態を確認してから続けてください。", true);
+      return false;
+    }
+    let found;
+    try {
+      found = await findApiWorkById(record.workId);
+    } catch (_) {
+      renderWorks(API_LOAD_ERROR);
+      const pendingCheck = setUploadUiRecord(record, "published", { publishedWork: work });
+      setActiveUploadRecord(pendingCheck);
+      setSubmitStatus("保存は完了しましたが、棚への反映をまだ確認できません。少し待ってから「続きから投稿」で再確認してください。", true);
+      return false;
+    }
+    const listedWork = found.work;
+    const confirmed = Boolean(listedWork);
+    if (confirmed) {
+      apiWorks = uniqueWorks([listedWork], apiWorks);
+      nextCursor = found.firstPage.nextCursor;
+      preferredIds = [record.workId, ...preferredIds.filter((id) => id !== record.workId)];
+      renderWorks("");
+      setActiveUploadRecord(null);
+      activeUploadRecord = null;
+      form.reset();
+      selectedFile = null;
+      clearFilePreview();
+      clearFieldErrors();
+      clearUploadRecord(record, false);
+      renderWorks("");
+      revealWork(record.workId);
+      setSubmitStatus("棚に投稿しました。取り下げもこのブラウザ、または同じAIに頼めます。");
+      return true;
+    }
+    apiWorks = uniqueWorks(apiWorks);
+    nextCursor = found.firstPage.nextCursor;
+    renderWorks("保存は完了しましたが、作品はまだ一覧で確認できません。少し待ってから再確認してください。");
+    const pendingCheck = setUploadUiRecord(record, "published", { publishedWork: work });
+    setActiveUploadRecord(pendingCheck);
+    setSubmitStatus("保存は完了しました。棚への反映をまだ確認できないため、少し待ってから「続きから投稿」で再確認してください。", true);
+    return false;
+  }
+
+  async function publishPreparedUpload(record, knownWork) {
+    const url = apiEndpointUrl(record.publishUrl);
+    if (!url) throw new Error("公開先を確認できませんでした。");
+    if (knownWork && workId(knownWork) === record.workId) {
+      await verifyPublishedUpload(record, knownWork);
       return;
     }
-    if (!validateForm()) return;
+    setFormBusy(true, "公開しています…");
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { Accept: "application/json", Authorization: `Bearer ${record.deleteToken}` },
+      });
+      if (!response.ok) throw new Error(await responseError(response, "公開できませんでした。続きから再試行できます"));
+      let result;
+      try { result = await response.json(); } catch (_) { throw new Error("公開結果を読み取れませんでした。状態を確認して続けてください。"); }
+      if (!result || !result.work || workId(result.work) !== record.workId) {
+        throw new Error("公開結果の作品番号が一致しません。状態を確認して続けてください。");
+      }
+      await verifyPublishedUpload(record, result.work);
+    } catch (error) {
+      setSubmitStatus(error instanceof Error ? error.message : "公開できませんでした。状態を確認して続けてください。", true);
+      const failed = setUploadUiRecord(record, record.state === "ready" ? "ready" : "published");
+      setActiveUploadRecord(failed);
+    } finally {
+      setFormBusy(false);
+    }
+  }
+
+  async function sendFileToUpload(record, file) {
+    if (!sameSelectedFile(record, file)) {
+      setFileError("最初に選んだファイルと同じ名前・形式・サイズのファイルを選んでください。");
+      setSubmitStatus("選んだファイルを確認できません。最初に選んだファイルを選び直してください。", true);
+      return;
+    }
+    const uploadUrl = apiEndpointUrl(record.uploadUrl);
+    if (!uploadUrl) {
+      setSubmitStatus("ファイルの送信先を確認できませんでした。取りやめてからやり直してください。", true);
+      return;
+    }
+    setFormBusy(true, "ファイルを送っています…");
+    setSubmitStatus("ファイルを安全に送信しています…", false);
+    try {
+      const response = await fetch(uploadUrl, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${record.deleteToken}`,
+          "Content-Type": record.fileType === "mp4" ? "video/mp4" : "text/html",
+        },
+        body: file,
+      });
+      if (!response.ok) throw new Error(await responseError(response, "ファイルを送れませんでした。続きから再試行できます"));
+      let result;
+      try { result = await response.json(); } catch (_) { throw new Error("送信結果を読み取れませんでした。状態を確認して続けてください。"); }
+      if (!result || result.state !== "ready") throw new Error("ファイルの準備が完了したことを確認できませんでした。状態を確認して続けてください。");
+      const readyRecord = setUploadUiRecord(record, "ready", { retryAfterSeconds: 0 });
+      setActiveUploadRecord(readyRecord);
+      setSubmitStatus("ファイルを受け取りました。作品を棚に並べています…", false);
+      await publishPreparedUpload(readyRecord);
+    } catch (error) {
+      setSubmitStatus(error instanceof Error ? error.message : "ファイルを送れませんでした。状態を確認して続けてください。", true);
+      const waitingRecord = setUploadUiRecord(record, record.state || "pending");
+      setActiveUploadRecord(waitingRecord);
+    } finally {
+      setFormBusy(false);
+    }
+  }
+
+  async function continueUploadRecord(id) {
+    if (formBusy || !apiBaseUrl) return;
+    const record = uploadUiRecords.find((item) => item.id === String(id)) || getStoredUploadRecords().find((item) => item.id === String(id));
+    if (!record) return;
+    const current = { ...record, busy: true };
+    uploadUiRecords = uploadUiRecords.map((item) => item.id === record.id ? current : item);
+    renderUploadResume();
+    setFormBusy(true, "状態を確認しています…");
+    setSubmitStatus("投稿の状態を確認しています…", false);
+    try {
+      const status = await readUploadStatus(record);
+      if (status.state === "expired" || status.state === "cancelled") {
+        clearUploadRecord(record, true);
+        setSubmitStatus(status.state === "expired" ? "この投稿は期限切れです。ファイルを選び直して投稿してください。" : "この投稿は取りやめ済みです。", true);
+        return;
+      }
+      const updated = setUploadUiRecord(record, status.state, { retryAfterSeconds: status.retryAfterSeconds });
+      setActiveUploadRecord(updated);
+      showManualEntry();
+      if (status.state === "ready") {
+        await publishPreparedUpload(updated, status.work);
+        return;
+      }
+      if (status.state === "published") {
+        await publishPreparedUpload(updated, status.work || updated.publishedWork);
+        return;
+      }
+      if (status.state === "uploading") {
+        const seconds = status.retryAfterSeconds;
+        setSubmitStatus(seconds ? `ファイル送信中のため、約${seconds}秒後に状態を再確認してください。` : "ファイル送信中のため、少し待ってから状態を再確認してください。", true);
+        return;
+      }
+      if (selectedFile && sameSelectedFile(updated, selectedFile)) {
+        await sendFileToUpload(updated, selectedFile);
+      } else {
+        selectedFile = null;
+        workFileInput.value = "";
+        clearFilePreview();
+        setFileError("");
+        setSubmitStatus("最初に選んだファイルを選び直してください。名前・形式・サイズが一致したら「続きから投稿」を押してください。", false);
+        workFileInput.focus();
+        fileUploadFields.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    } catch (error) {
+      if (error && error.expired) {
+        clearUploadRecord(record, true);
+        setSubmitStatus(error.message, true);
+      } else {
+        const stale = { ...record, busy: false, uiState: record.state || "unknown" };
+        uploadUiRecords = uploadUiRecords.map((item) => item.id === record.id ? stale : item);
+        setSubmitStatus(error instanceof Error ? error.message : "投稿の状態を確認できませんでした。通信状態を確かめてください。", true);
+      }
+    } finally {
+      const currentRecord = uploadUiRecords.find((item) => item.id === record.id);
+      if (currentRecord && currentRecord.busy) {
+        uploadUiRecords = uploadUiRecords.map((item) => item.id === record.id ? { ...item, busy: false } : item);
+      }
+      renderUploadResume();
+      setFormBusy(false);
+    }
+  }
+
+  async function cancelSavedUpload(id) {
+    if (formBusy || !apiBaseUrl) return;
+    const record = uploadUiRecords.find((item) => item.id === String(id)) || getStoredUploadRecords().find((item) => item.id === String(id));
+    if (!record) return;
+    uploadUiRecords = uploadUiRecords.map((item) => item.id === record.id ? { ...item, busy: true } : item);
+    renderUploadResume();
+    setFormBusy(true, "投稿を取りやめています…");
+    setSubmitStatus("投稿を取りやめています…", false);
+    try {
+      const response = await cancelUploadRequest(record);
+      if (response.status === 404 || response.status === 410) {
+        clearUploadRecord(record, true);
+        setSubmitStatus("投稿の受付はすでに終了しています。", false);
+        return;
+      }
+      if (!response.ok) throw new Error(await responseError(response, "投稿を取りやめできませんでした"));
+      clearUploadRecord(record, true);
+      if (activeUploadRecord && activeUploadRecord.id === record.id) setActiveUploadRecord(null);
+      setSubmitStatus("投稿を取りやめました。", false);
+    } catch (error) {
+      setSubmitStatus(error instanceof Error ? error.message : "投稿を取りやめできませんでした。通信状態を確かめてください。", true);
+    } finally {
+      uploadUiRecords = uploadUiRecords.map((item) => item.id === record.id ? { ...item, busy: false } : item);
+      renderUploadResume();
+      setFormBusy(false);
+    }
+  }
+
+  async function loadUploadRecovery() {
+    uploadUiRecords = getStoredUploadRecords();
+    for (const record of uploadUiRecords) memoryTokens.set(record.workId, record.deleteToken);
+    renderUploadResume();
+    if (!apiBaseUrl || !uploadUiRecords.length) return;
+    const records = [...uploadUiRecords];
+    let expiredFound = false;
+    await Promise.all(records.map(async (record) => {
+      try {
+        const status = await readUploadStatus(record);
+        if (status.state === "expired" || status.state === "cancelled") {
+          if (status.state === "expired") expiredFound = true;
+          clearUploadRecord(record, true);
+          return;
+        }
+        setUploadUiRecord(record, status.state, { retryAfterSeconds: status.retryAfterSeconds });
+      } catch (error) {
+        if (error && error.expired) {
+          expiredFound = true;
+          clearUploadRecord(record, true);
+        }
+        else {
+          const position = uploadUiRecords.findIndex((item) => item.id === record.id);
+          if (position >= 0) uploadUiRecords[position] = { ...record, uiState: "unknown" };
+        }
+      }
+    }));
+    renderUploadResume();
+    if ((uploadUiRecords.length || expiredFound) && panel.hidden) openSubmitPanel(openButtons[0] || null);
+    if (expiredFound) setSubmitStatus("期限切れの投稿受付を片付けました。ファイルを選び直して投稿できます。", true);
+  }
+
+  function formValues() {
+    return {
+      author: document.getElementById("author-input").value.trim(),
+      profile: profileInput.value.trim(),
+      title: document.getElementById("title-input").value.trim(),
+      description: document.getElementById("description-input").value.trim(),
+      consent: true,
+    };
+  }
+
+  async function submitFileWork() {
     if (!preflightTokenStorage()) {
       setSubmitStatus("この端末では取り下げに必要な情報を保存できないため、投稿を中止しました。ブラウザの保存設定を確認してください。", true);
       return;
     }
-
-    const values = new FormData(form);
+    const file = selectedFile;
+    const fields = formValues();
     const body = {
-      author: String(values.get("author")).trim(),
-      profile: String(values.get("profile")).trim(),
-      title: String(values.get("title")).trim(),
-      workUrl: String(values.get("workUrl")).trim(),
-      description: String(values.get("description")).trim(),
-      consent: true,
+      ...fields,
+      fileName: file.name,
+      fileType: fileType(file),
+      fileSize: file.size,
     };
+    setFormBusy(true, "投稿を受け付けています…");
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/uploads`, {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!response.ok) {
+        setSubmitStatus(await responseError(response, "投稿を受け付けできませんでした"), true);
+        return;
+      }
+      let result;
+      try { result = await response.json(); } catch (_) { throw new Error("受付結果を読み取れませんでした。状態を確認してください。"); }
+      const record = result && {
+        id: typeof result.id === "string" ? result.id : "",
+        workId: typeof result.workId === "string" ? result.workId : "",
+        deleteToken: typeof result.deleteToken === "string" ? result.deleteToken : "",
+        uploadUrl: typeof result.uploadUrl === "string" ? result.uploadUrl : "",
+        publishUrl: typeof result.publishUrl === "string" ? result.publishUrl : "",
+        statusUrl: typeof result.statusUrl === "string" ? result.statusUrl : "",
+        expiresAt: result.expiresAt || "",
+        fileName: file.name,
+        fileType: fileType(file),
+        fileSize: file.size,
+        ...fields,
+        state: "pending",
+      };
+      if (!uploadRecordIsValid(record)) {
+        if (record && record.id.startsWith("upload-") && record.workId.startsWith("community-") && record.deleteToken) {
+          try { await cancelUploadRequest(record); } catch (_) { /* report the incomplete preparation without exposing its token */ }
+        }
+        throw new Error("受付情報を安全に保存できないため、ファイルを送りませんでした。少し待って棚を確認してください。");
+      }
+      if (!persistUploadRecord(record)) {
+        let cancelled = false;
+        try {
+          const cancelResponse = await cancelUploadRequest(record);
+          if (!cancelResponse.ok && cancelResponse.status !== 404 && cancelResponse.status !== 410) {
+            throw new Error("投稿受付を取りやめできませんでした。");
+          }
+          cancelled = true;
+        } catch (_) {
+          memoryTokens.set(record.workId, record.deleteToken);
+          uploadUiRecords.push({ ...record, uiState: "pending" });
+          renderUploadResume();
+          setSubmitStatus("取り下げ情報を保存できず、準備の取りやめも確認できませんでした。ページを閉じずに「取りやめ」を再試行してください。", true);
+          return;
+        }
+        if (cancelled) clearUploadRecord(record, true);
+        setSubmitStatus("この端末に取り下げ情報を保存できなかったため、投稿受付を取りやめました。ブラウザの保存設定を確認してください。", true);
+        return;
+      }
+      activeUploadRecord = record;
+      uploadUiRecords.push({ ...record, uiState: "pending" });
+      setActiveUploadRecord(record);
+      renderUploadResume();
+      await sendFileToUpload(record, file);
+    } catch (error) {
+      setSubmitStatus(error instanceof Error ? error.message : "投稿を受け付けできませんでした。通信状態を確認してください。", true);
+    } finally {
+      setFormBusy(false);
+    }
+  }
 
-    submitButton.disabled = true;
-    form.setAttribute("aria-busy", "true");
-    submitButton.textContent = "投稿しています…";
+  async function submitUrlWork() {
+    if (!preflightTokenStorage()) {
+      setSubmitStatus("この端末では取り下げに必要な情報を保存できないため、投稿を中止しました。ブラウザの保存設定を確認してください。", true);
+      return;
+    }
+    const body = { ...formValues(), workUrl: workUrlInput.value.trim() };
+    setFormBusy(true, "投稿しています…");
     try {
       const response = await fetch(`${apiBaseUrl}/api/works`, {
         method: "POST",
@@ -643,48 +1340,86 @@
         setSubmitStatus(await responseError(response, "投稿できませんでした"), true);
         return;
       }
-
       let result;
       try { result = await response.json(); } catch (_) { throw new Error("投稿結果を読み取れませんでした。再読み込みしてください。"); }
       if (!result || !result.work || typeof result.work !== "object" || !workId(result.work)) {
         throw new Error("投稿は受け付けられましたが、作品情報を読み取れませんでした。再読み込みしてください。");
       }
-
       const createdWork = result.work;
       const createdId = workId(createdWork);
       preferredIds = [createdId, ...preferredIds.filter((id) => id !== createdId)];
-      let tokenStored = false;
       const tokenProvided = typeof result.deleteToken === "string" && Boolean(result.deleteToken);
+      let tokenStored = false;
       if (tokenProvided) {
         memoryTokens.set(createdId, result.deleteToken);
         try {
           window.localStorage.setItem(tokenStorageKey(createdId), result.deleteToken);
-          tokenStored = true;
-        } catch (_) {
-          tokenStored = false;
+          tokenStored = window.localStorage.getItem(tokenStorageKey(createdId)) === result.deleteToken;
+        } catch (_) { tokenStored = false; }
+      }
+
+      if (tokenProvided && !tokenStored) {
+        try {
+          const removeResponse = await fetch(`${apiBaseUrl}/api/works/${encodeURIComponent(createdId)}`, {
+            method: "DELETE",
+            headers: { Accept: "application/json", Authorization: `Bearer ${result.deleteToken}` },
+          });
+          if (!removeResponse.ok) throw new Error(await responseError(removeResponse, "投稿の取り下げを確認できませんでした"));
+          const remaining = await findApiWorkById(createdId);
+          if (remaining.work) throw new Error("棚に作品が残っていることを確認しました。");
+          removedIds.add(createdId);
+          preferredIds = preferredIds.filter((id) => id !== createdId);
+          apiWorks = apiWorks.filter((work) => workId(work) !== createdId);
+          memoryTokens.delete(createdId);
+          try { window.localStorage.removeItem(tokenStorageKey(createdId)); } catch (_) { /* no token is needed after verified removal */ }
+          form.reset();
+          selectedFile = null;
+          clearFilePreview();
+          clearFieldErrors();
+          updateEntryMode();
+          renderWorks("");
+          setSubmitStatus("取り下げ情報を保存できなかったため、自動で投稿を取り下げ、棚から消えたことを確認しました。ブラウザの保存設定を確認してください。", true);
+          return;
+        } catch (error) {
+          await refreshAfterPost(createdId, createdWork);
+          revealWork(createdId);
+          setSubmitStatus("取り下げ情報を保存できず、自動の取り下げも確認できませんでした。このページを閉じず、作品カードの「自分の投稿を取り下げる」から再試行してください。", true);
+          return;
         }
       }
 
       const confirmed = await refreshAfterPost(createdId, createdWork);
       form.reset();
+      selectedFile = null;
+      clearFilePreview();
       clearFieldErrors();
+      updateEntryMode();
       revealWork(createdId);
-      if (!tokenProvided) {
-        setSubmitStatus("投稿は保存されましたが、取り下げ用トークンを受け取れませんでした。", true);
-      } else if (!tokenStored) {
-        setSubmitStatus("この端末で取り下げに必要な情報を保存できませんでした。このページを閉じる前に取り下げてください。", true);
-      } else if (!confirmed) {
-        setSubmitStatus("投稿は保存されましたが、棚で再確認できませんでした。再読み込みしてください。", true);
-      } else {
-        setSubmitStatus("棚に投稿しました。");
-      }
+      if (!tokenProvided) setSubmitStatus("投稿は保存されましたが、取り下げ用トークンを受け取れませんでした。", true);
+      else if (!confirmed) setSubmitStatus("投稿は保存されましたが、棚で再確認できませんでした。再読み込みしてください。", true);
+      else setSubmitStatus("棚に投稿しました。");
     } catch (error) {
       setSubmitStatus(error instanceof Error ? error.message : "投稿できませんでした。通信状態を確認して、もう一度お試しください。", true);
     } finally {
-      form.setAttribute("aria-busy", "false");
-      submitButton.disabled = !apiBaseUrl;
-      submitButton.textContent = "棚に投稿する";
+      setFormBusy(false);
     }
+  }
+
+  async function submitWork(event) {
+    event.preventDefault();
+    if (formBusy) return;
+    setSubmitStatus("", false);
+    if (!apiBaseUrl) {
+      setSubmitStatus("投稿機能は公開前の準備中です。", true);
+      return;
+    }
+    if (activeUploadRecord) {
+      await continueUploadRecord(activeUploadRecord.id);
+      return;
+    }
+    if (!validateForm()) return;
+    if (currentEntryMode() === "file") await submitFileWork();
+    else await submitUrlWork();
   }
 
   async function removeOwnWork(id, button, cancelButton) {
@@ -754,4 +1489,5 @@
 
   window.addEventListener("hashchange", restoreWorkFragment);
   loadInitialWorks().then(() => window.requestAnimationFrame(restoreWorkFragment));
+  loadUploadRecovery();
 })();
