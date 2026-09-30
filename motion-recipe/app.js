@@ -308,7 +308,7 @@
         <div class="g-prompt" id="gp-${i}" hidden>${g.prep ? `<p class="g-prep">${esc(g.prep)}</p>` : ""}<pre>${esc(g.prompt.text)}</pre><p class="fine">${esc(g.prompt.note || "")}</p><button type="button" class="btn chip-btn" data-copyprompt="${i}">このプロンプトをコピー</button></div>` : "";
     const genre = GENRES[g.genre] ? `<button type="button" class="genre-badge g-${esc(g.genre)}" data-genre="${esc(g.genre)}" title="このジャンルの作品だけ見る">${esc(GENRES[g.genre])}</button>` : "";
     return `<article class="g-card" id="w-${esc(g.id)}">
-        <button type="button" class="g-thumb${g.aspect && g.aspect !== "16:9" ? " fit" : ""}" data-play="${i}" aria-label="再生：${esc(g.title)}${meta ? `（${esc(meta)}）` : ""}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')">${meta ? `<span class="g-meta" aria-hidden="true">${esc(meta)}</span>` : ""}</button>
+        <button type="button" class="g-thumb${g.aspect && g.aspect !== "16:9" ? " fit" : ""}" data-play="${i}" aria-label="再生：${esc(g.title)}${meta ? `（${esc(meta)}）` : ""}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')">${g.preview ? `<video class="g-pv" muted playsinline loop preload="none" data-src="gallery/${esc(g.preview)}" aria-hidden="true" tabindex="-1"></video>` : ""}${meta ? `<span class="g-meta" aria-hidden="true">${esc(meta)}</span>` : ""}</button>
         <div class="g-text">
           <p class="g-title">${esc(g.title)}</p>
           <div class="g-labels">${genre}${techChips(g)}</div>
@@ -341,7 +341,54 @@
   function renderOk() {
     if (!okItems.length) return;
     $("gallery-grid").innerHTML = okItems.map((g, i) => (hits(g, true) ? okCard(g, i) : "")).join("") || NONE;
+    watchPreviews();
   }
+  // 動くサムネ（2026-09-30 夜・競合調査の提案1 → 相談役 Fable の1位）：3.5秒・無音の予告（gallery/preview/）。
+  // パソコンは乗せた時だけ、スマホは画面の中の1本だけ動かす。本編の mp4 は押すまで読まない。動きを減らす設定・データ節約の時は動かさない
+  const pvOff = matchMedia("(prefers-reduced-motion: reduce)").matches || !!(navigator.connection && navigator.connection.saveData);
+  const canHover = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  let pvIO = null, pvNow = null;
+  const pvStart = (v) => {
+    if (!v || pvNow === v) return;
+    pvStop(pvNow);
+    if (!v.getAttribute("src")) v.src = v.dataset.src;
+    pvNow = v;
+    const p = v.play();
+    if (p && p.then) p.then(() => { if (pvNow === v) v.parentElement.classList.add("pv-on"); }).catch(() => {});
+  };
+  const pvStop = (v) => {
+    if (!v) return;
+    v.pause(); v.parentElement.classList.remove("pv-on");
+    if (pvNow === v) pvNow = null;
+  };
+  function watchPreviews() {
+    if (pvOff) return;
+    const grid = $("gallery-grid");
+    pvNow = null;
+    if (canHover) {
+      if (!grid.dataset.pv) {
+        grid.dataset.pv = "1";
+        grid.addEventListener("pointerover", (e) => { const t = e.target.closest(".g-thumb"); if (t) pvStart(t.querySelector(".g-pv")); });
+        grid.addEventListener("pointerout", (e) => { const t = e.target.closest(".g-thumb"); if (t && !t.contains(e.relatedTarget)) pvStop(t.querySelector(".g-pv")); });
+      }
+      return;
+    }
+    if (!("IntersectionObserver" in window)) return;
+    if (pvIO) pvIO.disconnect();
+    const seen = new Map();
+    let timer = 0;
+    pvIO = new IntersectionObserver((ents) => {
+      ents.forEach((en) => seen.set(en.target, en.intersectionRatio));
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        let best = null, br = 0.6;
+        seen.forEach((r, v) => { if (r >= br && document.contains(v)) { best = v; br = r; } });
+        if (best) pvStart(best); else pvStop(pvNow);
+      }, 150);
+    }, { threshold: [0, 0.6, 0.8, 1] });
+    grid.querySelectorAll(".g-pv").forEach((v) => pvIO.observe(v));
+  }
+  const pvPauseAll = () => pvStop(pvNow);
   function renderWorld() {
     if (!worldItems.length) return;
     const W2 = window.MOTION_WORLD;
@@ -422,6 +469,7 @@
   function openWork(i) {
     const g = okItems[i];
     modalIdx = i;
+    pvPauseAll(); // 窓を開く時は予告を止める
     const v = $("modal-video");
     v.muted = false;
     v.style.aspectRatio = /^\d+:\d+$/.test(g.aspect || "") ? g.aspect.replace(":", " / ") : "16 / 9"; // 読み込む前から形を取っておく（ガタつかない）

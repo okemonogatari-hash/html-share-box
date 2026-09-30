@@ -41,7 +41,8 @@ window.MOTION_GALLERY = {
     "fixes": 0,
     "src": "oneliner-test/PROCESS.md 冒頭の一言（途中の質問なし・約46分）"
    },
-   "prep": "用意する物：なし。基本の2行だけで作りました（画像0・動画0・音源0）"
+   "prep": "用意する物：なし。基本の2行だけで作りました（画像0・動画0・音源0）",
+   "preview": "preview/from-nothing.mp4"
   },
   {
    "id": "otehon-apple-asobi",
@@ -83,7 +84,8 @@ window.MOTION_GALLERY = {
     "fixes": 0,
     "src": "PROCESS.md「流れ（2026-09-27）」11:52→12:4x"
    },
-   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）"
+   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
+   "preview": "preview/otehon-apple-asobi.mp4"
   },
   {
    "id": "otehon-linear-kanau",
@@ -127,7 +129,8 @@ window.MOTION_GALLERY = {
     "fixes": 0,
     "src": "PROCESS.md「流れ（2026-09-27）」11:52→14:25（13:2x〜14:25 の通信の中断を除く）"
    },
-   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）"
+   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
+   "preview": "preview/otehon-linear-kanau.mp4"
   },
   {
    "id": "otehon-kimochi-zukan",
@@ -169,7 +172,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-27）」18:4x→20:49・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：アイコンの絵。この動画はカピバラのアイコンの絵を使っているので、自分のキャラやアイコンに差し替えてください（音はコード）"
+   "prep": "用意する物：アイコンの絵。この動画はカピバラのアイコンの絵を使っているので、自分のキャラやアイコンに差し替えてください（音はコード）",
+   "preview": "preview/otehon-kimochi-zukan.mp4"
   },
   {
    "id": "otehon-compass",
@@ -211,7 +215,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-27）」18:2x→20:58・「評価役の指摘と直したこと（2026-09-27 20:4x）」"
    },
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/otehon-compass.mp4"
   },
   {
    "id": "otehon-recipe-demo",
@@ -253,7 +258,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-27）」18:28→21:10・「評価役の指摘と直したこと（2026-09-27 21時）」"
    },
-   "prep": "用意する物：画面に映す画像と曲。この動画は棚の作品のサムネを画面に並べ、曲はおけもんの自作曲。自分のアプリの画面と好きな曲に差し替えてください"
+   "prep": "用意する物：画面に映す画像と曲。この動画は棚の作品のサムネを画面に並べ、曲はおけもんの自作曲。自分のアプリの画面と好きな曲に差し替えてください",
+   "preview": "preview/otehon-recipe-demo.mp4"
   },
   {
    "id": "otehon-four-faces",
@@ -290,7 +296,8 @@ window.MOTION_GALLERY = {
    "seconds": 15,
    "ref_url": "https://x.com/benjitaylor/status/2082515001949221152",
    "ref_world_id": "benji-launch-reel",
-   "prep": "用意する物：ロゴの画像。この動画は波のロゴの画像を使っているので、自分のロゴに差し替えてください（音はコード）"
+   "prep": "用意する物：ロゴの画像。この動画は波のロゴの画像を使っているので、自分のロゴに差し替えてください（音はコード）",
+   "preview": "preview/otehon-four-faces.mp4"
   },
   {
    "id": "otehon-lab-shelf",
@@ -332,7 +339,8 @@ window.MOTION_GALLERY = {
     "fixes": 2,
     "src": "PROCESS.md「流れ（2026-09-27）」20:43→22:1x（21:4x 外の目）・「評価役の指摘と直したこと（2026-09-27 22時）」"
    },
-   "prep": "用意する物：シールの絵と曲。この動画はカピバラのシールの絵と、フリー音源の曲（OpenTracks「heart beat」）を使っています"
+   "prep": "用意する物：シールの絵と曲。この動画はカピバラのシールの絵と、フリー音源の曲（OpenTracks「heart beat」）を使っています",
+   "preview": "preview/otehon-lab-shelf.mp4"
   },
   {
    "id": "otehon-why-play",
@@ -374,7 +382,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-27）」20:28→22:1x・「評価役の指摘と直したこと（40秒版 → 34.6秒版）」"
    },
-   "prep": "用意する物：語りの声と曲。この動画の語りは読み上げAIで別に作った音声です。注文書のままだと語りは入りません"
+   "prep": "用意する物：語りの声と曲。この動画の語りは読み上げAIで別に作った音声です。注文書のままだと語りは入りません",
+   "preview": "preview/otehon-why-play.mp4"
   },
   {
    "id": "otehon-horizon",
@@ -416,7 +425,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-27）」22:07→23:04・「残っていない物」23:3x 評価役の指摘でポスターを替えた"
    },
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/otehon-horizon.mp4"
   },
   {
    "id": "otehon-offkai",
@@ -458,7 +468,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-27）」22:00→23:15・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：写真1枚と曲。この動画はコーヒーの写真と、フリー音源の曲（OpenTracks「Morning」）を使っています"
+   "prep": "用意する物：写真1枚と曲。この動画はコーヒーの写真と、フリー音源の曲（OpenTracks「Morning」）を使っています",
+   "preview": "preview/otehon-offkai.mp4"
   },
   {
    "id": "otehon-retro-game",
@@ -500,7 +511,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-27）」21:2x→23:4x・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/otehon-retro-game.mp4"
   },
   {
    "id": "otehon-mizuyan",
@@ -542,7 +554,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-27〜28）」22:4x→00:23・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：曲だけ。この動画の曲はSuno で作った曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はSuno で作った曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/otehon-mizuyan.mp4"
   },
   {
    "id": "otehon-tsubu",
@@ -579,7 +592,8 @@ window.MOTION_GALLERY = {
    "seconds": 15,
    "ref_url": "https://x.com/OA_paperclips/status/2093445516919279867",
    "ref_world_id": "fluoddity",
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/otehon-tsubu.mp4"
   },
   {
    "id": "otehon-suiyo-radio",
@@ -621,7 +635,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-27〜28）」23:0x→1:0x・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/otehon-suiyo-radio.mp4"
   },
   {
    "id": "showa-radio-cm",
@@ -661,7 +676,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」06:0x→07:17・「2026-09-28 夜：語りを Gemini TTS に差し替えた」（本人の言葉で）"
    },
-   "prep": "用意する物：語りの声・曲・カピバラの絵。語りは Google の Gemini の読み上げ（TTS）で別に作り、曲はおけもんの自作曲。注文書のままだと語りは入りません"
+   "prep": "用意する物：語りの声・曲・カピバラの絵。語りは Google の Gemini の読み上げ（TTS）で別に作り、曲はおけもんの自作曲。注文書のままだと語りは入りません",
+   "preview": "preview/showa-radio-cm.mp4"
   },
   {
    "id": "otehon-asobo",
@@ -703,7 +719,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」00:09→01:5x・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/otehon-asobo.mp4"
   },
   {
    "id": "otehon-aki-yonaga",
@@ -745,7 +762,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」00:30→02:05・「評価役の指摘と直したこと（判定は「棚に出す」）」"
    },
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/otehon-aki-yonaga.mp4"
   },
   {
    "id": "otehon-watch-repair",
@@ -782,7 +800,8 @@ window.MOTION_GALLERY = {
    "seconds": 15,
    "ref_url": "https://x.com/fdotinc/status/2092780175176175804",
    "ref_world_id": "next-ipod-blueprint",
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/otehon-watch-repair.mp4"
   },
   {
    "id": "otehon-gelato",
@@ -824,7 +843,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」01:1x→05:53（02:25〜05:28 の電池切れを除く）・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/otehon-gelato.mp4"
   },
   {
    "id": "otehon-onomatopoeia",
@@ -861,7 +881,8 @@ window.MOTION_GALLERY = {
    "seconds": 15,
    "ref_url": "https://x.com/alex_barashkov/status/2055276192106774738",
    "ref_world_id": "animate-text",
-   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）"
+   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
+   "preview": "preview/otehon-onomatopoeia.mp4"
   },
   {
    "id": "otehon-gym-6th",
@@ -903,7 +924,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」02:16→06:48（02:25〜05:35 の電池切れと 06:41〜06:44 の待ちを除く）・「評価役の指摘と直したこと（判定は「直してから出す」）」"
    },
-   "prep": "用意する物：語りの声と曲。この動画の語りは読み上げAIで別に作り、曲はおけもんの自作曲。注文書のままだと語りは入りません"
+   "prep": "用意する物：語りの声と曲。この動画の語りは読み上げAIで別に作り、曲はおけもんの自作曲。注文書のままだと語りは入りません",
+   "preview": "preview/otehon-gym-6th.mp4"
   },
   {
    "id": "business-intro",
@@ -943,7 +965,8 @@ window.MOTION_GALLERY = {
     "fixes": 2,
     "src": "PROCESS.md「流れ（2026-09-28）」08:42→10:47・「外の目の指摘と直したこと」「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：語りの声・曲・アイコンの絵。語りは Google の Gemini の読み上げ（TTS）で別に作り、曲はおけもんの自作曲、最後にカピバラのアイコンの絵。注文書のままだと語りは入りません"
+   "prep": "用意する物：語りの声・曲・アイコンの絵。語りは Google の Gemini の読み上げ（TTS）で別に作り、曲はおけもんの自作曲、最後にカピバラのアイコンの絵。注文書のままだと語りは入りません",
+   "preview": "preview/business-intro.mp4"
   },
   {
    "id": "combo-insta-live",
@@ -983,7 +1006,8 @@ window.MOTION_GALLERY = {
     "fixes": 2,
     "src": "PROCESS.md「流れ（2026-09-28）」08:41→11:1x・「評価役の指摘と直したこと」「名前を外した」（本人の言葉で）"
    },
-   "prep": "用意する物：人物の動画・曲・カピバラの絵。画面の女の子は動画生成AIで別に作った動画です。注文書だけでは人物の動画は作れません"
+   "prep": "用意する物：人物の動画・曲・カピバラの絵。画面の女の子は動画生成AIで別に作った動画です。注文書だけでは人物の動画は作れません",
+   "preview": "preview/combo-insta-live.mp4"
   },
   {
    "id": "combo-tiktok",
@@ -1023,7 +1047,8 @@ window.MOTION_GALLERY = {
     "fixes": 2,
     "src": "PROCESS.md「流れ（2026-09-28）」11:3x→13:57（12:5x 外の目）・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：人物の動画と曲。画面の女の子は動画生成AIで別に作った動画です。注文書だけでは人物の動画は作れません"
+   "prep": "用意する物：人物の動画と曲。画面の女の子は動画生成AIで別に作った動画です。注文書だけでは人物の動画は作れません",
+   "preview": "preview/combo-tiktok.mp4"
   },
   {
    "id": "quote-tired",
@@ -1063,7 +1088,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」11:0x→13:00・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：肖像と曲。この動画は言葉の作者の肖像（著作権の切れた物）とおけもんの自作曲を使っています"
+   "prep": "用意する物：肖像と曲。この動画は言葉の作者の肖像（著作権の切れた物）とおけもんの自作曲を使っています",
+   "preview": "preview/quote-tired.mp4"
   },
   {
    "id": "quote-nietzsche",
@@ -1103,7 +1129,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」12:14→13:45・「評価役の指摘と直したこと（2026-09-28）」"
    },
-   "prep": "用意する物：肖像と曲。この動画は言葉の作者の肖像（著作権の切れた1882年の写真）とおけもんの自作曲を使っています"
+   "prep": "用意する物：肖像と曲。この動画は言葉の作者の肖像（著作権の切れた1882年の写真）とおけもんの自作曲を使っています",
+   "preview": "preview/quote-nietzsche.mp4"
   },
   {
    "id": "quote-adler",
@@ -1141,7 +1168,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」14:1x→21:50（15:1x〜15:51 の眠りと 16:08〜20:20 の停止を除く）・「評価役の指摘と直したこと（2026-09-28）」"
    },
-   "prep": "用意する物：肖像と曲。この動画は言葉の作者の肖像とおけもんの自作曲を使っています"
+   "prep": "用意する物：肖像と曲。この動画は言葉の作者の肖像とおけもんの自作曲を使っています",
+   "preview": "preview/quote-adler.mp4"
   },
   {
    "id": "capy-step",
@@ -1183,7 +1211,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」18:3x→19:02・「評価役の指摘と直したこと（2026-09-28 夜・判定「棚に出す」）」"
    },
-   "prep": "用意する物：キャラの絵と曲。この動画はカピバラの絵とおけもんの自作曲を使っています。自分のキャラの絵と好きな曲に差し替えてください"
+   "prep": "用意する物：キャラの絵と曲。この動画はカピバラの絵とおけもんの自作曲を使っています。自分のキャラの絵と好きな曲に差し替えてください",
+   "preview": "preview/capy-step.mp4"
   },
   {
    "id": "melon-soda",
@@ -1220,7 +1249,8 @@ window.MOTION_GALLERY = {
    "seconds": 30,
    "ref_url": "https://x.com/Ror_Fly/status/2102853258582880547",
    "ref_world_id": "negroni-recipe",
-   "prep": "用意する物：曲だけ。この動画の曲はSuno で作った曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はSuno で作った曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/melon-soda.mp4"
   },
   {
    "id": "blackout",
@@ -1260,7 +1290,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」21:0x→22:05・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：キャラの絵と曲。この動画はカピバラの絵とおけもんの自作曲を使っています（効果音はコード）。自分のキャラの絵と好きな曲に差し替えてください"
+   "prep": "用意する物：キャラの絵と曲。この動画はカピバラの絵とおけもんの自作曲を使っています（効果音はコード）。自分のキャラの絵と好きな曲に差し替えてください",
+   "preview": "preview/blackout.mp4"
   },
   {
    "id": "kyuin-lamp",
@@ -1300,7 +1331,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md「流れ（2026-09-28）」21:0x→22:14・「評価役の指摘と直したこと」"
    },
-   "prep": "用意する物：キャラの絵と曲。この動画はカピバラの絵とおけもんの自作曲を使っています（キュインの音はコード）。自分のキャラの絵と好きな曲に差し替えてください"
+   "prep": "用意する物：キャラの絵と曲。この動画はカピバラの絵とおけもんの自作曲を使っています（キュインの音はコード）。自分のキャラの絵と好きな曲に差し替えてください",
+   "preview": "preview/kyuin-lamp.mp4"
   },
   {
    "id": "konekone-ui",
@@ -1337,7 +1369,8 @@ window.MOTION_GALLERY = {
    "seconds": 15,
    "ref_url": "https://x.com/__morse/status/2103485566570369333",
    "ref_world_id": "morse-colorful-ui",
-   "prep": "用意する物：曲だけ。この動画の曲はフリー音源の「Morning」（OpenTracks）なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はフリー音源の「Morning」（OpenTracks）なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/konekone-ui.mp4"
   },
   {
    "id": "kids-art-class",
@@ -1374,7 +1407,8 @@ window.MOTION_GALLERY = {
    "seconds": 16,
    "ref_url": "https://x.com/LottielabHQ/status/1970480133854171408",
    "ref_world_id": "lottielab-burp",
-   "prep": "用意する物：曲だけ。この動画の曲はフリー音源の「Carefree」（Kevin MacLeod・CC BY 4.0）なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はフリー音源の「Carefree」（Kevin MacLeod・CC BY 4.0）なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/kids-art-class.mp4"
   },
   {
    "id": "flea-market",
@@ -1416,7 +1450,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
-   "prep": "用意する物：語りの声・曲・品物の画像。語りは Google の Gemini の読み上げ（TTS）で別に作り、曲はおけもんの自作曲、品物は画像生成AIで作った絵。注文書のままだと語りは入りません"
+   "prep": "用意する物：語りの声・曲・品物の画像。語りは Google の Gemini の読み上げ（TTS）で別に作り、曲はおけもんの自作曲、品物は画像生成AIで作った絵。注文書のままだと語りは入りません",
+   "preview": "preview/flea-market.mp4"
   },
   {
    "id": "ball-principles",
@@ -1458,7 +1493,8 @@ window.MOTION_GALLERY = {
     "fixes": 2,
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/ball-principles.mp4"
   },
   {
    "id": "seed-to-flower",
@@ -1504,7 +1540,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "add_to_shelf.py の --minutes・--fixes"
    },
-   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵はコード。注文書は音なしで、棚の動画は手順ごとの1音をコードで足しました）"
+   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵はコード。注文書は音なしで、棚の動画は手順ごとの1音をコードで足しました）",
+   "preview": "preview/seed-to-flower.mp4"
   },
   {
    "id": "vintage-sale",
@@ -1550,7 +1587,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "add_to_shelf.py の --minutes・--fixes"
    },
-   "prep": "用意する物：服の写真と曲。この動画の服と小物の写真は画像生成AIで作り、曲はおけもんの自作曲。自分のお店の写真と好きな曲に差し替えてください"
+   "prep": "用意する物：服の写真と曲。この動画の服と小物の写真は画像生成AIで作り、曲はおけもんの自作曲。自分のお店の写真と好きな曲に差し替えてください",
+   "preview": "preview/vintage-sale.mp4"
   },
   {
    "id": "ask-oneline",
@@ -1596,7 +1634,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
-   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）"
+   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
+   "preview": "preview/ask-oneline.mp4"
   },
   {
    "id": "halloween",
@@ -1642,7 +1681,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
-   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）"
+   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
+   "preview": "preview/halloween.mp4"
   },
   {
    "id": "pottery-intro",
@@ -1684,7 +1724,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
-   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）"
+   "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
+   "preview": "preview/pottery-intro.mp4"
   },
   {
    "id": "suki-post",
@@ -1726,7 +1767,8 @@ window.MOTION_GALLERY = {
     "fixes": 1,
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
-   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）"
+   "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
+   "preview": "preview/suki-post.mp4"
   },
   {
    "id": "hitoshizuku",
@@ -1769,7 +1811,8 @@ window.MOTION_GALLERY = {
     "fixes": 2,
     "src": "fullpower-showreel の PROCESS.md「流れ（2026-09-26）」07:1x→12:16（08:45〜12:0x の「つづき」待ちを除く）・本人の直し 08:0x と 13:3x"
    },
-   "prep": "用意する物：なし。この1文だけで作りました（音楽も効果音もコード）"
+   "prep": "用意する物：なし。この1文だけで作りました（音楽も効果音もコード）",
+   "preview": "preview/hitoshizuku.mp4"
   },
   {
    "id": "jonetsu-intro",
@@ -1805,7 +1848,8 @@ window.MOTION_GALLERY = {
     "fixes": 2,
     "src": "PROCESS.md「流れ（2026-09-26）」18:42→19:54（19:2x 外の目）・「スカイドロップ版」（本人の言葉で）"
    },
-   "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）"
+   "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）",
+   "preview": "preview/jonetsu-intro.mp4"
   },
   {
    "id": "kapipara-teaser",
@@ -1837,7 +1881,8 @@ window.MOTION_GALLERY = {
    "genre": "friendly",
    "purpose": "announce",
    "seconds": 20,
-   "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）"
+   "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）",
+   "preview": "preview/kapipara-teaser.mp4"
   },
   {
    "id": "kinetic-intro",
@@ -1869,7 +1914,8 @@ window.MOTION_GALLERY = {
    "genre": "cute",
    "purpose": "selfintro",
    "seconds": 33,
-   "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）"
+   "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）",
+   "preview": "preview/kinetic-intro.mp4"
   },
   {
    "id": "jizura-intro",
@@ -1900,7 +1946,8 @@ window.MOTION_GALLERY = {
    "genre": "cool",
    "purpose": "selfintro",
    "seconds": 30,
-   "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）"
+   "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）",
+   "preview": "preview/jizura-intro.mp4"
   },
   {
    "id": "slide-intro",
@@ -1929,7 +1976,8 @@ window.MOTION_GALLERY = {
    "genre": "cute",
    "purpose": "selfintro",
    "seconds": 30,
-   "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）"
+   "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）",
+   "preview": "preview/slide-intro.mp4"
   }
  ]
 };
