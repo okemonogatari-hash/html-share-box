@@ -146,6 +146,8 @@
   function makeAuthorAvatar(work, authorName) {
     const avatar = externalLink(work.profile, "author-avatar author-avatar-link", `${authorName}のプロフィール`)
       || element("span", "author-avatar");
+    avatar.textContent = "";
+    avatar.setAttribute("aria-label", `${authorName}のプロフィール`);
     if (!avatar.matches("a")) {
       avatar.setAttribute("role", "img");
       avatar.setAttribute("aria-label", `${authorName}のプロフィール`);
