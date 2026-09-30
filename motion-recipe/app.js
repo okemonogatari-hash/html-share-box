@@ -196,7 +196,7 @@
   // ---------------------------------------------------------------- 作品集（おけもんが作った／世界のお手本）
   const fmtViews = (n) => (n >= 10000 ? `${Math.round(n / 1000) / 10}万` : n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, "")}千` : String(n));
   const fmtSec = (s) => (s >= 60 ? `${Math.floor(s / 60)}分${s % 60 ? (s % 60) + "秒" : ""}` : `${s}秒`);
-  let okItems = [], worldItems = [];
+  let okItems = [], worldItems = [], galleryFirst = null;
   const baseUrl = location.href.split("#")[0].split("?")[0].replace(/[^/]*$/, "");
 
   const refAspect = (r) => (r && r.aspect ? (String(r.aspect).match(/\d+:\d+/) || [""])[0] : "");
@@ -340,7 +340,19 @@
   }
 
   const NONE = `<p class="muted">見つかりませんでした。ことばやタグを変えてみてね。</p>`;
+  function renderFirst() {
+    const F = galleryFirst;
+    const box = $("g-first");
+    if (!F || !box) return;
+    const narrowed = filt.q.trim() || filt.tech || filt.genre || filt.purpose;
+    const picks = (F.ids || []).map((id) => okItems.findIndex((g) => g.id === id)).filter((i) => i >= 0);
+    box.hidden = !!narrowed || !picks.length;
+    if (box.hidden) return;
+    box.innerHTML = `<p class="g-first-label">${esc(F.label)}<span class="g-first-note">${esc(F.note || "")}</span></p><div class="g-first-row">${picks.map((i) => { const g = okItems[i];
+      return `<button type="button" class="g-first-card" data-play="${i}" aria-label="再生：${esc(g.title)}"><span class="g-first-thumb" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')"></span><span class="g-first-title">${esc(g.title.split("（")[0].split(" — ")[0])}</span><span class="g-first-meta">${esc([g.seconds ? fmtSec(g.seconds) : "", ASPECT_LABEL[g.aspect] || "", PURPOSES[g.purpose] || ""].filter(Boolean).join("・"))}</span></button>`; }).join("")}</div>`;
+  }
   function renderOk() {
+    renderFirst();
     if (!okItems.length) return;
     $("gallery-grid").innerHTML = okItems.map((g, i) => (hits(g, true) ? okCard(g, i) : "")).join("") || NONE;
     watchPreviews();
@@ -460,6 +472,7 @@
   (window.MOTION_GALLERY ? Promise.resolve(window.MOTION_GALLERY) : fetch("gallery/gallery.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(r.status))))
     .then((list) => {
       okItems = Array.isArray(list) ? list : list.items || [];
+      galleryFirst = Array.isArray(list) ? null : list.first || null;
       if (!okItems.length) throw new Error("empty");
       setupFilters();
       renderAll();
