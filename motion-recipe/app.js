@@ -266,7 +266,8 @@
   // ジャンルは棚の gallery.json の genre、技法は technique_ids（正式名称で見せる）
   const GENRES = { cute: "かわいい", friendly: "親しみ", cool: "かっこいい", art: "アート", practical: "実用", business: "ビジネス" };
   // 用途の札（2026-09-30 相談役 Fable の改善案3「入口を用途に」）。gallery.json の purpose。日付のあるお知らせ＝告知、日付のない紹介＝紹介
-  const PURPOSES = { announce: "告知", introduce: "紹介", selfintro: "自己紹介", howto: "手順・レシピ", quote: "名言・ことば", season: "季節のあいさつ", explain: "解説", reel: "ショーリール" };
+  // 札の言葉は「誰が・どんな場面で」使うか（2026-10-01 相談役 Fable：世界と日本の棚を調べて、使う場面で選べる無料の棚は手薄。Jitter の用途札に倣う）
+  const PURPOSES = { announce: "お店・イベントのお知らせ", introduce: "お店・人の紹介", selfintro: "自己紹介", howto: "作り方・手順", quote: "ことば・名言", season: "季節のあいさつ・お祝い", explain: "授業・教材", reel: "見て楽しむ（腕だめし）" };
   const filt = { q: "", genre: "", tech: "", purpose: "" };
   const norm = (s) => String(s || "").normalize("NFKC").toLowerCase();
   const techName = (id) => (R.TECH[id] ? R.TECH[id].formal : "");

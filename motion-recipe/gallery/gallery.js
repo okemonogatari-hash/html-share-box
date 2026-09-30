@@ -1,7 +1,7 @@
 window.MOTION_GALLERY = {
  "title": "おけもんがつくったモーショングラフィック集",
- "updated": "2026-09-27",
- "count": 8,
+ "updated": "2026-10-01",
+ "count": 48,
  "items": [
   {
    "id": "from-nothing",
