@@ -298,7 +298,7 @@
     const m = g.making;
     if (!m || !(m.minutes > 0) || !(m.fixes >= 0)) return "";
     // 「AIが作った時間」と添える（2026-09-30 Fable：読者がプロンプトを貼って作る時間とは別物）
-    return `<p class="g-making" title="${esc(`出どころ：${m.src || "PROCESS.md"}。AI（うちの手足）が着工から書き出しまでにかかった時間で、プロンプトを貼って作る時間とは別。直し＝評価役・外の目・本人の指摘で作り直した回数`)}">作るのにかかった時間 約${esc(m.minutes)}分<span class="g-making-note">（AIが作った時間）</span><span class="g-nw">・直し${esc(m.fixes)}回</span></p>`;
+    return `<p class="g-making" title="${esc(`出どころ：${m.src || "PROCESS.md"}。AI（Claude Code）が着工から書き出しまでにかかった時間で、プロンプトを貼って作る時間とは別。直し＝評価役・外の目・本人の指摘で作り直した回数`)}">作るのにかかった時間 約${esc(m.minutes)}分<span class="g-making-note">（AIが作った時間）</span><span class="g-nw">・直し${esc(m.fixes)}回</span></p>`;
   }
   function okCard(g, i) {
     const meta = thumbMeta(g);
