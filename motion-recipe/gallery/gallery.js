@@ -42,7 +42,8 @@ window.MOTION_GALLERY = {
     "src": "oneliner-test/PROCESS.md 冒頭の一言（途中の質問なし・約46分）"
    },
    "prep": "用意する物：なし。基本の2行だけで作りました（画像0・動画0・音源0）",
-   "preview": "preview/from-nothing.mp4"
+   "preview": "preview/from-nothing.mp4",
+   "bumps": "音を再生の最初にまとめて作る作りだったため、実際に再生すると音も映像も止まった。1秒先の分だけ作る方式に直した"
   },
   {
    "id": "otehon-apple-asobi",
@@ -85,7 +86,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27）」11:52→12:4x"
    },
    "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
-   "preview": "preview/otehon-apple-asobi.mp4"
+   "preview": "preview/otehon-apple-asobi.mp4",
+   "bumps": "最初はピンが全部いっせいにシャボン玉になる形だった。お手本は約2秒ごとに次の形へ進むので、鳴ったピンから順に変わる形に詰めた"
   },
   {
    "id": "otehon-linear-kanau",
@@ -130,7 +132,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27）」11:52→14:25（13:2x〜14:25 の通信の中断を除く）"
    },
    "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
-   "preview": "preview/otehon-linear-kanau.mp4"
+   "preview": "preview/otehon-linear-kanau.mp4",
+   "bumps": "名前が出たあとの約5秒、画面が止まって見えた。カメラをゆっくり回して塵を流し、名前の光も呼吸させた"
   },
   {
    "id": "otehon-kimochi-zukan",
@@ -173,7 +176,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27）」18:4x→20:49・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：アイコンの絵。この動画はカピバラのアイコンの絵を使っているので、自分のキャラやアイコンに差し替えてください（音はコード）",
-   "preview": "preview/otehon-kimochi-zukan.mp4"
+   "preview": "preview/otehon-kimochi-zukan.mp4",
+   "bumps": "最後の図鑑のページで、中のカピバラの顔が小さくスマホでは読めなかった。並べ方を変えて窓を大きくした"
   },
   {
    "id": "otehon-compass",
@@ -216,7 +220,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27）」18:2x→20:58・「評価役の指摘と直したこと（2026-09-27 20:4x）」"
    },
    "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
-   "preview": "preview/otehon-compass.mp4"
+   "preview": "preview/otehon-compass.mp4",
+   "bumps": "中ほどの針が小さく暗く、スマホでは暗いザラザラの中だるみに見えた。針を太く明るくし、動きも足した"
   },
   {
    "id": "otehon-recipe-demo",
@@ -259,7 +264,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27）」18:28→21:10・「評価役の指摘と直したこと（2026-09-27 21時）」"
    },
    "prep": "用意する物：画面に映す画像と曲。この動画は棚の作品のサムネを画面に並べ、曲はおけもんの自作曲。自分のアプリの画面と好きな曲に差し替えてください",
-   "preview": "preview/otehon-recipe-demo.mp4"
+   "preview": "preview/otehon-recipe-demo.mp4",
+   "bumps": "冒頭にアプリの使い始めが映らず、途中は画面の下半分が空の枠のままだった。冒頭を作り直し、枠は書き始めてから出すようにした"
   },
   {
    "id": "otehon-four-faces",
@@ -302,7 +308,8 @@ window.MOTION_GALLERY = {
     "minutes": null,
     "fixes": 1,
     "src": "PROCESS.md の流れに時刻が無い。評価役の指摘（棚に出たあと）で1回"
-   }
+   },
+   "bumps": "4つの窓が長い間ほぼ同じ画面のままで、名前の字もスマホでは小さすぎた。窓を3画面に分け、名前の札を大きくした"
   },
   {
    "id": "otehon-lab-shelf",
@@ -345,7 +352,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27）」20:43→22:1x（21:4x 外の目）・「評価役の指摘と直したこと（2026-09-27 22時）」"
    },
    "prep": "用意する物：シールの絵と曲。この動画はカピバラのシールの絵と、フリー音源の曲（OpenTracks「heart beat」）を使っています",
-   "preview": "preview/otehon-lab-shelf.mp4"
+   "preview": "preview/otehon-lab-shelf.mp4",
+   "bumps": "同じ絵が1画面に3枚ずつ並んでいた。枠を44から21に減らし、どの瞬間も同じ絵は1枚だけになるよう入れ替え方を直した"
   },
   {
    "id": "otehon-why-play",
@@ -388,7 +396,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27）」20:28→22:1x・「評価役の指摘と直したこと（40秒版 → 34.6秒版）」"
    },
    "prep": "用意する物：語りの声と曲。この動画の語りは読み上げAIで別に作った音声です。注文書のままだと語りは入りません",
-   "preview": "preview/otehon-why-play.mp4"
+   "preview": "preview/otehon-why-play.mp4",
+   "bumps": "始まりの約4秒は暗闇の光がほとんど動かず、終わりも約3秒止まっていた。光の明滅を足し、40秒を34.6秒に縮めた"
   },
   {
    "id": "otehon-horizon",
@@ -431,7 +440,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27）」22:07→23:04・「残っていない物」23:3x 評価役の指摘でポスターを替えた"
    },
    "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
-   "preview": "preview/otehon-horizon.mp4"
+   "preview": "preview/otehon-horizon.mp4",
+   "bumps": "最初は光の粒に横筋が出たり、空に灰色の円が出たり、金箔が市松模様に見えたりした。質感を1つずつ直した"
   },
   {
    "id": "otehon-offkai",
@@ -474,7 +484,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27）」22:00→23:15・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：写真1枚と曲。この動画はコーヒーの写真と、フリー音源の曲（OpenTracks「Morning」）を使っています",
-   "preview": "preview/otehon-offkai.mp4"
+   "preview": "preview/otehon-offkai.mp4",
+   "bumps": "日付・時刻・場所がそろって見える時間が約1.8秒で、字もスマホでは小さかった。出す時刻を早めて約2.7秒見え、字も大きくした"
   },
   {
    "id": "otehon-retro-game",
@@ -517,7 +528,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27）」21:2x→23:4x・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
-   "preview": "preview/otehon-retro-game.mp4"
+   "preview": "preview/otehon-retro-game.mp4",
+   "bumps": "題名とゲームの景色が約4.5秒ほぼ止まり、「架空のゲーム」の注記も小さすぎた。場面を切り替えて動かし、注記は窓の中に大きく出した"
   },
   {
    "id": "otehon-mizuyan",
@@ -560,7 +572,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27〜28）」22:4x→00:23・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：曲だけ。この動画の曲はSuno で作った曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
-   "preview": "preview/otehon-mizuyan.mp4"
+   "preview": "preview/otehon-mizuyan.mp4",
+   "bumps": "好きなもの4語が1語約0.55秒で速く流れ、見せ場がすぐ過ぎた。字と語の間をのばし、この場面を2.4秒から3.8秒にした"
   },
   {
    "id": "otehon-tsubu",
@@ -603,7 +616,8 @@ window.MOTION_GALLERY = {
     "minutes": null,
     "fixes": 1,
     "src": "PROCESS.md の流れに時刻が無い。評価役の指摘で v2→v3 を1回"
-   }
+   },
+   "bumps": "全体が暗く、粒の形も描いた図形のように見えた。地を黒に近づけて粒を約2.3倍明るくし、形を粒の集まりに作り直した"
   },
   {
    "id": "otehon-suiyo-radio",
@@ -646,7 +660,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-27〜28）」23:0x→1:0x・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
-   "preview": "preview/otehon-suiyo-radio.mp4"
+   "preview": "preview/otehon-suiyo-radio.mp4",
+   "bumps": "番組の曜日と時間の字が小さく、スマホでは読めなかった。下の帯を広げて字を3倍ほどにし、2行に組み直した"
   },
   {
    "id": "showa-radio-cm",
@@ -687,7 +702,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」06:0x→07:17・「2026-09-28 夜：語りを Gemini TTS に差し替えた」（本人の言葉で）"
    },
    "prep": "用意する物：語りの声・曲・カピバラの絵。語りは Google の Gemini の読み上げ（TTS）で別に作り、曲はおけもんの自作曲。注文書のままだと語りは入りません",
-   "preview": "preview/showa-radio-cm.mp4"
+   "preview": "preview/showa-radio-cm.mp4",
+   "bumps": "場面が切り替わる所で、下に放射や棒が見えたり、大きな月だけが残ったりした。場面を枠で切り、舞台をとかして月につなぐ形に直した"
   },
   {
    "id": "otehon-asobo",
@@ -730,7 +746,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」00:09→01:5x・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
-   "preview": "preview/otehon-asobo.mp4"
+   "preview": "preview/otehon-asobo.mp4",
+   "bumps": "笑い所の「カプセルを開けたらブラックホール」が小さく速かった。カプセルを画面の約3分の1まで大きくし、「えっ」と思う間を置いた"
   },
   {
    "id": "otehon-aki-yonaga",
@@ -773,7 +790,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」00:30→02:05・「評価役の指摘と直したこと（判定は「棚に出す」）」"
    },
    "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
-   "preview": "preview/otehon-aki-yonaga.mp4"
+   "preview": "preview/otehon-aki-yonaga.mp4",
+   "bumps": "稲穂の場面が約1.8秒ほぼ止まって見え、間に形の違う紅葉を入れた。判子は誰の便りか伝わらず、朱の印に直した"
   },
   {
    "id": "otehon-watch-repair",
@@ -816,7 +834,8 @@ window.MOTION_GALLERY = {
     "minutes": 80,
     "fixes": 1,
     "src": "PROCESS.md の流れ 01:0x→02:1x（最初の書き出しまで）と 05:3x→05:4x（評価役の「直してから出す」を受けた直し）"
-   }
+   },
+   "bumps": "架空の工房名が約0.5秒しか出ず、字も小さかった。最後の画面の下へ移して大きくし、約1.5秒出し続けた"
   },
   {
    "id": "otehon-gelato",
@@ -859,7 +878,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」01:1x→05:53（02:25〜05:28 の電池切れを除く）・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
-   "preview": "preview/otehon-gelato.mp4"
+   "preview": "preview/otehon-gelato.mp4",
+   "bumps": "「架空のお店」の注記が小さく、実在の店に見えた。題字の店名の横に「架空のお店」の札を足し、締めの注記も大きくした"
   },
   {
    "id": "otehon-onomatopoeia",
@@ -902,7 +922,8 @@ window.MOTION_GALLERY = {
     "minutes": null,
     "fixes": 1,
     "src": "PROCESS.md の流れに時刻が無い。評価役の「棚に出す」のあと、良くなる所3つで1回"
-   }
+   },
+   "bumps": "最後の一行「つぎは、あなたの ことばで。」が0.7秒で終わっていた。間を詰めて、約1.7秒止めて見せた"
   },
   {
    "id": "otehon-gym-6th",
@@ -945,7 +966,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」02:16→06:48（02:25〜05:35 の電池切れと 06:41〜06:44 の待ちを除く）・「評価役の指摘と直したこと（判定は「直してから出す」）」"
    },
    "prep": "用意する物：語りの声と曲。この動画の語りは読み上げAIで別に作り、曲はおけもんの自作曲。注文書のままだと語りは入りません",
-   "preview": "preview/otehon-gym-6th.mp4"
+   "preview": "preview/otehon-gym-6th.mp4",
+   "bumps": "最後の画面でいちばん大きい字が別の数字で、伝えたい「7年目もよろしく」が小さかった。その一言を主役に直した"
   },
   {
    "id": "business-intro",
@@ -986,7 +1008,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」08:42→10:47・「外の目の指摘と直したこと」「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：語りの声・曲・アイコンの絵。語りは Google の Gemini の読み上げ（TTS）で別に作り、曲はおけもんの自作曲、最後にカピバラのアイコンの絵。注文書のままだと語りは入りません",
-   "preview": "preview/business-intro.mp4"
+   "preview": "preview/business-intro.mp4",
+   "bumps": "回っている途中の数字が「688」や「U」のような文字化けに見えた。数字の輪に歯止めを入れ、数字の上で止まる形にした"
   },
   {
    "id": "combo-insta-live",
@@ -1027,7 +1050,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」08:41→11:1x・「評価役の指摘と直したこと」「名前を外した」（本人の言葉で）"
    },
    "prep": "用意する物：人物の動画・曲・カピバラの絵。画面の女の子は動画生成AIで別に作った動画です。注文書だけでは人物の動画は作れません",
-   "preview": "preview/combo-insta-live.mp4"
+   "preview": "preview/combo-insta-live.mp4",
+   "bumps": "いちばんの見せ場で声が途切れ、頼まれた物の名前も言っていなかった。受ける一言を3つ足した"
   },
   {
    "id": "combo-tiktok",
@@ -1068,7 +1092,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」11:3x→13:57（12:5x 外の目）・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：人物の動画と曲。画面の女の子は動画生成AIで別に作った動画です。注文書だけでは人物の動画は作れません",
-   "preview": "preview/combo-tiktok.mp4"
+   "preview": "preview/combo-tiktok.mp4",
+   "bumps": "画面の左端に赤い缶やグラスが写り込み、題名の帯も笑顔の目元にかかっていた。切り出す範囲を直し、帯を縮めた"
   },
   {
    "id": "quote-tired",
@@ -1109,7 +1134,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」11:0x→13:00・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：肖像と曲。この動画は言葉の作者の肖像（著作権の切れた物）とおけもんの自作曲を使っています",
-   "preview": "preview/quote-tired.mp4"
+   "preview": "preview/quote-tired.mp4",
+   "bumps": "長い言葉も短い言葉と同じ約3秒で消え、最後まで読めなかった。長い2つの表示時間を約2秒のばした"
   },
   {
    "id": "quote-nietzsche",
@@ -1150,7 +1176,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」12:14→13:45・「評価役の指摘と直したこと（2026-09-28）」"
    },
    "prep": "用意する物：肖像と曲。この動画は言葉の作者の肖像（著作権の切れた1882年の写真）とおけもんの自作曲を使っています",
-   "preview": "preview/quote-nietzsche.mp4"
+   "preview": "preview/quote-nietzsche.mp4",
+   "bumps": "2句目と3句目の背景が約12秒同じで、4つの場面が3つに見えた。3句目の間に雲を沈めてカメラを上げ、「登る」場面にした"
   },
   {
    "id": "quote-adler",
@@ -1189,7 +1216,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」14:1x→21:50（15:1x〜15:51 の眠りと 16:08〜20:20 の停止を除く）・「評価役の指摘と直したこと（2026-09-28）」"
    },
    "prep": "用意する物：肖像と曲。この動画は言葉の作者の肖像とおけもんの自作曲を使っています",
-   "preview": "preview/quote-adler.mp4"
+   "preview": "preview/quote-adler.mp4",
+   "bumps": "肖像が輪の上に立つ形で、「横の関係」という教えと逆の絵に見えた。輪から外し、名前の脇に置いた"
   },
   {
    "id": "capy-step",
@@ -1232,7 +1260,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」18:3x→19:02・「評価役の指摘と直したこと（2026-09-28 夜・判定「棚に出す」）」"
    },
    "prep": "用意する物：キャラの絵と曲。この動画はカピバラの絵とおけもんの自作曲を使っています。自分のキャラの絵と好きな曲に差し替えてください",
-   "preview": "preview/capy-step.mp4"
+   "preview": "preview/capy-step.mp4",
+   "bumps": "約0.5秒、ほぼ無地の紺の画面で止まって見えた。その間に次の文字の輪郭が1字ずつ灯るようにして、間をつないだ"
   },
   {
    "id": "melon-soda",
@@ -1275,7 +1304,8 @@ window.MOTION_GALLERY = {
     "minutes": 20,
     "fixes": 1,
     "src": "PROCESS.md の流れ 18:40→19:00・「評価役の指摘と直したこと」で1回（直しの時間は記録なし）"
-   }
+   },
+   "bumps": "炭酸の瓶が題名の「30」を隠していた。瓶の待つ位置を左の外へずらして少し傾け、題名にかからないようにした"
   },
   {
    "id": "blackout",
@@ -1316,7 +1346,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」21:0x→22:05・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：キャラの絵と曲。この動画はカピバラの絵とおけもんの自作曲を使っています（効果音はコード）。自分のキャラの絵と好きな曲に差し替えてください",
-   "preview": "preview/blackout.mp4"
+   "preview": "preview/blackout.mp4",
+   "bumps": "数字が3000に着いたあと、約6秒も同じ構図が続いた。着く時刻を早め、画面を寄せて数字を叩きつける山場を作った"
   },
   {
    "id": "kyuin-lamp",
@@ -1357,7 +1388,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-28）」21:0x→22:14・「評価役の指摘と直したこと」"
    },
    "prep": "用意する物：キャラの絵と曲。この動画はカピバラの絵とおけもんの自作曲を使っています（キュインの音はコード）。自分のキャラの絵と好きな曲に差し替えてください",
-   "preview": "preview/kyuin-lamp.mp4"
+   "preview": "preview/kyuin-lamp.mp4",
+   "bumps": "後半の約9秒が同じ構図のまま、光が回るだけだった。曲の小節ごとにカメラと演出を変え、最後の和音で決めを足した"
   },
   {
    "id": "konekone-ui",
@@ -1400,7 +1432,8 @@ window.MOTION_GALLERY = {
     "minutes": 40,
     "fixes": 1,
     "src": "PROCESS.md の流れ 11:4x→12:2x・9/29 評価役の指摘で1回（直しの時間は記録なし）"
-   }
+   },
+   "bumps": "締めの約3.8秒、ボタンを1拍ずつ押すだけでほぼ止まって見えた。半拍ずつ押して跳ねる形にし、最初に戻るループにした"
   },
   {
    "id": "kids-art-class",
@@ -1443,7 +1476,8 @@ window.MOTION_GALLERY = {
     "minutes": 35,
     "fixes": 1,
     "src": "PROCESS.md の流れ 11:45→12:20・評価役の1回目（9/29 昼）で1回（直しの時間は記録なし）"
-   }
+   },
+   "bumps": "締めの絵がお手本のマークと組み立てまで同じで、ねんどの作例もねんどに見えなかった。締めを別の絵にし、手ごね風に作り直した"
   },
   {
    "id": "flea-market",
@@ -1486,7 +1520,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
    "prep": "用意する物：語りの声・曲・品物の画像。語りは Google の Gemini の読み上げ（TTS）で別に作り、曲はおけもんの自作曲、品物は画像生成AIで作った絵。注文書のままだと語りは入りません",
-   "preview": "preview/flea-market.mp4"
+   "preview": "preview/flea-market.mp4",
+   "bumps": "「だれかの」が約0.5秒で消えて読めず、締めの告知も約2秒しか映らなかった。残す時間をのばし、21.5秒を24秒にした"
   },
   {
    "id": "ball-principles",
@@ -1529,7 +1564,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
    "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
-   "preview": "preview/ball-principles.mp4"
+   "preview": "preview/ball-principles.mp4",
+   "bumps": "字の量に対して時間が足りず、読みきれなかった。グラフなどを減らして、約18秒から約30秒にのばした"
   },
   {
    "id": "seed-to-flower",
@@ -1576,7 +1612,8 @@ window.MOTION_GALLERY = {
     "src": "add_to_shelf.py の --minutes・--fixes"
    },
    "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵はコード。注文書は音なしで、棚の動画は手順ごとの1音をコードで足しました）",
-   "preview": "preview/seed-to-flower.mp4"
+   "preview": "preview/seed-to-flower.mp4",
+   "bumps": "茎の場面で、葉がお椀や漏斗の形に見えて葉に読めなかった。カメラが回っても正面から見えないよう、葉の向きをそろえた"
   },
   {
    "id": "vintage-sale",
@@ -1623,7 +1660,8 @@ window.MOTION_GALLERY = {
     "src": "add_to_shelf.py の --minutes・--fixes"
    },
    "prep": "用意する物：服の写真と曲。この動画の服と小物の写真は画像生成AIで作り、曲はおけもんの自作曲。自分のお店の写真と好きな曲に差し替えてください",
-   "preview": "preview/vintage-sale.mp4"
+   "preview": "preview/vintage-sale.mp4",
+   "bumps": "最後の約3.5秒が「50%OFF」のまま止まって終わった。間に服の写真を拍ごとに入れ替えて、動きを足した"
   },
   {
    "id": "ask-oneline",
@@ -1670,7 +1708,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
    "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
-   "preview": "preview/ask-oneline.mp4"
+   "preview": "preview/ask-oneline.mp4",
+   "bumps": "「だれに」の付箋が自分の店名に付いていて、相手の意味が誤解されやすかった。相手を足し、3つの問いを1行ずつに直した"
   },
   {
    "id": "halloween",
@@ -1717,7 +1756,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
    "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
-   "preview": "preview/halloween.mp4"
+   "preview": "preview/halloween.mp4",
+   "bumps": "始まりの1.5秒がほぼ真っ暗だった。手前のかぼちゃを最初のコマから灯し、空と丘を少し明るくした"
   },
   {
    "id": "pottery-intro",
@@ -1760,7 +1800,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
    "prep": "用意する物：なし。この注文書を貼るだけで作れます（絵も音もコードで作っています）",
-   "preview": "preview/pottery-intro.mp4"
+   "preview": "preview/pottery-intro.mp4",
+   "bumps": "グラフの人数の合計が、画面の「1,200人」と合わなかった。30年の合計がちょうど1,200人になるよう、棒の人数を直した"
   },
   {
    "id": "suki-post",
@@ -1803,7 +1844,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md の頭の1行（作るのにかかった時間）"
    },
    "prep": "用意する物：曲だけ。この動画の曲はおけもんの自作曲なので、好きな曲に差し替えてください（注文書のままだと、音はAIがコードで作ります）",
-   "preview": "preview/suki-post.mp4"
+   "preview": "preview/suki-post.mp4",
+   "bumps": "好きなもの6枚の名前が1字ずつ出て、読めるまで時間がかかった。絵と名前を同時に出し、途中の間も詰めて26秒を24.8秒にした"
   },
   {
    "id": "stream-wait",
@@ -2031,7 +2073,8 @@ window.MOTION_GALLERY = {
     "src": "fullpower-showreel の PROCESS.md「流れ（2026-09-26）」07:1x→12:16（08:45〜12:0x の「つづき」待ちを除く）・本人の直し 08:0x と 13:3x"
    },
    "prep": "用意する物：なし。この1文だけで作りました（音楽も効果音もコード）",
-   "preview": "preview/hitoshizuku.mp4"
+   "preview": "preview/hitoshizuku.mp4",
+   "bumps": "カピバラの場面が子どもの絵のようになったので、図形だけの「はずむ玉」に差し替えた。意図も説明なしでは伝わらなかった"
   },
   {
    "id": "jonetsu-intro",
@@ -2068,7 +2111,8 @@ window.MOTION_GALLERY = {
     "src": "PROCESS.md「流れ（2026-09-26）」18:42→19:54（19:2x 外の目）・「スカイドロップ版」（本人の言葉で）"
    },
    "prep": "注文書の仕組みができる前に作った作品です（注文書はありません）。道具：Claude Code（Opus 5.5）と HyperFrames（HTMLを動画にする道具）。声は Google の Gemini の読み上げ、写真と動画はおけもん本人の物",
-   "preview": "preview/jonetsu-intro.mp4"
+   "preview": "preview/jonetsu-intro.mp4",
+   "bumps": "最初に作った声は「息が多く作りものっぽい」と言われて使わず、別の声にした。曲を替えた版では語りが一撃に埋もれ、混ぜ直した"
   },
   {
    "id": "kapipara-teaser",
@@ -2106,7 +2150,8 @@ window.MOTION_GALLERY = {
     "minutes": null,
     "fixes": null,
     "src": "注文書の仕組みより前の作品。時間の記録なし"
-   }
+   },
+   "bumps": "場面の頭の空白コマは直した。小さい注釈が読みにくい点と、最後の約5秒が止まって見える点は、直せていない"
   },
   {
    "id": "kinetic-intro",
@@ -2144,7 +2189,8 @@ window.MOTION_GALLERY = {
     "minutes": null,
     "fixes": null,
     "src": "注文書の仕組みより前の作品。時間の記録なし"
-   }
+   },
+   "bumps": "最初の確認で3コマ目の文字が重なる所が見つかり、直した。音も前作より小さかったので、大きく合わせ直した"
   },
   {
    "id": "jizura-intro",
@@ -2181,7 +2227,8 @@ window.MOTION_GALLERY = {
     "minutes": null,
     "fixes": null,
     "src": "注文書の仕組みより前の作品。時間の記録なし"
-   }
+   },
+   "bumps": "同じカピバラの絵を何回も使うのはもったいないと言われ、新しいポーズを足して作り直した。紙吹雪は文字を隠さないよう控えめ"
   },
   {
    "id": "slide-intro",
@@ -2216,7 +2263,8 @@ window.MOTION_GALLERY = {
     "minutes": null,
     "fixes": null,
     "src": "注文書の仕組みより前の作品。時間の記録なし"
-   }
+   },
+   "bumps": "元のアイコン由来の絵をやめ、新しく作った動物に差し替えた。大きく出した元アイコンは画像が小さく、輪郭が粗いまま"
   }
  ],
  "first": {

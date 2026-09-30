@@ -318,6 +318,7 @@
           ${makingLine(g)}
           <details class="g-more"><summary>解説を読む</summary>
             <p class="g-desc">${esc(g.hitokoto || g.desc || "")}</p>
+            ${g.bumps ? `<p class="g-bump"><span class="g-bump-h">うまくいかなかった所</span>${esc(g.bumps)}</p>` : ""}
             <div class="g-tags">${tags.map((x) => `<span>${esc(x)}</span>`).join("")}</div>
           </details>
           <div class="g-actions"><button type="button" class="btn chip-btn ref-btn" data-ref="ok:${i}">これをお手本に作る</button>${g.ref_url ? `<button type="button" class="btn chip-btn cmp-btn" data-compare="${i}">お手本と並べて見る</button>` : ""}<button type="button" class="btn link small" data-copylink="${i}" title="${esc(workUrl(g))}">この作品のリンクをコピー</button>${prompt}</div>
@@ -493,7 +494,7 @@
     v.style.aspectRatio = /^\d+:\d+$/.test(g.aspect || "") ? g.aspect.replace(":", " / ") : "16 / 9"; // 読み込む前から形を取っておく（ガタつかない）
     v.src = "gallery/" + (g.video || g.id + ".mp4");
     v.poster = "gallery/" + (g.poster || g.id + ".jpg");
-    const desc = g.hitokoto || g.desc || "";
+    const desc = (g.hitokoto || g.desc || "") + (g.bumps ? `\n\nうまくいかなかった所：${g.bumps}` : "");
     $("modal-text").innerHTML = `<p class="modal-title" id="modal-title">${esc(g.title)}</p>${desc ? `<details class="modal-more"${matchMedia("(min-width: 760px)").matches ? " open" : ""}><summary>解説を読む</summary><p>${esc(desc)}</p></details>` : ""}`;
     $("modal").hidden = false;
     // リンクから来た時は音つき自動再生が止められることがあるので、その時は消音で動かす（音はプレーヤーで戻せる）
