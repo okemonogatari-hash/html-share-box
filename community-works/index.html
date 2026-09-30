@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="おけもんのノウハウ図書館の記事から生まれた、リベのみんなの作品を紹介する棚です。" />
+    <meta name="theme-color" content="#fffaf2" />
+    <title>みんなの「作ってみた」棚</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="config.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-decoration hero-decoration-one" aria-hidden="true"></div>
+      <div class="hero-decoration hero-decoration-two" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="eyebrow"><span class="eyebrow-mark" aria-hidden="true">✳</span> リベのみんなの作品棚</p>
+        <h1>みんなの<br class="mobile-break" /><span>「作ってみた」棚</span></h1>
+        <p class="intro">おけもんのノウハウ図書館の記事から生まれた、リベのみんなの作品。</p>
+        <button class="hero-post-button" id="hero-show-submit" type="button" aria-controls="submit-panel" aria-expanded="false">
+          作品を投稿する <span aria-hidden="true">＋</span>
+        </button>
+      </div>
+      <span class="hero-sparkle sparkle-a" aria-hidden="true">✦</span>
+      <span class="hero-sparkle sparkle-b" aria-hidden="true">✳</span>
+      <span class="hero-sparkle sparkle-c" aria-hidden="true">✦</span>
+    </header>
+
+    <main>
+      <section class="works-section" id="works" aria-labelledby="works-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">GALLERY</p>
+            <h2 id="works-title">みんなの作品</h2>
+          </div>
+          <p class="section-note">投稿で共有された作品を紹介しています。気になった作品から、作者や元の投稿へ。</p>
+        </div>
+        <p class="load-state" id="load-state" role="status" aria-live="polite">作品を読み込み中…</p>
+        <div class="works-grid" id="works-grid" aria-busy="true"></div>
+        <div class="more-works-row" id="more-works-row" hidden>
+          <button class="more-works-button" id="more-works" type="button">もっと見る</button>
+        </div>
+      </section>
+
+      <section class="share-callout" aria-labelledby="share-title">
+        <div class="callout-spark" aria-hidden="true">✦</div>
+        <div class="callout-copy">
+          <p class="section-kicker">NEXT IS YOURS</p>
+          <h2 id="share-title">あなたの「作ってみた」も見せてね</h2>
+          <p>作った本人がここに投稿できます。AI初心者サポートチャットでも、作品URLとどんなふうに作ったかをシェアしてね。</p>
+        </div>
+        <div class="callout-actions">
+          <button class="share-button" id="show-submit" type="button" aria-controls="submit-panel" aria-expanded="false">
+            作品を投稿する <span aria-hidden="true">＋</span>
+          </button>
+          <a class="chat-link" href="https://libecity.com/room_list?room_id=m74BCueTGd0wL6uxHCCZ" target="_blank" rel="noopener noreferrer">
+            チャットでもシェアする ↗
+          </a>
+        </div>
+      </section>
+
+      <section class="submit-panel" id="submit-panel" aria-labelledby="submit-title" hidden>
+        <div class="submit-heading">
+          <div>
+            <p class="section-kicker">YOUR WORK</p>
+            <h2 id="submit-title" tabindex="-1">あなたの「作ってみた」を棚に並べよう</h2>
+          </div>
+          <button class="close-submit" id="close-submit" type="button" aria-label="投稿フォームを閉じる">×</button>
+        </div>
+        <p class="submit-intro">ご自身が作った作品のURLを投稿できます。ファイルのアップロードはありません。</p>
+        <p class="api-notice" id="api-notice" role="status" hidden></p>
+        <p class="submit-status" id="submit-status" role="status" aria-live="polite" hidden></p>
+        <form id="submit-form" novalidate>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="author-input">作者名 <span class="required-tag">必須</span></label>
+              <input id="author-input" name="author" type="text" maxlength="100" autocomplete="name" required aria-describedby="author-help author-error" />
+              <small id="author-help" class="field-help">棚に表示するお名前（100字まで）</small>
+              <small id="author-error" class="field-error" hidden></small>
+            </div>
+            <div class="form-field">
+              <label for="profile-input">リベのプロフィールURL <span class="required-tag">必須</span></label>
+              <input id="profile-input" name="profile" type="url" inputmode="url" maxlength="2048" autocomplete="url" placeholder="https://libecity.com/user_profile/…" pattern="https://libecity\.com/user_profile/[^/?#]+/?" required aria-describedby="profile-help profile-avatar-help profile-error" />
+              <small id="profile-help" class="field-help">https://libecity.com/user_profile/会員ID のURL</small>
+              <small id="profile-avatar-help" class="field-help">アイコンはリベのプロフィール画像を表示します。</small>
+              <small id="profile-error" class="field-error" hidden></small>
+            </div>
+            <div class="form-field">
+              <label for="title-input">作品名 <span class="required-tag">必須</span></label>
+              <input id="title-input" name="title" type="text" maxlength="100" required aria-describedby="title-help title-error" />
+              <small id="title-help" class="field-help">100字まで</small>
+              <small id="title-error" class="field-error" hidden></small>
+            </div>
+            <div class="form-field">
+              <label for="work-url-input">作品URL <span class="required-tag">必須</span></label>
+              <input id="work-url-input" name="workUrl" type="url" inputmode="url" maxlength="2048" placeholder="https://…" required aria-describedby="work-url-help work-url-error" />
+              <small id="work-url-help" class="field-help">https:// で始まるURL。URLだけを投稿できます。</small>
+              <small id="work-url-error" class="field-error" hidden></small>
+            </div>
+            <div class="form-field form-field-wide">
+              <label for="description-input">作品の説明 <span class="required-tag">必須</span></label>
+              <textarea id="description-input" name="description" rows="4" maxlength="500" required aria-describedby="description-help description-error"></textarea>
+              <small id="description-help" class="field-help">作るときに工夫したことや、試したこと（500字まで）</small>
+              <small id="description-error" class="field-error" hidden></small>
+            </div>
+          </div>
+          <div class="consent-field">
+            <input id="consent-input" name="consent" type="checkbox" required aria-describedby="consent-help consent-error" />
+            <div>
+              <label for="consent-input">私は自分の作品を投稿します。この棚のURLを知っている人に、投稿内容・作品URL・リベのプロフィールアイコンを共有します。</label>
+              <small id="consent-help" class="field-help">投稿すると、この棚に作品名・作者名・URL・説明・アイコン画像が表示されます。投稿したブラウザから取り下げられます。ブラウザの保存データを消すと、取り下げ情報も消えます。</small>
+              <small id="consent-error" class="field-error" hidden></small>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="submit-button" id="submit-button" type="submit">棚に投稿する</button>
+            <button class="cancel-button" id="cancel-submit" type="button">閉じる</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>元の投稿を見るには、リベシティへのログインが必要です。</p>
+      <p class="footer-mark"><span aria-hidden="true">✳</span> つくるって、たのしい。</p>
+    </footer>
+  </body>
+</html>
