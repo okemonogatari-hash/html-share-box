@@ -384,6 +384,17 @@
     // 画面に出す言葉：欄に書いたもの（／で区切る）＋「」で囲んだ言葉
     const onscreen = (opts.onscreen || "").split(/[／/\n]+/).map((s) => s.trim()).filter(Boolean);
     for (const q of heard.quotes) if (!onscreen.includes(q)) onscreen.push(q);
+    // 「種→根→芽→茎→花」のように矢印でつないだ3つ以上の言葉は、手順の名前として画面に出す（2026-09-30 再現テスト：注文書に手順の名前が無く、貼って作ったAIが迷った）
+    const chainHit = heard.text.normalize("NFKC").match(/[^\s、。・,「」→]{1,8}(?:\s*→\s*[^\s、。・,「」→]{1,8}){2,}/);
+    const chain = chainHit ? chainHit[0].split(/\s*→\s*/).filter(Boolean) : [];
+    // 端の言葉に続く文をはがす（「花と育ち」→「花」、「見せてから種」→「種」）
+    // 端の言葉だけがほかより2字以上長い時にだけはがす（「ごはん」の「は」のような、言葉の中の字を切らないため）
+    if (chain.length >= 3) {
+      const mid = Math.max(...chain.slice(1, -1).map((w) => w.length));
+      if (chain[chain.length - 1].length > mid + 1) chain[chain.length - 1] = chain[chain.length - 1].replace(/^(.+?)(?:と|の順|まで|へ|に|で|を|が|は).*$/, "$1");
+      if (chain[0].length > mid + 1) chain[0] = chain[0].replace(/^.*(?:から|を|で|に|は|が|と)(.+)$/, "$1");
+    }
+    for (const c of chain) if (!onscreen.includes(c)) onscreen.push(c);
     // 画面に出す言葉を書いていない時は、金額・割合・人数などの数字も画面に出す（「3万円」「36万円」。秒・分は長さの指定なので外す）
     if (!(opts.onscreen || "").trim()) for (const m of heard.text.normalize("NFKC").matchAll(/\d[\d,.]*\s*(?:[万億]?円|[%％]|人|回|倍|位)/g)) { const v = m[0].replace(/\s+/g, ""); if (!onscreen.some((o) => o.includes(v))) onscreen.push(v); }
     const endWord = heard.quotes.length ? heard.quotes[heard.quotes.length - 1] : onscreen[0] || "";
@@ -484,7 +495,7 @@
     const d4 = ["calm", "bold", "cute", "wild"].filter((k) => adj[k] > 0).map((k) => ADJUST_LINES[k]).join("");
     const direction = `${d1}${d2}${d3}${d4}${P.end(endWord)}。`;
 
-    const prompt = composePrompt({ text: opts.text, purpose, loop: !!P.loop, seconds, aspect, sound, soft: soundTech === TECH.softsound, bpm, palette: pal.c, paletteWords, onscreen, direction, chosen, wild: adj.wild > 0, quiet, ref });
+    const prompt = composePrompt({ text: opts.text, purpose, loop: !!P.loop, seconds, aspect, sound, soft: soundTech === TECH.softsound, bpm, palette: pal.c, paletteWords, onscreen, chain, direction, chosen, wild: adj.wild > 0, quiet, ref });
     return { purpose, purposeLabel: P.label, moods: moodOrder.slice(0, 3), moodLabel, scene, sceneLabel: scene ? SCENES[scene].label : "", seconds, aspect, sound, bpm, palette: pal.c, paletteWords, onscreen, direction, heroes, techniques: chosen, reference: ref, prompt };
   }
 
@@ -531,6 +542,8 @@
     if (r.sound) L.push(`- 音：Web Audio API で、BGM（テンポ ${r.bpm}BPM 前後${r.soft ? "の静かな曲" : ""}）と効果音をコードだけで作る。ブラウザの決まりで最初は音が出ないので、最初の画面に大きな「▶ 音つきで再生」ボタンを置き、押したら映像と音を同時に始める。大事な動きと効果音は同じ瞬間に${r.soft ? "（効果音は控えめに）" : ""}`);
     else L.push("- 音：なし（映像だけで気持ちよく見せる）");
     L.push(r.onscreen.length ? `- 画面に出す言葉：${r.onscreen.map((w) => `「${w}」`).join("")}（どれも一字一句そのまま使う）` : "- 画面に出す言葉：上の「作りたいもの」から、短くて強い言葉をあなたが選ぶ（多くても1場面1〜2語）");
+    // 手順の並びがある時は、1つあたりの秒数の目安も渡す（同じ再現テスト：15秒の配分の目安が無く迷った）
+    if (r.chain && r.chain.length >= 3) L.push(`- 手順の見せ方：${r.chain.map((w) => `「${w}」`).join("→")}の順に1つずつ出す。1つあたり約${Math.max(1, Math.round(((r.seconds - 3) / (r.chain.length + 1)) * 10) / 10)}秒、最後に全部が並んだ所で3秒以上止める`);
     L.push(`- 色：${r.paletteWords}（例：${r.palette.join(" ")}）`);
     L.push("- 文字：日本語は読みやすい太さのフォントで。小さすぎる文字は使わない");
     L.push("");
