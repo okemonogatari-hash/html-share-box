@@ -296,7 +296,9 @@
   // 直し＝評価役・外の目・本人から作品への指摘で作り直した回数（自分で見つけて直した分は数えない）
   function makingLine(g) {
     const m = g.making;
-    if (!m || !(m.minutes > 0) || !(m.fixes >= 0)) return "";
+    // 記録の無い作品も「記録なし」と書く（2026-09-30 夜 Fable：全カードで作り方の明細を同じ形に）
+    if (!m || !(m.minutes > 0)) return `<p class="g-making" title="${esc(m && m.src ? `出どころ：${m.src}` : "作った時の時間の記録が残っていない作品")}">作るのにかかった時間 記録なし${m && m.fixes >= 0 ? `<span class="g-nw">・直し${esc(m.fixes)}回</span>` : ""}</p>`;
+    if (!(m.fixes >= 0)) return "";
     // 「AIが作った時間」と添える（2026-09-30 Fable：読者がプロンプトを貼って作る時間とは別物）
     return `<p class="g-making" title="${esc(`出どころ：${m.src || "PROCESS.md"}。AI（Claude Code）が着工から書き出しまでにかかった時間で、プロンプトを貼って作る時間とは別。直し＝評価役・外の目・本人の指摘で作り直した回数`)}">作るのにかかった時間 約${esc(m.minutes)}分<span class="g-making-note">（AIが作った時間）</span><span class="g-nw">・直し${esc(m.fixes)}回</span></p>`;
   }
@@ -449,6 +451,8 @@
     if (W.tip) $("world-tip").innerHTML = `💡 ${esc(W.tip.text)}（<a href="${esc(W.tip.url)}" target="_blank" rel="noopener">${esc(W.tip.by)}</a>）`;
     renderWorld();
     if (W.more) $("world-more").innerHTML = `<a href="${esc(W.more.url)}" target="_blank" rel="noopener">${esc(W.more.label)} ↗</a>`;
+    // 表示数がいつの数か（2026-09-30 夜・競合調査の提案7：What Ships は表示数の隣に取得日）
+    if (W.views_note) $("world-more").insertAdjacentHTML("beforeend", `<span class="fine world-views-note">${esc(W.views_note)}</span>`);
   } else {
     $("world-grid").innerHTML = `<p class="muted">世界のお手本はただいま準備中です。</p>`;
   }
