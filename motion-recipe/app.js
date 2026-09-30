@@ -300,11 +300,12 @@
     // 「AIが作った時間」と添える（2026-09-30 Fable：読者がプロンプトを貼って作る時間とは別物）
     return `<p class="g-making" title="${esc(`出どころ：${m.src || "PROCESS.md"}。AI（Claude Code）が着工から書き出しまでにかかった時間で、プロンプトを貼って作る時間とは別。直し＝評価役・外の目・本人の指摘で作り直した回数`)}">作るのにかかった時間 約${esc(m.minutes)}分<span class="g-making-note">（AIが作った時間）</span><span class="g-nw">・直し${esc(m.fixes)}回</span></p>`;
   }
+  // 「用意する物」の1行（2026-09-30 相談役 Fable「◎○△の札は出さず、事実の1行をプロンプトの中に」。Jev で札より「自分でも作れそう」が高かった 2.26 対 1.69）
   function okCard(g, i) {
     const meta = thumbMeta(g);
     const tags = (g.traits && g.traits.length ? g.traits : g.techniques || []).slice(0, 4);
     const prompt = g.prompt ? `<button type="button" class="btn link small" data-showprompt="${i}">使ったプロンプト</button>
-        <div class="g-prompt" id="gp-${i}" hidden><pre>${esc(g.prompt.text)}</pre><p class="fine">${esc(g.prompt.note || "")}</p><button type="button" class="btn chip-btn" data-copyprompt="${i}">このプロンプトをコピー</button></div>` : "";
+        <div class="g-prompt" id="gp-${i}" hidden>${g.prep ? `<p class="g-prep">${esc(g.prep)}</p>` : ""}<pre>${esc(g.prompt.text)}</pre><p class="fine">${esc(g.prompt.note || "")}</p><button type="button" class="btn chip-btn" data-copyprompt="${i}">このプロンプトをコピー</button></div>` : "";
     const genre = GENRES[g.genre] ? `<button type="button" class="genre-badge g-${esc(g.genre)}" data-genre="${esc(g.genre)}" title="このジャンルの作品だけ見る">${esc(GENRES[g.genre])}</button>` : "";
     return `<article class="g-card" id="w-${esc(g.id)}">
         <button type="button" class="g-thumb${g.aspect && g.aspect !== "16:9" ? " fit" : ""}" data-play="${i}" aria-label="再生：${esc(g.title)}${meta ? `（${esc(meta)}）` : ""}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')">${meta ? `<span class="g-meta" aria-hidden="true">${esc(meta)}</span>` : ""}</button>
@@ -317,6 +318,7 @@
             <div class="g-tags">${tags.map((x) => `<span>${esc(x)}</span>`).join("")}</div>
           </details>
           <div class="g-actions"><button type="button" class="btn chip-btn ref-btn" data-ref="ok:${i}">これをお手本に作る</button>${g.ref_url ? `<button type="button" class="btn chip-btn cmp-btn" data-compare="${i}">お手本と並べて見る</button>` : ""}<button type="button" class="btn link small" data-copylink="${i}" title="${esc(workUrl(g))}">この作品のリンクをコピー</button>${prompt}</div>
+          ${!g.prompt && g.prep ? `<p class="fine g-noprompt">${esc(g.prep)}</p>` : ""}
         </div>
       </article>`;
   }
