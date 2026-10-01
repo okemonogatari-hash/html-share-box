@@ -175,8 +175,11 @@
     .detail { padding: 0 0 20px; color: var(--soft); line-height: 1.8; }
     .detail > :first-child { margin-top: 0; }
     .quest-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 26px; margin: 14px 0 0; padding: 0; list-style: none; }
-    .quest-list li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 2px; border-bottom: 1px solid var(--line); }
-    .quest-list b { font-weight: 740; }
+    .quest-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 12px 2px; border-bottom: 1px solid var(--line); }
+    .quest-list b { display: block; font-weight: 740; line-height: 1.6; }
+    .quest-list small { display: block; margin-top: 4px; font-size: .78rem; color: var(--soft); }
+    .quest-list p { margin: 9px 0 0; font-size: .86rem; line-height: 1.8; }
+    .plan-nav small, .plan-card summary small { display: block; margin-top: 5px; font-size: .72rem; font-weight: 500; }
     .tag { align-self: start; padding: 3px 8px; border: 1px solid #cad6c4; border-radius: 999px; color: #516d54; font-size: .72rem; white-space: nowrap; }
     .tag.paid { border-color: #e0c68d; color: #785822; background: #fbf2df; }
     .rule-more { margin-top: 28px; }
@@ -191,6 +194,7 @@
     .plan-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
     .plan-card { padding: 0 18px; border-top: 1px solid #638071; }
     .plan-card > summary { color: #fff8e5; }
+    .plan-card .tag { color: #e1eadb; border-color: #819d89; background: #214d41; }
     .plan-card > summary::after { border-color: #9cb39e; color: #e6c46e; }
     .plan-card[open] { border-color: #d4b65f; }
     .plan-card .detail { color: #e1e8d8; }
@@ -322,7 +326,7 @@
           <li><strong>提出して券を受け取る</strong><span>投稿URLを公式へ提出し、抽選券の受け取りまで確かめます。</span></li>
         </ol>
         <p class="beginner-example"><strong>今回の例は「おけ酒」です。</strong> AIで作ったサイトを紹介する「ChatGPT Sites」の課題を選びました。瓶の裏をノックすると研究員が驚く様子を25秒の動画で見せ、Xへ公開。その投稿と作品ページのURLを公式へ提出して、抽選券を1枚受け取りました。</p>
-        <p>10種類から異なる課題を最大5つまで応募できます。1つだけでも参加できます。参加条件や動画・投稿の詳しい指定は、<a href="#rules">下の応募ルール</a>と<a href="https://side-quests.openai.chatgpt.site/official-rules/" target="_blank" rel="noopener noreferrer">公式ルール ↗</a>で確認してください。</p>
+        <p>10種類から異なる課題を最大5つまで応募できます。1つだけでも参加できます。参加条件や動画・投稿の詳しい指定は、<a href="#quest-themes">日本語の課題一覧</a>と<a href="#rules">応募ルール</a>と<a href="https://side-quests.openai.chatgpt.site/official-rules/" target="_blank" rel="noopener noreferrer">公式ルール ↗</a>で確認してください。</p>
       </section>
 
       <section class="section status-section" id="today" aria-labelledby="status-title">
@@ -473,21 +477,21 @@
           <div><h3>抽選は5名。作品の人気で決まらない</h3><p>有効な応募口を対象に、無作為で5名が選ばれます。応募口ごとの重みは同じで、作品の質、いいね数、有料プランで優遇されません。課題数に応じて応募口数は変わります。</p></div>
         </div>
         <div class="deadline"><span>締切</span><strong><time datetime="2026-10-01T21:30:00Z">2026年10月2日（金）06:30 日本時間</time></strong><small>公式表記：2026年10月1日 21:30 UTC</small></div>
-        <details class="rule-more">
-          <summary>全10種類の課題と、公式のFree / Paid区分</summary>
+        <details class="rule-more" id="quest-themes" open>
+          <summary>10種類の課題：どんなテーマ？</summary>
           <div class="detail">
-            <p>区分は公式ページの表記です。Ultrafastは30秒未満、それ以外は15〜30秒の動画課題です。</p>
+            <p>各課題に、「何を試して、何を見せるテーマか」を日本語で添えました。「無料課題」は無料アカウントで挑戦できるもの、「有料機能」は有料の機能を使うものです。Ultrafastは30秒未満、それ以外は15〜30秒の動画です。</p>
             <ul class="quest-list">
-              <li><b>Ultrafast</b><span class="tag paid">Paid</span></li>
-              <li><b>Profile</b><span class="tag">Free</span></li>
-              <li><b>Dots</b><span class="tag paid">Paid</span></li>
-              <li><b>Project Library</b><span class="tag">Free</span></li>
-              <li><b>Spaces</b><span class="tag paid">Paid</span></li>
-              <li><b>Codex CLI Setup</b><span class="tag">Free</span></li>
-              <li><b>ChatGPT Sites</b><span class="tag paid">Paid</span></li>
-              <li><b>3D Models</b><span class="tag">Free</span></li>
-              <li><b>Cloud</b><span class="tag paid">Paid</span></li>
-              <li><b>Plugins</b><span class="tag">Free</span></li>
+              <li><div><b>アイデアを、その場で動くプログラムに</b><small>英語名：Ultrafast</small><p>Ultrafastを使い、アイデアからプログラムを作る過程と、実際に動く結果を見せます。この課題だけは30秒未満の画面録画です。</p></div><span class="tag paid">有料機能</span></li>
+              <li><div><b>自分のChatGPTの使い方を振り返る</b><small>英語名：Share your Profile</small><p>ChatGPTのプロフィールや利用状況のまとめを見せ、「こんなに使っていた！」など、意外な数字を1つ紹介します。</p></div><span class="tag">無料課題</span></li>
+              <li><div><b>AIに仕事を頼んで、変化を見せる</b><small>英語名：Dots</small><p>DotsのAIアシスタントに手伝ってもらった、役立つ作業や意外に面白い作業を紹介。頼む前と後の変化や、出来上がった結果を見せます。</p></div><span class="tag paid">有料機能</span></li>
+              <li><div><b>今までの作品を、1枚の画像で紹介する</b><small>英語名：Project Library</small><p>公式が用意した指示文で、自分のプロジェクトを表す画像を作ります。その画像の中から、特徴的な作品を1つ紹介します。</p></div><span class="tag">無料課題</span></li>
+              <li><div><b>AIの作業スペースで、困りごとを解決する</b><small>英語名：Spaces</small><p>Spacesの作業スペースで、課題を解決する様子を紹介。完成した結果から動画を始め、どんな困りごとを、どう解決したかを見せます。</p></div><span class="tag paid">有料機能</span></li>
+              <li><div><b>文字で指示する画面から、AIを使う</b><small>英語名：Codex CLI Setup</small><p>パソコンのターミナルという、文字で操作する画面でCodexを使う課題です。設定と、便利な機能や作業手順を実際に使う様子を見せます。</p></div><span class="tag">無料課題</span></li>
+              <li><div><b>AIで作ったサイトを、実際に操作する</b><small>英語名：ChatGPT Sites</small><p>ChatGPT Sitesの機能で、自分が作ったサイトを紹介。完成した画面から始め、クリックなどの操作を1つ見せます。動画の投稿URLと、公開サイトのURLを提出します。</p></div><span class="tag paid">有料機能</span></li>
+              <li><div><b>立体作品の形や、作った過程を見せる</b><small>英語名：3D Models</small><p>生成した立体作品を回転させたり、周りを移動したり、作る前と後を比べたりして紹介。指示文または制作過程と、出来上がった作品を見せます。</p></div><span class="tag">無料課題</span></li>
+              <li><div><b>パソコンを閉じている間に、AIに作業してもらう</b><small>英語名：Codex Cloud Environments</small><p>何度も使えるネット上の作業環境で、Codexの実際の仕事を始めます。ノートパソコンを閉じ、出来上がった成果を紹介する課題です。</p></div><span class="tag paid">有料機能</span></li>
+              <li><div><b>プログラム作りを、追加機能で便利にする</b><small>英語名：Plugins</small><p>プログラミングを助ける追加機能「プラグイン」で、便利な作業を実演。使う前と後の変化を見せ、リンクがあれば添えます。</p></div><span class="tag">無料課題</span></li>
             </ul>
             <p style="margin-top:15px"><a href="https://side-quests.openai.chatgpt.site/" target="_blank" rel="noopener noreferrer">最新の課題一覧を公式で確認 ↗</a></p>
           </div>
@@ -498,29 +502,29 @@
         <div class="heading">
           <p class="kicker">WHAT COULD COME NEXT?</p>
           <h2 id="next-title">次の寄り道は、作品棚から。</h2>
-          <p>ここから先は候補です。Libraryを先に見て、ほかは使える機能と素材がそろったものを選びます。5つを埋めるために急がなくて大丈夫。</p>
+          <p>ここから先は候補です。「作品を画像にまとめる」課題を先に見て、ほかは使える機能と素材がそろったものを選びます。5つを埋めるために急がなくて大丈夫。</p>
         </div>
         <nav class="plan-nav" aria-label="次の課題候補を選ぶ">
-          <button type="button" data-plan="plan-library" aria-controls="plan-library" aria-pressed="true">Project Library ★優先</button>
-          <button type="button" data-plan="plan-cli" aria-controls="plan-cli" aria-pressed="false">Codex CLI Setup</button>
-          <button type="button" data-plan="plan-profile" aria-controls="plan-profile" aria-pressed="false">Share your Profile</button>
-          <button type="button" data-plan="plan-3d" aria-controls="plan-3d" aria-pressed="false">3D Models</button>
+          <button type="button" data-plan="plan-library" aria-controls="plan-library" aria-pressed="true">作品を画像にまとめる ★優先<small>Project Library</small></button>
+          <button type="button" data-plan="plan-cli" aria-controls="plan-cli" aria-pressed="false">文字の画面でAIを使う<small>Codex CLI Setup</small></button>
+          <button type="button" data-plan="plan-profile" aria-controls="plan-profile" aria-pressed="false">自分の利用状況を紹介<small>Share your Profile</small></button>
+          <button type="button" data-plan="plan-3d" aria-controls="plan-3d" aria-pressed="false">立体作品を紹介<small>3D Models</small></button>
         </nav>
         <div class="plan-stack">
           <details class="plan-card" id="plan-library" open>
-            <summary>Project Library <span class="tag">Free · 15〜30秒</span></summary>
+            <summary><span>作品を画像にまとめる<small>Project Library</small></span><span class="tag">無料課題 · 15〜30秒</span></summary>
             <div class="detail"><h3>第一候補：すでにある作品を、見つけやすく並べる</h3><p>作品棚から代表作をひとつ選び、公式の専用プロンプトで新しい棚の画像を作ります。動画では、棚を見せてから代表作を15〜30秒で紹介します。</p><p>まず課題ページの最新条件と専用プロンプトを確かめて、今の作品棚に合うか試します。</p></div>
           </details>
           <details class="plan-card" id="plan-cli">
-            <summary>Codex CLI Setup <span class="tag">Free · 15〜30秒</span></summary>
+            <summary><span>文字の画面でAIを使う<small>Codex CLI Setup</small></span><span class="tag">無料課題 · 15〜30秒</span></summary>
             <div class="detail"><h3>使いどころが見つかったら、手順ごと映す</h3><p>設定を見せ、便利な機能やワークフローをひとつ実演します。操作と結果を15〜30秒で紹介します。</p></div>
           </details>
           <details class="plan-card" id="plan-profile">
-            <summary>Share your Profile <span class="tag">Free · 15〜30秒</span></summary>
-            <div class="detail"><h3>今の公式機能と、見せてよい情報を確かめてから</h3><p>ChatGPTの公式プロフィールやUsage Highlightsに意外な数字が出るかを見る候補です。現在使える機能か、画面に個人情報が出ないかを確認してから決めます。</p></div>
+            <summary><span>自分の利用状況を紹介<small>Share your Profile</small></span><span class="tag">無料課題 · 15〜30秒</span></summary>
+            <div class="detail"><h3>今の公式機能と、見せてよい情報を確かめてから</h3><p>ChatGPTのプロフィールや利用状況のまとめ（Usage Highlights）に、意外な数字が出るかを見る候補です。現在使える機能か、画面に個人情報が出ないかを確認してから決めます。</p></div>
           </details>
           <details class="plan-card" id="plan-3d">
-            <summary>3D Models <span class="tag">Free · 15〜30秒</span></summary>
+            <summary><span>立体作品を紹介<small>3D Models</small></span><span class="tag">無料課題 · 15〜30秒</span></summary>
             <div class="detail"><h3>おけ酒の3D制作を、別の課題として見せられるか</h3><p>今回のSites動画とは別に、制作過程・プロンプト・モデルの回転・結果を同じ15〜30秒の動画に収める案です。今回のBlender制作が公式課題の生成経路に合うか、対象機能を確認してから採用します。</p></div>
           </details>
         </div>
