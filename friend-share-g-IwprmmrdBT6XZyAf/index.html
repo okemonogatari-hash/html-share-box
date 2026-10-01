@@ -49,11 +49,11 @@
     .hero::before, .hero::after { content: ""; position: absolute; z-index: -1; border-radius: 50%; pointer-events: none; }
     .hero::before { width: 400px; height: 400px; right: -185px; top: 6px; background: #e8edda; }
     .hero::after { width: 250px; height: 250px; left: -180px; bottom: -80px; background: #f3e5ca; }
-    .hero-grid { display: grid; grid-template-columns: 1fr .92fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+    .hero-grid { display: flex; flex-direction: column; gap: 24px; align-items: stretch; }
     .eyebrow { margin: 0 0 15px; color: var(--green); font-size: .75rem; font-weight: 800; letter-spacing: .13em; }
     .hero h1 { margin: 0; max-width: 620px; font-size: clamp(2rem, 3.4vw, 3.5rem); line-height: 1.19; letter-spacing: -.045em; }
     .hero h1 em { color: var(--coral); font-style: normal; }
-    .hero-copy { font-size: clamp(1rem, 1.55vw, 1.15rem); line-height: 1.9; }
+    .hero-copy { max-width: 800px; font-size: clamp(1rem, 1.55vw, 1.15rem); line-height: 1.9; }
     .hero-copy p { margin: 20px 0 0; max-width: 34em; }
     .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
     .button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 10px; padding: 11px 18px; border: 2px solid var(--green); border-radius: 999px; background: var(--green); color: white; font-weight: 750; text-decoration: none; cursor: pointer; }
@@ -61,8 +61,8 @@
     .button.secondary { background: transparent; color: var(--green); }
     .button.secondary:hover { background: #dcebdd; color: var(--ink); }
     .hero-note { color: var(--muted); font-size: .86rem; line-height: 1.7; }
-    .hero-figure { position: relative; margin: 0; }
-    .hero-figure img { display: block; width: 100%; height: auto; aspect-ratio: 1.56; object-fit: cover; border: 9px solid var(--white); border-radius: 38px 38px 12px 38px; box-shadow: var(--shadow); }
+    .hero-figure { position: relative; margin: 0; order: -1; }
+    .hero-figure img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border: 9px solid var(--white); border-radius: 38px 38px 12px 38px; box-shadow: var(--shadow); }
     .image-label { position: absolute; left: -12px; bottom: 36px; max-width: calc(100% - 20px); padding: 12px 16px; border-radius: 4px 14px 14px 14px; background: var(--dark); color: white; font-size: .82rem; font-weight: 700; box-shadow: 0 8px 22px #173b3430; }
     .image-label small { display: block; margin-top: 3px; color: #dce7d5; font-weight: 500; }
     .section { padding: clamp(58px, 8vw, 96px) 0; }
@@ -70,6 +70,18 @@
     .heading h2 { margin: 0; font-size: clamp(1.9rem, 4vw, 3.1rem); letter-spacing: -.04em; line-height: 1.25; }
     .heading p { margin: 13px 0 0; color: var(--soft); line-height: 1.85; }
     .kicker { margin: 0 0 11px; color: var(--coral); font-size: .75rem; font-weight: 850; letter-spacing: .14em; }
+
+    .about-section { padding-top: 20px; }
+    .beginner-flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; padding: 0; list-style: none; counter-reset: intro; }
+    .beginner-flow li { padding: 18px 15px; border: 1px solid var(--line); border-radius: 16px; background: var(--white); counter-increment: intro; }
+    .beginner-flow li::before { content: counter(intro, decimal-leading-zero); display: block; margin-bottom: 10px; color: var(--coral); font-weight: 850; }
+    .beginner-flow strong, .beginner-flow span { display: block; }
+    .beginner-flow strong { font-size: .92rem; }
+    .beginner-flow span { margin-top: 9px; color: var(--soft); font-size: .84rem; line-height: 1.8; }
+    .beginner-example { padding: 22px; border-left: 4px solid var(--green); border-radius: 0 16px 16px 0; background: #e8eddd; line-height: 1.9; }
+    .about-section > p { line-height: 1.9; }
+    @media (max-width: 820px) { .beginner-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .beginner-flow { grid-template-columns: 1fr; } }
 
     /* Live state: keep changing submission and ticket facts together here. */
     .status-section { padding-top: 2px; }
@@ -190,7 +202,7 @@
 
     @media (max-width: 820px) {
       .hero-grid, .journey-layout, .work-feature { grid-template-columns: 1fr; }
-      .hero-figure, .work-feature figure { max-width: 700px; }
+      .work-feature figure { max-width: 700px; }
       .journey-aside { position: static; }
       .journey-layout { gap: 22px; }
       .status-top { grid-template-columns: 1fr; }
@@ -232,7 +244,7 @@
     <div class="wrap header-inner">
       <a class="brand" href="#top">OKEMORI <span>／ SIDE QUESTS</span></a>
       <nav class="nav" aria-label="ページ内ナビゲーション">
-        <a href="#today">現在地</a><a href="#journey">今日の流れ</a><a href="#rules">応募ルール</a><a href="#next">次の候補</a>
+        <a href="#about">企画の説明</a><a href="#journey">今日の流れ</a><a href="#rules">応募ルール</a><a href="#next">次の候補</a>
       </nav>
     </div>
   </header>
@@ -242,19 +254,38 @@
         <div class="hero-grid">
           <div class="hero-copy">
             <p class="eyebrow">2026.10.01 ／ DEV DAY SIDE QUESTS</p>
-            <h1 id="hero-title">今日はゲームの<br><em>1日にしましょう。</em></h1>
-            <p>おけ森の作品棚から「これで遊べるかも」を選び、ひとつの作品を実際に触って、見てもらえる形へ。おけ酒を題材にした今回の道のりと、次の一歩をまとめました。</p>
+            <h1 id="hero-title" class="sr-only">今日はゲームの<br><em>1日にしましょう。</em></h1>
+            <p>ChatGPTなどのAI機能を試して、できたことを短い動画で紹介する公式企画に参加してみました。今回は「おけ酒」のサイトを題材に、作品選びから応募までの流れをまとめています。</p>
             <div class="actions">
-              <a class="button" href="#today">いまの状態を見る ↓</a>
+              <a class="button" href="#about">企画の説明から読む ↓</a>
               <a class="button secondary" href="https://okemon-ai-box.okemon.chatgpt.site/kapipara/" target="_blank" rel="noopener noreferrer">おけ酒の作品を開く ↗</a>
             </div>
-            <p class="hero-note">作品ができた時点と、課題の応募が済んだ時点は別々です。ここでは、その間に何をしたかも一緒に見ていきます。</p>
+            <p class="hero-note">作品づくりのあとには、動画の公開と公式への提出があります。今日やったことを順に紹介します。</p>
           </div>
           <figure class="hero-figure">
-            <img src="assets/quest-morning.png" alt="テーブルに広げた小さな世界を囲む人たち。今日の遊びを想像して作った生成イメージです。" width="1792" height="1024">
-            <figcaption class="image-label">今日の冒険を想像した生成イメージ<small>「次、どこに行こっか？」</small></figcaption>
+            <img src="assets/okemon-sidequest-header-v3.png" alt="DevDay Side Quests。今日はゲームの1日にしましょう。おけもんのカピバラと頭に乗ったインコが、パソコンの作品を楽しむイラスト。" width="1672" height="940">
+            <figcaption class="sr-only">おけもんとインコの、タイトル入りキービジュアル。</figcaption>
           </figure>
         </div>
+      </section>
+
+      <section class="section about-section" id="about" aria-labelledby="about-title">
+        <div class="heading">
+          <p class="kicker">START HERE</p><h2 id="about-title">DevDay Side Questsを、<br>はじめて聞いた方へ</h2>
+          <p><strong>DevDay（デブデイ）</strong>は、ChatGPTを開発するOpenAIが開くイベントです。<strong>Side Quests（サイドクエスト）</strong>は、その公式ページに用意された「やってみる小さな課題」のこと。ChatGPTなどのAI機能を実際に使って、できたことを短い動画で紹介します。</p>
+          <p>会場に行かなくても、公開した動画のURLを公式ページへ提出して参加できます。課題を完了すると、賞品が当たる抽選券を受け取れます。作品の人気や出来栄えで順位をつけるコンテストではなく、当選者は抽選で決まります。</p>
+          <p><a href="https://openai.com/index/devday-2026/" target="_blank" rel="noopener noreferrer">DevDayの公式案内 ↗</a> ／ <a href="https://side-quests.openai.chatgpt.site/" target="_blank" rel="noopener noreferrer">クエストの公式ページ ↗</a></p>
+        </div>
+        <h3>参加の流れは、この5つ</h3>
+        <ol class="beginner-flow">
+          <li><strong>課題を選ぶ</strong><span>10種類から、使える機能と興味に合うものを選びます。</span></li>
+          <li><strong>実際に試す</strong><span>作品や使い方を、課題の条件に合わせて見せます。</span></li>
+          <li><strong>短い動画にする</strong><span>原則15〜30秒。Ultrafastの課題だけは30秒未満です。</span></li>
+          <li><strong>SNSに公開する</strong><span>応募に使えるSNSへ、懸賞表示と指定タグを付けて投稿します。</span></li>
+          <li><strong>提出して券を受け取る</strong><span>投稿URLを公式へ提出し、抽選券の受け取りまで確かめます。</span></li>
+        </ol>
+        <p class="beginner-example"><strong>今回の例は「おけ酒」です。</strong> AIで作ったサイトを紹介する「ChatGPT Sites」の課題を選びました。瓶の裏をノックすると研究員が驚く様子を25秒の動画で見せ、Xへ公開。その投稿と作品ページのURLを公式へ提出して、抽選券を1枚受け取りました。</p>
+        <p>10種類から異なる課題を最大5つまで応募できます。1つだけでも参加できます。参加条件や動画・投稿の詳しい指定は、<a href="#rules">下の応募ルール</a>と<a href="https://side-quests.openai.chatgpt.site/official-rules/" target="_blank" rel="noopener noreferrer">公式ルール ↗</a>で確認してください。</p>
       </section>
 
       <section class="section status-section" id="today" aria-labelledby="status-title">
@@ -344,13 +375,13 @@
               </details>
               <details class="step-item" id="step-05">
                 <summary><span class="step-num">05</span><span>レビューを受けて、文と表示を読み返す</span></summary>
-                <div class="detail"><p>Astraに見せ方を確認し、Geminiで日本語を読み返しました。AIの提案をそのまま採用するのではなく、実際に起きた動きや公式の条件と合っているかを人が確かめてから進めます。</p></div>
+                <div class="detail"><p>別のAIにも動画を見てもらい、Geminiで日本語の表現を確認しました。AIの提案を、実際の動きや公式の条件と照らし合わせてから進めています。</p></div>
               </details>
               <details class="step-item" id="step-06">
                 <summary><span class="step-num">06</span><span>条件を書いて、SNSに公開する</span></summary>
                 <div class="detail">
                   <p>X・Threads・Instagram・Facebook・LinkedIn・Substackの6媒体へ広く共有しました。応募に使う公開投稿はX・Threads・Instagram・LinkedInのいずれかで、今回はX投稿を公式へ提出しています。FacebookとSubstackにも横展開しています。noteは本人確認待ちの下書き、リベッター用の公開文は削除してマイチャットへ保存しています。</p>
-                  <p>応募に使う公開投稿は、動画内と投稿本文の見える位置に、懸賞応募で賞品が当たる可能性があることを明記します。投稿本文に <strong>#OpenAISideQuest</strong> を付けます。同じ課題の投稿を複数のSNSへ載せても、応募口数は増えません。</p>
+                  <p>動画内と投稿本文には、懸賞への応募であることと、賞品が当たる可能性があることを明記します。投稿本文では、展開しなくても見える位置に置きます。投稿本文に <strong>#OpenAISideQuest</strong> を付けます。同じ課題の投稿を複数のSNSへ載せても、応募口数は増えません。</p>
                 </div>
               </details>
               <details class="step-item" id="step-07">
@@ -474,17 +505,14 @@
           </div>
           <div>
             <label class="sr-only" for="share-message">チャットへ添える文章</label>
-            <textarea class="share-text" id="share-message" readonly>OpenAI DevDayのSide Questsに、おけ酒の作品で参加した流れをまとめました。
-案内ページ：https://okemonogatari-hash.github.io/html-share-box/friend-share-g-IwprmmrdBT6XZyAf/
+            <textarea class="share-text" id="share-message" readonly>ChatGPTなどのAI機能を試して、できたことを短い動画で紹介するOpenAIの企画「DevDay Side Quests」に参加してみました😊
 
-作品は架空のお酒の瓶と部屋を3Dで作り、AI生成の研究員を登場させています。25秒動画では、公開ページで実際に操作するところを見られます。
+今回は、作品棚にあった「おけ酒」のサイトを25秒の動画で紹介。SNSへの投稿と公式への提出を済ませ、抽選券を1枚受け取りました🎟️
 
-作品：https://okemon-ai-box.okemon.chatgpt.site/kapipara/
-動画：https://youtu.be/6uaE7PWgVn0
-公式：https://side-quests.openai.chatgpt.site/
-ルール：https://side-quests.openai.chatgpt.site/official-rules/
+「どんな企画？」「どうやって参加するの？」から読めるように、経過をまとめています。
+https://okemonogatari-hash.github.io/html-share-box/friend-share-g-IwprmmrdBT6XZyAf/
 
-作品づくり、SNSでの公開、公式へのURL提出、抽選券の受け取りはそれぞれ別の段階です。初めて参加する人にも分かりやすいか、見てもらえたらうれしいです。</textarea>
+作品と動画もページから見られます。AIで何か作ってみたい方の参考になればうれしいです😊</textarea>
             <div class="share-controls">
               <button class="button" type="button" id="copy-message">文章をコピーする</button>
               <p class="share-status" id="copy-status" role="status" aria-live="polite">コピー前です。ボタンを押してから結果を確認できます。</p>
@@ -496,7 +524,7 @@
   </main>
   <footer class="footer">
     <div class="wrap footer-inner">
-      <p>おけ森の、2026年10月1日のSide Quests案内。<br>状態欄は公式画面を確認した時点の記録です。</p>
+      <p>おけ森の、2026年10月1日のSide Quests案内。<br>状態欄は公式画面を確認した時点の記録です。<br>キービジュアル：あや＠ロロカデザインさん制作のアイコンをもとに、AIで制作しました。</p>
       <nav aria-label="公式ページ">
         <a href="https://side-quests.openai.chatgpt.site/" target="_blank" rel="noopener noreferrer">公式クエスト一覧 ↗</a>
         <a href="https://side-quests.openai.chatgpt.site/official-rules/" target="_blank" rel="noopener noreferrer">公式ルール ↗</a>
