@@ -39,6 +39,12 @@
   const API_LOAD_ERROR = "投稿作品を読み込めませんでした。再読み込みしてください。";
   const tokenPrefix = "community-works:delete-token:";
   const uploadPrefix = "community-works:upload:";
+  const reactionTokenKey = "community-works:reaction-token";
+  const reactionTypes = [
+    { key: "like", emoji: "❤️", label: "いいね" },
+    { key: "clap", emoji: "👏", label: "すごい" },
+    { key: "inspired", emoji: "✨", label: "作ってみたい" },
+  ];
   const MAX_MP4_BYTES = 20 * 1024 * 1024;
   const MAX_HTML_BYTES = 2 * 1024 * 1024;
   const removedIds = new Set();
@@ -79,6 +85,11 @@
   }
 
   const apiBaseUrl = configuredApiBase();
+  let reactionTokenState = apiBaseUrl ? initializeReactionToken() : { token: "", writable: false };
+  let reactionReadOnlyReason = apiBaseUrl && !reactionTokenState.writable
+    ? "このブラウザでは保存機能を使えないため、リアクションは読み取りのみです。"
+    : "";
+  const reactionStates = new Map();
 
   function buildAiPostingPrompt() {
     const apiBase = apiBaseUrl || "未設定です。設定が入るまでAPIリクエストは実行しないでください。";
@@ -179,6 +190,258 @@
   function workId(work) {
     if (!work || work.id === undefined || work.id === null) return "";
     return String(work.id).trim();
+  }
+
+  function initializeReactionToken() {
+    try {
+      const storage = window.localStorage;
+      const existing = storage.getItem(reactionTokenKey);
+      if (typeof existing === "string" && /^[0-9a-f]{64}$/.test(existing)) {
+        return { token: existing, writable: true };
+      }
+      if (!window.crypto || typeof window.crypto.getRandomValues !== "function") {
+        return { token: "", writable: false };
+      }
+      const bytes = new Uint8Array(32);
+      window.crypto.getRandomValues(bytes);
+      const token = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+      storage.setItem(reactionTokenKey, token);
+      if (storage.getItem(reactionTokenKey) !== token) {
+        try { storage.removeItem(reactionTokenKey); } catch (_) { /* storage readback failed */ }
+        return { token: "", writable: false };
+      }
+      return { token, writable: true };
+    } catch (_) {
+      return { token: "", writable: false };
+    }
+  }
+
+  function verifyReactionTokenStorage() {
+    if (!reactionTokenState.token || !reactionTokenState.writable) return false;
+    try {
+      const storage = window.localStorage;
+      if (storage.getItem(reactionTokenKey) !== reactionTokenState.token) return false;
+      storage.setItem(reactionTokenKey, reactionTokenState.token);
+      return storage.getItem(reactionTokenKey) === reactionTokenState.token;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function getReactionState(id) {
+    const key = String(id);
+    let state = reactionStates.get(key);
+    if (!state) {
+      state = {
+        status: "idle",
+        counts: null,
+        mine: null,
+        posting: false,
+        feedback: "",
+      };
+      reactionStates.set(key, state);
+    }
+    return state;
+  }
+
+  function reactionSnapshotIsValid(value) {
+    if (!value || typeof value !== "object" || !value.counts || !value.mine) return false;
+    return reactionTypes.every(({ key }) => Number.isSafeInteger(value.counts[key])
+      && value.counts[key] >= 0 && typeof value.mine[key] === "boolean");
+  }
+
+  function updateReactionPanel(panel, id) {
+    const state = getReactionState(id);
+    const ready = state.status === "loaded";
+    panel.setAttribute("aria-busy", String(state.status === "loading" || state.posting));
+    for (const button of panel.querySelectorAll(".reaction-button")) {
+      const key = button.dataset.reaction;
+      const config = reactionTypes.find((item) => item.key === key);
+      if (!config) continue;
+      const mine = ready && state.mine[key] === true;
+      const countNode = button.querySelector(".reaction-count");
+      const count = ready ? state.counts[key] : "—";
+      countNode.textContent = String(count);
+      button.setAttribute("aria-label", `${config.emoji} ${config.label} ${count}件`);
+      button.setAttribute("aria-pressed", String(mine));
+      button.disabled = !ready || state.posting || !reactionTokenState.writable;
+      button.classList.toggle("is-active", mine);
+    }
+
+    const status = panel.querySelector(".reaction-status");
+    if (!apiBaseUrl) {
+      status.textContent = "リアクション機能は準備中です。";
+    } else if (state.status === "loading") {
+      status.textContent = "リアクションを読み込み中…";
+    } else if (state.status === "error") {
+      status.textContent = "リアクション数を読み込めませんでした。再読み込みしてください。";
+    } else if (state.posting) {
+      status.textContent = "保存中…";
+    } else {
+      status.textContent = state.feedback || reactionReadOnlyReason;
+    }
+
+    const retry = panel.querySelector(".reaction-retry");
+    retry.hidden = state.status !== "error" || !apiBaseUrl;
+  }
+
+  function updateReactionCard(id) {
+    const card = document.getElementById(cardId(id));
+    const panel = card && card.querySelector(".reaction-panel");
+    if (panel) updateReactionPanel(panel, id);
+  }
+
+  function setReactionReadOnlyReason(message) {
+    reactionReadOnlyReason = message;
+    const notice = document.getElementById("reaction-global-status");
+    if (notice) {
+      notice.textContent = message;
+      notice.hidden = !message;
+    }
+    for (const panel of document.querySelectorAll(".reaction-panel")) {
+      const id = panel.dataset.workId;
+      if (id) updateReactionPanel(panel, id);
+    }
+  }
+
+  function makeReactionPanel(work) {
+    const id = workId(work);
+    const panel = element("div", "reaction-panel");
+    panel.dataset.workId = id;
+    panel.setAttribute("role", "group");
+    panel.setAttribute("aria-label", "この作品へのリアクション");
+
+    const controls = element("div", "reaction-controls");
+    for (const config of reactionTypes) {
+      const button = element("button", "reaction-button");
+      button.type = "button";
+      button.dataset.reaction = config.key;
+      button.setAttribute("aria-pressed", "false");
+      const emoji = element("span", "reaction-emoji", config.emoji);
+      emoji.setAttribute("aria-hidden", "true");
+      button.append(emoji, element("span", "reaction-label", config.label), element("span", "reaction-count", "—"));
+      button.addEventListener("click", () => saveReaction(id, config.key));
+      controls.append(button);
+    }
+    const status = element("p", "reaction-status");
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+    const retry = element("button", "reaction-retry", "再読み込み");
+    retry.type = "button";
+    retry.hidden = true;
+    retry.addEventListener("click", () => retryReactionLoad(id));
+    panel.append(controls, status, retry);
+    updateReactionPanel(panel, id);
+    return panel;
+  }
+
+  async function readReactionChunk(ids) {
+    const headers = { Accept: "application/json" };
+    if (reactionTokenState.token) headers.Authorization = `Bearer ${reactionTokenState.token}`;
+    const url = `${apiBaseUrl}/api/reactions?ids=${encodeURIComponent(ids.join(","))}`;
+    const response = await fetch(url, { headers, cache: "no-store" });
+    if (!response.ok) throw new Error("reaction-load-failed");
+    const data = await response.json();
+    if (!data || !data.reactions || typeof data.reactions !== "object" || Array.isArray(data.reactions)) {
+      throw new Error("reaction-response-invalid");
+    }
+    const snapshots = new Map();
+    for (const id of ids) {
+      const snapshot = data.reactions[id];
+      if (!reactionSnapshotIsValid(snapshot)) throw new Error("reaction-response-invalid");
+      snapshots.set(id, {
+        counts: Object.fromEntries(reactionTypes.map(({ key }) => [key, snapshot.counts[key]])),
+        mine: Object.fromEntries(reactionTypes.map(({ key }) => [key, snapshot.mine[key]])),
+      });
+    }
+    for (const [id, snapshot] of snapshots) {
+      const state = getReactionState(id);
+      state.status = "loaded";
+      state.counts = snapshot.counts;
+      state.mine = snapshot.mine;
+      state.feedback = "";
+      updateReactionCard(id);
+    }
+  }
+
+  async function loadReactionBatches(ids) {
+    for (let start = 0; start < ids.length; start += 100) {
+      const batch = ids.slice(start, start + 100);
+      try {
+        await readReactionChunk(batch);
+      } catch (_) {
+        for (const id of batch) {
+          const state = getReactionState(id);
+          state.status = "error";
+          state.counts = null;
+          state.mine = null;
+          updateReactionCard(id);
+        }
+      }
+    }
+  }
+
+  function ensureReactionData(ids) {
+    if (!apiBaseUrl) return;
+    const pending = Array.from(new Set(ids.map((id) => String(id)).filter(Boolean)))
+      .filter((id) => getReactionState(id).status === "idle");
+    if (!pending.length) return;
+    for (const id of pending) {
+      const state = getReactionState(id);
+      state.status = "loading";
+      updateReactionCard(id);
+    }
+    void loadReactionBatches(pending);
+  }
+
+  function retryReactionLoad(id) {
+    const state = getReactionState(id);
+    if (state.status !== "error") return;
+    state.status = "idle";
+    state.feedback = "";
+    updateReactionCard(id);
+    ensureReactionData([id]);
+  }
+
+  async function saveReaction(id, type) {
+    const state = getReactionState(id);
+    if (state.status !== "loaded" || state.posting || !reactionTokenState.writable) return;
+    state.posting = true;
+    state.feedback = "";
+    updateReactionCard(id);
+    if (!verifyReactionTokenStorage()) {
+      reactionTokenState.writable = false;
+      setReactionReadOnlyReason("このブラウザでは保存機能を使えないため、リアクションを変更できません。");
+      state.posting = false;
+      state.feedback = "リアクションを保存できませんでした。ブラウザの保存機能を確認してください。";
+      updateReactionCard(id);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/reactions`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${reactionTokenState.token}`,
+        },
+        body: JSON.stringify({ workId: id, reaction: type, active: !state.mine[type] }),
+      });
+      if (!response.ok) throw new Error("reaction-save-failed");
+      const result = await response.json();
+      if (!result || String(result.workId) !== id || !reactionSnapshotIsValid(result)) {
+        throw new Error("reaction-response-invalid");
+      }
+      state.counts = Object.fromEntries(reactionTypes.map(({ key }) => [key, result.counts[key]]));
+      state.mine = Object.fromEntries(reactionTypes.map(({ key }) => [key, result.mine[key]]));
+      state.feedback = result.mine[type] ? "リアクションしました。" : "リアクションを取り消しました。";
+    } catch (_) {
+      state.feedback = "リアクションを保存できませんでした。時間をおいて再度お試しください。";
+    } finally {
+      state.posting = false;
+      updateReactionCard(id);
+    }
   }
 
   function cardId(id) {
@@ -396,6 +659,7 @@
       actions.append(confirmation);
     }
     if (actions.childNodes.length) body.append(actions);
+    body.append(makeReactionPanel(work));
 
     card.append(body);
     return card;
@@ -542,6 +806,11 @@
     grid.replaceChildren(...visibleWorks.map(makeCard));
     grid.setAttribute("aria-busy", "false");
     updateCountSummary(works, groups, visibleWorks);
+    const reactionNotice = document.getElementById("reaction-global-status");
+    if (reactionNotice) {
+      reactionNotice.textContent = reactionReadOnlyReason;
+      reactionNotice.hidden = !reactionReadOnlyReason;
+    }
     if (message) setLoadMessage(message);
     else if (!works.length) setLoadMessage("掲載作品はまだありません。");
     else if (!visibleWorks.length) setLoadMessage("条件に合う作品はありません。");
@@ -549,6 +818,7 @@
     moreRow.hidden = !apiBaseUrl || !nextCursor;
     moreButton.disabled = loadingMore;
     moreButton.textContent = loadingMore ? "読み込み中…" : "もっと見る";
+    ensureReactionData(works.map(workId));
   }
 
   async function responseError(response, fallback) {
