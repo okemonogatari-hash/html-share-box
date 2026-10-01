@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#173f36">
+  <meta name="description" content="おけ酒を例に、OpenAI DevDay Side Questsの制作から応募、抽選券の受け取りまでをたどる案内です。">
+  <title>今日はゲームの1日にしましょう｜おけ森のSide Quests案内</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #173b34;
+      --soft: #405b52;
+      --paper: #fbf6e9;
+      --white: #fffdf7;
+      --green: #24644f;
+      --dark: #173f36;
+      --pale: #e8eddd;
+      --coral: #de7658;
+      --gold: #d7a347;
+      --line: #d9d6c5;
+      --muted: #6c776b;
+      --shadow: 0 18px 55px #263d3017;
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-width: 320px; background: var(--paper); }
+    a { color: var(--green); text-underline-offset: .2em; overflow-wrap: anywhere; }
+    a:hover { color: #b8563c; }
+    a:focus-visible, button:focus-visible, summary:focus-visible, textarea:focus-visible { outline: 3px solid #bc6a4c; outline-offset: 3px; }
+    button, textarea { font: inherit; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+    .skip { position: absolute; z-index: 20; top: 8px; left: 8px; padding: 12px 16px; transform: translateY(-150%); border-radius: 12px; background: white; color: var(--ink); }
+    .skip:focus { transform: translateY(0); }
+    .header { background: var(--dark); color: #f7f2df; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 70px; }
+    .brand { color: #fff8e6; font-size: .83rem; font-weight: 800; letter-spacing: .14em; text-decoration: none; white-space: nowrap; }
+    .brand span { color: #ecc878; font-weight: 600; letter-spacing: .08em; }
+    .nav { display: flex; gap: clamp(10px, 2vw, 26px); align-items: center; }
+    .nav a { display: inline-flex; align-items: center; min-height: 44px; color: #e5ecd9; text-decoration: none; font-size: .82rem; white-space: nowrap; }
+    .nav a:hover { color: white; }
+    .hero { position: relative; isolation: isolate; overflow: clip; padding: clamp(44px, 7vw, 86px) 0 54px; }
+    .hero::before, .hero::after { content: ""; position: absolute; z-index: -1; border-radius: 50%; pointer-events: none; }
+    .hero::before { width: 400px; height: 400px; right: -185px; top: 6px; background: #e8edda; }
+    .hero::after { width: 250px; height: 250px; left: -180px; bottom: -80px; background: #f3e5ca; }
+    .hero-grid { display: grid; grid-template-columns: 1fr .92fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+    .eyebrow { margin: 0 0 15px; color: var(--green); font-size: .75rem; font-weight: 800; letter-spacing: .13em; }
+    .hero h1 { margin: 0; max-width: 620px; font-size: clamp(2rem, 3.4vw, 3.5rem); line-height: 1.19; letter-spacing: -.045em; }
+    .hero h1 em { color: var(--coral); font-style: normal; }
+    .hero-copy { font-size: clamp(1rem, 1.55vw, 1.15rem); line-height: 1.9; }
+    .hero-copy p { margin: 20px 0 0; max-width: 34em; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 10px; padding: 11px 18px; border: 2px solid var(--green); border-radius: 999px; background: var(--green); color: white; font-weight: 750; text-decoration: none; cursor: pointer; }
+    .button:hover { background: #164a39; color: white; }
+    .button.secondary { background: transparent; color: var(--green); }
+    .button.secondary:hover { background: #dcebdd; color: var(--ink); }
+    .hero-note { color: var(--muted); font-size: .86rem; line-height: 1.7; }
+    .hero-figure { position: relative; margin: 0; }
+    .hero-figure img { display: block; width: 100%; height: auto; aspect-ratio: 1.56; object-fit: cover; border: 9px solid var(--white); border-radius: 38px 38px 12px 38px; box-shadow: var(--shadow); }
+    .image-label { position: absolute; left: -12px; bottom: 36px; max-width: calc(100% - 20px); padding: 12px 16px; border-radius: 4px 14px 14px 14px; background: var(--dark); color: white; font-size: .82rem; font-weight: 700; box-shadow: 0 8px 22px #173b3430; }
+    .image-label small { display: block; margin-top: 3px; color: #dce7d5; font-weight: 500; }
+    .section { padding: clamp(58px, 8vw, 96px) 0; }
+    .heading { max-width: 680px; margin-bottom: 30px; }
+    .heading h2 { margin: 0; font-size: clamp(1.9rem, 4vw, 3.1rem); letter-spacing: -.04em; line-height: 1.25; }
+    .heading p { margin: 13px 0 0; color: var(--soft); line-height: 1.85; }
+    .kicker { margin: 0 0 11px; color: var(--coral); font-size: .75rem; font-weight: 850; letter-spacing: .14em; }
+
+    /* Live state: keep changing submission and ticket facts together here. */
+    .status-section { padding-top: 2px; }
+    .status-panel { overflow: hidden; border: 1px solid #c5d1c0; border-radius: 24px; background: var(--white); box-shadow: var(--shadow); }
+    .status-top { display: grid; grid-template-columns: minmax(230px, .85fr) 1.15fr; }
+    .status-count { display: flex; min-height: 248px; flex-direction: column; justify-content: center; padding: clamp(25px, 5vw, 48px); background: var(--dark); color: #fff8e8; }
+    .status-count .eyebrow { color: #b9d5b9; }
+    .count { display: flex; align-items: baseline; gap: 9px; margin: 5px 0 8px; font-size: clamp(4rem, 8vw, 6.4rem); font-weight: 850; letter-spacing: -.08em; line-height: 1; }
+    .count span { color: #e2c26c; font-size: .35em; letter-spacing: 0; }
+    .status-count p:last-child { margin: 0; color: #e1eadb; line-height: 1.7; }
+    .status-info { display: grid; align-content: center; gap: 22px; padding: clamp(24px, 5vw, 44px); }
+    .status-line { display: grid; grid-template-columns: 145px 1fr; gap: 16px; align-items: start; }
+    .status-line dt { color: var(--muted); font-size: .83rem; font-weight: 700; }
+    .status-line dd { margin: 0; line-height: 1.75; }
+    .status-line strong { color: var(--dark); }
+    .link-list { display: grid; gap: 7px; margin: 8px 0 0; padding: 0; list-style: none; }
+    .link-list a { display: inline-block; overflow-wrap: anywhere; }
+    .ticket { padding: 16px 18px; border-left: 4px solid var(--gold); border-radius: 0 12px 12px 0; background: #f8f0db; }
+    .ticket strong { display: block; margin-bottom: 4px; color: #684d20; }
+    .ticket p { margin: 0; line-height: 1.7; }
+    .status-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 18px clamp(24px, 5vw, 44px); border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+    .status-footer p { margin: 0; }
+    .status-footer a { font-weight: 750; }
+    .status-notice { padding: 12px 18px; border-top: 1px solid var(--line); color: #665a44; background: #fcf8ed; font-size: .84rem; }
+
+    .journey { background: #e8eddd; }
+    .journey-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(28px, 6vw, 68px); align-items: start; }
+    .journey-aside { position: sticky; top: 20px; }
+    .journey-aside .heading { margin-bottom: 20px; }
+    .quote { margin: 22px 0; padding: 18px 20px; border-left: 4px solid var(--coral); background: #f7f4e8; color: #635749; font-size: 1.06rem; font-weight: 680; line-height: 1.7; }
+    .quote small { font-size: .82rem; font-weight: 500; }
+    .step-nav, .plan-nav { display: none; }
+    .js-ready .step-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 24px 0 18px; }
+    .step-nav button, .plan-nav button { min-height: 48px; padding: 8px 10px; border: 1px solid #b7c8b4; border-radius: 12px; background: #f8f8ee; color: var(--ink); font-size: .78rem; font-weight: 740; cursor: pointer; }
+    .step-nav button:hover, .plan-nav button:hover { background: white; border-color: var(--green); }
+    .step-nav button[aria-pressed="true"], .plan-nav button[aria-pressed="true"] { border-color: var(--green); background: var(--green); color: white; }
+    .step-stack { position: relative; padding-left: 27px; }
+    .step-stack::before { content: ""; position: absolute; top: 11px; bottom: 18px; left: 8px; width: 2px; background: #b7c8ad; }
+    .step-item { position: relative; margin-bottom: 9px; padding: 0 18px; border: 1px solid #d5ddcf; border-radius: 14px; background: #f9f8ee; }
+    .step-item::before { content: ""; position: absolute; top: 18px; left: -26px; width: 14px; height: 14px; border: 3px solid #e8eddd; border-radius: 50%; background: #789576; box-shadow: 0 0 0 1px #789576; }
+    .step-item[open] { border-color: #9bb39b; box-shadow: 0 7px 24px #263d3012; }
+    .step-item[open]::before { background: var(--coral); box-shadow: 0 0 0 1px var(--coral); }
+    .step-item > summary { min-height: 58px; justify-content: flex-start; }
+    .step-num { min-width: 34px; color: var(--coral); font-size: .75rem; font-weight: 850; letter-spacing: .08em; }
+    .step-item .detail { padding: 0 0 18px 34px; color: var(--soft); line-height: 1.8; }
+    .step-item p { margin: 0 0 9px; }
+    .step-item p:last-child { margin-bottom: 0; }
+    .step-item > summary, .detail > summary { position: relative; display: flex; min-height: 54px; align-items: center; justify-content: space-between; gap: 14px; cursor: pointer; list-style: none; font-weight: 740; }
+    summary::-webkit-details-marker { display: none; }
+    .step-item > summary::after, .detail > summary::after { content: "+"; display: grid; width: 28px; height: 28px; place-items: center; flex: 0 0 auto; border: 1px solid #afbdac; border-radius: 50%; color: var(--green); font-size: 1.15rem; line-height: 1; }
+    details[open] > summary::after { content: "−"; }
+    .noscript { margin: 14px 0; color: var(--muted); font-size: .84rem; line-height: 1.7; }
+
+    .work-feature { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(24px, 5vw, 54px); align-items: center; padding: clamp(18px, 3vw, 30px); border-radius: 28px; background: var(--white); box-shadow: var(--shadow); }
+    .work-feature figure { margin: 0; }
+    .work-feature img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 22px 22px 6px 22px; }
+    .work-feature figcaption { margin-top: 10px; color: var(--muted); font-size: .78rem; line-height: 1.6; }
+    .work-copy h3 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.1rem); line-height: 1.3; }
+    .work-copy p { color: var(--soft); line-height: 1.85; }
+    .fiction-note { padding: 12px 14px; border-radius: 12px; background: #f7eddd; color: #65533b !important; font-size: .88rem; }
+    .work-copy .button { margin-top: 4px; }
+    .work-link { display: block; margin-top: 13px; font-size: .84rem; }
+
+    .rule-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 28px 0 20px; }
+    .stamp { min-height: 92px; display: grid; align-content: center; justify-items: center; gap: 4px; border: 1px dashed #9cae98; border-radius: 15px; background: #f5f5e9; color: #5c7562; text-align: center; }
+    .stamp strong { font-size: .82rem; }
+    .stamp span { font-size: .72rem; }
+    .stamp.done { border: 2px solid var(--green); background: #dcebdd; color: var(--dark); box-shadow: inset 0 -4px 0 #b8cfb8; }
+    .rule-copy { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 26px; }
+    .rule-copy > div { padding-top: 18px; border-top: 1px solid var(--line); }
+    .rule-copy h3 { margin: 0 0 9px; font-size: 1.08rem; }
+    .rule-copy p { margin: 0; color: var(--soft); line-height: 1.8; }
+    .deadline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 16px; margin-top: 26px; padding: 18px 20px; border-radius: 15px; background: #f0e6cf; }
+    .deadline strong { color: #765320; font-size: 1.16rem; }
+    .deadline small { color: #6c685a; }
+    details { border-top: 1px solid var(--line); }
+    details > summary { position: relative; min-height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 14px; cursor: pointer; list-style: none; font-weight: 740; }
+    .detail { padding: 0 0 20px; color: var(--soft); line-height: 1.8; }
+    .detail > :first-child { margin-top: 0; }
+    .quest-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 26px; margin: 14px 0 0; padding: 0; list-style: none; }
+    .quest-list li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 2px; border-bottom: 1px solid var(--line); }
+    .quest-list b { font-weight: 740; }
+    .tag { align-self: start; padding: 3px 8px; border: 1px solid #cad6c4; border-radius: 999px; color: #516d54; font-size: .72rem; white-space: nowrap; }
+    .tag.paid { border-color: #e0c68d; color: #785822; background: #fbf2df; }
+    .rule-more { margin-top: 28px; }
+
+    .plan-section { background: var(--dark); color: #f7f2e5; }
+    .plan-section .kicker { color: #e8c978; }
+    .plan-section .heading p { color: #d7e2d1; }
+    .plan-nav { grid-template-columns: repeat(4, 1fr); gap: 9px; margin: 28px 0 20px; }
+    .js-ready .plan-nav { display: grid; }
+    .plan-nav button { min-height: 54px; border-color: #58796a; background: #214d41; color: #edf4e9; }
+    .plan-nav button[aria-pressed="true"] { border-color: #e5c36e; background: #e5c36e; color: #233c32; }
+    .plan-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
+    .plan-card { padding: 0 18px; border-top: 1px solid #638071; }
+    .plan-card > summary { color: #fff8e5; }
+    .plan-card > summary::after { border-color: #9cb39e; color: #e6c46e; }
+    .plan-card[open] { border-color: #d4b65f; }
+    .plan-card .detail { color: #e1e8d8; }
+    .plan-card h3 { margin: 0 0 8px; color: #edcc7f; font-size: 1.08rem; }
+    .plan-card p { margin: 0 0 10px; }
+    .plan-footer { margin: 24px 0 0; color: #d7e2d1; line-height: 1.8; }
+
+    .share-section { padding-bottom: 88px; }
+    .share-box { display: grid; grid-template-columns: .7fr 1.3fr; gap: 26px; align-items: start; padding: clamp(24px, 5vw, 42px); border: 1px solid #d7d9c8; border-radius: 24px; background: #f2ecdb; }
+    .share-box h2 { margin: 0; font-size: clamp(1.7rem, 3vw, 2.3rem); line-height: 1.3; }
+    .share-intro { color: var(--soft); line-height: 1.8; }
+    .share-text { width: 100%; min-height: 188px; resize: vertical; padding: 16px; border: 1px solid #c2c6b7; border-radius: 13px; background: var(--white); color: var(--ink); line-height: 1.75; }
+    .share-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 12px; }
+    .share-status { min-height: 1.5em; margin: 2px 0 0; color: #556d59; font-size: .85rem; }
+    .share-links { display: flex; flex-wrap: wrap; gap: 9px 18px; margin-top: 17px; font-size: .85rem; }
+    .footer { padding: 28px 0 36px; background: var(--dark); color: #d7e4d6; font-size: .82rem; }
+    .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; align-items: center; }
+    .footer p { margin: 0; }
+    .footer nav { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+    .footer a { display: inline-flex; min-height: 44px; align-items: center; color: #f1d68b; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    @media (max-width: 820px) {
+      .hero-grid, .journey-layout, .work-feature { grid-template-columns: 1fr; }
+      .hero-figure, .work-feature figure { max-width: 700px; }
+      .journey-aside { position: static; }
+      .journey-layout { gap: 22px; }
+      .status-top { grid-template-columns: 1fr; }
+      .status-count { min-height: 198px; }
+      .share-box { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(calc(100% - 28px), 500px); }
+      .header-inner { display: block; min-height: auto; padding: 10px 0 7px; }
+      .brand { display: inline-flex; min-height: 38px; align-items: center; }
+      .nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; }
+      .nav a { justify-content: center; min-width: 0; min-height: 44px; font-size: .75rem; }
+      .hero { padding-top: 39px; }
+      .hero h1 { font-size: clamp(2rem, 10vw, 3rem); }
+      .hero-figure img { border-width: 6px; border-radius: 26px 26px 8px 26px; }
+      .image-label { left: -2px; bottom: 20px; font-size: .72rem; }
+      .status-line { grid-template-columns: 1fr; gap: 5px; }
+      .status-info { gap: 19px; }
+      .rule-strip { gap: 5px; }
+      .stamp { min-height: 75px; border-radius: 10px; }
+      .stamp strong { font-size: .68rem; }
+      .stamp span { font-size: .65rem; }
+      .rule-copy, .quest-list, .plan-stack { grid-template-columns: 1fr; }
+      .js-ready .step-nav { grid-template-columns: repeat(2, 1fr); }
+      .plan-nav { grid-template-columns: repeat(2, 1fr); }
+      .share-controls .button { width: 100%; }
+      .footer-inner { display: block; }
+      .footer nav { margin-top: 10px; gap: 2px 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">本文へ移動</a>
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top">OKEMORI <span>／ SIDE QUESTS</span></a>
+      <nav class="nav" aria-label="ページ内ナビゲーション">
+        <a href="#today">現在地</a><a href="#journey">今日の流れ</a><a href="#rules">応募ルール</a><a href="#next">次の候補</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="wrap">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">2026.10.01 ／ DEV DAY SIDE QUESTS</p>
+            <h1 id="hero-title">今日はゲームの<br><em>1日にしましょう。</em></h1>
+            <p>おけ森の作品棚から「これで遊べるかも」を選び、ひとつの作品を実際に触って、見てもらえる形へ。おけ酒を題材にした今回の道のりと、次の一歩をまとめました。</p>
+            <div class="actions">
+              <a class="button" href="#today">いまの状態を見る ↓</a>
+              <a class="button secondary" href="https://okemon-ai-box.okemon.chatgpt.site/kapipara/" target="_blank" rel="noopener noreferrer">おけ酒の作品を開く ↗</a>
+            </div>
+            <p class="hero-note">作品ができた時点と、課題の応募が済んだ時点は別々です。ここでは、その間に何をしたかも一緒に見ていきます。</p>
+          </div>
+          <figure class="hero-figure">
+            <img src="assets/quest-morning.png" alt="テーブルに広げた小さな世界を囲む人たち。今日の遊びを想像して作った生成イメージです。" width="1792" height="1024">
+            <figcaption class="image-label">今日の冒険を想像した生成イメージ<small>「次、どこに行こっか？」</small></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section status-section" id="today" aria-labelledby="status-title">
+        <div class="heading">
+          <p class="kicker">RIGHT NOW</p><h2 id="status-title">いまの状態</h2>
+          <p>公式画面を2026年10月1日に読み返した時点の記録です。提出・進捗・抽選券の受け取りを分けています。</p>
+        </div>
+        <section class="status-panel" id="live-status" aria-label="公式画面で確認した現在の状態">
+          <div class="status-top">
+            <div class="status-count">
+              <p class="eyebrow">OFFICIAL QUEST STATUS</p>
+              <div class="count" aria-label="5つ中1つ完了">1<span>／ 5</span></div>
+              <p>Side Quests complete<br><strong>ChatGPT Sites：submitted</strong></p>
+            </div>
+            <dl class="status-info">
+              <div class="status-line">
+                <dt>公式へ提出したリンク</dt>
+                <dd>
+                  <strong>Post link</strong>
+                  <ul class="link-list"><li><a href="https://x.com/okemonogatari/status/2105532788435034528" target="_blank" rel="noopener noreferrer">https://x.com/okemonogatari/status/2105532788435034528</a></li></ul>
+                  <strong>Live Site URL</strong>
+                  <ul class="link-list"><li><a href="https://okemon-ai-box.okemon.chatgpt.site/kapipara/" target="_blank" rel="noopener noreferrer">https://okemon-ai-box.okemon.chatgpt.site/kapipara/</a></li></ul>
+                </dd>
+              </div>
+              <div class="status-line">
+                <dt>抽選券の状態</dt>
+                <dd><div class="ticket">
+                  <strong>Your tickets：1/5 claimed · 0 ready to claim</strong>
+                  <p>抽選券は1枚受け取り済みです。</p>
+                </div></dd>
+              </div>
+            </dl>
+          </div>
+          <div class="status-footer">
+            <p>応募締切：<strong>2026年10月2日（金）06:30 日本時間</strong></p>
+            <a href="https://side-quests.openai.chatgpt.site/" target="_blank" rel="noopener noreferrer">公式クエストを開く ↗</a>
+          </div>
+          <p class="status-notice">応募要件の審査結果・当選は未確認です。次は、新しい課題候補を選びます。</p>
+        </section>
+      </section>
+
+      <section class="section journey" id="journey" aria-labelledby="journey-title">
+        <div class="journey-layout">
+          <div class="journey-aside">
+            <div class="heading">
+              <p class="kicker">FROM IDEA TO ENTRY</p>
+              <h2 id="journey-title">作るところから、<br>受け取るところまで。</h2>
+              <p>作品づくり、動画の公開、公式への提出、抽選券の受け取り。ひとつずつ別の扉を通ります。各番号を押すと、その場面が開きます。</p>
+            </div>
+            <blockquote class="quote">「おけ酒も個人的にはすきだけどね🤣」<br><small>— おけちゃんのひとこと</small></blockquote>
+            <a class="button secondary" href="https://youtu.be/6uaE7PWgVn0" target="_blank" rel="noopener noreferrer">おけ酒の25秒動画を見る ↗</a>
+            <p class="noscript">番号ボタンが使えない環境でも、右側の各項目を開けば全工程を読めます。</p>
+          </div>
+          <div class="journey-content">
+            <nav class="step-nav" aria-label="今日の流れから場面を選ぶ">
+              <button type="button" data-step="step-01" aria-controls="step-01" aria-pressed="true">01 公式を確認</button>
+              <button type="button" data-step="step-02" aria-controls="step-02" aria-pressed="false">02 作品を選ぶ</button>
+              <button type="button" data-step="step-03" aria-controls="step-03" aria-pressed="false">03 遊びやすくする</button>
+              <button type="button" data-step="step-04" aria-controls="step-04" aria-pressed="false">04 動画を撮る</button>
+              <button type="button" data-step="step-05" aria-controls="step-05" aria-pressed="false">05 読み返す</button>
+              <button type="button" data-step="step-06" aria-controls="step-06" aria-pressed="false">06 SNSに公開</button>
+              <button type="button" data-step="step-07" aria-controls="step-07" aria-pressed="false">07 URLを提出</button>
+              <button type="button" data-step="step-08" aria-controls="step-08" aria-pressed="false">08 券を受け取る</button>
+            </nav>
+            <div class="step-stack">
+              <details class="step-item" id="step-01" open>
+                <summary><span class="step-num">01</span><span>公式ページとルールを先に確認する</span></summary>
+                <div class="detail">
+                  <p>10種類の課題から、できそうなものをひとつ選びます。必要な動画の長さ、投稿に書く懸賞表示、ハッシュタグ、提出するURLを先に確認すると、作ったあとで撮り直すことが減ります。</p>
+                  <p><a href="https://side-quests.openai.chatgpt.site/" target="_blank" rel="noopener noreferrer">公式の課題一覧 ↗</a> ／ <a href="https://side-quests.openai.chatgpt.site/official-rules/" target="_blank" rel="noopener noreferrer">公式ルール ↗</a></p>
+                </div>
+              </details>
+              <details class="step-item" id="step-02">
+                <summary><span class="step-num">02</span><span>作品棚から、使えそうなものを選ぶ</span></summary>
+                <div class="detail"><p>今回は、前から育てていたおけ酒のページを選びました。新しいものをゼロから作る代わりに、すでにある作品へ今回の課題に合う体験を足せるか考えます。</p></div>
+              </details>
+              <details class="step-item" id="step-03">
+                <summary><span class="step-num">03</span><span>触ってもらいやすいように整える</span></summary>
+                <div class="detail"><p>瓶の裏を見つけてノックしたくなるように調整し、パソコンとスマホの両方で操作を確かめました。作品を整えたら、公開されているページが意図どおり動くかもう一度見ます。</p></div>
+              </details>
+              <details class="step-item" id="step-04">
+                <summary><span class="step-num">04</span><span>実際の体験を25秒の動画にする</span></summary>
+                <div class="detail">
+                  <p>動画には公開Siteを操作するところを入れました。瓶の裏をノックすると研究員が起きて「ばれたーー！」。画面だけでなく、どんな反応が返るかまで短く見せています。</p>
+                  <p><a href="https://youtu.be/6uaE7PWgVn0" target="_blank" rel="noopener noreferrer">完成した25秒動画を開く ↗</a></p>
+                </div>
+              </details>
+              <details class="step-item" id="step-05">
+                <summary><span class="step-num">05</span><span>レビューを受けて、文と表示を読み返す</span></summary>
+                <div class="detail"><p>Astraに見せ方を確認し、Geminiで日本語を読み返しました。AIの提案をそのまま採用するのではなく、実際に起きた動きや公式の条件と合っているかを人が確かめてから進めます。</p></div>
+              </details>
+              <details class="step-item" id="step-06">
+                <summary><span class="step-num">06</span><span>条件を書いて、SNSに公開する</span></summary>
+                <div class="detail">
+                  <p>X・Threads・Instagram・Facebook・LinkedIn・Substackの6媒体へ広く共有しました。応募に使う公開投稿はX・Threads・Instagram・LinkedInのいずれかで、今回はX投稿を公式へ提出しています。FacebookとSubstackにも横展開しています。noteは本人確認待ちの下書き、リベッター用の公開文は削除してマイチャットへ保存しています。</p>
+                  <p>応募に使う公開投稿は、動画内と投稿本文の見える位置に、懸賞応募で賞品が当たる可能性があることを明記します。投稿本文に <strong>#OpenAISideQuest</strong> を付けます。同じ課題の投稿を複数のSNSへ載せても、応募口数は増えません。</p>
+                </div>
+              </details>
+              <details class="step-item" id="step-07">
+                <summary><span class="step-num">07</span><span>公開した投稿と作品のURLを公式へ提出する</span></summary>
+                <div class="detail"><p>投稿を公開することと、公式へURLを提出することは別の手順です。公式フォームへ必要なURLを送ったあと、提出内容をもう一度開き、対象課題とリンクを読み返します。</p></div>
+              </details>
+              <details class="step-item" id="step-08">
+                <summary><span class="step-num">08</span><span>対象になった抽選券を、公式画面で受け取る</span></summary>
+                <div class="detail">
+                  <p>課題の提出と抽選券の受け取りは別の手順です。公式画面に「Claim your ticket」が表示されたら、本人が受け取り操作をし、claimed表示まで確かめます。</p>
+                  <p><a href="https://side-quests.openai.chatgpt.site/" target="_blank" rel="noopener noreferrer">公式画面を開く ↗</a></p>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="work" aria-labelledby="work-title">
+        <div class="heading"><p class="kicker">THE EXAMPLE</p><h2 id="work-title">おけ酒は、こんな体験です。</h2></div>
+        <div class="work-feature">
+          <figure>
+            <img src="assets/work-okesake.jpg" alt="桜とカピバラを描いたラベルの架空のお酒。作品棚から選んだビジュアルです。" width="1248" height="1248" loading="lazy">
+            <figcaption>作品棚から選んだビジュアル。実際の操作は公開ページで見られます。</figcaption>
+          </figure>
+          <div class="work-copy">
+            <p class="eyebrow">A TINY SECRET DOOR</p>
+            <h3>瓶の裏をノックすると、<br>研究員が起きる。</h3>
+            <p>Blenderで作った架空の酒瓶と部屋に、AIで生成したカピバラ研究員が登場します。裏側をノックすると「ばれたーー！」と驚いて、言い訳を始める遊びです。</p>
+            <p class="fiction-note">これは架空のお酒を題材にした作品です。実物の販売や決済はありません。</p>
+            <a class="button" href="https://youtu.be/6uaE7PWgVn0" target="_blank" rel="noopener noreferrer">25秒の操作動画を見る ↗</a>
+            <a class="work-link" href="https://okemon-ai-box.okemon.chatgpt.site/kapipara/" target="_blank" rel="noopener noreferrer">公開中の作品ページ ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="rules" aria-labelledby="rules-title">
+        <div class="heading">
+          <p class="kicker">A FEW RULES THAT MATTER</p>
+          <h2 id="rules-title">応募の数え方は、意外とシンプル。</h2>
+          <p>一つの課題を何回投稿したかではなく、いくつの異なる課題を完了したかで応募口数が決まります。</p>
+        </div>
+        <div class="rule-strip" role="img" aria-label="最大5口のうち、ChatGPT Sitesの課題が1つ完了">
+          <div class="stamp done"><strong>01 · SITES</strong><span>完了した課題</span></div>
+          <div class="stamp"><strong>02</strong><span>別の課題</span></div>
+          <div class="stamp"><strong>03</strong><span>別の課題</span></div>
+          <div class="stamp"><strong>04</strong><span>別の課題</span></div>
+          <div class="stamp"><strong>05</strong><span>別の課題</span></div>
+        </div>
+        <div class="rule-copy">
+          <div><h3>課題ひとつにつき、応募は1口</h3><p>10種類の課題から異なるものを最大5つまで。1つだけの応募でも参加できます。同じSites作品をSNSへ何度載せても、Sitesの口数は1口のままです。</p></div>
+          <div><h3>抽選は5名。作品の人気で決まらない</h3><p>有効な応募口を対象に、無作為で5名が選ばれます。応募口ごとの重みは同じで、作品の質、いいね数、有料プランで優遇されません。課題数に応じて応募口数は変わります。</p></div>
+        </div>
+        <div class="deadline"><span>締切</span><strong><time datetime="2026-10-01T21:30:00Z">2026年10月2日（金）06:30 日本時間</time></strong><small>公式表記：2026年10月1日 21:30 UTC</small></div>
+        <details class="rule-more">
+          <summary>全10種類の課題と、公式のFree / Paid区分</summary>
+          <div class="detail">
+            <p>区分は公式ページの表記です。Ultrafastは30秒未満、それ以外は15〜30秒の動画課題です。</p>
+            <ul class="quest-list">
+              <li><b>Ultrafast</b><span class="tag paid">Paid</span></li>
+              <li><b>Profile</b><span class="tag">Free</span></li>
+              <li><b>Dots</b><span class="tag paid">Paid</span></li>
+              <li><b>Project Library</b><span class="tag">Free</span></li>
+              <li><b>Spaces</b><span class="tag paid">Paid</span></li>
+              <li><b>Codex CLI Setup</b><span class="tag">Free</span></li>
+              <li><b>ChatGPT Sites</b><span class="tag paid">Paid</span></li>
+              <li><b>3D Models</b><span class="tag">Free</span></li>
+              <li><b>Cloud</b><span class="tag paid">Paid</span></li>
+              <li><b>Plugins</b><span class="tag">Free</span></li>
+            </ul>
+            <p style="margin-top:15px"><a href="https://side-quests.openai.chatgpt.site/" target="_blank" rel="noopener noreferrer">最新の課題一覧を公式で確認 ↗</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section plan-section" id="next" aria-labelledby="next-title">
+        <div class="heading">
+          <p class="kicker">WHAT COULD COME NEXT?</p>
+          <h2 id="next-title">次の寄り道は、作品棚から。</h2>
+          <p>ここから先は候補です。Libraryを先に見て、ほかは使える機能と素材がそろったものを選びます。5つを埋めるために急がなくて大丈夫。</p>
+        </div>
+        <nav class="plan-nav" aria-label="次の課題候補を選ぶ">
+          <button type="button" data-plan="plan-library" aria-controls="plan-library" aria-pressed="true">Project Library ★優先</button>
+          <button type="button" data-plan="plan-cli" aria-controls="plan-cli" aria-pressed="false">Codex CLI Setup</button>
+          <button type="button" data-plan="plan-profile" aria-controls="plan-profile" aria-pressed="false">Share your Profile</button>
+          <button type="button" data-plan="plan-3d" aria-controls="plan-3d" aria-pressed="false">3D Models</button>
+        </nav>
+        <div class="plan-stack">
+          <details class="plan-card" id="plan-library" open>
+            <summary>Project Library <span class="tag">Free · 15〜30秒</span></summary>
+            <div class="detail"><h3>第一候補：すでにある作品を、見つけやすく並べる</h3><p>作品棚から代表作をひとつ選び、公式の専用プロンプトで新しい棚の画像を作ります。動画では、棚を見せてから代表作を15〜30秒で紹介します。</p><p>まず課題ページの最新条件と専用プロンプトを確かめて、今の作品棚に合うか試します。</p></div>
+          </details>
+          <details class="plan-card" id="plan-cli">
+            <summary>Codex CLI Setup <span class="tag">Free · 15〜30秒</span></summary>
+            <div class="detail"><h3>使いどころが見つかったら、手順ごと映す</h3><p>設定を見せ、便利な機能やワークフローをひとつ実演します。操作と結果を15〜30秒で紹介します。</p></div>
+          </details>
+          <details class="plan-card" id="plan-profile">
+            <summary>Share your Profile <span class="tag">Free · 15〜30秒</span></summary>
+            <div class="detail"><h3>今の公式機能と、見せてよい情報を確かめてから</h3><p>ChatGPTの公式プロフィールやUsage Highlightsに意外な数字が出るかを見る候補です。現在使える機能か、画面に個人情報が出ないかを確認してから決めます。</p></div>
+          </details>
+          <details class="plan-card" id="plan-3d">
+            <summary>3D Models <span class="tag">Free · 15〜30秒</span></summary>
+            <div class="detail"><h3>おけ酒の3D制作を、別の課題として見せられるか</h3><p>今回のSites動画とは別に、制作過程・プロンプト・モデルの回転・結果を同じ15〜30秒の動画に収める案です。今回のBlender制作が公式課題の生成経路に合うか、対象機能を確認してから採用します。</p></div>
+          </details>
+        </div>
+        <p class="plan-footer">課題の条件に合うか分からない時は、先に公式の説明を読み、まだ不明ならその課題は保留にします。</p>
+      </section>
+
+      <section class="section share-section" id="share" aria-labelledby="share-title">
+        <div class="share-box">
+          <div>
+            <p class="kicker">READY TO SHARE</p>
+            <h2 id="share-title">チャットへ添える一言</h2>
+            <p class="share-intro">本文をコピーして、このページのURLと一緒にAI初心者サポートのチャットへ添えられます。リンクは作品・動画・公式ページに直接つないであります。</p>
+            <div class="share-links">
+              <a href="https://okemon-ai-box.okemon.chatgpt.site/kapipara/" target="_blank" rel="noopener noreferrer">作品 ↗</a>
+              <a href="https://youtu.be/6uaE7PWgVn0" target="_blank" rel="noopener noreferrer">25秒動画 ↗</a>
+              <a href="https://side-quests.openai.chatgpt.site/" target="_blank" rel="noopener noreferrer">公式クエスト ↗</a>
+              <a href="https://side-quests.openai.chatgpt.site/official-rules/" target="_blank" rel="noopener noreferrer">公式ルール ↗</a>
+            </div>
+          </div>
+          <div>
+            <label class="sr-only" for="share-message">チャットへ添える文章</label>
+            <textarea class="share-text" id="share-message" readonly>OpenAI DevDayのSide Questsに、おけ酒の作品で参加した流れをまとめました。
+案内ページ：https://okemonogatari-hash.github.io/html-share-box/friend-share-g-IwprmmrdBT6XZyAf/
+
+作品は架空のお酒の瓶と部屋を3Dで作り、AI生成の研究員を登場させています。25秒動画では、公開ページで実際に操作するところを見られます。
+
+作品：https://okemon-ai-box.okemon.chatgpt.site/kapipara/
+動画：https://youtu.be/6uaE7PWgVn0
+公式：https://side-quests.openai.chatgpt.site/
+ルール：https://side-quests.openai.chatgpt.site/official-rules/
+
+作品づくり、SNSでの公開、公式へのURL提出、抽選券の受け取りはそれぞれ別の段階です。初めて参加する人にも分かりやすいか、見てもらえたらうれしいです。</textarea>
+            <div class="share-controls">
+              <button class="button" type="button" id="copy-message">文章をコピーする</button>
+              <p class="share-status" id="copy-status" role="status" aria-live="polite">コピー前です。ボタンを押してから結果を確認できます。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <p>おけ森の、2026年10月1日のSide Quests案内。<br>状態欄は公式画面を確認した時点の記録です。</p>
+      <nav aria-label="公式ページ">
+        <a href="https://side-quests.openai.chatgpt.site/" target="_blank" rel="noopener noreferrer">公式クエスト一覧 ↗</a>
+        <a href="https://side-quests.openai.chatgpt.site/official-rules/" target="_blank" rel="noopener noreferrer">公式ルール ↗</a>
+        <a href="https://x.com/okemonogatari/status/2105532788435034528" target="_blank" rel="noopener noreferrer">Xの公開投稿 ↗</a>
+      </nav>
+    </div>
+  </footer>
+  <script>
+    (function () {
+      "use strict";
+      document.documentElement.classList.add("js-ready");
+      var stepButtons = Array.prototype.slice.call(document.querySelectorAll("[data-step]"));
+      var stepItems = Array.prototype.slice.call(document.querySelectorAll(".step-item"));
+      stepButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          var selected = button.getAttribute("data-step");
+          stepItems.forEach(function (item) { item.open = item.id === selected; });
+          stepButtons.forEach(function (other) { other.setAttribute("aria-pressed", String(other === button)); });
+        });
+      });
+      var planButtons = Array.prototype.slice.call(document.querySelectorAll("[data-plan]"));
+      var planItems = Array.prototype.slice.call(document.querySelectorAll(".plan-card"));
+      planButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          var selected = button.getAttribute("data-plan");
+          planItems.forEach(function (item) { item.open = item.id === selected; });
+          planButtons.forEach(function (other) { other.setAttribute("aria-pressed", String(other === button)); });
+        });
+      });
+      var copyButton = document.getElementById("copy-message");
+      var textArea = document.getElementById("share-message");
+      var status = document.getElementById("copy-status");
+      copyButton.addEventListener("click", function () {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(textArea.value).then(function () {
+            status.textContent = "コピーしました。チャットへ貼り付けられます。";
+          }).catch(function () {
+            textArea.focus();
+            textArea.select();
+            status.textContent = "自動コピーできませんでした。文章を選択しました。⌘C または Ctrl+C でコピーしてください。";
+          });
+          return;
+        }
+        textArea.focus();
+        textArea.select();
+        status.textContent = "自動コピーを利用できません。文章を選択しました。⌘C または Ctrl+C でコピーしてください。";
+      });
+    }());
+  </script>
+</body>
+</html>
