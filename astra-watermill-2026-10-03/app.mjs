@@ -1,4 +1,5 @@
 import * as THREE from './vendor/three.module.js';
+import {frameDeltaSeconds, unitPhase} from './timing.mjs';
 THREE.ColorManagement.legacyMode=false;
 
 // All forms and textures below are made for this miniature. Metres are illustrative.
@@ -152,7 +153,7 @@ const canvas=renderer.domElement;
 canvas.addEventListener('pointerdown',e=>{pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});canvas.setPointerCapture(e.pointerId);drag=true;mouse={x:e.clientX,y:e.clientY};if(pointers.size===2){const p=[...pointers.values()];pinch=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);}});
 canvas.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===2){const p=[...pointers.values()],d=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);desired.distance=clamp(desired.distance*pinch/Math.max(10,d),5,31);pinch=d;}else if(drag){desired.theta-=(e.clientX-mouse.x)*.008;desired.phi=clamp(desired.phi-(e.clientY-mouse.y)*.006,.3,1.48);}mouse={x:e.clientX,y:e.clientY};});
 function release(e){pointers.delete(e.pointerId);drag=pointers.size>0;if(pointers.size===1)mouse={...pointers.values().next().value};}canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);canvas.addEventListener('wheel',e=>{e.preventDefault();desired.distance=clamp(desired.distance*Math.exp(e.deltaY*.001),5,31);},{passive:false});
-let flow=.65,speed=.65,paused=matchMedia('(prefers-reduced-motion: reduce)').matches,elapsed=0,angle=0,last=performance.now(),frames=0;
+let flow=.65,speed=.65,paused=matchMedia('(prefers-reduced-motion: reduce)').matches,elapsed=0,angle=0,last=null,frames=0;
 function pauseUI(){$('pause').setAttribute('aria-pressed',String(paused));$('pause-label').textContent=paused?'時をうごかす':'時をとめる';$('pause-icon').textContent=paused?'▷':'Ⅱ';$('state').textContent=paused?'ひとやすみ':flow===0?(speed>.02?'ゆっくり停止中':'水門を閉じました'):'流れています';}
 $('pause').onclick=()=>{paused=!paused;pauseUI();};$('flow').oninput=e=>{flow=Number(e.target.value)/100;$('flow-value').innerHTML=`${e.target.value}<span>%</span>`;pauseUI();};$('roof').onchange=e=>{roofFront.visible=!e.target.checked;};
 let savedImageURL=null;
@@ -160,11 +161,11 @@ $('save-image').onclick=()=>{$('save-status').textContent='画像を用意して
 $('reset').onclick=()=>{flow=.65;speed=.65;paused=false;elapsed=0;angle=0;$('flow').value=65;$('flow-value').innerHTML='65<span>%</span>';$('roof').checked=true;roofFront.visible=false;selectView('whole');pauseUI();};pauseUI();
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();}new ResizeObserver(resize).observe(stage);resize();
 let accumulator=0;
-function animate(now){requestAnimationFrame(animate);const dt=Math.min((now-last)/1000,.05);last=now;const follow=1-Math.exp(-dt*5);orbit.theta+=(desired.theta-orbit.theta)*follow;orbit.phi+=(desired.phi-orbit.phi)*follow;orbit.distance+=(desired.distance-orbit.distance)*follow;orbit.target.lerp(desired.target,follow);let distance=orbit.distance*Math.max(1,(view==='whole'?1.1:.78)/camera.aspect);camera.position.set(orbit.target.x+Math.sin(orbit.theta)*Math.sin(orbit.phi)*distance,orbit.target.y+Math.cos(orbit.phi)*distance,orbit.target.z+Math.cos(orbit.theta)*Math.sin(orbit.phi)*distance);camera.lookAt(orbit.target);
+function animate(now){requestAnimationFrame(animate);const dt=frameDeltaSeconds(now,last);last=now;const follow=1-Math.exp(-dt*5);orbit.theta+=(desired.theta-orbit.theta)*follow;orbit.phi+=(desired.phi-orbit.phi)*follow;orbit.distance+=(desired.distance-orbit.distance)*follow;orbit.target.lerp(desired.target,follow);let distance=orbit.distance*Math.max(1,(view==='whole'?1.1:.78)/camera.aspect);camera.position.set(orbit.target.x+Math.sin(orbit.theta)*Math.sin(orbit.phi)*distance,orbit.target.y+Math.cos(orbit.phi)*distance,orbit.target.z+Math.cos(orbit.theta)*Math.sin(orbit.phi)*distance);camera.lookAt(orbit.target);
  if(!paused||frames===0){elapsed+=paused?0:dt;speed+=(flow-speed)*(1-Math.exp(-dt*1.18));if(flow===0&&speed<.0008)speed=0;angle+=speed*dt*.95;wheel.rotation.x=angle;mainGear.rotation.x=angle;pinion.rotation.y=-angle*4;grind.rotation.y=-angle*4;gate.position.y=3.98+flow*.38;falling.visible=flow>.012;channelWater.scale.x=.28+flow*.72;channelWater.material.opacity=.48+flow*.3;
   const pos=river.geometry.attributes.position;for(let i=0;i<pos.count;i++){pos.setY(i,waterBase[i*3+1]+Math.sin(waterBase[i*3]*4+elapsed*(.35+flow*2.7))*Math.cos(waterBase[i*3+2]*2.4-elapsed*1.7)*(.009+flow*.019));}pos.needsUpdate=true;
-  droplets.forEach(({o,phase,x,speed:rate},i)=>{const t=(elapsed*(.35+flow*.55)*rate+phase)%1;o.visible=i<flow*90;o.position.set(x+Math.sin(t*8+i)*.055,3.81-t*t*3.64,-.03+t*2.38);o.scale.set(.55,.6+t*2.9,.5);});
-  foam.forEach(({o,t,lane,speed:rate},i)=>{const s=(t+elapsed*(.006+flow*.035)*rate)%1,p=streamCurve.getPoint(s),tangent=streamCurve.getTangent(s);o.position.set(p.x-tangent.z*lane,p.y+.058+Math.sin(elapsed*2+i)*.008,p.z+tangent.x*lane);o.rotation.z=Math.atan2(tangent.x,tangent.z);o.visible=flow>.01;});
+  droplets.forEach(({o,phase,x,speed:rate},i)=>{const t=unitPhase(elapsed*(.35+flow*.55)*rate+phase);o.visible=i<flow*90;o.position.set(x+Math.sin(t*8+i)*.055,3.81-t*t*3.64,-.03+t*2.38);o.scale.set(.55,.6+t*2.9,.5);});
+  foam.forEach(({o,t,lane,speed:rate},i)=>{const s=unitPhase(t+elapsed*(.006+flow*.035)*rate),p=streamCurve.getPoint(s),tangent=streamCurve.getTangent(s);o.position.set(p.x-tangent.z*lane,p.y+.058+Math.sin(elapsed*2+i)*.008,p.z+tangent.x*lane);o.rotation.z=Math.atan2(tangent.x,tangent.z);o.visible=flow>.01;});
   motes.forEach(({o,x,y,z,phase})=>o.position.set(x+Math.sin(elapsed*.13+phase)*.2,y+Math.sin(elapsed*.2+phase)*.13,z+Math.cos(elapsed*.16+phase)*.16));
  }
  accumulator+=dt;if(accumulator>.2){accumulator=0;$('rpm').textContent=paused?'0.0':(speed*.95*60/(pi*2)).toFixed(1);pauseUI();}renderer.render(scene,camera);frames++;

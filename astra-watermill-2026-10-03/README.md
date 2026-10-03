@@ -35,6 +35,7 @@ OSの「視差効果を減らす」に相当する `prefers-reduced-motion: redu
 ```sh
 node --check app.mjs
 node qa/check-static.mjs
+node --test qa/timing.test.mjs
 ```
 
 静的検査は、参照先の存在、同梱依存、DOMと操作コードの対応、ローカルファイルで完結していることを確認します。画面の見やすさや操作結果の確認は、親担当のブラウザQAとスクリーンショットを参照してください。
@@ -45,6 +46,7 @@ node qa/check-static.mjs
 
 - `index.html` / `style.css`：日本語の操作とレスポンシブUI
 - `app.mjs`：独自造形・テクスチャ・アニメーション・操作
+- `timing.mjs`：フレーム時刻差と水の循環位置の境界処理
 - `vendor/`：Three.js r147とライセンス
 - `making.html`：公開用の短い制作解説
 - `PROCESS.md` / `prompts/`：依頼・委任・素材・再制作手順
