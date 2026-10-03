@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#efede6">
+  <meta name="description" content="あなたの言葉を、紙の浮彫りと箔押しに。光を動かして仕上げる、小さなデジタル工房。">
+  <title>ひかりのエンボス工房 | おけもん実験室</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-link" href="https://okemonogatari-hash.github.io/html-share-box/lab-works.html">← <span>実験室の棚へ</span></a>
+    <span class="edition">OKEMON LAB · NO. 02</span>
+    <a class="making-link" href="making.html">作り方</a>
+  </header>
+  <main>
+    <div class="intro">
+      <div><p class="eyebrow"><span></span> A LITTLE EXPERIMENT WITH LIGHT</p><h1>ひかりのエンボス工房<span class="title-dot">。</span></h1></div>
+      <p class="intro-copy">言葉をひと押し。<br>光をなぞって、あなただけの一枚に。</p>
+    </div>
+    <div class="workbench">
+      <section class="preview-section" aria-label="作品のプレビュー">
+        <div class="paper-stage" id="paperStage">
+          <div class="stage-label"><span class="live-dot"></span> YOUR IMPRESSION</div>
+          <div class="paper-wrap">
+            <canvas id="artwork" width="1280" height="1024" tabindex="0" role="img" aria-label="箔押しの作品。ドラッグか矢印キーで光を動かせます。" aria-describedby="lightHelp">作品の表示にはCanvasが使えるブラウザが必要です。</canvas>
+          </div>
+          <span class="light-point" id="lightPoint" aria-hidden="true"><i></i></span>
+          <div class="stage-footer"><span id="materialCaption">01 / シャンパン箔</span><span>1280 × 1024</span></div>
+        </div>
+        <p class="gesture-hint" id="lightHelp"><span aria-hidden="true">✧</span> 紙の上をなぞると、光が動きます。<span class="desktop-hint">矢印キーでも操作できます。</span></p>
+        <p id="errorMessage" class="error-message" role="alert" hidden></p>
+      </section>
+      <aside class="controls" aria-label="作品を仕上げる">
+        <div class="control-heading"><span class="section-no">01</span><h2>言葉を選ぶ</h2><span id="charCount">9 / 42</span></div>
+        <label class="sr-only" for="message">紙に押す言葉。42文字まで、3行まで。</label>
+        <textarea id="message" rows="2" maxlength="2048" spellcheck="false">光を、
+ひと押し。</textarea>
+        <div class="text-options"><span>改行できます · 42文字まで</span><button id="sampleButton" type="button">「おけもん」で試す</button></div>
+        <fieldset class="material-field"><legend><span class="section-no">02</span> 素材の手ざわり</legend>
+          <div class="materials">
+            <button class="material" data-material="cotton" type="button" aria-pressed="false"><span class="swatch cotton" aria-hidden="true">あ</span><span>コットン紙</span></button>
+            <button class="material selected" data-material="gold" type="button" aria-pressed="true"><span class="swatch gold" aria-hidden="true">あ</span><span>シャンパン箔</span></button>
+            <button class="material" data-material="black" type="button" aria-pressed="false"><span class="swatch black" aria-hidden="true">あ</span><span>宵の黒箔</span></button>
+          </div>
+        </fieldset>
+        <div class="press-row"><span class="small-label">押し方</span><div class="segmented" role="group" aria-label="押し方"><button data-relief="raised" class="active" aria-pressed="true" type="button">浮き出す</button><button data-relief="pressed" aria-pressed="false" type="button">くぼませる</button></div></div>
+        <label class="range-label" for="depth"><span>押しの深さ</span><output id="depthValue" for="depth">65%</output></label>
+        <input id="depth" type="range" min="10" max="100" value="65" step="1">
+        <div class="light-heading"><span class="section-no">03</span><h2>光をあてる</h2><button id="resetLight" type="button" title="光だけを最初の位置へ">光を戻す ↖</button></div>
+        <div class="light-sliders">
+          <label for="lightX"><span>左</span><span class="sr-only">光の左右位置</span><input id="lightX" type="range" min="-100" max="100" value="-55" step="1"><span>右</span></label>
+          <label for="lightY"><span>上</span><span class="sr-only">光の上下位置</span><input id="lightY" type="range" min="-100" max="100" value="-65" step="1"><span>下</span></label>
+        </div>
+        <button class="save-button" id="saveButton" type="button"><span>この光で、PNGを保存</span><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 15v5h16v-5"/></svg></button>
+        <div class="bottom-actions"><button id="resetButton" type="button">はじめの一枚に戻す</button><span>画像はこの端末で作ります</span></div>
+        <div id="saveResult" class="save-result" role="status" aria-live="polite" hidden><span id="saveStatus"></span> <a id="downloadLink" download="hikari-emboss.png">画像を開く・保存する ↗</a></div>
+        <p id="inputStatus" class="sr-only" aria-live="polite"></p>
+      </aside>
+    </div>
+    <footer class="page-footer"><p>同じ言葉も、光ひとつで表情が変わる。</p><span>HIKARI NO EMBOSS · デジタルの紙と光の小実験</span></footer>
+  </main>
+  <script type="module" src="app.mjs"></script>
+</body>
+</html>
