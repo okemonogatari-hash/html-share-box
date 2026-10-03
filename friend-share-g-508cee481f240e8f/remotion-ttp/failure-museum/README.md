@@ -1,6 +1,6 @@
 # 失敗博物館：カピバラがプロになるまで
 
-**状態：ローカル準備版。未デプロイです。** 公開予定URLは <https://okemonogatari-hash.github.io/html-share-box/friend-share-g-508cee481f240e8f/remotion-ttp/failure-museum/>。GitHub Pagesへの保存と公開後の読戻しは親担当が行います。
+**共有保存済み。** [失敗博物館を開く](https://okemonogatari-hash.github.io/html-share-box/friend-share-g-508cee481f240e8f/remotion-ttp/failure-museum/)。GitHub PagesでHTMLの公開を読み戻しました。動画・原文の公開後照合も親が記録します。
 
 動画展示6本（Flow試作5本と、15秒編集版1本）、出力に至らなかった編集3回、AIへ渡した実プロンプトを、失敗の種類ごとにまとめた携帯向けHTMLです。生成試作のうち1本は全編不採用でも前半の一部を別編集へ使いました。15秒編集版は失敗動画ではなく、後の滑らかさ/TTP検証へ進む転換点として別区分にしました。出力のない3回は実動画が存在しないので、動画本数には加えていません。表示している9.083秒の動作参照は「Flowへアップロードした入力」で、生成出力ではありません。
 
