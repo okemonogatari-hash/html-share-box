@@ -24,4 +24,4 @@ python3 -m http.server 8000
 
 ブラウザで `http://localhost:8000/` を開きます。HTML、CSS、JavaScriptは単一の `index.html` に含み、外部フォントや外部ライブラリを読み込みません。
 
-現在のRemotion比較ページへのリンクは `../index.html` です。リンク先・公開URLとも予定表記で、親が公開構成を確定してから読戻し確認します。
+現在のRemotion比較ページへのリンクは `../index.html` です。15秒ハイブリッド版は `../flow-hybrid/` にあります。共有URLはGitHub Pagesの既存共有箱配下です。

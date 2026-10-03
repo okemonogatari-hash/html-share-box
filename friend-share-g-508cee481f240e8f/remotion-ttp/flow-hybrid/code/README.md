@@ -1,6 +1,6 @@
 # Code package
 
-`hybrid.tsx` is the Remotion entry. `physics/` contains the Blender Python scene, simulation, camera, and geometry-check scripts. Run commands from each directory shown in `share/flow-hybrid/README.md`.
+`hybrid.tsx` is the Remotion entry. `physics/` contains the Blender Python scene, simulation, camera, and geometry-check scripts. Run commands from each directory shown in `../README.md`.
 
 Remotion reads assets from `code/public/`:
 
@@ -9,4 +9,4 @@ Remotion reads assets from `code/public/`:
 - `flow-hybrid/reaction.mp4`
 - optional `reference.mp4` for `ContactAudit` only
 
-These media files are not included in this code snapshot. The parent will add approved public copies after the final camera and video review. Do not put the original source video or private account material here.
+The three Flow/Blender input media are included. The compositor uses only the ranges documented in ../README.md. The optional original reference video is excluded.
