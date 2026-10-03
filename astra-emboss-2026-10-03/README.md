@@ -4,7 +4,7 @@
 
 短文を浮彫り・箔押しのような表現にし、光を動かして仕上げるCanvas 2D作品です。外部パッケージ・画像素材・外部フォント・AI APIは使いません。
 
-公開予定: https://okemonogatari-hash.github.io/html-share-box/astra-emboss-2026-10-03/
+公開先: https://okemonogatari-hash.github.io/html-share-box/astra-emboss-2026-10-03/
 
 ## ローカルで開く
 
