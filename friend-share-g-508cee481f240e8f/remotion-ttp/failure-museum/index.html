@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4ecdc">
+  <meta name="description" content="カピバラとインコのボウリング制作で起きた、AI動画の失敗とやり直しの記録。動画・元プロンプト・学びを分けて保存。">
+  <title>失敗博物館｜カピバラがプロになるまで</title>
+  <style>
+    :root{--paper:#f5eddf;--paper2:#fffaf1;--ink:#213b37;--muted:#566c66;--teal:#1f6458;--teal-dark:#164b43;--amber:#d79243;--rust:#ac5c3d;--line:#d9cbb2;--shadow:0 18px 48px rgba(47,54,42,.10)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--paper)}
+    body{margin:0;color:var(--ink);font-family:ui-rounded,"Hiragino Maru Gothic ProN","Hiragino Sans",Meiryo,system-ui,sans-serif;background:radial-gradient(circle at 10% 0%,rgba(255,255,255,.8),transparent 32rem),linear-gradient(155deg,#f7f0e4 0%,#f2e8d6 60%,#e8eee5 100%);line-height:1.72}
+    a{color:var(--teal-dark);text-underline-offset:.2em}
+    .wrap{width:min(1100px,calc(100% - 32px));margin-inline:auto}
+    header{padding:clamp(34px,8vw,88px) 0 30px;position:relative}
+    .eyebrow{display:inline-flex;align-items:center;gap:.55rem;color:var(--teal);font-size:.82rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .eyebrow:before{content:"";width:1.25rem;height:2px;background:var(--amber)}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:clamp(2.5rem,8.6vw,5.9rem);line-height:1.04;letter-spacing:-.055em;max-width:900px;margin:.5rem 0 1.15rem}
+    h1 span{display:block;color:var(--teal);font-size:.55em;letter-spacing:-.035em;margin-top:.2em}
+    .lede{font-size:clamp(1.05rem,2.3vw,1.32rem);max-width:720px;color:#425b54;margin-bottom:1.5rem}
+    .scribble{display:inline-block;transform:rotate(-2deg);background:#f3cf8c;color:#4b422d;padding:.2rem .8rem;border-radius:3px 15px 4px 13px;font-size:.92rem;font-weight:750;box-shadow:2px 3px 0 rgba(99,74,34,.1)}
+    .hero-note{max-width:800px;padding:1rem 1.2rem;border-left:4px solid var(--amber);background:rgba(255,250,241,.76);border-radius:0 14px 14px 0;color:#435a53}
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 20px}
+    .metric{padding:17px 18px;background:rgba(255,250,241,.9);border:1px solid var(--line);border-radius:18px;box-shadow:0 7px 22px rgba(57,49,32,.05)}
+    .metric b{display:block;font-size:clamp(1.7rem,4vw,2.5rem);color:var(--teal);line-height:1.1;letter-spacing:-.04em}
+    .metric span{display:block;color:var(--muted);font-size:.89rem;margin-top:.45rem}
+    .navline{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 4px}
+    .pill-link{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;padding:.65rem .9rem;border:1px solid var(--line);border-radius:999px;background:rgba(255,250,241,.7);font-weight:700;font-size:.92rem}
+    main{padding:22px 0 70px}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin:26px 0 18px}
+    .section-head h2{font-size:clamp(1.7rem,4vw,2.6rem);letter-spacing:-.04em;margin:0}
+    .section-head p{margin:0;color:var(--muted);max-width:540px}
+    .case-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+    .case-card{background:var(--paper2);border:1px solid var(--line);border-radius:22px;padding:clamp(16px,2.6vw,24px);box-shadow:var(--shadow);overflow:hidden}
+    .case-card:first-child[data-kind="generated-output"]{grid-column:span 2;display:grid;grid-template-columns:minmax(240px,.82fr) minmax(300px,1.18fr);column-gap:24px;align-items:start}
+    .case-card:first-child[data-kind="generated-output"] .case-topline,.case-card:first-child[data-kind="generated-output"] h3,.case-card:first-child[data-kind="generated-output"] .wish{grid-column:1}
+    .case-card:first-child[data-kind="generated-output"] .video-shell{grid-column:2;grid-row:1 / span 5}
+    .case-card:first-child[data-kind="generated-output"] .story-grid,.case-card:first-child[data-kind="generated-output"] .disposition,.case-card:first-child[data-kind="generated-output"] .prompt-list{grid-column:1}
+    .case-topline{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:.65rem;color:var(--muted);font-size:.79rem;font-weight:800;letter-spacing:.04em}
+    .case-type{color:var(--teal)}
+    .case-duration{white-space:nowrap;border-radius:99px;background:#f4e2c1;padding:.12rem .55rem;color:#624a2d}
+    .case-card h3{font-size:clamp(1.3rem,2.4vw,1.75rem);line-height:1.3;letter-spacing:-.025em;margin-bottom:.55rem}
+    .wish{color:#435a53;margin-bottom:1rem}
+    .video-shell{border-radius:17px;overflow:hidden;background:#18231f;border:1px solid rgba(31,57,50,.2)}
+    .video-shell video{display:block;width:100%;height:auto;max-height:620px;object-fit:contain;background:#18231f;aspect-ratio:9/16}
+    .video-label{padding:.48rem .8rem;font-size:.78rem;font-weight:800;letter-spacing:.015em}
+    .output-label{background:#e7eee3;color:#285d4d}
+    .input-label{background:#f6e2bb;color:#694a1e}
+    .video-tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:10px;background:#f4efe4}
+    button{font:inherit;cursor:pointer}
+    .video-tools button{border:1px solid #cbbd9f;background:#fffaf1;color:var(--ink);border-radius:999px;padding:.42rem .68rem;font-size:.79rem;font-weight:750;min-height:38px}
+    .video-tools button:hover,.video-tools button:focus-visible{border-color:var(--teal);outline:2px solid rgba(31,100,88,.18)}
+    .chapters{display:flex;gap:6px;overflow-x:auto;max-width:100%;padding:1px 2px 4px;scrollbar-width:thin}
+    .chapters .jump{white-space:nowrap}
+    .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 8px}
+    .story-grid section{padding:13px 14px;border-radius:14px;background:#f6f2e8}
+    .story-grid h4,.attempts h4,.prompt-list>h4{font-size:.86rem;color:var(--teal);margin:0 0 .35rem}
+    .story-grid p{font-size:.91rem;margin:0;color:#43534c}
+    .disposition{font-size:.9rem;font-weight:800;color:var(--rust);margin:.8rem 0}
+    .prompt-list{border-top:1px dashed var(--line);padding-top:.75rem}
+    details.prompt{margin:.4rem 0;border-radius:12px;background:#f4efe5;border:1px solid #e2d7c5}
+    details.prompt summary{cursor:pointer;padding:.7rem .85rem;font-weight:750;color:#32584f;list-style-position:inside}
+    details.prompt summary span{font-weight:500;color:var(--muted);font-size:.8rem}
+    .prompt-inner{padding:0 .8rem .8rem}
+    .prompt-file{font-size:.77rem;color:var(--muted);margin:0 0 .45rem}
+    pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;background:#fffdf7;border:1px solid #e2d7c5;border-radius:10px;padding:12px;font: .86rem/1.62 ui-monospace,SFMono-Regular,Menlo,monospace;color:#263a34}
+    .edit-recipe{border-top:1px dashed var(--line);padding-top:.7rem;margin-top:.6rem}
+    .edit-recipe h4{font-size:.86rem;color:var(--teal);margin:0 0 .35rem}
+    .edit-recipe p{font-size:.9rem;color:#43534c;margin:0 0 .55rem}
+    .attempts{background:#f8f2e7;border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin:12px 0}
+    .attempts ol{padding-left:1.3rem;margin:.3rem 0 0;color:#43534c;font-size:.9rem}
+    .attempts li+li{margin-top:.45rem}
+    .no-output{border-style:dashed}
+    .interlude{margin:30px 0;background:#244f47;color:#f8f1e5;border-radius:22px;padding:clamp(20px,4vw,32px);position:relative;overflow:hidden}
+    .interlude:after{content:"!";position:absolute;right:18px;top:-45px;font-size:11rem;line-height:1;font-family:Georgia,serif;color:rgba(255,255,255,.08);transform:rotate(12deg)}
+    .interlude h2{font-size:clamp(1.5rem,3.5vw,2.2rem);margin-bottom:.55rem;letter-spacing:-.03em;position:relative;z-index:1}
+    .interlude p{max-width:780px;color:#e3eade;position:relative;z-index:1}
+    .interlude b{color:#ffd38f}
+    .next-route{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;border:1px solid var(--line);background:rgba(255,250,241,.84);padding:20px;border-radius:18px;margin-top:28px}
+    .next-route h2{margin:0 0 .25rem;font-size:1.2rem}
+    .next-route p{margin:0;color:var(--muted);font-size:.92rem}
+    .next-route a{display:inline-block;padding:.67rem .9rem;border-radius:999px;background:var(--teal);color:white;text-decoration:none;font-weight:800;white-space:nowrap}
+    footer{padding:0 0 50px;color:var(--muted);font-size:.84rem}
+    footer .credit{color:#46564e;margin-top:1rem}
+    .tiny{font-size:.78rem;color:var(--muted)}
+    @media(max-width:760px){.wrap{width:min(100% - 22px,610px)}header{padding-top:34px}.metrics{gap:7px}.metric{padding:13px 11px;border-radius:14px}.metric span{font-size:.78rem}.case-list{grid-template-columns:1fr}.case-card:first-child[data-kind="generated-output"]{grid-column:auto;display:block}.case-card:first-child[data-kind="generated-output"] .video-shell{grid-column:auto;grid-row:auto}.case-card{border-radius:18px;padding:15px}.case-card:first-child .video-shell{margin:12px 0}.video-shell video{max-height:72vh}.story-grid{grid-template-columns:1fr}.section-head{display:block}.section-head p{margin-top:.45rem}.next-route{grid-template-columns:1fr}.next-route a{justify-self:start}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="eyebrow">制作プロセスの収蔵庫 · 2026.10</div>
+    <h1>失敗博物館<span>カピバラがプロになるまで</span></h1>
+    <p class="lede">球が分身し、ピンが先に跳ね、審判AIまで一度ホイッスルを吹き間違えた。そんな試行錯誤を、プロンプトごと棚に残しました。</p>
+        <div class="metrics" aria-label="収蔵数">
+      <div class="metric"><b>6本</b><span>動画展示<br>生成試作5本＋15秒編集版1本</span></div>
+      <div class="metric"><b>3回</b><span>Flow編集を試すも出力なし</span></div>
+      <div class="metric"><b>1回</b><span>審判AIの誤判定<br>接触を見直して判定撤回</span></div>
+    </div>
+    <p class="hero-note">失敗は「お願いの仕方が悪かった」で片づけず、どの指示で何を狙い、どこで因果が切れたかを見ます。動画の試作と、出力のない試行は別の棚です。</p>
+    <nav class="navline" aria-label="ページ内の移動">
+      <a class="pill-link" href="#cases">🎞 試作動画を見に行く</a>
+      <a class="pill-link" href="#no-output">🧺 出力なしの記録</a>
+      <a class="pill-link" href="#referee">📣 審判AIの見落とし</a>
+    </nav>
+  </header>
+  <main class="wrap">
+    <section id="cases" aria-labelledby="cases-title">
+      <div class="section-head"><h2 id="cases-title">ボールとピンのすれ違い</h2><p>動画を再生すると、別のカードは自動で一時停止します。見どころボタンで問題の時刻へ移動できます。</p></div>
+      <div class="case-list"><article class="case-card " id="one-shot-v1" data-kind="generated-output"><div class="case-topline"><span class="case-type">生成動画 · 不採用/区間選別</span><span class="case-duration">10.005秒</span></div><h3>全部入り10秒、ボールがふわっとする</h3><p class="wish"><b>ねらい：</b>カピバラの助走からピン接触、ふたりの喜びまでを一続きで見せたい。</p><div class="video-shell"><div class="video-label output-label">生成された試作 · 10.005秒</div><video controls playsinline preload="metadata" data-local-video aria-label="全部入り10秒、ボールがふわっとする"><source src="media/flow-one-shot-v1.mp4" type="video/mp4">動画を再生できない環境です。</video><div class="video-tools"><button type="button" class="play-toggle">この動画を再生</button><button type="button" class="speed-toggle">0.5倍速</button><div class="chapters" aria-label="見どころへ移動"><button class="jump" type="button" data-seek="3.5">0:03.5 助走</button><button class="jump" type="button" data-seek="5.0">0:05.0 離球の指定付近</button><button class="jump" type="button" data-seek="8.0">0:08.0 接触の指定付近</button></div></div></div><div class="story-grid"><section><h4>起きたこと</h4><p>第一試作。記録上、離球が浮いて見えてフォームも弱く、球とピンのタイミングにも手直しが必要だった。10秒で助走・投球・接触・祝福までを一つの連続ショットに背負わせた。</p></section><section><h4>持ち帰ったこと</h4><p>フォーム、球の移動、接触、リアクションの全部を一回の生成に詰めず、失敗した場所を切り分けて指示する。</p></section></div><p class="disposition">▰ 全編不採用。次の版では画面とカットを整理し、生成クリップから使う区間も選び直した。</p><div class="prompt-list"><h4>プロンプト原文</h4><details class="prompt"><summary>渡した原文を開く <span>（全文・原文のまま）</span></summary><div class="prompt-inner"><p class="prompt-file">prompts/flow-one-shot-v1.txt · <a href="prompts/flow-one-shot-v1.txt" download>原文ファイルを保存</a></p><pre><code>Create a 10-second vertical 9:16 animated sports short. Start exactly from the uploaded frame: the same golden-tan capybara in teal bowling jersey and cream trousers, the same yellow-headed lime-green budgerigar, the same glossy blue bowling ball and warm bowling alley. Keep the charming tactile 3D animation look and both characters recognizable.
+
+ACTION TIMING
+0–1s: The capybara focuses down the lane and shifts its weight. The little budgerigar does one eager hop on the ball return, cheering its friend.
+1–5s: In a readable full-body shot the capybara makes a smooth controlled four-step professional bowling approach. The blue ball drops into a pendulum swing in the right paw, travels into a high backswing, then forward. Finish with a bent left knee and sliding left foot; the right leg crosses behind for balance and the free left arm opens sideways. Release the ball close to the wooden floor, smoothly rolling forward, with the right arm following through upward.
+5–8s: Stay on the same axis facing the pins. The released blue ball rolls away along the lane with subtle spin and a gentle hook toward the headpin pocket. The distant white pins scatter naturally when the ball hits them. The bird follows the rolling ball with its gaze and excited wing flutters.
+8–10s: The capybara rises from the finishing pose, turns partly back toward its little friend with a proud joyful smile and raises one paw. The bird remains near the ball return, hopping and chirping happily. End while the friends are beginning to celebrate, leaving their bodies visible for a continuation.
+
+CAMERA
+One continuous sports-film shot, no cuts. Begin at the rear three-quarter angle of the frame. Gently track forward with the approach while keeping the capybara&#x27;s entire body and bowling arm visible, then ease back just enough for the bird and capybara to share the ending frame. Preserve lane direction and physical contact with the floor.
+
+AUDIO
+Bowling alley room tone, soft shoe slide, rolling ball, a crisp satisfying pin crash at impact, cheerful natural budgie chirps. Light playful rhythmic instrumental under the action, quieter than the pin crash. No speech.
+Keep bowling believable, body motion fluid and weighted. One ball is released once; it rolls rather than flying. Keep characters, outfits and props consistent. No text, no title, no logos.
+</code></pre></div></details></div></article><article class="case-card " id="cinematic-v2" data-kind="generated-output"><div class="case-topline"><span class="case-type">生成動画 · 不採用/区間選別</span><span class="case-duration">10.005秒</span></div><h3>映画っぽくしたら、球が分身の術</h3><p class="wish"><b>ねらい：</b>離球から約2.8秒で球がピンへ届く、読みやすいカット割りにしたい。</p><div class="video-shell"><div class="video-label output-label">生成された試作 · 10.005秒</div><video controls playsinline preload="metadata" data-local-video aria-label="映画っぽくしたら、球が分身の術"><source src="media/flow-cinematic-v2.mp4" type="video/mp4">動画を再生できない環境です。</video><div class="video-tools"><button type="button" class="play-toggle">この動画を再生</button><button type="button" class="speed-toggle">0.5倍速</button><div class="chapters" aria-label="見どころへ移動"><button class="jump" type="button" data-seek="3.5">0:03.5 離球前</button><button class="jump" type="button" data-seek="4.0">0:04.0 二球化を確認</button><button class="jump" type="button" data-seek="5.2">0:05.2 接触前後の設計点</button><button class="jump" type="button" data-seek="8.0">0:08.0 接触の設計点</button></div></div></div><div class="story-grid"><section><h4>起きたこと</h4><p>第二試作。カットを分けて改善したが、4秒以降に球が二重に見える箇所があり、全編そのままでは使えなかった。前半の見える区間は後の15秒編集へ一部救済。</p></section><section><h4>持ち帰ったこと</h4><p>動画全体の採否と、切り出せるショットの採否は別。良い区間だけ拾うなら、元動画まるごと合格とは言わない。</p></section></div><p class="disposition">▰ 全編のままは不採用。一部を短く切って前作15秒編集へ再利用。</p><div class="prompt-list"><h4>プロンプト原文</h4><details class="prompt"><summary>渡した原文を開く <span>（全文・原文のまま）</span></summary><div class="prompt-inner"><p class="prompt-file">prompts/flow-cinematic-v2.txt · <a href="prompts/flow-cinematic-v2.txt" download>原文ファイルを保存</a></p><pre><code>A delightful 10-second cinematic bowling short starring this capybara and its yellow-green budgie friend. Warm polished 3D animation, professional sports camera work. The capybara settles into a focused stance, then performs a brisk, fluent four-step approach with a high pendulum backswing. At about 5.2 seconds the final slide and forward swing meet: the blue ball leaves the right paw just above the lane and rolls smoothly along the wood. Cut to a low tracking view following the spinning blue ball for about 2.8 seconds. It reaches the front pin at about 8 seconds; that contact starts an energetic, believable chain reaction through the rack. Cut back to the capybara smiling as the little budgie flutters happily beside it. Make the throw athletic and the friendship playful. Sound: shoes on the approach, a rolling rumble, then the sharp pin crash at contact, happy bird chirps.
+</code></pre></div></details></div></article><article class="case-card milestone" id="edited-15s-v1" data-kind="edited-milestone"><div class="case-topline"><span class="case-type">前段の編集版 · TTPへ進む転換点</span><span class="case-duration">15.000秒</span></div><h3>15秒に編集できた。でも、次の目標が見えた</h3><p class="wish"><b>ねらい：</b>助走、離球、接触、喜びをつないで、15秒のショートとして気持ちよく見せたい。</p><div class="video-shell"><div class="video-label output-label">Flow生成クリップを編集した前段作品 · 720×1280 / 24fps</div><video controls playsinline preload="metadata" data-local-video aria-label="前段の15秒編集版、TTPへ進む転換点"><source src="media/edited-15s-version-v1.mp4" type="video/mp4">動画を再生できない環境です。</video><div class="video-tools"><button type="button" class="play-toggle">この動画を再生</button><button type="button" class="speed-toggle">0.5倍速</button><div class="chapters" aria-label="見どころへ移動"><button class="jump" type="button" data-seek="0">0:00 冒頭の構え</button><button class="jump" type="button" data-seek="5.2">0:05.20 離球付近</button><button class="jump" type="button" data-seek="8.1">0:08.10 接触付近</button><button class="jump" type="button" data-seek="9.5">0:09.50 喜びへ</button></div></div></div><div class="story-grid"><section><h4>起きたこと</h4><p>Flowの複数クリップを切り、冒頭の構えを2倍に保持して計360フレーム＝15.000秒へ編集。離球前後とピン接触のタイミングを整え、前段の作品として一度まとまりました。その後、投球の滑らかさや参考動作への近さをさらに求めてTTP検証へ。</p></section><section><h4>持ち帰ったこと</h4><p>一度まとまった作品も、次に目指す基準が上がれば次の出発点。編集で時間は揃えられるけれど、生成ショットの動きそのものを連続化したことにはなりません。</p></section></div><p class="disposition">▰ 前段の編集版として保存。後の滑らかさ/TTP目標は未達。最終TTP成功とは呼ばない。</p><div class="edit-recipe"><h4>編集の指示とカット配分</h4><p>構え32フレームを2倍にして64、投球32–92、走行156–173、衝突0–85、喜び13–143を接続。24fps、720×1280、360フレームです。音は生成クリップから引き継ぎ、切替に短いフェード。</p><details class="prompt"><summary>編集へ切り替えた実際の指示を開く <span>（全文）</span></summary><div class="prompt-inner"><p class="prompt-file">prompts/edit-instruction-15s.txt · <a href="prompts/edit-instruction-15s.txt" download>原文ファイルを保存</a></p><pre><code>今、確認したんですが、ボールの投げるタイミングやピンの倒れるタイミングが不自然です。もっと元動画のタイミングを見てきて修正してください。
+この辺も、みんながどうやってうまいこと作ってるかっていうののお手本とかお作法をもう一回見てきた上で、どうやったらうまくいくか、あんまり禁止とかルールに縛られずに自由に力を発揮してみてください。
+</code></pre></div></details></div></article><article class="case-card " id="story-v1" data-kind="generated-output"><div class="case-topline"><span class="case-type">生成動画 · 不採用/区間選別</span><span class="case-duration">8秒</span></div><h3>ボール、逆走して帰ってくる</h3><p class="wish"><b>ねらい：</b>眠そうなカピバラが突然プロ投球。インコもびっくり、最後は大喜び。</p><div class="video-shell"><div class="video-label output-label">生成された試作 · 8秒</div><video controls playsinline preload="metadata" data-local-video aria-label="ボール、逆走して帰ってくる"><source src="media/story-v1.mp4" type="video/mp4">動画を再生できない環境です。</video><div class="video-tools"><button type="button" class="play-toggle">この動画を再生</button><button type="button" class="speed-toggle">0.5倍速</button><div class="chapters" aria-label="見どころへ移動"><button class="jump" type="button" data-seek="4.8333">0:04.83 接触前</button><button class="jump" type="button" data-seek="5.0">0:05.00 球はまだ手前</button><button class="jump" type="button" data-seek="5.1667">0:05.17 先に閃光</button><button class="jump" type="button" data-seek="6.5">0:06.50 球が二つに見える</button></div></div></div><div class="story-grid"><section><h4>起きたこと</h4><p>眠そうな表情からの切り替えとインコの反応は魅力的。ところが5.000秒で球はピン手前、5.167秒に先に閃光。6秒台は奥の球とは別の球が手前へ戻るように見えた。</p></section><section><h4>持ち帰ったこと</h4><p>物語の気持ちよさと、球が当たってピンが倒れる因果は別々に見る。派手な光は接触の代わりにならない。</p></section></div><p class="disposition">▰ ボウリングとして全編不採用。眠そうな始まりとふたりの温度差は、次の演出にも活かした。</p><div class="prompt-list"><h4>プロンプト原文</h4><details class="prompt"><summary>渡した原文を開く <span>（全文・原文のまま）</span></summary><div class="prompt-inner"><p class="prompt-file">prompts/story-sleepy-to-bowler-v1.txt · <a href="prompts/story-sleepy-to-bowler-v1.txt" download>原文ファイルを保存</a></p><pre><code>A funny cinematic bowling moment. The golden capybara starts as in the image, sitting with a vacant, sleepy expression. Suddenly it becomes astonishingly focused, springs to its feet, and bowls like a seasoned professional: a fluid approach, powerful high backswing, smooth low release and elegant follow-through. The blue ball rolls down the lane and crashes into the pins for a spectacular strike. The yellow-green budgie is visibly stunned, then thrilled. Make the sleepy-to-brilliant contrast delightful, with lively natural movement and warm 3D animation.</code></pre></div></details></div></article><article class="case-card " id="story-v2" data-kind="generated-output"><div class="case-topline"><span class="case-type">生成動画 · 不採用/区間選別</span><span class="case-duration">8秒</span></div><h3>ピン、まだ呼んでない</h3><p class="wish"><b>ねらい：</b>一球の低いリリースから、奥のピンまで届いて倒れる動作をはっきり見せたい。</p><div class="video-shell"><div class="video-label output-label">生成された試作 · 8秒</div><video controls playsinline preload="metadata" data-local-video aria-label="ピン、まだ呼んでない"><source src="media/story-v2.mp4" type="video/mp4">動画を再生できない環境です。</video><div class="video-tools"><button type="button" class="play-toggle">この動画を再生</button><button type="button" class="speed-toggle">0.5倍速</button><div class="chapters" aria-label="見どころへ移動"><button class="jump" type="button" data-seek="3.5833">0:03.58 離球</button><button class="jump" type="button" data-seek="5.375">0:05.375 ピン静止の最後</button><button class="jump" type="button" data-seek="5.4167">0:05.417 ピン初動</button></div></div></div><div class="story-grid"><section><h4>起きたこと</h4><p>フォームと球の進み方は改善。3.58秒あたりで離球するが、5.4167秒にピンが動き始めた時点で球はまだ手前。大事な「球が触れてから倒れる」が映像で確認できなかった。</p></section><section><h4>持ち帰ったこと</h4><p>改善点が増えたように見えても、採否の軸は一つに絞る。ここではピンが動き出す瞬間を接触コマと照合する。</p></section></div><p class="disposition">▰ 全編不採用。後から粗い2fpsシートだけで合格と言いかけ、24fpsの接触前後を確認して判定を撤回した。</p><div class="prompt-list"><h4>プロンプト原文</h4><details class="prompt"><summary>渡した原文を開く <span>（全文・原文のまま）</span></summary><div class="prompt-inner"><p class="prompt-file">prompts/story-clean-strike-v2.txt · <a href="prompts/story-clean-strike-v2.txt" download>原文ファイルを保存</a></p><pre><code>A funny bowling surprise: the sleepy capybara sitting on the bench suddenly lights up, stands and turns to face the pins. Follow it from behind as it delivers a wonderfully crisp professional throw, with a smooth backswing and low release. The blue ball rolls away from the camera, straight down the wooden lane to the distant white pins. The ball reaches and hits the pins, which topple in a clean textbook strike. The budgie watches in disbelief and bursts into happy wing flaps. Keep the warm, charming 3D character acting and the satisfying change from drowsy to brilliant.</code></pre></div></details></div></article><article class="case-card " id="extension-v2" data-kind="generated-output"><div class="case-topline"><span class="case-type">生成動画 · 不採用/区間選別</span><span class="case-duration">15.018667秒</span></div><h3>延長したら、ラックがタイムリープ</h3><p class="wish"><b>ねらい：</b>ストライク後、何事もなかった顔へ戻ってインコだけが盛り上がる落ちを足したい。</p><div class="video-shell"><div class="video-label output-label">生成された試作 · 15.018667秒</div><video controls playsinline preload="metadata" data-local-video aria-label="延長したら、ラックがタイムリープ"><source src="media/story-v2-extended.mp4" type="video/mp4">動画を再生できない環境です。</video><div class="video-tools"><button type="button" class="play-toggle">この動画を再生</button><button type="button" class="speed-toggle">0.5倍速</button><div class="chapters" aria-label="見どころへ移動"><button class="jump" type="button" data-seek="0">0:00 冒頭</button><button class="jump" type="button" data-seek="8">0:08 延長区間のはじまり付近</button><button class="jump" type="button" data-seek="10">0:10 球とラックを見る</button><button class="jump" type="button" data-seek="14.5">0:14.5 終盤</button></div></div></div><div class="story-grid"><section><h4>起きたこと</h4><p>Flowの画面表示は16秒、保存した動画は15.018667秒。8〜10秒付近に球の増殖とラックの再出現があり、後ろへ延ばしたら前の因果も整う、とはならなかった。</p></section><section><h4>持ち帰ったこと</h4><p>延長は前の映像を直すボタンではない。後半の狙いがよくても、接続点と前半の因果を再確認する。</p></section></div><p class="disposition">▰ 全編不採用。別に生成した顔アップ単独素材は採用候補になったため、この失敗動画群には混ぜない。</p><div class="prompt-list"><h4>プロンプト原文</h4><details class="prompt"><summary>渡した原文を開く <span>（全文・原文のまま）</span></summary><div class="prompt-inner"><p class="prompt-file">prompts/story-ending-extension.txt · <a href="prompts/story-ending-extension.txt" download>原文ファイルを保存</a></p><pre><code>After the strike, the capybara turns back toward us and instantly returns to its adorably blank, sleepy expression, as if the brilliant strike were completely ordinary. The yellow-green budgie flies up beside its head and celebrates excitedly. The capybara gives a tiny, casual shrug and a slow blink. A warm, funny ending that holds the contrast between effortless skill and sleepy calm.</code></pre></div></details></div></article>
+      </div>
+    </section>
+    <section class="interlude" id="referee">
+      <div class="eyebrow" style="color:#ffd38f">番外編 · 審判もやらかす</div>
+      <h2>審判（親AI）も、最初の笛を吹き間違えた</h2>
+      <p>Story v2を粗い<strong>2fps</strong>の一覧だけで見て、「球が届いてからピンが倒れた」と一度判定。接触前後を<strong>24fps</strong>で見直すと、5.4167秒にピンが跳ね始めた時点で球はまだ手前でした。判定を撤回して、全編不採用へ。</p>
+      <p>教訓は「AIを信じよう」でも「人が悪い」でもなく、<b>見た証拠の細かさを、結論より先に確認する。</b>2fpsの見取り図に、主審の権限を渡してはいけなかった。</p>
+    </section>
+    <section id="no-output" aria-labelledby="no-output-title">
+      <div class="section-head"><h2 id="no-output-title">出力なしの棚</h2><p>下の映像は入力としてアップロードした動作参照です。Flowの生成結果ではありません。</p></div>
+      <div class="case-list"><article class="case-card no-output" id="motion-edit-no-output" data-kind="no-output-attempts"><div class="case-topline"><span class="case-type">出力なし · 入力参照</span><span class="case-duration">試行3回</span></div><h3>編集を3回頼んだ。出力は3回ともゼロ</h3><p class="wish"><b>ねらい：</b>この動作参照の投球タイミングを、カピバラの演技へ置き換えたい。</p><div class="video-shell"><div class="video-label input-label">これはFlowへ渡した動作参照です。生成出力ではありません。</div><video controls playsinline preload="metadata" data-local-video aria-label="Flowへ渡した入力動作参照、生成動画ではありません"><source src="media/motion-reference-no-output.mp4" type="video/mp4">動画を再生できない環境です。</video><div class="video-tools"><button type="button" class="play-toggle">この動画を再生</button><button type="button" class="speed-toggle">0.5倍速</button><div class="chapters" aria-label="見どころへ移動"><button class="jump" type="button" data-seek="0">0:00 入力参照の冒頭</button><button class="jump" type="button" data-seek="5">0:05 入力参照の中ほど</button></div></div></div><div class="story-grid"><section><h4>起きたこと</h4><p>これはFlowへ渡した入力参照の再生。Flowの生成動画は一つも出ていない。1回目は詳細指示、2回目は短い指示、3回目は同じ短文で入力を約3.5秒地点からトリムして再試行。いずれも一般エラーで、画面上は課金なし。</p></section><section><h4>持ち帰ったこと</h4><p>出力がない試行に架空の「失敗動画」を付けない。入力クリップと生成結果の棚を分ける。エラーが続いたら同じ入口を連打せず、別の制作方法へ切り替える。</p></section></div><div class="attempts"><h4>3回の履歴</h4><ol><li><b>#1</b> 入力全編9.083333秒。一般エラー、出力なし、課金なし表示。</li><li><b>#2</b> 同じ入力全編。一般エラー、出力なし、課金なし表示。</li><li><b>#3</b> 同じ短文を再利用。入力開始を約3.5秒からにトリム（Flow内表示 00:05:14）、生成時間表示 00:06:00。一般エラー、出力なし、課金なし表示。</li></ol></div><p class="disposition">⭘ 出力なし。動画カウントには入れない</p><div class="prompt-list"><h4>プロンプト原文</h4><details class="prompt"><summary>渡した原文を開く <span>（全文・原文のまま）</span></summary><div class="prompt-inner"><p class="prompt-file">prompts/motion-edit-detailed.txt · <a href="prompts/motion-edit-detailed.txt" download>原文ファイルを保存</a></p><pre><code>Use the uploaded animation for the bowling motion, timing, camera, and lane layout. Replace the bowler with the compact golden capybara from the image, wearing its teal bowling shirt and cream trousers. Render soft detailed fur and warm cinematic 3D lighting. Preserve the full approach, high backswing, final sliding step, low release at 5.3 seconds, and first pin contact at 8.0 seconds. Keep one ball continuously attached to the bowling paw until release, then rolling along the same path. Keep the capybara’s compact proportions and grounded feet. Place the same yellow-green budgie on the ball return at screen right, happily watching. One continuous shot; no added cuts or slow motion.
+</code></pre></div></details><details class="prompt"><summary>渡した原文を開く <span>（全文・原文のまま）</span></summary><div class="prompt-inner"><p class="prompt-file">prompts/motion-edit-short.txt · <a href="prompts/motion-edit-short.txt" download>原文ファイルを保存</a></p><pre><code>Apply the pose and motion from the input video to the capybara character from the provided image. Keep the original video’s camera and action timing. Use the image’s cinematic 3D style and add its yellow-green budgie watching at the right.</code></pre></div></details></div></article></div>
+    </section>
+    <section class="next-route" aria-label="現在の制作ルート">
+      <div><h2>次は、ショットごとに役割を分けて15秒へ</h2><p>Flowの演技、Blenderの実接触、Remotion合成を組み合わせた15秒版へ進みました。完全TTPとの差や、実際の作り方も一緒に記録しています。</p></div>
+      <a href="../flow-hybrid/">新しい15秒版・作り方へ →</a> · <a href="../index.html">TTP・比較ページへ</a>
+    </section>
+  </main>
+  <footer class="wrap">
+    <p class="tiny">2026.10.03 · 動画展示6本、出力なし3回。動画と実プロンプトを保存し、失敗から作り方を変えた記録です。</p>
+    <p class="credit">キャラクター原案：あや＠ロロカデザインさん。原案画像・元データはこのページに含めていません。</p>
+  </footer>
+  <script>
+    (()=>{
+      const videos=[...document.querySelectorAll('video[data-local-video]')];
+      const pauseOthers=(active)=>videos.forEach(v=>{if(v!==active)v.pause()});
+      const update=(card,video)=>{const b=card.querySelector('.play-toggle');if(b)b.textContent=video.paused?'この動画を再生':'一時停止';};
+      videos.forEach(video=>{
+        const card=video.closest('.case-card');
+        video.addEventListener('play',()=>pauseOthers(video));
+        video.addEventListener('play',()=>update(card,video));
+        video.addEventListener('pause',()=>update(card,video));
+        video.addEventListener('ended',()=>update(card,video));
+        card.querySelector('.play-toggle').addEventListener('click',async()=>{
+          if(video.paused){pauseOthers(video);if(video.ended)video.currentTime=0;try{await video.play()}catch(e){card.querySelector('.play-toggle').textContent='動画を読み込めません。下の再生ボタンを確認';}}
+          else video.pause();
+        });
+        card.querySelector('.speed-toggle').addEventListener('click',e=>{
+          video.playbackRate=video.playbackRate===0.5?1:0.5;
+          e.currentTarget.textContent=video.playbackRate===0.5?'再生速度 0.5×':'再生速度 1×';
+        });
+        card.querySelectorAll('[data-seek]').forEach(btn=>btn.addEventListener('click',async()=>{
+          pauseOthers(video);
+          video.currentTime=Number(btn.dataset.seek);
+          try{await video.play()}catch(e){card.querySelector('.play-toggle').textContent='読み込み後にもう一度再生';}
+        }));
+      });
+    })();
+  </script>
+</body>
+</html>
