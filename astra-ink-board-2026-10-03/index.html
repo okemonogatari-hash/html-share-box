@@ -1,0 +1,33 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f0e5"><meta name="description" content="青いボールペンで描いたチェスの駒。並べて、眺めて、一枚のスケッチに。自由に並べるスケッチ盤。"><title>インクの盤上 — Ballpoint study 05</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f5f0e5'/%3E%3Cpath d='M10 25h12l-1-4h-2l-1-9h-4l-1 9h-2zM16 4v8M12 8h8' fill='none' stroke='%23203b69' stroke-width='1.5'/%3E%3C/svg%3E"><link rel="stylesheet" href="style.css"></head><body>
+<main class="notebook">
+ <header class="masthead"><a class="shelf-link" href="https://okemonogatari-hash.github.io/html-share-box/lab-works.html">← 実験室の棚</a><span class="edition">A SMALL STUDY IN BLUE <b>05</b></span><a href="making.html">作り方とプロンプト ↗</a></header>
+ <section class="intro"><div><p class="eyebrow">BALLPOINT / COMPOSITION</p><h1>インクの盤上<span class="title-dot">.</span></h1></div><p class="intro-copy">青い線を重ねて、<br>まだ名前のない一局を。</p></section>
+ <div class="workspace">
+  <section class="art-panel" aria-label="自由に並べるスケッチ盤">
+   <div class="canvas-wrap" id="canvas-wrap"><canvas id="art-canvas" tabindex="0" role="img" aria-label="青いボールペンの立体チェス盤。駒を選んで空きマスをタップすると動かせます。下のマス指定でも操作できます。"></canvas><div id="fallback" hidden><img src="poster.png" alt="インクの盤上の完成見本"><p>この環境では立体表示を開けませんでした。<br>別のブラウザでお試しください。</p></div><span class="page-mark" aria-hidden="true">Fig. 05<br><i>Ink, paper & a little silence.</i></span><span class="sheet-number" aria-hidden="true">/ 64 squares</span></div>
+   <div class="art-caption"><span><i class="ink-dot"></i> 自由に並べるスケッチ盤</span><span id="piece-count">8 pieces</span></div>
+   <p class="status" id="status" role="status" aria-live="polite">駒を選んで、空いたマスへ。好きな景色に並べてください。</p>
+  </section>
+  <aside class="tools" aria-label="スケッチの道具">
+   <section class="tool-section"><div class="section-title"><span>01</span><h2>盤に、ひとつ。</h2></div>
+    <div class="segmented mode"><button id="mode-select" aria-pressed="true">選ぶ・動かす</button><button id="mode-place" aria-pressed="false">駒を置く</button></div>
+    <div class="piece-palette" aria-label="置く駒"><button data-piece="king" aria-pressed="false"><span aria-hidden="true">♔</span>キング</button><button data-piece="queen" aria-pressed="false"><span aria-hidden="true">♕</span>クイーン</button><button data-piece="rook" aria-pressed="false"><span aria-hidden="true">♖</span>ルーク</button><button data-piece="bishop" aria-pressed="false"><span aria-hidden="true">♗</span>ビショップ</button><button data-piece="knight" aria-pressed="true"><span aria-hidden="true">♘</span>ナイト</button><button data-piece="pawn" aria-pressed="false"><span aria-hidden="true">♙</span>ポーン</button></div>
+    <div class="side-choice" aria-label="駒の濃淡"><button data-side="light" aria-pressed="true"><span class="side-swatch light"></span>白の駒</button><button data-side="dark" aria-pressed="false"><span class="side-swatch dark"></span>青の駒</button></div>
+    <div class="small-actions"><button id="remove" disabled>選んだ駒を消す</button><button id="clear-selection" disabled>選択解除</button></div>
+    <p class="tool-help" id="mode-help">駒 → 空きマスの順にタップ。<br>別の駒をタップすると選び直せます。</p>
+    <details class="square-entry"><summary>マスを指定して操作</summary><div><label for="square-picker">マス</label><select id="square-picker" aria-label="操作するマス"></select><button id="apply-square">このマスを選ぶ</button></div><p>矢印キーでマスを選択、Enterで操作。<br>Escapeで選択解除、Deleteで駒を消せます。</p></details>
+   </section>
+   <section class="tool-section"><div class="section-title"><span>02</span><h2>構図と、眺め。</h2></div>
+    <label class="select-row" for="composition"><span>はじめの構図</span><select id="composition"><option value="quiet">余白のある午後 · 8駒</option><option value="study">かたちの標本 · 6駒</option><option value="opening">開幕の整列 · 32駒</option><option value="empty">まっさらな盤 · 0駒</option></select></label>
+    <div class="camera-row"><div class="segmented"><button id="camera-iso" aria-pressed="true">斜めから</button><button id="camera-top" aria-pressed="false">真上から</button></div><button id="orbit-left" aria-label="左へ視点を回す">↶</button><button id="orbit-right" aria-label="右へ視点を回す">↷</button></div>
+   </section>
+   <section class="tool-section ink-section"><div class="section-title"><span>03</span><h2>線の、手ざわり。</h2></div>
+    <label class="range-label" for="ink"><span>インクの濃さ</span><output id="ink-value">76</output></label><input id="ink" type="range" min="35" max="100" value="76">
+    <label class="range-label" for="hatching"><span>線の重なり</span><output id="hatching-value">68</output></label><input id="hatching" type="range" min="0" max="100" value="68">
+   </section>
+   <div class="history-row"><button id="undo" disabled>↶ 元に戻す</button><button id="redo" disabled>↷ やり直す</button><button id="reset" class="reset">最初へ</button></div>
+   <button id="save-png" class="save-button">一枚の絵として保存 <span>↓ PNG</span></button><a id="download-link" class="download-link" hidden>画像をダウンロード</a><p class="save-note">盤だけを画像に。並べ替えは元に戻せます。</p>
+  </aside>
+ </div>
+ <footer class="footer"><div><span class="footer-script">A quiet move.</span><p>勝ち負けより、線の居場所。<br>駒を並べてつくる、小さなペン画。</p></div><span>おけもん実験室<br><span class="footer-fine">OCT. 2026 / MADE OF LINES</span></span></footer>
+</main><script type="module" src="app.mjs"></script></body></html>
