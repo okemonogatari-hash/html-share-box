@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#e6dcc8">
+  <title>水車小屋の午後 — おけもん実験室</title>
+  <meta name="description" content="木の歯車、石臼、きらめく小川。流れを変えて、ゆっくり眺める小さな水車小屋。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <section id="stage" aria-label="木組みの水車小屋を動かして眺める3D展示">
+      <header class="masthead"><a class="eyebrow" href="https://okemonogatari-hash.github.io/html-share-box/lab-works.html">OKEMON LAB / 01</a><h1>水車小屋の午後<span>THE MILL AT GOLDEN HOUR</span></h1><p>水のちからが、木の歯車を伝わっていく。</p></header>
+      <div class="scene-note"><span class="dot"></span><span id="scene-label">水音の似合う、ゆっくりした時間。</span></div>
+      <div class="hint">ドラッグでぐるり · ホイール / ピンチで近づく</div>
+      <div id="loading" role="status">小屋に灯りをともしています…</div>
+      <div id="error" role="alert" hidden><strong>この端末では3Dを開けませんでした</strong><p>WebGLを有効にした新しいブラウザで、もう一度開いてください。</p><button id="retry">もう一度開く</button><small id="error-detail"></small></div>
+    </section>
+    <aside aria-label="水車小屋の操作">
+      <div class="chapter"><span>FLOW & MOTION</span><span>01 — 03</span></div>
+      <h2>流れを、ひとさじ。</h2><p class="intro">水門をひらくと、水車が回り、<br>奥の石臼まで力が届きます。</p>
+      <div class="flow-label"><label for="flow">水門のひらき</label><output id="flow-value" for="flow">65<span>%</span></output></div>
+      <input id="flow" type="range" min="0" max="100" value="65" step="1" aria-describedby="flow-description">
+      <div class="range-labels"><span>とじる</span><span>いっぱい</span></div>
+      <p id="flow-description" class="micro">水車は少しずつ、流れの速さになじみます。</p>
+      <div class="readout"><div><span>水車の速さ</span><strong><b id="rpm">—</b> <small>rpm</small></strong></div><div><span>いまの様子</span><strong id="state">流れています</strong></div></div>
+      <button id="pause" class="primary" aria-pressed="false"><span id="pause-icon">Ⅱ</span><span id="pause-label">時をとめる</span></button>
+      <div class="section-label">近くで見る</div>
+      <div class="views" role="group" aria-label="視点を選ぶ"><button data-view="whole" class="active" aria-pressed="true">小屋ぜんたい</button><button data-view="wheel" aria-pressed="false">水車と水</button><button data-view="gears" aria-pressed="false">歯車のしくみ</button></div>
+      <label class="check"><input id="roof" type="checkbox" checked><span>屋根をひらいて、なかを見る</span></label>
+      <button id="reset" class="quiet">↺　はじめの景色に戻す</button>
+      <button id="save-image" class="save">この景色を保存 <span>PNG</span></button><p id="save-status" class="micro" role="status"></p>
+      <details><summary>小屋のひみつ</summary><p>上から水を受ける「上掛け水車」。大きな木歯車が小さな歯車を回し、縦の軸が石臼へと力を渡します。</p><p>流量と回転を結んだ、眺めるための模型です。水の粒や泡は演出で、厳密な流体・機械計算ではありません。</p><a href="making.html">作り方とプロンプト ↗</a></details>
+      <footer>CRAFTED IN THE BROWSER<br><span>木目も、小石も、この小屋のために。</span></footer>
+    </aside>
+  </main>
+  <script>window.addEventListener('error',function(e){if(e.target&&e.target.tagName==='SCRIPT'){document.getElementById('loading').hidden=true;document.getElementById('error').hidden=false;}} ,true);document.getElementById('retry').onclick=function(){location.reload()};setTimeout(function(){if(!window.__watermillReady){document.getElementById('loading').hidden=true;document.getElementById('error').hidden=false;}},15000);</script>
+  <script type="module" src="app.mjs"></script>
+</body>
+</html>
