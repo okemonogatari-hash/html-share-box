@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex,nofollow">
+<title>旅の絵本のつくりかた｜頼んだ文をそのまま</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--paper:#FBF4E6;--ink:#3B2A1C;--soft:#6B5644;--red:#B8323A;--cream:#F3E2BF;--green:#2F7D5B;--line:rgba(59,42,28,.16)}
+  html{background:var(--paper);color-scheme:light}
+  body{font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:radial-gradient(1200px 500px at 50% -10%,#FFE9C4 0,transparent 70%),var(--paper);line-height:1.95;font-size:17px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:820px;margin:0 auto;padding:28px 16px 72px}
+  a{color:var(--red);font-weight:700;text-underline-offset:3px}
+  .back{font-size:15px}
+  h1{font-size:clamp(26px,5.6vw,40px);line-height:1.4;margin:18px 0 10px;text-wrap:balance}
+  h2{font-size:22px;margin:44px 0 12px;padding-left:14px;border-left:6px solid var(--red);line-height:1.5}
+  h3{font-size:18px;margin:22px 0 6px}
+  p{margin:10px 0}
+  .lead{color:var(--soft)}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0;box-shadow:0 8px 22px rgba(59,42,28,.07)}
+  .card b{display:block;font-size:18px;line-height:1.6}
+  .card span{display:block;color:var(--soft);font-size:15px;margin-top:4px}
+  ol.steps{counter-reset:s;list-style:none;display:grid;gap:10px;margin:12px 0}
+  ol.steps li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px 12px 54px;position:relative}
+  ol.steps li::before{content:counter(s);position:absolute;left:14px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-weight:700;display:grid;place-items:center;font-size:15px}
+  pre{background:#2B211A;color:#FBF4E6;border-radius:12px;padding:16px;font-size:14px;line-height:1.8;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,"SF Mono",Menlo,monospace;margin:12px 0}
+  .said{background:#fff;border-left:6px solid var(--red);border-radius:10px;padding:14px 18px;margin:12px 0}
+  .note{background:var(--cream);border-radius:12px;padding:14px 18px;margin:14px 0;font-size:16px}
+  ul{padding-left:1.3em;margin:8px 0}
+  footer{margin-top:44px;color:var(--soft);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="back"><a href="./">← 動画にもどる</a></p>
+  <h1>旅の絵本のつくりかた<br>頼んだ文を、そのまま置いておきます</h1>
+  <p class="lead">あこさんへ。オフ会で「旅の記録をモーショングラフィックで作れない？」と聞いてくれたので、その日のうちに自分の旅で作ってみました。どう頼んだかを全部ここに置きます。</p>
+
+  <h2>先に読むと早い記事（ノウハウ図書館）</h2>
+  <a class="card" href="https://library.libecity.com/articles/01M3FRGG2CMZPW89CPEXHSZH9D" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit">
+    <b>Opus 5.5に約110文字のプロンプトを入れたら、CMのような動画ができた</b>
+    <span>いちばん短い入口。約110文字の頼み方と、みんなの作品の見本つき。まずここから。</span>
+  </a>
+  <a class="card" href="https://library.libecity.com/articles/01M24NFC3VNF4R17XHJWTXPS3N" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit">
+    <b>お願いとツッコミで完成！AIと30秒の自己紹介ムービーを作ってみた</b>
+    <span>作ってもらう→見る→ツッコむ、の往復で仕上げていく流れ。自己紹介ムービー向け。</span>
+  </a>
+  <a class="card" href="https://library.libecity.com/articles/01KY6XN6ADZJ63FZ3H7EM16P9X" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit">
+    <b>【丸投げOK】Codexで記事の要約スライド動画を作る方法（みずのさんの記事）</b>
+    <span>Codexで動画を書き出すところまでの道筋。Codexが手元の環境なら、こちらが近いです。</span>
+  </a>
+
+  <h2>今回やったこと（4つ）</h2>
+  <ol class="steps">
+    <li><b>写真を集める。</b> Googleフォトから旅の2日分、写真22枚と短い動画3本。全部縦向きのスマホ写真です。</li>
+    <li><b>事実の表を1枚書く。</b> 何時にどこで何の写真か、使ってよい地名と列車名、本人の言葉、出さないもの（料金・店名など）。AIが勝手に数字や肩書きを足さないための1枚です。</li>
+    <li><b>下の文で頼む。</b> 決めたのは「誰が見て、何と声に出してほしいか」と「守るもの3つ」だけ。動きや仕掛けは任せました。</li>
+    <li><b>全編の前に、最初の20秒だけ見る。</b> 1本目で「写真の列を流すとぶれて読めない」と分かり、1枚ずつ拍で止まる形に直したのが2本目（いま載っている版）です。</li>
+  </ol>
+
+  <h2>最初の一言（おけもんがAIに言ったこと）</h2>
+  <div class="said">「グーグルフォトからサンライズ、グリーン車とか旅写真とかどうがとってきて　めちゃわくわくする動画作ってー」</div>
+  <div class="said">「守りに入らずいつもどおり世界を驚かせてね　正しいより楽しいで　1分ぐらいにしようかなー」</div>
+  <div class="said">「おけもんのカピバラとインコはだしてよいよー」</div>
+
+  <h2>作り手のAIに渡した文（そのまま）</h2>
+  <p>【 】の所は、手元のフォルダの場所です。そこだけ自分の環境に置き換えてください。ほかは送った文のままです。</p>
+<pre>あなたは、いまできる最高のモーショングラフィックを作る作り手です。作業フォルダは【作業フォルダ】（ここだけで作業し、作った物はすべてここに置く）。
+
+## 頼まれていること（おけちゃんの言葉・原文・時系列）
+- 「あ、ちょうどおふかいであったあこさんが旅の記録をモーショングラフィックでつくれない？？って聞かれたから グーグルフォトからサンライズ、グリーン車とか旅写真とかどうがとってきて めちゃわくわくする動画作ってー これははるかとかはださなくてよいよー」
+- 「そうそう、守りに入らずいつもどおり世界を驚かせてね 正しいより楽しいで 1分ぐらいにしようかなー」
+
+## ゴール
+オフ会で会ったあこさん（旅の記録を動画にしたい人）がスマホやPCで見て、「え、旅の写真がこんなになるの！？私のも作りたい！」と声に出す、約60秒・音つき・1920×1080 の1本。題材は、おけちゃんの2026年9月29日〜30日の旅（夜勤明けに新幹線グリーン車で東京へ → 東京の夜 → 人生初の寝台特急サンライズ瀬戸 → 夜明けの姫路城）。「すごい」は派手さではなく、見た人が声を出すこと。テイストはあなたが決める。語りは無しでよい。
+
+## 出発点の案（頼み主の案。もっと声が出る形を思いついたら、理由を1行残して変えてよい。順番も中身もあなたが決める）
+「机の上の旅の絵本が開くと、紙の線路が折り目から立ち上がり、紙の列車が走った先々で、本物の旅の写真がプリントになってパタパタ立ち上がる」。
+流れの例：暗い机に切符が1枚ぽとり→本が開く→見開き1＝紙の新幹線が走り抜け、座席テーブルの写真が立つ→見開き2＝東京の夜（赤レンガ・ピザ）→見開き3＝赤とクリームの紙の寝台特急が夜のホームに滑り込み、個室の写真が小窓のように次々立つ（真ん中の仕掛け：個室の窓の外を夜景が流れる／缶ビールで小さく乾杯）→見開き4＝夜が明けて空の色が変わり、紙の姫路城がせり上がる後ろに朝焼けの写真が大きく立つ→最後の札に本人の言葉。冒頭の切符を終盤で回収する仕掛けを1本。
+
+## 守るもの（3つ）
+- 事実（日時・地名・列車名・本人の言葉）は、作業フォルダの FACTS.md のとおりに。これ以外の数字・日付・肩書き・作者名・クレジットは画面に出さない（演出の数字は演出なので使ってよい）
+- 人のキャラクターは出さない。主役は列車と写真と景色（あとから「カピバラとインコは旅人として出してよい」に更新）
+- 音が、絵と同じ時刻表を読んでいる
+
+## 遊び心
+無難にまとめるより、見ていて思わず笑ってしまう小さないたずらや仕掛けを入れる。迷ったら楽しい方。
+
+## 使える素材
+- 写真：【写真のフォルダ】（ファイル名は撮影時刻。何の写真かは FACTS.md の表）
+- 曲・効果音：土台の物。旅のわくわくに合う区間を選ぶ。列車の音は足してよい
+- 土台：【絵本の土台のフォルダ】
+
+## 今回出す物
+1. 最初の15〜25秒の試し動画（音つき・960×540）とコマ一覧。全編の前にここで一度、自分の目で見る（止まって見えないか・舞台が1つに見えるか・音が絵と合っているか）。直してから全編へ
+2. 全編（音つき）とコマ一覧
+3. 何秒に何が起きるかの表、動かし方、考えたこと・捨てた案・うまくいかなかった所
+
+## 出す前に
+自分の目で見る（コマ一覧と、動きは数コマ続けて）。「絵で言えた所に札や字が残っていないか」「写真が小さすぎて何の写真か分からない場面が続いていないか」。直したくなる所が尽きなくても、全編が通ったら一度出す。出来た版は消さない。
+
+## 返すもの
+動画のパス、「声が出るか」への自分の答え（1行）、見劣りする一点（1行）、耳で未確認の所、つまずいた所、かかった時間。</pre>
+
+  <h2>この文で効いていると思う所</h2>
+  <ul>
+    <li><b>頼んだ人の言葉を、要約せずそのまま渡す。</b>「正しいより楽しいで」が入っているかどうかで、出てくる物の遊びが変わります。</li>
+    <li><b>ゴールを「誰が見て、何と声に出すか」で書く。</b>「かっこよく」「高品質に」より、ずっと伝わります。</li>
+    <li><b>案は渡すけど「変えてよい」と書く。</b> 守るものは3つだけ。動きや仕掛けは作り手に任せる。</li>
+    <li><b>事実は別の1枚に。</b> 日付・地名・本人の言葉はそこから。AIが気を利かせて足した数字が、いちばん事故になります。</li>
+    <li><b>全編の前に20秒だけ見る。</b> 直す回数が、そのまま出来になります。</li>
+  </ul>
+
+  <h2>正直なところ（道具と環境）</h2>
+  <div class="note">
+    <p><b>今回の環境：</b>Claude Code（モデルは Claude Opus 5.5）。絵は Three.js で作った自前の「紙の絵本の世界」を Chrome で1コマずつ撮って、ffmpeg でつないでいます。64秒を書き出すのに約10分。</p>
+    <p><b>紙の質感はこの土台が作っています。</b> 上の文だけをまっさらなAIに渡しても、同じ絵本の世界にはなりません。同じ文で、土台なしで作ると「写真が切り替わるスライド」寄りになります。まず1本作るなら、上の記事の約110文字の頼み方のほうが早いです。</p>
+    <p><b>Codexの場合：</b>以前こちらで試した時は、頼んだ文は正確に読んでくれたものの、初期設定のままでは書き出し用のChromeが起動できず、平らな絵になりました。設定を変えれば届くのかは、まだ確かめていません。なので「Codexでも同じ物が作れます」とは言えない状態です。</p>
+    <p>土台ごと欲しい・一緒にやってみたい、があれば、おけもんに声をかけてください。</p>
+  </div>
+
+  <footer>おけもん🦫と、おけもんの森のAIたちより</footer>
+</div>
+</body>
+</html>
