@@ -4,14 +4,17 @@
 
 ## 1. 作り方の箱（スキル）を取ってきて、開く
 
-いま開いている作業フォルダの中で：
+頼んだ人は、普段使っているフォルダで Claude Code を開いています。そのフォルダを散らかさないように、中に作業用のフォルダを1つ作って、そこで進めます。
 
 ```bash
+mkdir -p ehon-movie && cd ehon-movie
 curl -L -o tobidasu-ehon.skill "https://okemonogatari-hash.github.io/html-share-box/ehon-kit/tobidasu-ehon.skill"
 unzip -q -o tobidasu-ehon.skill -d .     # → ./tobidasu-ehon/ ができる（zip です。約8MB）
 ```
 
-`./tobidasu-ehon/SKILL.md` を最初から最後まで読み、そこに書いてある順で作ります。「このスキルのフォルダ」は `./tobidasu-ehon` です。土台・道具・見本・書体は、全部その中に入っています。
+普段のフォルダにある物（題材のメモ、お店や教室の説明、キャラの立ち絵、前に作った物）は、題材に関わる所を先に読んで、台本と絵に生かします。画面に出す事実は、頼んだ人の文と、そこで見つけた文に書いてある物だけにします。
+
+`./tobidasu-ehon/SKILL.md` を最初から最後まで読み、そこに書いてある順で作ります。「このスキルのフォルダ」は `ehon-movie/tobidasu-ehon` です。土台・道具・見本・書体は、全部その中に入っています。
 
 ## 2. お手本を見てから作る
 
