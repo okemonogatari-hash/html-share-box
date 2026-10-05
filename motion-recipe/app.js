@@ -590,6 +590,15 @@
     openWork(i);
   }
   window.addEventListener("hashchange", openFromHash);
+  // 棚の上の見本（お店の見本・ポートフォリオ枠）のリンク：HTML では href="#gallery"（部品が読めなくても作品集までは行く）、
+  // 読めていれば data-work の作品を開く（2026-10-06：HTML に無い id へのリンクが公開前チェックで「リンク切れ」になっていた）
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest && e.target.closest("a[data-work]");
+    if (!a || !okItems.length) return;
+    e.preventDefault();
+    const h = "#w-" + a.dataset.work;
+    if (location.hash === h) openFromHash(); else location.hash = h;
+  });
 
   $("gallery").addEventListener("click", async (e) => {
     const tb = e.target.closest("[data-tech]");
