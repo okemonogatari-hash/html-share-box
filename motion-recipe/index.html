@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css?v=20261005b" />
+    <link rel="stylesheet" href="style.css?v=20261006a" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 5C23 20 13 30 13 42a19 19 0 0 0 38 0C51 30 41 20 32 5z' fill='%231b1712'/%3E%3C/svg%3E" />
   </head>
   <body>
@@ -32,6 +32,22 @@
       <!-- 1. 作品集（主役） -->
       <section class="card gallery-sec" id="gallery">
         <h2>モーショングラフィック集</h2>
+        <!-- お店の見本（2026-10-06・春ちゃんと相談「最初の作品まで遠い」）。ここは部品が読めなくても出るよう HTML に直接書く -->
+        <div class="shop-picks" aria-labelledby="shop-picks-title">
+          <h3 id="shop-picks-title">お店の紹介・お知らせなら、こんな15秒</h3>
+          <a class="shop-hero" href="#w-otehon-gelato" aria-label="秋の新作（架空のジェラート店）を再生">
+            <video muted loop playsinline autoplay preload="metadata" poster="gallery/otehon-gelato.jpg" src="gallery/preview/otehon-gelato.mp4"></video>
+            <span class="shop-hero-cap"><strong>秋の新作のお知らせ</strong><small>架空のジェラート店・15秒 ▶ 音つきで見る</small></span>
+          </a>
+          <div class="shop-row">
+            <a class="shop-pick" href="#w-otehon-watch-repair"><img src="gallery/otehon-watch-repair.jpg" alt="" loading="lazy"><span>時計修理工房の紹介</span></a>
+            <a class="shop-pick" href="#w-kids-art-class"><img src="gallery/kids-art-class.jpg" alt="" loading="lazy"><span>子ども絵画教室の募集</span></a>
+            <a class="shop-pick" href="#w-otehon-gym-6th"><img src="gallery/otehon-gym-6th.jpg" alt="" loading="lazy"><span>ジムの6周年</span></a>
+            <a class="shop-pick" href="#w-konekone-ui"><img src="gallery/konekone-ui.jpg" alt="" loading="lazy"><span>パン屋さんの予約アプリ</span></a>
+            <a class="shop-pick" href="#w-vintage-sale"><img src="gallery/vintage-sale.jpg" alt="" loading="lazy"><span>古着屋のセール（縦長）</span></a>
+          </div>
+          <p class="shop-note">お店はぜんぶ架空の見本です。押すと音つきで再生します。</p>
+        </div>
         <p class="sec-lead">作りたいものに近い1本を選んで「これをお手本に作る」を押すと、そのテンポや切り替えに寄せた注文書になります。</p>
         <div class="portfolio-picks" aria-labelledby="portfolio-picks-title">
           <h3 id="portfolio-picks-title">おけもんの映像ポートフォリオ</h3>
@@ -202,9 +218,25 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <script src="gallery/gallery.js?v=20261001d"></script>
-    <script src="gallery/world.js?v=20261001d"></script>
-    <script src="recipe.js?v=20261001d"></script>
-    <script src="app.js?v=20261001d"></script>
+    <script src="gallery/gallery.js?v=20261006a"></script>
+    <script src="gallery/world.js?v=20261006a"></script>
+    <script src="recipe.js?v=20261006a"></script>
+    <script src="app.js?v=20261006a"></script>
+    <script>
+      /* 部品の読み込みが一度こけても、棚が「読み込み中…」のまま止まらないように（2026-10-06 朝に実際に起きた） */
+      (function () {
+        if (window.MotionRecipe && window.MOTION_GALLERY) return;
+        var q = [];
+        if (!window.MOTION_GALLERY) q.push("gallery/gallery.js");
+        if (!window.MotionRecipe) q.push("recipe.js");
+        if (!window.MotionRecipe) q.push("app.js");
+        function fail() { var g = document.getElementById("gallery-grid"); if (g) g.innerHTML = '<p class="muted">作品の一覧を読み込めませんでした。上の見本は見られます。<a href="./">もう一度読み込む</a></p>'; }
+        (function next() {
+          var src = q.shift();
+          if (!src) return;
+          var e = document.createElement("script"); e.src = src + "?retry=" + Date.now(); e.onload = next; e.onerror = fail; document.body.appendChild(e);
+        })();
+      })();
+    </script>
   </body>
 </html>
