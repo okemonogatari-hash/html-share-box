@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ちょるさんのオフ会チャット立ち上げキット</title>
+<meta name="description" content="このページをAIに読ませると、リベシティのオフ会チャットを作成ボタンの手前まで一緒に作ってくれます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#FFF9EC; --paper:#FFFFFF; --ink:#3B2A1E; --sub:#6B5B4E; --line:#EADFC8;
+  --mint:#CFEDE6; --mint-deep:#1F6F63; --sun:#F2B632; --sun-soft:#FFF0C4;
+  --coral:#A33824; --coral-soft:#FFE3DA;
+  --ai-bg:#F1F6F5; --ai-line:#B9D8D2;
+  --display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --body:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.85}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--mint-deep);text-underline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* セットの行き来 */
+.setnav{background:var(--paper);border-bottom:2px solid var(--line)}
+.setnav .wrap{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding-top:10px;padding-bottom:10px}
+.setnav span{font-family:var(--display);font-weight:700;font-size:14px;color:var(--sub)}
+.setnav a,.setnav b{font-family:var(--display);font-weight:700;font-size:14px;padding:6px 14px;border-radius:999px;text-decoration:none}
+.setnav b{background:var(--ink);color:#fff}
+.setnav a{background:var(--mint);color:var(--ink)}
+
+/* 表紙 */
+.hero{padding:28px 0 8px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:center}
+.hero img{border-radius:18px;box-shadow:0 10px 0 var(--mint),0 18px 30px rgba(59,42,30,.14)}
+.ribbon{display:inline-block;font-family:var(--display);font-weight:700;font-size:14px;background:var(--sun-soft);border:2px solid var(--sun);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(26px,4.6vw,44px);line-height:1.35;margin:0 0 14px;letter-spacing:.01em;text-wrap:balance}
+h1 .nb,h2 .nb{display:inline-block}
+h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--sun) 62%)}
+.lead{font-size:17px;margin:0 0 10px}
+.from{font-size:14px;color:var(--sub);margin:0}
+
+section{padding:34px 0 6px}
+h2{font-family:var(--display);font-weight:900;font-size:clamp(21px,3.2vw,30px);line-height:1.45;margin:0 0 6px;display:flex;align-items:flex-start;gap:.5em}
+h2 .t{text-wrap:balance;min-width:0}
+h2 .no{display:grid;place-items:center;flex:none;width:1.9em;height:1.9em;border-radius:50%;background:var(--ink);color:#fff;font-size:.62em;margin-top:.42em}
+.h2sub{margin:0 0 18px;color:var(--sub)}
+h3{font-family:var(--display);font-weight:700;font-size:19px;margin:0 0 6px;line-height:1.5;text-wrap:balance}
+
+/* 3つの手順 */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0;padding:0;list-style:none}
+.steps li{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:18px 18px 16px;position:relative}
+.steps .who{display:inline-block;font-family:var(--display);font-weight:700;font-size:13px;border-radius:999px;padding:2px 12px;margin-bottom:8px}
+.who.you{background:var(--coral-soft);color:var(--coral)}
+.who.ai{background:var(--mint);color:var(--mint-deep)}
+.steps p{margin:0;font-size:15px}
+
+/* コピーできる箱 */
+.copy{background:var(--paper);border:2px dashed var(--sun);border-radius:16px;padding:16px 18px;margin:16px 0}
+.copy{min-width:0}
+.copy .cap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;margin-bottom:8px}
+.copy .cap strong{font-family:var(--display);font-size:15px}
+.copy pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:var(--body);font-size:15px;line-height:1.8}
+.btn{font-family:var(--display);font-weight:700;font-size:14px;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:8px 16px;cursor:pointer;white-space:nowrap}
+.btn.done{background:var(--mint-deep)}
+
+/* 決める5つ */
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.five li{background:var(--paper);border-radius:16px;border:2px solid var(--line);padding:14px 14px 12px}
+.five b{display:block;font-family:var(--display);font-size:16px;margin-bottom:2px}
+.five span{display:block;font-size:13.5px;color:var(--sub);line-height:1.65}
+.five i{font-style:normal;display:block;margin-top:8px;font-size:13.5px;background:var(--sun-soft);border-radius:10px;padding:6px 8px;line-height:1.6}
+
+/* 見本 */
+.sample{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:start}
+table{width:100%;border-collapse:collapse;background:var(--paper);border-radius:14px;overflow:hidden;border:2px solid var(--line);font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{width:9.5em;font-family:var(--display);font-weight:700;background:#FFFDF6}
+tr:last-child th,tr:last-child td{border-bottom:0}
+.note{font-size:14px;color:var(--sub);margin:10px 0 0}
+
+/* 画像 */
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.gallery figure{margin:0;background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:12px}
+.gallery img{border-radius:10px;width:100%}
+.gallery figcaption{font-size:14px;margin-top:8px;line-height:1.65}
+.gallery figcaption b{font-family:var(--display);display:block;font-size:15px}
+.gallery.two{grid-template-columns:minmax(0,1.78fr) minmax(0,1fr);margin-top:16px}
+
+/* AIが読むところ */
+.ai{background:var(--ai-bg);border:2px solid var(--ai-line);border-radius:20px;padding:22px 24px;margin-top:8px}
+.ai .tag{display:inline-block;font-family:var(--display);font-weight:700;font-size:13px;background:var(--mint-deep);color:#fff;border-radius:999px;padding:3px 14px;margin-bottom:10px}
+.ai h3{margin-top:22px}
+.ai ol,.ai ul{margin:6px 0 0;padding-left:1.4em}
+.ai li{margin:4px 0}
+
+.ai code{word-break:break-all;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em;background:#fff;border:1px solid var(--ai-line);border-radius:6px;padding:1px 6px}
+.hand{background:var(--coral-soft);border-radius:14px;padding:14px 18px;margin-top:14px}
+.hand b{font-family:var(--display);color:var(--coral)}
+
+/* 作ったあと */
+.after{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0}
+.after li{background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:16px 18px}
+.after b{font-family:var(--display);display:block;font-size:17px;margin-bottom:2px}
+.after span{font-size:14.5px;color:var(--sub);display:block;line-height:1.7}
+
+.next{margin:34px 0 0;background:var(--mint);border-radius:20px;padding:22px 24px;display:flex;gap:18px;align-items:center}
+.next img{width:92px;height:92px;border-radius:50%;flex:none;border:4px solid #fff}
+.next p{margin:0}
+.next a{font-family:var(--display);font-weight:700;color:var(--ink)}
+footer{padding:28px 0 44px;font-size:13.5px;color:var(--sub)}
+
+@media (max-width:900px){
+  .hero-grid,.sample{grid-template-columns:minmax(0,1fr)}
+  .five{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  .steps,.after,.gallery,.gallery.two{grid-template-columns:minmax(0,1fr)}
+  .five{grid-template-columns:minmax(0,1fr)}
+  th{width:7.2em}
+  .next{flex-direction:column;align-items:flex-start}
+  .ai{padding:18px 16px}
+}
+</style>
+</head>
+<body>
+
+<nav class="setnav" aria-label="プレゼントのセット">
+  <div class="wrap">
+    <span>🎁 2枚セットです</span>
+    <b>① オフ会チャットの作り方</b>
+    <a href="profile.html">② プロフィールの書き換え方 →</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="ribbon">🎉 トラ会員 &amp; Macデビュー おめでとうございます</p>
+      <h1>ちょるさんの<br><em>オフ会チャット</em>、<br><span class="nb">AIと一緒に</span><span class="nb">立ち上げましょう。</span></h1>
+      <p class="lead">このページをそのままAIに読ませると、リベシティのオフ会チャットを<strong>「作成する」ボタンの手前まで</strong>一緒に作ってくれます。最後のボタンは、ちょるさんの手で押してくださいね。</p>
+      <p class="from">おけもんと、森のAIたちより（2026年10月9日・梅田のオフ会にて）</p>
+    </div>
+    <img src="img/thumb.jpg" width="1280" height="720" alt="切り絵風のイラスト。開いたノートの上を、鉛筆を持ったちょるさんが歩き出し、カピバラのおけもんが手を振っている。「ゆるっとジャーナリング会　書いて、叶えに行く。　はじめてさん歓迎」">
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">1</span><span class="t">やることは、3つだけです</span></h2>
+    <p class="h2sub">むずかしい入力は、AIにまかせて大丈夫です。</p>
+    <ol class="steps">
+      <li><span class="who you">ちょるさん</span><h3>日にちと場所を決めます</h3><p>リベシティオフィスで開くなら、先にオフィスの予約を取っておきます。予約は主催するちょるさんの名前で。</p></li>
+      <li><span class="who ai">AI</span><h3>下の合言葉をAIに渡します</h3><p>AIがこのページを読んで、足りないことを質問しながら、作成画面をひとつずつ埋めていきます。</p></li>
+      <li><span class="who you">ちょるさん</span><h3>画面を見て「作成する」を押します</h3><p>タイトル・日時・場所を自分の目で見て、よければボタンをぽちっと。ここがちょるさんの初主催の瞬間です。</p></li>
+    </ol>
+
+    <div class="copy" id="aikotoba">
+      <div class="cap"><strong>🗝 AIに渡す合言葉（コピーして貼るだけ）</strong><button class="btn" type="button" data-copy="aikotoba">コピーする</button></div>
+<pre>このページを最後まで読んで、「AIさんへ」に書いてある順番で、わたしのリベシティのオフ会チャットを「作成する」ボタンの手前まで一緒に作ってください。
+https://okemonogatari-hash.github.io/html-share-box/friend-share-g-daW1jVduZyFSXXdm/
+まず、決まっていないことをわたしに質問してください。「作成する」はわたしが自分で押します。</pre>
+    </div>
+    <p class="note">ブラウザを操作できるAI（Claude の Chrome 拡張など）なら、そのまま画面に入れてくれます。操作ができないAIでも、タイトルと概要文を一緒に作って、入れる順番を案内してくれます。</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">2</span><span class="t">先に、<span class="nb">この5つだけ</span><span class="nb">決めておきます</span></span></h2>
+    <p class="h2sub">決まっていなくても大丈夫です。AIが聞いてくれます。黄色いところは、おけもんがデモで入れた値です。</p>
+    <ul class="five">
+      <li><b>📅 いつ</b><span>日にちと、はじまり・おわりの時間。</span><i>10/14(水) 15:30〜17:00</i></li>
+      <li><b>📍 どこで</b><span>リベシティオフィス／カフェなど／oVice（オンライン）。</span><i>大阪(梅田)オフィス</i></li>
+      <li><b>👥 何人で</b><span>定員は、主催の自分も入れた人数です。</span><i>6名</i></li>
+      <li><b>💰 参加費</b><span>無料か、実費だけか。</span><i>無料</i></li>
+      <li><b>💬 どんな会</b><span>ひとことで言うと、何を一緒にやる会でしょう。</span><i>4つの問いを、みんなでゆるっと書く</i></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">3</span><span class="t">おけもんがデモで作った中身です</span></h2>
+    <p class="h2sub">2026年10月9日、おけもんのパソコンで「作成する」の手前まで入れた内容です（架空の会なので、作成はしていません）。たたき台にどうぞ。</p>
+
+    <div class="copy" id="title">
+      <div class="cap"><strong>チャットルーム名</strong><button class="btn" type="button" data-copy="title">コピーする</button></div>
+<pre>10/14(水)🔰初心者歓迎｜ゆるっとジャーナリング会📓書いて、叶えに行く in 梅田</pre>
+    </div>
+
+    <div class="sample">
+      <div class="copy" id="gaiyou" style="margin-top:0">
+        <div class="cap"><strong>概要文（詳細・公開情報）</strong><button class="btn" type="button" data-copy="gaiyou">コピーする</button></div>
+<pre>「ジャーナリング、気になるけど何を書いたらいいんやろ・・」
+
+「ノート買ったのに、3日で止まってる・・」
+
+「頭の中がごちゃごちゃで、やりたいことが見えてこない・・」
+
+そんな人のための、初心者向け少人数オフ会です😊
+
+むずかしいことはしません！
+
+「昨日できたこと」「うれしかったこと」みたいな、かんたんな4つの問いを、みんなで一緒にゆるっと書いてみましょー✨
+
+書いたものは見せなくて大丈夫です🙆‍♀️
+話したい人だけ、気づいたことをちょこっとシェアしましょう
+
+書いたら叶う、じゃなくて
+書いて、叶えに行く📓
+
+自分に合う「続く形」を一緒に見つけられたらうれしいです😊🙌
+
+こんな方におすすめです👇
+
+・ジャーナリングをやってみたい、始めたけど続かなかった
+
+・頭の中や気持ちを整理したい
+
+・やりたいこと、叶えたいことを言葉にしてみたい
+
+・他の人がどんなふうに書いているのか聞いてみたい
+
+持ち物はノートとペンだけ（スマホのメモでもOKです）
+参加費は無料です。
+
+一人参加・オフ会初心者さん、大歓迎です😊🙌</pre>
+      </div>
+      <div>
+        <table>
+          <tr><th>種類</th><td>公式オフィスで開催するイベント</td></tr>
+          <tr><th>開催場所</th><td>大阪(梅田)オフィス<br>「オフィスの予約を取りました」にチェック</td></tr>
+          <tr><th>開催日時</th><td>2026/10/14 15:30〜17:00</td></tr>
+          <tr><th>カレンダー</th><td>「オフ会カレンダーに登録する」にチェック</td></tr>
+          <tr><th>募集状況</th><td>募集中</td></tr>
+          <tr><th>定員</th><td>6名／定員になったら自動で受付終了</td></tr>
+          <tr><th>プロジェクター</th><td>なし</td></tr>
+          <tr><th>タグ</th><td>ジャーナリング／初心者大歓迎／自己理解／習慣化</td></tr>
+          <tr><th>参加・閲覧</th><td>管理者の承認が必要／チャット検索に表示する</td></tr>
+          <tr><th>通知</th><td>デモなので「誰にも通知しない」。<br>本番は、知らせたい範囲をちょるさんが選びます。</td></tr>
+        </table>
+        <p class="note">概要文はおけもんの口ぐせで書いた見本です。「4つの問い」と「書いたら叶う、じゃなくて、書いて叶えに行く」は、9月24日の梅田のオフ会でちょるさんが教えてくれた言葉をお借りしました。本番は、ちょるさんの言葉に書き直してくださいね。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">4</span><span class="t">絵もプレゼントです</span></h2>
+    <p class="h2sub">画像を長押し（パソコンは右クリック）で保存できます。ちょるさんの会で自由に使ってください。</p>
+    <div class="gallery">
+      <figure><img src="img/icon.jpg" width="1000" height="1000" alt="チャットアイコン用の正方形の絵。ノートの上のちょるさんとカピバラ、朝日と虹。文字なし。" loading="lazy"><figcaption><b>チャットアイコン</b>文字なしの正方形。オフ会チャットのアイコンにそのまま使えます。<br><a href="img/icon.jpg" download>保存する</a></figcaption></figure>
+      <figure><img src="img/thumb.jpg" width="1280" height="720" alt="日付なしの告知サムネ" loading="lazy"><figcaption><b>告知サムネ（日付なし）</b>どの回にも使い回せます。告知の投稿に添える横長の絵です。<br><a href="img/thumb.jpg" download>保存する</a></figcaption></figure>
+      <figure><img src="img/thumb-sample-date.jpg" width="1280" height="720" alt="「10/14(水) 梅田オフィス」と入った告知サムネの見本" loading="lazy"><figcaption><b>日付入りの見本</b>デモの日付が入っています。自分の日付で作る時のお手本に。<br><a href="img/thumb-sample-date.jpg" download>保存する</a></figcaption></figure>
+    </div>
+    <div class="gallery two">
+      <figure><img src="img/prev-0924-thumb.jpg" width="1280" height="720" alt="9月24日のストレングス×ジャーナリングのサムネ。丸いテーブルでノートを書くみんなとカピバラ。" loading="lazy"><figcaption><b>9月24日の思い出のサムネ</b>ちょるさんが初めてジャーナリングの話をしてくれた日の絵です。<br><a href="img/prev-0924-thumb.jpg" download>保存する</a></figcaption></figure>
+      <figure><img src="img/prev-0924-icon.jpg" width="1000" height="1000" alt="9月24日のチャットアイコン" loading="lazy"><figcaption><b>9月24日のアイコン</b><br><a href="img/prev-0924-icon.jpg" download>保存する</a></figcaption></figure>
+    </div>
+
+    <div class="copy" id="eprompt">
+      <div class="cap"><strong>🎨 自分の日付でサムネを作りたい時のお願い文</strong><button class="btn" type="button" data-copy="eprompt">コピーする</button></div>
+<pre>添付した絵と同じ切り絵・紙コラージュ風で、同じ2人（白衣でサイドポニーテールの女の子と、カピバラ）のオフ会サムネを、横長（16:9）で1枚作ってください。
+入れる文字はこれだけです。一字一句そのまま、太めの丸い手書き文字で。
+・大見出し「（会の名前）」
+・添え書き「（ひとこと）」
+・帯「（日付）（場所）」
+文字は絵と重ねず、指定していない文字や英語は入れないでください。</pre>
+    </div>
+    <p class="note">画像を作れるAI（ChatGPT など）に、上の「告知サムネ（日付なし）」を添付して、かっこの中を書き換えて渡します。</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">5</span><span class="t">ここから下は、AIが読むところです</span></h2>
+    <p class="h2sub">ちょるさんは読まなくて大丈夫です。気になったら、のぞいてみてください。</p>
+
+    <div class="ai" id="for-ai">
+      <span class="tag">🤖 AIさんへ</span>
+      <p>このページを開いているあなたは、ちょるさん（リベシティの会員で、これから初めてオフ会を主催する人）のAIです。目的は、ちょるさんのリベシティのアカウントで、オフ会チャットの作成フォームを「作成する」ボタンの手前まで正しく埋めて、ちょるさんに渡すことです。ちょるさんは、Macも、AIにパソコンを操作してもらうのも、今日が初めてかもしれません。画面のどこを見ればいいかを、ひとつずつ言葉にしながら進めてください。</p>
+
+      <div class="hand">
+        <b>ちょるさんに渡すところ（ここはAIが押さずに、画面を見せて待ちます）</b>
+        <ul>
+          <li>ログイン（IDとパスワードは、ちょるさんが自分で入れます）</li>
+          <li>オフィス予約の確定ボタン</li>
+          <li>オフ会チャットの「作成する」ボタン</li>
+          <li>通知の範囲（フォロワー全員に知らせるか、開催地のフォロワーだけか、知らせないか）</li>
+          <li>作成したあとの告知の投稿・参加申請の承認・メンバーの追加</li>
+        </ul>
+      </div>
+
+      <h3>進め方</h3>
+      <ol>
+        <li><strong>先に聞きます。</strong>上の「2」の5つ（いつ・どこで・何人で・参加費・どんな会）のうち、決まっていないものをちょるさんに質問します。日付は曜日を計算して、「10/14は水曜日ですね」のように声に出して合わせます。</li>
+        <li><strong>概要文を、ちょるさんの言葉にします。</strong>「3」の見本は、別の人（おけもん）の口ぐせです。次の3つを聞いて、ちょるさんの話し方のまま書き直し、入力する前に全文を見せて直してもらいます。<br>・どんな人に来てほしいですか<br>・帰るとき、その人がどうなっていたらうれしいですか<br>・当日は、何を一緒にやりますか</li>
+        <li><strong>オフィスで開く時は、予約を一緒に確かめます。</strong><code>https://office.libecity.com</code> の「予約一覧」を開き、ちょるさん本人の予約が開催時間をまるごと包んでいるかを見ます。まだなら予約画面まで案内して、確定はちょるさんに押してもらいます。</li>
+        <li><strong>作成フォームを開きます。</strong><code>https://libecity.com/room_list</code> → 左下の「＋チャット作成」→「オフ会チャットを新規作成」。</li>
+        <li><strong>下の「フォームの順番」で入れます。</strong></li>
+        <li><strong>読み戻して見せます。</strong>入れ終わったら、フォームに実際に入っている値（タイトル・種類・場所・日時・定員・タグ・概要文の頭と末尾・チェックの状態・通知）を画面から読み取り、表にしてちょるさんに見せます。入れたつもりの値ではなく、画面の値を使います。</li>
+        <li><strong>フォームを一番上に戻して、渡します。</strong>「上から見て、よければ『作成する』を押してください」と伝えて待ちます。</li>
+        <li><strong>作成されたら、3つを別々に開いて確かめます。</strong>①できたチャットのページ（タイトル・日時・場所）②イベント・オフ会カレンダーのその日（会が載っていて、チャットへ行けるか）③オフィス開催なら予約一覧（時間が合っているか）。</li>
+      </ol>
+
+      <h3>フォームの順番（2026年10月9日に、おけもんのアカウントで見た画面です）</h3>
+      <ol>
+        <li><strong>チャットアイコン</strong>：「チャットアイコンを変更」。JPG・PNG・WEBP。このページの <code>img/icon.jpg</code> が使えます。</li>
+        <li><strong>チャットルーム名</strong>（必須）：60文字以内を目安に、「日付＋どんな人向けか＋何をやる会か」が一読で分かる名前にします。</li>
+        <li><strong>オフ会・イベントの種類</strong>（必須）：「通常のオフ会・イベント」か「公式オフィスで開催するイベント」。リベシティオフィスで開くなら後者を選びます。ここがずれると、あとで直すことになります。</li>
+        <li><strong>開催場所</strong>（公式オフィスの時）：「オフィスの予約を取りました」にチェックを入れ、オフィスを選びます。チェックは、進め方の3で予約を実物で確かめてから入れます。</li>
+        <li><strong>開催日時</strong>（必須）：日付・開始・終了。画面の注意書きに「土日祝の東京・大阪開催のイベントは最大2時間まで」とありました。</li>
+        <li><strong>オフ会カレンダーに登録する</strong>：チェックを入れます。チェックが灰色で押せず、「すでに同じ開催日時のイベントがカレンダーに登録されています」と出た時は、その時間に別の登録が当たっています。ちょるさんに伝えて、時間をずらすか相談します（デモでは、時間をずらしたら押せるようになりました）。</li>
+        <li><strong>募集状況</strong>（必須）：受付前／募集中／受付終了。</li>
+        <li><strong>定員</strong>（必須・管理者を含む人数）と「定員に達した場合、自動で受付を終了する」。</li>
+        <li><strong>プロジェクターの利用</strong>（必須・公式オフィスの時）：あり／なし。</li>
+        <li><strong>タグ</strong>（10個まで）：1つ入力するたびに Enter で確定します。右上の数字が「1 / 10」のように増えたら入っています。</li>
+        <li><strong>詳細（公開）情報</strong>：見出しを押すと入力欄が開きます。ここが概要文です。入れたあと、段落が全部残っているかを読み戻します。ここに書いた内容は、参加前の人にも見えます。連絡先などは書きません。</li>
+        <li><strong>チャットの設定</strong>：「参加・閲覧に管理者の承認が必要」「チャット検索に表示する」「一般メンバーに@ALLを許可する」「一般メンバーに概要欄の編集を許可する」。迷ったら最初の状態のままにして、ちょるさんに聞きます。</li>
+        <li><strong>通知設定</strong>（必須）：「すべてのフォロワーに通知する」「開催場所のフォロワーに通知する」「誰にも通知しない」。作成した瞬間に通知が飛ぶので、ちょるさんに選んでもらいます。</li>
+      </ol>
+
+      <h3>つまずきやすいところ</h3>
+      <ul>
+        <li>画面は会員の区分や時期で変わることがあります。このページと画面が違った時は、画面のほうを信じて、違いをちょるさんに伝えてください。</li>
+        <li>フォームの上のほうに、チャット作成の注意事項（宣伝や勧誘を目的にした会は作れない、など）が書いてあります。最初に読んで、会の内容が合っているかを確かめます。</li>
+        <li>「作成する」ボタンにカーソルが乗っている時は、Enter を押さないようにします。</li>
+        <li>オフィス開催のルールは、フォームの中の「オフィスのイベント主催に関するよくある質問」のリンクが一次情報です。このページの説明より、そちらを優先してください。</li>
+        <li>うまくいかない項目があったら、そこで手を止めて、どの項目で何が起きたかをそのままちょるさんに伝えます。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">6</span><span class="t">作ったあとに、この3つを見ます</span></h2>
+    <p class="h2sub">3つそろったら、開催の準備は完了です。AIに「3つ確かめて」と言えば、一緒に見てくれます。</p>
+    <ul class="after">
+      <li><b>💬 できたチャット</b><span>タイトル・日時・場所が、決めたとおりになっていますか。</span></li>
+      <li><b>📅 イベントカレンダー</b><span>その日のカレンダーに会が載っていて、チャットへ行けますか。</span></li>
+      <li><b>🏢 オフィスの予約</b><span>オフィスで開く時だけ。自分の予約が、会の時間を包んでいますか。</span></li>
+    </ul>
+
+    <div class="next">
+      <img src="img/icon.jpg" width="1000" height="1000" alt="" loading="lazy">
+      <p><strong>セットのもう1枚もどうぞ。</strong><br>オフ会を開くと、プロフィールを見に来てくれる人が増えます。<a href="profile.html">② プロフィールの書き換え方 →</a></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    このページは、2026年10月9日の画面をもとに作りました。リベシティの画面やルールは変わることがあります。最新は、作成フォームの注意書きと公式のよくある質問で確かめてください。<br>
+    絵：AIで制作（カピバラは、あや＠ロロカデザインさんのアイコンがもとになっています）。
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('[data-copy]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var pre = document.querySelector('#' + btn.dataset.copy + ' pre');
+    if(!pre) return;
+    var text = pre.textContent.trim();
+    var done = function(){ btn.textContent = 'コピーしました'; btn.classList.add('done'); setTimeout(function(){ btn.textContent = 'コピーする'; btn.classList.remove('done'); }, 1800); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, function(){ selectPre(pre); });
+    } else { selectPre(pre); }
+  });
+});
+function selectPre(pre){
+  var r = document.createRange(); r.selectNodeContents(pre);
+  var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+</script>
+</body>
+</html>
