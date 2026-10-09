@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="color-scheme" content="light">
+  <title>Codex Computer Use はじめの一歩</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #fbfaf6;
+      --surface: #fffefa;
+      --ink: #25342d;
+      --muted: #64736b;
+      --green: #285d48;
+      --green-dark: #1d4938;
+      --green-soft: #eaf2ec;
+      --line: #dbe4dc;
+      --red: #a94f46;
+      --red-soft: #f8eeeb;
+      --gold: #806a35;
+      --gold-soft: #f7f2e4;
+      --shadow: 0 12px 32px rgba(35, 67, 51, .055);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 14% 2%, rgba(218, 233, 219, .43), transparent 32rem),
+        var(--paper);
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.85;
+    }
+    a { color: var(--green-dark); text-underline-offset: .2em; }
+    a:hover { color: var(--red); }
+    :focus-visible { outline: 3px solid #bd675a; outline-offset: 3px; border-radius: 4px; }
+    .wrap { width: min(1260px, calc(100% - 48px)); margin-inline: auto; }
+    .masthead { padding: 48px 0 25px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .55rem;
+      margin: 0 0 12px; color: var(--green); font-size: .82rem;
+      font-weight: 750; letter-spacing: .08em;
+    }
+    .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--red); }
+    h1 { max-width: 900px; margin: 0; color: var(--green-dark); font-size: clamp(2rem, 4.4vw, 3.45rem); line-height: 1.24; letter-spacing: -.045em; }
+    .lead { max-width: 780px; margin: 17px 0 0; color: #46584e; font-size: 1.08rem; }
+    .lede-note { display: flex; align-items: flex-start; gap: 11px; max-width: 780px; margin-top: 19px; padding: 13px 16px; border: 1px solid #e6d2ca; border-radius: 13px; background: rgba(255, 250, 247, .8); color: #63443e; font-size: .92rem; }
+    .lede-note strong { color: var(--red); white-space: nowrap; }
+
+    .map-block { margin: 14px 0 32px; padding: 22px 24px 24px; border: 1px solid var(--line); border-radius: 22px; background: rgba(255, 254, 250, .86); box-shadow: var(--shadow); }
+    .map-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 17px; }
+    .map-heading h2 { margin: 0; color: var(--green-dark); font-size: 1.04rem; }
+    .map-heading p { margin: 0; color: var(--muted); font-size: .82rem; }
+    .journey { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 13px; margin: 0; padding: 0; list-style: none; }
+    .journey li { position: relative; min-height: 121px; padding: 14px 14px 13px; border: 1px solid #dce7dd; border-radius: 14px; background: #f8fbf7; }
+    .journey li:not(:last-child)::after { content: "→"; position: absolute; z-index: 2; top: 42px; right: -16px; width: 20px; color: var(--red); font-size: 1.1rem; font-weight: 800; text-align: center; }
+    .step-no { display: block; margin-bottom: 5px; color: var(--red); font-size: .75rem; font-weight: 800; letter-spacing: .08em; }
+    .journey strong { display: block; color: var(--green-dark); font-size: .94rem; line-height: 1.45; }
+    .journey small { display: block; margin-top: 6px; color: var(--muted); font-size: .78rem; line-height: 1.55; }
+
+    .reading { width: min(850px, calc(100% - 48px)); margin: 0 auto 70px; }
+    .toc { margin: 0 0 31px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+    .toc h2 { margin: 0 0 10px; color: var(--green-dark); font-size: 1rem; }
+    .toc ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 25px; margin: 0; padding-left: 1.35rem; color: var(--green); font-size: .91rem; }
+    .toc li { padding-left: 2px; }
+    .toc a { text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    .section { margin: 0 0 35px; padding: 30px 31px; border: 1px solid var(--line); border-radius: 19px; background: var(--surface); box-shadow: 0 7px 22px rgba(35, 67, 51, .035); }
+    .section-head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 17px; }
+    .section-index { flex: 0 0 37px; display: grid; place-items: center; width: 37px; height: 37px; margin-top: 1px; border-radius: 50%; background: var(--green-soft); color: var(--green-dark); font-size: .86rem; font-weight: 800; }
+    h2 { margin: 0; color: var(--green-dark); font-size: 1.48rem; line-height: 1.38; letter-spacing: -.02em; }
+    h3 { margin: 24px 0 9px; color: var(--green-dark); font-size: 1.08rem; line-height: 1.5; }
+    p { margin: 0 0 13px; }
+    p:last-child { margin-bottom: 0; }
+    .section-intro { color: var(--muted); font-size: .94rem; }
+    .callout { margin: 17px 0; padding: 15px 17px; border-left: 4px solid var(--green); border-radius: 0 11px 11px 0; background: var(--green-soft); color: #334b3d; font-size: .93rem; }
+    .callout.warn { border-color: var(--red); background: var(--red-soft); color: #63433d; }
+    .callout.gold { border-color: #b2964c; background: var(--gold-soft); color: #584e37; }
+    .callout strong { color: var(--green-dark); }
+    .callout.warn strong { color: #8d4038; }
+    .small { color: var(--muted); font-size: .86rem; }
+
+    .evidence-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .evidence-table th, .evidence-table td { padding: 13px 12px; border-bottom: 1px solid #e5ebe5; text-align: left; vertical-align: top; }
+    .evidence-table th { color: var(--green-dark); font-size: .82rem; font-weight: 800; }
+    .evidence-table th:first-child { width: 27%; }
+    .evidence-table tr:last-child td { border-bottom: 0; }
+    .status { display: inline-block; margin: 0 5px 3px 0; padding: 1px 8px; border-radius: 999px; font-size: .75rem; font-weight: 800; white-space: nowrap; }
+    .status.ok { background: var(--green-soft); color: var(--green-dark); }
+    .status.no { background: var(--red-soft); color: #8d4038; }
+    .status.part { background: var(--gold-soft); color: #6e5c27; }
+    .evidence-table code, code.inline { padding: .1em .36em; border-radius: 5px; background: #f0f3ef; color: #39483f; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; overflow-wrap: anywhere; }
+    .quote-test { display: block; margin-top: 6px; padding: 8px 10px; border-radius: 8px; background: #f3f6f2; color: #43564a; font-size: .86rem; }
+
+    .checklist { display: grid; gap: 9px; margin: 14px 0 0; padding: 0; list-style: none; }
+    .checklist li { display: flex; gap: 11px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; background: #f8faf7; }
+    .checklist input { flex: 0 0 auto; width: 19px; height: 19px; margin: 5px 0 0; accent-color: var(--green); }
+    .checklist label { cursor: pointer; font-size: .93rem; }
+    .privacy-note { margin-top: 13px; padding: 11px 13px; border: 1px dashed #cbd8cc; border-radius: 10px; color: var(--muted); font-size: .83rem; }
+    .switcher:not([hidden]) { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 18px 0 13px; }
+    .switcher-label { margin-right: 4px; color: var(--muted); font-size: .85rem; }
+    .switcher button, .copy-button { appearance: none; border: 1px solid #a8bdae; border-radius: 999px; background: #fff; color: var(--green-dark); font: inherit; font-size: .88rem; font-weight: 750; cursor: pointer; }
+    .switcher button { padding: 7px 15px; }
+    .switcher button[aria-pressed="true"] { border-color: var(--green); background: var(--green); color: white; }
+    .os-panel { margin-top: 12px; padding: 17px 18px; border: 1px solid var(--line); border-radius: 13px; background: #fcfdfb; }
+    .os-panel h3 { margin: 0 0 7px; }
+    .os-panel p { margin-bottom: 9px; font-size: .92rem; }
+    .noscript-note { margin: 12px 0 0; color: var(--muted); font-size: .82rem; }
+
+    details { margin: 10px 0; border: 1px solid #e0e7e0; border-radius: 12px; background: #fcfdfb; }
+    summary { position: relative; padding: 13px 42px 13px 15px; color: var(--green-dark); font-weight: 750; cursor: pointer; list-style: none; line-height: 1.55; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; position: absolute; right: 16px; top: 10px; color: var(--red); font-size: 1.35rem; font-weight: 500; }
+    details[open] summary::after { content: "−"; }
+    .details-body { padding: 0 16px 15px; color: #45564c; font-size: .92rem; }
+    .details-body p { margin-bottom: 9px; }
+    .details-body ol, .details-body ul { margin: 7px 0 0; padding-left: 1.45rem; }
+    .details-body li { margin: 4px 0; }
+
+    .prompt-box { overflow: hidden; border: 1px solid #d8e1d9; border-radius: 14px; background: #f8faf7; }
+    .prompt-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 13px; padding: 11px 13px; border-bottom: 1px solid #d8e1d9; background: #eef4ef; }
+    .prompt-toolbar span { color: var(--green-dark); font-size: .85rem; font-weight: 750; }
+    .copy-button { padding: 7px 13px; border-radius: 9px; background: white; }
+    .copy-button:hover { border-color: var(--green); background: #f9fffa; }
+    .copy-status { min-height: 1.5em; margin: 0; padding: 4px 13px 0; color: var(--muted); font-size: .82rem; }
+    .copy-status[data-kind="success"] { color: var(--green-dark); }
+    .copy-status[data-kind="error"] { color: #8d4038; }
+    pre { max-height: 620px; overflow: auto; margin: 0; padding: 16px; color: #314238; font: .86rem/1.75 ui-monospace, SFMono-Regular, Menlo, Consolas, "Yu Gothic", monospace; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 2; }
+    .copy-fallback { position: fixed; inset: auto auto 0 0; width: 2px; height: 2px; padding: 0; border: 0; opacity: .01; }
+    .noscript-inline { margin: 12px 0 0; color: var(--muted); font-size: .84rem; }
+
+    .criteria { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 15px; }
+    .criterion { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #fbfcfa; }
+    .criterion strong { display: block; margin-bottom: 3px; color: var(--green-dark); font-size: .93rem; }
+    .criterion p { color: var(--muted); font-size: .85rem; line-height: 1.65; }
+    .source-list { margin: 12px 0 0; padding-left: 1.3rem; }
+    .source-list li { margin: 9px 0; }
+    .source-list a { font-weight: 700; }
+    .source-list small { display: block; color: var(--muted); font-size: .81rem; }
+    .footer { padding: 0 0 42px; color: var(--muted); font-size: .82rem; text-align: center; }
+    .footer p { margin: 6px 0; }
+
+    @media (max-width: 760px) {
+      .wrap, .reading { width: min(100% - 32px, 620px); }
+      .masthead { padding-top: 34px; }
+      .map-block { padding: 18px 16px; }
+      .map-heading { display: block; }
+      .map-heading p { margin-top: 4px; }
+      .journey { grid-template-columns: 1fr; gap: 8px; }
+      .journey li { min-height: 0; display: grid; grid-template-columns: 40px minmax(0, 1fr); column-gap: 9px; padding: 10px 12px; }
+      .step-no { grid-row: span 2; margin: 3px 0 0; }
+      .journey strong { align-self: end; }
+      .journey small { margin-top: 2px; }
+      .journey li:not(:last-child)::after { content: "↓"; top: auto; bottom: -15px; right: 13px; width: 20px; font-size: .85rem; }
+      .toc { padding: 17px; }
+      .toc ol { grid-template-columns: 1fr; gap: 3px; }
+      .section { padding: 23px 19px; margin-bottom: 23px; }
+      .section-head { gap: 11px; }
+      .section-index { flex-basis: 32px; width: 32px; height: 32px; }
+      h2 { font-size: 1.3rem; }
+      .evidence-table { font-size: .84rem; }
+      .evidence-table th, .evidence-table td { padding: 10px 7px; }
+      .evidence-table th:first-child { width: 29%; }
+      .criteria { grid-template-columns: 1fr; }
+      pre { max-height: 520px; padding: 13px; font-size: .79rem; }
+    }
+    @media (max-width: 390px) {
+      body { font-size: 17px; }
+      .wrap, .reading { width: calc(100% - 28px); }
+      .masthead { padding-top: 28px; }
+      .lead { font-size: 1rem; }
+      .lede-note { display: block; font-size: .86rem; }
+      .lede-note strong { display: block; margin-bottom: 3px; }
+      .section { padding: 21px 15px; }
+      .evidence-table { font-size: .8rem; }
+      .evidence-table th:first-child { width: 28%; }
+      .status { font-size: .68rem; }
+      .switcher { gap: 6px; }
+      .switcher-label { flex-basis: 100%; }
+      .prompt-toolbar { align-items: flex-start; }
+      .prompt-toolbar span { max-width: 62%; line-height: 1.5; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    @media print {
+      :root { --paper: #fff; --surface: #fff; }
+      body { background: white; font-size: 12pt; }
+      .map-block, .section { box-shadow: none; break-inside: avoid; }
+      .switcher, .copy-button, .copy-status { display: none !important; }
+      .js-enabled .os-panel[hidden] { display: block !important; }
+      details { break-inside: avoid; }
+      details > .details-body { display: block !important; }
+      a { color: inherit; }
+    }
+  h1,h2,h3 { text-wrap: balance; }
+    .step-no,.status { font-size:14px; }
+    .evidence-table code,code.inline { font-size:14px; }
+    </style>
+</head>
+<body>
+  <header class="masthead wrap">
+    <p class="eyebrow">オフ会で試すための、やさしい手引き</p>
+    <h1>Codex Computer Use<br>はじめの一歩</h1>
+    <p class="lead">画面を見て、ボタンを押し、結果を読み返す。そんなPC操作をCodexに頼む機能です。まずは自分の画面で、小さな新規文書を使って確かめましょう。</p>
+    <div class="lede-note"><strong>まずは、あなたのCodexに診断を頼もう</strong><span>下の<a href="#prompt">診断プロンプトをコピー</a>して、確認したいパソコンのCodexに貼ってください。設定が足りなければ、画面を見ながら一つずつ進めます。OSの許可画面だけは本人が操作します。</span></div>
+  </header>
+
+  <section class="map-block wrap" aria-labelledby="map-title">
+    <div class="map-heading">
+      <h2 id="map-title">まずはこの順で、ひとつずつ</h2>
+      <p>「使えるか」から「保存して開き直せたか」まで</p>
+    </div>
+    <ol class="journey">
+      <li><span class="step-no">STEP 01</span><strong>機能があるか</strong><small>デスクトップ版・地域・組織の提供状況を確認</small></li>
+      <li><span class="step-no">STEP 02</span><strong>使う経路を選ぶ</strong><small>画面操作とChrome拡張は別の経路</small></li>
+      <li><span class="step-no">STEP 03</span><strong>本人が許可する</strong><small>OSの許可が表示されたら内容を見て判断</small></li>
+      <li><span class="step-no">STEP 04</span><strong>無害な操作を試す</strong><small>新規文書に短い日本語を一度だけ入力</small></li>
+      <li><span class="step-no">STEP 05</span><strong>結果を読み戻す</strong><small>画面・本文・保存後の再オープンを確認</small></li>
+    </ol>
+  </section>
+
+  <main class="reading">
+    <nav class="toc" aria-label="目次">
+      <h2>読みたい場所へ</h2>
+      <ol>
+        <li><a href="#measure">今回の実測</a></li>
+        <li><a href="#setup">設定チェック</a></li>
+        <li><a href="#symptoms">症状から切り分ける</a></li>
+        <li><a href="#prompt">貼り付けて使う診断プロンプト</a></li>
+        <li><a href="#working">「動いた」の判定</a></li>
+        <li><a href="#sources">公式案内と範囲</a></li>
+      </ol>
+    </nav>
+
+    <section class="section" id="measure" aria-labelledby="measure-title">
+      <div class="section-head"><span class="section-index">01</span><div><h2 id="measure-title">今回の実測：できたこと、止まったこと</h2><p class="section-intro">2026年10月9日に、こちらのMacで確認した結果です。別のPCで同じ状態になる保証ではありません。</p></div></div>
+      <table class="evidence-table">
+        <thead><tr><th scope="col">確認したもの</th><th scope="col">観測結果</th></tr></thead>
+        <tbody>
+          <tr><td>環境</td><td>macOS 27.0.1（build 26A434）／ChatGPT.app（bundle <code>com.openai.codex</code>、version 26.1002.52244、build 13536）／CUA helper 26.1001.1001394／Chrome 154.0.8037.99</td></tr>
+          <tr><td>アプリ一覧</td><td><span class="status ok">取得成功</span><code>cua_repl</code> が利用でき、アプリ一覧を取得できました。</td></tr>
+          <tr><td>Chrome経路</td><td><span class="status ok">接続・本文取得</span>Chrome拡張の接続と、ログイン済みページ本文の読み取りを確認しました。これはChrome経路の結果です。</td></tr>
+          <tr><td>新規文書への入力</td><td><span class="status ok">画面と読み取りが一致</span>TextEditの新規書類ボタンをAX操作し、次の文を貼り付け。操作後のアクセシビリティ情報と画像の両方で一致を確認しました。<span class="quote-test">Computer Use 動作確認<br>日本語の入力を確認しました。</span></td></tr>
+          <tr><td>保存・開き直し</td><td><span class="status no">未成立</span>保存ダイアログの「保存」操作で <code>noWindowsAvailable</code>。再観測すると「開く」ダイアログへ変化し、指定先に保存ファイルはありませんでした。保存成功とは判定していません。</td></tr>
+          <tr><td>別の操作エラー</td><td><span class="status part">一部復旧</span>古い画面要素IDを使った際に <code>invalid element ID</code>。最新画面からIDを取り直すと、値の入力は成功しました。画面の変化後は部品を再特定する必要があります。</td></tr>
+          <tr><td>未確認</td><td>座標ドラッグ・スクロール、全アプリでの動作、バックグラウンド維持、macOS許可スイッチの実値、別の人のPCは今回確認していません。原因が単一の設定だとは証明していません。</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn"><strong>入力できたことと、保存できたことは別です。</strong> 画面上で文字が見えたら「入力を確認」。保存先にファイルができ、開き直して同じ文を読めたときに初めて「保存まで確認」とします。</div>
+      <p class="small">今回の操作では、新しいAPIキーや自作MCPを設定していません。これだけで、どの人にもキーやMCPが不要とは言えません。</p>
+    </section>
+
+    <section class="section" id="setup" aria-labelledby="setup-title">
+      <div class="section-head"><span class="section-index">02</span><div><h2 id="setup-title">設定チェック：使う経路とOSを確認</h2><p class="section-intro">画面操作とChromeのページ読み取りは別の機能経路です。まず、何をしたいかに合わせます。</p></div></div>
+
+      <h3>共通：デスクトップ版のComputer Use</h3>
+      <ul class="checklist">
+        <li><input type="checkbox" id="common1"><label for="common1">ChatGPTデスクトップアプリのWorkまたはCodexで、<strong>Plugins → Computer Use</strong> を開く。Install / Enable を案内されたら公式の流れで進める。</label></li>
+        <li><input type="checkbox" id="common2"><label for="common2">Computer Useのserverとskillが有効か、設定画面で確認する。</label></li>
+        <li><input type="checkbox" id="common3"><label for="common3"><strong>Settings → Computer use</strong> に項目があるか確認する。見当たらない場合は、地域・組織での提供状況を確認する。</label></li>
+      </ul>
+
+      <div class="switcher" id="os-switcher" hidden role="group" aria-label="OS別の案内を選択">
+        <span class="switcher-label">あなたのOSに合わせて表示</span>
+        <button type="button" data-select-os="both" aria-controls="mac-guide windows-guide" aria-pressed="true">両方表示</button>
+        <button type="button" data-select-os="mac" aria-controls="mac-guide" aria-pressed="false">Mac</button>
+        <button type="button" data-select-os="windows" aria-controls="windows-guide" aria-pressed="false">Windows</button>
+      </div>
+      <noscript><p class="noscript-note">JavaScriptを使わない表示では、MacとWindowsの案内を両方表示しています。</p></noscript>
+
+      <div class="os-panel" id="mac-guide" data-os-panel="mac">
+        <h3>Mac：本人が許可画面を確認</h3>
+        <p>公式案内では、macOSの <strong>System Settings → Privacy &amp; Security</strong> で、画面収録（表示が「画面とシステムオーディオの録音」等の場合もあります）と、Codex Computer Useのアクセシビリティ許可を確認します。表示されたアプリ名と許可内容を本人が見て操作してください。</p>
+        <ul class="checklist">
+          <li><input type="checkbox" id="mac1"><label for="mac1">必要な許可が表示された場合、対象アプリと目的を読んでから自分で許可する。</label></li>
+          <li><input type="checkbox" id="mac2"><label for="mac2">許可後、Computer Useへ戻り、まず新しい空の文書だけで試す。</label></li>
+        </ul>
+        <p class="small">公式資料はMacでのバックグラウンド動作に対応すると案内していますが、今回その状態は実測していません。画面収録とアクセシビリティは別の許可です。</p>
+      </div>
+      <div class="os-panel" id="windows-guide" data-os-panel="windows">
+        <h3>Windows：ロック解除した前景デスクトップで試す</h3>
+        <p>公式案内では、WindowsのComputer Useはアクティブなデスクトップ上で動きます。最初の確認ではPCのロックを解除し、操作中に本人が同じ画面やマウスを同時に動かさないようにします。</p>
+        <ul class="checklist">
+          <li><input type="checkbox" id="win1"><label for="win1">対象のデスクトップが前面で、ロックされていないことを確認する。</label></li>
+          <li><input type="checkbox" id="win2"><label for="win2">操作中は画面を切り替えたり、同じ入力欄を触ったりせず、結果が出るまで待つ。</label></li>
+        </ul>
+        <p class="small">Mac向けの「画面収録」「アクセシビリティ」の手順を、そのままWindowsへ当てはめないでください。</p>
+      </div>
+
+      <h3>ブラウザ本文を読む：Chrome拡張の経路</h3>
+      <p>ページを読む依頼なら、<strong>Settings → Computer Use → Chrome → Install</strong> から公式拡張を入れ、Manageの表示と、拡張を入れたChromeプロファイルを確認します。Codexでは<strong>@Chrome</strong>を選びます。@Browser（内蔵ブラウザ）とはログイン状態が別です。</p>
+      <p class="small">Chromeの接続テスト：入力欄の「@」からChromeを選び、「https://learn.chatgpt.com/docs/computer-use を開き、ページの見出しを教えて。フォーム送信や設定変更はしないで」と依頼します。公開ページを読めたら、次に必要なサイトへ本人がログインして試します。</p>
+      <div class="callout"><strong>Full access は別の設定です。</strong> Codexのファイルやコマンドの実行範囲を指し、macOSの画面収録・アクセシビリティ許可や、アプリ・サイトごとの許可とは別レイヤーです。画面操作のためにすべての許可を広げる必要はありません。</div>
+      <p class="privacy-note">このページのチェック状態やOS選択は保存しません。サーバー送信、Cookie、localStorageへの記録は行いません。読み込み時はチェックを空に戻します。</p>
+    </section>
+
+    <section class="section" id="symptoms" aria-labelledby="symptoms-title">
+      <div class="section-head"><span class="section-index">03</span><div><h2 id="symptoms-title">症状から切り分ける</h2><p class="section-intro">同じ操作を連打せず、最新画面を見直して次の一手だけ試します。読みたい項目を開いてください。</p></div></div>
+
+      <details>
+        <summary>Computer Useがメニューに見当たらない</summary>
+        <div class="details-body">
+          <p>機能の提供は地域や組織設定によって異なる場合があります。まずChatGPTデスクトップアプリのWork/Codexにいるか、Plugins内のComputer Use、Settings → Computer useを見直します。</p>
+          <p>項目がなければ、管理者や公式の提供案内を確認します。手で設定ファイルを書き換えたり、非公式インストーラーを探したりせず、利用可能になるまで待ちます。</p>
+        </div>
+      </details>
+      <details>
+        <summary>スクリーンショットは取れるのに、クリックやスクロールが失敗する</summary>
+        <div class="details-body">
+          <p>画像を取得できたことは、次の操作が通った証拠にはなりません。同じアプリを本人や別のAIが同時に操作していないか確認します。操作中なら待ち、いったん止めて最新画像を取り、ボタン名と役割・位置を見直し、別の小さな操作を一度だけ試して結果を読み戻します。</p>
+          <ul>
+            <li><code class="inline">noWindowsAvailable</code>：エラー後に画面を取り直し、ダイアログや対象アプリが変わっていないか確認。続けて同じクリックを重ねません。</li>
+            <li><code class="inline">invalid element ID</code>：画面が変わった後の古い部品IDの可能性があります。最新画面から部品を取り直します。</li>
+            <li>10月1日は画面を取り直してスクロールできた記録があり、10月6日は通常画面でスクロールが失敗しました。前回の成功を今回の画面に当てはめず、原因も一つに決めません。</li>
+          </ul>
+        </div>
+      </details>
+      <details>
+        <summary>日本語が入らない、または入力先が違う</summary>
+        <div class="details-body">
+          <p>操作前に画像で入力欄と既存の文字を確かめます。まず新規の空文書を使い、一文だけ貼り付けて、操作後に画像と読み取りの両方を確認します。既存文書の上書きは試験に使いません。</p>
+          <p>文字が見えなければ、欄と画面をもう一度確かめてから一度だけ別の入力方法を試します。失敗が続いたらそこで止め、エラーの原文を残します。</p>
+        </div>
+      </details>
+      <details>
+        <summary>入力は見えたが、保存できたか分からない</summary>
+        <div class="details-body">
+          <p>入力の成功と保存の成功を分けます。保存先が本人から指定されていなければ先に尋ねます。新しいファイル名を使い、同名ファイルがあれば置き換えず別名を確認します。</p>
+          <p>画面が変わった、保存ボタンが反応しない、エラーが出た場合は最新画面を読み直します。ファイルが保存先に存在し、開き直して同じ文章が読めるまで「保存済み」と言いません。</p>
+          <p>今回のTextEditでは「保存」操作でエラーとなり、指定先にファイルはありませんでした。日本語入力は確認できましたが、保存と再オープンは未確認です。</p>
+        </div>
+      </details>
+      <details>
+        <summary>Chrome拡張が接続されない、または違うページが見える</summary>
+        <div class="details-body">
+          <p>画面操作の許可と、Chrome拡張の接続を混ぜずに確認します。@Chromeを選んでいるか、拡張を入れたChromeプロファイルか、Settings → Computer Use → ChromeのManageに拡張が出るかを見ます。@Browserには別のログイン状態があります。</p>
+          <p>まだ直らない場合は、公式案内に沿って次の順に進みます。</p>
+          <ol>
+            <li>対象サイトのブロックリストを確認。</li>
+            <li>デスクトップアプリの更新と、重複するアプリがないか確認。</li>
+            <li>未保存作業を保存し、Chromeを再起動。Manageとプロファイルを再確認。</li>
+            <li>新しいチャット、次にデスクトップアプリ再起動を試す。</li>
+            <li>最後に、公式のInstall手順で拡張を入れ直す。解決しなければアプリで <code>/feedback</code> を使い、チャットIDと発生したエラーをサポートへ伝えます（秘密情報は除きます）。</li>
+          </ol>
+          <p class="small">ローカルファイルのアップロードをする場合を除き、file URL許可を追加する必要はありません。</p>
+        </div>
+      </details>
+      <details>
+        <summary>Macの許可を求められた／Windowsの画面が反応しない</summary>
+        <div class="details-body">
+          <p>Macは許可画面のアプリ名と用途を本人が読み、必要な項目だけ本人が操作します。AIがセキュリティ許可を代わりに承認することはできません。全許可のリセットや一括オンを対策にしません。</p>
+          <p>Windowsはロック解除したアクティブなデスクトップで試します。ロック中や、別画面へ切り替えた状態を初回テストにしません。操作中の同時入力を避けます。</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="section" id="prompt" aria-labelledby="prompt-title">
+      <div class="section-head"><span class="section-index">04</span><div><h2 id="prompt-title">そのままCodexに貼れる診断プロンプト</h2><p class="section-intro">貼り付け先は、確認したいPCで開いたCodexです。入力欄で「@」を入力し、Computer（または対象アプリ）が出たら選んでから、下の文を貼り付けます。候補がない場合は先に設定チェックへ。許可設定と保存先は本人が判断します。</p></div></div>
+      <div class="prompt-box">
+        <div class="prompt-toolbar"><span>Computer Useの設定と、無害な新規文書テスト</span><button class="copy-button" id="copy-prompt" type="button" hidden>プロンプトをコピー</button></div>
+        <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
+        <pre><code id="diagnostic-prompt">このPCでCodex Computer Useを安全に診断してください。現在の状態を確認してから、一つずつ進めてください。
+
+最初に次を調べ、分かる範囲で報告してください。
+- OS名とバージョン、ChatGPT/Codexデスクトップアプリのバージョン
+- Computer Useの機能・操作ツールがこのチャットで実際に使えるか
+- 画面操作を試す対象アプリ。Chromeを試す場合は、Chrome拡張がつながっているプロファイルと、@Chromeを選べるか
+- 同じアプリを本人や別のAIが同時に操作していないか。操作中なら、画面を取り合わず終わるまで待つ
+
+操作前に最新のスクリーンショットを見て、対象画面と入力欄を確認してください。画像を取得できただけで、クリックや入力が成功したとは判定しないでください。
+
+機能やツールが使えない場合は、その事実と確認場所を伝えて止まってください。設定ファイルの手編集、非公式な導入、制限や許可の回避はしないでください。OSの画面収録・アクセシビリティなどの許可が必要なら、設定画面と項目名を一つずつ案内し、本人が内容を読んで操作するのを待ってください。あなたが許可を代わりに承認してはいけません。
+
+テストは新しい空の文書だけで行います。MacならTextEdit、Windowsならメモ帳を使い、既存の文書は開いたり変更したりしないでください。最新画面で新規書類を確認してから、次の2行を一度だけ入力してください。
+Computer Use 動作確認
+日本語の入力を確認しました。
+
+入力後、スクリーンショットと画面からの読み取りの両方で、欄と2行の内容を確認してください。一致しなければ成功と言わず、最新画面を取り直して一度だけ別の小さな入力方法を試します。同じエラーが続いたら止め、原文を記録してください。invalid element IDが出たら最新画面から部品を取り直します。
+
+保存テストに進む前に、私に保存先フォルダを尋ねて回答を待ってください。指定された場所に新しいテキストファイルとして保存します。同名ファイルがあれば置き換えず、別名を決めるため私に尋ねてください。保存ダイアログや画面が変わったら最新状態を再確認してください。保存先にファイルがあることを確認し、開き直して2行が一致するまで保存成功と報告しないでください。
+
+最後に「成功」「失敗」「未確認」を分けて短く報告してください。失敗時はエラー原文、最後に見えた画面、次に試す一手を添えてください。メールアドレス、認証情報、個人のファイル内容、アカウントIDは報告へ含めないでください。許可が得られない場合や同じ失敗が続いた場合は、その操作を止めてください。</code></pre>
+      </div>
+      <noscript><p class="noscript-inline">コピー機能はJavaScriptが必要です。ボタンがない場合は、上の文章を選択して手動でコピーしてください。</p></noscript>
+      <p class="small">コピーが失敗した時は成功表示を出しません。本文を選択して手動でコピーできます。</p>
+    </section>
+
+    <section class="section" id="working" aria-labelledby="working-title">
+      <div class="section-head"><span class="section-index">05</span><div><h2 id="working-title">どこまで確かめたら「動いた」？</h2><p class="section-intro">「動いた」は一言で済ませず、実際に確認できた段階を伝えます。</p></div></div>
+      <div class="criteria">
+        <div class="criterion"><strong>① 機能が見つかった</strong><p>このPC・アカウントで設定項目とツールが使える。</p></div>
+        <div class="criterion"><strong>② 操作が実行された</strong><p>画面上の対象と操作後の変化を観測できた。</p></div>
+        <div class="criterion"><strong>③ 入力を読み返せた</strong><p>画像と画面の読み取りで、期待した文字が一致した。</p></div>
+        <div class="criterion"><strong>④ 保存後も一致した</strong><p>新規ファイルを保存先で確認し、開き直して同じ文章を読めた。</p></div>
+      </div>
+      <div class="callout gold"><strong>今回の実測は②と③の一部まで。</strong> 新規文書への日本語入力は確認できました。保存ファイルが作られず、④は未達です。Chrome拡張のページ読み取り成功は、TextEditの保存成功を意味しません。</div>
+      <p>画面が撮れた・ボタンを押したと言った、だけでは完了にしません。操作結果と保存結果を、それぞれ読み戻して伝えます。</p>
+    </section>
+
+    <section class="section" id="sources" aria-labelledby="sources-title">
+      <div class="section-head"><span class="section-index">06</span><div><h2 id="sources-title">公式案内と、このページの範囲</h2><p class="section-intro">公式ページを2026年10月9日に確認し、必要な手順だけ短く言い換えています。ボタン名はアプリ更新で変わることがあります。</p></div></div>
+      <ul class="source-list">
+        <li><a href="https://learn.chatgpt.com/docs/computer-use" target="_blank" rel="noopener noreferrer">OpenAI公式：Computer Use</a><small>デスクトップ版Work/Codexでの導入、設定、Macの許可、Windowsの前景デスクトップ、地域・組織での利用条件。</small></li>
+        <li><a href="https://learn.chatgpt.com/docs/chrome-extension" target="_blank" rel="noopener noreferrer">OpenAI公式：Chrome extension</a><small>公式Install経路、拡張・プロファイル確認、@Chromeと内蔵ブラウザの違い、接続不調時の確認手順。</small></li>
+        <li><a href="https://learn.chatgpt.com/docs/permission-modes" target="_blank" rel="noopener noreferrer">OpenAI公式：Permission modes</a><small>Codexのファイル・コマンド権限と、Computer UseやOS側の画面許可を区別する根拠。</small></li>
+      </ul>
+      <p class="small" style="margin-top:17px">このページは外部ライブラリ・画像・解析タグを読み込みません。noindexを指定していますが、これは検索エンジン向けの指示で、閲覧を制限する設定ではありません。共有する場合は公開範囲を別途確認してください。</p>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <p>この資料は設定を代行せず、本人が自分の画面で確認するための案内です。</p>
+    <p>実測日：2026年10月9日　｜　個人名・会話内容・個人IDは掲載していません</p>
+  </footer>
+
+  <script>
+    (() => {
+      const body = document.body;
+      const switcher = document.getElementById('os-switcher');
+      const osButtons = [...document.querySelectorAll('[data-select-os]')];
+      const panels = [...document.querySelectorAll('[data-os-panel]')];
+      const checkboxes = [...document.querySelectorAll('input[type="checkbox"]')];
+
+      const resetChecks = () => checkboxes.forEach((checkbox) => { checkbox.checked = false; });
+      resetChecks();
+      window.addEventListener('pageshow', resetChecks);
+
+      const setOs = (os) => {
+        body.dataset.os = os;
+        osButtons.forEach((button) => {
+          button.setAttribute('aria-pressed', String(button.dataset.selectOs === os));
+        });
+        panels.forEach((panel) => {
+          panel.hidden = os !== 'both' && panel.dataset.osPanel !== os;
+        });
+      };
+      osButtons.forEach((button) => button.addEventListener('click', () => setOs(button.dataset.selectOs)));
+      body.classList.add('js-enabled');
+      switcher.hidden = false;
+      setOs('both');
+
+      const copyButton = document.getElementById('copy-prompt');
+      const prompt = document.getElementById('diagnostic-prompt');
+      const status = document.getElementById('copy-status');
+      const announce = (message, kind) => {
+        status.textContent = message;
+        status.dataset.kind = kind;
+      };
+      const fallbackCopy = () => {
+        const field = document.createElement('textarea');
+        field.className = 'copy-fallback';
+        field.setAttribute('aria-hidden', 'true');
+        field.readOnly = true;
+        field.value = prompt.textContent.trim();
+        document.body.appendChild(field);
+        field.select();
+        let copied = false;
+        try { copied = document.execCommand('copy') === true; } catch (_) { copied = false; }
+        field.remove();
+        return copied;
+      };
+      copyButton.hidden = false;
+      copyButton.addEventListener('click', async () => {
+        const text = prompt.textContent.trim();
+        copyButton.disabled = true;
+        announce('コピーを試しています…', '');
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            announce('コピーしました。貼り付け先で内容を確認してください。', 'success');
+          } else if (fallbackCopy()) {
+            announce('コピーしました。貼り付け先で内容を確認してください。', 'success');
+          } else {
+            announce('自動コピーに失敗しました。本文を選択して手動でコピーしてください。', 'error');
+          }
+        } catch (_) {
+          if (fallbackCopy()) {
+            announce('コピーしました。貼り付け先で内容を確認してください。', 'success');
+          } else {
+            announce('自動コピーに失敗しました。本文を選択して手動でコピーしてください。', 'error');
+          }
+        } finally {
+          copyButton.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
