@@ -250,7 +250,7 @@
           <tr><td>新規文書への入力</td><td><span class="status ok">画面と読み取りが一致</span>TextEditの新規書類ボタンをAX操作し、次の文を貼り付け。操作後のアクセシビリティ情報と画像の両方で一致を確認しました。<span class="quote-test">Computer Use 動作確認<br>日本語の入力を確認しました。</span></td></tr>
           <tr><td>保存・開き直し</td><td><span class="status no">未成立</span>保存ダイアログの「保存」操作で <code>noWindowsAvailable</code>。再観測すると「開く」ダイアログへ変化し、指定先に保存ファイルはありませんでした。保存成功とは判定していません。</td></tr>
           <tr><td>別の操作エラー</td><td><span class="status part">一部復旧</span>古い画面要素IDを使った際に <code>invalid element ID</code>。最新画面からIDを取り直すと、値の入力は成功しました。画面の変化後は部品を再特定する必要があります。</td></tr>
-          <tr><td>未確認</td><td>座標ドラッグ・スクロール、全アプリでの動作、バックグラウンド維持、macOS許可スイッチの実値、別の人のPCは今回確認していません。原因が単一の設定だとは証明していません。</td></tr>
+          <tr><td>未確認</td><td>ネイティブアプリの座標ドラッグ・スクロール、全アプリでの動作、バックグラウンド維持、macOS許可スイッチの実値、別の人のPCは今回確認していません。原因が単一の設定だとは証明していません。</td></tr>
         </tbody>
       </table>
       <div class="callout warn"><strong>入力できたことと、保存できたことは別です。</strong> 画面上で文字が見えたら「入力を確認」。保存先にファイルができ、開き直して同じ文を読めたときに初めて「保存まで確認」とします。</div>
@@ -298,7 +298,7 @@
       <p>ページを読む依頼なら、<strong>Settings → Computer Use → Chrome → Install</strong> から公式拡張を入れ、Manageの表示と、拡張を入れたChromeプロファイルを確認します。Codexでは<strong>@Chrome</strong>を選びます。@Browser（内蔵ブラウザ）とはログイン状態が別です。</p>
       <p class="small">Chromeの接続テスト：入力欄の「@」からChromeを選び、「https://learn.chatgpt.com/docs/computer-use を開き、ページの見出しを教えて。フォーム送信や設定変更はしないで」と依頼します。公開ページを読めたら、次に必要なサイトへ本人がログインして試します。</p>
       <div class="callout"><strong>Full access は別の設定です。</strong> Codexのファイルやコマンドの実行範囲を指し、macOSの画面収録・アクセシビリティ許可や、アプリ・サイトごとの許可とは別レイヤーです。画面操作のためにすべての許可を広げる必要はありません。</div>
-      <p class="privacy-note">このページのチェック状態やOS選択は保存しません。サーバー送信、Cookie、localStorageへの記録は行いません。読み込み時はチェックを空に戻します。</p>
+      <p class="privacy-note">このページのチェック状態やOS選択は保存しません。サーバー送信、Cookie、localStorageへの記録は行いません。読み込み時はチェックを空に戻し、Macの手順を表示します。</p>
     </section>
 
     <section class="section" id="symptoms" aria-labelledby="symptoms-title">
@@ -444,7 +444,7 @@ Computer Use 動作確認
       osButtons.forEach((button) => button.addEventListener('click', () => setOs(button.dataset.selectOs)));
       body.classList.add('js-enabled');
       switcher.hidden = false;
-      setOs('both');
+      setOs('mac');
 
       const copyButton = document.getElementById('copy-prompt');
       const prompt = document.getElementById('diagnostic-prompt');
