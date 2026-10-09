@@ -53,6 +53,8 @@
     .lead { max-width: 780px; margin: 17px 0 0; color: #46584e; font-size: 1.08rem; }
     .lede-note { display: flex; align-items: flex-start; gap: 11px; max-width: 780px; margin-top: 19px; padding: 13px 16px; border: 1px solid #e6d2ca; border-radius: 13px; background: rgba(255, 250, 247, .8); color: #63443e; font-size: .92rem; }
     .lede-note strong { color: var(--red); white-space: nowrap; }
+    .lede-note .guide-link { display: inline-flex; align-items: center; margin: 5px 8px 3px 0; padding: 5px 11px; border-radius: 999px; background: var(--green); color: white; font-weight: 750; text-decoration: none; }
+    .lede-note .guide-link:hover { background: var(--green-dark); color: white; }
 
     .map-block { margin: 14px 0 32px; padding: 22px 24px 24px; border: 1px solid var(--line); border-radius: 22px; background: rgba(255, 254, 250, .86); box-shadow: var(--shadow); }
     .map-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 17px; }
@@ -114,6 +116,24 @@
     .os-panel h3 { margin: 0 0 7px; }
     .os-panel p { margin-bottom: 9px; font-size: .92rem; }
     .noscript-note { margin: 12px 0 0; color: var(--muted); font-size: .82rem; }
+    .walkthrough { margin: 23px 0 27px; }
+    .walkthrough > h3 { margin: 0 0 7px; }
+    .walkthrough-intro { color: var(--muted); font-size: .88rem; }
+    .walkthrough-list { display: grid; gap: 14px; margin-top: 15px; }
+    .walk-step { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 10px; padding: 15px; border: 1px solid var(--line); border-radius: 14px; background: #fcfdfb; }
+    .walk-step h4 { margin: 0 0 7px; color: var(--green-dark); font-size: 1rem; line-height: 1.45; }
+    .walk-step p { margin-bottom: 8px; color: #4d5e54; font-size: .87rem; line-height: 1.7; }
+    .walk-step ol { margin: 7px 0 0; padding-left: 1.35rem; color: #43554a; font-size: .85rem; line-height: 1.68; }
+    .walk-step li { margin: 4px 0; }
+    .walk-step .step-no { margin: 0 0 5px; }
+    .screen-figure { min-width: 0; margin: 0; }
+    .screen-image-link { position: relative; display: block; overflow: visible; border: 1px solid #cbd6cc; border-radius: 9px; background: #f0f2ef; line-height: 0; }
+    .screen-image-link img { display: block; width: 100%; height: auto; border-radius: 8px; }
+    .hotspot { position: absolute; z-index: 2; left: var(--x); top: var(--y); width: var(--w); height: var(--h); border: 2px solid #bc493e; border-radius: 5px; background: rgba(201, 75, 61, .12); box-shadow: 0 0 0 1px rgba(255,255,255,.84); pointer-events: none; }
+    .hotspot-number { position: absolute; top: -26px; left: 0; display: grid; place-items: center; width: 28px; height: 25px; border: 1px solid white; border-radius: 4px; background: #7c2822; color: white; font: 800 14px/1 -apple-system, BlinkMacSystemFont, sans-serif; box-shadow: 0 1px 5px rgba(0,0,0,.28); }
+    .screen-figure figcaption { margin-top: 7px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .screen-source { display: inline-block; margin-right: 5px; padding: 1px 6px; border: 1px solid #cad9cd; border-radius: 999px; background: var(--green-soft); color: var(--green-dark); font-size: 13px; font-weight: 800; }
+    .screen-source.official { border-color: #ead1c8; background: var(--red-soft); color: #834239; }
 
     details { margin: 10px 0; border: 1px solid #e0e7e0; border-radius: 12px; background: #fcfdfb; }
     summary { position: relative; padding: 13px 42px 13px 15px; color: var(--green-dark); font-weight: 750; cursor: pointer; list-style: none; line-height: 1.55; }
@@ -165,6 +185,7 @@
       .section { padding: 23px 19px; margin-bottom: 23px; }
       .section-head { gap: 11px; }
       .section-index { flex-basis: 32px; width: 32px; height: 32px; }
+      .walk-step { grid-template-columns: 1fr; gap: 10px; }
       h2 { font-size: 1.3rem; }
       .evidence-table { font-size: .84rem; }
       .evidence-table th, .evidence-table td { padding: 10px 7px; }
@@ -209,7 +230,7 @@
     <p class="eyebrow">オフ会で試すための、やさしい手引き</p>
     <h1>Codex Computer Use<br>はじめの一歩</h1>
     <p class="lead">画面を見て、ボタンを押し、結果を読み返す。そんなPC操作をCodexに頼む機能です。まずは自分の画面で、小さな新規文書を使って確かめましょう。</p>
-    <div class="lede-note"><strong>まずは、あなたのCodexに診断を頼もう</strong><span>下の<a href="#prompt">診断プロンプトをコピー</a>して、確認したいパソコンのCodexに貼ってください。設定が足りなければ、画面を見ながら一つずつ進めます。OSの許可画面だけは本人が操作します。</span></div>
+    <div class="lede-note"><strong>画面を見ながら設定する</strong><span><a class="guide-link" href="#walkthrough">4ステップの画面ガイドへ ↓</a><br>表示を見比べて、あなたのPCで一つずつ確かめられます。診断を頼む時は<a href="#prompt">コピー用プロンプト</a>を使ってください。OSの許可画面は本人が操作します。</span></div>
   </header>
 
   <section class="map-block wrap" aria-labelledby="map-title">
@@ -231,7 +252,7 @@
       <h2>読みたい場所へ</h2>
       <ol>
         <li><a href="#measure">今回の実測</a></li>
-        <li><a href="#setup">設定チェック</a></li>
+        <li><a href="#walkthrough">設定チェックと画面案内</a></li>
         <li><a href="#symptoms">症状から切り分ける</a></li>
         <li><a href="#prompt">貼り付けて使う診断プロンプト</a></li>
         <li><a href="#working">「動いた」の判定</a></li>
@@ -250,7 +271,8 @@
           <tr><td>新規文書への入力</td><td><span class="status ok">画面と読み取りが一致</span>TextEditの新規書類ボタンをAX操作し、次の文を貼り付け。操作後のアクセシビリティ情報と画像の両方で一致を確認しました。<span class="quote-test">Computer Use 動作確認<br>日本語の入力を確認しました。</span></td></tr>
           <tr><td>保存・開き直し</td><td><span class="status no">未成立</span>保存ダイアログの「保存」操作で <code>noWindowsAvailable</code>。再観測すると「開く」ダイアログへ変化し、指定先に保存ファイルはありませんでした。保存成功とは判定していません。</td></tr>
           <tr><td>別の操作エラー</td><td><span class="status part">一部復旧</span>古い画面要素IDを使った際に <code>invalid element ID</code>。最新画面からIDを取り直すと、値の入力は成功しました。画面の変化後は部品を再特定する必要があります。</td></tr>
-          <tr><td>未確認</td><td>ネイティブアプリの座標ドラッグ・スクロール、全アプリでの動作、バックグラウンド維持、macOS許可スイッチの実値、別の人のPCは今回確認していません。原因が単一の設定だとは証明していません。</td></tr>
+          <tr><td>macOS許可状態</td><td><span class="status ok">オンを読戻し</span>「画面収録」と「デバイスの制御とデータへのアクセス」の両方で、Codex Computer Useの行がオンと画面・AX（画面の部品名や状態を読む情報）で確認できました。設定自体は変更していません。これは全操作の成功や録画実施を示すものではありません。</td></tr>
+          <tr><td>未確認</td><td>ネイティブアプリの座標ドラッグ・スクロール、全アプリでの動作、バックグラウンド維持、別の人のPCは今回確認していません。原因が単一の設定だとは証明していません。</td></tr>
         </tbody>
       </table>
       <div class="callout warn"><strong>入力できたことと、保存できたことは別です。</strong> 画面上で文字が見えたら「入力を確認」。保存先にファイルができ、開き直して同じ文を読めたときに初めて「保存まで確認」とします。</div>
@@ -259,6 +281,110 @@
 
     <section class="section" id="setup" aria-labelledby="setup-title">
       <div class="section-head"><span class="section-index">02</span><div><h2 id="setup-title">設定チェック：使う経路とOSを確認</h2><p class="section-intro">画面操作とChromeのページ読み取りは別の機能経路です。まず、何をしたいかに合わせます。</p></div></div>
+
+      <div class="walkthrough" id="walkthrough">
+        <h3>画面を見ながら進める：4ステップ</h3>
+        <p class="walkthrough-intro">赤枠の番号と、各画像の上の説明を見比べてください。画像をクリックすると原画が開きます。画面表示はOS・アプリの版や言語で変わることがあります。Codexに操作を頼むときは、この画像の座標を使い回さず、毎回最新の画面と部品名から探します。</p>
+
+        <div class="walkthrough-list">
+          <article class="walk-step" id="guide-plugin">
+            <div>
+              <span class="step-no">GUIDE 01</span>
+              <h4>Computer Useの導入画面を開く</h4>
+              <p>ChatGPTデスクトップアプリのWorkまたはCodexで、Plugins → Computer Useを開き、公式のInstall / Enable手順へ進みます。</p>
+              <ol>
+                <li>MCP servers内のComputer-useを有効にします。</li>
+                <li>Skills内のComputer Useも有効にします。</li>
+                <li>両方が有効になったら、公式図の「Try now」から試します（表示は版によって異なる場合があります）。</li>
+              </ol>
+              <p class="small">これはOpenAI公式ドキュメントの図を撮ったものです。このMacの実画面ではありません。<a href="https://learn.chatgpt.com/docs/computer-use" target="_blank" rel="noopener noreferrer">出典：OpenAI公式（2026-10-09閲覧）</a>。項目自体が見つからない場合は、デスクトップ版のWork／Codexを使っているかと、地域・組織での提供状況を確認します。</p>
+            </div>
+            <figure class="screen-figure">
+              <a class="screen-image-link" href="screenshots/official-plugin.jpg" target="_blank" rel="noopener noreferrer" aria-label="OpenAI公式図の原画を新しいタブで開く">
+                <img src="screenshots/official-plugin.jpg" alt="OpenAI公式ドキュメントのComputer Use図。赤枠1はComputer-use MCP serverのスイッチ、赤枠2はComputer Use skillのスイッチ、赤枠3はTry nowを示す。これはこのMacの実画面ではなく、案内用の図。" loading="lazy" decoding="async">
+                <span class="hotspot" style="--x:84.74%;--y:26.05%;--w:8.95%;--h:7.37%" aria-hidden="true"><span class="hotspot-number">3</span></span>
+                <span class="hotspot" style="--x:89.74%;--y:50.79%;--w:3.29%;--h:3.68%" aria-hidden="true"><span class="hotspot-number">1</span></span>
+                <span class="hotspot" style="--x:89.74%;--y:70%;--w:3.29%;--h:3.68%" aria-hidden="true"><span class="hotspot-number">2</span></span>
+              </a>
+              <figcaption><span class="screen-source official">OpenAI公式ドキュメントの図</span>実機画面ではありません。原画を開いて拡大できます。</figcaption>
+            </figure>
+          </article>
+
+          <article class="walk-step" id="guide-recording">
+            <div>
+              <span class="step-no">GUIDE 02 · macOS 27.0.1実機</span>
+              <h4>「画面収録」のCodex Computer Use行を見る</h4>
+              <p>システム設定の検索欄で「画面収録」と入力し、プライバシーとセキュリティ内の「アプリケーションに画面の収録を許可」を開きます。</p>
+              <p>この実機では、右側の見出しは「画面収録とシステムオーディオ録音」と表示されました。これはmacOS 27.0.1・日本語表示での本日の観測です。ほかの版で同じ名称とは限りません。</p>
+              <ol>
+                <li>赤枠1：検索欄。</li>
+                <li>赤枠2：設定項目の検索結果。</li>
+                <li>赤枠3・4：一覧のCodex Computer Use行と、そのスイッチ。</li>
+              </ol>
+              <p>この実機ではCodex Computer Useのスイッチがオンと画面・AXで確認できました。許可設定自体は変更していません。確認するのはこの行だけです。オフなら、許可内容を読んで本人がオンにします。再起動を案内されたら作業を保存して従ってください。<strong>行がない場合</strong>はComputer Useの「Try now」で利用を開始し、表示される許可案内から開き直します。ほかのアプリのオン／オフをそろえる必要はありません。</p>
+            </div>
+            <figure class="screen-figure">
+              <a class="screen-image-link" href="screenshots/mac-screen-recording.jpg" target="_blank" rel="noopener noreferrer" aria-label="macOS画面収録設定の実機原画を新しいタブで開く">
+                <img src="screenshots/mac-screen-recording.jpg" alt="2026年10月9日のmacOS 27.0.1実機。赤枠1は画面収録の検索欄、2は『アプリケーションに画面の収録を許可』の検索結果、3はCodex Computer Use行、4は同じ行のオン状態のスイッチ。ほかのアプリの状態は説明対象ではない。" loading="lazy" decoding="async">
+                <span class="hotspot" style="--x:0.95%;--y:9.28%;--w:29.6%;--h:5.44%" aria-hidden="true"><span class="hotspot-number">1</span></span>
+                <span class="hotspot" style="--x:2.03%;--y:16.64%;--w:28.04%;--h:8.88%" aria-hidden="true"><span class="hotspot-number">2</span></span>
+                <span class="hotspot" style="--x:34.12%;--y:63.92%;--w:62.84%;--h:6.4%" aria-hidden="true"><span class="hotspot-number">3</span></span>
+                <span class="hotspot" style="--x:91.08%;--y:66%;--w:5.07%;--h:2.64%" aria-hidden="true"><span class="hotspot-number">4</span></span>
+              </a>
+              <figcaption><span class="screen-source">macOS 27.0.1実機 · 2026-10-09</span>この端末で確認した表示です。画像をクリックすると原画が開きます。</figcaption>
+            </figure>
+          </article>
+
+          <article class="walk-step" id="guide-control">
+            <div>
+              <span class="step-no">GUIDE 03 · macOS 27.0.1実機</span>
+              <h4>補助アプリによる「コンピュータの操作」を見る</h4>
+              <p>システム設定で「プライバシー」と検索し、検索結果「補助アプリケーションによるコンピュータの操作を許可」を開きます。この実機では右側の見出しが「デバイスの制御とデータへのアクセス」と表示されました。</p>
+              <ol>
+                <li>赤枠1：検索欄。</li>
+                <li>赤枠2：プライバシー設定の検索結果。</li>
+                <li>赤枠3・4：Codex Computer Use行とスイッチ。</li>
+              </ol>
+              <p>この実機ではスイッチがオンと画面・AXで確認できました。設定変更はしていません。オフの場合は、対象と許可内容を読んで本人がオンにします。<strong>この名前がない場合</strong>は「プライバシーとセキュリティ」内の「アクセシビリティ（Accessibility）」を確認してください。公式ガイドはこの名称で案内しています。サイドバーにある一般のアクセシビリティ設定とは区別します。表示名はmacOSの版や言語で変わる場合があります。</p>
+            </div>
+            <figure class="screen-figure">
+              <a class="screen-image-link" href="screenshots/mac-device-control.jpg" target="_blank" rel="noopener noreferrer" aria-label="macOSのデバイス制御設定の実機原画を新しいタブで開く">
+                <img src="screenshots/mac-device-control.jpg" alt="2026年10月9日のmacOS 27.0.1実機。赤枠1はプライバシーの検索欄、2は『補助アプリケーションによるコンピュータの操作を許可』の検索結果、3はCodex Computer Use行、4は同じ行のオン状態のスイッチ。右側の見出しは『デバイスの制御とデータへのアクセス』。" loading="lazy" decoding="async">
+                <span class="hotspot" style="--x:0.95%;--y:9.28%;--w:29.6%;--h:5.44%" aria-hidden="true"><span class="hotspot-number">1</span></span>
+                <span class="hotspot" style="--x:2.36%;--y:33.68%;--w:27.36%;--h:8.4%" aria-hidden="true"><span class="hotspot-number">2</span></span>
+                <span class="hotspot" style="--x:34.12%;--y:59.68%;--w:62.84%;--h:6.4%" aria-hidden="true"><span class="hotspot-number">3</span></span>
+                <span class="hotspot" style="--x:91.08%;--y:61.84%;--w:5.07%;--h:2.64%" aria-hidden="true"><span class="hotspot-number">4</span></span>
+              </a>
+              <figcaption><span class="screen-source">macOS 27.0.1実機 · 2026-10-09</span>この端末で確認した表示です。ほかのアプリの設定はそろえません。クリックで原画を拡大できます。</figcaption>
+            </figure>
+          </article>
+
+          <article class="walk-step" id="guide-chrome">
+            <div>
+              <span class="step-no">GUIDE 04 · OpenAI公式図</span>
+              <h4>Chrome拡張は別の設定画面で確認</h4>
+              <p>Chromeのページ本文を読む場合は、Settings → Computer Useを開きます。公式の導入手順ではChromeのInstallから拡張を追加し、使うChromeプロファイルを確認します。</p>
+              <ol>
+                <li>赤枠1：Google Chromeの設定行。</li>
+                <li>赤枠2：Manageボタン。接続状態やプロファイルを確認します。</li>
+                <li>Codexの入力欄では「@Chrome」を選びます。内蔵の@Browserとは別のログイン状態です。</li>
+              </ol>
+              <p class="small">公式ドキュメントに掲載された案内図です。このPCで撮った実画面ではありません。<a href="https://learn.chatgpt.com/docs/computer-use" target="_blank" rel="noopener noreferrer">出典：OpenAI公式（2026-10-09閲覧）</a>。ManageではなくInstallと表示される場合は、<a href="https://learn.chatgpt.com/docs/chrome-extension" target="_blank" rel="noopener noreferrer">公式の拡張導入手順</a>から進みます。</p>
+            </div>
+            <figure class="screen-figure">
+              <a class="screen-image-link" href="screenshots/official-settings.jpg" target="_blank" rel="noopener noreferrer" aria-label="OpenAI公式のComputer Use設定図の原画を新しいタブで開く">
+                <img src="screenshots/official-settings.jpg" alt="OpenAI公式ドキュメントのComputer Use設定図。赤枠1はGoogle Chromeの設定行、赤枠2はManageボタン。実機画面ではない。" loading="lazy" decoding="async">
+                <span class="hotspot" style="--x:6.45%;--y:40.05%;--w:87.37%;--h:9.6%" aria-hidden="true"><span class="hotspot-number">1</span></span>
+                <span class="hotspot" style="--x:82.24%;--y:42.39%;--w:5.53%;--h:5.15%" aria-hidden="true"><span class="hotspot-number">2</span></span>
+              </a>
+              <figcaption><span class="screen-source official">OpenAI公式ドキュメントの図</span>本機の実画面ではありません。クリックで原画を拡大できます。</figcaption>
+            </figure>
+          </article>
+        </div>
+
+        <div class="callout"><strong>この実機で見えた許可状態：</strong>画面収録とデバイス制御の両方で、Codex Computer Useの行はオンでした。確認は画面とAX（画面の部品名・状態を読む情報）で行い、スイッチは変更していません。この表示だけで、録画・補助機能を実行したことや、すべての操作が成功することまでは意味しません。</div>
+        <p class="small">実機画像のアプリ一覧にはほかの名前も写っています。確認するのはCodex Computer Useの行だけです。他アプリの設定をそろえたり変更したりする必要はありません。</p>
+      </div>
 
       <h3>共通：デスクトップ版のComputer Use</h3>
       <ul class="checklist">
@@ -298,7 +424,7 @@
       <p>ページを読む依頼なら、<strong>Settings → Computer Use → Chrome → Install</strong> から公式拡張を入れ、Manageの表示と、拡張を入れたChromeプロファイルを確認します。Codexでは<strong>@Chrome</strong>を選びます。@Browser（内蔵ブラウザ）とはログイン状態が別です。</p>
       <p class="small">Chromeの接続テスト：入力欄の「@」からChromeを選び、「https://learn.chatgpt.com/docs/computer-use を開き、ページの見出しを教えて。フォーム送信や設定変更はしないで」と依頼します。公開ページを読めたら、次に必要なサイトへ本人がログインして試します。</p>
       <div class="callout"><strong>Full access は別の設定です。</strong> Codexのファイルやコマンドの実行範囲を指し、macOSの画面収録・アクセシビリティ許可や、アプリ・サイトごとの許可とは別レイヤーです。画面操作のためにすべての許可を広げる必要はありません。</div>
-      <p class="privacy-note">このページのチェック状態やOS選択は保存しません。サーバー送信、Cookie、localStorageへの記録は行いません。読み込み時はチェックを空に戻し、Macの手順を表示します。</p>
+      <p class="privacy-note">このページのチェック状態やOS選択は保存しません。サーバー送信、Cookie、localStorageへの記録は行いません。読み込み時はチェックを空に戻し、Macの手順を表示します。Windowsの案内も切り替えて読めます。</p>
     </section>
 
     <section class="section" id="symptoms" aria-labelledby="symptoms-title">
@@ -376,7 +502,9 @@
 
 操作前に最新のスクリーンショットを見て、対象画面と入力欄を確認してください。画像を取得できただけで、クリックや入力が成功したとは判定しないでください。
 
-機能やツールが使えない場合は、その事実と確認場所を伝えて止まってください。設定ファイルの手編集、非公式な導入、制限や許可の回避はしないでください。OSの画面収録・アクセシビリティなどの許可が必要なら、設定画面と項目名を一つずつ案内し、本人が内容を読んで操作するのを待ってください。あなたが許可を代わりに承認してはいけません。
+機能やツールが使えない場合は、その事実と確認場所を伝えて止まってください。設定ファイルの手編集、非公式な導入、制限や許可の回避はしないでください。OSの画面収録・アクセシビリティなどの許可が必要なら、最新画面を見て設定場所を一つずつ案内し、本人が内容を読んで操作するのを待ってください。あなたが許可を代わりに承認してはいけません。
+
+Macの設定名はOSの版や言語で変わる場合があります。2026年10月9日のmacOS 27.0.1実機では、画面収録は「アプリケーションに画面の収録を許可」内のCodex Computer Use行、補助アプリの操作許可は「補助アプリケーションによるコンピュータの操作を許可」から「デバイスの制御とデータへのアクセス」へ進んだ先の同じアプリ行でした。一般の「アクセシビリティ」一覧と混同しないでください。確認するのはCodex Computer Use行だけで、他アプリのスイッチをそろえたり変更したりしません。表示が違う時は座標を使い回さず、設定の最新画面を読み直してください。
 
 テストは新しい空の文書だけで行います。MacならTextEdit、Windowsならメモ帳を使い、既存の文書は開いたり変更したりしないでください。最新画面で新規書類を確認してから、次の2行を一度だけ入力してください。
 Computer Use 動作確認
@@ -411,7 +539,7 @@ Computer Use 動作確認
         <li><a href="https://learn.chatgpt.com/docs/chrome-extension" target="_blank" rel="noopener noreferrer">OpenAI公式：Chrome extension</a><small>公式Install経路、拡張・プロファイル確認、@Chromeと内蔵ブラウザの違い、接続不調時の確認手順。</small></li>
         <li><a href="https://learn.chatgpt.com/docs/permission-modes" target="_blank" rel="noopener noreferrer">OpenAI公式：Permission modes</a><small>Codexのファイル・コマンド権限と、Computer UseやOS側の画面許可を区別する根拠。</small></li>
       </ul>
-      <p class="small" style="margin-top:17px">このページは外部ライブラリ・画像・解析タグを読み込みません。noindexを指定していますが、これは検索エンジン向けの指示で、閲覧を制限する設定ではありません。共有する場合は公開範囲を別途確認してください。</p>
+      <p class="small" style="margin-top:17px">画像はこのページに同梱しています。外部ライブラリ・解析タグは使用していません。noindexを指定していますが、これは検索エンジン向けの指示で、閲覧を制限する設定ではありません。共有する場合は公開範囲を別途確認してください。</p>
     </section>
   </main>
 
