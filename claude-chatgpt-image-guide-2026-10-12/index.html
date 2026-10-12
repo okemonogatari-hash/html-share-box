@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="color-scheme" content="light">
+<title>Claude Codeに「ChatGPTで絵を作ってきて」と頼む方法</title>
+<meta property="og:title" content="Claude Codeに「ChatGPTで絵を作ってきて」と頼む方法">
+<meta property="og:description" content="貼り付けるだけの頼み文つき。サムネ7案と図4枚を、ChatGPTの画面を一度もさわらずに作った日の記録です。">
+<meta property="og:image" content="https://okemonogatari-hash.github.io/html-share-box/claude-chatgpt-image-guide-2026-10-12/img/hero.jpg">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#fff8e8; --card:#ffffff; --ink:#123c4a; --sub:#3f5f6a;
+  --mint:#91d7c3; --mint-soft:#e3f5ef; --sky:#d9f0fa; --yellow:#f6d45c; --yellow-soft:#fff3c4;
+  --peach:#f3a6a6; --peach-soft:#fde9e6; --line:#e6dcc3; --code:#12303b; --code-fg:#f4f7f5;
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.85}
+img{max-width:100%;height:auto;display:block}
+a{color:#0d5a6e}
+.wrap{width:min(1120px,calc(100% - 36px));margin-inline:auto}
+header{padding:38px 0 8px}
+.kicker{display:inline-block;background:var(--yellow);color:var(--ink);font-weight:800;font-size:.86rem;padding:4px 14px;border-radius:999px;margin:0 0 14px}
+h1{font-size:clamp(1.7rem,4.2vw,2.7rem);line-height:1.35;margin:0 0 14px;letter-spacing:-.02em;text-wrap:balance}
+h1 mark{background:linear-gradient(transparent 62%,var(--yellow) 62%);color:inherit}
+.lead{font-size:1.08rem;margin:0;max-width:44em;color:var(--sub)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:30px;align-items:center}
+.hero figure{margin:0}
+.hero img{border-radius:20px;box-shadow:0 14px 34px rgba(18,60,74,.16);border:4px solid #fff}
+figcaption{font-size:.84rem;color:var(--sub);margin-top:8px;line-height:1.6}
+section{padding:34px 0 6px}
+h2{font-size:clamp(1.3rem,3vw,1.9rem);line-height:1.4;margin:0 0 6px;display:flex;gap:10px;align-items:flex-start}
+h2 span{flex:none;background:var(--mint);border-radius:10px;padding:0 10px;font-size:.8em;line-height:1.75}
+h2 em{font-style:normal;text-wrap:balance;min-width:0}
+.sec-lead{margin:0 0 18px;color:var(--sub);max-width:46em}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0;padding:0;list-style:none;counter-reset:f}
+.flow li{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px 16px 14px;position:relative;counter-increment:f}
+.flow li::before{content:counter(f);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;margin-bottom:8px}
+.flow b{display:block;font-size:1.05rem;line-height:1.5;margin-bottom:4px}
+.flow p{margin:0;font-size:.92rem;color:var(--sub);line-height:1.7}
+.flow .who{display:inline-block;font-size:.8rem;font-weight:800;border-radius:999px;padding:1px 10px;margin-bottom:6px}
+.who.me{background:var(--yellow-soft)} .who.cc{background:var(--mint-soft)} .who.gpt{background:var(--sky)}
+.need{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.need div{background:var(--card);border-radius:18px;padding:16px 18px;border:2px solid var(--line)}
+.need b{display:block;font-size:1.02rem;margin-bottom:2px}
+.need p{margin:0;font-size:.92rem;color:var(--sub);line-height:1.7}
+.paste{background:var(--card);border:3px solid var(--ink);border-radius:22px;overflow:hidden;box-shadow:0 12px 30px rgba(18,60,74,.12)}
+.paste-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;background:var(--yellow);flex-wrap:wrap}
+.paste-top b{font-size:1rem}
+button.copy{font:inherit;font-weight:800;border:0;border-radius:999px;background:var(--ink);color:#fff;padding:8px 22px;cursor:pointer}
+button.copy:hover{background:#0b2a35}
+pre{margin:0;padding:20px 20px 22px;background:var(--code);color:var(--code-fg);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14.5px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+pre .fill{color:#ffe27a}
+.hint{font-size:.92rem;color:var(--sub);margin:12px 4px 0}
+.grid7{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.grid7 figure,.grid4 figure{margin:0;background:var(--card);border-radius:14px;padding:8px 8px 10px;border:2px solid var(--line)}
+.grid7 img,.grid4 img{border-radius:9px}
+.grid7 figcaption,.grid4 figcaption{margin:7px 4px 0;font-size:.82rem}
+.grid7 .win{border-color:var(--ink);background:var(--yellow-soft)}
+.badge{display:inline-block;background:var(--ink);color:#fff;border-radius:999px;font-size:.8rem;font-weight:800;padding:0 9px;margin-right:4px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.shrink{background:#fff;border-radius:14px;padding:12px;border:2px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 12px}
+.shrink figure{margin:0;width:140px}
+.shrink img{width:140px;height:79px}
+.shrink figcaption{margin:0;text-align:center;font-weight:800}
+.two{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:24px;align-items:start}
+.two img{border-radius:16px;border:3px solid #fff;box-shadow:0 10px 24px rgba(18,60,74,.14)}
+.trap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.trap li{background:var(--card);border-radius:16px;padding:14px 16px;border:2px solid var(--line)}
+.trap .ng{display:block;font-size:.9rem;color:#8a3d37;background:var(--peach-soft);border-radius:8px;padding:2px 10px;margin-bottom:6px}
+.trap .ok{display:block;font-size:.95rem}
+.trap .ok::before{content:"通った道 ";font-weight:800;color:#1c6b55}
+.plus{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.plus div{background:var(--mint-soft);border-radius:18px;padding:16px 18px}
+.plus b{display:block;margin-bottom:2px}
+.plus p{margin:0;font-size:.93rem;line-height:1.75}
+.honest{background:var(--card);border-radius:18px;border:2px dashed var(--peach);padding:16px 20px}
+.honest ul{margin:6px 0 0;padding-left:1.2em}
+.honest li{margin:2px 0;font-size:.95rem}
+footer{padding:30px 0 46px;font-size:.84rem;color:var(--sub)}
+@media(max-width:860px){
+  .hero,.two{grid-template-columns:minmax(0,1fr)}
+  .flow,.grid7,.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .need,.plus,.trap{grid-template-columns:minmax(0,1fr)}
+  .two img{max-width:300px}
+}
+@media(max-width:430px){
+  body{font-size:16px}
+  .flow{grid-template-columns:minmax(0,1fr)}
+  pre{font-size:13.5px;padding:16px 14px}
+}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="hero">
+    <div>
+      <p class="kicker">貼り付けるだけの頼み文つき</p>
+      <h1>Claude Codeに「<mark>ChatGPTで絵を作ってきて</mark>」と頼む方法です</h1>
+      <p class="lead">こんにちは、おけもんです😊 記事のサムネ7案と、本文に入れる図4枚を、ChatGPTの画面を一度もさわらずに作りました。Claude Codeがブラウザを開いて、ChatGPTに頼んで、できた絵を保存して、見比べるところまでやってくれます。下の頼み文を、あなたのClaude Codeに貼ってみてください。</p>
+    </div>
+    <figure>
+      <img src="img/hero.jpg" width="1280" height="720" alt="黄色地に「編集ソフト、開いてません AIに4行たのんだだけ」と書かれた、ハンモックのカピバラと働くインコのサムネイル">
+      <figcaption>この日できた11枚のうちの1枚です。字もChatGPTが描いています（2026年10月12日）。</figcaption>
+    </figure>
+  </div>
+</header>
+
+<section class="wrap">
+  <h2><span>1</span><em>何が起きるのかを、先に見てください</em></h2>
+  <p class="sec-lead">あなたがやるのは、最初の1回の頼みだけです。あとの3つは、AIどうしで進みます。</p>
+  <ol class="flow">
+    <li><span class="who me">あなた</span><b>頼み文を貼ります</b><p>作りたい物と、入れたい文字を書いて、Claude Codeに渡します。</p></li>
+    <li><span class="who cc">Claude Code</span><b>ブラウザでChatGPTを開きます</b><p>お手本の画像を添えて、依頼文を打って、送信ボタンを押します。</p></li>
+    <li><span class="who gpt">ChatGPT</span><b>絵を描きます</b><p>1回の頼みで3〜4枚。待つのは2〜3分です。</p></li>
+    <li><span class="who cc">Claude Code</span><b>保存して、見て、比べます</b><p>字の間違いを1枚ずつ確かめて、小さく縮めた比較表まで作ります。</p></li>
+  </ol>
+</section>
+
+<section class="wrap">
+  <h2><span>2</span><em>用意する物は、3つです</em></h2>
+  <div class="need">
+    <div><b>Claude Codeと、ブラウザを動かす道具</b><p>私は、Claudeのデスクトップアプリの「Code」タブに付いているブラウザを使いました。ChromeにClaudeの拡張を入れている方は、そちらでも同じ頼み方ができます。</p></div>
+    <div><b>画像を作れるChatGPT</b><p>そのブラウザで chatgpt.com を開いて、ご自身でログインしておきます。ログインだけは人の仕事です。</p></div>
+    <div><b>お手本の画像（あれば）</b><p>いつものキャラや、前に作ったサムネを1枚。これを添えると、絵柄がそろいます。無くても作れます。</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="paste">
+  <h2><span>3</span><em>この頼み文を、Claude Codeに貼ります</em></h2>
+  <p class="sec-lead">黄色い【 】の中だけ、ご自身の内容に書き換えてください。下半分の「進め方」は、私が実際につまずいた所をそのまま書いた物です。消さずに一緒に貼ると、Claude Codeが同じ所で転びにくくなります。</p>
+  <div class="paste">
+    <div class="paste-top"><b>📋 コピーして、そのまま貼れます</b><button class="copy" type="button" id="copybtn">コピーする</button></div>
+<pre id="prompt">ブラウザを操作できる道具（内部ブラウザ。無ければ Claude in Chrome）で、ChatGPT に画像を作ってもらってください。
+
+■ 作りたい物
+<span class="fill">【例：ブログ記事「◯◯」のサムネイル。横長16:9】</span>
+■ 入れる文字（このとおりに。これ以外の文字は入れない）
+<span class="fill">【例：1行目（小さめ）「編集できなくても」／2行目（特大）「YouTubeデビュー」】</span>
+■ 絵の中身と雰囲気
+<span class="fill">【例：明るい朝の公園。うちの看板キャラの猫が、スマホを持って歩いている】</span>
+■ お手本にする画像（このパソコンの中の場所。無ければ「なし」）
+<span class="fill">【例：~/Pictures/icon.png】</span>
+■ 枚数と違い
+<span class="fill">【例：読む人に刺さる角度を変えて3枚】</span>
+■ 保存する場所
+<span class="fill">【例：~/Desktop/chatgpt-images/】</span>
+
+進め方（つまずきやすい所なので、この順でお願いします）
+1. ブラウザで https://chatgpt.com を開く。ログイン画面が出たら、そこで止まって私に教える。ログインは私がやります。パスワードは入力しないでください。
+2. お手本の画像がある時は、長い辺を1000pxくらいに縮めてから添付する。ページにある画像用のファイル入力（input[type=file]）へ、JavaScript で File を作って入れ、change イベントを出す。「（ファイル名）を削除する」というボタンが出たら、添付できています。画像のデータをページへ運ぶ時は、手元に一時的なページを立てて window.name に載せ、同じタブで ChatGPT へ移動すると運べます。終わったら一時ページは止めてください。
+3. 依頼文は、入力欄をクリックしてから、文字として打つ。Enter は送信になるので改行は入れず、段落は空白でつなぐ。複数枚ほしい時は「ChatGPTの画像生成で、THREE separate, independent images（3枚の別々の画像）を作ってください」のように、枚数を英語でも書く。文字は「下に指定した日本語だけを正確に書き、ほかの文字や実在のロゴは入れない」と添える。
+4. 送る前に、入力欄の文字数と、先頭・末尾の言葉を読んで、1回ぶんだけ入っているのを確かめる。それから送信ボタンを押す。
+5. 絵ができるまで2〜3分かかります。長く待つ命令を1回出すのではなく、10秒くらいの待ちを何回かに分けて、絵が出たかを確かめる。
+6. できた絵は、ページの中の大きい画像（幅1000px以上）を canvas に描いて JPEG にし、base64 で受け取って、保存する場所へファイルとして置く。同じ絵を二重に拾っていないか、ファイルの中身（ハッシュ）で確かめる。
+7. 保存した絵を自分で開いて見て、入れた文字が指定どおりかを1枚ずつ確かめる。違っていたら、同じ会話で「◯枚目の『…』を『…』に直して」と頼み直す。
+8. サムネイルの時は、全部の案を幅140pxに縮めて横に並べた比較画像も1枚作る。いちばん大きい字が読めるかを見るためです。
+9. 最後に、保存した場所と、それぞれの絵が何の案かを、一覧で教えてください。</pre>
+  </div>
+  <p class="hint">うまく動かなかった時は、Claude Codeに「このページを読んで、同じやり方でやって」と、このページのURLごと渡してみてください。</p>
+</section>
+
+<section class="wrap">
+  <h2><span>4</span><em>この日、実際にできた物です</em></h2>
+  <p class="sec-lead">ChatGPTへ送ったのは3回です。サムネ3枚、角度を変えたサムネ4枚、本文の図4枚。合わせて11枚で、字の間違いは1つもありませんでした。</p>
+  <div class="grid7">
+    <figure class="win"><img src="img/t5.jpg" width="760" height="428" alt="編集ソフト、開いてません" loading="lazy"><figcaption><span class="badge">採用</span>否定から入る案</figcaption></figure>
+    <figure><img src="img/t1.jpg" width="760" height="428" alt="編集できなくてもYouTubeデビュー" loading="lazy"><figcaption>悩みに答える案</figcaption></figure>
+    <figure><img src="img/t3.jpg" width="760" height="428" alt="散歩でしゃべるだけ あとはAIが編集" loading="lazy"><figcaption>やる事が見える案</figcaption></figure>
+    <figure><img src="img/t2.jpg" width="760" height="428" alt="たのんだのは4行だけ 21分から8分半の動画に" loading="lazy"><figcaption>数字で見せる案</figcaption></figure>
+    <figure><img src="img/t4.jpg" width="760" height="428" alt="AIがここまで編集 撮って渡しただけ" loading="lazy"><figcaption>前と後を見せる案</figcaption></figure>
+    <figure><img src="img/t6.jpg" width="760" height="428" alt="顔出しなしでYouTubeはじめました" loading="lazy"><figcaption>顔出しなしの案</figcaption></figure>
+    <figure><img src="img/t7.jpg" width="760" height="428" alt="Claude Codeで動画編集 撮って投げるだけ" loading="lazy"><figcaption>道具の名前で見せる案</figcaption></figure>
+  </div>
+  <p class="sec-lead" style="margin-top:22px">本文に入れる図も、同じ会話の続きで頼みました。同じカピバラとインコが、別の場面で動いてくれます。</p>
+  <div class="grid4">
+    <figure><img src="img/b1.jpg" width="760" height="428" alt="やったのは、これだけ。散歩でしゃべる、4行たのむ、動画が届く" loading="lazy"><figcaption>3ステップの図</figcaption></figure>
+    <figure><img src="img/b2.jpg" width="760" height="428" alt="たのんでないのに、やってくれた。背景をぼかす、インコが返事、21分から8分半" loading="lazy"><figcaption>引き出し線の図</figcaption></figure>
+    <figure><img src="img/b3.jpg" width="760" height="428" alt="2本目で変えた3つ。スマホは横で撮る、お手本を先に見せる、気になる所を一言" loading="lazy"><figcaption>チェック3つの図</figcaption></figure>
+    <figure><img src="img/b4.jpg" width="760" height="428" alt="まずは散歩のついでに10秒" loading="lazy"><figcaption>しめの1場面</figcaption></figure>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2><span>5</span><em>選ぶところまで、AIに任せました</em></h2>
+  <p class="sec-lead">私が言ったのは「5パターンぐらい出して、どれがいいかあなたたちで話し合って決めて」「お手本を見てきて」の2つです。そのあとAIがやった事が、絵を作る事より面白かったので置いておきます。</p>
+  <div class="plus">
+    <div><b>① 先に、お手本を見に行きました</b><p>記事を載せる場所で、同じテーマの人気記事のサムネを12枚開いて、どんな言葉と色に反応が集まっているかを読んでから、追加の4案を頼んでいました。</p></div>
+    <div><b>② 一覧の大きさまで縮めました</b><p>サムネは、並んだ時は幅140pxくらいです。7案をその大きさに縮めて並べると、大きい画面では良く見えた案の字が、読めなくなっていました。</p></div>
+    <div><b>③ 作っていないAIに選ばせました</b><p>経緯も記事の題も知らない別のAIに、縮めた表だけを見せて「どれを押す？」と聞いています。作った本人は、自分の案に甘くなるからだそうです。</p></div>
+  </div>
+  <div class="shrink" style="margin-top:16px"><figure><img src="img/t5.jpg" width="140" height="79" alt="案Aを幅140ピクセルに縮めた物" loading="lazy"><figcaption>A</figcaption></figure><figure><img src="img/t2.jpg" width="140" height="79" alt="案Bを幅140ピクセルに縮めた物" loading="lazy"><figcaption>B</figcaption></figure><figure><img src="img/t7.jpg" width="140" height="79" alt="案Cを幅140ピクセルに縮めた物" loading="lazy"><figcaption>C</figcaption></figure><figure><img src="img/t1.jpg" width="140" height="79" alt="案Dを幅140ピクセルに縮めた物" loading="lazy"><figcaption>D</figcaption></figure><figure><img src="img/t4.jpg" width="140" height="79" alt="案Eを幅140ピクセルに縮めた物" loading="lazy"><figcaption>E</figcaption></figure><figure><img src="img/t6.jpg" width="140" height="79" alt="案Fを幅140ピクセルに縮めた物" loading="lazy"><figcaption>F</figcaption></figure><figure><img src="img/t3.jpg" width="140" height="79" alt="案Gを幅140ピクセルに縮めた物" loading="lazy"><figcaption>G</figcaption></figure></div>
+  <p class="hint">実際に使った比較表です。Cは色がいちばん目立ちますが、「Claude Codeという言葉が分からないと、技術者向けに見える」と言われて外れました。Aに決まった理由は、記事の題にまだ無い言葉を足せるからでした。</p>
+</section>
+
+<section class="wrap">
+  <h2><span>6</span><em>つまずいた所と、通った道です</em></h2>
+  <div class="two">
+    <figure style="margin:0"><img src="img/screen.jpg" width="480" height="525" alt="ChatGPTの画面に、できあがったサムネイル3枚が並んでいる様子" loading="lazy"><figcaption>Claude Codeが見ていたChatGPTの画面です。右に、同時にできた3枚が並んでいます。</figcaption></figure>
+    <ul class="trap">
+      <li><span class="ng">依頼文の途中で、送信されてしまう</span><span class="ok">ChatGPTは Enter が送信です。改行を入れず、段落は空白でつなぎます。</span></li>
+      <li><span class="ng">文字が二重に入る／入っていないように見える</span><span class="ok">入力欄をクリックしてから打ちます。送る前に、文字数と先頭・末尾を読みます。</span></li>
+      <li><span class="ng">3枚頼んだのに、1枚にまとめて描かれる</span><span class="ok">「THREE separate, independent images」と、枚数を英語でも書きます。</span></li>
+      <li><span class="ng">絵柄が毎回ちがう</span><span class="ok">お手本の画像を1枚添えて、「同じキャラ・同じ世界で」と書きます。続きは同じ会話で頼みます。</span></li>
+      <li><span class="ng">待っている間に、止まったように見える</span><span class="ok">1回で長く待たず、10秒の待ちを何回かに分けて、絵が出たかを確かめます。</span></li>
+      <li><span class="ng">同じ絵を2回保存してしまう</span><span class="ok">会話が進むと、前の絵の番地が変わります。ファイルの中身で、同じ物かを確かめます。</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2><span>7</span><em>確かめた範囲を、正直に書いておきます</em></h2>
+  <div class="honest">
+    <ul>
+      <li>試したのは、私のMac 1台です。Claudeのデスクトップアプリの「Code」タブと、そこに付いているブラウザを使いました（2026年10月12日）。</li>
+      <li>WindowsやChromeの拡張で、同じ頼み文がそのまま通るかは、まだ確かめていません。動かなかった所があれば、教えてもらえると嬉しいです。</li>
+      <li>ChatGPTの画面は、ときどき変わります。ボタンの名前が変わると、Claude Codeが探し直す分だけ時間がかかります。</li>
+      <li>ChatGPTへのログインと、絵を何に使うかの判断は、人の仕事として残しています。実在のロゴや、他の人のキャラクターは頼んでいません。</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="wrap">
+  <p>カピバラとインコのアイコンは、あや＠ロロカデザインさんに作っていただいた物です。許可をいただいて、AIで動かしています。<br>おけもん／2026年10月12日</p>
+</footer>
+<script>
+(function(){
+  var b=document.getElementById('copybtn'),p=document.getElementById('prompt');
+  if(!b||!p)return;
+  b.addEventListener('click',function(){
+    var t=p.innerText;
+    function done(){b.textContent='コピーしました';setTimeout(function(){b.textContent='コピーする'},2200)}
+    function fallback(){var r=document.createRange();r.selectNodeContents(p);var s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy');done()}catch(e){b.textContent='選んだ状態にしました'}}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback)}else{fallback()}
+  });
+})();
+</script>
+</body>
+</html>
