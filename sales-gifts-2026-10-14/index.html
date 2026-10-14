@@ -85,6 +85,8 @@ ul.steps{padding:0}
 .route span{font-size:15px;color:var(--muted)}
 
 /* tiles */
+.find{width:100%;box-sizing:border-box;border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font-size:17px;font-family:inherit;color:var(--ink);margin:6px 0 10px}
+.find:focus{outline:3px solid var(--ink);outline-offset:1px}
 .filters{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0 14px}
 .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;font-size:15px;font-weight:700;white-space:nowrap}
 .chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
@@ -276,6 +278,7 @@ footer{padding:36px 0 24px}
   <p class="eyebrow">受けた人の入口</p>
   <h2>34資質のカード</h2>
   <p>自分の資質を押すと、「例えば、こんなケースがあるかも」が開きます。</p>
+  <input class="find" id="find" type="search" inputmode="text" autocomplete="off" placeholder="資質の名前でさがす（例：最上志向）" aria-label="資質の名前でさがす">
   <div class="filters" id="filters" role="group" aria-label="領域でしぼる"></div>
   <div class="tiles" id="tiles"></div>
   <p style="margin-top:16px"><a class="btn" href="#work">印をつけたら、ワークへ →</a></p>
@@ -382,18 +385,18 @@ const toggle=id=>{picked(id)?state.picks=state.picks.filter(x=>x!==id):state.pic
 
 // --- 34資質 ---
 const DOMS=['すべて','実行力','影響力','人間関係構築力','戦略的思考力','★ 印をつけた'];
-let filter='すべて',cur=0,shown=[];
+let filter='すべて',cur=0,shown=[],q='';
 function renderFilters(){
   $('#filters').innerHTML=DOMS.map(d=>`<button class="chip" aria-pressed="${d===filter}" data-f="${d}">${d}</button>`).join('');
 }
 function renderTiles(){
-  shown=CARDS.filter(c=>filter==='すべて'||(filter.startsWith('★')?picked(c.slug):c.domain===filter));
+  shown=CARDS.filter(c=>(filter==='すべて'||(filter.startsWith('★')?picked(c.slug):c.domain===filter))&&(!q||c.ja.includes(q)||c.en.toLowerCase().includes(q.toLowerCase())));
   $('#tiles').innerHTML=shown.length?shown.map((c,i)=>`
     <button class="tile ${picked(c.slug)?'picked':''}" data-i="${i}" data-d="${c.domain}" aria-label="${esc(c.ja)}のカードを開く">
       ${picked(c.slug)?'<span class="star" aria-hidden="true">★</span>':''}
       <img src="${c.img}" alt="" loading="lazy" width="1000" height="562">
       <span class="t"><span class="dom">${c.domain}</span><b>${esc(c.ja)}</b><span class="e">${esc(c.okemon_words||c.essence)}</span></span>
-    </button>`).join(''):'<p class="empty">まだ印がありません。気になるカードを開いて「自分にもあるかも」を押してみてください。</p>';
+    </button>`).join(''):(q?'<p class="empty">その名前の資質が見つかりません。漢字や読みを変えてみてください。</p>':'<p class="empty">まだ印がありません。気になるカードを開いて「自分にもあるかも」を押してみてください。</p>');
 }
 function caseHtml(k){
   return `<div class="case"><span class="where">${esc(k.setting)}</span>
@@ -426,6 +429,7 @@ function openCard(i){
       <p class="links"><a href="${c.okemon}" target="_blank" rel="noopener">おけもんの解説 ↗</a><a href="${c.gallup}" target="_blank" rel="noopener">Gallup公式定義 ↗</a></p>
     </div>`;
   const d=$('#dlg');if(!d.open)d.showModal();$('#sheet').scrollTop=0;
+  try{history.replaceState(null,'','#'+c.slug)}catch(e){}
 }
 $('#filters').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;filter=b.dataset.f;renderFilters();renderTiles()});
 $('#tiles').addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b)openCard(+b.dataset.i)});
@@ -434,7 +438,11 @@ $('#dlg').addEventListener('click',e=>{
   const g=e.target.closest('[data-go]');if(g){openCard((cur+ +g.dataset.go+shown.length)%shown.length);return}
   const p=e.target.closest('[data-pick]');if(p){toggle(p.dataset.pick);p.setAttribute('aria-pressed',picked(p.dataset.pick));p.textContent=picked(p.dataset.pick)?'★ 印をつけた':'☆ これ、自分にもあるかも'}
 });
-$('#dlg').addEventListener('close',renderTiles);
+$('#dlg').addEventListener('close',()=>{try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}renderTiles()});
+$('#find').addEventListener('input',e=>{q=e.target.value.trim();renderTiles()});
+function openFromHash(){let s='';try{s=decodeURIComponent(location.hash.slice(1))}catch(e){}if(!s)return;const c=CARDS.find(x=>x.slug===s||x.ja===s);if(!c)return;filter='すべて';q='';$('#find').value='';renderFilters();renderTiles();openCard(shown.indexOf(c))}
+addEventListener('hashchange',openFromHash);
+addEventListener('load',()=>setTimeout(openFromHash,0));
 
 // --- つい、やっちゃうこと ---
 function renderDaily(){
