@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex,nofollow">
+<meta name="okemori-audience" content="internal">
+<title>広報アイデア帳 リベ大フェスAIブース</title>
+<style>
+:root{color-scheme:light;--bg:#fbf8f1;--paper:#fff;--ink:#2b2622;--sub:#6b625a;--line:#e7dfd2;--accent:#e8a400;--accent-d:#8a5d00;--accent-bg:#fff4cf;--ov:#2f6f8f;--ov-bg:#e4f1f7;--jp:#b3493a;--jp-bg:#fbe6e1;--num:#8a3b00;--num-bg:#ffe9c7;--ok:#2d7a4b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 "Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,system-ui,sans-serif;-webkit-text-size-adjust:100%}
+body.big{font-size:19px}
+a{color:#0b5cad}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+.top{padding:28px 0 12px}
+.top .kicker{margin:0;color:var(--accent-d);font-weight:700;font-size:.85em;letter-spacing:.06em}
+.top h1{margin:.2em 0 .3em;font-size:1.6rem;line-height:1.35}
+.top p{margin:.2em 0;color:var(--sub)}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:6px 12px;font-size:.9em}
+.stat b{font-size:1.15em;color:var(--accent-d)}
+.bar{position:sticky;top:0;z-index:20;background:rgba(251,248,241,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:8px 0}
+.filters{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:10px 16px;margin-top:6px}
+.filters>summary{font-size:.88em;color:var(--sub);cursor:pointer}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0}
+.row .lab{font-size:.8em;color:var(--sub);min-width:3.2em}
+.chip,.seg button,.tool{font:inherit;font-size:.88em;line-height:1.2;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:7px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"],.seg button[aria-pressed="true"],.tool[aria-pressed="true"]{background:var(--accent-bg);border-color:var(--accent);color:var(--accent-d);font-weight:700}
+.daynav{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;flex:1;min-width:0}
+.daynav a{flex:none;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);padding:7px 14px;border-radius:999px;font-size:.9em;font-weight:700}
+.daynav a:hover{border-color:var(--accent)}
+input[type=search]{font:inherit;font-size:.9em;border:1px solid var(--line);border-radius:999px;padding:7px 14px;min-width:0;flex:1 1 180px;max-width:320px;background:#fff;color:var(--ink)}
+.count{font-size:.82em;color:var(--sub);margin-left:auto;white-space:nowrap}
+.day{padding:26px 0 8px}
+.day-head h2{margin:0;font-size:1.45rem;border-left:6px solid var(--accent);padding-left:12px;line-height:1.3}
+.nth{font-size:.6em;color:var(--sub);font-weight:400;margin-left:10px}
+.summary{margin:.5em 0 .2em;color:var(--sub);font-size:.92em}
+.muted{color:var(--sub)}.small{font-size:.82em;margin:.15em 0}
+details.facets,details.extras{margin:.6em 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:8px 14px}
+details summary{cursor:pointer;font-size:.9em;color:var(--sub)}
+details ol,details ul{margin:.5em 0 .3em;padding-left:1.3em;font-size:.9em}
+details li{margin:.25em 0}
+.pick{margin:.8em 0;background:var(--accent-bg);border:1px solid #f1d58a;border-radius:14px;padding:10px 16px}
+.pick p{margin:.2em 0}
+.picklabel{display:inline-block;font-size:.75em;font-weight:700;color:var(--accent-d);letter-spacing:.05em}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.card.fav{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-bg)}
+.js-ready .card[hidden]{display:none}
+.card-top{display:flex;gap:12px;align-items:flex-start}
+.no{flex:none;width:2.1em;height:2.1em;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:grid;place-items:center;font-size:.95em;margin-top:.15em}
+.titles{flex:1;min-width:0}
+.titles h3{margin:0;font-size:1.08em;line-height:1.5}
+.sub{margin:.1em 0 0;color:var(--sub);font-size:.88em;line-height:1.5}
+.star{flex:none;border:1px solid var(--line);background:#fff;border-radius:12px;width:44px;height:44px;font-size:1.4rem;line-height:1;cursor:pointer;color:#b8ab97}
+.star[aria-pressed="true"]{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.reg,.tag,.pickbadge{font-size:.75em;border-radius:999px;padding:2px 10px;font-weight:700}
+.reg-ov{background:var(--ov-bg);color:var(--ov)}.reg-jp{background:var(--jp-bg);color:var(--jp)}
+.tag{background:#f1ece2;color:var(--sub);font-weight:500}
+.pickbadge{background:var(--accent);color:#fff}
+.what{margin:.1em 0;font-size:.95em}
+.num{background:var(--num-bg);color:var(--num);font-weight:700;border-radius:4px;padding:0 3px}
+.figs{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.figlabel{font-size:.75em;color:var(--sub)}
+.fig{font-size:.82em;font-weight:700;background:var(--num-bg);color:var(--num);border-radius:8px;padding:2px 9px}
+.use{background:#f4f9f1;border:1px solid #d4e6cb;border-radius:12px;padding:8px 12px}
+.use p{margin:.1em 0;font-size:.93em}
+.uselabel{font-size:.75em;font-weight:700;color:var(--ok);letter-spacing:.04em}
+.foot{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin-top:auto;padding-top:6px;border-top:1px dashed var(--line);font-size:.85em}
+.rate b{color:var(--accent);letter-spacing:.05em;font-weight:400}
+.links{display:flex;flex-wrap:wrap;gap:6px 12px;margin-left:auto}
+.src{font-size:.85em;word-break:break-all}
+.summary-box{background:var(--paper);border:2px solid var(--accent);border-radius:16px;padding:6px 20px 14px;margin:18px 0}
+.summary-box h2,.summary-box h3,.summary-box h4{line-height:1.45}
+#empty{text-align:center;color:var(--sub);padding:40px 0}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#2b2622;color:#fff;padding:10px 18px;border-radius:999px;font-size:.9em;pointer-events:none;z-index:50}
+.ft{padding:30px 0 60px;color:var(--sub);font-size:.82em}
+@media (max-width:760px){.grid{grid-template-columns:1fr}.top h1{font-size:1.35rem}.count{width:100%;margin-left:0}.links{margin-left:0}}
+@media print{.bar,.star,.toast{display:none}.card{break-inside:avoid}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top">
+  <p class="kicker">リベ大お金の勉強フェス2027 ／ AIブース 広報ブレスト</p>
+  <h1>毎朝10本の「広報アイデア帳」</h1>
+  <p>世界と日本の告知・広告の実例を、毎朝ひとまとめに。できる・できないは問わず、おもしろさ優先のたねです。気になるものに ☆ を付けて、10/24の広報MTGに持っていけます。</p>
+  <div class="stats"><span class="stat"><b>30</b> 本</span><span class="stat">海外 <b>16</b> ／ 日本 <b>14</b></span><span class="stat"><b>3</b> 日分（最新 10/16（金））</span><span class="stat">気になる <b id="favn">0</b></span></div>
+</div>
+</div>
+<div class="bar"><div class="wrap">
+  <div class="row"><span class="lab">日付</span><nav class="daynav"><a href="#day-2026-10-16">10/16（金）</a><a href="#day-2026-10-15">10/15（木）</a><a href="#day-2026-10-14">10/14（水）</a></nav><span id="count" class="count"></span></div>
+</div></div>
+<div class="wrap"><details class="filters" id="filters" open><summary>絞り込み・気になる・画面共有の設定</summary>
+  <div class="row"><span class="lab">地域</span><span class="seg"><button type="button" aria-pressed="true" data-region-btn="all">すべて</button> <button type="button" aria-pressed="false" data-region-btn="海外">海外</button> <button type="button" aria-pressed="false" data-region-btn="日本">日本</button></span>
+    <button class="tool" id="fun3" type="button" aria-pressed="false">おもしろさ★3だけ</button>
+    <button class="tool" id="favonly" type="button" aria-pressed="false">気になるだけ</button>
+    <input type="search" id="q" placeholder="ことばで探す（例：抽選、猫、TikTok）" aria-label="ことばで探す"></div>
+  <div class="row"><span class="lab">切り口</span><button class="chip" type="button" aria-pressed="false" data-tag-btn="謎・ARG">謎・ARG</button><button class="chip" type="button" aria-pressed="false" data-tag-btn="投票・参加">投票・参加</button><button class="chip" type="button" aria-pressed="false" data-tag-btn="配る・紙・グッズ">配る・紙・グッズ</button><button class="chip" type="button" aria-pressed="false" data-tag-btn="キャラ・マスコット">キャラ・マスコット</button><button class="chip" type="button" aria-pressed="false" data-tag-btn="AI・デジタル体験">AI・デジタル体験</button><button class="chip" type="button" aria-pressed="false" data-tag-btn="予約・抽選・行列">予約・抽選・行列</button><button class="chip" type="button" aria-pressed="false" data-tag-btn="配信・動画">配信・動画</button><button class="chip" type="button" aria-pressed="false" data-tag-btn="子ども・親子">子ども・親子</button><button class="chip" type="button" aria-pressed="false" data-tag-btn="リアルの場">リアルの場</button></div>
+  <div class="row"><button class="tool" id="copyfav" type="button">気になるをコピー</button>
+    <button class="tool" id="big" type="button" aria-pressed="false">大きい文字（画面共有用）</button>
+    <button class="tool" id="reset" type="button">絞り込みを戻す</button></div>
+</details></div>
+<main class="wrap">
+
+<section class="day" id="day-2026-10-16">
+  <header class="day-head">
+    <h2>10/16（金）<span class="nth">3回目</span></h2>
+    <p class="summary">候補32件 → 親が出典を開いて確かめた10本（差し替え0件）。海外6本・日本4本（Duolingoの相撲は、東京で生中継した日本向けの企画なので日本に数えた）。</p>
+    <p class="muted small">※ 1回目・2回目で「切り口の例」はひと通り使い終えたので、今日は例に無い切り口を8つ立てた。</p><p class="muted small">※ 数字はすべて出典ページに書いてあるもの（主催者・代理店の発表、関係者の発言、「噂」と書かれた数字を含む）。1回目・2回目の20本と既出の案とは重ならないものを選んだ。</p>
+    <details class="facets"><summary>この日の切り口（Haiku 8人の担当）</summary><ol><li>博物館・美術館・科学館の告知と子ども向けワークショップの集客</li><li>投票・名付け・どっちか選んで（ファンが中身を決める）</li><li>教育・学習サービスの奇抜な告知</li><li>ポップアップ・限定・抽選・行列のつくり方</li><li>音楽フェスの出演者発表・先行の見せ方</li><li>観光局・自治体の奇策PR</li><li>手紙・はがき・未来に届く手紙（アナログに届く告知）</li><li>視聴者が参加できるライブ配信</li></ol></details>
+    <div class="pick"><span class="picklabel">ゆいのいちばん</span><p>1「ぬいぐるみのお泊まり」。子どもの予約が少ない・当日キャンセルが多い、という一番の悩みに、“かわいい”で正面から効きそうなの。未来猫とぬいぐるみが並ぶ写真、絶対みんな撮りたくなるよ。</p></div>
+  </header>
+  <div class="grid">
+<article class="card" id="c-2026-10-16-1" data-id="2026-10-16#1" data-region="日本" data-fun="3" data-ease="2" data-tags="子ども・親子|リアルの場|予約・抽選・行列">
+  <div class="card-top">
+    <span class="no">1</span>
+    <div class="titles"><h3>ぬいぐるみだけ「お泊まり」に来る</h3><p class="sub">子どもは家にいても、ぬいぐるみが会場に来る</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="pickbadge">今日の1本</span><span class="tag">子ども・親子</span> <span class="tag">リアルの場</span> <span class="tag">予約・抽選・行列</span></div>
+  <p class="what">東京国立近代美術館（MOMAT）の「ぬいぐるみお泊まり会」。中学生以下の子のぬいぐるみ（10〜<span class="num">100cm</span>）を預かり、閉館後の展示室で作品と一緒に過ごす様子をプロが撮影。写真はアルバムにして持ち主へ郵送する。定員<span class="num">20体</span>で、応募が多い時は抽選。<span class="num">2025年</span>秋は応募10/14〜28、お泊まり11/7〜9（支援：Adobe Foundation）。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">100cm</span><span class="fig">20体</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>親子講座の予約特典を「ぬいぐるみがMIRAI NEKOのブースに前日入り」にする。やんちゃ猫と遊んでいるAI写真・AI絵本を当日に手渡し。「うちの子（ぬいぐるみ）が待ってる」から当日キャンセルも減りそう。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.timeout.jp/tokyo/ja/news/plushie-sleepover-in-momat-100825" target="_blank" rel="noopener noreferrer">timeout.jp ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-16-2" data-id="2026-10-16#2" data-region="海外" data-fun="3" data-ease="2" data-tags="AI・デジタル体験">
+  <div class="card-top">
+    <span class="no">2</span>
+    <div class="titles"><h3>国の番号に電話すると、知らない誰かが出る</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">AI・デジタル体験</span></div>
+  <p class="what">スウェーデン観光協会（STF）の「The Swedish Number」（<span class="num">2016年</span>4月）。世界中の誰でも国の番号に電話すると、アプリで登録したスウェーデン人のだれかにランダムでつながる。台本も審査もなし。翌日の昼までに<span class="num">約3,000人</span>が電話し、ほぼ同じ人数が受け手に登録。一番多くかけてきたのはトルコから。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">約3,000人</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>「AIブースにつながる番号（または通話ルーム）」を作り、15人のメンバーのだれかがランダムに出て「わたしのAIの使い方」を3分話す。メンバー紹介動画の“生の電話”版。AIの声で未来猫が出る日があっても楽しい。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://cbsnews.com/news/sweden-hotline-call-random-swedish-person-dial-a-swede" target="_blank" rel="noopener noreferrer">cbsnews.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-16-3" data-id="2026-10-16#3" data-region="海外" data-fun="3" data-ease="2" data-tags="投票・参加|配信・動画">
+  <div class="card-top">
+    <span class="no">3</span>
+    <div class="titles"><h3>チャットの全員で1つのゲームを操作する</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">投票・参加</span> <span class="tag">配信・動画</span></div>
+  <p class="what">「Twitch Plays Pokémon」（<span class="num">2014年</span>）。ゲームボーイ版『ポケモン 赤』を<span class="num">24時間</span>配信し、視聴者がチャットに打ったボタンの命令で、みんなで同時に<span class="num">1人</span>の主人公を動かした。<span class="num">16日</span>間、推定<span class="num">65万</span><span class="num">8,000人</span>が参加、<span class="num">3,600万</span>回視聴。2週間あまりでラスボスに勝った。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">24時間</span><span class="fig">16日</span><span class="fig">65万</span><span class="fig">8,000人</span><span class="fig">3,600万</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>「リベの全員で1本のアプリをAIに作らせる」生配信。チャットの多数決で次の指示を決め、ぐだぐだしながら完成まで見せる。できたアプリは一般講座の“お手本”として当日ブースに展示。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.killscreen.com/was-twitch-plays-pokemon-anomaly-or-way-future/" target="_blank" rel="noopener noreferrer">killscreen.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-16-4" data-id="2026-10-16#4" data-region="海外" data-fun="3" data-ease="2" data-tags="謎・ARG|配る・紙・グッズ|予約・抽選・行列">
+  <div class="card-top">
+    <span class="no">4</span>
+    <div class="titles"><h3>ヒントを10本のビデオテープに分けて、10人に郵送</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">謎・ARG</span> <span class="tag">配る・紙・グッズ</span> <span class="tag">予約・抽選・行列</span></div>
+  <p class="what">NYの音楽フェス「Governors Ball」（<span class="num">2019年</span>）。Redditで住所を送ってくれた人から無作為に<span class="num">10人</span>を選び、ヒントが1つずつ入ったVHSテープを郵送。<span class="num">10本</span>のヒントをReddit上で持ち寄るとヘッドライナー（Florence and the Machine）が分かる仕組み。Instagramにも出演者ごとのヒントを出した。先行販売は前年より<span class="num">20%</span>増（主催の担当者の発言）。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">10人</span><span class="fig">10本</span><span class="fig">20%</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>手を挙げたリベ民10人に、ヒントカード（またはヒント動画のURL）を1枚ずつ届ける。10人がつぶやきで持ち寄ると「親子講座で作るゲームのタイトル」が分かる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.bizbash.com/event-production-planning/how-governors-ball-generated-hype-for-this-year-s-festival" target="_blank" rel="noopener noreferrer">bizbash.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-16-5" data-id="2026-10-16#5" data-region="海外" data-fun="2" data-ease="3" data-tags="謎・ARG">
+  <div class="card-top">
+    <span class="no">5</span>
+    <div class="titles"><h3>出演者を「並べ替えパズル」で発表する</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">謎・ARG</span></div>
+  <p class="what">Tyler, The Creator のフェス「Camp Flog Gnaw 2026」（<span class="num">2026年</span>8月）。公式サイトに名前をばらばらにした文字パズルを置き、解いた人から出演者が分かる形で発表。FADERの記者たちは解くのに最低<span class="num">30分</span>かかった。過去にもクロスワードなどゲーム形式で発表している。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">30分</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>講座の中身やメンバーの名前を、MIRAI NEKOが出す文字並べ替えパズル（HTML）で毎日1問ずつ発表。全部解けた人にだけ「予約開始のお知らせ」を一足早く。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★☆</b></span><span class="rate">手軽さ <b>★★★</b></span><span class="links"><a class="src" href="https://thefader.com/2026/08/18/camp-flog-gnaw-2026-lineup-tickets" target="_blank" rel="noopener noreferrer">thefader.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-16-6" data-id="2026-10-16#6" data-region="海外" data-fun="3" data-ease="2" data-tags="投票・参加">
+  <div class="card-top">
+    <span class="no">6</span>
+    <div class="titles"><h3>結末を2つ撮って、ファンの投票で本編を決める</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">投票・参加</span></div>
+  <p class="what">スペインのドラマ『Mar de plástico』（Antena 3、<span class="num">2016年</span>12月）。最終回を「正義の結末」と「復讐の結末」の2通り撮り、公式サイトの投票で多い方を本編で放送。負けた方も直後の特番で、裏側の映像と一緒に流した。2つのハッシュタグで盛り上げた。</p>
+  
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>「未来猫の夏」のAIショート動画を結末2パターンで作り、リベの投票で本編を決める。負けた方は“幻の結末”としてブース来場者だけに見せる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.panoramaaudiovisual.com/en/2016/12/13/los-espectadores-elegiran-el-final-de-mar-de-plastico/" target="_blank" rel="noopener noreferrer">panoramaaudiovisual.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-16-7" data-id="2026-10-16#7" data-region="海外" data-fun="3" data-ease="3" data-tags="謎・ARG|AI・デジタル体験">
+  <div class="card-top">
+    <span class="no">7</span>
+    <div class="titles"><h3>「赤ちゃん語の講座はじめます」—— うその告知のあとに、本物の割引</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">謎・ARG</span> <span class="tag">AI・デジタル体験</span></div>
+  <p class="what">語学アプリ Babbel とベビー用品の Lalo が、エイプリルフールに「Baby（アメリカ英語）」講座＝赤ちゃんの喃語を訳すコースを発表。最後に「今日じゃないけどね」と種明かしし、おわびに Lalo <span class="num">15%</span>OFF・Babbel <span class="num">55%</span>OFF を出した。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">15%</span><span class="fig">55%</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>「猫語をAIで翻訳する講座、はじめます」と未来猫が発表 → 種明かし → 本物の親子講座の早割へ。4/1は予約開始（6/1）の2か月前なので、予告のタイミングにちょうどいい。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★★</b></span><span class="links"><a class="src" href="https://www.meetlalo.com/pages/april-fools" target="_blank" rel="noopener noreferrer">meetlalo.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-16-8" data-id="2026-10-16#8" data-region="日本" data-fun="3" data-ease="2" data-tags="キャラ・マスコット|配信・動画|リアルの場">
+  <div class="card-top">
+    <span class="no">8</span>
+    <div class="titles"><h3>有名マスコット8体と相撲をとる</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">キャラ・マスコット</span> <span class="tag">配信・動画</span> <span class="tag">リアルの場</span></div>
+  <p class="what">Duolingo（日本）の「Duo&#x27;s Sumo Showdown」。緑のフクロウDuoが、パックマン、ソニック、ドンキの「ドンペン」、Pontaなど日本の人気マスコット<span class="num">8体</span>と土俵で対決。<span class="num">1か月</span>かけてSNSで盛り上げ、最後は東京での取組をTikTok・Instagram・Xで生中継。代理店は「数百万インプレッション」と発表（正確な数字は非公開）。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">8体</span><span class="fig">1か月</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>フェスの他ブースのキャラ（またはリベの人気スタンプ）と未来猫の「ゆる対決」をAI動画で毎週1番。千秋楽はブースの当日イベントにする。他ブースとの相互宣伝にもなる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.campaignasia.com/video/duolingos-owl-takes-on-japans-beloved-mascots-in-sumo-showdown/504835" target="_blank" rel="noopener noreferrer">campaignasia.com ↗</a><a class="src" href="https://ultrasupernew.com/work/duolingo" target="_blank" rel="noopener noreferrer">ultrasupernew.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-16-9" data-id="2026-10-16#9" data-region="日本" data-fun="2" data-ease="2" data-tags="配る・紙・グッズ|リアルの場">
+  <div class="card-top">
+    <span class="no">9</span>
+    <div class="titles"><h3>1年後に届く手紙を預かる</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">配る・紙・グッズ</span> <span class="tag">リアルの場</span></div>
+  <p class="what">文具ブランドSTÁLOGY（株式会社ニトムズ）の「未来レター」。代官山の店で買った人が書いた手紙を預かり、<span class="num">約1年</span>後の同じ月に郵便局から出す。<span class="num">2015年</span>12月に始まり、<span class="num">2017年</span>1月末までに<span class="num">1,500件</span>を超えた。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">約1年</span><span class="fig">1,500件</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>講座の最後に「1年後の自分へ」AIで作ったアプリのスクショと一言を預かり、2028年7月に届ける。「来年のフェスでまた会おう」の告知にもなるし、去年の参加者の“届いた”報告がそのまま次の広報になる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★☆</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://resemom.jp/release/prtimes/20170202/27907.html" target="_blank" rel="noopener noreferrer">resemom.jp ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-16-10" data-id="2026-10-16#10" data-region="日本" data-fun="2" data-ease="2" data-tags="予約・抽選・行列|リアルの場">
+  <div class="card-top">
+    <span class="no">10</span>
+    <div class="titles"><h3>1,650mの行列を「iPad抽選」でさばく</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">予約・抽選・行列</span> <span class="tag">リアルの場</span></div>
+  <p class="what">ルイ・ヴィトン×シュプリームの表参道ポップアップ（<span class="num">2017年</span>6月<span class="num">30日</span>）。朝8時半の時点で行列は3列・<span class="num">約1,650m</span>、<span class="num">約5,000人</span>が並び、9時ごろからiPadのタッチ式抽選で入店を決めた。当選は<span class="num">400人</span>「との噂」（記事にそう書いてある）。行列そのものがニュースになった。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">30日</span><span class="fig">約1,650m</span><span class="fig">約5,000人</span><span class="fig">400人</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>残しておく当日枠を「朝のタッチ抽選」で配る。外れた人にはその場でAIが「あなた向けのおすすめ講座カード」を出し、次の回の抽選券を渡す。当日枠を残すルールを、逆にイベントに変える。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★☆</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.wwdjapan.com/articles/441970" target="_blank" rel="noopener noreferrer">wwdjapan.com ↗</a></span></div>
+</article>
+  </div>
+  <details class="extras"><summary>今日は入れなかった「たね」 13件</summary><ul><li>UEFA EURO 2016：マスコットの名前を投票で決めて、107,790票（UEFAの名前投票で最多）。結果はテレビ番組で発表 <a href="https://www.uefa.com/news/newsid=2189677.html" target="_blank" rel="noopener noreferrer">uefa.com</a></li><li>Philadelphia Phoenix：マスコットの名前投票が同点になり、延長戦の投票で「Birdy McBirdface」に <a href="https://billypenn.com/2024/05/08/philadelphia-phoenix-ultimate-frisbee-new-mascot-birdy-mcbirdface/" target="_blank" rel="noopener noreferrer">billypenn.com</a></li><li>Duolingo「Dead Duo」（2025年2月）：Duoが“死んだ”と発表 → 世界中の学習で復活させる <a href="https://nogood.io/blog/duolingo-social-media-strategy/" target="_blank" rel="noopener noreferrer">nogood.io</a></li><li>Duolingo「Museum of Wonky English」：日本の“へんな英語”を集めた美術館 <a href="https://ultrasupernew.com/work/duolingo" target="_blank" rel="noopener noreferrer">ultrasupernew.com</a> <span class="muted">（←ここは親も開いた）</span></li><li>Inspired by Iceland：国民の約3分の1が体験談の発信に参加 <a href="https://ipa.co.uk/knowledge/case-studies/promote-iceland-inspired-by-iceland/" target="_blank" rel="noopener noreferrer">ipa.co.uk</a></li><li>フェロー諸島 Sheep View：羊にカメラを背負わせて自前のストリートビュー <a href="https://skift.com/?p=189912" target="_blank" rel="noopener noreferrer">skift.com</a></li><li>TRNSMT 2019：歌詞のヒントでファンが出演者を当てて発表 <a href="http://www.radiox.co.uk/festivals/trnsmt/2019-line-up-announced-by-fans-online/" target="_blank" rel="noopener noreferrer">radiox.co.uk</a></li><li>Popaganda 2013：出演者のカバー曲を演奏し、最初に当てた人にチケット <a href="https://www.adsoftheworld.com/campaigns/the-live-quiz-release" target="_blank" rel="noopener noreferrer">adsoftheworld.com</a></li><li>Museum of Ice Cream NYC：3万枚が5日で完売 <a href="https://fortune.com/2016/08/02/museum-of-ice-cream-new-york-photos/" target="_blank" rel="noopener noreferrer">fortune.com</a></li><li>In-N-Out シドニーのポップアップ：リストバンド制で、開店前に売り切れ <a href="https://gulfnews.com/world/oceania/six-hour-queues-and-a-burger-shortage-in-37c-sydney-in-n-out-pop-up-anything-but-1.1656781" target="_blank" rel="noopener noreferrer">gulfnews.com</a></li><li>Eventbriteのはがき事例：はがき約5,000通×2回で、ほぼ満席に <a href="https://www.eventbrite.co.uk/blog/using-direct-mail-for-events-ds00/" target="_blank" rel="noopener noreferrer">eventbrite.co.uk</a></li><li>カタール子ども博物館：前日に材料リストを出して、親子でライブ工作 <a href="https://marhaba.qa/?p=151837" target="_blank" rel="noopener noreferrer">marhaba.qa</a></li><li>SOUR PATCH KIDS「Sweet vs. Sour Live」：視聴者の投票で配信の空気が変わる <a href="https://www.everythingahead.com/case-studies/layer-cast" target="_blank" rel="noopener noreferrer">everythingahead.com</a></li></ul></details>
+</section><section class="day" id="day-2026-10-15">
+  <header class="day-head">
+    <h2>10/15（木）<span class="nth">2回目</span></h2>
+    <p class="summary">候補32件 → 親が出典を開いて確かめた10本（差し替え0件）。海外5本・日本5本（FFXIVはドイツの展示会での日本のゲーム会社の事例として日本側に数えた）。</p>
+    <p class="muted small">※ 数字はすべて出典ページに書いてあるもの（自社発表・アワード応募者の自己申告を含む）。昨日の10本・既出案とは重ならないものを選んだ。</p>
+    <details class="facets"><summary>この日の切り口（Haiku 8人の担当）</summary><ol><li>ファンコミュニティ発の宣伝（アンバサダー・ファン巻き込み）</li><li>地域のゲリラ的な告知・商店街・文化祭</li><li>スタートアップのローンチ（Product Huntなど）</li><li>ゲーム・映画の予告の手法（ARG以外）</li><li>クラファンの見せ方（ストレッチゴール・進捗）</li><li>ニュースレター・ポッドキャスト・音声</li><li>TikTok・ショート動画のトレンド</li><li>紙・グッズ・ステッカー</li></ol></details>
+    <div class="pick"><span class="picklabel">ゆいのいちばん</span><p>3「やんちゃ猫が1週間アカウントを乗っ取る」。未来猫がコンビなのを一番そのまま活かせるし、おけちゃんのAI動画・イラストがそのまま武器になるなって思ったの。</p></div>
+  </header>
+  <div class="grid">
+<article class="card" id="c-2026-10-15-1" data-id="2026-10-15#1" data-region="海外" data-fun="3" data-ease="2" data-tags="配る・紙・グッズ|AI・デジタル体験|予約・抽選・行列">
+  <div class="card-top">
+    <span class="no">1</span>
+    <div class="titles"><h3>4種類のうち1枚だけ配る</h3><p class="sub">「揃えたい」でアプリを開かせる</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">配る・紙・グッズ</span> <span class="tag">AI・デジタル体験</span> <span class="tag">予約・抽選・行列</span></div>
+  <p class="what">eBay（全米スポーツコレクターズ大会 2021・シカゴ）。ブースで限定トレカ<span class="num">4種</span>類のうち<span class="num">1枚</span>を配り、残りはeBayアプリの新機能で集める仕掛けに。<span class="num">4種</span>揃えた人には<span class="num">5枚</span>目の特別カードを郵送。合計<span class="num">8,000枚</span>（各<span class="num">2,000枚</span>）を配り切り、<span class="num">808人</span>（<span class="num">40%</span>）が<span class="num">5枚</span>目を獲得。$10クーポンの利用データでは、<span class="num">2019年</span>の大会と比べて新規・休眠ユーザーとの接点が<span class="num">2倍</span>。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">8,000枚</span><span class="fig">2,000枚</span><span class="fig">808人</span><span class="fig">40%</span><span class="fig">2倍</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>オフ会やリベシティのお店で「未来猫カード」4種のうち1枚を配る。残り3枚は、みずのさんの毎朝動画・メンバー紹介動画・予約ページにそれぞれ隠しておき、4種揃えた人には「5枚目＝先生猫のサイン入りカード」をブースで手渡し。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.exhibitoronline.com/topics/article.asp?ID=3389" target="_blank" rel="noopener noreferrer">exhibitoronline.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-15-2" data-id="2026-10-15#2" data-region="日本" data-fun="3" data-ease="2" data-tags="配る・紙・グッズ|予約・抽選・行列|子ども・親子">
+  <div class="card-top">
+    <span class="no">2</span>
+    <div class="titles"><h3>缶バッジ5種で「ガチャ」に挑戦できる</h3><p class="sub">県をまたいだスタンプラリー</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">配る・紙・グッズ</span> <span class="tag">予約・抽選・行列</span> <span class="tag">子ども・親子</span></div>
+  <p class="what">群馬県「HANI-缶ラリー」第3弾（<span class="num">2019年</span>4/27〜7/31）。県内11施設がそれぞれ違う埴輪の缶バッジを各50個配布（計550個）。どれでも<span class="num">5種</span>類以上集めると県立歴史博物館の「埴輪ガチャ」に挑戦でき、先着79名。第1弾・第2弾の続編。</p>
+  
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>全国行脚オフ会の会場ごとに、その土地の未来猫缶バッジ（「大阪の未来猫」「札幌の未来猫」…）を少数だけ配る。5種集めた人はフェス当日ブースで「未来猫ガチャ」（AIが作ったミニゲームの景品）に挑戦。行脚オフ会そのものが集める旅になる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.pref.gunma.jp/03/c42g_00097.html" target="_blank" rel="noopener noreferrer">pref.gunma.jp ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-15-3" data-id="2026-10-15#3" data-region="海外" data-fun="3" data-ease="3" data-tags="キャラ・マスコット|配る・紙・グッズ">
+  <div class="card-top">
+    <span class="no">3</span>
+    <div class="titles"><h3>やんちゃなキャラが公式アカウントを1週間乗っ取る</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="pickbadge">今日の1本</span><span class="tag">キャラ・マスコット</span> <span class="tag">配る・紙・グッズ</span></div>
+  <p class="what">2K Games『Marvel&#x27;s Midnight Suns』の #DeadpoolSuns。デッドプールが「自分がゲームに入ってないのはおかしい」と公式SNSを1週間ジャック。ゲーム画面への落書き、未発表キャラのリーク、無料コード配布。「Doodle Day」では<span class="num">1日</span>でファン向けの手描きイラストを<span class="num">100枚</span>以上返した。<span class="num">640万</span>インプレッション（その月のベストの<span class="num">92%</span>）、<span class="num">7日</span>でフォロワー<span class="num">11%</span>増（応募者の自己申告）。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">100枚</span><span class="fig">640万</span><span class="fig">92%</span><span class="fig">11%</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>先生猫が寝ているすきに、やんちゃ猫がブースのアカウントを1週間乗っ取る。勝手に講座の裏情報をリークしたり、「ボクも先生やりたい！」と騒いだり。「ガチャ猫デー」はAIでその場で描いた猫イラストを質問者全員に返す。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★★</b></span><span class="links"><a class="src" href="https://shortyawards.com/15th/deadpoolsuns" target="_blank" rel="noopener noreferrer">shortyawards.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-15-4" data-id="2026-10-15#4" data-region="海外" data-fun="3" data-ease="3" data-tags="">
+  <div class="card-top">
+    <span class="no">4</span>
+    <div class="titles"><h3>金額ではなく「人数」で特典が1つずつ開く</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span></div>
+  <p class="what">RiffTrax（米国の映画ツッコミ番組）のKickstarter「TimeCop」。支援者が<span class="num">3,500人</span>を超えたら<span class="num">1本</span>、以降<span class="num">500人</span>ごとに<span class="num">1本</span>、<span class="num">8,000人</span>まで全<span class="num">10本</span>のボーナス短編を解放。解放の基準は金額ではなく人数だけ。目標$350,000に対し$393,855（<span class="num">112%</span>）・<span class="num">3,476人</span>の時点で、締切まで<span class="num">28日</span>。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">3,500人</span><span class="fig">500人</span><span class="fig">8,000人</span><span class="fig">10本</span><span class="fig">112%</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>予約ページに「予約者○人でブースに新しいAIゲームが1本増える」メーターを付ける。10人・30人・50人…で未来猫の新作ゲームが解放されていき、9割（トントン）ラインを最後のゴールにして「あと○人！」をリベッターで毎日つぶやく。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★★</b></span><span class="links"><a class="src" href="https://sandlershandlings.substack.com/p/rifftrax-live-timecop-kickstarter-hits-funding-goals-backer-stretch-goal-shorts" target="_blank" rel="noopener noreferrer">sandlershandlings.substack.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-15-5" data-id="2026-10-15#5" data-region="日本" data-fun="3" data-ease="2" data-tags="配信・動画|投票・参加|キャラ・マスコット">
+  <div class="card-top">
+    <span class="no">5</span>
+    <div class="titles"><h3>マスコットのダンスを「来た人が撮る」</h3><p class="sub">工場見学の来館が2倍</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">配信・動画</span> <span class="tag">投票・参加</span> <span class="tag">キャラ・マスコット</span></div>
+  <p class="what">岩下の新生姜（栃木）の公式マスコット「イワシカちゃん」。工場見学施設のグリーティングでダンスを披露し、来館者が投稿した「R.Y.U.S.E.I.」のダンス動画がTikTokで<span class="num">200万</span>再生超。TikTokは<span class="num">2024年</span>開設でフォロワー<span class="num">1万</span><span class="num">8千</span>人（2026/3/30時点）。年間来館者数は<span class="num">2倍</span>以上、アンケートで<span class="num">49%</span>が「イワシカちゃんに会うため」と回答。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">200万</span><span class="fig">1万</span><span class="fig">8千</span><span class="fig">2倍</span><span class="fig">49%</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>未来猫コンビの15秒の「ふりつけ」をAIで作って先に配り、オフ会で会員が踊った動画をリベシティに投稿してもらう。フェス当日はブース前で着ぐるみ（またはパネル）とその振りを一緒に踊れる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.jprime.jp/articles/-/41250" target="_blank" rel="noopener noreferrer">jprime.jp ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-15-6" data-id="2026-10-15#6" data-region="日本" data-fun="3" data-ease="3" data-tags="リアルの場|配る・紙・グッズ|投票・参加">
+  <div class="card-top">
+    <span class="no">6</span>
+    <div class="titles"><h3>商店街のお店ごとに「笑えるポスター」</h3><p class="sub">3年たっても貼られてる</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">リアルの場</span> <span class="tag">配る・紙・グッズ</span> <span class="tag">投票・参加</span></div>
+  <p class="what">電通関西の日下慶太さんの「商店街ポスター展」。大阪の新世界市場から始まり、文の里商店街・伊丹西台・宮城県女川へ。若手クリエイターがお店ごとに自由にポスターを作り、新世界市場では<span class="num">約3年</span>後も掲出中。文の里では終了<span class="num">5か月</span>後に来た人のTwitter投稿（写真<span class="num">約20枚</span>）からまとめサイト、ウェブメディア<span class="num">8社</span>ほど、テレビのキー局の取材へ（<span class="num">2015年</span>9月の記事）。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">約3年</span><span class="fig">5か月</span><span class="fig">約20枚</span><span class="fig">8社</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>AIブースの15人それぞれの「推しポスター」を、本人の口ぐせや得意技でAIと一緒に作る。オフ会会場の壁やリベシティの各チャットに1枚ずつ貼っていき、全員分そろうとブースの壁になる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★★</b></span><span class="links"><a class="src" href="https://www.advertimes.com/?p=202671" target="_blank" rel="noopener noreferrer">advertimes.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-15-7" data-id="2026-10-15#7" data-region="日本" data-fun="3" data-ease="2" data-tags="リアルの場|予約・抽選・行列">
+  <div class="card-top">
+    <span class="no">7</span>
+    <div class="titles"><h3>「この時間にここに来ると良いことがあるかも？」だけ</h3><p class="sub">駅前で70人が踊り出す</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">リアルの場</span> <span class="tag">予約・抽選・行列</span></div>
+  <p class="what">アメリカンイーグル（<span class="num">2012年</span>4月<span class="num">7日</span>・新宿駅東口）。日本1号店の開店前に、SNSで「この時間にここに来ると良いことがあるかも？」の一文だけ告知。当日、通行人に紛れた日本工学院の学生ダンサー<span class="num">70人</span>（<span class="num">約1か月</span>特訓）が踊り出し、最後にブランドを明かす。メディアはあえて一部だけ。4/18の開店当日朝は<span class="num">約1,000人</span>の行列。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">70人</span><span class="fig">約1か月</span><span class="fig">約1,000人</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>リベの大きなオフ会の休憩時間に、会場に紛れたブースメンバー15人が黄色い何かを一斉に取り出して、未来猫の音楽で30秒だけ踊る（または一斉に同じポーズ）。最後に「6月1日、予約開始にゃ」のプラカード。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.advertimes.com/?p=75134" target="_blank" rel="noopener noreferrer">advertimes.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-15-8" data-id="2026-10-15#8" data-region="日本" data-fun="2" data-ease="2" data-tags="リアルの場|キャラ・マスコット">
+  <div class="card-top">
+    <span class="no">8</span>
+    <div class="titles"><h3>熱いファンを面接して「ブースの案内役」に</h3><p class="sub">日本のゲーム会社が海外で</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">リアルの場</span> <span class="tag">キャラ・マスコット</span></div>
+  <p class="what">スクウェア・エニックス『ファイナルファンタジーXIV』（gamescom 2015・ドイツ）。ストーリーや戦闘が複雑で初めての人に説明しにくく、毎年ファンから「一緒に働きたい」と申し出があったため、初めてコミュニティからアンバサダーを公募。数日間のSkype面接で<span class="num">1人</span>ずつ選び、<span class="num">6日</span>間ブースに立ってもらった。期間中は吉田プロデューサーとのミート＆グリートも。</p>
+  
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>「AIはじめての先輩」案内役を、リベ会員から公募して面接（面接もAI公開会議風にライブで）。選ばれた人はおそろいTシャツで当日ブースの入口に立つ。応募の時点で「出展に挑戦中」の発信になる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★☆</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://na.finalfantasyxiv.com/blog/001118.html" target="_blank" rel="noopener noreferrer">na.finalfantasyxiv.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-15-9" data-id="2026-10-15#9" data-region="海外" data-fun="3" data-ease="2" data-tags="AI・デジタル体験|配信・動画|リアルの場">
+  <div class="card-top">
+    <span class="no">9</span>
+    <div class="titles"><h3>広告に話しかけると、AIが答えてくれる</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">AI・デジタル体験</span> <span class="tag">配信・動画</span> <span class="tag">リアルの場</span></div>
+  <p class="what">Instreamatic.ai × ロシアのAlfa-Bank（<span class="num">2018年</span>・代理店OMD）。音声ストリームの再生開始時に短い予告を流し、最後に「詳しく聞きたい？」と質問。声で「はい」と答えた人にはAIが説明してサイトを開き、興味なしの人には短い一言だけ流して戻す。<span class="num">50万</span>回以上配信、リスナーの<span class="num">5.06%</span>が肯定的に反応。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">50万</span><span class="fig">5.06%</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>未来猫に話しかけられる音声ページを作る。「親子講座ってなに？」「AI初めてでも大丈夫？」と声で聞くと先生猫が答え、最後に予約ページへ。このページ自体が「AIでこういうの作れるよ」の見本になる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://rainnews.com/instreamatic-ai-shares-success-from-russian-voice-driven-ad-campaign/" target="_blank" rel="noopener noreferrer">rainnews.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-15-10" data-id="2026-10-15#10" data-region="海外" data-fun="3" data-ease="2" data-tags="AI・デジタル体験|配信・動画|投票・参加">
+  <div class="card-top">
+    <span class="no">10</span>
+    <div class="titles"><h3>「あなたの眼力」を測るフィルター</h3><p class="sub">遊んだ人が広告の作り手に</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">AI・デジタル体験</span> <span class="tag">配信・動画</span> <span class="tag">投票・参加</span></div>
+  <p class="what">トルコの眼鏡チェーン Atasun Optik。テレビCMの「サングラスをかけると視線が集まる」を、TikTokで自分の「眼力（ナザール）」を測るメーター付きエフェクトにした。動画総再生<span class="num">1億</span><span class="num">600万</span>回超、ユーザー投稿<span class="num">1,000件</span>以上、Web・アプリの注文+<span class="num">181.5%</span>（キャンペーン全体の成果・自社の事例ページ）。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">1億</span><span class="fig">600万</span><span class="fig">1,000件</span><span class="fig">181.5%</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>カメラに顔を映すと「あなたのAI先生度」をメーターで測るHTML（白衣と猫耳が自動で付く）。結果画面のスクショに「判定：先生猫級 → 講座で確かめるにゃ」。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://ads.tiktok.com/business/ru/inspiration/atasun-branded-effect-campaign" target="_blank" rel="noopener noreferrer">ads.tiktok.com ↗</a></span></div>
+</article>
+  </div>
+  <details class="extras"><summary>今日は入れなかった「たね」 7件</summary><ul><li>Sonic25周年「エッグマンがTwitterを乗っ取る」：声優2人が生でファンの質問に回答 <a href="https://shortyawards.com/9th/soniceggman-twitter-takeover" target="_blank" rel="noopener noreferrer">shortyawards.com</a></li><li>Niche（Kickstarter）：「24時間で100人支援したら新機能」の時間制ゴール／最後のゴールは先に「FINAL」と宣言 <a href="https://www.gamedeveloper.com/business/niche-a-community-based-kickstarter-campaign" target="_blank" rel="noopener noreferrer">gamedeveloper.com</a></li><li>Wishland：支援者がスターを出し合い、投票で解放する特典を決める <a href="https://stonemaiergames.com/?p=15173" target="_blank" rel="noopener noreferrer">stonemaiergames.com</a></li><li>Tally：Product Huntと同じ日にSNS・ニュースレターも一斉に動かすチェックリスト <a href="https://blog.tally.so/product-hunt-launch-results/" target="_blank" rel="noopener noreferrer">blog.tally.so</a></li><li>Aniplex：作品名を伏せた数字だけのカウントダウンサイト <a href="https://animecorner.me/aniplex-launches-mysterious-countdown-set-to-end-on-june-9/" target="_blank" rel="noopener noreferrer">animecorner.me</a></li><li>Chiquita：バナナのシールを25種のキャラにして、自分のキャラを作れるジェネレーター <a href="https://www.designboom.com/design/chiquita-viral-sticker-campaign-by-dj-neff/" target="_blank" rel="noopener noreferrer">designboom.com</a></li><li>山梨県公式TikTok：1日のデートプランを1分弱の動画に <a href="https://www.advertimes.com/20230928/article435040/" target="_blank" rel="noopener noreferrer">advertimes.com</a></li></ul></details>
+</section><section class="day" id="day-2026-10-14">
+  <header class="day-head">
+    <h2>10/14（水）<span class="nth">1回目</span></h2>
+    <p class="summary">候補32件 → 親が出典を開いて確かめた10本（差し替え0件）。海外5本・日本5本。</p>
+    <p class="muted small">※ 数字はすべて出典ページに書いてあるもの（自社発表・関係者発言を含む）。</p>
+    <details class="facets"><summary>この日の切り口（Haiku 8人の担当）</summary><ol><li>海外の展示会（CES・SXSW・コミコン）の小ブース集客</li><li>ARG・謎解き・暗号の告知</li><li>キャラクター（VTuber・マスコット）の告知</li><li>UGC（参加者が作って広げる）</li><li>子ども・親子イベントの集客と当日キャンセル対策</li><li>カウントダウン・ウェイトリスト・ローンチ</li><li>日本のコミケ・技術書典の出展者の工夫</li><li>AIを使った体験型の告知</li></ol></details>
+    <div class="pick"><span class="picklabel">ゆいのいちばん</span><p>1「明日わかるよ、だけ言う300人」。15人の黄色い謎の人がオフ会に出没する絵が浮かんで、わたしが笑っちゃった。</p></div>
+  </header>
+  <div class="grid">
+<article class="card" id="c-2026-10-14-1" data-id="2026-10-14#1" data-region="海外" data-fun="3" data-ease="2" data-tags="謎・ARG|リアルの場|配る・紙・グッズ">
+  <div class="card-top">
+    <span class="no">1</span>
+    <div class="titles"><h3>「明日わかるよ」だけ言う300人</h3><p class="sub">謎の予告で会場をざわつかせる</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="pickbadge">今日の1本</span><span class="tag">謎・ARG</span> <span class="tag">リアルの場</span> <span class="tag">配る・紙・グッズ</span></div>
+  <p class="what">Bluetooth SIG（CES 2004「Operation Blueshock」）。小さな出展なのに、会場へ黒の正装のモデル<span class="num">300人</span>を送り込み、話しかけられても「You&#x27;ll find out tomorrow.」としか言わない。名刺の裏には<span class="num">8か国</span>語の謎めいた一言。翌日は<span class="num">100人</span>で花束を配達、最終日に種明かし。名刺は初日<span class="num">75分</span>で<span class="num">86,500枚</span>、合計<span class="num">13万</span>枚超。来場者調査で<span class="num">68%</span>が「何か見た」、公式サイトは当日<span class="num">94%</span>増。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">300人</span><span class="fig">8か国</span><span class="fig">100人</span><span class="fig">75分</span><span class="fig">86,500枚</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>リベのオフ会で15人が黄色い謎カード（「6月1日にわかるにゃ」だけ）を配り続け、予約開始日に未来猫が種明かし。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://marketingsherpa.com/article/case-study/operation-blueshock-strikes-ces" target="_blank" rel="noopener noreferrer">marketingsherpa.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-14-2" data-id="2026-10-14#2" data-region="海外" data-fun="3" data-ease="3" data-tags="謎・ARG|予約・抽選・行列|リアルの場">
+  <div class="card-top">
+    <span class="no">2</span>
+    <div class="titles"><h3>座席は6つだけ、合言葉で乗れる</h3><p class="sub">「入れなかった人」も宣伝になる</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">謎・ARG</span> <span class="tag">予約・抽選・行列</span> <span class="tag">リアルの場</span></div>
+  <p class="what">ABCのドラマ「Pan Am」（サンディエゴ・コミコン2011）。機内を再現した小さなブースに座席は<span class="num">6席</span>だけ。公式Twitterが「秘密のフレーズ」を流し、それを客室乗務員に言えた人がチケットをもらえた。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">6席</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>個別ガチ相談の「先行枠」を数席だけ用意し、合言葉をみずのさんの毎朝動画の最後に1語ずつ混ぜる。全部集めた人が先行予約できる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★★</b></span><span class="links"><a class="src" href="https://insidethemagic.net/?p=26741" target="_blank" rel="noopener noreferrer">insidethemagic.net ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-14-3" data-id="2026-10-14#3" data-region="海外" data-fun="3" data-ease="2" data-tags="配る・紙・グッズ|謎・ARG">
+  <div class="card-top">
+    <span class="no">3</span>
+    <div class="titles"><h3>お釣りの1ドル札が入口</h3><p class="sub">手に残る物に告知を仕込む</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">配る・紙・グッズ</span> <span class="tag">謎・ARG</span></div>
+  <p class="what">映画『ダークナイト』（コミコン2007〜）。「ONE DOLLAR」の所が「Why so serious?」になったジョーカー柄の札を<span class="num">約11,000枚</span>、お釣りとして配った。その言葉のURLからネットの謎解き（ARG）へ。関係者によれば<span class="num">75か国</span>・<span class="num">1,100万</span>人が参加。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">約11,000枚</span><span class="fig">75か国</span><span class="fig">1,100万</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>リベのオフ会やリベシティ内のお店で「未来猫のおもちゃのお札」を配り、書いてある一言を検索すると、AIで作ったミニゲームの告知ページへ着く。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://gizmodo.com/dark-knight-arg-interview-immersive-gaming-batman-1850782310" target="_blank" rel="noopener noreferrer">gizmodo.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-14-4" data-id="2026-10-14#4" data-region="海外" data-fun="3" data-ease="2" data-tags="AI・デジタル体験|配信・動画">
+  <div class="card-top">
+    <span class="no">4</span>
+    <div class="titles"><h3>質問に答えるとAIが「あなたの曲」を作る</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">AI・デジタル体験</span> <span class="tag">配信・動画</span></div>
+  <p class="what">BMW×Tomorrowland「Future Record」（<span class="num">2023年</span>7月）。futurerecord.ai でチャットに答える（好きなジャンル・テンポ・今の気分・フェスへの期待）と、AIが自分だけのダンス曲・歌詞・ジャケット絵を作り、TikTok／Reels／Shorts用の縦動画もダウンロードできた。</p>
+  
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>「お金で今いちばん気になること」を3問答えると、未来猫がその人のテーマソングと縦動画を作ってくれるHTML。動画の最後に「この作り方、ブースで教えるにゃ」。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.press.bmwgroup.com/global/article/detail/T0425558EN/bmw-and-tomorrowland-create-a-whole-new-music-experience-with-the-help-of-artificial-intelligence" target="_blank" rel="noopener noreferrer">press.bmwgroup.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-14-5" data-id="2026-10-14#5" data-region="海外" data-fun="2" data-ease="2" data-tags="予約・抽選・行列">
+  <div class="card-top">
+    <span class="no">5</span>
+    <div class="titles"><h3>「あなたの前に○人」を見せて、紹介で前へ進める</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-ov">海外</span><span class="tag">予約・抽選・行列</span></div>
+  <p class="what">Robinhood（ローンチ前）。登録直後の画面に「順番待ちの何番目か」を表示し、友だちを紹介するほど順番が上がる仕組み。初日<span class="num">約1万</span>人、1週目<span class="num">約5万</span>人、<span class="num">1年</span>で<span class="num">約100万</span>人がウェイトリストに。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">約1万</span><span class="fig">約5万</span><span class="fig">約100万</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>6/1の予約開始前に「お知らせ登録」を開き、「あなたは○番目。リベ友を誘うと前へ」を見せる。開始日は前の人から順にお知らせ。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★☆</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.prefinery.com/blog/referral-programs/robinhood/" target="_blank" rel="noopener noreferrer">prefinery.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-14-6" data-id="2026-10-14#6" data-region="日本" data-fun="2" data-ease="2" data-tags="予約・抽選・行列">
+  <div class="card-top">
+    <span class="no">6</span>
+    <div class="titles"><h3>予約を3段に分けて、直前の空きを拾う</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">予約・抽選・行列</span></div>
+  <p class="what">大阪・関西万博（2025）のパビリオン予約。「<span class="num">2か月</span>前抽選」「<span class="num">7日</span>前抽選」「<span class="num">3日</span>前〜前日の空き枠先着」「当日登録（1枠体験すると次の1枠を予約可）」の段階制。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">2か月</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>親子講座は「早割の第1弾」「直前の空き枠先着」の2段に。キャンセルが出たら未来猫が「空いたにゃ！」と即お知らせ。当日枠とも自然につながる。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★☆</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://travel.watch.impress.co.jp/docs/news/2021388.html" target="_blank" rel="noopener noreferrer">travel.watch.impress.co.jp ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-14-7" data-id="2026-10-14#7" data-region="日本" data-fun="2" data-ease="3" data-tags="キャラ・マスコット|予約・抽選・行列">
+  <div class="card-top">
+    <span class="no">7</span>
+    <div class="titles"><h3>推しキャラを「期間限定アンバサダー」に</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">キャラ・マスコット</span> <span class="tag">予約・抽選・行列</span></div>
+  <p class="what">志摩スペイン村（<span class="num">2023年</span>2月）。VTuberの周央サンゴさんを期間限定アンバサダーに起用し、コラボイベントを開催。初日の来場は<span class="num">約7,000人</span>で、前年同日の<span class="num">2倍</span>以上。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">約7,000人</span><span class="fig">2倍</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>未来猫コンビを「フェスまでの期間限定アンバサダー」に任命し、リベシティの中で毎週ひとこと実況。任命式そのものを1本のネタにする。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★☆</b></span><span class="rate">手軽さ <b>★★★</b></span><span class="links"><a class="src" href="https://business.ntt-east.co.jp/column/bizdrive/vtuber-use-in-gov-and-business.html" target="_blank" rel="noopener noreferrer">business.ntt-east.co.jp ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-14-8" data-id="2026-10-14#8" data-region="日本" data-fun="3" data-ease="2" data-tags="謎・ARG">
+  <div class="card-top">
+    <span class="no">8</span>
+    <div class="titles"><h3>売り場に謎を混ぜる</h3><p class="sub">探すこと自体が遊び</p></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">謎・ARG</span></div>
+  <p class="what">グラニフ「みつけて！グラニフ！」（<span class="num">2025年</span>4月）。特設サイトで4ステージの謎解き、さらにgraniph Tokyoで<span class="num">3日</span>間のリアル謎解き。謎の手がかりを刷った非売品Tシャツを普通の商品と同じ棚に並べ、マネキンの視線もヒントに。<span class="num">3日</span>間で<span class="num">343人</span>が参加。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">343人</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>おそろいTシャツの中に1枚だけ謎入りを混ぜ、「謎Tを着たメンバーを探せ」をオフ会で開催。見つけた人にブースの限定ステッカー。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://advertimes.com/20250722/article505744" target="_blank" rel="noopener noreferrer">advertimes.com ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-14-9" data-id="2026-10-14#9" data-region="日本" data-fun="2" data-ease="3" data-tags="投票・参加">
+  <div class="card-top">
+    <span class="no">9</span>
+    <div class="titles"><h3>「わたしだけのジャケット」を作って投稿</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">投票・参加</span></div>
+  <p class="what">ソニー・ミュージック／大滝詠一『EACH TIME』（<span class="num">2024年</span>3月）。特設サイトのジャケットメーカーで自分の写真をジャケット枠に合成し、#私だけのEACHTIME で投稿。選ばれた作品は3/21の新聞広告に載った。</p>
+  
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>「未来猫と一緒に写れる黄色いフレーム」メーカーを作り、選ばれた写真はフェス当日のブースの壁に貼る。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★☆</b></span><span class="rate">手軽さ <b>★★★</b></span><span class="links"><a class="src" href="https://www.sonymusic.co.jp/Music/Info/eiichiohtaki-each-time/" target="_blank" rel="noopener noreferrer">sonymusic.co.jp ↗</a></span></div>
+</article>
+<article class="card" id="c-2026-10-14-10" data-id="2026-10-14#10" data-region="日本" data-fun="3" data-ease="2" data-tags="AI・デジタル体験">
+  <div class="card-top">
+    <span class="no">10</span>
+    <div class="titles"><h3>その場で「自分のきっぷ」を作れる機械（神戸のサークル）</h3></div>
+    <button class="star" type="button" aria-pressed="false" aria-label="気になる" title="気になる">☆</button>
+  </div>
+  <div class="badges"><span class="reg reg-jp">日本</span><span class="tag">AI・デジタル体験</span></div>
+  <p class="what">架空鉄道サークル「神戸板宿電気鉄道空想会社」（コミケ106・<span class="num">2025年</span>8月）。スペースにタッチパネル付きの機械を置き、来場者が架空鉄道のオリジナルきっぷを作れるようにした。コミケは<span class="num">2日</span>間で<span class="num">約25万</span>人。</p>
+  <div class="figs"><span class="figlabel">数字</span><span class="fig">約25万</span></div>
+  <div class="use"><span class="uselabel">AIブースでの使い方</span><p>「未来猫鉄道・AI行き」の自分専用きっぷをAIで作れるHTMLを先に配り、予約した人にはQR付きの本きっぷを発行。当日きっぷを見せると入場。</p></div>
+  
+  <div class="foot"><span class="rate">おもしろさ <b>★★★</b></span><span class="rate">手軽さ <b>★★☆</b></span><span class="links"><a class="src" href="https://www.tetsudo.com/report/502/" target="_blank" rel="noopener noreferrer">tetsudo.com ↗</a></span></div>
+</article>
+  </div>
+  <details class="extras"><summary>今日は入れなかった「たね」 2件</summary><ul><li>Mazda SXSW 2015：ハッシュタグ投稿で「並ばず入れるFast Pass」を1日10枚 <a href="https://www.xxlmag.com/dont-wait-line-hype-hotel-mazda-offering-fast-pass/" target="_blank" rel="noopener noreferrer">xxlmag.com</a> <span class="muted">（調査員の報告のみ・親は未確認）</span></li><li>シンガポールNUHS：デポジット導入で無断欠席 9.1%→4.3% <a href="https://child.chi.sg/learn/child-collection/projects/deposit-collection-reduces-no-show-rates-for-sleep-studies/" target="_blank" rel="noopener noreferrer">child.chi.sg</a> <span class="muted">（調査員の報告のみ・親は未確認）</span></li></ul></details>
+</section>
+<p id="empty" hidden>条件に合うアイデアがありません。「絞り込みを戻す」を押してください。</p>
+</main>
+<div class="wrap ft">出典は各カードのリンク先で確認できます（数字は出典ページに書いてあるもの）。☆ の印は、このブラウザの中だけに残ります。毎朝04:00ごろ自動で更新（最終生成 2026-10-16 06:56）。</div>
+<div id="toast" class="toast" role="status" hidden></div>
+<script>
+(function(){
+  document.documentElement.classList.add('js-ready');
+  var KEY='libefes-pr-fav-v1';
+  var favs={};
+  function load(){try{favs=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){favs={};}}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(favs));}catch(e){}}
+  load();
+  var cards=[].slice.call(document.querySelectorAll('.card'));
+  var st={region:'all',tags:{},fun3:false,favOnly:false,q:''};
+  var $=function(s){return document.querySelector(s);};
+  function toast(m){var t=$('#toast');t.textContent=m;t.hidden=false;setTimeout(function(){t.hidden=true;},1800);}
+  function applyFav(c){var on=!!favs[c.dataset.id];c.classList.toggle('fav',on);var b=c.querySelector('.star');b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'★':'☆';}
+  function favCount(){return Object.keys(favs).filter(function(k){return favs[k];}).length;}
+  function refresh(){
+    var shown=0;
+    cards.forEach(function(c){
+      var ok=true;
+      if(st.region!=='all'&&c.dataset.region!==st.region)ok=false;
+      if(st.fun3&&c.dataset.fun!=='3')ok=false;
+      if(st.favOnly&&!favs[c.dataset.id])ok=false;
+      var tg=Object.keys(st.tags).filter(function(k){return st.tags[k];});
+      if(ok&&tg.length){var ct=c.dataset.tags.split('|');ok=tg.every(function(t){return ct.indexOf(t)>=0;});}
+      if(ok&&st.q){ok=c.textContent.toLowerCase().indexOf(st.q)>=0;}
+      c.hidden=!ok;if(ok)shown++;
+    });
+    document.querySelectorAll('.day').forEach(function(d){
+      var any=d.querySelectorAll('.card:not([hidden])').length>0;
+      d.querySelector('.grid').style.display=any?'':'none';
+      var ex=d.querySelector('.extras');if(ex)ex.style.display=(st.region==='all'&&!tg0())?'':'none';
+    });
+    function tg0(){return Object.keys(st.tags).some(function(k){return st.tags[k];})||st.fun3||st.favOnly||st.q;}
+    $('#count').textContent=shown+' / '+cards.length+' 本を表示';
+    $('#favn').textContent=favCount();
+    $('#empty').hidden=(shown!==0);
+  }
+  cards.forEach(function(c){applyFav(c);c.querySelector('.star').addEventListener('click',function(){favs[c.dataset.id]=!favs[c.dataset.id];if(!favs[c.dataset.id])delete favs[c.dataset.id];save();applyFav(c);refresh();});});
+  document.querySelectorAll('[data-region-btn]').forEach(function(b){b.addEventListener('click',function(){st.region=b.dataset.regionBtn;document.querySelectorAll('[data-region-btn]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});refresh();});});
+  document.querySelectorAll('[data-tag-btn]').forEach(function(b){b.addEventListener('click',function(){var t=b.dataset.tagBtn;st.tags[t]=!st.tags[t];b.setAttribute('aria-pressed',st.tags[t]?'true':'false');refresh();});});
+  $('#fun3').addEventListener('click',function(){st.fun3=!st.fun3;this.setAttribute('aria-pressed',st.fun3?'true':'false');refresh();});
+  $('#favonly').addEventListener('click',function(){st.favOnly=!st.favOnly;this.setAttribute('aria-pressed',st.favOnly?'true':'false');refresh();});
+  $('#q').addEventListener('input',function(){st.q=this.value.trim().toLowerCase();refresh();});
+  $('#big').addEventListener('click',function(){var on=document.body.classList.toggle('big');this.setAttribute('aria-pressed',on?'true':'false');});
+  $('#reset').addEventListener('click',function(){st={region:'all',tags:{},fun3:false,favOnly:false,q:''};$('#q').value='';document.querySelectorAll('[aria-pressed]').forEach(function(x){if(x.classList.contains('star')||x.id==='big')return;x.setAttribute('aria-pressed',x.dataset.regionBtn==='all'?'true':'false');});refresh();});
+  $('#copyfav').addEventListener('click',function(){
+    var lines=[];
+    cards.forEach(function(c){if(!favs[c.dataset.id])return;var h=c.querySelector('h3').textContent;var a=c.querySelector('a.src');lines.push('・'+c.dataset.id.replace('#',' #')+' '+h+(a?' '+a.href:''));});
+    if(!lines.length){toast('気になるの印がまだありません');return;}
+    var txt='気になる広報アイデア（'+lines.length+'件）\n'+lines.join('\n');
+    function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('コピーしました（'+lines.length+'件）');}catch(e){toast('コピーできませんでした');}document.body.removeChild(ta);}
+    try{navigator.clipboard.writeText(txt).then(function(){toast('コピーしました（'+lines.length+'件）');},fb);}catch(e){fb();}
+  });
+  try{if(window.innerWidth<760)$('#filters').removeAttribute('open');}catch(e){}
+  refresh();
+})();
+</script>
+</body>
+</html>
