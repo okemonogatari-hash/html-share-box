@@ -52,15 +52,24 @@
 <main id="list"></main>
 <footer>from おけもん 🦫 ＆ AIの仲間たち</footer>
 <script>
+// 動画ができた人（publish_add.sh が1人ずつ足す）
+window.DONE = ['wassy', 'nezuhana', 'hiit', 'tatsuya', 'mecha'];
 const P = [
   { k: 'wassy', name: 'AIわっしー', g: 1, n: 1, hook: 'その鷲、どこへ巣立つの？', talk: '「住んでる鷲」から「巣立つ鷲」へ。どこへ飛ぶの？' },
   { k: 'nezuhana', name: 'ねずはな', g: 2, n: 2, hook: 'このパフェ、ぜんぶ手づくり。', talk: 'ミニチュアのパフェ、1個つくるのに何時間かかるの？' },
   { k: 'hiit', name: 'HIIT', g: 2, n: 3, hook: '朝4時。社長は、寝ている。', talk: '朝4時の報告、AI社員は何を見て書いてるの？' },
   { k: 'tatsuya', name: 'タツヤ', g: 2, n: 4, hook: '火おこし検定って、知ってる？', talk: '静岡の民泊、どんな物件を狙ってる？' },
   { k: 'mecha', name: 'メカバイオ', g: 3, n: 5, hook: '朝4:50。もう、誰かがいる。', talk: '毎朝4:50、続けられる秘訣は？' },
-];
+  { k: 'miacchi', name: 'みあっち', g: 4, n: 6, hook: '年に600冊、絵本を借りる人。', talk: '3時起きの朝活、最初の1時間は何してる？' },
+  { k: 'chii', name: 'ちーちゃん', g: 4, n: 7, hook: '元保育士が、インスタを動かしてる。', talk: '保育士の10年、SNSの仕事で生きてることある？' },
+  { k: 'hitomimi', name: 'ひとみみ', g: 4, n: 8, hook: '「家で働く」を、ぜんぶ叶えた人。', talk: 'Claude Code、家のことは何を任せてる？' },
+  { k: 'kyojiro', name: 'きょじろ', g: 4, n: 9, hook: '月500万PVのブログが、ある日——', talk: 'クロコに、次は何を任せたい？' },
+  { k: 'molly', name: 'モーリー', g: 4, n: 10, hook: '釜山国際映画祭に、招待された人。', talk: 'VRで、介護の現場に何ができそう？' },
+  { k: 'ohagi', name: 'おはぎ丸飲み', g: 4, n: 11, hook: 'おはぎ、丸飲みしてるの？', talk: '電脳せどり、最初の0→1は何だった？' },
+  { k: 'hamu', name: 'はむ', g: 4, n: 12, hook: '10軒の家を、ぜんぶ自分で直した人。', talk: 'いちばん大変だった修繕は？' },
+].filter((p) => window.DONE.includes(p.k));
 // まだ動画がない人（できたら上の P へ移す）
-const SOON = [['miacchi', 'みあっち'], ['chii', 'ちーちゃん'], ['hitomimi', 'ひとみみ'], ['kyojiro', 'きょじろ'], ['molly', 'モーリー'], ['ohagi', 'おはぎ丸飲み'], ['hamu', 'はむ']];
+const SOON = [['miacchi', 'みあっち'], ['chii', 'ちーちゃん'], ['hitomimi', 'ひとみみ'], ['kyojiro', 'きょじろ'], ['molly', 'モーリー'], ['ohagi', 'おはぎ丸飲み'], ['hamu', 'はむ']].filter(([k]) => !window.DONE.includes(k));
 const G = { 1: ['班1', '1回目 10:10〜 同じ班'], 2: ['班2', '2回目 11:05〜 同じ班'], 3: ['主催', '今日の会をつくってくれた人'], 4: ['ほか', '休憩・終わったあとに'] };
 const nav = document.getElementById('nav'), list = document.getElementById('list');
 const card = (p) => `<section id="${p.k}">
@@ -73,8 +82,7 @@ const card = (p) => `<section id="${p.k}">
   const ps = P.filter((p) => p.g === g); if (!ps.length) return;
   list.insertAdjacentHTML('beforeend', `<div class="grp"><h3>${G[g][0]}</h3><span>${G[g][1]}</span></div>` + ps.map(card).join(''));
 });
-P.filter((p) => p.g === 4).forEach((p) => list.insertAdjacentHTML('beforeend', card(p)));
-list.insertAdjacentHTML('beforeend', `<div class="grp"><h3>${G[4][0]}</h3><span>${G[4][1]}</span></div>` + (P.some((p) => p.g === 4) ? '' : '') + `<div class="soon">${SOON.map(([k, n]) => `<div><img src="${k}.jpg" alt="">${n}さん・準備中</div>`).join('')}</div>`);
+list.insertAdjacentHTML('beforeend', `<div class="grp"><h3>${G[4][0]}</h3><span>${G[4][1]}</span></div>` + P.filter((p) => p.g === 4).map(card).join('') + (SOON.length ? `<div class="soon">${SOON.map(([k, n]) => `<div><img src="${k}.jpg" alt="">${n}さん・準備中</div>`).join('')}</div>` : ''));
 P.forEach((p) => nav.insertAdjacentHTML('beforeend', `<a href="#${p.k}"><img src="${p.k}.jpg" alt="">${p.name}</a>`));
 // タップで、その場で動画に差し替えて再生（同時に1本だけ）
 document.querySelectorAll('.play').forEach((b) => b.addEventListener('click', () => {
