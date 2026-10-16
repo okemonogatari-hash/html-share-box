@@ -85,13 +85,14 @@ const P = [
 const SOON = [['miacchi', 'みあっち'], ['chii', 'ちーちゃん'], ['hitomimi', 'ひとみみ'], ['kyojiro', 'きょじろ'], ['molly', 'モーリー'], ['ohagi', 'おはぎ丸飲み'], ['hamu', 'はむ']].filter(([k]) => !window.DONE.includes(k));
 const G = { 1: ['班1', '1回目 10:10〜 同じ班'], 2: ['班2', '2回目 11:05〜 同じ班'], 3: ['主催', '今日の会をつくってくれた人'], 4: ['ほか', '休憩・終わったあとに'] };
 const nav = document.getElementById('nav'), list = document.getElementById('list');
+const san = (n) => (/ちゃん$/.test(n) ? n : n + 'さん');
 const card = (p) => `<section id="${p.k}">
-    <div class="who"><img src="${p.k}.jpg" alt=""><div><div class="n">${p.n} / 14 ・ ${p.tag}</div><h2>${p.name}さん</h2></div></div>
+    <div class="who"><img src="${p.k}.jpg" alt=""><div><div class="n">${p.n} / 14 ・ ${p.tag}</div><h2>${san(p.name)}</h2></div></div>
     <p class="hook">${p.hook}</p>
-    <button class="play" data-k="${p.k}" aria-label="${p.name}さんの動画を再生"><img src="${p.k}_poster.jpg" alt="" loading="lazy"><i></i><b>タップで再生（30秒・音あり🔊）</b></button>
-    <button class="cpb" type="button" data-k="${p.k}" data-href="../${window.LINKS[p.k]}/">🔗 ${p.name}さんのページのリンクをコピー</button>
+    <button class="play" data-k="${p.k}" aria-label="${san(p.name)}の動画を再生"><img src="${p.k}_poster.jpg" alt="" loading="lazy"><i></i><b>タップで再生（30秒・音あり🔊）</b></button>
+    <button class="cpb" type="button" data-k="${p.k}" data-href="../${window.LINKS[p.k]}/">🔗 ${san(p.name)}のページのリンクをコピー</button>
     <div class="okm" id="ok-${p.k}"></div>
-    <a class="own" href="../${window.LINKS[p.k]}/">${p.name}さんのページを開く</a>
+    <a class="own" href="../${window.LINKS[p.k]}/">${san(p.name)}のページを開く</a>
   </section>`;
 // 主催を先頭に、そのあと全員（チャット全体に見せる並び）
 const ORDER = [P.find((p) => p.k === 'mecha'), ...P.filter((p) => p.k !== 'mecha')].filter(Boolean);
