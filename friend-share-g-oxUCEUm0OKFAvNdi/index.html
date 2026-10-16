@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>10/16 朝のオフ会 紹介ムービー</title>
+<style>
+  :root { color-scheme: light; --ink: #1d2433; --sub: #5a6275; --bg: #FFF9EE; --card: #FFFFFF; --acc: #FFD21F; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: -apple-system, "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif; }
+  header { padding: 28px 16px 8px; text-align: center; }
+  header .tag { display: inline-block; background: var(--ink); color: #fff; border-radius: 99px; padding: 6px 16px; font-size: 13px; letter-spacing: .05em; }
+  h1 { font-size: 26px; margin: 14px 0 6px; line-height: 1.35; }
+  header p { margin: 0 auto; max-width: 520px; color: var(--sub); font-size: 14px; line-height: 1.7; }
+  nav { display: flex; gap: 8px; overflow-x: auto; padding: 14px 16px; position: sticky; top: 0; background: rgba(255,249,238,.94); backdrop-filter: blur(6px); z-index: 2; }
+  nav a { flex: 0 0 auto; display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--ink); background: #fff; border: 2px solid var(--ink); border-radius: 99px; padding: 4px 12px 4px 4px; font-size: 14px; font-weight: 700; }
+  nav img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+  main { max-width: 560px; margin: 0 auto; padding: 8px 16px 60px; }
+  section { background: var(--card); border: 3px solid var(--ink); border-radius: 24px; box-shadow: 0 6px 0 var(--ink); padding: 16px; margin: 22px 0 30px; scroll-margin-top: 70px; }
+  .who { display: flex; align-items: center; gap: 12px; }
+  .who img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 3px solid var(--ink); }
+  .who .n { font-size: 12px; color: var(--sub); }
+  .who h2 { font-size: 20px; margin: 2px 0 0; }
+  .hook { margin: 12px 0 10px; font-size: 18px; font-weight: 800; background: linear-gradient(transparent 60%, var(--acc) 60%); display: inline; line-height: 1.8; }
+  video { width: 100%; aspect-ratio: 9 / 16; border-radius: 16px; background: #222; display: block; margin-top: 12px; }
+  .talk { margin-top: 12px; background: #FFF6C9; border-radius: 14px; padding: 10px 14px; font-size: 15px; line-height: 1.6; }
+  .talk b { display: block; font-size: 12px; color: var(--sub); }
+  .from { font-size: 12px; color: var(--sub); margin-top: 8px; }
+  footer { text-align: center; color: var(--sub); font-size: 12px; padding: 0 16px 40px; }
+</style>
+</head>
+<body>
+<header>
+  <span class="tag">10/16（金）新宿西口 経営者オフ会</span>
+  <h1>はじめまして、を<br>30秒で楽しく。</h1>
+  <p>同じ班のみなさんを、リベのプロフィールから1人30秒ずつ紹介しました。絵はChatGPT、動きと音はClaude。音が出ます🔊</p>
+</header>
+<nav id="nav"></nav>
+<main id="list"></main>
+<footer>from おけもん 🦫 ＆ AIの仲間たち</footer>
+<script>
+const P = [
+  { k: 'wassy', name: 'AIわっしー', n: '1回目', hook: 'その鷲、どこへ巣立つの？', talk: '「住んでる鷲」から「巣立つ鷲」へ。どこへ飛ぶの？', from: 'トーク画面で、本人の言葉が返ってくる' },
+  { k: 'nezuhana', name: 'ねずはな', n: '2回目', hook: 'このパフェ、ぜんぶ手づくり。', talk: 'ミニチュアのパフェ、1個つくるのに何時間かかるの？', from: '作品の手元のアップから' },
+  { k: 'hiit', name: 'HIIT', n: '2回目', hook: '朝4時。社長は、寝ている。', talk: '朝4時の報告、AI社員は何を見て書いてるの？', from: '寝ている間に印刷されてくる経営報告書' },
+  { k: 'tatsuya', name: 'タツヤ', n: '2回目', hook: '火おこし検定って、知ってる？', talk: '静岡の民泊、どんな物件を狙ってる？', from: '居酒屋のお品書き' },
+  { k: 'mecha', name: 'メカバイオ', n: '主催', hook: '朝4:50。もう、誰かがいる。', talk: '毎朝4:50、続けられる秘訣は？', from: '4:50の朝礼に、人が集まってくる' },
+];
+const READY = ['wassy', 'tatsuya', 'mecha'];
+const nav = document.getElementById('nav'), list = document.getElementById('list');
+P.forEach((p, i) => {
+  nav.insertAdjacentHTML('beforeend', `<a href="#${p.k}"><img src="${p.k}.jpg" alt="">${p.name}</a>`);
+  list.insertAdjacentHTML('beforeend', `<section id="${p.k}">
+    <div class="who"><img src="${p.k}.jpg" alt=""><div><div class="n">${i + 1} / 12 ・ ${p.n}</div><h2>${p.name}さん</h2></div></div>
+    <p class="hook">${p.hook}</p>
+    ${READY.includes(p.k) ? `<video src="${p.k}.mp4" poster="${p.k}_poster.jpg" controls playsinline preload="metadata"></video>` : '<div class="talk" style="text-align:center;background:#EEF2F7">🎬 ただいま書き出し中。もうすぐ届きます</div>'}
+    <div class="talk"><b>おけもんが聞いてみたいこと</b>${p.talk}</div>
+  </section>`);
+});
+</script>
+</body>
+</html>
