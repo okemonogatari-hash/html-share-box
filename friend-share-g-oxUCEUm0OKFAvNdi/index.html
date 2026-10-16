@@ -28,6 +28,17 @@
   .talk { margin-top: 12px; background: #FFF6C9; border-radius: 14px; padding: 10px 14px; font-size: 15px; line-height: 1.6; }
   .talk b { display: block; font-size: 12px; color: var(--sub); }
   .from { font-size: 12px; color: var(--sub); margin-top: 8px; }
+  .grp { margin: 30px 0 4px; display: flex; align-items: baseline; gap: 10px; }
+  .grp h3 { margin: 0; font-size: 20px; }
+  .grp span { color: var(--sub); font-size: 13px; }
+  .play { position: relative; display: block; width: 100%; aspect-ratio: 9 / 16; border-radius: 16px; overflow: hidden; margin-top: 12px; border: 0; padding: 0; background: #222; cursor: pointer; }
+  .play img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .play i { position: absolute; left: 50%; top: 50%; width: 92px; height: 92px; margin: -46px 0 0 -46px; border-radius: 50%; background: rgba(255,210,31,.95); border: 4px solid var(--ink); box-shadow: 0 6px 0 var(--ink); }
+  .play i::after { content: ""; position: absolute; left: 34px; top: 24px; border-left: 34px solid var(--ink); border-top: 21px solid transparent; border-bottom: 21px solid transparent; }
+  .play b { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; color: #fff; font-size: 15px; text-shadow: 0 1px 4px #000; }
+  .soon { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  .soon div { display: flex; align-items: center; gap: 6px; background: #fff; border: 2px dashed #b9bfcc; border-radius: 99px; padding: 4px 12px 4px 4px; font-size: 14px; color: var(--sub); }
+  .soon img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
   footer { text-align: center; color: var(--sub); font-size: 12px; padding: 0 16px 40px; }
 </style>
 </head>
@@ -42,23 +53,36 @@
 <footer>from おけもん 🦫 ＆ AIの仲間たち</footer>
 <script>
 const P = [
-  { k: 'wassy', name: 'AIわっしー', n: '1回目', hook: 'その鷲、どこへ巣立つの？', talk: '「住んでる鷲」から「巣立つ鷲」へ。どこへ飛ぶの？', from: 'トーク画面で、本人の言葉が返ってくる' },
-  { k: 'nezuhana', name: 'ねずはな', n: '2回目', hook: 'このパフェ、ぜんぶ手づくり。', talk: 'ミニチュアのパフェ、1個つくるのに何時間かかるの？', from: '作品の手元のアップから' },
-  { k: 'hiit', name: 'HIIT', n: '2回目', hook: '朝4時。社長は、寝ている。', talk: '朝4時の報告、AI社員は何を見て書いてるの？', from: '寝ている間に印刷されてくる経営報告書' },
-  { k: 'tatsuya', name: 'タツヤ', n: '2回目', hook: '火おこし検定って、知ってる？', talk: '静岡の民泊、どんな物件を狙ってる？', from: '居酒屋のお品書き' },
-  { k: 'mecha', name: 'メカバイオ', n: '主催', hook: '朝4:50。もう、誰かがいる。', talk: '毎朝4:50、続けられる秘訣は？', from: '4:50の朝礼に、人が集まってくる' },
+  { k: 'wassy', name: 'AIわっしー', g: 1, n: 1, hook: 'その鷲、どこへ巣立つの？', talk: '「住んでる鷲」から「巣立つ鷲」へ。どこへ飛ぶの？' },
+  { k: 'nezuhana', name: 'ねずはな', g: 2, n: 2, hook: 'このパフェ、ぜんぶ手づくり。', talk: 'ミニチュアのパフェ、1個つくるのに何時間かかるの？' },
+  { k: 'hiit', name: 'HIIT', g: 2, n: 3, hook: '朝4時。社長は、寝ている。', talk: '朝4時の報告、AI社員は何を見て書いてるの？' },
+  { k: 'tatsuya', name: 'タツヤ', g: 2, n: 4, hook: '火おこし検定って、知ってる？', talk: '静岡の民泊、どんな物件を狙ってる？' },
+  { k: 'mecha', name: 'メカバイオ', g: 3, n: 5, hook: '朝4:50。もう、誰かがいる。', talk: '毎朝4:50、続けられる秘訣は？' },
 ];
-const READY = ['wassy', 'nezuhana', 'hiit', 'tatsuya', 'mecha'];
+// まだ動画がない人（できたら上の P へ移す）
+const SOON = [['miacchi', 'みあっち'], ['chii', 'ちーちゃん'], ['hitomimi', 'ひとみみ'], ['kyojiro', 'きょじろ'], ['molly', 'モーリー'], ['ohagi', 'おはぎ丸飲み'], ['hamu', 'はむ']];
+const G = { 1: ['班1', '1回目 10:10〜 同じ班'], 2: ['班2', '2回目 11:05〜 同じ班'], 3: ['主催', '今日の会をつくってくれた人'], 4: ['ほか', '休憩・終わったあとに'] };
 const nav = document.getElementById('nav'), list = document.getElementById('list');
-P.forEach((p, i) => {
-  nav.insertAdjacentHTML('beforeend', `<a href="#${p.k}"><img src="${p.k}.jpg" alt="">${p.name}</a>`);
-  list.insertAdjacentHTML('beforeend', `<section id="${p.k}">
-    <div class="who"><img src="${p.k}.jpg" alt=""><div><div class="n">${i + 1} / 12 ・ ${p.n}</div><h2>${p.name}さん</h2></div></div>
+const card = (p) => `<section id="${p.k}">
+    <div class="who"><img src="${p.k}.jpg" alt=""><div><div class="n">${p.n} / 12</div><h2>${p.name}さん</h2></div></div>
     <p class="hook">${p.hook}</p>
-    ${READY.includes(p.k) ? `<video src="${p.k}.mp4" poster="${p.k}_poster.jpg" controls playsinline preload="metadata"></video>` : '<div class="talk" style="text-align:center;background:#EEF2F7">🎬 ただいま書き出し中。もうすぐ届きます</div>'}
-    <div class="talk"><b>おけもんが聞いてみたいこと</b>${p.talk}</div>
-  </section>`);
+    <button class="play" data-k="${p.k}" aria-label="${p.name}さんの動画を再生"><img src="${p.k}_poster.jpg" alt="" loading="lazy"><i></i><b>タップで再生（30秒・音あり）</b></button>
+    <div class="talk"><b>この人と話したいこと</b>${p.talk}</div>
+  </section>`;
+[1, 2, 3].forEach((g) => {
+  const ps = P.filter((p) => p.g === g); if (!ps.length) return;
+  list.insertAdjacentHTML('beforeend', `<div class="grp"><h3>${G[g][0]}</h3><span>${G[g][1]}</span></div>` + ps.map(card).join(''));
 });
+P.filter((p) => p.g === 4).forEach((p) => list.insertAdjacentHTML('beforeend', card(p)));
+list.insertAdjacentHTML('beforeend', `<div class="grp"><h3>${G[4][0]}</h3><span>${G[4][1]}</span></div>` + (P.some((p) => p.g === 4) ? '' : '') + `<div class="soon">${SOON.map(([k, n]) => `<div><img src="${k}.jpg" alt="">${n}さん・準備中</div>`).join('')}</div>`);
+P.forEach((p) => nav.insertAdjacentHTML('beforeend', `<a href="#${p.k}"><img src="${p.k}.jpg" alt="">${p.name}</a>`));
+// タップで、その場で動画に差し替えて再生（同時に1本だけ）
+document.querySelectorAll('.play').forEach((b) => b.addEventListener('click', () => {
+  document.querySelectorAll('video').forEach((v) => v.pause());
+  const v = document.createElement('video');
+  Object.assign(v, { src: b.dataset.k + '.mp4', poster: b.dataset.k + '_poster.jpg', controls: true, playsInline: true, autoplay: true });
+  v.setAttribute('playsinline', ''); b.replaceWith(v); v.play().catch(() => {});
+}));
 </script>
 </body>
 </html>
