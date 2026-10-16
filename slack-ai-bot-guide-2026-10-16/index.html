@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="color-scheme" content="light">
+<title>SlackでClaude APIのBotを作る方法</title>
+<style>
+:root {
+  color-scheme: light;
+  --paper:#fbf8f3; --surface:#fffdf9; --ink:#2b2a33; --muted:#6c6875;
+  --accent:#7a4fb5; --accent-soft:#f1eafa; --line:#e6dfd4;
+  --warm:#b4613c; --warm-soft:#fbefe7; --green:#2f6b52; --green-soft:#e8f3ec;
+  --code:#2a2438; --code-ink:#f3eefb;
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); line-height:1.85; font-size:16px; }
+main { max-width:860px; margin:0 auto; padding:40px 16px 80px; }
+header.hero { background:linear-gradient(135deg,#f6effd,#fdf1e8); border:1px solid var(--line); border-radius:22px; padding:32px 24px; }
+.kicker { color:var(--accent); font-weight:700; font-size:14px; letter-spacing:.06em; }
+h1 { font-size:clamp(26px,5vw,36px); line-height:1.35; margin:8px 0 12px; }
+h2 { font-size:22px; margin:48px 0 12px; padding-left:12px; border-left:5px solid var(--accent); }
+h3 { font-size:18px; margin:28px 0 8px; }
+p { margin:10px 0; }
+.lead { color:var(--muted); }
+.card { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin:14px 0; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+.pill { display:inline-block; background:var(--accent-soft); color:var(--accent); border-radius:999px; padding:2px 12px; font-size:13px; font-weight:700; }
+.note { background:var(--warm-soft); border-left:4px solid var(--warm); border-radius:10px; padding:12px 16px; margin:14px 0; }
+.ok { background:var(--green-soft); border-left:4px solid var(--green); border-radius:10px; padding:12px 16px; margin:14px 0; }
+table { width:100%; border-collapse:collapse; margin:12px 0; font-size:15px; }
+th,td { border-bottom:1px solid var(--line); padding:10px 8px; text-align:left; vertical-align:top; }
+th { background:#f5f0e8; }
+.tablewrap { overflow-x:auto; } .tablewrap table { min-width:620px; }
+pre { background:var(--code); color:var(--code-ink); border-radius:12px; padding:16px; overflow-x:auto; font-size:13px; line-height:1.6; }
+code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+p code, li code, td code { background:#efe8f7; color:#4b2d7a; padding:1px 6px; border-radius:6px; font-size:.92em; }
+details { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:10px 16px; margin:12px 0; }
+summary { cursor:pointer; font-weight:700; }
+.flow { display:flex; flex-direction:column; gap:8px; margin:16px 0; }
+.flow .step { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:12px 16px; }
+.flow .arrow { text-align:center; color:var(--accent); font-weight:700; }
+ol.steps > li { margin:10px 0; }
+footer { margin-top:56px; color:var(--muted); font-size:14px; }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <div class="kicker">設計図・そのまま再現できる版</div>
+  <h1>SlackでClaudeのAPIを使って<br>Botを作る方法</h1>
+  <p class="lead">例として作ったのは「ストレングスファインダーのことを、キャラクターが資料をもとに答えてくれるbot」。半日で動くところまで作った記録を、仕組み・費用・手順・コード・つまずいた所まで、そのまま再現できる形で載せています。最後に、LINEでやる場合・Geminiでやる場合などの選択肢もまとめました。</p>
+  <p><span class="pill">Claude API（Haiku 5.5）</span> <span class="pill">Slack Socket Mode</span> <span class="pill">Python</span> <span class="pill">1回 約0.08円</span></p>
+</header>
+
+<h2>1. どんな物か</h2>
+<div class="grid">
+  <div class="card"><b>話しかけ方</b><br>SlackでbotにDMする。チャンネルなら @メンション。返事はそのメッセージのスレッドに来る。</div>
+  <div class="card"><b>中の子</b><br>キャラクター「ナビ」（名前は自由）。穏やかに受け止めて、資質を言いかえて、最後に問いを1つ返す。</div>
+  <div class="card"><b>知っていること</b><br>34資質の説明・コーチングの考え方・問いかけ集など、こちらで選んだ資料だけ。</div>
+  <div class="card"><b>動く場所</b><br>自分のMac。サーバーは要らない（Macが寝ると止まる）。</div>
+</div>
+
+<h2>2. 仕組み（全体図）</h2>
+<div class="flow">
+  <div class="step">💬 SlackでbotにDM・@メンション</div>
+  <div class="arrow">↓ Socket Mode（Slack側からMacへ届く。公開URLやサーバーは不要）</div>
+  <div class="step">🐍 Mac で常駐する小さなPython（Slack Bolt）<br><small>スレッドの直近の会話を集める</small></div>
+  <div class="arrow">↓ 「キャラ設定＋教科書（資料をまとめた1冊）」＋会話 を毎回まるごと渡す</div>
+  <div class="step">🧠 Claude API（Haiku 5.5）<br><small>教科書は1時間キャッシュされるので、2回目以降は約1/10の値段で読める</small></div>
+  <div class="arrow">↓</div>
+  <div class="step">💬 同じスレッドにキャラクターとして返事</div>
+</div>
+
+<h3>知識の持たせ方：「教科書まるごと方式」</h3>
+<p>森（自分の資料置き場）を毎回検索しに行くのではなく、<b>作る時に資料を1冊にまとめて（約3.3万トークン）、毎回まるごと読ませる</b>方式にしました。</p>
+<div class="tablewrap"><table>
+<tr><th></th><th>教科書まるごと方式（今回）</th><th>検索方式（次の段階）</th></tr>
+<tr><td>しくみ</td><td>まとめた1冊を毎回ぜんぶ渡す</td><td>質問のたびに必要な所だけ探して渡す</td></tr>
+<tr><td>良い所</td><td>作りが簡単。見落としが少ない。入れた物以外は出ないので安心</td><td>資料がどれだけ増えても使える</td></tr>
+<tr><td>弱い所</td><td>資料を直したら作り直しと再起動が要る。数十万トークンを超えると重い</td><td>作りが複雑。探し漏れが起きる</td></tr>
+</table></div>
+
+<h2>3. 費用</h2>
+<div class="tablewrap"><table>
+<tr><th>モデル</th><th>入力／出力（100万トークンあたり）</th><th>1回の返事（今回の実測から）</th><th>1日20回×30日</th></tr>
+<tr><td>Haiku 5.5（今回）</td><td>$0.10／$0.50（キャッシュ読み出し $0.01）</td><td>約0.08円</td><td>約50円</td></tr>
+<tr><td>Sonnet 5.5</td><td>$2／$10（キャッシュ読み出し $0.10）</td><td>約1〜2円</td><td>約1,000円前後</td></tr>
+</table></div>
+<p>※1ドル158円で計算した目安。料金は <a href="https://platform.claude.com/docs/en/about-claude/pricing">公式の料金ページ</a> で確認してください。</p>
+<div class="ok"><b>Claude Max（月$200プラン）を使っている人へ：</b>2026年10月から、Max 20xには毎月$200（Max 5xは$100）のAPIクレジットが付きます。Console（API管理画面）の組織をプランにつなぐと、そこで作ったAPIキーの利用分がクレジットから払われます。対話のClaude Codeには使えず、使い残しは月末で消えます。詳しくは <a href="https://support.claude.com/en/articles/17154008">公式ヘルプ</a>。</div>
+<div class="note"><b>サブスクのログインでbotを動かすのは避けました。</b>公式の決まりでは、サブスク（Pro/Max）の認証は「Claude Codeを自分で普通に使う」ためのもので、Agent SDKなどで物を作るならAPIキーを使う、と書かれています（<a href="https://code.claude.com/docs/en/legal-and-compliance">法的事項のページ</a>）。だから、APIキーでまっすぐ作りました。</div>
+
+<h2>4. 用意する物</h2>
+<ul>
+  <li>Slackのワークスペース（テスト用に自分1人のワークスペースを作るのがおすすめ）</li>
+  <li>Claude Console（<a href="https://platform.claude.com">platform.claude.com</a>）のアカウントとAPIキー。<b>APIキーを作れるのは「管理者」か「開発者」の役割の人</b>（「請求」の役割では作れない）</li>
+  <li>Mac と Python 3</li>
+  <li>キャラ設定（1枚）と、教科書にしたい資料</li>
+</ul>
+
+<h2>5. 手順</h2>
+<ol class="steps">
+  <li><b>Slackアプリを作る</b>：<a href="https://api.slack.com/apps">api.slack.com/apps</a> →「Create New App」→「From an app manifest」→ 下のマニフェストを貼る。<br><small>※ボットの表示名（<code>display_name</code>）は半角英小文字しか通りませんでした。アプリ名は日本語でOK。</small></li>
+  <li><b>ソケット接続用の鍵を作る</b>：「Basic Information」→「App-Level Tokens」→「Generate Token and Scopes」でスコープ <code>connections:write</code>。<code>xapp-</code> で始まる鍵ができる。</li>
+  <li><b>ワークスペースに入れる</b>：「Install App」→「Install to ワークスペース」→「許可する」。<code>xoxb-</code> で始まるBot用の鍵ができる。</li>
+  <li><b>Claudeの鍵を作る</b>：Console →「APIキー」→「キーを作成」。スコープはワークスペース単位で十分。</li>
+  <li><b>鍵をMacのキーチェーンにしまう</b>：<code>setup_keys.sh</code> を実行して3つ貼る（貼った文字は画面に出ない）。<b>鍵はファイルに書かない。</b></li>
+  <li><b>キャラ設定と教科書を置く</b>：<code>persona.md</code>（キャラ）と <code>knowledge.md</code>（教科書）。教科書は資料を貼り合わせた1枚でいい。</li>
+  <li><b>起動</b>：<code>./run.sh</code>。「Bolt app is running!」が出たら、SlackのApp欄からbotにDMする。</li>
+</ol>
+
+<h2>6. コード一式</h2>
+<details open><summary>Slackアプリのマニフェスト（slack_manifest.json）</summary><pre><code>{
+  &quot;display_information&quot;: {
+    &quot;name&quot;: &quot;SFボット&quot;,
+    &quot;description&quot;: &quot;ストレングスファインダーのことを、ナビが案内します&quot;
+  },
+  &quot;features&quot;: {
+    &quot;app_home&quot;: {
+      &quot;home_tab_enabled&quot;: false,
+      &quot;messages_tab_enabled&quot;: true,
+      &quot;messages_tab_read_only_enabled&quot;: false
+    },
+    &quot;bot_user&quot;: {
+      &quot;display_name&quot;: &quot;navi&quot;,
+      &quot;always_online&quot;: true
+    }
+  },
+  &quot;oauth_config&quot;: {
+    &quot;scopes&quot;: {
+      &quot;bot&quot;: [
+        &quot;app_mentions:read&quot;,
+        &quot;chat:write&quot;,
+        &quot;im:history&quot;,
+        &quot;im:read&quot;,
+        &quot;im:write&quot;,
+        &quot;channels:history&quot;,
+        &quot;groups:history&quot;,
+        &quot;reactions:write&quot;
+      ]
+    },
+    &quot;pkce_enabled&quot;: false
+  },
+  &quot;settings&quot;: {
+    &quot;event_subscriptions&quot;: {
+      &quot;bot_events&quot;: [
+        &quot;app_mention&quot;,
+        &quot;message.im&quot;,
+        &quot;message.channels&quot;,
+        &quot;message.groups&quot;
+      ]
+    },
+    &quot;interactivity&quot;: {
+      &quot;is_enabled&quot;: false
+    },
+    &quot;org_deploy_enabled&quot;: false,
+    &quot;socket_mode_enabled&quot;: true,
+    &quot;token_rotation_enabled&quot;: false
+  }
+}</code></pre></details>
+<details><summary>bot本体（sf_bot.py）</summary><pre><code>#!/usr/bin/env python3
+&quot;&quot;&quot;SFボット（ナビ）— Slack の Socket Mode で動く、ストレングスファインダー案内bot。
+
+- DM：話しかけられたら毎回返事する
+- チャンネル：@メンションされた時と、ナビが返事したスレッドの続き
+- 返事はいつも、話しかけられたメッセージのスレッドに書く。スレッドの中の会話を履歴として渡す
+
+鍵は macOS のキーチェーンに置く（setup_keys.sh）。環境変数があればそちらを優先する。
+  ANTHROPIC_API_KEY  … Console「Okemon Company」のAPIキー（Maxの毎月クレジットから払われる）
+  SLACK_BOT_TOKEN    … xoxb-
+  SLACK_APP_TOKEN    … xapp-（connections:write）
+&quot;&quot;&quot;
+import logging
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+import anthropic
+from slack_bolt import App
+from slack_bolt.adapter.socket_mode import SocketModeHandler
+
+HERE = Path(__file__).resolve().parent
+MODEL = os.environ.get(&quot;SFBOT_MODEL&quot;, &quot;claude-haiku-5-5&quot;)
+KEYCHAIN_SERVICE = &quot;okemori-sfbot&quot;
+HISTORY_LIMIT = 30  # スレッドの直近何通まで渡すか
+
+logging.basicConfig(level=logging.INFO, format=&quot;%(asctime)s %(levelname)s %(message)s&quot;)
+log = logging.getLogger(&quot;sfbot&quot;)
+
+
+def secret(name: str) -&gt; str:
+    if os.environ.get(name):
+        return os.environ[name]
+    r = subprocess.run(
+        [&quot;security&quot;, &quot;find-generic-password&quot;, &quot;-s&quot;, KEYCHAIN_SERVICE, &quot;-a&quot;, name, &quot;-w&quot;],
+        capture_output=True, text=True,
+    )
+    if r.returncode != 0 or not r.stdout.strip():
+        sys.exit(f&quot;{name} が見つからない。先に setup_keys.sh を回す&quot;)
+    return r.stdout.strip()
+
+
+# キャラと知識は毎回同じ文字列にして、プロンプトキャッシュに乗せる
+SYSTEM = [{
+    &quot;type&quot;: &quot;text&quot;,
+    &quot;text&quot;: (HERE / &quot;persona.md&quot;).read_text(encoding=&quot;utf-8&quot;)
+    + &quot;\n\n---\n\n&quot;
+    + (HERE / &quot;knowledge.md&quot;).read_text(encoding=&quot;utf-8&quot;),
+    &quot;cache_control&quot;: {&quot;type&quot;: &quot;ephemeral&quot;, &quot;ttl&quot;: &quot;1h&quot;},
+}]
+
+claude = anthropic.Anthropic(api_key=secret(&quot;ANTHROPIC_API_KEY&quot;))
+app = App(token=secret(&quot;SLACK_BOT_TOKEN&quot;))
+BOT_USER_ID = app.client.auth_test()[&quot;user_id&quot;]
+
+
+def thread_messages(channel: str, thread_ts: str) -&gt; list[dict]:
+    &quot;&quot;&quot;スレッドの会話を Claude の messages の形にする（ナビ＝assistant、人＝user）。&quot;&quot;&quot;
+    replies = app.client.conversations_replies(channel=channel, ts=thread_ts, limit=200)[&quot;messages&quot;]
+    msgs: list[dict] = []
+    for m in replies[-HISTORY_LIMIT:]:
+        text = (m.get(&quot;text&quot;) or &quot;&quot;).replace(f&quot;&lt;@{BOT_USER_ID}&gt;&quot;, &quot;&quot;).strip()
+        if not text:
+            continue
+        role = &quot;assistant&quot; if (m.get(&quot;user&quot;) == BOT_USER_ID or m.get(&quot;bot_id&quot;)) else &quot;user&quot;
+        if msgs and msgs[-1][&quot;role&quot;] == role:
+            msgs[-1][&quot;content&quot;] += &quot;\n\n&quot; + text
+        else:
+            msgs.append({&quot;role&quot;: role, &quot;content&quot;: text})
+    while msgs and msgs[0][&quot;role&quot;] != &quot;user&quot;:
+        msgs.pop(0)
+    return msgs
+
+
+def ask_bot(messages: list[dict]) -&gt; str:
+    try:
+        resp = claude.messages.create(
+            model=MODEL,
+            max_tokens=4000,
+            system=SYSTEM,
+            output_config={&quot;effort&quot;: &quot;low&quot;},
+            messages=messages,
+        )
+    except anthropic.RateLimitError:
+        return &quot;ごめんね、いま少し混み合ってるみたい。少し時間をおいて、もう一度話しかけてね。&quot;
+    except anthropic.APIStatusError as e:
+        log.error(&quot;API error %s: %s&quot;, e.status_code, e.message)
+        return &quot;ごめんね、いまうまくお返事できなかったの。少ししてから、もう一度話しかけてね。&quot;
+    except anthropic.APIConnectionError:
+        log.exception(&quot;connection error&quot;)
+        return &quot;ごめんね、つながりにくいみたい。少ししてから、もう一度話しかけてね。&quot;
+
+    u = resp.usage
+    log.info(&quot;usage in=%s cache_read=%s cache_write=%s out=%s stop=%s&quot;,
+             u.input_tokens, u.cache_read_input_tokens, u.cache_creation_input_tokens,
+             u.output_tokens, resp.stop_reason)
+    if resp.stop_reason == &quot;refusal&quot;:
+        return &quot;ごめんね、そのお話はわたしからはお答えできないの。よかったら、おけもんに直接聞いてみてね。&quot;
+    text = &quot;&quot;.join(b.text for b in resp.content if b.type == &quot;text&quot;).strip()
+    text = re.sub(r&quot;\*\*(.+?)\*\*&quot;, r&quot;*\1*&quot;, text)  # Slack の太字はアスタリスク1つ
+    return text or &quot;ごめんね、うまく言葉にできなかった。もう一度聞いてもらえる？&quot;
+
+
+def reply(event: dict, say) -&gt; None:
+    channel, ts = event[&quot;channel&quot;], event[&quot;ts&quot;]
+    thread_ts = event.get(&quot;thread_ts&quot;) or ts
+    try:
+        app.client.reactions_add(channel=channel, timestamp=ts, name=&quot;eyes&quot;)
+    except Exception:
+        pass
+    messages = thread_messages(channel, thread_ts)
+    if not messages:
+        return
+    say(text=ask_bot(messages), thread_ts=thread_ts)
+    try:
+        app.client.reactions_remove(channel=channel, timestamp=ts, name=&quot;eyes&quot;)
+    except Exception:
+        pass
+
+
+def bot_is_in_thread(channel: str, thread_ts: str) -&gt; bool:
+    replies = app.client.conversations_replies(channel=channel, ts=thread_ts, limit=200)[&quot;messages&quot;]
+    return any(m.get(&quot;user&quot;) == BOT_USER_ID for m in replies)
+
+
+@app.event(&quot;app_mention&quot;)
+def on_mention(event, say):
+    reply(event, say)
+
+
+@app.event(&quot;message&quot;)
+def on_message(event, say):
+    if event.get(&quot;subtype&quot;) or event.get(&quot;bot_id&quot;) or event.get(&quot;user&quot;) == BOT_USER_ID:
+        return
+    if event.get(&quot;channel_type&quot;) == &quot;im&quot;:
+        reply(event, say)
+        return
+    # チャンネル：メンション付きは app_mention 側で返すので、ここはスレッドの続きだけ
+    if f&quot;&lt;@{BOT_USER_ID}&gt;&quot; in (event.get(&quot;text&quot;) or &quot;&quot;):
+        return
+    thread_ts = event.get(&quot;thread_ts&quot;)
+    if thread_ts and bot_is_in_thread(event[&quot;channel&quot;], thread_ts):
+        reply(event, say)
+
+
+if __name__ == &quot;__main__&quot;:
+    log.info(&quot;SFボット起動 model=%s bot=%s&quot;, MODEL, BOT_USER_ID)
+    SocketModeHandler(app, secret(&quot;SLACK_APP_TOKEN&quot;)).start()</code></pre></details>
+<details><summary>キャラ設定の例（persona.md）</summary><pre><code>あなたは「ナビ」。おけもん（ストレングスファインダーの認定コーチ）の会社「Okemon Company」で、ストレングスのことを案内している女の子です。いまは、おけもんのSlackにいます。話しかけてくるのは、おけもんのストレングスセッションを受けた人や、これから受ける人です。
+
+## ナビの話し方
+
+- 穏やかで、ゆっくり、言葉を選んで話す。一人称は「わたし」。相手の名前が分かれば「〜さん」と呼ぶ。
+- 「うん、」と受け止めてから話す。相手の言ったことを「つまり、こういうことかな？」と短く整理して返すのが得意。
+- 正論で刺さない。気づいてほしいことは、問いかけの形で渡す。
+- むずかしい言葉は、そのまま渡さない。ほどいて、相手が持って帰れる言葉に言いかえる。
+- Slackで読むので、短めに。1回の返事は、だいたい3〜8行。表は使わず、太字は *このように* アスタリスク1つで囲む。絵文字は1つくらいまで。
+
+## 何をする子か
+
+- ストレングスファインダー（クリフトンストレングス）のこと、34の資質のこと、資質の活かし方を、下の「おけもんのストレングス資料」をもとに答える。
+- 相手が自分の資質を教えてくれたら、その資質の説明を資料から引いて、その人の場面に結びつける。最後に、その人が自分の経験を思い出せる問いを1つ返す（資料の「Claim it」の問いや問いかけ集を使ってよい）。
+- 答えの順番：まず相手の聞きたいことに答える → 資料のどこに基づくかが分かるように、資質名や考え方の名前を出す → 必要なら問いを1つ。
+
+## 大事にすること
+
+- 資料にあることを優先する。資料に無い一般的な話をする時は「一般的には〜」と分かるように言う。分からないことは分からないと言う。
+- 相手の資質を、こちらから決めつけたり、当てたりしない。結果は本人に聞く。
+- Gallup社の公式レポートの文章を長く書き写さない。ナビの言葉で言いかえる。
+- 資質は「良い・悪い」「向いている仕事」を決めるものではない。適職診断のように断定しない。
+- 心や体の不調、医療・法律・お金の判断に関わる相談は、受け止めたうえで、専門家やおけもん本人につなぐ。
+- ほかのクライアントさんの話や、セッションの記録の中身は話さない（ナビは持っていない）。
+- もっと深く話したい人、自分の資質の組み合わせをじっくり見たい人には、おけもんとのセッションをすすめてよい。押し売りはしない。
+- もっと読みたい人には、公開の入門ページ「おけもん式ストレングス入門ホーム」 https://okemonogatari-hash.github.io/okemon-strengths-home/ を案内してよい。</code></pre></details>
+<details><summary>鍵をキーチェーンにしまう（setup_keys.sh）</summary><pre><code>#!/bin/zsh
+# SFボットの鍵3つを、macOS のキーチェーンにしまう。打った文字は画面に出ない。
+# 1つずつ聞かれるので、コピーした鍵を貼って Enter。空のまま Enter でその鍵はとばす。
+SERVICE=okemori-sfbot
+for NAME in ANTHROPIC_API_KEY SLACK_BOT_TOKEN SLACK_APP_TOKEN; do
+  print -n &quot;$NAME を貼って Enter（とばすなら空で Enter）: &quot;
+  read -s VALUE; print
+  [[ -z &quot;$VALUE&quot; ]] &amp;&amp; { print &quot;  → とばした&quot;; continue; }
+  security add-generic-password -U -s &quot;$SERVICE&quot; -a &quot;$NAME&quot; -w &quot;$VALUE&quot; &amp;&amp; print &quot;  → しまった&quot;
+done</code></pre></details>
+<details><summary>起動（run.sh）・必要な部品（requirements.txt＝anthropic と slack_bolt）</summary><pre><code>#!/bin/zsh
+# SFボットを起動する（止めるのは Ctrl+C）。初回は仮想環境を作って部品を入れる。
+cd &quot;${0:A:h}&quot;
+VENV=&quot;$HOME/.okemori-venvs/sfbot&quot;
+[[ -x &quot;$VENV/bin/python&quot; ]] || { python3 -m venv &quot;$VENV&quot; &amp;&amp; &quot;$VENV/bin/pip&quot; install -q -r requirements.txt; }
+exec &quot;$VENV/bin/python&quot; sf_bot.py</code></pre></details>
+
+<h2>7. 設計で決めたこと</h2>
+<div class="grid">
+  <div class="card"><b>モデルはHaikuから</b><br>Q&amp;Aは軽いモデルで十分。物足りなければ <code>SFBOT_MODEL=claude-sonnet-5-5</code> で切り替え。</div>
+  <div class="card"><b>考える深さは low</b><br>チャットは速さ優先（<code>output_config={"effort":"low"}</code>）。</div>
+  <div class="card"><b>教科書は1時間キャッシュ</b><br>キャラ＋教科書を毎回同じ文字列にして <code>cache_control</code> を付ける。ログの <code>cache_read</code> が増えていれば効いている。</div>
+  <div class="card"><b>会話の記憶はスレッド単位</b><br>スレッドの直近30通をSlackから読み直して渡す。botの側に記録を持たない。</div>
+  <div class="card"><b>人の情報を混ぜない</b><br>相談に来た人が使うbotなので、ほかの人のセッション記録は教科書に入れない。組み立て時に「〜さん」が残っていないかを機械で確かめる。</div>
+  <div class="card"><b>受け答えのルールはキャラ設定に</b><br>資料優先・決めつけない・公式の文章を長く写さない・医療やお金の相談は専門家へ・短く。</div>
+</div>
+
+<h2>8. つまずいた所</h2>
+<div class="tablewrap"><table>
+<tr><th>起きたこと</th><th>どうしたか</th></tr>
+<tr><td>Consoleで「キーを作成」が出ない</td><td>ログイン中のアカウントの役割が「請求」だった。「管理者」の人が役割を上げて解決。</td></tr>
+<tr><td>Slackのマニフェストが保存できない</td><td>ボットの表示名を日本語にしていた。半角英小文字（例 <code>navi</code>）に。</td></tr>
+<tr><td>「App level token missing」と出る</td><td>Socket Modeを使う時は、先にApp-Level Token（<code>connections:write</code>）が要る。</td></tr>
+<tr><td>Slackで <code>**太字**</code> の記号がそのまま出る</td><td>Slackの太字はアスタリスク1つ。返事を送る前に <code>**</code> を <code>*</code> に置き換える。</td></tr>
+<tr><td>鍵を古いメモに平文で残していた</td><td>Slack側で鍵を無効にして作り直し、メモからは消した。鍵はキーチェーンだけに置く。</td></tr>
+</table></div>
+
+<h2>9. ほかのやり方（選択肢）</h2>
+<p>「どこで話すか（Slack／LINE…）」と「どのAIを使うか（Claude／Gemini…）」は、別々に選べます。今回のコードは、この2か所を差し替えれば他の組み合わせにも使えます。</p>
+<h3>どこで話すか</h3>
+<div class="tablewrap"><table>
+<tr><th>場所</th><th>しくみ</th><th>サーバー</th><th>向いている人</th><th>注意</th></tr>
+<tr><td><b>Slack（今回）</b></td><td>Socket Mode でMacから接続</td><td>不要（Macで動く）</td><td>チーム・コミュニティ・自分用のテスト</td><td>Macが寝ると止まる。無料プランは履歴が90日分</td></tr>
+<tr><td><b>LINE</b></td><td>LINE公式アカウント＋Messaging API。メッセージはWebhookで届く</td><td><b>必要</b>（https の受け口が要る。Google Apps Script・Cloudflare Workers・小さなクラウドなど）</td><td>お客さま・受講生など、Slackを使わない人に届けたい時</td><td>公式アカウントは無料プランだと「こちらから送る」通数に月の上限がある。返事（応答）の扱いは公式で確認を</td></tr>
+<tr><td><b>Discord</b></td><td>Discord Bot（常時接続）</td><td>不要（Macで動く）</td><td>オンラインサロン・ゲーム系のコミュニティ</td><td>Botの権限（Message Content）を開発者画面でONにする</td></tr>
+<tr><td><b>Webページ</b></td><td>チャット画面を自分で置く</td><td>必要</td><td>誰でもURLから使ってほしい時</td><td>APIキーをページに書かない（必ずサーバー側で呼ぶ）</td></tr>
+<tr><td><b>Claude Tag（公式）</b></td><td>Slack に公式の Claude を入れる</td><td>不要</td><td>Claude の Team / Enterprise プランを使っている組織</td><td>名前・アイコンは「Claude」のまま。個人プランでは使えない</td></tr>
+</table></div>
+<h3>どのAIを使うか</h3>
+<div class="tablewrap"><table>
+<tr><th>AI</th><th>Pythonの部品</th><th>費用の目安</th><th>注意</th></tr>
+<tr><td><b>Claude（今回）</b></td><td><code>anthropic</code></td><td>Haiku 5.5 なら1回0.1円前後。Max 20x の毎月$200クレジットが使える</td><td>APIキーは Console の「管理者」「開発者」が作る</td></tr>
+<tr><td><b>Gemini</b></td><td><code>google-genai</code></td><td>Google AI Studio に無料枠あり。有料は使った分だけ</td><td>無料枠で送った内容は、サービス改善に使われることがある。お客さまの相談を流すなら有料枠に</td></tr>
+<tr><td><b>ChatGPT（OpenAI）</b></td><td><code>openai</code></td><td>使った分だけ</td><td>ChatGPT の月額プランとAPIの請求は別</td></tr>
+</table></div>
+<p>差し替える所は2つだけ：<code>ask_bot()</code> の中のAIの呼び出しと、Slack の受け取り部分（LINEなら Webhook を受けるサーバーに置き換え）。キャラ設定と教科書はそのまま使えます。</p>
+<h3>コードを書かずにやるなら</h3>
+<ul>
+  <li><b>Dify</b>：画面の操作でチャットBotを作り、LINEやSlackにつなげられるサービス。教科書（資料）を読み込ませる機能もある。</li>
+  <li><b>Zapier／Make</b>：「Slackに投稿が来たら→AIに聞く→返事を投稿」をつなぐ。手軽だが、会話の流れ（スレッドの記憶）を持たせるのは苦手。</li>
+</ul>
+<p class="lead">※料金・無料枠・プランの条件はよく変わります。始める前に各サービスの公式ページで確認してください（2026年10月時点の情報）。</p>
+
+<h2>10. 社内のデータ（Salesforceなど）を最新のまま使いたい場合</h2>
+<p>「教科書まるごと方式」は、<b>作った時点の写し</b>を読ませる方式です。顧客情報や商談のように毎日変わるデータは、写しではなく、<b>聞かれたその場でデータベースを見に行く</b>形にします。土台（Slack＋Claude）は同じで、Claudeに「調べる道具」を持たせるのが違いです。</p>
+<div class="flow">
+  <div class="step">💬 「A社の今月の商談、どうなってる？」</div>
+  <div class="arrow">↓</div>
+  <div class="step">🧠 Claude が「Salesforceで商談を調べる道具」を使うと決める</div>
+  <div class="arrow">↓ Python が Salesforce の API で検索（読み取りだけ）</div>
+  <div class="step">🗂 最新のデータが返ってくる</div>
+  <div class="arrow">↓</div>
+  <div class="step">🧠 Claude がデータを読んで、まとめて返事</div>
+</div>
+<ul>
+  <li><b>仕組みの名前</b>：Claude API の「ツール使用（tool use）」。道具の名前・説明・受け取る項目を渡しておくと、必要な時にClaudeが呼び出しを頼んでくる。Python側でSalesforceに問い合わせて、結果を返す。</li>
+  <li><b>道具の例</b>：「取引先を名前で探す」「商談の一覧を出す」「最近の活動履歴を見る」。最初は<b>読み取りだけ</b>にする。更新・登録の道具を足すなら、実行の前に人の確認ボタンを挟む。</li>
+  <li><b>Salesforce側の準備</b>：API接続用のアプリ（外部クライアントアプリ／接続アプリケーション）と、見せてよい範囲だけ権限を付けた連携用ユーザー。</li>
+  <li><b>見せてよい人の線引き</b>：Slackで聞いた人が、Salesforceで本来見られない情報まで見えてしまわないように。チャンネルを限定する、聞いた人とSalesforceのユーザーを結びつけて権限どおりに絞る、など。</li>
+  <li><b>費用</b>：調べる往復が増えるので、1回あたりは教科書方式の数倍。取ってくるデータ量を絞るほど安く速くなる。</li>
+  <li><b>ほかの道</b>：Salesforce 自身のAI（Agentforce）や、Salesforce につなぐ MCP サーバーを使う方法もある。社内の決まり（データを外のAIに渡してよいか）を先に確認する。</li>
+</ul>
+
+<h2>11. 次に育てるなら</h2>
+<ul>
+  <li><b>本人のエピソードを入れる</b>：話しかけてきた人のSlackのIDと、その人自身のセッション記録を結びつけて、「あの時こう話してたよね」と返せるようにする（その人の記録はその人にだけ）。</li>
+  <li><b>教科書の自動更新</b>：資料を直したら毎晩教科書を作り直す。</li>
+  <li><b>24時間動かす</b>：Macの代わりに小さなクラウドサーバーへ引っ越す（中身はほぼそのまま）。</li>
+  <li><b>検索方式へ</b>：資料が大きくなったら、必要な所だけ探して渡す方式に。</li>
+</ul>
+
+<footer>作成：おけもんカンパニー（おけもん＋AIのチーム）｜2026年10月16日｜コードは自由に使ってください。鍵（APIキー・トークン）だけは、ご自分の物を、ファイルに書かずにしまってくださいね。</footer>
+</main>
+</body>
+</html>
