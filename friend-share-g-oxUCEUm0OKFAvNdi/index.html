@@ -56,7 +56,7 @@
 <header>
   <span class="tag">10/16（金）新宿西口 経営者オフ会</span>
   <h1>はじめまして、を<br>30秒で楽しく。</h1>
-  <p>今日のみなさん12人を、リベのプロフィールから1人30秒の「番組」にしました。1人ずつ、ちがう番組です。<b>自分のカードの「📋 紹介文とリンクをコピー」を押して、リベッター（つぶやき）やSNSに貼るだけでシェアできます。</b>絵はChatGPT、台本はGemini、声はGeminiの声、動きと音はClaude。音が出ます🔊</p>
+  <p>今日のみなさん12人を、リベのプロフィールから1人30秒の「番組」にしました。1人ずつ、ちがう番組です。<b>自分のカードの「🔗 リンクをコピー」で、自分のページのリンクをコピーできます。</b>絵はChatGPT、台本はGemini、声はGeminiの声、動きと音はClaude。音が出ます🔊</p>
 </header>
 <nav id="nav"></nav>
 <main id="list"></main>
@@ -87,9 +87,9 @@ const card = (p) => `<section id="${p.k}">
     <div class="who"><img src="${p.k}.jpg" alt=""><div><div class="n">${p.n} / 12 ・ ${p.tag}</div><h2>${p.name}さん</h2></div></div>
     <p class="hook">${p.hook}</p>
     <button class="play" data-k="${p.k}" aria-label="${p.name}さんの動画を再生"><img src="${p.k}_poster.jpg" alt="" loading="lazy"><i></i><b>タップで再生（30秒・音あり🔊）</b></button>
-    <button class="cpb" type="button" data-k="${p.k}" data-href="../${window.LINKS[p.k]}/">📋 ${p.name}さんの紹介文とリンクをコピー</button>
+    <button class="cpb" type="button" data-k="${p.k}" data-href="../${window.LINKS[p.k]}/">🔗 ${p.name}さんのページのリンクをコピー</button>
     <div class="okm" id="ok-${p.k}"></div>
-    <a class="own" href="../${window.LINKS[p.k]}/">${p.name}さんのページを開く（𝕏 投稿もここから）</a>
+    <a class="own" href="../${window.LINKS[p.k]}/">${p.name}さんのページを開く</a>
   </section>`;
 // 主催を先頭に、そのあと全員（チャット全体に見せる並び）
 const ORDER = [P.find((p) => p.k === 'mecha'), ...P.filter((p) => p.k !== 'mecha')].filter(Boolean);
@@ -104,10 +104,9 @@ const copyText = async (t) => { try { await navigator.clipboard.writeText(t); } 
 const prefetch = (k, href) => fetch(href).then((r) => r.text()).then((h) => { const t = new DOMParser().parseFromString(h, 'text/html').getElementById('t'); if (t) TXT[k] = t.textContent.trim(); }).catch(() => {});
 document.addEventListener('click', (e) => {
   const b = e.target.closest('.cpb'); if (!b) return;
-  const k = b.dataset.k, t = TXT[k] || ('30秒の紹介ムービー、見てね！\n' + new URL(b.dataset.href, location.href).href);
-  copyText(t); const ok = document.getElementById('ok-' + k); if (ok) ok.textContent = 'コピーしました！ つぶやきの欄に貼ってね';
+  const k = b.dataset.k, t = new URL(b.dataset.href, location.href).href;
+  copyText(t); const ok = document.getElementById('ok-' + k); if (ok) ok.textContent = 'リンクをコピーしました';
 });
-ORDER.forEach((p) => prefetch(p.k, '../' + window.LINKS[p.k] + '/'));
 // タップで、その場で動画に差し替えて再生（同時に1本だけ）
 document.querySelectorAll('.play').forEach((b) => b.addEventListener('click', () => {
   document.querySelectorAll('video').forEach((v) => v.pause());
