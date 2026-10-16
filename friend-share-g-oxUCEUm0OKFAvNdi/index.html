@@ -46,7 +46,7 @@
 <header>
   <span class="tag">10/16（金）新宿西口 経営者オフ会</span>
   <h1>はじめまして、を<br>30秒で楽しく。</h1>
-  <p>同じ班のみなさんを、リベのプロフィールから1人30秒ずつ紹介しました。絵はChatGPT、動きと音はClaude。音が出ます🔊</p>
+  <p>同じ班のみなさんを、リベのプロフィールから1人30秒ずつ。1人ずつ、ちがう番組になっています。絵はChatGPT、台本はGemini、声はGeminiの声、動きと音はClaude。音が出ます🔊</p>
 </header>
 <nav id="nav"></nav>
 <main id="list"></main>
@@ -55,27 +55,27 @@
 // 動画ができた人（publish_add.sh が1人ずつ足す）
 window.DONE = ['wassy', 'nezuhana', 'hiit', 'tatsuya', 'mecha', 'miacchi', 'chii', 'hitomimi', 'kyojiro', 'molly', 'ohagi', 'hamu'];
 const P = [
-  { k: 'wassy', name: 'AIわっしー', g: 1, n: 1, hook: 'その鷲、どこへ巣立つの？', talk: '「住んでる鷲」から「巣立つ鷲」へ。どこへ飛ぶの？' },
-  { k: 'nezuhana', name: 'ねずはな', g: 2, n: 2, hook: 'このパフェ、ぜんぶ手づくり。', talk: 'ミニチュアのパフェ、1個つくるのに何時間かかるの？' },
-  { k: 'hiit', name: 'HIIT', g: 2, n: 3, hook: '朝4時。社長は、寝ている。', talk: '朝4時の報告、AI社員は何を見て書いてるの？' },
-  { k: 'tatsuya', name: 'タツヤ', g: 2, n: 4, hook: '火おこし検定って、知ってる？', talk: '静岡の民泊、どんな物件を狙ってる？' },
-  { k: 'mecha', name: 'メカバイオ', g: 3, n: 5, hook: '朝4:50。もう、誰かがいる。', talk: '毎朝4:50、続けられる秘訣は？' },
-  { k: 'miacchi', name: 'みあっち', g: 4, n: 6, hook: '年に600冊、絵本を借りる人。', talk: '3時起きの朝活、最初の1時間は何してる？' },
-  { k: 'chii', name: 'ちーちゃん', g: 4, n: 7, hook: '元保育士が、インスタを動かしてる。', talk: '保育士の10年、SNSの仕事で生きてることある？' },
-  { k: 'hitomimi', name: 'ひとみみ', g: 4, n: 8, hook: '「家で働く」を、ぜんぶ叶えた人。', talk: 'Claude Code、家のことは何を任せてる？' },
-  { k: 'kyojiro', name: 'きょじろ', g: 4, n: 9, hook: '月500万PVのブログが、ある日——', talk: 'クロコに、次は何を任せたい？' },
-  { k: 'molly', name: 'モーリー', g: 4, n: 10, hook: '釜山国際映画祭に、招待された人。', talk: 'VRで、介護の現場に何ができそう？' },
-  { k: 'ohagi', name: 'おはぎ丸飲み', g: 4, n: 11, hook: 'おはぎ、丸飲みしてるの？', talk: '電脳せどり、最初の0→1は何だった？' },
-  { k: 'hamu', name: 'はむ', g: 4, n: 12, hook: '10軒の家を、ぜんぶ自分で直した人。', talk: 'いちばん大変だった修繕は？' },
+  { k: 'wassy', name: 'AIわっしー', g: 1, n: 1, tag: '📺 深夜のテレビ通販', hook: '本日の特選品は、新宿オフィスを巣立つ鷲。', talk: '「住んでる鷲」から「巣立つ鷲」へ。どこへ飛ぶの？' },
+  { k: 'nezuhana', name: 'ねずはな', g: 2, n: 2, tag: '🤫 ASMR……と思いきや', hook: 'しーっ。静かな工房です。……最初だけは。', talk: 'ミニチュアのパフェ、1個つくるのに何時間かかるの？' },
+  { k: 'hiit', name: 'HIIT', g: 2, n: 3, tag: '🎬 ドキュメンタリーの予告', hook: '午前4時。社長は、眠っている。', talk: '朝4時の報告、AI社員は何を見て書いてるの？' },
+  { k: 'tatsuya', name: 'タツヤ', g: 2, n: 4, tag: '❓ クイズ番組', hook: '第1問。火おこし検定3級を持つのは、どんな人？', talk: '静岡の民泊、どんな物件を狙ってる？' },
+  { k: 'mecha', name: 'メカバイオ', g: 3, n: 5, tag: '🏟️ スタメン発表', hook: '本日の、主催！ 背番号16！', talk: '毎朝4:50、続けられる秘訣は？' },
+  { k: 'miacchi', name: 'みあっち', g: 4, n: 6, tag: '📖 飛び出す絵本', hook: 'ページをめくると、三姉妹のママ。', talk: '3時起きの朝活、最初の1時間は何してる？' },
+  { k: 'chii', name: 'ちーちゃん', g: 4, n: 7, tag: '🧸 おもちゃのCM', hook: 'ちーちゃんフィギュア、新発売！', talk: '保育士の10年、SNSの仕事で生きてることある？' },
+  { k: 'hitomimi', name: 'ひとみみ', g: 4, n: 8, tag: '⏳ ローディング画面', hook: 'NOW LOADING… 叶えた夢を読み込み中。', talk: 'Claude Code、家のことは何を任せてる？' },
+  { k: 'kyojiro', name: 'きょじろ', g: 4, n: 9, tag: '🎮 格闘ゲーム', hook: '2023年の自分 vs 2026年の自分。', talk: 'クロコに、次は何を任せたい？' },
+  { k: 'molly', name: 'モーリー', g: 4, n: 10, tag: '🎞️ レッドカーペット生中継', hook: '今、赤じゅうたんに到着しました！', talk: 'VRで、介護の現場に何ができそう？' },
+  { k: 'ohagi', name: 'おはぎ丸飲み', g: 4, n: 11, tag: '🎤 一問一答インタビュー', hook: 'お名前は？「おはぎ。」ご職業は？「おはぎ。」', talk: '電脳せどり、最初の0→1は何だった？' },
+  { k: 'hamu', name: 'はむ', g: 4, n: 12, tag: '🏠 劇的ビフォーアフター', hook: 'なんということでしょう。', talk: 'いちばん大変だった修繕は？' },
 ].filter((p) => window.DONE.includes(p.k));
 // まだ動画がない人（できたら上の P へ移す）
 const SOON = [['miacchi', 'みあっち'], ['chii', 'ちーちゃん'], ['hitomimi', 'ひとみみ'], ['kyojiro', 'きょじろ'], ['molly', 'モーリー'], ['ohagi', 'おはぎ丸飲み'], ['hamu', 'はむ']].filter(([k]) => !window.DONE.includes(k));
 const G = { 1: ['班1', '1回目 10:10〜 同じ班'], 2: ['班2', '2回目 11:05〜 同じ班'], 3: ['主催', '今日の会をつくってくれた人'], 4: ['ほか', '休憩・終わったあとに'] };
 const nav = document.getElementById('nav'), list = document.getElementById('list');
 const card = (p) => `<section id="${p.k}">
-    <div class="who"><img src="${p.k}.jpg" alt=""><div><div class="n">${p.n} / 12</div><h2>${p.name}さん</h2></div></div>
+    <div class="who"><img src="${p.k}.jpg" alt=""><div><div class="n">${p.n} / 12 ・ ${p.tag}</div><h2>${p.name}さん</h2></div></div>
     <p class="hook">${p.hook}</p>
-    <button class="play" data-k="${p.k}" aria-label="${p.name}さんの動画を再生"><img src="${p.k}_poster.jpg" alt="" loading="lazy"><i></i><b>タップで再生（30秒・音あり）</b></button>
+    <button class="play" data-k="${p.k}" aria-label="${p.name}さんの動画を再生"><img src="${p.k}_poster.jpg" alt="" loading="lazy"><i></i><b>タップで再生（30秒・音あり🔊）</b></button>
     <div class="talk"><b>この人と話したいこと</b>${p.talk}</div>
   </section>`;
 [1, 2, 3].forEach((g) => {
