@@ -39,6 +39,7 @@
   .soon { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
   .soon div { display: flex; align-items: center; gap: 6px; background: #fff; border: 2px dashed #b9bfcc; border-radius: 99px; padding: 4px 12px 4px 4px; font-size: 14px; color: var(--sub); }
   .soon img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+  .own { display: block; margin-top: 10px; text-align: right; font-size: 14px; font-weight: 700; color: var(--ink); }
   footer { text-align: center; color: var(--sub); font-size: 12px; padding: 0 16px 40px; }
 </style>
 </head>
@@ -53,6 +54,7 @@
 <footer>from おけもん 🦫 ＆ AIの仲間たち</footer>
 <script>
 // 動画ができた人（publish_add.sh が1人ずつ足す）
+window.LINKS = {"wassy": "friend-share-g-gpovANXw84td2vri", "nezuhana": "friend-share-g-m1tOrWfHaN1BeFyT", "hiit": "friend-share-g-SItdr6oCyPqAEiVK", "tatsuya": "friend-share-g-Bx3XwsPAogy03WMu", "mecha": "friend-share-g-WaCIMaAwEnE0uVUf", "miacchi": "friend-share-g-5QKz1W5kby1eKPMD", "chii": "friend-share-g-3k4PAgR6PVHZAhzC", "hitomimi": "friend-share-g-CGEqU5tPoKLUBdbv", "kyojiro": "friend-share-g-m9COJGGA1bJVxX3n", "molly": "friend-share-g-kaWMGNgoVwOX8RDJ", "ohagi": "friend-share-g-6BGFw7llZGevu90k", "hamu": "friend-share-g-BCPP1GHai4qJmZLy"};
 window.DONE = ['wassy', 'nezuhana', 'hiit', 'tatsuya', 'mecha', 'miacchi', 'chii', 'hitomimi', 'kyojiro', 'molly', 'ohagi', 'hamu'];
 const P = [
   { k: 'wassy', name: 'AIわっしー', g: 1, n: 1, tag: '📺 深夜のテレビ通販', hook: '本日の特選品は、新宿オフィスを巣立つ鷲。', talk: '「住んでる鷲」から「巣立つ鷲」へ。どこへ飛ぶの？' },
@@ -77,6 +79,7 @@ const card = (p) => `<section id="${p.k}">
     <p class="hook">${p.hook}</p>
     <button class="play" data-k="${p.k}" aria-label="${p.name}さんの動画を再生"><img src="${p.k}_poster.jpg" alt="" loading="lazy"><i></i><b>タップで再生（30秒・音あり🔊）</b></button>
     <div class="talk"><b>この人と話したいこと</b>${p.talk}</div>
+    <a class="own" href="../${window.LINKS[p.k]}/">${p.name}さんだけのページ（シェア用）→</a>
   </section>`;
 [1, 2, 3].forEach((g) => {
   const ps = P.filter((p) => p.g === g); if (!ps.length) return;
