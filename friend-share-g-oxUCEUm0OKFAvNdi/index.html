@@ -46,6 +46,9 @@
   .soon img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
   .own { display: block; margin-top: 12px; text-align: center; font-size: 17px; font-weight: 800; color: var(--ink); text-decoration: none; background: var(--acc); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 0 4px 0 var(--ink); padding: 13px 8px; }
   .own small { font-size: 13px; font-weight: 700; }
+  .cpb { display: block; width: 100%; margin-top: 12px; text-align: center; font: inherit; font-size: 17px; font-weight: 800; color: #fff; background: #1d2433; border: 0; border-radius: 14px; padding: 14px 8px; cursor: pointer; }
+  .okm { min-height: 1em; margin-top: 6px; text-align: center; font-size: 14px; font-weight: 800; color: #C0392B; }
+  .own { font-size: 15px !important; padding: 10px 8px !important; }
   footer { text-align: center; color: var(--sub); font-size: 12px; padding: 0 16px 40px; }
 </style>
 </head>
@@ -53,7 +56,7 @@
 <header>
   <span class="tag">10/16（金）新宿西口 経営者オフ会</span>
   <h1>はじめまして、を<br>30秒で楽しく。</h1>
-  <p>今日のみなさん12人を、リベのプロフィールから1人30秒の「番組」にしました。1人ずつ、ちがう番組です。<b>自分のカードの「📣 自分のページ」を開くと、文とリンクをコピーして、そのままつぶやきやSNSでシェアできます。</b>絵はChatGPT、台本はGemini、声はGeminiの声、動きと音はClaude。音が出ます🔊</p>
+  <p>今日のみなさん12人を、リベのプロフィールから1人30秒の「番組」にしました。1人ずつ、ちがう番組です。<b>自分のカードの「📋 紹介文とリンクをコピー」を押して、リベッター（つぶやき）やSNSに貼るだけでシェアできます。</b>絵はChatGPT、台本はGemini、声はGeminiの声、動きと音はClaude。音が出ます🔊</p>
 </header>
 <nav id="nav"></nav>
 <main id="list"></main>
@@ -84,7 +87,9 @@ const card = (p) => `<section id="${p.k}">
     <div class="who"><img src="${p.k}.jpg" alt=""><div><div class="n">${p.n} / 12 ・ ${p.tag}</div><h2>${p.name}さん</h2></div></div>
     <p class="hook">${p.hook}</p>
     <button class="play" data-k="${p.k}" aria-label="${p.name}さんの動画を再生"><img src="${p.k}_poster.jpg" alt="" loading="lazy"><i></i><b>タップで再生（30秒・音あり🔊）</b></button>
-    <a class="own" href="../${window.LINKS[p.k]}/">📣 ${p.name}さんのページを開いて、リンクでシェア</a>
+    <button class="cpb" type="button" data-k="${p.k}" data-href="../${window.LINKS[p.k]}/">📋 ${p.name}さんの紹介文とリンクをコピー</button>
+    <div class="okm" id="ok-${p.k}"></div>
+    <a class="own" href="../${window.LINKS[p.k]}/">${p.name}さんのページを開く（𝕏 投稿もここから）</a>
   </section>`;
 // 主催を先頭に、そのあと全員（チャット全体に見せる並び）
 const ORDER = [P.find((p) => p.k === 'mecha'), ...P.filter((p) => p.k !== 'mecha')].filter(Boolean);
@@ -92,6 +97,17 @@ ORDER.forEach((p, i) => { p.n = i + 1; });
 list.insertAdjacentHTML('beforeend', `<div class="grp"><h3>主催</h3><span>今日の会をつくってくれた人</span></div>` + card(ORDER[0]));
 list.insertAdjacentHTML('beforeend', `<div class="grp"><h3>参加したみなさん</h3><span>自分のカードを探してね</span></div>` + ORDER.slice(1).map(card).join(''));
 ORDER.forEach((p) => nav.insertAdjacentHTML('beforeend', `<a href="#${p.k}"><img src="${p.k}.jpg" alt="">${p.name}</a>`));
+
+// 各自のページの「文とリンク」を先に読んでおき、まとめページからも1タップでコピーできるように
+const TXT = {};
+const copyText = async (t) => { try { await navigator.clipboard.writeText(t); } catch (e) { const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); document.execCommand('copy'); a.remove(); } };
+const prefetch = (k, href) => fetch(href).then((r) => r.text()).then((h) => { const t = new DOMParser().parseFromString(h, 'text/html').getElementById('t'); if (t) TXT[k] = t.textContent.trim(); }).catch(() => {});
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('.cpb'); if (!b) return;
+  const k = b.dataset.k, t = TXT[k] || ('30秒の紹介ムービー、見てね！\n' + new URL(b.dataset.href, location.href).href);
+  copyText(t); const ok = document.getElementById('ok-' + k); if (ok) ok.textContent = 'コピーしました！ つぶやきの欄に貼ってね';
+});
+ORDER.forEach((p) => prefetch(p.k, '../' + window.LINKS[p.k] + '/'));
 // タップで、その場で動画に差し替えて再生（同時に1本だけ）
 document.querySelectorAll('.play').forEach((b) => b.addEventListener('click', () => {
   document.querySelectorAll('video').forEach((v) => v.pause());
