@@ -304,6 +304,22 @@
     return `<p class="g-making" title="${esc(`出どころ：${m.src || "PROCESS.md"}。AI（Claude Code）が着工から書き出しまでにかかった時間で、プロンプトを貼って作る時間とは別。直し＝評価役・外の目・本人の指摘で作り直した回数`)}">作るのにかかった時間 約${esc(m.minutes)}分<span class="g-making-note">（AIが作った時間）</span><span class="g-nw">・直し${esc(m.fixes)}回</span></p>`;
   }
   // 「用意する物」の1行（2026-09-30 相談役 Fable「◎○△の札は出さず、事実の1行をプロンプトの中に」。Jev で札より「自分でも作れそう」が高かった 2.26 対 1.69）
+  // 更新日と今週の新着（2026-10-19 世界に追いつく班：上位の見本棚は「いつ増えたか」が画面にある。借りる順の1つ目）
+  function showUpdated() {
+    const el = $("g-updated");
+    if (!el) return;
+    const dates = [...okItems.map((g) => g.date), ...worldItems.map((g) => g.added)].filter(Boolean).sort();
+    const last = dates[dates.length - 1];
+    if (!last) return;
+    const week = (d) => d && (Date.now() - new Date(d + "T00:00:00+09:00").getTime()) < 7 * 864e5;
+    // 世界のお手本は投稿の日ではなく、棚に足した日（added）で数える
+    const nOk = okItems.filter((g) => week(g.date)).length, nW = worldItems.filter((g) => week(g.added)).length;
+    const jp = (d) => d.replace(/^(\d{4})-0?(\d+)-0?(\d+)$/, "$2月$3日");
+    const W2 = window.MOTION_WORLD || {};
+    const upd = [last, W2.updated || ""].sort().pop();
+    el.textContent = `最終更新 ${jp(upd)}` + (nOk || nW ? `・この1週間の新着：${[nOk ? `おけもんが作った ${nOk}本` : "", nW ? `世界のお手本 ${nW}本` : ""].filter(Boolean).join("・")}` : "");
+    el.hidden = false;
+  }
   // 棚に入って14日以内の作品に「NEW」（2026-10-19）
   const isNew = (g) => g.date && (Date.now() - new Date(g.date + "T00:00:00+09:00").getTime()) < 14 * 864e5;
   function okCard(g, i) {
@@ -332,7 +348,7 @@
   function worldCard(w, i) {
     const meta = [w.views ? `${fmtViews(w.views)}表示` : "", w.seconds ? fmtSec(w.seconds) : ""].filter(Boolean).join("・");
     return `<article class="w-card" id="r-${esc(w.id)}">
-        <div class="w-head"><span class="w-badge ${w.group === "ai" ? "ai" : "pro"}">${w.group === "ai" ? "AI・コード" : "プロ"}</span><span class="w-meta">${esc(meta)}</span></div>
+        <div class="w-head"><span class="w-badge ${w.group === "pro" ? "pro" : "ai"}">${w.group === "pro" ? "プロ" : "AI・コード"}</span>${w.added ? `<span class="g-new">NEW</span>` : ""}<span class="w-meta">${esc(meta)}</span></div>
         <p class="w-title">${esc(w.title)}</p>
         <p class="w-by">${esc(w.by)}${w.date ? `・${esc(w.date)}` : ""}</p>
         <div class="g-labels">${techChips(w)}</div>
@@ -489,6 +505,7 @@
       if (qTech && R.TECH[qTech]) filt.tech = qTech;
       setupFilters();
       renderAll();
+      showUpdated();
       if (qTech && R.TECH[qTech] && location.hash === "#gallery") $("gallery").scrollIntoView({ block: "start" });
       openFromHash();
     })

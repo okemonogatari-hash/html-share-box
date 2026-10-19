@@ -1,7 +1,7 @@
 window.MOTION_WORLD = {
  "title": "世界のお手本",
- "updated": "2026-09-27",
- "note": "他の人の作品なので、動画や画像はこのページに置かない。説明（hitokoto・traits）は 2026-09-27 に実物をコマで見て書いた（gallery-notes/world_traits_2026-09-27.json）。表示数といいねは同日 xget の実数。sound:false は元の動画に音が無いもの",
+ "updated": "2026-10-19",
+ "note": "他の人の作品なので、動画や画像はこのページに置かない。説明（hitokoto・traits）は 2026-09-27 に実物をコマで見て書いた（gallery-notes/world_traits_2026-09-27.json）。表示数といいねは同日 xget の実数。sound:false は元の動画に音が無いもの／2026-10-19：いま世界で伸びている12本を足した（research/world-trends-x-2026-10-19.md の D。実物の動画をコマで見て、うちの言葉で書いた）",
  "tip": {
   "text": "お手本を1〜2本選んで「これに寄せて」と頼むのが、いちばん効く。参考なしだと Opus は「中央の文字・グラデーション背景・全部フェードイン」に落ちやすい",
   "by": "Rexan Wong",
@@ -13,6 +13,10 @@ window.MOTION_WORLD = {
  },
  "groups": [
   {
+   "id": "now",
+   "label": "2026年10月・いま世界で伸びている1本"
+  },
+  {
    "id": "ai",
    "label": "AIやコードで作った話題の1本"
   },
@@ -22,6 +26,381 @@ window.MOTION_WORLD = {
   }
  ],
  "items": [
+  {
+   "id": "anatomy-isometric",
+   "title": "Anatomy — 1行から等角の機械が描かれる（スキルの紹介映像）",
+   "by": "Ryan",
+   "handle": "wheresryan22",
+   "url": "https://x.com/wheresryan22/status/2108948624004526516",
+   "date": "2026-10-11",
+   "seconds": 39,
+   "views": 2581694,
+   "likes": 17880,
+   "aspect": "16:9",
+   "sound": false,
+   "hitokoto": "白い紙の上に、打ち込んだ1行の言葉から、等角の細い線で機械が1部品ずつ描かれていく。横では数字が数え上がり、スロットルを開くと炎と流れが乗って、触って回せる。最後は30台あまりの機械のカタログに広がる。「1行で機械を言えば絵になる」道具の紹介。",
+   "traits": [
+    "白い紙に細い等角の線で、部品が1つずつ描かれる",
+    "強調したい語だけ斜体、数字は0から数え上がる",
+    "最後に炎と流れが乗り、触って回せる",
+    "終わりは何十台もの機械が並ぶカタログ"
+   ],
+   "technique_ids": [
+    "line",
+    "infographic",
+    "stagger",
+    "extrude3d"
+   ],
+   "moods": [
+    "cool",
+    "calm"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "cd-case-texture",
+   "title": "CDケースの質感 — フタが開いて盤面が入れ替わる",
+   "by": "ann",
+   "handle": "ann_nnng",
+   "url": "https://x.com/ann_nnng/status/2109257723246501895",
+   "date": "2026-10-11",
+   "seconds": 30,
+   "views": 269879,
+   "likes": 6323,
+   "aspect": "16:10",
+   "sound": false,
+   "hitokoto": "白い舞台の真ん中に、透明なCDケースが1つだけ。フタが開いて傾くたびに、盤面がステッカー柄・金・赤いバラ・うねる虹色へと入れ替わる。3Dの模型を使わず、コードと光の計算だけで透明な樹脂の反射と影を出している。",
+   "traits": [
+    "白い舞台に透明なケースが1つだけ",
+    "フタの開け閉めで盤面の柄が入れ替わる",
+    "透明な樹脂の反射と影がやわらかい",
+    "下の色の丸を押して切り替える体裁"
+   ],
+   "technique_ids": [
+    "texture",
+    "camera3d",
+    "liquidglass",
+    "matchcut"
+   ],
+   "moods": [
+    "cool",
+    "elegant"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "espresso-exploded",
+   "title": "エスプレッソ機の分解図 — 寄って、ばらして、組み戻す",
+   "by": "ann",
+   "handle": "ann_nnng",
+   "url": "https://x.com/ann_nnng/status/2110698132225106303",
+   "date": "2026-10-15",
+   "seconds": 10,
+   "views": 70885,
+   "likes": 1641,
+   "aspect": "1:1",
+   "hitokoto": "クリーム色の紙に描かれた図面のようなエスプレッソ機。カメラが豆の入口・圧力計・ノブ・取っ手と4回寄って、部品の名前と仕様が添えられる。「82の部品」でばらばらの分解図になり、また組み戻って全体で止まる。10秒の正方形。",
+   "traits": [
+    "図面の紙に、図番と寸法の注記",
+    "4回寄って、部品名と仕様を添える",
+    "ばらばらの分解図になって組み戻る",
+    "最後は全体に戻って静止"
+   ],
+   "technique_ids": [
+    "extrude3d",
+    "camera3d",
+    "infographic",
+    "hold"
+   ],
+   "moods": [
+    "calm",
+    "elegant"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "iso-glow",
+   "title": "ISO-GLOW — 光だけが灯る等角の模型",
+   "by": "April",
+   "handle": "Aprilzz423",
+   "url": "https://x.com/Aprilzz423/status/2107794465457139988",
+   "date": "2026-10-07",
+   "seconds": 17,
+   "views": 80343,
+   "likes": 1711,
+   "aspect": "1:1",
+   "sound": false,
+   "hitokoto": "炭色の地に、琥珀色の光だけが灯る小さな等角の模型（タイプライター・ビル・灯台・街・クレーン…）が、約2秒ずつ入れ替わる。窓が下から上へ灯り、灯台の光線が回る。最後は紋章と一言で3秒止まる。",
+   "traits": [
+    "炭色の地に琥珀の光だけ",
+    "約2秒ごとに次の模型へ",
+    "窓が下から上へ順に灯る",
+    "最後は紋章で3秒止まる"
+   ],
+   "technique_ids": [
+    "lightsweep",
+    "stagger",
+    "geometric",
+    "hold"
+   ],
+   "moods": [
+    "cool",
+    "mystic"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "three-models-side",
+   "title": "同じ頼み方を3つのモデルで — 作業窓を横に並べて見せる",
+   "by": "N01ennn",
+   "handle": "N01ennn",
+   "url": "https://x.com/N01ennn/status/2108520767092597182",
+   "date": "2026-10-09",
+   "seconds": 53,
+   "views": 118980,
+   "likes": 1469,
+   "aspect": "16:9",
+   "hitokoto": "作業の窓を横に3つ並べ、それぞれ大・中・小のモデルが同じ頼み方で動画を作っていく様子を同じ秒で見せる。窓の中では作りかけの映像が流れ、下ではコマ数・書き出しの%・工程の帯が一緒に進む。比べっこの見せ方の見本。",
+   "traits": [
+    "作業窓を3つ横に並べる",
+    "窓の中で作りかけの映像が流れる",
+    "下にコマ数と工程の帯が同じ秒で進む",
+    "最後に直しの指示を書く入力欄"
+   ],
+   "technique_ids": [
+    "ui",
+    "infographic",
+    "kinetic",
+    "cursor"
+   ],
+   "moods": [
+    "exciting",
+    "cool"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "pixel-island-loop",
+   "title": "雨の夜の浮島 — ドット絵のループ",
+   "by": "Sahil",
+   "handle": "SahilExec",
+   "url": "https://x.com/SahilExec/status/2107132523755307179",
+   "date": "2026-10-06",
+   "seconds": 13,
+   "views": 37619,
+   "likes": 898,
+   "aspect": "16:9",
+   "sound": false,
+   "hitokoto": "雨の夜の浮島に、灯る窓の家・焚き火・赤い傘・提灯・滝。煙・雨粒・光の粒・灯のちらつきが、それぞれ別の周期で動くので、1画面のままずっと見ていられる。全部コードで描いたドット絵。カメラも切り替えも無い。",
+   "traits": [
+    "雨の夜の浮島の1画面",
+    "煙・雨・灯がそれぞれ別の周期で動く",
+    "カメラも切り替えも無いループ",
+    "月から山並みまで同じ紺の色調"
+   ],
+   "technique_ids": [
+    "particles",
+    "breathing",
+    "texture",
+    "hold"
+   ],
+   "moods": [
+    "calm",
+    "emo"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "peach-depth-type",
+   "title": "PEACH／JUICY — 人物をはさむ巨大な文字",
+   "by": "かなまる",
+   "handle": "uniyume",
+   "url": "https://x.com/uniyume/status/2105817897918775444",
+   "date": "2026-10-02",
+   "seconds": 6,
+   "views": 31730,
+   "likes": 327,
+   "aspect": "16:9",
+   "hitokoto": "巨大な黒い文字が人物の後ろに置かれ、重なる所だけ白い輪郭が前に出て、人と文字が前後にはさまる。四隅にはカメラのファインダーのような枠と細かい記号、黄色い札に日本語の一言。10か月前の自分の動画に、文字だけ足して作り直した6秒。",
+   "traits": [
+    "巨大な文字が人物の後ろと前にはさまる",
+    "四隅にファインダーの枠と細かい記号",
+    "黄色い札に日本語の一言",
+    "昔の自分の動画に文字だけ足した"
+   ],
+   "technique_ids": [
+    "kinetic",
+    "collage",
+    "hold"
+   ],
+   "moods": [
+    "pop",
+    "cool"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "tea-art-relay",
+   "title": "Tea across the ages — 同じ部屋で約35の画風をリレー",
+   "by": "Vox（紹介）",
+   "handle": "Voxyz_ai",
+   "url": "https://x.com/Voxyz_ai/status/2109690569563746755",
+   "date": "2026-10-13",
+   "seconds": 41,
+   "views": 225449,
+   "likes": 2040,
+   "aspect": "16:9",
+   "sound": false,
+   "hitokoto": "窓・机・猫・お茶を飲む女性という同じ部屋の構図のまま、画風だけが洞窟壁画・エジプト・浮世絵・ゴッホ・クリムト・ポップ・8ビット…と約1秒ずつ入れ替わる。右上に年号と画風の名前。画風の名前で頼める道具の紹介映像。",
+   "traits": [
+    "同じ構図のまま画風だけが変わる",
+    "約1秒ずつ、古代から今まで",
+    "右上に年号と画風の名前",
+    "最後に今年の年号で締める"
+   ],
+   "technique_ids": [
+    "matchcut",
+    "morph",
+    "texture",
+    "collage"
+   ],
+   "moods": [
+    "pop",
+    "exciting"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "niboshi-ramen-cm",
+   "title": "煮干ラーメンのCM — お店のURLから作った30秒",
+   "by": "しょうへい",
+   "handle": "showheyohtaki",
+   "url": "https://x.com/showheyohtaki/status/2111264682208354758",
+   "date": "2026-10-17",
+   "seconds": 30,
+   "views": 18484,
+   "likes": 218,
+   "aspect": "16:9",
+   "hitokoto": "黒と金の和の高級感で、煮干の質感を見せるラーメン屋さんのCM。数字が増えていく歴史の紙芝居、墨の魚が横切り、「パツ」「パツ」の大きな擬音が麺の動きに合う。最後は器の2分割から和紙の白地にお店のロゴ。お店のURLを渡して作った日本語の1本。",
+   "traits": [
+    "黒と金の和の高級感",
+    "数字が増える歴史の紙芝居",
+    "大きな擬音が麺の動きに合う",
+    "和紙の白地にお店のロゴで締める"
+   ],
+   "technique_ids": [
+    "infographic",
+    "kinetic",
+    "texture",
+    "brush"
+   ],
+   "moods": [
+    "wa",
+    "elegant"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "frozen-notebook",
+   "title": "凍った手記 — 縦書きの日記と割れる漢字",
+   "by": "あいくりえいたろう",
+   "handle": "aicreataro",
+   "url": "https://x.com/aicreataro/status/2107794785188864070",
+   "date": "2026-10-07",
+   "seconds": 86,
+   "views": 86740,
+   "likes": 973,
+   "aspect": "16:9",
+   "hitokoto": "縦書きの日本語の日記が主役で、日付が進むほど吹雪のノイズが強くなる。巨大な漢字が現れてはひびが入って割れ、終盤は貼り紙の言葉が赤い手書きに変わって字が増えていく。動画を作るAIは使わず、文字と図形と語りだけで作った日本語のホラー。",
+   "traits": [
+    "縦書きの日記が主役で日付が進む",
+    "巨大な漢字にひびが入って割れる",
+    "吹雪のノイズと霧と窓格子",
+    "終盤、赤い手書きの字が増えていく"
+   ],
+   "technique_ids": [
+    "kinetic",
+    "semantic",
+    "glitch",
+    "hold"
+   ],
+   "moods": [
+    "mystic",
+    "emo"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "taste-skill-words",
+   "title": "TasteSkill v2 — 1語ずつ積み上がる文",
+   "by": "Lexn",
+   "handle": "LexnLin",
+   "url": "https://x.com/LexnLin/status/2110122106537050584",
+   "date": "2026-10-14",
+   "seconds": 64,
+   "views": 525155,
+   "likes": 4486,
+   "aspect": "16:9",
+   "hitokoto": "白地に1行ずつ文が打ち出され、語に合わせて黒や橙の小さな札が入る。「AIっぽい」を黒地で大きく見せたあと、「いまは味がある」がオレンジ地で流れ続ける。最後に点数が上がって締める、言葉だけで引っぱる64秒の道具紹介。",
+   "traits": [
+    "白地に1行ずつ文が打ち出される",
+    "語に合わせて小さな札が入る",
+    "黒地とオレンジ地で前後を対比",
+    "最後に点数が上がって締める"
+   ],
+   "technique_ids": [
+    "kinetic",
+    "stagger",
+    "hold",
+    "ui"
+   ],
+   "moods": [
+    "cool",
+    "exciting"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
+  {
+   "id": "paper-mono-making",
+   "title": "Paper Mono — エディタごと見せる制作画面",
+   "by": "Agus",
+   "handle": "agusegui",
+   "url": "https://x.com/agusegui/status/2108251509830140401",
+   "date": "2026-10-09",
+   "seconds": 61,
+   "views": 218638,
+   "likes": 2754,
+   "aspect": "5:4",
+   "hitokoto": "エディタ・プレビュー・拍の目盛りのタイムラインを1画面に並べたまま、文字・紙の曲面・蝶が次々に生まれていく制作画面そのものを作品にした1本。「全部コードで、自分は触っていない」。作る過程を見せる見せ方の見本。",
+   "traits": [
+    "エディタとプレビューとタイムラインを1画面に",
+    "文字・紙の曲面・蝶が次々に生まれる",
+    "作っている過程そのものが作品",
+    "最後に名前と公開の一言"
+   ],
+   "technique_ids": [
+    "ui",
+    "kinetic",
+    "texture"
+   ],
+   "moods": [
+    "calm",
+    "elegant"
+   ],
+   "group": "now",
+   "added": "2026-10-19"
+  },
   {
    "id": "stephan-opus55",
    "group": "ai",
@@ -1226,5 +1605,5 @@ window.MOTION_WORLD = {
    ]
   }
  ],
- "views_note": "表示数といいねは、お手本を棚に足した日（2026-09-27 から）に X で数えた数です。今の数とは違います"
+ "views_note": "表示数といいねは、お手本を棚に足した日に X で数えた数です（9/27 から。いちばん上の12本は 2026-10-19）。今の数とは違います"
 };
