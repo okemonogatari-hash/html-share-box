@@ -29,9 +29,18 @@
   G.forEach((g) => (g.technique_ids || []).forEach((id, k) => (byTech[id] = byTech[id] || []).push({ g, k })));
   Object.values(byTech).forEach((l) => l.sort((a, b) => a.k - b.k || String(b.g.date).localeCompare(String(a.g.date))));
   const shortTitle = (s) => String(s).split(/[（—]/)[0].trim();
+  // 棚にまだ実例が無い技法（10/19 に足した15個など）は、世界のお手本（元の X の投稿）を実例として出す
+  const WORLD = ((window.MOTION_WORLD && window.MOTION_WORLD.items) || []);
+  function worldExamples(t) {
+    const w = WORLD.filter((x) => (x.technique_ids || []).includes(t.id)).slice(0, 3);
+    if (!w.length) return `
+          <div class="tb-row tb-ex-row"><span class="tb-k">実例</span><p class="tb-ex-wait">この技法を主役にした作品を、見本集の便で作っているところです（2026年10月〜）。</p></div>`;
+    return `
+          <div class="tb-row tb-ex-row"><span class="tb-k">世界の実例</span><div class="tb-ex-world">${w.map((x) => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(String(x.title).split(" — ")[0])}<span>${x.views ? ` ${(x.views >= 10000 ? Math.round(x.views / 1000) / 10 + "万" : x.views.toLocaleString())}表示` : ""} ↗</span></a>`).join("")}</div></div>`;
+  }
   function examples(t) {
     const l = byTech[t.id] || [];
-    if (!l.length) return "";
+    if (!l.length) return worldExamples(t);
     const cards = l.slice(0, 3).map(({ g }) => `<a class="tb-ex-card" href="./#w-${encodeURIComponent(g.id)}" title="${esc(g.title)}">
               <span class="tb-ex-thumb${g.aspect && g.aspect !== "16:9" ? " tall" : ""}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')">${g.preview ? `<video muted playsinline loop preload="none" data-src="gallery/${esc(g.preview)}" aria-hidden="true" tabindex="-1"></video>` : ""}</span>
               <span class="tb-ex-t">${esc(shortTitle(g.title))}</span></a>`).join("");

@@ -298,8 +298,8 @@
   function makingLine(g) {
     const m = g.making;
     // 記録の無い作品も「記録なし」と書く（2026-09-30 夜 Fable：全カードで作り方の明細を同じ形に）
-    if (!m || !(m.minutes > 0)) return `<p class="g-making" title="${esc(m && m.src ? `出どころ：${m.src}` : "作った時の時間の記録が残っていない作品")}">作るのにかかった時間 記録なし${m && m.fixes >= 0 ? `<span class="g-nw">・直し${esc(m.fixes)}回</span>` : ""}</p>`;
-    if (!(m.fixes >= 0)) return "";
+    if (!m || !(m.minutes > 0)) return `<p class="g-making" title="${esc(m && m.src ? `出どころ：${m.src}` : "作った時の時間の記録が残っていない作品")}">作るのにかかった時間 記録なし${m && typeof m.fixes === "number" && m.fixes >= 0 ? `<span class="g-nw">・直し${esc(m.fixes)}回</span>` : ""}</p>`;
+    if (!(typeof m.fixes === "number" && m.fixes >= 0)) return "";
     // 「AIが作った時間」と添える（2026-09-30 Fable：読者がプロンプトを貼って作る時間とは別物）
     return `<p class="g-making" title="${esc(`出どころ：${m.src || "PROCESS.md"}。AI（Claude Code）が着工から書き出しまでにかかった時間で、プロンプトを貼って作る時間とは別。直し＝評価役・外の目・本人の指摘で作り直した回数`)}">作るのにかかった時間 約${esc(m.minutes)}分<span class="g-making-note">（AIが作った時間）</span><span class="g-nw">・直し${esc(m.fixes)}回</span></p>`;
   }
@@ -320,8 +320,8 @@
     el.textContent = `最終更新 ${jp(upd)}` + (nOk || nW ? `・この1週間の新着：${[nOk ? `おけもんが作った ${nOk}本` : "", nW ? `世界のお手本 ${nW}本` : ""].filter(Boolean).join("・")}` : "");
     el.hidden = false;
   }
-  // 棚に入って14日以内の作品に「NEW」（2026-10-19）
-  const isNew = (g) => g.date && (Date.now() - new Date(g.date + "T00:00:00+09:00").getTime()) < 14 * 864e5;
+  // 棚に入って7日以内の作品に「NEW」（2026-10-19。14日だと78枚中30枚に付いて目印にならなかった）
+  const isNew = (g) => g.date && (Date.now() - new Date(g.date + "T00:00:00+09:00").getTime()) < 7 * 864e5;
   function okCard(g, i) {
     const meta = thumbMeta(g);
     const tags = (g.traits && g.traits.length ? g.traits : g.techniques || []).slice(0, 4);
@@ -329,7 +329,7 @@
         <div class="g-prompt" id="gp-${i}" hidden>${g.prep ? `<p class="g-prep">${esc(g.prep)}</p>` : ""}<pre>${esc(g.prompt.text)}</pre><p class="fine">${esc(g.prompt.note || "")}</p><button type="button" class="btn chip-btn" data-copyprompt="${i}">このプロンプトをコピー</button></div>` : "";
     const genre = GENRES[g.genre] ? `<button type="button" class="genre-badge g-${esc(g.genre)}" data-genre="${esc(g.genre)}" title="このジャンルの作品だけ見る">${esc(GENRES[g.genre])}</button>` : "";
     return `<article class="g-card" id="w-${esc(g.id)}">
-        <button type="button" class="g-thumb${g.aspect && g.aspect !== "16:9" ? " fit" : ""}" data-play="${i}" aria-label="再生：${esc(g.title)}${meta ? `（${esc(meta)}）` : ""}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')">${g.preview ? `<video class="g-pv" muted playsinline loop preload="none" data-src="gallery/${esc(g.preview)}" aria-hidden="true" tabindex="-1"></video>` : ""}${meta ? `<span class="g-meta" aria-hidden="true">${esc(meta)}</span>` : ""}</button>
+        <button type="button" class="g-thumb${g.aspect && g.aspect !== "16:9" ? " fit" : ""}" data-play="${i}" aria-label="再生：${esc(g.title)}${meta ? `（${esc(meta)}）` : ""}" data-bg="gallery/${esc(g.poster || g.id + ".jpg")}">${g.preview ? `<video class="g-pv" muted playsinline loop preload="none" data-src="gallery/${esc(g.preview)}" aria-hidden="true" tabindex="-1"></video>` : ""}${meta ? `<span class="g-meta" aria-hidden="true">${esc(meta)}</span>` : ""}</button>
         <div class="g-text">
           <p class="g-title">${isNew(g) ? `<span class="g-new">NEW</span>` : ""}${esc(g.title)}</p>
           ${g.date ? `<p class="g-date">${esc(String(g.date).replace(/^(\d{4})-0?(\d+)-0?(\d+)$/, "$1年$2月$3日"))}</p>` : ""}
@@ -370,7 +370,16 @@
     box.hidden = !!narrowed || !picks.length;
     if (box.hidden) return;
     box.innerHTML = `<p class="g-first-label">${esc(F.label)}<span class="g-first-note">${esc(F.note || "")}</span></p><div class="g-first-row">${picks.map((i) => { const g = okItems[i];
-      return `<button type="button" class="g-first-card" data-play="${i}" aria-label="再生：${esc(g.title)}"><span class="g-first-thumb" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')"></span><span class="g-first-title">${esc(g.title.split("（")[0].split(" — ")[0])}</span><span class="g-first-meta">${esc([g.seconds ? fmtSec(g.seconds) : "", ASPECT_LABEL[g.aspect] || "", PURPOSES[g.purpose] || ""].filter(Boolean).join("・"))}</span></button>`; }).join("")}</div>`;
+      return `<button type="button" class="g-first-card" data-play="${i}" aria-label="再生：${esc(g.title)}"><span class="g-first-thumb" data-bg="gallery/${esc(g.poster || g.id + ".jpg")}"></span><span class="g-first-title">${esc(g.title.split("（")[0].split(" — ")[0])}</span><span class="g-first-meta">${esc([g.seconds ? fmtSec(g.seconds) : "", ASPECT_LABEL[g.aspect] || "", PURPOSES[g.purpose] || ""].filter(Boolean).join("・"))}</span></button>`; }).join("")}</div>`;
+  }
+  // サムネの背景は、画面に近づいた時だけ読む（2026-10-19：スマホの初回読み込みが13.2MB、うち約11.9MBが全カードのサムネの先読みだった）
+  let bgIO = null;
+  function lazyBg() {
+    const els = document.querySelectorAll("[data-bg]");
+    const put = (el) => { el.style.backgroundImage = `url('${el.dataset.bg}')`; el.removeAttribute("data-bg"); };
+    if (!("IntersectionObserver" in window)) { els.forEach(put); return; }
+    if (!bgIO) bgIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { bgIO.unobserve(e.target); put(e.target); } }), { rootMargin: "600px 0px" });
+    els.forEach((el) => bgIO.observe(el));
   }
   function renderOk() {
     renderFirst();
@@ -379,6 +388,7 @@
     const order = okItems.map((g, i) => i);
     if (filt.sort === "new") order.sort((a, b) => String(okItems[b].date || "").localeCompare(String(okItems[a].date || "")) || a - b);
     $("gallery-grid").innerHTML = order.map((i) => (hits(okItems[i], true) ? okCard(okItems[i], i) : "")).join("") || NONE;
+    lazyBg();
     watchPreviews();
   }
   // 動くサムネ（2026-09-30 夜・競合調査の提案1 → 相談役 Fable の1位）：3.5秒・無音の予告（gallery/preview/）。
