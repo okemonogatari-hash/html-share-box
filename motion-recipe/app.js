@@ -268,7 +268,7 @@
   // 用途の札（2026-09-30 相談役 Fable の改善案3「入口を用途に」）。gallery.json の purpose。日付のあるお知らせ＝告知、日付のない紹介＝紹介
   // 札の言葉は「誰が・どんな場面で」使うか（2026-10-01 相談役 Fable：世界と日本の棚を調べて、使う場面で選べる無料の棚は手薄。Jitter の用途札に倣う）
   const PURPOSES = { announce: "お店・イベントのお知らせ", introduce: "お店・人の紹介", selfintro: "自己紹介", howto: "作り方・手順", quote: "ことば・名言", season: "季節のあいさつ・お祝い", explain: "授業・教材", reel: "見て楽しむ（腕だめし）" };
-  const filt = { q: "", genre: "", tech: "", purpose: "" };
+  const filt = { q: "", genre: "", tech: "", purpose: "", sort: "" };
   const norm = (s) => String(s || "").normalize("NFKC").toLowerCase();
   const techName = (id) => (R.TECH[id] ? R.TECH[id].formal : "");
   function haystack(it) {
@@ -304,6 +304,8 @@
     return `<p class="g-making" title="${esc(`出どころ：${m.src || "PROCESS.md"}。AI（Claude Code）が着工から書き出しまでにかかった時間で、プロンプトを貼って作る時間とは別。直し＝評価役・外の目・本人の指摘で作り直した回数`)}">作るのにかかった時間 約${esc(m.minutes)}分<span class="g-making-note">（AIが作った時間）</span><span class="g-nw">・直し${esc(m.fixes)}回</span></p>`;
   }
   // 「用意する物」の1行（2026-09-30 相談役 Fable「◎○△の札は出さず、事実の1行をプロンプトの中に」。Jev で札より「自分でも作れそう」が高かった 2.26 対 1.69）
+  // 棚に入って14日以内の作品に「NEW」（2026-10-19）
+  const isNew = (g) => g.date && (Date.now() - new Date(g.date + "T00:00:00+09:00").getTime()) < 14 * 864e5;
   function okCard(g, i) {
     const meta = thumbMeta(g);
     const tags = (g.traits && g.traits.length ? g.traits : g.techniques || []).slice(0, 4);
@@ -313,7 +315,8 @@
     return `<article class="g-card" id="w-${esc(g.id)}">
         <button type="button" class="g-thumb${g.aspect && g.aspect !== "16:9" ? " fit" : ""}" data-play="${i}" aria-label="再生：${esc(g.title)}${meta ? `（${esc(meta)}）` : ""}" style="background-image:url('gallery/${esc(g.poster || g.id + ".jpg")}')">${g.preview ? `<video class="g-pv" muted playsinline loop preload="none" data-src="gallery/${esc(g.preview)}" aria-hidden="true" tabindex="-1"></video>` : ""}${meta ? `<span class="g-meta" aria-hidden="true">${esc(meta)}</span>` : ""}</button>
         <div class="g-text">
-          <p class="g-title">${esc(g.title)}</p>
+          <p class="g-title">${isNew(g) ? `<span class="g-new">NEW</span>` : ""}${esc(g.title)}</p>
+          ${g.date ? `<p class="g-date">${esc(String(g.date).replace(/^(\d{4})-0?(\d+)-0?(\d+)$/, "$1年$2月$3日"))}</p>` : ""}
           <div class="g-labels">${genre}${techChips(g)}</div>
           ${makingLine(g)}
           <details class="g-more"><summary>解説を読む</summary>
@@ -356,7 +359,10 @@
   function renderOk() {
     renderFirst();
     if (!okItems.length) return;
-    $("gallery-grid").innerHTML = okItems.map((g, i) => (hits(g, true) ? okCard(g, i) : "")).join("") || NONE;
+    // 並び（2026-10-19 世界に追いつく班：上位の見本棚は並び替えと新着の印を持つ。おすすめ順＝棚の並びのまま）
+    const order = okItems.map((g, i) => i);
+    if (filt.sort === "new") order.sort((a, b) => String(okItems[b].date || "").localeCompare(String(okItems[a].date || "")) || a - b);
+    $("gallery-grid").innerHTML = order.map((i) => (hits(okItems[i], true) ? okCard(okItems[i], i) : "")).join("") || NONE;
     watchPreviews();
   }
   // 動くサムネ（2026-09-30 夜・競合調査の提案1 → 相談役 Fable の1位）：3.5秒・無音の予告（gallery/preview/）。
@@ -421,6 +427,7 @@
     $("g-count").textContent = list.length ? (narrowed ? `${list.length}本中 ${n}本` : `${list.length}本`) : "";
     $("g-genres").hidden = world; // ジャンルと用途は「おけもんが作った」の棚だけ
     $("g-purposes").hidden = world;
+    if ($("g-sort")) $("g-sort").hidden = world; // 並び替えは「おけもんが作った」の棚だけ
     showFlow();
   }
   const renderAll = () => { renderOk(); renderWorld(); renderCount(); };
@@ -458,6 +465,7 @@
   function setTech(id) { filt.tech = filt.tech === id ? "" : id; $("g-tech").value = filt.tech; renderAll(); }
   $("g-search").addEventListener("input", () => { filt.q = $("g-search").value; renderAll(); });
   $("g-tech").addEventListener("change", () => { filt.tech = $("g-tech").value; renderAll(); });
+  if ($("g-sort")) $("g-sort").addEventListener("change", () => { filt.sort = $("g-sort").value; renderAll(); });
 
   const W = window.MOTION_WORLD;
   if (W && W.items) {
@@ -476,8 +484,12 @@
       okItems = (Array.isArray(list) ? list : list.items || []).filter((g) => !g.hidden); // hidden＝棚から下げた作品（直してから戻す・2026-10-01）
       galleryFirst = Array.isArray(list) ? null : list.first || null;
       if (!okItems.length) throw new Error("empty");
+      // 技法集の「この技法の作品を棚で見る」（?tech=<id>#gallery・2026-10-19）：その技法で絞った棚を開く
+      const qTech = new URLSearchParams(location.search).get("tech");
+      if (qTech && R.TECH[qTech]) filt.tech = qTech;
       setupFilters();
       renderAll();
+      if (qTech && R.TECH[qTech] && location.hash === "#gallery") $("gallery").scrollIntoView({ block: "start" });
       openFromHash();
     })
     .catch(() => { $("gallery-grid").innerHTML = `<p class="muted">作品集はただいま準備中です。</p>`; });

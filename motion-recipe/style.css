@@ -288,6 +288,117 @@ textarea { resize: vertical; min-height: 92px; }
 .d-beatsync .eq i:nth-child(2) { animation-delay: 0.12s; background: #ffc75f; } .d-beatsync .eq i:nth-child(3) { animation-delay: 0.24s; background: var(--ai); } .d-beatsync .eq i:nth-child(4) { animation-delay: 0.06s; background: #3bb58a; } .d-beatsync .eq i:nth-child(5) { animation-delay: 0.18s; }
 @keyframes beat { 0% { transform: scaleY(1); } 60% { transform: scaleY(0.3); } 100% { transform: scaleY(1); } }
 
+/* 棚の新着の印と日付（2026-10-19） */
+.g-new { display: inline-block; margin-right: 6px; padding: 0 7px; border-radius: 999px; background: var(--shu); color: #fff; font-size: 11px; font-weight: 900; letter-spacing: .04em; vertical-align: 2px; }
+.g-date { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+
+/* ===== 2026-10-19 世界に追いつく班：いま世界で伸びている技法の見本 ===== */
+/* ASCII・網点：文字の網目の上を光の帯が通ると、本当の形に戻る */
+.stage.d-ascii { background: #0f1420; }
+.d-ascii .grid { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0; font: 700 9px/9px ui-monospace, Menlo, monospace; color: #7fd8be; letter-spacing: 0.5px; white-space: pre; }
+.d-ascii .solid { position: absolute; left: 50%; top: 50%; width: 92px; height: 66px; margin: -33px -46px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #ffe7a3, #e4472f 70%); clip-path: inset(0 100% 0 0); animation: asciiSolid 3.6s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+.d-ascii .band { position: absolute; top: 0; bottom: 0; left: 0; width: 26px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent); animation: asciiBand 3.6s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+@keyframes asciiSolid { 0%, 15% { clip-path: inset(0 100% 0 0); } 55%, 80% { clip-path: inset(0 0 0 0); } 100% { clip-path: inset(0 0 0 100%); } }
+@keyframes asciiBand { 0%, 15% { transform: translateX(-30px); } 55% { transform: translateX(240px); } 100% { transform: translateX(240px); } }
+/* カーソルが演じる画面デモ */
+.d-cursor .win { position: absolute; left: 50%; top: 50%; width: 150px; height: 96px; margin: -48px -75px; border-radius: 10px; background: #fff; border: 2px solid var(--ink); transform-origin: 70% 40%; animation: curZoom 4s cubic-bezier(0.65, 0, 0.35, 1) infinite; overflow: hidden; }
+.d-cursor .ln { position: absolute; left: 10px; top: 12px; width: 70px; height: 9px; border-radius: 5px; background: var(--paper2); }
+.d-cursor .btn { position: absolute; right: 12px; top: 10px; width: 36px; height: 14px; border-radius: 999px; background: var(--shu); animation: curBtn 4s infinite; }
+.d-cursor .ans { position: absolute; left: 10px; height: 7px; border-radius: 4px; background: var(--ai); transform-origin: left; transform: scaleX(0); animation: curAns 4s steps(6) infinite; }
+.d-cursor .a1 { top: 38px; width: 110px; } .d-cursor .a2 { top: 52px; width: 86px; animation-delay: 0.25s; } .d-cursor .a3 { top: 66px; width: 60px; animation-delay: 0.5s; }
+.d-cursor .ptr { position: absolute; left: 30%; top: 75%; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 16px solid var(--ink); transform: rotate(-28deg); animation: curPtr 4s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+@keyframes curPtr { 0% { left: 22%; top: 80%; } 30%, 36% { left: 70%; top: 38%; } 33% { transform: rotate(-28deg) scale(0.8); } 60%, 100% { left: 70%; top: 38%; opacity: 0; } }
+@keyframes curBtn { 0%, 31% { transform: none; } 33% { transform: scale(0.88); } 36%, 100% { transform: none; } }
+@keyframes curZoom { 0%, 36% { transform: scale(1); } 50%, 85% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@keyframes curAns { 0%, 40% { transform: scaleX(0); } 70%, 100% { transform: scaleX(1); } }
+/* パタパタ回る数字（案内板） */
+.d-counter .flaps { position: absolute; left: 50%; top: 50%; display: flex; gap: 6px; transform: translate(-50%, -50%); }
+.d-counter .flaps b { position: relative; display: block; width: 34px; height: 48px; overflow: hidden; border-radius: 6px; background: #1b1712; color: #fff; font: 900 34px/48px system-ui, sans-serif; text-align: center; }
+.d-counter .flaps b::after { content: ""; position: absolute; left: 0; right: 0; top: 23px; height: 2px; background: rgba(0, 0, 0, 0.6); }
+.d-counter .flaps span { display: block; }
+.d-counter .f1 span { animation: flap1 3.6s steps(1) infinite; } .d-counter .f2 span { animation: flap2 3.6s steps(1) infinite; } .d-counter .f3 span { animation: flap3 3.6s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+@keyframes flap1 { 0% { transform: translateY(0); } 10% { transform: translateY(-48px); } 20%, 100% { transform: translateY(-96px); } }
+@keyframes flap2 { 0% { transform: translateY(0); } 8% { transform: translateY(-96px); } 16% { transform: translateY(-192px); } 24% { transform: translateY(-288px); } 32%, 100% { transform: translateY(-384px); } }
+@keyframes flap3 { 0% { transform: translateY(0); } 50%, 100% { transform: translateY(-336px); } }
+/* 厚みのある3Dの文字 */
+.d-extrude3d { perspective: 300px; }
+.d-extrude3d .mid { display: flex; gap: 4px; font: 900 52px/1 system-ui, sans-serif; color: #ffc75f; }
+.d-extrude3d .mid span { display: inline-block; transform-origin: 50% 100%; text-shadow: 1px 1px 0 #d99a1a, 2px 2px 0 #c4850c, 3px 3px 0 #ad7208, 4px 4px 0 #965f04, 5px 5px 0 #7d4c02, 8px 10px 12px rgba(0, 0, 0, 0.25); animation: ext 3.2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+.d-extrude3d .mid span:nth-child(2) { animation-delay: 0.15s; color: #ff8a6a; }
+@keyframes ext { 0% { transform: rotateX(90deg); opacity: 0; } 30%, 80% { transform: rotateX(0deg); opacity: 1; } 100% { transform: rotateX(-20deg) translateY(-6px); opacity: 0; } }
+/* 粒が集まって1枚の絵になる */
+.d-assemble .tiles { position: absolute; left: 50%; top: 50%; }
+.d-assemble .tiles i { position: absolute; width: 10px; height: 10px; margin: -5px; border-radius: 2px; animation: asm 3.6s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+@keyframes asm { 0% { transform: translate(var(--sx), var(--sy)) rotate(160deg) scale(0.4); opacity: 0; } 15% { opacity: 1; } 55%, 85% { transform: translate(var(--x), var(--y)); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(0.6); opacity: 0; } }
+/* 太さが波打つ文字 */
+.d-varfont .mid { display: flex; gap: 2px; font: 200 46px/1 system-ui, -apple-system, "Segoe UI Variable", sans-serif; color: var(--ai); }
+.d-varfont .mid span { animation: vf 2.4s ease-in-out infinite; }
+.d-varfont .mid span:nth-child(2) { animation-delay: 0.15s; } .d-varfont .mid span:nth-child(3) { animation-delay: 0.3s; } .d-varfont .mid span:nth-child(4) { animation-delay: 0.45s; }
+@keyframes vf { 0%, 100% { font-weight: 200; } 50% { font-weight: 900; color: var(--shu); } }
+/* 紙を破って次の場面へ（コマ撮り調：1秒8コマに間引く） */
+.d-tornpaper .under { position: absolute; inset: 0; display: grid; place-items: center; background: #7fd8be; color: #fff; font: 900 40px/1 system-ui, sans-serif; font-style: normal; }
+.d-tornpaper .half { position: absolute; top: -4px; bottom: -4px; width: 56%; background: #ffc75f radial-gradient(rgba(120, 90, 40, 0.12) 1px, transparent 1px) 0 0 / 5px 5px; filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.15)); }
+.d-tornpaper .h1 { left: 0; clip-path: polygon(0 0, 100% 0, 92% 10%, 100% 22%, 90% 34%, 99% 46%, 89% 58%, 98% 70%, 90% 82%, 99% 92%, 94% 100%, 0 100%); animation: torn1 3.2s steps(8) infinite; }
+.d-tornpaper .h2 { right: 0; clip-path: polygon(8% 0, 100% 0, 100% 100%, 6% 100%, 0 92%, 9% 82%, 1% 70%, 10% 58%, 0 46%, 9% 34%, 0 22%, 8% 10%); animation: torn2 3.2s steps(8) infinite; }
+@keyframes torn1 { 0%, 30% { transform: none; } 70%, 100% { transform: translateX(-110%) rotate(-8deg); } }
+@keyframes torn2 { 0%, 30% { transform: none; } 70%, 100% { transform: translateX(110%) rotate(7deg); } }
+/* 速さを合わせてつなぐ */
+.d-velocitycut .strip { position: absolute; inset: 0; animation: vel 3s infinite; }
+.d-velocitycut .strip i { position: absolute; top: 0; bottom: 0; width: 100%; display: grid; place-items: center; font: 900 44px/1 system-ui, sans-serif; font-style: normal; color: #fff; }
+.d-velocitycut .pa { left: 0; background: var(--ai); } .d-velocitycut .pb { left: 100%; background: var(--shu); }
+@keyframes vel { 0%, 25% { transform: translateX(0); filter: none; animation-timing-function: cubic-bezier(0.7, 0, 1, 1); } 45% { transform: translateX(-50%); filter: blur(3px); animation-timing-function: cubic-bezier(0, 0, 0.3, 1); } 65%, 90% { transform: translateX(-100%); filter: none; } 100% { transform: translateX(-100%); } }
+/* カメラが演技する（ピント送り） */
+.stage.d-camerafocus { background: linear-gradient(#2a2420, #4a3f36); }
+.d-camerafocus .near { position: absolute; left: 22%; top: 50%; width: 58px; height: 58px; margin-top: -29px; border-radius: 50%; background: #ffc75f; animation: focNear 4s ease-in-out infinite; }
+.d-camerafocus .far { position: absolute; right: 22%; top: 50%; width: 30px; height: 30px; margin-top: -10px; border-radius: 6px; background: #7fd8be; animation: focFar 4s ease-in-out infinite; }
+.d-camerafocus .bk { position: absolute; width: 22px; height: 22px; border-radius: 50%; background: rgba(255, 220, 160, 0.35); filter: blur(2px); animation: breathe 4s ease-in-out infinite; }
+.d-camerafocus .k1 { left: 60%; top: 18%; } .d-camerafocus .k2 { left: 12%; top: 70%; width: 14px; height: 14px; }
+@keyframes focNear { 0%, 35% { filter: blur(0); transform: scale(1); } 55%, 90% { filter: blur(5px); transform: scale(1.04); } 100% { filter: blur(0); } }
+@keyframes focFar { 0%, 35% { filter: blur(4px); } 55%, 90% { filter: blur(0); transform: scale(1.02); } 100% { filter: blur(4px); } }
+/* 言葉が動きのまま入れ替わる */
+.d-typematch .mid { width: 120px; height: 40px; }
+.d-typematch .mid span { position: absolute; left: 50%; top: 0; margin-left: -60px; font: 900 28px/40px "Zen Maru Gothic", sans-serif; white-space: nowrap; animation: tmMove 3.2s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+.d-typematch .w1 { color: var(--ai); animation-name: tmMove, tmA !important; } .d-typematch .w2 { color: var(--shu); animation-name: tmMove, tmB !important; }
+@keyframes tmMove { 0% { transform: translate(-22px, 26px) rotate(-6deg); } 100% { transform: translate(22px, -26px) rotate(4deg); } }
+@keyframes tmA { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes tmB { 0%, 49% { opacity: 0; } 50%, 100% { opacity: 1; } }
+/* 手描きの線がふるえる（ボイル） */
+.d-boil .mid { font: 900 26px/1 "Zen Maru Gothic", sans-serif; }
+.d-boil svg { position: absolute; inset: 0; width: 100%; height: 100%; animation: boil 0.375s steps(1) infinite; }
+.d-boil path { fill: none; stroke: var(--shu); stroke-width: 3.5; stroke-linecap: round; stroke-dasharray: 380; animation: draw 3.2s ease-in-out infinite; }
+@keyframes boil { 0% { transform: translate(0, 0) rotate(0deg); } 33% { transform: translate(1px, -1px) rotate(0.6deg); } 66% { transform: translate(-1px, 1px) rotate(-0.5deg); } }
+/* ガラス越しの光 */
+.stage.d-liquidglass { background: #1b1f3a; }
+.d-liquidglass .blob { position: absolute; width: 80px; height: 80px; border-radius: 50%; filter: blur(4px); animation: gooa 5s ease-in-out infinite alternate; }
+.d-liquidglass .b1 { left: 14%; top: 10%; background: #ff8fa3; } .d-liquidglass .b2 { left: 48%; top: 34%; background: #7fd8be; animation-duration: 6s; } .d-liquidglass .b3 { left: 30%; top: 50%; width: 60px; height: 60px; background: #ffc75f; animation-duration: 4s; }
+.d-liquidglass .glass { position: absolute; left: 50%; top: 50%; width: 120px; height: 72px; margin: -36px -60px; border-radius: 18px; background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.55); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 8px 24px rgba(0, 0, 0, 0.25); -webkit-backdrop-filter: blur(10px) saturate(160%); backdrop-filter: blur(10px) saturate(160%); display: grid; place-items: center; animation: glassFloat 4s ease-in-out infinite; }
+.d-liquidglass .glass b { color: #fff; font: 900 30px/1 system-ui, sans-serif; }
+@keyframes glassFloat { 0%, 100% { transform: translateY(4px); } 50% { transform: translateY(-4px); } }
+/* 虹色の膜・金属の光 */
+.stage.d-shaderorb { background: #08080b; }
+.d-shaderorb .orb { position: absolute; left: 50%; top: 50%; width: 84px; height: 84px; margin: -42px; border-radius: 50%; background: conic-gradient(from 0deg, #ff8fa3, #ffc75f, #7fd8be, #6cc0e8, #c9b6ff, #ff8fa3); filter: blur(1px) saturate(140%); animation: orbSpin 6s linear infinite; }
+.d-shaderorb .sheen { position: absolute; left: 50%; top: 50%; width: 84px; height: 84px; margin: -42px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.85), transparent 35%), radial-gradient(circle at 60% 70%, transparent 40%, rgba(0, 0, 0, 0.55) 75%); mix-blend-mode: screen; }
+@keyframes orbSpin { to { transform: rotate(360deg); } }
+/* 機械が読み取る画面 */
+.stage.d-mvhud { background: #121417; }
+.d-mvhud .subj { position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px; border-radius: 46% 54% 40% 60%; background: #6e6a62; }
+.d-mvhud .fill { position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px; border-radius: 46% 54% 40% 60%; background: rgba(59, 181, 138, 0.6); clip-path: inset(100% 0 0 0); animation: hudFill 3.6s ease-out infinite; }
+.d-mvhud .scan { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: #3bb58a; box-shadow: 0 0 8px #3bb58a; animation: hudScan 3.6s linear infinite; }
+.d-mvhud .cn { position: absolute; width: 10px; height: 10px; border: 2px solid #3bb58a; opacity: 0; animation: hudCorner 3.6s steps(1) infinite; }
+.d-mvhud .c1 { left: calc(50% - 38px); top: calc(50% - 38px); border-right: none; border-bottom: none; } .d-mvhud .c2 { left: calc(50% + 26px); top: calc(50% - 38px); border-left: none; border-bottom: none; }
+.d-mvhud .c3 { left: calc(50% - 38px); top: calc(50% + 26px); border-right: none; border-top: none; } .d-mvhud .c4 { left: calc(50% + 26px); top: calc(50% + 26px); border-left: none; border-top: none; }
+.d-mvhud .tag { position: absolute; left: calc(50% + 40px); top: calc(50% - 40px); font: 700 10px/1 ui-monospace, Menlo, monospace; color: #3bb58a; opacity: 0; animation: hudCorner 3.6s steps(1) infinite; }
+@keyframes hudScan { 0% { transform: translateY(0); } 45%, 100% { transform: translateY(140px); } }
+@keyframes hudFill { 0%, 25% { clip-path: inset(100% 0 0 0); } 55%, 90% { clip-path: inset(0 0 0 0); } 100% { clip-path: inset(0 0 0 0); opacity: 0; } }
+@keyframes hudCorner { 0%, 40% { opacity: 0; } 42%, 92% { opacity: 1; } 100% { opacity: 0; } }
+/* 小節で設計する */
+.d-beatscore .bars { position: absolute; left: 50%; top: 50%; display: grid; grid-template-columns: repeat(8, 18px); gap: 4px; transform: translate(-50%, -60%); }
+.d-beatscore .bars i { height: 34px; border-radius: 4px; background: var(--paper); border: 1.5px solid var(--line); }
+.d-beatscore .bars i:nth-child(4n + 1) { border-color: var(--ink); }
+.d-beatscore .head { position: absolute; left: calc(50% - 86px); top: calc(50% - 20.4px); width: 18px; height: 34px; border-radius: 4px; background: var(--shu); animation: bsHead 4s steps(8) infinite; }
+.d-beatscore .lbl { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; font: 700 12px/1 system-ui, sans-serif; color: var(--ink2); }
+@keyframes bsHead { 0% { transform: translateX(0); } 100% { transform: translateX(176px); } }
+
 @media (prefers-reduced-motion: reduce) { .stage *, .stage *::before, .stage *::after, .hero * { animation: none !important; } }
 @media (max-width: 560px) {
   .card { padding: 18px 14px; }
@@ -423,6 +534,20 @@ a.tech-chip:hover { background: #eef2fb; }
 .tb-tags .tag.p { background: #e8eefc; color: var(--ai); }
 .tb-word { font-weight: 900; }
 .tb-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+/* 実例（2026-10-19）：その技法を使った棚の作品を動く予告つきで */
+.tb-ex { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.tb-ex-card { display: block; text-decoration: none; color: var(--ink2); min-width: 0; }
+.tb-ex-thumb { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: var(--paper2) center / cover no-repeat; box-shadow: 0 1px 0 var(--line); transition: transform .2s; }
+.tb-ex-thumb.tall { background-size: contain; background-color: #1b1712; }
+.tb-ex-thumb video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.tb-ex-thumb.tall video { object-fit: contain; }
+.tb-ex-card:hover .tb-ex-thumb { transform: translateY(-2px); }
+.tb-ex-t { display: block; margin-top: 4px; font-size: 12.5px; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tb-ex-all { display: inline-block; margin-top: 6px; font-size: 13px; font-weight: 700; color: var(--ai); }
+.tb-new, .tb-name .tb-new { display: inline-block; font-size: 11px; font-weight: 900; letter-spacing: .04em; color: #fff; background: var(--shu); border-radius: 999px; padding: 1px 8px; margin-left: 8px; vertical-align: 3px; }
+.tb-newtoc { margin-top: 10px; padding: 10px 12px; border-radius: 14px; background: #fff3ee; border: 1.5px solid #f6c9bd; }
+.tb-newtoc-h { flex-basis: 100%; margin: 0 0 4px; font-size: 14px; font-weight: 700; color: var(--ink); }
+.tb-newtoc-h .tb-new { margin: 0 6px 0 0; }
 .tb-row blockquote { margin: 0; background: #fff; border: 1.5px solid var(--line); border-left: 4px solid var(--ink); border-radius: 10px; padding: 8px 12px; font-size: 13.5px; color: var(--ink2); }
 @media (max-width: 700px) {
   .tb-entry { grid-template-columns: 1fr; gap: 10px; }
