@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>パスワード見張り（サンプル）</title>
+<meta name="robots" content="noindex">
+<style>
+:root{
+  --bg:#f6f4ef; --panel:#ffffff; --ink:#23262f; --sub:#6b6f7b; --line:#e7e3da;
+  --side:#1f3b6e; --side-ink:#eef2fb; --accent:#2f6fde;
+  --red:#e0533f; --orange:#ef8f2e; --yellow:#f2c230; --green:#3aa65a; --deep:#2f7d3a;
+  --chip:#f1eee6;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;line-height:1.6}
+.wrap{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+aside{background:var(--side);color:var(--side-ink);padding:24px 16px;position:sticky;top:0;height:100vh}
+aside h1{font-size:20px;margin:0 0 4px}
+aside .tag{display:inline-block;font-size:12px;background:rgba(255,255,255,.15);border-radius:99px;padding:2px 10px}
+aside nav{margin-top:24px;display:flex;flex-direction:column;gap:4px}
+aside nav a{color:var(--side-ink);text-decoration:none;padding:10px 12px;border-radius:10px;font-weight:600}
+aside nav a:hover,aside nav a.on{background:rgba(255,255,255,.14)}
+aside .foot{position:absolute;bottom:20px;left:16px;right:16px;font-size:12px;opacity:.8}
+main{padding:28px;max-width:1200px;min-width:0}
+.hero>div{min-width:0}
+#spark{max-width:100%}
+.tablewrap{overflow-x:auto}
+.cards{grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-bottom:18px}
+.hero{display:grid;grid-template-columns:1fr 220px;gap:20px;align-items:center}
+.eyebrow{color:var(--accent);font-weight:700;font-size:14px}
+h2{font-size:30px;margin:2px 0 6px}
+.lead{color:var(--sub);margin:0 0 14px}
+.stats{display:flex;gap:28px;flex-wrap:wrap}
+.stat b{display:block;font-size:28px;line-height:1.2}
+.stat span{font-size:12px;color:var(--sub);font-weight:700}
+.trend{display:flex;align-items:center;gap:16px;margin-top:14px}
+.trend .delta{font-size:22px;font-weight:800;color:var(--green)}
+.trend small{color:var(--sub)}
+.gauge text{font-family:inherit}
+.bar{display:flex;height:14px;border-radius:99px;overflow:hidden;gap:3px;margin:10px 0}
+.bar div{height:100%}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--sub)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.cards{display:grid;gap:16px;margin-bottom:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column}
+.card.hot{background:linear-gradient(180deg,#fff4f1,#fff)}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start}
+.card .num{font-size:40px;font-weight:800;line-height:1.1}
+.card .ico{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:800}
+.card h3{font-size:16px;margin:6px 0 4px}
+.card p{font-size:13px;color:var(--sub);margin:0 0 12px;flex:1}
+.card .act{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px}
+button.link{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--ink);cursor:pointer}
+button.link.go{color:var(--accent)}
+button.link:disabled{color:#b5b5b5;cursor:default}
+.listhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.listhead h3{margin:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{border:1px solid var(--line);background:var(--chip);border-radius:99px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer}
+.chips button.on{background:var(--side);color:#fff;border-color:var(--side)}
+input[type=search]{border:1px solid var(--line);border-radius:10px;padding:8px 12px;font:inherit;min-width:220px}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th{text-align:left;color:var(--sub);font-size:12px;font-weight:700;border-bottom:1px solid var(--line);padding:8px 6px}
+td{border-bottom:1px solid var(--line);padding:9px 6px;vertical-align:middle}
+tr.done td{opacity:.45}
+.b{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:1px 7px;margin:1px 3px 1px 0;color:#fff}
+.host{color:var(--sub);font-size:12px}
+td .open{border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:8px;padding:3px 10px;font:inherit;font-size:12px;cursor:pointer;white-space:nowrap}
+.note{font-size:13px;color:var(--sub)}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px}
+@media (max-width:820px){.wrap{grid-template-columns:1fr}aside{position:static;height:auto}aside .foot{position:static;margin-top:16px}.hero{grid-template-columns:1fr}main{padding:16px}}
+
+.sample-banner{background:#fff8e6;border-color:#f2d9a0}
+.sample-banner p{margin:6px 0 0;color:#5b4a22}
+.steps{padding-left:20px;margin:8px 0 14px}.steps li{margin:4px 0}
+.copywrap{position:relative;border:1px solid var(--line);border-radius:14px;background:#faf8f3}
+.copywrap pre{margin:0;padding:52px 18px 18px;white-space:pre-wrap;word-break:break-word;font:13px/1.7 ui-monospace,Menlo,monospace;max-height:420px;overflow:auto}
+.copybtn{position:absolute;top:10px;right:10px;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside>
+    <h1>パスワード見張り</h1>
+    <span class="tag">このMacだけ</span>
+    <nav>
+      <a href="#top" class="on">見張り</a>
+      <a href="#list">レビュー</a>
+      <a href="#make">作り方</a>
+    </nav>
+    <div class="foot">値はこのMacの点検プログラムの中だけで読んでいます。この画面にもファイルにも、パスワードは入っていません。</div>
+  </aside>
+  <main id="top">
+    <section class="panel sample-banner">
+      <b>🧪 これはサンプルです（サイト名も数字も、ぜんぶ架空のデータ）</b>
+      <p>クロコ（Claude Code）に頼むと、あなたの1Passwordの中身を点検して、これと同じ画面を<strong>あなたのMacの中だけに</strong>作ってくれます。パスワードの中身は、AIにも、この画面にも出ません。作り方は<a href="#make">いちばん下の指示文</a>をコピーして、クロコに貼るだけです。</p>
+    </section>
+
+    <section class="panel hero">
+      <div>
+        <div class="eyebrow">1Password × CLI ／ このMacだけで点検</div>
+        <h2>見張り</h2>
+        <p class="lead" id="lead"></p>
+        <div class="stats" id="stats"></div>
+        <div class="trend"><svg id="spark" width="320" height="60"></svg><div><div class="delta" id="delta"></div><small id="since"></small></div></div>
+      </div>
+      <svg class="gauge" id="gauge" viewBox="0 0 200 170" width="220"></svg>
+    </section>
+
+    <section class="panel">
+      <b>パスワードの強さ</b>
+      <div class="bar" id="bar"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+
+    <section class="cards" id="cards"></section>
+
+    <section class="panel" id="list">
+      <div class="listhead">
+        <h3 id="listtitle">危ない順</h3>
+        <input type="search" id="q" placeholder="サイト名でさがす">
+      </div>
+      <div class="chips" id="chips" style="margin-top:10px"></div>
+      <p class="note">「変更画面」を押すと、そのサイトのパスワード変更ページ（対応していないサイトはトップ）が開きます。新しいパスワードは1Passwordで作って保存してね。終わったら「済」に印をつけると、薄くなります。</p>
+      <div class="tablewrap"><table><thead><tr><th>サイト</th><th>気になるところ</th><th></th><th>済</th></tr></thead><tbody id="rows"></tbody></table></div>
+    </section>
+
+    <section class="panel" id="make">
+      <h3 style="margin-top:0">あなたのクロコで、このダッシュボードを作る</h3>
+      <ol class="steps">
+        <li><b>用意するもの</b>：Mac／1Password（契約済み・Macのアプリが入っている）／Claudeのデスクトップアプリ（クロコ＝Claude Codeが使える状態）</li>
+        <li>1Passwordのアプリを開いて、ロックを解除しておく</li>
+        <li>下の「コピー」を押して、クロコに貼って送る（全部読まなくてOK）</li>
+        <li>あとはクロコが1つずつ案内してくれます。1Passwordの許可が出たら、内容を見て許可。インストールなどは、クロコが説明してから聞いてくれます</li>
+      </ol>
+      <div class="copywrap">
+        <button class="copybtn" id="copybtn">📋 指示文をコピー</button>
+        <pre id="prompt">あなた（Claude Code）と一緒に、私のパスワードの「健康診断ダッシュボード」を作りたいです。私は非エンジニアなので、1つずつ順番に、画面に出ている日本語の名前で案内してください。1つ終わるたびに、私の返事を待ってから次へ進んでください。
+
+【作りたいもの】
+1Passwordに入っているログイン情報を1件ずつ点検して、「全体で何点か」と「どれから直すと一番安全になるか」が見えるダッシュボード（HTMLファイル）。見た目と項目は、このサンプルを参考にしてください：https://okemonogatari-hash.github.io/html-share-box/pw-dashboard-sample/
+
+【いちばん大事な約束】
+- パスワードの値は、あなたも私も見ません。値を読んでよいのは、あなたが書く点検プログラムの中だけです。画面・ファイル・この会話に、値を出さないでください。
+- 値が出る形のopコマンド（op read、op item get など）を、あなたが直接実行して結果を表示しないでください。opの出力は、点検プログラムの中だけで受け取ってください。
+- 1Passwordは読み取りだけです。追加・変更・削除はしないでください。
+- サイトのパスワードを変えるのは私です。あなたがサイトに入力して変更しないでください。
+- 結果のファイルは、GitHubやクラウドと同期されない場所（例：ホームフォルダの中の pw-dashboard フォルダ）に、自分だけが読める権限で置いてください。
+- インストールなどMac全体に影響する操作は、実行前に「何をするか」をやさしく説明して、私の許可を取ってください。
+- わからないエラーが出たら、推測で別の方法を試さず、そこで止めて報告してください。
+
+【進め方】
+1. 準備の確認：Homebrew と 1Password CLI（op）が入っているか確かめてください。無ければ、入れ方を説明して許可を取ってから入れてください。
+2. 1Passwordとつなぐ：1Passwordのアプリを開いてロックを解除するよう案内し、次に「1Password」メニュー →「設定…」→「開発者」→「1Password CLIと連携」にチェックを入れるよう案内してください（チェックがグレーで押せない時は、1Passwordのロックが外れているか確かめるよう伝えてください）。
+3. つながったか確認：保管庫の名前と、ログイン項目の件数だけ教えてください（中身は読まない）。
+4. 点検：点検プログラムを書いて実行してください。見るのは次の3つです。
+ ・使い回し：別々のサイトで同じパスワードを使っている時だけ数える。同じサイトに2回保存されているだけのものは「重複」として別に数える
+ ・弱いパスワード：文字の種類と長さから、ざっくり判定
+ ・httpのサイト（暗号化されていないページ）
+ 時間がかかる時は「いま何をしていて、あと何分くらいか」を先に伝えてください。
+5. 点数：「問題が1つもないログインの割合（%）」にしてください。日付と点数を記録して、何回か実行すると線グラフで変化が見えるようにしてください。
+6. 画面：点数、数字のカード、危ない順の一覧（サイト名と印だけ）を出してください。お金・メール・Google／Appleなど大事なアカウントは上に。各行に「パスワード変更画面を開く」ボタンと、直したら押す「済」の印も付けてください。できたら、ブラウザで開いてください。
+7. 漏えい照合は、最初は付けません。私が「漏えいも調べて」と言った時だけ、Have I Been Pwned に「値ではなく、ハッシュの先頭5文字」だけを送る方法で行ってください。送る前に、何を送るか説明して許可を取ってください。
+
+【終わったら報告】
+- 件数、点数、数字のカードの中身
+- 結果ファイルに値が入っていないことを、どうやって確かめたか
+- 1PasswordのWatchtowerの数字と並べて、合っているか（ずれたら理由）
+- 次に私がやること（まず何から直すか、1件だけ）</pre>
+      </div>
+      <p class="note">守っていること：パスワードの値を読むのは、クロコが書く点検プログラムの中だけ。1Passwordは読むだけで変えない。サイトのパスワードを変えるのは、あなた自身です。（確認日 2026年10月26日・作り手 おけもん）</p>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast" hidden></div>
+<script>
+const DATA={"sample": true, "summary": {"generated": "サンプル（架空のデータ）", "total": 30, "score": 43, "hibp": true, "pwned": 5, "reused": 14, "reuse_groups": 4, "strength": [2, 3, 3, 8, 14], "weak": 5, "http": 3, "ai_risky": 1, "otp": 2, "empty": 0, "dup": 0}, "history": [{"date": "2026-10-19", "score": 17}, {"date": "2026-10-21", "score": 27}, {"date": "2026-10-23", "score": 37}, {"date": "2026-10-26", "score": 43}], "rows": [{"id": "s0", "title": "サンプル銀行", "host": "www.sample-bank.example", "site": "sample-bank.example", "url": "https://www.sample-bank.example", "http": false, "otp": false, "empty": false, "strength": 3, "ai": false, "important": true, "reuse_group": 1, "reuse_count": 4, "dup": false, "pwned": 1200, "risk": 16}, {"id": "s16", "title": "まちの図書館", "host": "www.library.example", "site": "library.example", "url": "https://www.library.example", "http": true, "otp": false, "empty": false, "strength": 0, "ai": false, "important": false, "reuse_group": 3, "reuse_count": 5, "dup": false, "pwned": 1792, "risk": 12}, {"id": "s17", "title": "昔のブログ", "host": "www.old-blog.example", "site": "old-blog.example", "url": "https://www.old-blog.example", "http": true, "otp": false, "empty": false, "strength": 0, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 1829, "risk": 9}, {"id": "s9", "title": "ネット通販B", "host": "www.shop-b.example", "site": "shop-b.example", "url": "https://www.shop-b.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": false, "reuse_group": 1, "reuse_count": 4, "dup": false, "pwned": 1533, "risk": 8}, {"id": "s22", "title": "習い事よやく", "host": "www.naraigoto.example", "site": "naraigoto.example", "url": "https://www.naraigoto.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": false, "reuse_group": 3, "reuse_count": 5, "dup": false, "pwned": 2014, "risk": 8}, {"id": "s2", "title": "れい証券", "host": "www.rei-shoken.example", "site": "rei-shoken.example", "url": "https://www.rei-shoken.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": true, "reuse_group": 2, "reuse_count": 3, "dup": false, "pwned": 0, "risk": 6}, {"id": "s4", "title": "クラウド写真箱", "host": "www.photo-box.example", "site": "photo-box.example", "url": "https://www.photo-box.example", "http": false, "otp": true, "empty": false, "strength": 4, "ai": false, "important": true, "reuse_group": 1, "reuse_count": 4, "dup": false, "pwned": 0, "risk": 6}, {"id": "s5", "title": "ポイントペイ", "host": "www.point-pay.example", "site": "point-pay.example", "url": "https://www.point-pay.example", "http": false, "otp": false, "empty": false, "strength": 2, "ai": false, "important": true, "reuse_group": 2, "reuse_count": 3, "dup": false, "pwned": 0, "risk": 6}, {"id": "s6", "title": "AIチャット（例）", "host": "www.ai-chat.example", "site": "ai-chat.example", "url": "https://www.ai-chat.example", "http": false, "otp": false, "empty": false, "strength": 3, "ai": true, "important": false, "reuse_group": 4, "reuse_count": 2, "dup": false, "pwned": 0, "risk": 5}, {"id": "s11", "title": "音楽サブスク", "host": "www.ongaku.example", "site": "ongaku.example", "url": "https://www.ongaku.example", "http": false, "otp": false, "empty": false, "strength": 1, "ai": false, "important": false, "reuse_group": 3, "reuse_count": 5, "dup": false, "pwned": 0, "risk": 5}, {"id": "s8", "title": "ネット通販A", "host": "www.shop-a.example", "site": "shop-a.example", "url": "https://www.shop-a.example", "http": false, "otp": false, "empty": false, "strength": 2, "ai": false, "important": false, "reuse_group": 3, "reuse_count": 5, "dup": false, "pwned": 0, "risk": 3}, {"id": "s13", "title": "ホテルさがし", "host": "www.hotel.example", "site": "hotel.example", "url": "https://www.hotel.example", "http": false, "otp": false, "empty": false, "strength": 3, "ai": false, "important": false, "reuse_group": 2, "reuse_count": 3, "dup": false, "pwned": 0, "risk": 3}, {"id": "s14", "title": "ふるさと寄付", "host": "www.kifu.example", "site": "kifu.example", "url": "https://www.kifu.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": false, "reuse_group": 4, "reuse_count": 2, "dup": false, "pwned": 0, "risk": 3}, {"id": "s19", "title": "料理レシピ帳", "host": "www.recipe.example", "site": "recipe.example", "url": "https://www.recipe.example", "http": false, "otp": false, "empty": false, "strength": 3, "ai": false, "important": false, "reuse_group": 1, "reuse_count": 4, "dup": false, "pwned": 0, "risk": 3}, {"id": "s26", "title": "名刺管理", "host": "www.meishi.example", "site": "meishi.example", "url": "https://www.meishi.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": false, "reuse_group": 3, "reuse_count": 5, "dup": false, "pwned": 0, "risk": 3}, {"id": "s28", "title": "宅配ロッカー", "host": "www.locker.example", "site": "locker.example", "url": "https://www.locker.example", "http": true, "otp": false, "empty": false, "strength": 1, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 3}, {"id": "s20", "title": "電子書籍", "host": "www.ebook.example", "site": "ebook.example", "url": "https://www.ebook.example", "http": false, "otp": false, "empty": false, "strength": 1, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 2}, {"id": "s1", "title": "ためしカード", "host": "www.tameshi-card.example", "site": "tameshi-card.example", "url": "https://www.tameshi-card.example", "http": false, "otp": false, "empty": false, "strength": 3, "ai": false, "important": true, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s3", "title": "おためしメール", "host": "www.otameshi-mail.example", "site": "otameshi-mail.example", "url": "https://www.otameshi-mail.example", "http": false, "otp": true, "empty": false, "strength": 4, "ai": false, "important": true, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s7", "title": "AI画像メーカー（例）", "host": "www.ai-image.example", "site": "ai-image.example", "url": "https://www.ai-image.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": true, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s10", "title": "動画見放題", "host": "www.douga.example", "site": "douga.example", "url": "https://www.douga.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s12", "title": "旅行よやく", "host": "www.ryoko.example", "site": "ryoko.example", "url": "https://www.ryoko.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s15", "title": "フリマアプリ", "host": "www.furima.example", "site": "furima.example", "url": "https://www.furima.example", "http": false, "otp": false, "empty": false, "strength": 3, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s18", "title": "スポーツジム", "host": "www.gym.example", "site": "gym.example", "url": "https://www.gym.example", "http": false, "otp": false, "empty": false, "strength": 3, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s21", "title": "オンライン英会話", "host": "www.eikaiwa.example", "site": "eikaiwa.example", "url": "https://www.eikaiwa.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s23", "title": "家計簿アプリ", "host": "www.kakeibo.example", "site": "kakeibo.example", "url": "https://www.kakeibo.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": true, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s24", "title": "ネットスーパー", "host": "www.super.example", "site": "super.example", "url": "https://www.super.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s25", "title": "SNSのサンプル", "host": "www.sns.example", "site": "sns.example", "url": "https://www.sns.example", "http": false, "otp": false, "empty": false, "strength": 3, "ai": false, "important": true, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s27", "title": "オンライン会議", "host": "www.kaigi.example", "site": "kaigi.example", "url": "https://www.kaigi.example", "http": false, "otp": false, "empty": false, "strength": 2, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}, {"id": "s29", "title": "病院よやく", "host": "www.byoin.example", "site": "byoin.example", "url": "https://www.byoin.example", "http": false, "otp": false, "empty": false, "strength": 4, "ai": false, "important": false, "reuse_group": 0, "reuse_count": 1, "dup": false, "pwned": 0, "risk": 0}]};
+const S=DATA.summary, R=DATA.rows;
+const C={red:getComputedStyle(document.documentElement).getPropertyValue('--red').trim(),orange:'#ef8f2e',yellow:'#f2c230',green:'#3aa65a',deep:'#2f7d3a',blue:'#2f6fde',purple:'#7a5bd6',gray:'#8a8f9a'};
+const STR=['とても弱い','弱い','ふつう','強い','とても強い'], STRC=[C.red,C.orange,C.yellow,C.green,C.deep];
+let doneSet=new Set(); try{doneSet=new Set(JSON.parse(localStorage.getItem('pwdone')||'[]'))}catch(e){}
+const saveDone=()=>{try{localStorage.setItem('pwdone',JSON.stringify([...doneSet]))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+document.getElementById('lead').textContent=`${S.total.toLocaleString()} 件のログインを1件ずつ点検しました（${S.generated}）。カードの「レビュー」で中身を見て、「次を開く」で危ない順に片づけます。`;
+document.getElementById('stats').innerHTML=[
+  [S.total,'ログイン'],[S.reused,'使い回し'],[S.weak,'弱い'],[S.otp,'2段階コードを1Passwordに保存']
+].map(([n,l])=>`<div class="stat"><b>${n.toLocaleString()}</b><span>${l}</span></div>`).join('');
+
+// ゲージ
+(function(){const g=document.getElementById('gauge'),s=S.score,cx=100,cy=100,r=80;
+ const arc=(a0,a1,col)=>{const p=a=>[cx+r*Math.cos(a),cy+r*Math.sin(a)];const[x0,y0]=p(a0),[x1,y1]=p(a1);return `<path d="M${x0} ${y0} A${r} ${r} 0 ${a1-a0>Math.PI?1:0} 1 ${x1} ${y1}" stroke="${col}" stroke-width="14" fill="none" stroke-linecap="round"/>`};
+ const A0=Math.PI*0.8,A1=Math.PI*2.2,span=A1-A0;
+ const ang=A0+span*s/100,kx=cx+r*Math.cos(ang),ky=cy+r*Math.sin(ang);
+ const label=s>=80?'とても良い':s>=60?'良い':s>=40?'もう少し':'これから';
+ g.innerHTML=arc(A0,A0+span*.4,C.red)+arc(A0+span*.4,A0+span*.7,C.yellow)+arc(A0+span*.7,A1,C.green)+
+ `<circle cx="${kx}" cy="${ky}" r="9" fill="#fff" stroke="${C.ink||'#23262f'}" stroke-width="4"/>`+
+ `<text x="100" y="108" text-anchor="middle" font-size="46" font-weight="800" fill="#23262f">${s}</text>`+
+ `<text x="100" y="134" text-anchor="middle" font-size="14" font-weight="700" fill="#6b6f7b">${label}</text>`;})();
+
+// 推移
+(function(){const h=DATA.history,el=document.getElementById('spark'),W=320,H=60;
+ if(h.length<2){el.innerHTML=`<text x="0" y="36" font-size="13" fill="#6b6f7b">ここから毎回の点数が線になります</text>`;document.getElementById('delta').textContent=`${S.score}点`;document.getElementById('since').textContent='今日がスタート';return}
+ const xs=h.map((_,i)=>i/(h.length-1)*(W-10)+5),ys=h.map(p=>H-6-(p.score/100)*(H-12));
+ el.innerHTML=`<polyline fill="none" stroke="${C.blue}" stroke-width="3" points="${xs.map((x,i)=>x+','+ys[i]).join(' ')}"/><circle cx="${xs.at(-1)}" cy="${ys.at(-1)}" r="5" fill="${C.blue}"/>`;
+ const d=S.score-h[0].score;document.getElementById('delta').textContent=(d>=0?'+':'')+d+'点';
+ document.getElementById('since').textContent=`${h[0].date} の ${h[0].score}点 → 今日 ${S.score}点`;})();
+
+// 強さバー
+document.getElementById('bar').innerHTML=S.strength.map((n,i)=>n?`<div style="flex:${n};background:${STRC[i]}"></div>`:'').join('');
+document.getElementById('legend').innerHTML=S.strength.map((n,i)=>`<span><i style="background:${STRC[i]}"></i>${STR[i]} ${n}</span>`).join('');
+
+// 絞り込み
+const F={
+  all:{t:'危ない順（全部）',f:r=>r.risk>0},
+  pwned:{t:'漏えいしたパスワード',f:r=>r.pwned>0},
+  reuse:{t:'使い回しのパスワード',f:r=>r.reuse_count>1},
+  weak:{t:'弱いパスワード',f:r=>r.strength<=1},
+  important:{t:'お金・メールなど大事なアカウント',f:r=>r.important&&r.risk>0},
+  ai:{t:'AIサービスの要注意アカウント',f:r=>r.ai&&r.risk>0},
+  http:{t:'安全でないウェブサイト（http）',f:r=>r.http},
+  ok:{t:'問題なし',f:r=>r.risk===0},
+};
+const CARDS=[
+  ['pwned',S.hibp?S.pwned:'—','!',C.red,'漏えいしたパスワード',S.hibp?'過去の流出データに同じ値が見つかったもの。最優先で変えます':'まだ照合していません。照合するとここに数が出ます（送るのは値ではなく、ハッシュの先頭5文字だけ）'],
+  ['reuse',S.reused,'⟳',C.red,'使い回しのパスワード',`1か所漏れると、同じ値の全サイトに入られます（${S.reuse_groups}組）。サイトごとに別の値へ`],
+  ['weak',S.weak,'□',C.orange,'弱いパスワード','短い・文字の種類が少ない・よくある並び。1Passwordで長い乱数に変えます'],
+  ['important',R.filter(F.important.f).length,'¥',C.purple,'大事なアカウントの要対応','お金・メール・リベなど、乗っ取られると困るところ。ここから片づけると点数以上に安心'],
+  ['ai',S.ai_risky,'AI',C.red,'AIサービスの要注意アカウント','会話・資料・APIの請求がつながっているので、乗っ取られると被害が大きい'],
+  ['http',S.http,'⚠',C.green,'安全でないウェブサイト','URLが http:// のもの。https で開けるか確かめて直します'],
+];
+const queue={};
+document.getElementById('cards').innerHTML=CARDS.map(([k,n,ic,col,h,p])=>{
+  const hot=typeof n==='number'&&n>0&&(k==='pwned'||k==='reuse'||k==='ai');
+  return `<div class="card ${hot?'hot':''}"><div class="top"><div class="num">${typeof n==='number'?n.toLocaleString():n}</div><div class="ico" style="background:${col}">${ic}</div></div><h3>${h}</h3><p>${p}</p><div class="act"><button class="link" data-rev="${k}">レビュー</button><button class="link go" data-go="${k}" ${typeof n==='number'&&n>0?'':'disabled'}>次を開く →</button></div></div>`}).join('');
+
+let cur='all';
+const chips=document.getElementById('chips');
+chips.innerHTML=Object.entries(F).map(([k,v])=>`<button data-chip="${k}">${v.t}</button>`).join('');
+const badge=r=>[
+  r.pwned?`<span class="b" style="background:${C.red}">漏えい</span>`:'',
+  r.reuse_count>1?`<span class="b" style="background:${C.red}">使い回し #${r.reuse_group}（${r.reuse_count}サイト）</span>`:'',
+  r.dup?`<span class="b" style="background:${C.gray}">同じサイトに重複保存</span>`:'',
+  r.strength<=1?`<span class="b" style="background:${STRC[r.strength]}">${STR[r.strength]}</span>`:'',
+  r.important?`<span class="b" style="background:${C.purple}">大事</span>`:'',
+  r.ai?`<span class="b" style="background:${C.blue}">AI</span>`:'',
+  r.http?`<span class="b" style="background:${C.gray}">http</span>`:'',
+  r.otp?`<span class="b" style="background:${C.deep}">2段階あり</span>`:'',
+].join('');
+const changeUrl=r=>r.host?`https://${r.host}/.well-known/change-password`:r.url;
+function render(){
+  const q=document.getElementById('q').value.trim().toLowerCase();
+  document.getElementById('listtitle').textContent=F[cur].t;
+  chips.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.chip===cur));
+  const raw=R.filter(F[cur].f).filter(r=>!q||(r.title+r.host).toLowerCase().includes(q));
+  // 同じサイト・同じ状態の行は1行にまとめる（何件あるかは「×n」で出す）
+  const seen=new Map(),list=[];
+  for(const r of raw){const k=[r.site||r.host,r.reuse_group,r.strength,r.http,r.pwned?1:0].join('|');
+    if(seen.has(k)){seen.get(k).n++;continue} const g={...r,n:1};seen.set(k,g);list.push(g)}
+  document.getElementById('rows').innerHTML=list.slice(0,400).map(r=>`<tr class="${doneSet.has(r.id)?'done':''}"><td><b>${esc(DATA.sample?r.title:(r.site||r.title))}</b>${r.n>1?` <span class="host">×${r.n}件</span>`:''}<div class="host">${esc(r.host)}</div></td><td>${badge(r)}</td><td><button class="open" data-open="${r.id}">変更画面</button></td><td><input type="checkbox" data-done="${r.id}" ${doneSet.has(r.id)?'checked':''}></td></tr>`).join('')+(list.length>400?`<tr><td colspan="4" class="note">ほか ${list.length-400} 件（検索でしぼってね）</td></tr>`:'')+(list.length?'':`<tr><td colspan="4" class="note">ここは0件。えらい！</td></tr>`);
+}
+const byId=Object.fromEntries(R.map(r=>[r.id,r]));
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
+document.addEventListener('click',e=>{
+  const t=e.target;
+  if(t.dataset.chip){cur=t.dataset.chip;render()}
+  if(t.dataset.rev){cur=t.dataset.rev;render();document.getElementById('list').scrollIntoView({behavior:'smooth'})}
+  if(DATA.sample&&(t.dataset.open||t.dataset.go)){toast('サンプルなので開きません。本物では、ここでサイトの変更画面が開きます');return}
+  if(t.dataset.open){window.open(changeUrl(byId[t.dataset.open]),'_blank','noopener')}
+  if(t.dataset.go){const k=t.dataset.go;const next=R.filter(F[k].f).find(r=>!doneSet.has(r.id)&&!(queue[k]||[]).includes(r.id));
+    if(!next){toast('このカードはぜんぶ開いたよ');return}
+    (queue[k]=queue[k]||[]).push(next.id);window.open(changeUrl(next),'_blank','noopener');toast(`${next.title} の変更画面を開いたよ`)}
+});
+document.addEventListener('change',e=>{const id=e.target.dataset.done;if(!id)return;e.target.checked?doneSet.add(id):doneSet.delete(id);saveDone();render()});
+document.getElementById('q').addEventListener('input',render);
+render();
+</script>
+
+<script>
+document.getElementById('copybtn').addEventListener('click',async()=>{
+  const t=document.getElementById('prompt').innerText;
+  try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}
+  const b=document.getElementById('copybtn');b.textContent='✅ コピーしました';setTimeout(()=>b.textContent='📋 指示文をコピー',2200);
+});
+</script>
+</body>
+</html>
