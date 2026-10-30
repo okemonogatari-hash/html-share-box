@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AI自動編集でYouTubeデビュー</title>
+<meta name="description" content="スマホで喋った動画を、あなたのClaude Codeが編集してくれるページ。合言葉を貼ると、AIがこのページを読んで、テロップ・カット・顔隠し・BGMまで進めます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#FFF9EC; --paper:#FFFFFF; --ink:#3B2A1E; --sub:#6B5B4E; --line:#EADFC8;
+  --mint:#CFEDE6; --mint-deep:#1F6F63; --sun:#F2B632; --sun-soft:#FFF0C4;
+  --coral:#A33824; --coral-soft:#FFE3DA;
+  --ai-bg:#F1F6F5; --ai-line:#B9D8D2;
+  --display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --body:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.85}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--mint-deep);text-underline-offset:3px;word-break:break-all}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+.hero{padding:30px 0 8px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px;align-items:center}
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.shots img{border-radius:16px;box-shadow:0 8px 0 var(--mint),0 14px 26px rgba(59,42,30,.14)}
+.ribbon{display:inline-block;font-family:var(--display);font-weight:700;font-size:14px;background:var(--sun-soft);border:2px solid var(--sun);border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(26px,4.6vw,44px);line-height:1.35;margin:0 0 14px;letter-spacing:.01em;text-wrap:balance}
+h1 .nb,h2 .nb{display:inline-block}
+h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--sun) 62%)}
+.lead{font-size:17px;margin:0 0 10px}
+.from{font-size:14px;color:var(--sub);margin:0}
+
+section{padding:34px 0 6px}
+h2{font-family:var(--display);font-weight:900;font-size:clamp(21px,3.2vw,30px);line-height:1.45;margin:0 0 6px;display:flex;align-items:flex-start;gap:.5em}
+h2 .t{text-wrap:balance;min-width:0}
+h2 .no{display:grid;place-items:center;flex:none;width:1.9em;height:1.9em;border-radius:50%;background:var(--ink);color:#fff;font-size:.62em;margin-top:.42em}
+.h2sub{margin:0 0 18px;color:var(--sub)}
+h3{font-family:var(--display);font-weight:700;font-size:19px;margin:0 0 6px;line-height:1.5;text-wrap:balance}
+
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0;padding:0;list-style:none}
+.steps li{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:18px 18px 16px}
+.steps .who{display:inline-block;font-family:var(--display);font-weight:700;font-size:13px;border-radius:999px;padding:2px 12px;margin-bottom:8px}
+.who.you{background:var(--coral-soft);color:var(--coral)}
+.who.ai{background:var(--mint);color:var(--mint-deep)}
+.steps p{margin:0;font-size:15px}
+
+.copy{background:var(--paper);border:2px dashed var(--sun);border-radius:16px;padding:16px 18px;margin:16px 0;min-width:0}
+.copy .cap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;margin-bottom:8px}
+.copy .cap strong{font-family:var(--display);font-size:15px}
+.copy pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:var(--body);font-size:15px;line-height:1.8}
+.btn{font-family:var(--display);font-weight:700;font-size:14px;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:8px 16px;cursor:pointer;white-space:nowrap}
+.btn.done{background:var(--mint-deep)}
+.note{font-size:14px;color:var(--sub);margin:10px 0 0}
+
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0}
+.cards li{background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:16px 18px}
+.cards b{font-family:var(--display);display:block;font-size:17px;margin-bottom:2px}
+.cards span{font-size:14.5px;color:var(--sub);display:block;line-height:1.7}
+
+.videos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.videos a{display:block;background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:16px 18px;text-decoration:none;color:var(--ink)}
+.videos b{font-family:var(--display);display:block;font-size:17px}
+.videos span{font-size:14px;color:var(--sub);display:block}
+.videos u{font-size:14px;color:var(--mint-deep)}
+
+.ai{background:var(--ai-bg);border:2px solid var(--ai-line);border-radius:20px;padding:22px 24px;margin-top:8px}
+.ai .tag{display:inline-block;font-family:var(--display);font-weight:700;font-size:13px;background:var(--mint-deep);color:#fff;border-radius:999px;padding:3px 14px;margin-bottom:10px}
+.ai h3{margin-top:22px}
+.ai ol,.ai ul{margin:6px 0 0;padding-left:1.4em}
+.ai li{margin:4px 0}
+.ai code{word-break:break-all;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em;background:#fff;border:1px solid var(--ai-line);border-radius:6px;padding:1px 6px}
+.hand{background:var(--coral-soft);border-radius:14px;padding:14px 18px;margin-top:14px}
+.hand b{font-family:var(--display);color:var(--coral)}
+.aicap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px}
+
+.start{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:16px 20px}
+.start ol{margin:4px 0 0;padding-left:1.4em}
+footer{padding:30px 0 44px;font-size:13.5px;color:var(--sub)}
+
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:minmax(0,1fr)}
+  .shots{max-width:420px}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .steps,.cards,.videos{grid-template-columns:minmax(0,1fr)}
+  .ai{padding:18px 16px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="ribbon">🎬 10/30 梅田オフ会「AI自動編集でYouTubeデビュー」</p>
+      <h1>スマホで喋った動画を、<br><em>あなたのClaude Code</em>が<span class="nb">編集してくれます。</span></h1>
+      <p class="lead">下の<strong>合言葉</strong>をClaude Codeに貼るだけ。AIがこのページを読んで、あなたに少し質問してから、<strong>カット・テロップ・顔隠し・BGM</strong>までやってくれます。編集ソフトは開きません。</p>
+      <p class="from">おけもんと、森のAIたちより（2026年10月30日）</p>
+      <p class="from">※ 今日のオフ会用に作ったお試し版です。うまく進まなかったら、その場で声をかけてください。</p>
+    </div>
+    <div class="shots">
+      <img src="img/fig01_mask_telop.jpg" width="1080" height="1920" alt="おけもんの1本目の動画の一場面。散歩中の自撮りで、顔にカピバラのお面が重なり、下に喋った言葉のテロップが出ている。">
+      <img src="img/fig03_parrot_mic.jpg" width="1080" height="1920" alt="同じ動画の一場面。肩にインコのキャラクターが乗り、「編集AI」として一言しゃべっている。">
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">1</span><span class="t">やることは、3つだけです</span></h2>
+    <p class="h2sub">今日は練習なので、<strong>1〜3分の短い動画</strong>がおすすめ。長い動画は、おうちでゆっくり。</p>
+    <ol class="steps">
+      <li><span class="who you">あなた</span><h3>スマホを横にして、喋って撮る</h3><p>自分に向けて、話したいことを1〜3分。言い直したくなったら「ここカットして」と声に出せばOK。</p></li>
+      <li><span class="who you">あなた</span><h3>動画をパソコンに入れる</h3><p>AirDropやケーブルで、パソコンの「ダウンロード」フォルダへ。写真も使いたければ一緒に入れます。</p></li>
+      <li><span class="who ai">AI</span><h3>合言葉をClaude Codeに貼る</h3><p>AIがこのページを読んで、決まっていないことを聞きながら、編集した動画を作ってくれます。</p></li>
+    </ol>
+
+    <div class="copy" id="aikotoba">
+      <div class="cap"><strong>🗝 Claude Codeに渡す合言葉（コピーして貼るだけ）</strong><button class="btn" type="button" data-copy="aikotoba">コピーする</button></div>
+<pre>このページを最後まで読んで、「AIさんへ」に書いてある順番で、わたしの動画をYouTube用に編集してください。
+https://okemonogatari-hash.github.io/html-share-box/friend-share-g-J3zaqupNIIioTgLu/
+動画は「ダウンロード」フォルダに入れています。始める前に、決まっていないことをまとめて質問してください。</pre>
+    </div>
+    <p class="note">もしAIが「ページを開けない」と言ったら、いちばん下の「AIさんへ」を<strong>まるごとコピー</strong>して貼っても同じように動きます。</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">2</span><span class="t">Claude Codeが<span class="nb">まだの人へ</span></span></h2>
+    <div class="start">
+      <ol>
+        <li>Claudeのデスクトップアプリを入れます：<a href="https://claude.com/download">https://claude.com/download</a></li>
+        <li>Claudeのアカウントでログイン（ログインはご自身で）。Claude Code は有料プランで使えます。プランと料金は、その日の公式ページで確かめてください。</li>
+        <li>アプリの上のほうにある「Code」を開き、作業するフォルダ（「ダウンロード」でOK）を選びます。</li>
+        <li>上の合言葉を貼って送信。AIが「これを入れてもいい？」と聞いてきたら、内容を見てOKを押します。</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">3</span><span class="t">おけもんは、こうなりました</span></h2>
+    <p class="h2sub">朝の散歩で21分38秒喋っただけの動画が、8分33秒のYouTube動画に。編集ソフトは一度も開いていません。</p>
+    <div class="videos">
+      <a href="https://youtu.be/CqMec8hBjOk"><b>▶ 1本目：おけもんYouTubeデビュー</b><span>カピバラのお面・テロップ・BGM・背景ぼかし。肩のインコが「かぶせておきました」と返事。</span><u>https://youtu.be/CqMec8hBjOk</u></a>
+      <a href="https://youtu.be/cn5qabsSqMk"><b>▶ 2本目：dotsを10日使った正直レビュー</b><span>オフ会で「カピバラがうるさい」と言われて、横撮り・お手本を見てから・お面は顔の所だけ、に変えた回。</span><u>https://youtu.be/cn5qabsSqMk</u></a>
+    </div>
+
+    <div class="copy" id="yon">
+      <div class="cap"><strong>✍️ おけもんが実際に送った「4行の頼み文」</strong><button class="btn" type="button" data-copy="yon">コピーする</button></div>
+<pre>今日のダウンロードフォルダーに、今日のVlogの動画と今日撮った画像とかを入れているので、うまいこと繋ぎ合わせて「おけもんYouTubeデビュー」っていう感じで編集をしてください。
+喋ったことが出るようなテロップはつけておいてほしいし、邪魔しない程度のBGMもつけてもいいだろうし、顔は基本出さないようにしておいてほしいです。
+モザイクだと芸がなさすぎるから、Vlog風にして顔だけお面をかぶせるとか。
+設計をする人、実行をする人、リサーチをする人、そういう感じでうまく動いてくれたら嬉しいです。</pre>
+    </div>
+    <p class="note">くわしい話はノウハウ図書館の記事に書いています →
+      <a href="https://library.libecity.com/articles/01M4FC0SMRWD88EDMPD3YFAHJS">【プロンプト付き】YouTube編集はOpus 5.5に丸投げ。散歩で喋って4行頼んだだけ🤣</a>（リベシティ会員向け）</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">4</span><span class="t">撮るときのコツは、3つだけ</span></h2>
+    <ul class="cards">
+      <li><b>📱 スマホは「横」</b><span>YouTubeの画面にぴったり。縦で撮ると、パソコンで見た時に真ん中に細く出ます。</span></li>
+      <li><b>✂️「ここカットして」と声に出す</b><span>噛んでも撮り直さなくて大丈夫。AIに頼むときにも「ここ切ってね」と伝えると確実です。</span></li>
+      <li><b>⏱ 本番前に10秒ためし撮り</b><span>声や外の音がどう入っているか、先に確かめておくと安心です。</span></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2><span class="no">5</span><span class="t">ここから下は、AIが読むところです</span></h2>
+    <p class="h2sub">読まなくて大丈夫です。気になったら、のぞいてみてください。</p>
+
+    <div class="ai" id="for-ai">
+      <div class="aicap"><span class="tag">🤖 AIさんへ</span><button class="btn" type="button" data-copy="for-ai">この枠をまるごとコピー</button></div>
+      <p>このページを開いているあなたは、リベシティのオフ会（2026年10月30日・梅田「AI自動編集でYouTubeデビュー」）に来ている人のClaude Codeです。目的は、その人がスマホで撮った動画を、<strong>その人のパソコンの中だけで</strong>、YouTubeに上げられる1本の動画（mp4）に編集して渡すことです。見本は、おけもんが4行の頼み文で作ってもらった動画（https://youtu.be/CqMec8hBjOk・https://youtu.be/cn5qabsSqMk）です。相手はパソコンもAIも初めてかもしれません。専門用語を使わず、いま何をしているかを短い言葉で伝えながら進めてください。</p>
+
+      <div class="hand">
+        <b>本人に渡すところ（AIは押さずに、聞いて待ちます）</b>
+        <ul>
+          <li>ソフトを新しく入れる時（何を・なぜ・どのくらいの大きさかを一言添えて、OKをもらってから）</li>
+          <li>ログイン・パスワード・お金がかかること</li>
+          <li>YouTubeへのアップロードと公開設定（AIは上げません。最初は「限定公開」をすすめます）</li>
+          <li>元の動画を消す・動かすこと（元の動画には手を触れず、コピーで作業します）</li>
+        </ul>
+      </div>
+
+      <h3>進め方</h3>
+      <ol>
+        <li><strong>先にまとめて聞きます（1回で）。</strong>①どの動画を使うか（「ダウンロード」の新しい動画を一覧にして選んでもらう）②顔は「出す／お面で隠す／ぼかす」のどれか（お面にしたい絵やアイコン画像があるか）③動画の題名やチャンネル名の仮の名前 ④BGMは「なし／手持ちの音楽を使う」のどちらか ⑤「ここは切って」「ここは残して」があれば。分からないものは、下の「迷った時の決め方」で決めて進めます。</li>
+        <li><strong>道具を確かめます。</strong>OS（Mac／Windows）と、動画を切ったりつないだりする道具（ffmpeg）、文字起こしの道具（whisper 系。Macなら whisper.cpp、ほかは faster-whisper など）、Python があるかを調べます。無いものは、入れる前に本人に一言聞いてから入れます。空き容量も見て、動画の3倍以上空いているかを確かめます。</li>
+        <li><strong>作業用のフォルダを作ります。</strong>「ダウンロード」の中に <code>youtube-edit-日付</code> を作り、元の動画をコピーしてそこで作業します。分析用に、軽い版（720p）を先に作ると速いです。</li>
+        <li><strong>文字起こしをして、残す所を決めます。</strong>喋った言葉を時間つきで書き起こし、①0.5秒より長い無音を詰める ②「ここカットして」と言った所と、その直前の言い直しを切る ③話がまとまっている所を残す。外の音が大きい時は、声を聞き分けやすくしてから無音を判定します。</li>
+        <li><strong>設計図を見せます。</strong>残す区間・だいたいの長さ・テロップの見本5行・顔の隠し方を、短い表で本人に見せてOKをもらいます。ここで直してもらうのがいちばん楽です。</li>
+        <li><strong>最初の20秒だけ、仕上げて見せます。</strong>全部を書き出す前に、冒頭20秒を完成形で作って見てもらいます（テロップの大きさ・お面の位置・音の大きさ）。OKなら全部を書き出します。</li>
+        <li><strong>全部を書き出します。</strong>横長 1920×1080（縦で撮った動画は、本人に聞いて「縦のまま」か「横の画面に置く」か決める）、mp4（H.264・AAC）。</li>
+        <li><strong>自分で見てから渡します。</strong>下の「渡す前に見ること」を確かめてから、できた動画の場所と、題名の案3つ・概要欄の案・サムネイルの案（動画から1コマ）を渡します。</li>
+      </ol>
+
+      <h3>仕上げの中身（おけもんの動画で、喜ばれたもの）</h3>
+      <ul>
+        <li><strong>テロップ</strong>：喋った言葉を、読みやすく直して画面の下に。聞き間違いは直し、1行は短く。文字は大きめ、白文字にふち取り。</li>
+        <li><strong>顔隠し</strong>（選んだ時）：顔の位置を全部のコマで追いかけて、お面の絵を顔の所だけに重ねます。目・鼻・口の真ん中に置き、「隠れているか」と「顔に乗って見えるか」の両方を見ます。頭ごとかぶせると「うるさい」と言われたので、顔の所だけにします。Macなら標準の顔検出（Vision）、ほかは MediaPipe や OpenCV で。</li>
+        <li><strong>背景のプライバシー</strong>：外で撮った動画は、車のナンバー・表札・お店の看板・通りすがりの人の顔が読めないようにぼかします。景色を見せたい所は本人に聞きます。</li>
+        <li><strong>BGM</strong>：本人が使っていいと分かっている音楽だけを使います。声の下に敷き、喋っている間は声より約8dB小さく。ネットから勝手に曲を取ってこないでください。</li>
+        <li><strong>遊び心（入れてもいいか聞いてから）</strong>：本人が動画の中で編集に話しかけている所（「カットしてくれるかな」など）に、小さなキャラクターが「切っておきました」と返す一言を置くと、とても喜ばれました。</li>
+      </ul>
+
+      <h3>迷った時の決め方</h3>
+      <ul>
+        <li>顔：本人が決めていなければ「お面」。お面の絵が無ければ、シンプルな丸い動物の顔を作って重ね、あとで差し替えられると伝えます。</li>
+        <li>BGM：手持ちが無ければ「なし」で作り、あとから足せると伝えます。</li>
+        <li>長さ：元の動画の4割くらいを目安に。話の中身を削りすぎないこと。</li>
+        <li>入れないもの：家族やほかの人の顔・名前、住所が分かる物、画面に映ったメッセージ。迷ったら入れずに、本人に聞きます。</li>
+      </ul>
+
+      <h3>渡す前に見ること</h3>
+      <ul>
+        <li>できた動画を何か所かコマで取り出して、顔隠しを選んだ時は顔が見えていないか。</li>
+        <li>テロップが、その時に喋っている言葉と合っているか。切れ目で言葉の頭やおしりが欠けていないか。</li>
+        <li>音が割れていないか、BGMが声に勝っていないか。</li>
+        <li>確かめられなかったことは、正直にそのまま伝えます（例：「音は耳で聞けていないので、一度聞いてみてください」）。</li>
+      </ul>
+
+      <h3>時間の目安と、困った時</h3>
+      <ul>
+        <li>1〜3分の動画なら、道具がそろっていれば数分〜十数分ほど。20分の動画は、書き出しだけで30分ほどかかることがあります。オフ会の時間内に終わらなそうなら、先に「短い版」を作って見せます。</li>
+        <li>途中で止まったら、どこで何が起きたかを、そのまま短く本人に伝えて、次の一手を提案します。</li>
+        <li>終わったら、作り方をフォルダの中に <code>README.md</code> として残します（次の動画で同じ頼み方ができるように）。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>作ったひと：おけもん（ストレングスファインダー認定コーチ・大のAI好き）と、森のAIたち。<br>このページは、ノウハウ図書館の記事「YouTube編集はOpus 5.5に丸投げ」をもとに、今日のオフ会用に作ったお試し版です（2026年10月30日）。</p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('[data-copy]').forEach(function(btn){
+  var label = btn.textContent;
+  btn.addEventListener('click', function(){
+    var box = document.getElementById(btn.dataset.copy);
+    if(!box) return;
+    var pre = box.querySelector('pre');
+    var target = pre || box;
+    var text = (pre ? pre.textContent : box.innerText.replace(label,'')).trim();
+    var done = function(){ btn.textContent = 'コピーしました'; btn.classList.add('done'); setTimeout(function(){ btn.textContent = label; btn.classList.remove('done'); }, 1800); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, function(){ selectNode(target); });
+    } else { selectNode(target); }
+  });
+});
+function selectNode(n){
+  var r = document.createRange(); r.selectNodeContents(n);
+  var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+</script>
+</body>
+</html>
