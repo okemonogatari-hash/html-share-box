@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="color-scheme" content="light">
+<title>Circlebackを無料で使い倒す、私のやり方</title>
+<meta property="og:title" content="Circlebackを無料で使い倒す、私のやり方">
+<meta property="og:description" content="会議に入って議事録まで作ってくれる秘書AI。半年使ってきた私が、無料枠で十分だと思っている理由と使い方をまとめました。">
+<meta property="og:image" content="https://okemonogatari-hash.github.io/html-share-box/circleback-guide-2026-11-06/img/hero.jpg">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#fff8e8; --card:#ffffff; --ink:#123c4a; --sub:#3f5f6a;
+  --mint:#91d7c3; --mint-soft:#e3f5ef; --sky:#d9f0fa; --yellow:#f6d45c; --yellow-soft:#fff3c4;
+  --peach:#f3a6a6; --peach-soft:#fde9e6; --line:#e6dcc3; --code:#12303b; --code-fg:#f4f7f5;
+  --link:#0d5a6e; --warn:#8a3d37;
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.85}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--link)}
+.wrap{width:min(1120px,calc(100% - 32px));margin-inline:auto}
+header{padding:38px 0 8px}
+.kicker{display:inline-block;background:var(--yellow);color:var(--ink);font-weight:800;font-size:.86rem;padding:4px 14px;border-radius:999px;margin:0 0 14px}
+h1{font-size:clamp(1.7rem,4.2vw,2.7rem);line-height:1.35;margin:0 0 14px;letter-spacing:-.02em;text-wrap:balance}
+h1 span{display:inline-block}
+h1 mark{background:linear-gradient(transparent 62%,var(--yellow) 62%);color:inherit}
+.lead{font-size:1.06rem;margin:0 0 10px;color:var(--sub)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:30px;align-items:center}
+figure{margin:0}
+.hero img,.pic img{border-radius:20px;box-shadow:0 14px 34px rgba(18,60,74,.16);border:4px solid #fff}
+figcaption{font-size:.84rem;color:var(--sub);margin-top:8px;line-height:1.6}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:8px 14px;font-size:.92rem;line-height:1.5}
+.stats b{display:block;font-size:1.25rem}
+section{padding:40px 0 6px}
+h2{font-size:clamp(1.3rem,3vw,1.85rem);line-height:1.45;margin:0 0 6px;display:flex;gap:10px;align-items:flex-start}
+h2 span{flex:none;background:var(--mint);border-radius:10px;padding:0 10px;font-size:.8em;line-height:1.8}
+h2 em{font-style:normal;text-wrap:balance;min-width:0}
+.sec-lead{margin:0 0 18px;color:var(--sub);max-width:46em}
+
+/* 3ステップ */
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0;padding:0;list-style:none;counter-reset:f}
+.flow li{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px 18px 14px;counter-increment:f}
+.flow li::before{content:counter(f);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;margin-bottom:8px}
+.flow b{display:block;font-size:1.05rem;line-height:1.5;margin-bottom:4px}
+.flow p{margin:0;font-size:.93rem;color:var(--sub);line-height:1.75}
+
+/* 30日の流れ（動く図） */
+.move{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:26px;align-items:center}
+.board{background:var(--card);border:3px solid var(--ink);border-radius:22px;padding:18px 18px 16px;box-shadow:0 12px 30px rgba(18,60,74,.10)}
+.lane{display:grid;grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);gap:8px;align-items:stretch}
+.box{border-radius:16px;padding:12px 12px 10px;min-height:190px;position:relative}
+.box h3{margin:0 0 8px;font-size:.98rem;line-height:1.4}
+.box.cb{background:var(--sky)}
+.box.mine{background:var(--yellow-soft)}
+.chip{display:block;background:#fff;border-radius:10px;padding:6px 10px;margin:0 0 7px;font-size:.86rem;line-height:1.5;border:2px solid var(--line)}
+.arrow{display:grid;place-items:center;font-weight:800;font-size:.8rem;text-align:center;line-height:1.3;color:var(--ink)}
+.arrow i{display:block;font-style:normal;font-size:1.6rem;line-height:1}
+.timer{margin-top:14px}
+.timer .bar{height:14px;border-radius:999px;background:var(--mint-soft);overflow:hidden;border:2px solid var(--line)}
+.timer .bar span{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--mint),var(--yellow) 70%,var(--peach));transform-origin:left}
+.timer .labels{display:flex;justify-content:space-between;font-size:.84rem;color:var(--sub);margin-top:4px;gap:8px}
+.timer .pick{display:inline-block;background:var(--ink);color:#fff;border-radius:999px;padding:0 10px;font-size:.8rem;font-weight:800}
+@media (prefers-reduced-motion:no-preference){
+  .js-ready .box.cb .chip.go{animation:hop 6s ease-in-out infinite}
+  .js-ready .box.mine .chip.came{animation:land 6s ease-in-out infinite}
+  .js-ready .timer .bar span{animation:fill 6s linear infinite}
+}
+@keyframes hop{0%,30%{transform:none;opacity:1}45%{transform:translateX(40px);opacity:0}46%,85%{opacity:0;transform:none}100%{opacity:1}}
+@keyframes land{0%,40%{opacity:.25;transform:translateX(-20px)}55%,100%{opacity:1;transform:none}}
+@keyframes fill{from{transform:scaleX(.03)}to{transform:scaleX(1)}}
+.mine-list{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.mine-list li{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px 16px}
+.mine-list b{display:block;font-size:1.02rem;line-height:1.5}
+.mine-list p{margin:2px 0 0;font-size:.92rem;color:var(--sub);line-height:1.7}
+.tag{display:inline-block;font-size:.78rem;font-weight:800;border-radius:999px;padding:0 9px;margin-right:6px;vertical-align:2px}
+.tag.t1{background:var(--mint-soft)} .tag.t2{background:var(--peach-soft)} .tag.t3{background:var(--sky)}
+
+/* 料金 */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.plan{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px 18px}
+.plan.free{border:3px solid var(--ink);background:#fffdf6;position:relative}
+.plan .name{font-weight:800;font-size:1.1rem}
+.plan .price{font-size:1.6rem;font-weight:800;line-height:1.3;margin:2px 0 2px}
+.plan .price small{font-size:.8rem;font-weight:700;color:var(--sub)}
+.plan ul{margin:8px 0 0;padding-left:1.1em;font-size:.92rem;line-height:1.7}
+.plan .me{position:absolute;top:-14px;right:14px;background:var(--yellow);border-radius:999px;font-size:.8rem;font-weight:800;padding:2px 12px}
+.src{font-size:.86rem;color:var(--sub);margin:12px 2px 0}
+
+/* よい所・いまひとつ */
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.col{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px 18px}
+.col h3{margin:0 0 6px;font-size:1.08rem}
+.col.good h3{color:#1d6b55}
+.col.meh h3{color:var(--warn)}
+.col ul{margin:0;padding-left:1.1em;font-size:.95rem;line-height:1.75}
+.col li+li{margin-top:6px}
+.note{background:var(--mint-soft);border-radius:16px;padding:14px 18px;margin-top:14px;font-size:.95rem}
+
+/* はじめ方 */
+.start{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:26px;align-items:start}
+.steps{margin:0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:s}
+.steps li{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px 16px;counter-increment:s}
+.steps li b::before{content:counter(s) ". "}
+.steps p{margin:2px 0 0;font-size:.92rem;color:var(--sub);line-height:1.7}
+.paste{background:var(--card);border:3px solid var(--ink);border-radius:22px;overflow:hidden;box-shadow:0 12px 30px rgba(18,60,74,.12);margin-top:18px}
+.paste-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 18px;background:var(--yellow);flex-wrap:wrap}
+.paste-top b{font-size:1rem}
+button.copy{font:inherit;font-weight:800;border:0;border-radius:999px;background:var(--ink);color:#fff;padding:7px 20px;cursor:pointer}
+pre{margin:0;padding:16px 18px 18px;background:var(--code);color:var(--code-fg);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14.5px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+code.inline{background:var(--sky);border-radius:6px;padding:1px 6px;font-size:.88em;overflow-wrap:anywhere}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0;padding:0;list-style:none}
+.links a{display:inline-block;background:var(--card);border:2px solid var(--ink);border-radius:999px;padding:6px 16px;font-weight:800;text-decoration:none;color:var(--ink)}
+footer{padding:40px 0 50px;font-size:.86rem;color:var(--sub)}
+
+@media (max-width:820px){
+  .hero,.move,.start{grid-template-columns:minmax(0,1fr)}
+  .flow,.plans,.two{grid-template-columns:minmax(0,1fr)}
+  .hero figure{order:-1}
+}
+@media (max-width:420px){
+  body{font-size:16px}
+  .lane{grid-template-columns:minmax(0,1fr);gap:6px}
+  .arrow{padding:2px 0}
+  .arrow i{transform:rotate(90deg)}
+  .box{min-height:0}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js-ready')</script>
+
+<header class="wrap">
+  <div class="hero">
+    <div>
+      <p class="kicker">広報チームMTGでお話ししたAIの話</p>
+      <h1><span>会議が終わったら、</span><span><mark>議事録がもう届いている</mark>。</span></h1>
+      <p class="lead">Circleback（サークルバック）は、会議に入って録音・文字起こし・議事録まで作ってくれる秘書AIです。私は有料・無料あわせて半年ほど使ってきて、いまは<b>無料プランで十分</b>だと思っています。どう使っているかをまとめました😊</p>
+      <ul class="stats">
+        <li><b>200本以上</b>4月から録った会議・セッション・オフ会</li>
+        <li><b>0円</b>10月から使っている無料プラン</li>
+        <li><b>約20分</b>会議が終わってから議事録が出るまで</li>
+      </ul>
+    </div>
+    <figure>
+      <img src="img/hero.jpg" alt="オンライン会議に小さな秘書ロボットが参加して、みんなの声をメモ帳に集め、整った議事録の紙を出しているイラスト" width="1400" height="788">
+      <figcaption>挿絵はChatGPTに描いてもらいました。</figcaption>
+    </figure>
+  </div>
+</header>
+
+<main>
+<section class="wrap" id="what">
+  <h2><span>1</span><em>Circlebackがやってくれること</em></h2>
+  <p class="sec-lead">やることは「録りたい会議のスイッチを入れておく」だけです。</p>
+  <ol class="flow">
+    <li><b>Googleカレンダーとつなぐ</b><p>予定が一覧に出るので、録りたい会議のスイッチをONにします。対面のオフ会やセッションは、スマホかパソコンのアプリで録ります。</p></li>
+    <li><b>時間になるとBotが会議に入る</b><p>Google MeetなどにBotが参加して、みんなの話を録ってくれます。Botを入れずに、パソコンのアプリだけで録ることもできます。</p></li>
+    <li><b>終わって20分ほどで議事録</b><p>話した人の名前つきの文字起こし・要点・やること（アクションアイテム）が日本語で届きます。</p></li>
+  </ol>
+</section>
+
+<section class="wrap" id="free">
+  <h2><span>2</span><em>無料だと30日で消えるので、その前にAIに取ってきてもらっています</em></h2>
+  <p class="sec-lead">無料プランは、会議と録音の履歴が30日までです。でも無料でもMCP（Claude CodeなどのAIからCirclebackを読む入口）が使えるので、30日以内にAIに取り出してもらえば、手元にずっと残せます。だから私には実質タダで十分なんです✨</p>
+  <div class="move">
+    <div class="board" aria-label="Circlebackの中の会議を、30日以内にAIが自分の置き場へ移す図">
+      <div class="lane">
+        <div class="box cb">
+          <h3>Circlebackの中<br>（30日で消える）</h3>
+          <span class="chip go">🎙 11/6 広報MTG</span>
+          <span class="chip">🎙 オフ会のセッション</span>
+          <span class="chip">🎙 ひとり語り</span>
+        </div>
+        <div class="arrow"><span><i>→</i>AIが<br>取る</span></div>
+        <div class="box mine">
+          <h3>自分の置き場<br>（ずっと残る）</h3>
+          <span class="chip came">📝 議事録</span>
+          <span class="chip came">🎥 録画（限定公開）</span>
+          <span class="chip came">📄 文字起こし全文</span>
+        </div>
+      </div>
+      <div class="timer">
+        <div class="bar"><span></span></div>
+        <div class="labels"><span>会議の日</span><span class="pick">このあいだに取る</span><span>30日目</span></div>
+      </div>
+    </div>
+    <figure class="pic">
+      <img src="img/move.jpg" alt="砂時計の横にある会議の紙を、秘書ロボットが抱えて本棚と動画のスクリーンへ運んでいるイラスト" width="1400" height="933" loading="lazy">
+    </figure>
+  </div>
+
+  <h3 style="margin:26px 0 10px;font-size:1.15rem;text-wrap:balance">今日の広報MTGは、<span style="display:inline-block">こう残しました</span></h3>
+  <ul class="mine-list">
+    <li><span class="tag t1">議事録</span><b>Claude CodeがMCPで文字起こしを取ってきて、議事録に</b><p>決まったこと・担当・まだ決まっていないことに分けて、チームの議事録のドキュメントに今日の日付のタブを足して書いてもらいました。</p></li>
+    <li><span class="tag t2">録画</span><b>録画はYouTubeに限定公開で上げて、リンクをチームの表に</b><p>Circlebackの録画を取り出して、YouTubeへ限定公開でアップ。リンクを録画フォルダのスプレッドシートに1行足しました。</p></li>
+    <li><span class="tag t3">原本</span><b>文字起こしの全文は、自分のフォルダへ</b><p>あとで「あの時なんて言ってた？」を探せるように、全文を手元に保存しています。</p></li>
+  </ul>
+</section>
+
+<section class="wrap" id="price">
+  <h2><span>3</span><em>無料と有料のちがい</em></h2>
+  <p class="sec-lead">8月31日に料金プランが新しくなって、私が有料で使っていた頃（月$25、約4,000円）より安くなりました。</p>
+  <div class="plans">
+    <div class="plan free">
+      <span class="me">私はこれ</span>
+      <div class="name">Free</div>
+      <div class="price">$0</div>
+      <ul>
+        <li>議事録・やること・名前つき文字起こし</li>
+        <li>オンライン会議も対面も（Bot／パソコンのアプリ／スマホ・Apple Watchのアプリ）</li>
+        <li>API・MCP・CLIが使える</li>
+        <li>会議と録音の履歴は30日まで</li>
+        <li>自動化は一部だけ</li>
+      </ul>
+    </div>
+    <div class="plan">
+      <div class="name">Pro</div>
+      <div class="price">$15<small>／月（年払い）</small></div>
+      <ul>
+        <li>Freeのすべて</li>
+        <li>会議の履歴が無制限</li>
+        <li>録音の保存が1年</li>
+        <li>Notionなどへの自動連携</li>
+        <li>自分で決めた観点でAIにまとめてもらう</li>
+      </ul>
+    </div>
+    <div class="plan">
+      <div class="name">Business</div>
+      <div class="price">$25<small>／月（年払い）</small></div>
+      <ul>
+        <li>Proのすべて</li>
+        <li>管理者とメンバーの権限</li>
+        <li>録音の保存が2年</li>
+        <li>チームでの利用向け</li>
+      </ul>
+    </div>
+  </div>
+  <p class="src">1人あたりの料金。月払いにすると少し上がります（Proは月$18）。2026年11月6日に<a href="https://circleback.ai/pricing">公式の料金ページ</a>で確認しました。いちばん新しい内容は公式ページで見てください。</p>
+</section>
+
+<section class="wrap" id="honest">
+  <h2><span>4</span><em>便利なところと、正直いまひとつなところ</em></h2>
+  <p class="sec-lead">半年使ってきた中での感想です。</p>
+  <div class="two">
+    <div class="col good">
+      <h3>😊 便利なところ</h3>
+      <ul>
+        <li>会議が終わって20分ほどで、名前つきの文字起こし・要点・やることが日本語で出てくる</li>
+        <li>無料でもMCPが使えて、Claude CodeやCodexから文字起こし・議事録・録画をそのまま取り出せる</li>
+        <li>Botを入れずに、パソコンのアプリだけでも録れる（梅田の3時間のオフ会もパソコン1台で録れました）</li>
+        <li>過去の会議をまとめて「あの時なんて言ってた？」と聞ける</li>
+      </ul>
+    </div>
+    <div class="col meh">
+      <h3>🤔 いまひとつなところ</h3>
+      <ul>
+        <li><b>スマホで録ると、録れていないことが多かった。</b>私が有料をやめたいちばんの理由です</li>
+        <li>名前の聞き間違いが多い（今日のMTGでは私が「ポケモン」になっていましたｗ）。話している人が入れ替わることも</li>
+        <li>自動の要約に、言っていないことが混ざることがある。大事なところは文字起こしと照らすのがおすすめです</li>
+        <li>長い録音は処理が遅いことがあった（2時間のオフ会が12時間たっても終わらなかった日も）</li>
+        <li>Botが会議に入るので、参加者に一言ことわりを入れる。音声はクラウドに上がるので、外に出せない話の会議には向きません</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">オンライン会議の文字起こしだけなら、いまはGoogle Meet自体にも文字起こしの機能があるので、それで足りることも多いです。私も有料をやめた時は「Meetの文字起こしで代わりになるな」と思いました。Circlebackのよさは、AIから取り出せることと、対面の会議も同じ場所にたまることです。</p>
+</section>
+
+<section class="wrap" id="try">
+  <h2><span>5</span><em>ちょっと試してみるなら</em></h2>
+  <p class="sec-lead">無料プランは試用期間ではないので、そのままずっと使えます。</p>
+  <div class="start">
+    <div>
+      <ol class="steps">
+        <li><b>circleback.ai で無料登録</b><p>Googleカレンダーをつなぐと、予定が一覧に出ます。</p></li>
+        <li><b>次の会議のスイッチをON</b><p>ホーム画面で、録りたい予定のスイッチを入れておきます。入れ忘れると録れないので、ここだけ気をつけてください。</p></li>
+        <li><b>AIにつなぐ（Claude Codeの場合）</b><p>ターミナルで <code class="inline">claude mcp add --transport http circleback https://circleback.ai/api/mcp</code> を実行して、Claude Codeの中で <code class="inline">/mcp</code> からログインします。ClaudeやChatGPTのアプリからもつなげます。</p></li>
+      </ol>
+      <div class="paste">
+        <div class="paste-top"><b>つないだら、AIにこう頼むだけ</b><button class="copy" type="button" data-target="ask">コピー</button></div>
+<pre id="ask">Circlebackから、今日の会議の文字起こしと議事録を取ってきて。
+決まったこと・担当すること・まだ決まっていないことに分けて、
+（保存したいフォルダ）に保存してね。</pre>
+      </div>
+    </div>
+    <figure class="pic">
+      <img src="img/start.jpg" alt="明るい部屋で、秘書ロボットのそばで人がノートパソコンのボタンに指を伸ばしているイラスト" width="1400" height="933" loading="lazy">
+    </figure>
+  </div>
+  <ul class="links">
+    <li><a href="https://circleback.ai">Circleback 公式</a></li>
+    <li><a href="https://circleback.ai/pricing">料金ページ</a></li>
+    <li><a href="https://circleback.ai/docs/support/platform/circleback-mcp">AIとのつなぎ方（公式）</a></li>
+  </ul>
+</section>
+</main>
+
+<footer class="wrap">
+  <p>2026年11月6日　おけもん（リベ大フェス2027 AIブース 広報チーム）。料金とつなぎ方は同じ日に公式ページで確かめました。サービスの内容は変わることがあるので、使う前に公式ページを見てください。</p>
+</footer>
+
+<script>
+document.querySelectorAll('button.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var t=document.getElementById(b.dataset.target).innerText;
+    var done=function(){b.textContent='コピーしました';setTimeout(function(){b.textContent='コピー'},1600)};
+    if(navigator.clipboard){navigator.clipboard.writeText(t).then(done,function(){})}
+  });
+});
+</script>
+</body>
+</html>
