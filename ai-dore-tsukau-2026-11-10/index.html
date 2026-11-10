@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex">
+<title>で、どれ使う？ Claude Code・Codex・Muse</title>
+<meta name="description" content="Claude Code・Codex・Muse。代わりに手を動かしてくれるAIを、任せたい作業から1つ選ぶページです。料金は2026年11月10日に公式ページで確認しました。">
+<style>
+:root{
+  --bg:#F5F1E8;
+  --white:#FFFFFF;
+  --ink:#141414;
+  --ink-2:#4A4A4A;
+  --cc:#FF6B2C;   /* Claude Code：オレンジ */
+  --cx:#2F6BFF;   /* Codex：青 */
+  --mu:#8A4DFF;   /* Muse：紫 */
+  --cc-soft:#FFE3D4;
+  --cx-soft:#DCE7FF;
+  --mu-soft:#E9DDFF;
+  --sun:#FFD84A;
+  --r:16px;
+  --sans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","YuGothic","Noto Sans JP",Meiryo,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.85;-webkit-text-size-adjust:100%;overflow-x:hidden}
+svg{max-width:100%}
+a{color:var(--ink);text-underline-offset:4px;text-decoration-thickness:2px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--cx);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-weight:800;line-height:1.25;margin:0;letter-spacing:-.01em;text-wrap:balance}
+p{margin:0 0 1em}
+button{font-family:inherit}
+
+/* ヘッダー */
+.header{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:2px solid var(--ink)}
+.header .wrap{display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:16px;position:relative}
+.bar{position:absolute;left:0;bottom:-2px;height:4px;width:0;background:var(--cc);z-index:1}
+.brand{font-weight:800;font-size:19px;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px}
+.brand i{display:flex;gap:4px}
+.brand i b{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink)}
+.brand i b:nth-child(1){background:var(--cc)}.brand i b:nth-child(2){background:var(--cx)}.brand i b:nth-child(3){background:var(--mu)}
+.nav{display:flex;gap:2px;flex-wrap:wrap;justify-content:flex-end}
+.nav a{display:block;padding:8px 12px;font-size:16px;font-weight:600;text-decoration:none;border-radius:999px}
+.nav a:hover{background:var(--ink);color:#fff}
+.menu-btn{display:none;align-items:center;gap:8px;background:var(--white);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;font-size:16px;font-weight:700;color:var(--ink);cursor:pointer}
+
+/* 押せるもの共通：押すと沈む */
+.push{border:2px solid var(--ink);border-radius:var(--r);box-shadow:4px 4px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+.push:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--ink)}
+.push:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.btn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;font-weight:800;font-size:19px;line-height:1.4;padding:16px 30px;cursor:pointer;border-radius:999px;box-shadow:4px 4px 0 var(--cc)}
+.btn:hover{box-shadow:6px 6px 0 var(--cc)}
+.btn:active{box-shadow:0 0 0 var(--cc)}
+
+/* ファーストビュー */
+.hero{padding:56px 0 64px}
+.hero .wrap{display:grid;grid-template-columns:.86fr 1.14fr;gap:36px;align-items:center}
+.eyebrow{display:inline-block;font-size:16px;font-weight:700;background:var(--sun);border:2px solid var(--ink);border-radius:999px;padding:2px 16px;margin:0 0 22px;transform:rotate(-2deg)}
+.hero h1{font-size:clamp(46px,7vw,96px);line-height:1.08;letter-spacing:-.03em;position:relative;z-index:0}
+.hero h1 span{display:block}
+.hero h1 em{font-style:normal;position:relative;white-space:nowrap}
+.hero h1 em::after{content:"";position:absolute;left:-2%;right:-2%;bottom:.06em;height:.26em;background:var(--sun);z-index:-1;border-radius:4px;transform:rotate(-1deg)}
+.lead{margin:28px 0 30px;font-size:19px;max-width:27em}
+.hero-note{margin:18px 0 0;font-size:16px;color:var(--ink-2)}
+
+/* キャラ3体 */
+.stage{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start;padding-top:20px}
+.char{background:none;border:0;padding:0;cursor:pointer;color:var(--ink);text-align:center;display:block;width:100%}
+.char:nth-child(2){margin-top:44px}
+.char svg{display:block;width:100%;height:auto;overflow:visible}
+.char .body{transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.char:hover .body,.char:focus-visible .body{transform:translateY(-10px) rotate(-3deg)}
+.char.jump .body{animation:jump .6s cubic-bezier(.3,1.5,.5,1)}
+@keyframes jump{0%{transform:none}35%{transform:translateY(-34px) scale(1.04,.96)}70%{transform:translateY(0) scale(.96,1.05)}100%{transform:none}}
+.bob{animation:bob 3.2s ease-in-out infinite alternate}
+.char:nth-child(2) .bob{animation-delay:-1.1s}
+.char:nth-child(3) .bob{animation-delay:-2.1s}
+@keyframes bob{to{transform:translateY(-8px)}}
+.blink{animation:blink 5s infinite}
+.char:nth-child(2) .blink{animation-delay:-1.7s}
+.char:nth-child(3) .blink{animation-delay:-3.3s}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+.eye{transform-box:fill-box;transform-origin:center}
+.orbit{transform-origin:100px 105px;animation:spin 7s linear infinite}
+.zz{animation:drift 2.6s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(6px,-5px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.char-name{display:block;font-weight:800;font-size:clamp(16px,1.8vw,24px);line-height:1.3;margin-top:8px;white-space:nowrap}
+.char-say{display:inline-block;margin-top:12px;font-size:16px;font-weight:600;line-height:1.45;background:var(--white);border:2px solid var(--ink);border-radius:12px;padding:6px 10px;position:relative}
+.char-say::before{content:"";position:absolute;left:50%;top:-9px;width:14px;height:14px;background:var(--white);border-left:2px solid var(--ink);border-top:2px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
+.stage-hint{grid-column:1/-1;text-align:center;font-size:16px;color:var(--ink-2);margin:14px 0 0}
+
+/* 流れる帯 */
+.ticker{background:var(--ink);color:var(--sun);overflow:hidden;white-space:nowrap;font-weight:800;font-size:22px;letter-spacing:.06em;line-height:1;padding:14px 0}
+.ticker div{display:inline-block;animation:tick 26s linear infinite}
+.ticker span{margin:0 22px}
+.ticker i{font-style:normal;color:#fff}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* セクション共通 */
+section{padding:84px 0}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:10px 22px;align-items:end;margin-bottom:36px}
+.num{font-size:clamp(64px,9vw,120px);font-weight:800;line-height:.82;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:2px var(--ink)}
+.sec-head h2{font-size:clamp(30px,4.6vw,56px)}
+.sec-head p{grid-column:1/-1;margin:8px 0 0;max-width:38em;color:var(--ink-2)}
+.band-white{background:var(--white);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+
+.tag{display:inline-block;font-size:16px;font-weight:800;line-height:1.4;padding:2px 12px;border-radius:999px;border:2px solid var(--ink);white-space:nowrap}
+.tag.cc{background:var(--cc)}.tag.cx{background:var(--cx);color:#fff}.tag.mu{background:var(--mu);color:#fff}
+
+/* 01 えらぶ */
+.chooser{display:grid;grid-template-columns:.9fr 1.1fr;gap:32px;align-items:start}
+.choices{display:grid;gap:14px}
+.choice{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:var(--white);padding:16px 18px;font-size:17px;font-weight:600;color:var(--ink);cursor:pointer;line-height:1.6}
+.choice .dot{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--ink);background:var(--white)}
+.choice[aria-pressed="true"]{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.choice[aria-pressed="true"][data-pick="cc"]{background:var(--cc-soft)}
+.choice[aria-pressed="true"][data-pick="cx"]{background:var(--cx-soft)}
+.choice[aria-pressed="true"][data-pick="mu"]{background:var(--mu-soft)}
+.choice[aria-pressed="true"][data-pick="no"]{background:var(--sun)}
+.choice[aria-pressed="true"][data-pick="cc"] .dot{background:var(--cc)}
+.choice[aria-pressed="true"][data-pick="cx"] .dot{background:var(--cx)}
+.choice[aria-pressed="true"][data-pick="mu"] .dot{background:var(--mu)}
+.choice[aria-pressed="true"][data-pick="no"] .dot{background:var(--ink)}
+.result{--tool:var(--ink);--soft:var(--sun);background:var(--white);border:2px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--tool);padding:28px 30px 26px;transition:box-shadow .3s}
+.result[data-show="cc"]{--tool:var(--cc);--soft:var(--cc-soft)}
+.result[data-show="cx"]{--tool:var(--cx);--soft:var(--cx-soft)}
+.result[data-show="mu"]{--tool:var(--mu);--soft:var(--mu-soft)}
+.pane{animation:pop .35s cubic-bezier(.3,1.4,.5,1)}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.985)}}
+.result-top{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.result-top .mini{flex:none;width:84px}
+.result-top .mini svg{display:block;width:100%;height:auto;overflow:visible}
+.result-label{font-size:16px;font-weight:700;margin:0;color:var(--ink-2)}
+.result h3{font-size:clamp(30px,4vw,44px)}
+.result dl{margin:22px 0 0;display:grid;grid-template-columns:4.5em 1fr;gap:10px 16px;border-top:2px solid var(--ink);padding-top:18px}
+.result dt{font-weight:800;font-size:16px}
+.result dd{margin:0}
+.result .next{margin:20px 0 0;font-weight:700}
+
+/* 実演の窓 */
+.demo{display:none;margin-top:20px;border:2px solid var(--ink);border-radius:14px;overflow:hidden;background:var(--bg)}
+.js-ready .demo{display:block}
+.demo-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px 8px 14px;background:var(--ink);color:#fff;font-size:16px;line-height:1.5}
+.demo-bar span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--tool);margin-right:8px}
+.demo-bar button{flex:none;font-size:16px;font-weight:700;background:var(--sun);border:0;border-radius:999px;color:var(--ink);cursor:pointer;padding:4px 14px}
+.demo-log{list-style:none;margin:0;padding:16px;min-height:286px;display:grid;gap:10px;align-content:start}
+.demo-log li{line-height:1.6;font-size:16px}
+.js-ready .demo-log li{opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+.js-ready .demo-log li.on{opacity:1;transform:none}
+.demo-log li.you{justify-self:end;background:var(--ink);color:#fff;padding:9px 16px;border-radius:16px 16px 4px 16px;max-width:90%}
+.demo-log li.ai{display:flex;gap:11px;align-items:flex-start}
+.demo-log li.ai::before{content:"";flex:none;width:16px;height:16px;margin-top:5px;border:3px solid #D5CFC2;border-top-color:var(--tool);border-radius:50%;animation:spin .8s linear infinite}
+.demo-log li.ai.ok::before{animation:none;width:7px;height:12px;margin:3px 5px 0;border:solid var(--tool);border-width:0 3px 3px 0;border-radius:0;transform:rotate(45deg)}
+.demo-log li.done{background:var(--soft);border:2px solid var(--ink);border-radius:12px;padding:10px 14px;font-weight:800}
+
+/* 02 ちがい */
+.compare{width:100%;border-collapse:separate;border-spacing:0;background:var(--white);border:2px solid var(--ink);border-radius:22px;overflow:hidden}
+.compare th,.compare td{padding:18px 20px;text-align:left;vertical-align:top;border-bottom:2px solid var(--ink);border-right:2px solid var(--ink);line-height:1.7}
+.compare tr>*:last-child{border-right:0}
+.compare tbody tr:last-child>*{border-bottom:0}
+.compare thead th{font-size:22px;font-weight:800;line-height:1.3}
+.compare thead th small{display:block;font-weight:600;font-size:16px;opacity:.85}
+.compare thead .c-cc{background:var(--cc)}
+.compare thead .c-cx{background:var(--cx);color:#fff}
+.compare thead .c-mu{background:var(--mu);color:#fff}
+.compare thead td{background:var(--ink)}
+.compare tbody th{width:10em;font-weight:800;background:var(--sun);white-space:nowrap}
+.aside-note{margin:26px 0 0;padding:18px 22px;background:var(--bg);border:2px dashed var(--ink);border-radius:var(--r)}
+.aside-note strong{font-weight:800;background:var(--sun);padding:0 6px;border-radius:4px}
+
+/* 03 お値段 */
+.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
+.pcard{background:var(--white);border:2px solid var(--ink);border-radius:22px;padding:24px 22px;position:relative}
+.pcard.cc{box-shadow:6px 6px 0 var(--cc)}.pcard.cx{box-shadow:6px 6px 0 var(--cx);margin-top:26px}.pcard.mu{box-shadow:6px 6px 0 var(--mu);margin-top:52px}
+.pcard .yen{font-size:clamp(52px,6vw,78px);font-weight:800;line-height:1;letter-spacing:-.04em;margin:16px 0 4px}
+.pcard .yen small{font-size:19px;letter-spacing:0;font-weight:700;margin-left:4px}
+.pcard p{margin:10px 0 0}
+.memo{margin-top:44px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;background:var(--sun);border:2px solid var(--ink);border-radius:var(--r);padding:20px 24px;rotate:-.6deg}
+.memo h3{font-size:21px;white-space:nowrap}
+.memo ul{margin:0;padding-left:1.2em}
+.memo p{margin:8px 0 0}
+
+/* 04 はじめ方 */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.tab{font-weight:800;font-size:17px;padding:10px 22px;background:var(--bg);border:2px solid var(--ink);border-radius:999px;color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+.tab[aria-selected="true"]{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.tab[aria-selected="true"][data-tab="cc"]{background:var(--cc)}
+.tab[aria-selected="true"][data-tab="cx"]{background:var(--cx);color:#fff}
+.tab[aria-selected="true"][data-tab="mu"]{background:var(--mu);color:#fff}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:s;align-items:start}
+.steps li{counter-increment:s;background:var(--bg);border:2px solid var(--ink);border-radius:22px;padding:22px 22px 24px;position:relative}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:2px solid var(--ink);background:var(--sun);font-size:26px;font-weight:800;line-height:1;margin-bottom:14px}
+.steps li:nth-child(2){margin-top:18px}
+.steps li:nth-child(3){margin-top:36px}
+.steps strong{display:block;font-weight:800;font-size:20px;line-height:1.45;margin-bottom:6px}
+.steps-foot{margin:28px 0 0;padding-left:18px;border-left:6px solid var(--ink);max-width:40em}
+
+/* 05 不安 */
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;align-items:start}
+.faq-grid>div{display:grid;gap:16px}
+details{background:var(--white);border:2px solid var(--ink);border-radius:var(--r);overflow:hidden}
+summary{list-style:none;cursor:pointer;padding:16px 56px 16px 20px;font-weight:800;position:relative;line-height:1.55}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:14px;top:50%;width:30px;height:30px;margin-top:-15px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:#fff;font-size:22px;line-height:1;font-weight:700;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg);background:var(--cc);color:var(--ink)}
+details[open] summary{border-bottom:2px solid var(--ink);background:var(--sun)}
+details p{margin:0;padding:16px 20px 18px}
+
+/* 06 おけもん */
+.case{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:start}
+.case-row{display:grid;grid-template-columns:8.2em 1fr;gap:16px;padding:20px 0;border-bottom:2px solid var(--ink)}
+.case-row:first-child{border-top:2px solid var(--ink)}
+.case-row .tag{margin-top:2px;justify-self:start;align-self:start}
+.case-row p{margin:0;font-weight:700;font-size:18px;line-height:1.65}
+.case-row .sub{font-weight:400;font-size:16px;color:var(--ink-2);margin-top:6px}
+.oops h3{font-size:26px;margin-bottom:18px}
+.notes{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.notes li{background:var(--sun);border:2px solid var(--ink);padding:16px 16px 18px;font-weight:600;line-height:1.65;font-size:16px;box-shadow:4px 4px 0 var(--ink);transition:rotate .2s,scale .2s}
+.notes li:nth-child(1){rotate:-2.2deg}
+.notes li:nth-child(2){rotate:1.6deg;margin-top:10px;background:var(--mu-soft)}
+.notes li:nth-child(3){rotate:1.2deg;background:var(--cx-soft)}
+.notes li:nth-child(4){rotate:-1.4deg;margin-top:8px;background:var(--cc-soft)}
+.notes li:hover{rotate:0deg;scale:1.03}
+.notes b{display:block;font-size:16px;font-weight:800;margin-bottom:4px}
+
+/* しめ */
+.closing{background:var(--ink);color:#fff;padding:92px 0}
+.closing .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:center}
+.closing h2{font-size:clamp(40px,6.4vw,84px);line-height:1.12;letter-spacing:-.03em}
+.closing h2 span,.closing h2 em{display:inline-block}
+.closing h2 em{font-style:normal;color:var(--sun)}
+.closing p{margin:22px 0 0;font-size:19px;max-width:26em}
+.closing .btn{background:var(--sun);color:var(--ink);margin-top:28px;border-color:var(--sun);box-shadow:4px 4px 0 var(--cc)}
+.closing h3{font-size:18px;margin-bottom:12px;color:var(--sun)}
+.closing ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.closing li{border:2px solid #fff;border-radius:999px;padding:10px 20px;line-height:1.55}
+
+.footer{padding:40px 0 56px;font-size:16px;line-height:1.8}
+.footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.footer h2{font-size:16px;font-weight:800;margin-bottom:6px;letter-spacing:0}
+.footer ul{margin:0;padding-left:1.2em}
+.footer a{word-break:break-all}
+
+.js-ready .reveal{opacity:0;translate:0 22px;transition:opacity .7s,translate .7s cubic-bezier(.2,.8,.2,1)}
+.js-ready .reveal.in{opacity:1;translate:0 0}
+
+@media (max-width:980px){
+  .hero .wrap,.chooser,.case,.closing .wrap,.footer .wrap{grid-template-columns:1fr}
+  .hero{padding:40px 0 48px}
+  section{padding:60px 0}
+  .closing{padding:64px 0}
+  .faq-grid{grid-template-columns:1fr}
+  .prices,.steps{grid-template-columns:1fr}
+  .pcard.cx,.pcard.mu,.steps li:nth-child(n){margin-top:0}
+  .memo{grid-template-columns:1fr;gap:8px}
+  .stage{max-width:560px;margin:0 auto}
+}
+@media (max-width:900px){
+  .js-ready .menu-btn{display:inline-flex}
+  .js-ready .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:2px solid var(--ink);flex-direction:column;padding:8px 16px 14px;margin-top:2px}
+  .js-ready .nav.open{display:flex}
+  .js-ready .nav a{padding:12px 10px;border-radius:10px}
+}
+@media (max-width:760px){
+  .wrap{padding:0 18px}
+  .lead,.closing p{font-size:17px}
+  .ticker{font-size:18px;padding:12px 0}
+  .char-say{padding:5px 8px}
+  .char:nth-child(2){margin-top:26px}
+  .result{padding:22px 18px;box-shadow:5px 5px 0 var(--tool)}
+  .result-top .mini{width:64px}
+  .result dl{grid-template-columns:1fr;gap:2px}
+  .result dd{margin-bottom:10px}
+  .case-row{grid-template-columns:1fr;gap:8px}
+  .notes{grid-template-columns:1fr}
+  .notes li:nth-child(n){rotate:-.8deg;margin-top:0}
+  .notes li:nth-child(2n){rotate:.8deg}
+  /* 比較表：スマホではAIごとの縦並び */
+  .compare,.compare tbody,.compare tr,.compare td,.compare th{display:block}
+  .compare{border:0;background:none;border-radius:0;overflow:visible}
+  .compare thead{display:none}
+  .compare tbody tr{background:var(--white);border:2px solid var(--ink);border-radius:var(--r);margin-bottom:16px;overflow:hidden}
+  .compare tbody th{width:auto;border-right:0;padding:10px 16px;font-size:18px}
+  .compare tbody td{border-right:0;border-bottom:2px dashed #BDB7A8;padding:10px 16px 12px}
+  .compare tbody tr td:last-child{border-bottom:0}
+  .compare tbody tr:last-child>th{border-bottom:2px solid var(--ink)}
+  .compare tbody tr:last-child>td{border-bottom:2px dashed #BDB7A8}
+  .compare tbody tr:last-child>td:last-child{border-bottom:0}
+  .compare tbody td::before{content:attr(data-name);display:table;font-size:16px;font-weight:800;line-height:1.4;padding:1px 10px;border-radius:999px;border:2px solid var(--ink);margin-bottom:6px}
+  .compare td.c-cc::before{background:var(--cc)}
+  .compare td.c-cx::before{background:var(--cx);color:#fff}
+  .compare td.c-mu::before{background:var(--mu);color:#fff}
+  .demo-log{min-height:330px}
+}
+@media (max-width:420px){
+  .stage{gap:6px}
+  .char-name{font-size:16px}
+  .btn{font-size:18px;padding:14px 24px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .bob,.blink,.orbit,.zz,.ticker div,.demo-log li.ai::before,.pane,.char.jump .body{animation:none}
+  .js-ready .reveal,.js-ready .demo-log li{opacity:1;translate:0 0;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="bar" id="bar"></div>
+  <div class="wrap">
+    <a class="brand" href="#top"><i aria-hidden="true"><b></b><b></b><b></b></i>で、どれ使う？</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">メニュー</button>
+    <nav class="nav" id="nav" aria-label="ページ内メニュー">
+      <a href="#erabu">えらぶ</a>
+      <a href="#chigai">ちがい</a>
+      <a href="#ryokin">お値段</a>
+      <a href="#hajimeru">はじめ方</a>
+      <a href="#fuan">不安なこと</a>
+      <a href="#okemon">おけもんの場合</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Claude Code・Codex・Muse　2026年11月版</p>
+      <h1><span>で、結局</span><span><em>どれ使う？</em></span></h1>
+      <p class="lead">ChatGPTとおしゃべりするのは、もう慣れた。次は、代わりに手を動かしてくれるAIの番です。よく名前を聞く3つを、オフ会で聞かれる順にまとめました。</p>
+      <a class="btn push" href="#erabu">さっそくえらぶ</a>
+      <p class="hero-note">料金は2026年11月10日に、公式ページで確認しました。</p>
+    </div>
+
+    <div class="stage" id="stage">
+      <button class="char" type="button" data-char="cc" aria-label="Claude Codeをえらぶ">
+        <svg viewBox="0 0 200 200" aria-hidden="true"><g class="bob"><g class="body">
+          <path d="M34 62h44l12 14h76a10 10 0 0 1 10 10v84a10 10 0 0 1-10 10H34a10 10 0 0 1-10-10V72a10 10 0 0 1 10-10z" fill="#FF6B2C" stroke="#141414" stroke-width="5" stroke-linejoin="round"/>
+          <g class="eye blink"><circle cx="76" cy="122" r="17" fill="#fff" stroke="#141414" stroke-width="4"/><circle class="pupil" cx="76" cy="122" r="8" fill="#141414"/></g>
+          <g class="eye blink"><circle cx="126" cy="122" r="17" fill="#fff" stroke="#141414" stroke-width="4"/><circle class="pupil" cx="126" cy="122" r="8" fill="#141414"/></g>
+          <path d="M88 153q13 11 26 0" fill="none" stroke="#141414" stroke-width="5" stroke-linecap="round"/>
+        </g></g></svg>
+        <span class="char-name">Claude Code</span>
+        <span class="char-say">パソコンの中で働く</span>
+      </button>
+      <button class="char" type="button" data-char="cx" aria-label="Codexをえらぶ">
+        <svg viewBox="0 0 200 200" aria-hidden="true"><g class="bob"><g class="body">
+          <g class="orbit"><circle cx="100" cy="105" r="88" fill="none" stroke="#141414" stroke-width="4" stroke-dasharray="3 13" stroke-linecap="round"/><circle cx="100" cy="17" r="9" fill="#FFD84A" stroke="#141414" stroke-width="4"/></g>
+          <circle cx="100" cy="105" r="70" fill="#2F6BFF" stroke="#141414" stroke-width="5"/>
+          <g class="eye blink"><circle cx="76" cy="98" r="17" fill="#fff" stroke="#141414" stroke-width="4"/><circle class="pupil" cx="76" cy="98" r="8" fill="#141414"/></g>
+          <g class="eye blink"><circle cx="124" cy="98" r="17" fill="#fff" stroke="#141414" stroke-width="4"/><circle class="pupil" cx="124" cy="98" r="8" fill="#141414"/></g>
+          <path d="M88 132q12 10 24 0" fill="none" stroke="#141414" stroke-width="5" stroke-linecap="round"/>
+        </g></g></svg>
+        <span class="char-name">Codex</span>
+        <span class="char-say">同じ仕事をくり返す</span>
+      </button>
+      <button class="char" type="button" data-char="mu" aria-label="Museをえらぶ">
+        <svg viewBox="0 0 200 200" aria-hidden="true"><g class="bob"><g class="body">
+          <g class="zz" fill="none" stroke="#141414" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="150" y="14" width="26" height="42" rx="6" fill="#FFD84A"/><path d="M159 46h8"/></g>
+          <path d="M52 176a34 34 0 0 1-8-67 46 46 0 0 1 88-18 40 40 0 0 1 26 73 34 34 0 0 1-22 12z" fill="#8A4DFF" stroke="#141414" stroke-width="5" stroke-linejoin="round"/>
+          <g class="eye blink"><circle cx="78" cy="122" r="17" fill="#fff" stroke="#141414" stroke-width="4"/><circle class="pupil" cx="78" cy="122" r="8" fill="#141414"/></g>
+          <g class="eye blink"><circle cx="124" cy="122" r="17" fill="#fff" stroke="#141414" stroke-width="4"/><circle class="pupil" cx="124" cy="122" r="8" fill="#141414"/></g>
+          <path d="M90 152q11 9 22 0" fill="none" stroke="#141414" stroke-width="5" stroke-linecap="round"/>
+        </g></g></svg>
+        <span class="char-name">Muse</span>
+        <span class="char-say">スマホの向こうで働く</span>
+      </button>
+      <p class="stage-hint">気になる子を押してみてください。</p>
+    </div>
+  </div>
+</div>
+
+<div class="ticker" aria-hidden="true"><div>
+  <span>CLAUDE CODE</span><i>●</i><span>CODEX</span><i>●</i><span>MUSE</span><i>●</i><span>で、どれ使う？</span><i>●</i><span>CLAUDE CODE</span><i>●</i><span>CODEX</span><i>●</i><span>MUSE</span><i>●</i><span>で、どれ使う？</span><i>●</i><span>CLAUDE CODE</span><i>●</i><span>CODEX</span><i>●</i><span>MUSE</span><i>●</i><span>で、どれ使う？</span><i>●</i><span>CLAUDE CODE</span><i>●</i><span>CODEX</span><i>●</i><span>MUSE</span><i>●</i><span>で、どれ使う？</span><i>●</i>
+</div></div>
+
+<!-- 01 -->
+<section id="erabu">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num" aria-hidden="true">01</span>
+      <h2>まず、何を任せたい？</h2>
+      <p>いちばん近いものを押してください。おけもんが実際に使ってみた感想なので、答えは目安です。</p>
+    </div>
+    <div class="chooser">
+      <div class="choices" role="group" aria-label="任せたいこと">
+        <button class="choice push" type="button" data-pick="cc" aria-pressed="true"><span class="dot"></span><span>資料やホームページを作ってほしい。パソコンの中も片づけてほしい。</span></button>
+        <button class="choice push" type="button" data-pick="cx" aria-pressed="false"><span class="dot"></span><span>ChatGPTにはもう課金してる。そのまま作業もしてほしい。</span></button>
+        <button class="choice push" type="button" data-pick="mu" aria-pressed="false"><span class="dot"></span><span>スマホから頼みたい。返信の下書きや、毎日の記録を任せたい。</span></button>
+        <button class="choice push" type="button" data-pick="no" aria-pressed="false"><span class="dot"></span><span>正直、何を任せたらいいか分からない。</span></button>
+      </div>
+
+      <div class="result" id="result" data-show="cc" aria-live="polite">
+        <div class="pane" data-pane="cc">
+          <div class="result-top"><div class="mini" data-mini="cc"></div><div><p class="result-label">あなたにはこれ</p><h3>Claude Code</h3></div></div>
+          <p>フォルダを1つ渡すと、中のファイルを読んで、作って、直して、確かめるところまでやってくれます。資料やホームページのように、形に残るものが得意です。このページもClaude Codeで作りました。</p>
+          <div class="demo" data-demo="cc">
+            <div class="demo-bar"><span>あなたのパソコン</span><button type="button" class="replay">もう一回</button></div>
+            <ol class="demo-log" aria-label="作業が進む様子の例"></ol>
+          </div>
+          <dl>
+            <dt>お金</dt><dd>月20ドルのProから。無料プランでは使えません。</dd>
+            <dt>場所</dt><dd>パソコン。アプリを入れれば始められます。</dd>
+          </dl>
+          <p class="next"><a href="#hajimeru" data-go="cc">Claude Codeのはじめ方へ</a></p>
+        </div>
+        <div class="pane" data-pane="cx">
+          <div class="result-top"><div class="mini" data-mini="cx"></div><div><p class="result-label">あなたにはこれ</p><h3>Codex</h3></div></div>
+          <p>ChatGPTと同じ会社が出している、作業係のAIです。月20ドルのPlusに入っているなら、いまの契約のまま使えます。おけもんは、毎週のラジオの告知や、朝の情報集めを任せています。</p>
+          <div class="demo" data-demo="cx">
+            <div class="demo-bar"><span>毎週の決まった仕事</span><button type="button" class="replay">もう一回</button></div>
+            <ol class="demo-log" aria-label="作業が進む様子の例"></ol>
+          </div>
+          <dl>
+            <dt>お金</dt><dd>Plus（月20ドル）に含まれます。無料プランと月8ドルのGoは、パソコンのアプリだけ。順番に使えるようになっている途中です。</dd>
+            <dt>場所</dt><dd>パソコン、ブラウザ、iPhone。</dd>
+          </dl>
+          <p class="next"><a href="#hajimeru" data-go="cx">Codexのはじめ方へ</a></p>
+        </div>
+        <div class="pane" data-pane="mu">
+          <div class="result-top"><div class="mini" data-mini="mu"></div><div><p class="result-label">あなたにはこれ</p><h3>Muse</h3></div></div>
+          <p>Metaが出している、個人向けのAIです。Museは、ブラウザつきの専用パソコンをクラウドの上に持っていて、そこであなたの代わりに作業します。送信や購入のような操作は、実行の前にあなたの承認を求めます。</p>
+          <div class="demo" data-demo="mu">
+            <div class="demo-bar"><span>スマホから頼む</span><button type="button" class="replay">もう一回</button></div>
+            <ol class="demo-log" aria-label="作業が進む様子の例"></ol>
+          </div>
+          <dl>
+            <dt>お金</dt><dd>無料。ただし使える量に上限があります。上限の量は公表されていません。おけもんは2週間無料で使ってから、有料のPowerにしました。</dd>
+            <dt>場所</dt><dd>スマホのアプリ、パソコン。</dd>
+          </dl>
+          <p class="next"><a href="#hajimeru" data-go="mu">Museのはじめ方へ</a></p>
+        </div>
+        <div class="pane" data-pane="no">
+          <div class="result-top"><div><p class="result-label">まだ契約しなくて大丈夫</p><h3>先に、任せたいことを1つ決める</h3></div></div>
+          <p>3つとも、任せる作業があって初めて役に立ちます。今週、自分の手でやった作業を3つ書き出してみてください。毎回同じ手順のものと、気が重くて後回しにしたものが、任せやすい作業です。</p>
+          <dl>
+            <dt>お金</dt><dd>0円。いま使っているChatGPTやGeminiに「この作業、AIに任せられる？」と聞くところからで足ります。</dd>
+            <dt>次は</dt><dd>1つ決まったら、もう一度ここでえらぶ。</dd>
+          </dl>
+          <p class="next"><a href="#owari">任せやすい作業の例へ</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="chigai" class="band-white">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num" aria-hidden="true">02</span>
+      <h2>ちがいは、働く場所</h2>
+      <p>性能の順位は、毎月入れ替わります。変わりにくいのは「どこで、何を使って働くか」です。同じ4つの質問で並べました。</p>
+    </div>
+    <table class="compare">
+      <thead>
+        <tr>
+          <td></td>
+          <th scope="col" class="c-cc">Claude Code<small>Anthropic</small></th>
+          <th scope="col" class="c-cx">Codex<small>OpenAI</small></th>
+          <th scope="col" class="c-mu">Muse<small>Meta</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">どこで働く？</th>
+          <td class="c-cc" data-name="Claude Code">あなたのパソコンの、渡したフォルダの中</td>
+          <td class="c-cx" data-name="Codex">あなたが指定したファイルと道具の上</td>
+          <td class="c-mu" data-name="Muse">Museがクラウドに持っている専用のパソコン。あなたの端末の外</td>
+        </tr>
+        <tr>
+          <th scope="row">何が得意？</th>
+          <td class="c-cc" data-name="Claude Code">形に残るもの。資料、ホームページ、ファイル整理</td>
+          <td class="c-cx" data-name="Codex">作って確かめるまでの作業。おけもんは毎週の告知と朝の情報集め</td>
+          <td class="c-mu" data-name="Muse">ブラウザでこなす用事。おけもんは返信の下書きと、歩数や食事の記録</td>
+        </tr>
+        <tr>
+          <th scope="row">どこから頼む？</th>
+          <td class="c-cc" data-name="Claude Code">パソコンのアプリ、ブラウザ</td>
+          <td class="c-cx" data-name="Codex">パソコン、ブラウザ、iPhone</td>
+          <td class="c-mu" data-name="Muse">スマホのアプリ、パソコン</td>
+        </tr>
+        <tr>
+          <th scope="row">気をつけること</th>
+          <td class="c-cc" data-name="Claude Code">無料では使えない。渡すフォルダは自分で決める</td>
+          <td class="c-cx" data-name="Codex">ChatGPTで話したことは、そのままは伝わらない</td>
+          <td class="c-mu" data-name="Muse">無料の枠を使い切ると、待つか有料にするかになる。承認の前に中身を読む</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="aside-note"><strong>ChatGPTやGeminiは？</strong>　話し相手として使うなら、いまのままで十分です。このページの3つは、相談の先にある作業を任せる相手。入れ替えるものではなく、足すものです。</p>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="ryokin">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num" aria-hidden="true">03</span>
+      <h2>お値段</h2>
+      <p>有料プランは3つとも月額制で、使える量に上限があります。上限のあとも続けたい時は、自分で追加分を買う形です。金額は公式のドル表示のまま載せています。</p>
+    </div>
+    <div class="prices">
+      <div class="pcard cc">
+        <span class="tag cc">Claude Code</span>
+        <p class="yen">20<small>ドル／月から</small></p>
+        <p>Proプランの金額です。無料プランにClaude Codeは入っていません。上にMax（100ドル）とUltra（200ドル）があります。</p>
+      </div>
+      <div class="pcard cx">
+        <span class="tag cx">Codex</span>
+        <p class="yen">0<small>ドルから</small></p>
+        <p>無料プランとGo（8ドル）はパソコンのアプリだけで、順番に提供されている途中です。Plus（20ドル）ならブラウザやiPhoneからも使えます。上にPro（100ドルから）があります。</p>
+      </div>
+      <div class="pcard mu">
+        <span class="tag mu">Muse</span>
+        <p class="yen">0<small>ドル</small></p>
+        <p>使える量に上限つきで無料です。有料はPower（20ドル）とMaximum（100ドル）。公式には試験運用中で地域が限られるとありますが、おけもんは日本からPowerに申し込めました。</p>
+      </div>
+    </div>
+    <div class="memo">
+      <h3>正直メモ</h3>
+      <div>
+        <ul>
+          <li>上の金額は、2026年11月10日に各社の公式ページで読んだ数字です。</li>
+          <li>公式ページの金額はドル表示です。日本円での請求額は、為替と税、申し込む場所で変わります。</li>
+          <li>おけもんは2026年11月10日に、MuseのPowerへ月額3,499円で申し込みました。</li>
+        </ul>
+        <p>契約の前に、いちばん下の公式ページで最新の金額を見てください。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="hajimeru" class="band-white">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num" aria-hidden="true">04</span>
+      <h2>はじめの3歩</h2>
+      <p>上でえらんだAIの手順が開いています。ほかの2つも、名前を押すと見られます。</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="AIごとのはじめ方">
+      <button class="tab" type="button" role="tab" data-tab="cc" id="tab-cc" aria-controls="steps-cc" aria-selected="true">Claude Code</button>
+      <button class="tab" type="button" role="tab" data-tab="cx" id="tab-cx" aria-controls="steps-cx" aria-selected="false" tabindex="-1">Codex</button>
+      <button class="tab" type="button" role="tab" data-tab="mu" id="tab-mu" aria-controls="steps-mu" aria-selected="false" tabindex="-1">Muse</button>
+    </div>
+    <div role="tabpanel" id="steps-cc" aria-labelledby="tab-cc" data-steps="cc">
+      <ol class="steps">
+        <li><strong>ClaudeをProにする</strong>Claudeに登録して、月20ドルのPro以上をえらびます。</li>
+        <li><strong>アプリで「コード」を開く</strong>パソコンにClaudeのアプリを入れて、「コード」をえらびます。黒い画面は使いません。</li>
+        <li><strong>フォルダを1つ渡す</strong>今日の作業場にするフォルダをえらんで、「このフォルダは何？」と聞いてみます。</li>
+      </ol>
+      <p class="steps-foot">フォルダは、新しく作った空のもので大丈夫です。大事なファイルが入った場所から始める必要はありません。</p>
+    </div>
+    <div role="tabpanel" id="steps-cx" aria-labelledby="tab-cx" data-steps="cx">
+      <ol class="steps">
+        <li><strong>Codexを開く</strong>ChatGPTのアカウントでサインインします。</li>
+        <li><strong>フォルダをえらぶ</strong>作業してほしい場所を1つえらびます。</li>
+        <li><strong>小さく1つ頼む</strong>「このフォルダの中身を一覧にして」くらいの大きさから始めます。</li>
+      </ol>
+      <p class="steps-foot">ChatGPTで話した内容は、Codexにはそのまま伝わりません。必要なことは、頼む時にもう一度書きます。</p>
+    </div>
+    <div role="tabpanel" id="steps-mu" aria-labelledby="tab-mu" data-steps="mu">
+      <ol class="steps">
+        <li><strong>Museを開く</strong>スマホのアプリか、パソコンで muse.ai を開きます。</li>
+        <li><strong>登録する</strong>携帯番号かメールアドレスで登録します。</li>
+        <li><strong>チャットで頼む</strong>送信などの前には、承認を求めてきます。中身を読んでからOKを押します。</li>
+      </ol>
+      <p class="steps-foot">無料の枠には上限があります。おけもんは最初の4日でほぼ使い切りました。最初は用事を1つに絞るのがおすすめです。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="fuan">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num" aria-hidden="true">05</span>
+      <h2>ちょっと不安なこと</h2>
+      <p>オフ会やAIシェア会でよく出る質問と、先に知っておいてほしいことです。</p>
+    </div>
+    <div class="faq-grid">
+      <div>
+        <details open>
+          <summary>「許可しますか？」と何度も聞かれて、怖いです。</summary>
+          <p>あれは、AIが勝手に進めないための確認です。ファイルを消す、外へ送るといった操作の前には確認が出ます。読んで分からなければ、「これは何をする許可？」とそのまま聞き返せます。確認を全部とばす設定は、慣れるまで使わないでください。</p>
+        </details>
+        <details>
+          <summary>黒い画面や英語は出てきませんか。</summary>
+          <p>3つとも、ふつうのアプリの画面から始められます。英語で返ってきたら「日本語で教えて」と書けば切り替わります。</p>
+        </details>
+        <details>
+          <summary>知らないうちに請求が増えませんか。</summary>
+          <p>月額制で、使える量に上限があります。上限に届いたら「しばらく待つ」「上のプランにする」「追加分を買う」から自分でえらびます。Claude CodeとCodexの追加分は、自分で設定や購入をした時に使う仕組みです。従量制のサービスを別につないだ時は、そちらの請求にも気をつけてください。</p>
+        </details>
+      </div>
+      <div>
+        <details>
+          <summary>3つとも契約したほうがいいですか。</summary>
+          <p>1つで足ります。任せる作業が増えて、1つでは合わない用事が出てきたら、その時に2つ目を足せば間に合います。</p>
+        </details>
+        <details>
+          <summary>ChatGPTと、何がちがうんですか。</summary>
+          <p>見分ける所は、どの会社のものか、話す窓口か作業の係か、どの情報と道具を使えるか、の3つです。いまはChatGPTでもファイルを作れるので、境目はだんだん薄くなっています。</p>
+        </details>
+        <details>
+          <summary>入れてはいけない情報はありますか。</summary>
+          <p>パスワードと、お客さんの名簿や連絡先は入れないでください。仕事の資料を渡す時は、外に出してよい内容かを先に自分で確かめます。</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="okemon" class="band-white">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num" aria-hidden="true">06</span>
+      <h2>おけもんはこう使ってます</h2>
+      <p>スマホではChatGPT、パソコンではCodexとClaude Codeが中心です。任せていることと、しくじった話をそのまま載せます。</p>
+    </div>
+    <div class="case">
+      <div>
+        <div class="case-row">
+          <span class="tag cc">Claude Code</span>
+          <div>
+            <p>毎日の記録、資料、動画、ホームページ。形に残るものは、ここで作っています。</p>
+            <p class="sub">2026年の3月から使っています。旅の思い出ムービーを2本作って見比べたのもここです。</p>
+          </div>
+        </div>
+        <div class="case-row">
+          <span class="tag cx">Codex</span>
+          <div>
+            <p>毎週の「水曜AIラジオ」の告知と、朝の情報集め。</p>
+            <p class="sub">告知は、投稿したあとに自分で開き直して、文と画像とリンクを確かめるところまで任せています。</p>
+          </div>
+        </div>
+        <div class="case-row">
+          <span class="tag mu">Muse</span>
+          <div>
+            <p>コミュニティでの返信の下書きと、歩数や食事の記録。</p>
+            <p class="sub">返信は、文面を読んで直してからOKを押しています。食事の写真は14日つづけて記録できました。</p>
+          </div>
+        </div>
+      </div>
+      <div class="oops">
+        <h3>しくじりメモ</h3>
+        <ul class="notes">
+          <li><b>Muse</b>無料の枠を、最初の4日でほぼ使い切りました。</li>
+          <li><b>Muse</b>任せた返信が、返信の形にならないまま投稿されました。いまは文面を読んで直してからOKを押しています。</li>
+          <li><b>Codex</b>パソコンの整理を頼んだら、何度やり直しても途中で止まりました。</li>
+          <li><b>Claude Code</b>有料の音声サービスを、断られた理由を見ないまま何度も呼び直して、1日100回の上限に届きました。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="closing" id="owari">
+  <div class="wrap">
+    <div>
+      <h2><span>今日やるのは、</span><em>1つだけ。</em></h2>
+      <p>いま自分の手でやっている作業を1つ、えらんだAIに任せてみてください。うまくいかなくても、次に何を伝えればいいかが分かります。</p>
+      <a class="btn push" href="#erabu">もう一度えらぶ</a>
+    </div>
+    <div>
+      <h3>任せやすい作業の例</h3>
+      <ul>
+        <li>ダウンロードフォルダの中身を、種類ごとに分ける</li>
+        <li>先月のメモを読んで、やり残しを一覧にする</li>
+        <li>お店や教室の案内ページを1枚作る</li>
+        <li>届いた連絡への返信を、下書きまで作る</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="wrap">
+    <div>
+      <h2>確かめた公式ページ（2026年11月10日）</h2>
+      <ul>
+        <li><a href="https://claude.com/pricing" rel="noopener">Claudeの料金（claude.com/pricing）</a></li>
+        <li><a href="https://learn.chatgpt.com/docs/pricing" rel="noopener">Codexの料金（learn.chatgpt.com/docs/pricing）</a></li>
+        <li><a href="https://www.meta.com/help/subscriptions/1021145227643680/" rel="noopener">Museの料金（Metaのヘルプ）</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>このページについて</h2>
+      <p>作った人：おけもん。リベシティ公式オンラインスクール「Claude Code×ホームページ制作実践合宿」で教わった作り方に沿って、Claude Codeで作りました。料金や機能は変わるので、契約の前に公式ページを確かめてください。</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  document.documentElement.className='js-ready';
+  var calm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $=function(s,r){return [].slice.call((r||document).querySelectorAll(s));};
+
+  /* メニュー */
+  var menuBtn=document.querySelector('.menu-btn'),nav=document.getElementById('nav');
+  menuBtn.addEventListener('click',function(){
+    var open=nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded',open?'true':'false');
+  });
+  nav.addEventListener('click',function(e){
+    if(e.target.tagName==='A'){nav.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');}
+  });
+
+  /* キャラを結果パネルにも置く */
+  $('[data-mini]').forEach(function(slot){
+    var src=document.querySelector('.char[data-char="'+slot.dataset.mini+'"] svg');
+    if(src){slot.appendChild(src.cloneNode(true));}
+  });
+
+  /* 目がカーソルを追いかける */
+  var px=0,py=0,ticking=false;
+  function look(){
+    ticking=false;
+    $('.eye').forEach(function(eye){
+      var p=eye.querySelector('.pupil');
+      var r=eye.getBoundingClientRect();
+      if(!r.width){return;}
+      var dx=px-(r.left+r.width/2),dy=py-(r.top+r.height/2),d=Math.sqrt(dx*dx+dy*dy)||1;
+      var scale=200/eye.ownerSVGElement.getBoundingClientRect().width;
+      var m=Math.min(7,d*scale/14);
+      p.setAttribute('transform','translate('+(dx/d*m).toFixed(2)+' '+(dy/d*m).toFixed(2)+')');
+    });
+  }
+  function onMove(e){
+    px=e.clientX;py=e.clientY;
+    if(!ticking){ticking=true;requestAnimationFrame(look);}
+  }
+  if(!calm){
+    window.addEventListener('pointermove',onMove,{passive:true});
+    window.addEventListener('pointerdown',onMove,{passive:true});
+  }
+
+  /* えらぶ → 結果・実演・はじめ方が連動 */
+  var choices=$('.choice'),result=document.getElementById('result'),panes=$('.pane'),tabs=$('.tab'),stepPanels=$('[data-steps]');
+  var demos={
+    cc:[['you','教室の案内ページを1枚作って。日時と場所は「メモ.txt」に書いてあるよ'],
+        ['ai','フォルダの中の「メモ.txt」を読む'],
+        ['ai','案内ページ（index.html）を作る'],
+        ['ai','自分で開いて、文字の重なりがないか確かめる'],
+        ['done','できました。フォルダに index.html があります']],
+    cx:[['you','今週のラジオの告知を用意しておいて'],
+        ['ai','先週の告知を開く'],
+        ['ai','日付とテーマを今週のものに入れ替える'],
+        ['ai','リンクが開くか、ひとつずつ確かめる'],
+        ['done','今週の告知ができました。目を通してください']],
+    mu:[['you','届いている連絡に、返信の下書きを作って'],
+        ['ai','クラウドの専用パソコンでメッセージを開く'],
+        ['ai','3件の返信を下書きする'],
+        ['ai','下書きをあなたに見せて、待つ'],
+        ['you','OK、この文で送って'],
+        ['done','3件、送信しました']]
+  };
+  panes.forEach(function(p){p.hidden=p.dataset.pane!=='cc';});
+  stepPanels.forEach(function(p){p.hidden=p.dataset.steps!=='cc';});
+  var timers=[],started=false;
+  function play(key){
+    timers.forEach(clearTimeout);timers=[];
+    var box=document.querySelector('.demo[data-demo="'+key+'"]');
+    if(!box){return;}
+    var log=box.querySelector('.demo-log');
+    log.innerHTML='';
+    var items=demos[key].map(function(d){
+      var li=document.createElement('li');li.className=d[0];li.textContent=d[1];log.appendChild(li);return li;
+    });
+    if(calm){items.forEach(function(li){li.classList.add('on');if(li.classList.contains('ai')){li.classList.add('ok');}});return;}
+    items.forEach(function(li,i){
+      timers.push(setTimeout(function(){
+        li.classList.add('on');
+        if(i>0&&items[i-1].classList.contains('ai')){items[i-1].classList.add('ok');}
+      },350+i*1100));
+    });
+  }
+  function showTab(key){
+    tabs.forEach(function(t){
+      var on=t.dataset.tab===key;
+      t.setAttribute('aria-selected',on?'true':'false');
+      t.tabIndex=on?0:-1;
+    });
+    stepPanels.forEach(function(p){p.hidden=p.dataset.steps!==key;});
+    if(window.__check){setTimeout(window.__check,0);}
+  }
+  function pick(key){
+    choices.forEach(function(c){c.setAttribute('aria-pressed',c.dataset.pick===key?'true':'false');});
+    panes.forEach(function(p){p.hidden=p.dataset.pane!==key;});
+    result.dataset.show=key;
+    started=true;
+    if(key!=='no'){showTab(key);play(key);}
+  }
+  choices.forEach(function(c){c.addEventListener('click',function(){pick(c.dataset.pick);});});
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){showTab(t.dataset.tab);});
+    t.addEventListener('keydown',function(e){
+      if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft'){return;}
+      var n=(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length;
+      showTab(tabs[n].dataset.tab);tabs[n].focus();
+    });
+  });
+  $('[data-go]').forEach(function(a){a.addEventListener('click',function(){showTab(a.dataset.go);});});
+  $('.replay').forEach(function(b){b.addEventListener('click',function(){play(b.closest('.demo').dataset.demo);});});
+
+  /* キャラを押す → ぴょんと跳ねて、その子の結果へ */
+  $('.stage .char').forEach(function(c){
+    c.addEventListener('click',function(){
+      c.classList.remove('jump');void c.offsetWidth;c.classList.add('jump');
+      var key=c.dataset.char;
+      setTimeout(function(){
+        pick(key);
+        document.getElementById('erabu').scrollIntoView({behavior:calm?'auto':'smooth'});
+      },calm?0:380);
+    });
+  });
+
+  /* 読み進みの線 */
+  var bar=document.getElementById('bar');
+  function onScroll(){
+    var h=document.documentElement,max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  /* 画面に入ったら出す */
+  var targets=$('.sec-head,.chooser,.compare,.aside-note,.pcard,.memo,.tabs,.steps li,.steps-foot,.faq-grid details,.case-row,.oops,.closing .wrap>*');
+  var pending=[];
+  function startDemo(){if(!started){started=true;if(result.dataset.show!=='no'){play(result.dataset.show);}}}
+  function check(){
+    if(!pending.length){return;}
+    var line=window.innerHeight*.94;
+    pending=pending.filter(function(t){
+      var r=t.getBoundingClientRect();
+      if(!r.width&&!r.height){return true;}
+      if(r.top<line){
+        t.classList.add('in');
+        if(t.classList.contains('chooser')){startDemo();}
+        return false;
+      }
+      return true;
+    });
+  }
+  if(!calm){
+    targets.forEach(function(t){t.classList.add('reveal');});
+    pending=targets.slice();
+    window.addEventListener('scroll',check,{passive:true});
+    window.addEventListener('resize',check);
+    tabs.forEach(function(t){t.addEventListener('click',function(){setTimeout(check,0);});});
+    window.__check=check;
+    check();
+    /* 念のため：スクロールの合図が届かない環境でも、必ず表示される */
+    var guard=setInterval(function(){check();if(!pending.length){clearInterval(guard);}},500);
+  }else{startDemo();}
+})();
+</script>
+</body>
+</html>
