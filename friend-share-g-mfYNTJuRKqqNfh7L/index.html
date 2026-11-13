@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ja" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="color-scheme" content="light"><meta name="theme-color" content="#17734b">
+<title>かどっちのAI社員のつくり方</title>
+<meta property="og:title" content="かどっちのAI社員のつくり方"><meta property="og:description" content="座ると、今週のBNIの準備がもうできている。その会社を、かどっちのパソコンに作る手引きです。">
+<style>
+:root{--bg:#f5f8f3;--card:#fff;--ink:#17261f;--sub:#4d5d55;--line:#d9e4dc;--green:#17734b;--deep:#0f5235;--pale:#e3f1e8;--sun:#ffd166;--sunink:#3d2a00;--sky:#e6f0fb;--skyink:#174a7c;--rose:#fde8ee;--roseink:#8f1d44;--code:#10231a;--codeink:#e8f3ec}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;font-size:17px;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 18px 72px}
+.narrow{max-width:760px}
+.mast{display:inline-block;background:var(--pale);color:var(--deep);font-weight:700;font-size:13.5px;letter-spacing:.08em;border-radius:999px;padding:4px 14px;margin:0 0 12px}
+h1{font-size:34px;line-height:1.4;margin:0 0 14px;text-wrap:balance}h1 span{display:inline-block}
+.lead{margin:0;color:#2b3a33}
+h2{font-size:23px;line-height:1.5;margin:56px 0 14px;display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;align-items:start}
+h2 i{font-style:normal;width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;font-size:16px;font-weight:700;display:grid;place-items:center;line-height:1}
+p{margin:0 0 12px}
+ul{margin:0 0 12px;padding-left:1.3em}
+li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.cap{font-size:14px;color:var(--sub);margin:8px 2px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:center}
+.screen{background:#0f2219;border-radius:18px;padding:12px;box-shadow:0 14px 30px rgba(15,60,40,.18)}
+.screen .top{display:flex;gap:6px;padding:2px 4px 10px}
+.screen .top span{width:10px;height:10px;border-radius:50%;background:#3d5a4b}
+.board{background:#fff;border-radius:10px;padding:14px}
+.board h3{margin:0 0 10px;font-size:16px;line-height:1.5;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.board h3 b{background:var(--sun);color:var(--sunink);font-size:13px;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.person{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:14px;line-height:1.65}
+.person strong{display:block;font-size:15px}
+.person span{display:inline-block;background:var(--pale);color:var(--deep);border-radius:6px;padding:0 8px;margin:4px 4px 0 0;font-size:13px}
+.person.dim{color:var(--sub);background:#fafcfa}
+
+/* loop */
+.loop{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center;position:relative;font-size:15px;line-height:1.6}
+.step b{display:block;font-size:16px}
+.step em{font-style:normal;display:block;font-size:26px;line-height:1.3;margin-bottom:4px}
+.step small{display:block;color:var(--sub);font-size:13.5px;margin-top:2px}
+.step.you{background:var(--sun);border-color:#e8b93f;color:var(--sunink)}
+.step.you small{color:#5a4208}
+.loop .step:not(:last-child)::after{content:"▶";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--green);font-size:13px;z-index:1}
+.back{margin-top:10px;background:var(--pale);border:1px dashed #9cc7ae;border-radius:14px;padding:12px 16px;color:var(--deep);font-weight:700;text-align:center;line-height:1.6}
+.back small{display:block;font-weight:500;color:#2f5a44;font-size:14px}
+.grow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.grow div{border-radius:14px;padding:14px;background:var(--sky);color:var(--skyink);font-size:15px;line-height:1.6}
+.grow b{display:block;font-size:16px}
+
+/* staff */
+.staff{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.staff .card{padding:16px}
+.staff em{font-style:normal;font-size:32px;line-height:1.2;display:block}
+.staff b{display:block;font-size:17px;margin:4px 0 2px}
+.staff p{font-size:15px;line-height:1.7;margin:0}
+
+/* start */
+.start{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;counter-reset:s}
+.start .card{counter-increment:s;padding:16px 16px 16px 16px}
+.start .card::before{content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--sun);color:var(--sunink);font-weight:800;margin-bottom:8px;line-height:1}
+.start p{font-size:15.5px;line-height:1.7;margin:0}
+.btn{display:inline-block;margin-top:10px;background:var(--green);color:#fff;font-weight:700;text-decoration:none;border-radius:12px;padding:10px 18px;line-height:1.4;font-size:16px}
+.prompt{background:var(--code);border-radius:16px;margin:16px 0;overflow:hidden}
+.prompt .bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;background:#183326;color:#c5dccf;font-size:14px;font-weight:700}
+.prompt button{font:inherit;font-size:14px;font-weight:700;color:var(--sunink);background:var(--sun);border:0;border-radius:9px;padding:6px 14px;cursor:pointer;white-space:nowrap}
+.prompt pre{margin:0;padding:16px;color:var(--codeink);font-family:"Hiragino Sans","Noto Sans JP",ui-monospace,Menlo,monospace;font-size:15.5px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.note{background:var(--sky);color:#173a5c;border-radius:14px;padding:14px 16px;font-size:15.5px;line-height:1.75}
+
+/* timeline */
+.time{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:6px}
+.time div{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--green);border-radius:12px;padding:12px;font-size:14.5px;line-height:1.65}
+.time b{display:block;font-size:15.5px;color:var(--deep)}
+.time .mid{border-top-color:#e8b93f;background:#fffaf0}
+.time .mid b{color:#7a5200}
+.out{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;margin-top:14px}
+.out .box{background:var(--sun);color:var(--sunink);border-radius:14px;padding:14px 16px;font-weight:700;text-align:center;line-height:1.5}
+.out .box small{display:block;font-weight:500;font-size:13.5px}
+.chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.chips span{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:14.5px;line-height:1.5;text-align:center;font-weight:700}
+
+/* tools */
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tools .card{padding:16px}
+.tools h3{margin:0 0 8px;font-size:18px;line-height:1.4}
+.lane{border-radius:10px;padding:8px 10px;font-size:14.5px;line-height:1.6;margin-top:6px}
+.lane b{display:block;font-size:13px;letter-spacing:.04em}
+.lane.now{background:#f1f4f2;color:#33423a}
+.lane.auto{background:var(--pale);color:var(--deep)}
+.lane.bee{background:var(--sky);color:var(--skyink)}
+
+/* stairs */
+.stairs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:end}
+.stair{border-radius:16px;padding:16px;border:1px solid var(--line);background:var(--card)}
+.stair .n{display:inline-block;background:var(--green);color:#fff;border-radius:999px;padding:1px 12px;font-size:13.5px;font-weight:700}
+.stair dl{margin:8px 0 0;font-size:15px;line-height:1.65}
+.stair dt{font-weight:700;color:var(--deep);margin-top:6px}
+.stair dd{margin:0}
+.stair.s2{padding-top:44px}.stair.s3{padding-top:72px;background:#f0f8f3}
+
+/* traffic */
+.traffic{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;align-items:start}
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:8.6em minmax(0,1fr);gap:10px;align-items:center;font-size:15px;line-height:1.5}
+.bar span{background:var(--pale);border-radius:8px;padding:6px 10px;color:var(--deep);font-weight:700}
+.bar.star span{background:var(--sun);color:var(--sunink)}
+.lights{display:grid;gap:8px}
+.light{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:center;font-size:15px;line-height:1.5}
+.light i{width:22px;height:22px;border-radius:50%}
+.g{background:#2aa765}.y{background:#f2b61d}.r{background:#dd4a4a}.k{background:#2b2b2b}
+
+/* road */
+.road{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.road .card{border-top:8px solid var(--green)}
+.road .card:nth-child(2){border-top-color:#e8b93f}.road .card:nth-child(3){border-top-color:#3c7fc4}
+.road b{font-size:18px;display:block;margin-bottom:4px}
+.road ul{font-size:15.5px;margin:0}
+
+/* youtube */
+.yt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:y}
+.yt div{counter-increment:y;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:15px;line-height:1.55;font-weight:700}
+.yt div::before{content:counter(y);display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--pale);color:var(--deep);font-size:13.5px;margin-right:8px;line-height:1}
+.yt small{display:block;font-weight:500;color:var(--sub);font-size:13.5px;margin-top:2px}
+.yt .you{background:var(--sun);border-color:#e8b93f;color:var(--sunink)}
+.yt .you small{color:#5a4208}
+.yt .you::before{background:#fff;color:var(--sunink)}
+
+.gear{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.gear b{font-size:18px;display:block}
+.gear p{font-size:15.5px;margin:4px 0 0}
+.help{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.help div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:15.5px;line-height:1.7}
+.help b{color:var(--deep);display:block}
+footer{margin-top:44px;color:var(--sub);font-size:14px;line-height:1.8}
+footer a{color:var(--deep);overflow-wrap:anywhere}
+
+@media (max-width:860px){
+  .hero,.traffic{grid-template-columns:minmax(0,1fr)}
+  .loop{grid-template-columns:minmax(0,1fr)}
+  .loop .step:not(:last-child)::after{content:"▼";right:auto;left:50%;top:auto;bottom:-13px;transform:translateX(-50%)}
+  .staff{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .start,.tools,.stairs,.road,.grow{grid-template-columns:minmax(0,1fr)}
+  .time{grid-template-columns:minmax(0,1fr)}
+  .stair.s2,.stair.s3{padding-top:16px}
+  .yt{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chips{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .out{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  body{font-size:16.5px}h1{font-size:27px}h2{font-size:20.5px;margin-top:44px}
+  .gear,.help{grid-template-columns:minmax(0,1fr)}
+  .bar{grid-template-columns:7.4em minmax(0,1fr)}
+}
+</style></head>
+<body><main class="wrap">
+
+<section class="hero">
+  <div>
+    <p class="mast">AI社員のつくり方</p>
+    <h1><span>かどっちの</span><span>AI社員の</span><span>つくり方</span></h1>
+    <p class="lead">月曜の朝にパソコンの前に座ると、今週のBNIの準備がもうできています。1to1が終わると、お礼と紹介の下書きが届き、かどっちは読んで「OK」と返すだけです。このページは、その会社をかどっちのパソコンに作るための手引きです。組み立てるのは Codex で、かどっちは Codex の質問に答えていきます。</p>
+  </div>
+  <div class="screen" aria-label="月曜の朝の画面の例">
+    <div class="top"><span></span><span></span><span></span></div>
+    <div class="board">
+      <h3>今週の1to1 <b>7人</b></h3>
+      <div class="person"><strong>火曜 10:00　Aさん（税理士）</strong>前回：開業したばかりのお客さんを探している<br><span>繋がりたい：整骨院の院長</span><span>聞くこと3つ</span><span>渡せる紹介1件</span></div>
+      <div class="person"><strong>水曜 15:00　Bさん（工務店）</strong>前回：リフォームの相談が増えている<br><span>繋がりたい：不動産の方</span><span>聞くこと3つ</span></div>
+      <div class="person dim">木曜 9:00　Cさん ／ 金曜 13:00　Dさん ／ ほか3人</div>
+    </div>
+  </div>
+</section>
+<p class="cap">画面の名前と内容は、説明のための例です。</p>
+
+<h2><i>1</i><span>できあがると、月曜の朝はこうなります</span></h2>
+<div class="narrow">
+<p>月曜の朝、パソコンを開くと「今週の1to1」の板が出ています。会う人ごとに、相手の仕事、前回話したこと、相手が繋がりたい人、今日聞くとよいこと3つが並んでいます。</p>
+<p>1to1が終わったら、録音かメモを「箱」のフォルダに入れます。少し待つと、チェック待ちの箱に次の4つが届きます。</p>
+</div>
+<div class="out">
+  <div class="box">録音かメモを<br>箱に入れる<small>かどっちがやること</small></div>
+  <div class="chips"><span>相手へのお礼の文</span><span>紹介の文<br>（繋ぐ相手がいる時）</span><span>次に会う候補日</span><span>BNI Connect に<br>入れる記録</span></div>
+</div>
+<div class="narrow" style="margin-top:14px">
+<p>かどっちは読んで、「OK」か「ここを直して」を返します。月末には、30〜40人と会った記録と紹介の数がまとまっています。</p>
+</div>
+
+<h2><i>2</i><span>会社は、この輪で回ります</span></h2>
+<div class="loop">
+  <div class="step"><em>🛠</em><b>社員が作る</b><small>下書き・準備・記録</small></div>
+  <div class="step"><em>🔍</em><b>検品係が確かめる</b><small>別の目で、見せる前に</small></div>
+  <div class="step"><em>📥</em><b>チェック待ちの箱</b><small>通った物だけ届く</small></div>
+  <div class="step you"><em>🙆</em><b>かどっちが返事</b><small>「OK」か「ここを直して」</small></div>
+  <div class="step"><em>📊</em><b>成績表に1行</b><small>返事を数える</small></div>
+</div>
+<div class="back">↺ 週に1回、いちばん多かった直しを1つ選んで、社員の手順書を1か所だけ変える<small>効果が出たかを確かめるのは次の週。出なかった変更は元に戻します</small></div>
+<div class="narrow" style="margin-top:16px">
+<p>AI社員が作った物は、かどっちに見せる前に検品係が確かめます。チェック待ちの箱に届くのは、通った物だけです。かどっちの返事は、成績表に1行ずつ残ります。</p>
+</div>
+<div class="grow">
+  <div><b>はじめ</b>1件ずつチェック</div>
+  <div><b>5回続けてそのままOK</b>その種類は、週1回のまとめてチェックに変えられます</div>
+  <div><b>そのあと</b>まとめてチェックの種類が増えるほど、かどっちが見る回数は減ります</div>
+</div>
+
+<h2><i>3</i><span>社員は4人です</span></h2>
+<div class="staff">
+  <div class="card"><em>🧭</em><b>ディレクター</b><p>今日やる1個を決めます。新しい仕事にはゴールを書き、ほかの社員へ振ります。</p></div>
+  <div class="card"><em>✉️</em><b>秘書</b><p>返信の下書きを作り、約束と期日、予定をまとめます。</p></div>
+  <div class="card"><em>🧾</em><b>経理</b><p>領収書と明細を帳簿に入れ、月のまとめと請求書の下書きを作ります。</p></div>
+  <div class="card"><em>🔍</em><b>検品係</b><p>かどっちに見せる前に確かめます。毎週、成績表を数えて社員を1か所ずつ直します。</p></div>
+</div>
+<p class="cap">社員の名前と話し方は、最初の日にかどっちが決められます。</p>
+
+<h2><i>4</i><span>始め方は3つです</span></h2>
+<div class="start">
+  <div class="card"><p>下のボタンからキットを受け取り、開いてできたフォルダを書類（ドキュメント）の中に置きます。</p><a class="btn" href="ai-shain-kit.zip" download>キットを受け取る</a></div>
+  <div class="card"><p>ChatGPT のデスクトップアプリ（Codex）で、そのフォルダをプロジェクトとして開きます。</p></div>
+  <div class="card"><p>次の1文を貼って送ります。</p></div>
+</div>
+<div class="prompt"><div class="bar"><span>そのまま貼る1文</span><button type="button" data-copy="p0">コピー</button></div><pre id="p0">START.md を読んで、一緒にAI社員を組み立ててください。</pre></div>
+<div class="narrow">
+<p>あとは Codex の質問に答えていきます。最初の日は1〜2時間かかります。進むのは、BNIのメンバー5人分のメンバーカードと、次の1to1の準備の1枚ができる所までです。メンバーの名簿か名刺の写真を手元に用意しておくと、早く進みます。</p>
+<div class="note">途中で承認の画面が出ることがあります。Codex がフォルダの外やインターネットに触ろうとした時に出る画面です。内容を読んで、分かる物だけ許可してください。分からない時は、Codex に「これは何をしようとしているの？」と聞くと説明が返ってきます。</div>
+</div>
+
+<h2><i>5</i><span>最初の仕事は、BNIの1to1です</span></h2>
+<p>1to1の前と後で、AI社員の動きはこう分かれます。</p>
+<div class="time">
+  <div><b>週の初め</b>予定表から今週の1to1を拾い、板に並べます。今月まだ会っていない人も出します。</div>
+  <div><b>前の日</b>相手ごとに準備の1枚を作ります。前回話したこと、相手が繋がりたい人、今日聞くとよいこと3つ、かどっちから渡せる紹介の候補が入ります。</div>
+  <div class="mid"><b>1to1の後</b>かどっちが録音かメモを箱に入れます。AI社員は相手のメンバーカードを書き換え、お礼の文、紹介の文、次の候補日、BNI Connect の記録を作ります。</div>
+  <div><b>定例会の前</b>週間プレゼンの台本と、渡すリファーラルの一覧を作ります。</div>
+  <div><b>週の終わり</b>信号機の点の見込みと、緑まであと何をすればよいかを出します。</div>
+</div>
+<div class="narrow" style="margin-top:16px">
+<p>メンバーの情報は、1人1枚のメンバーカードにまとめます。相手からもらったGAINSシートや略歴シートの置き場も、カードの横です。1to1で決まった「次にやること」は約束の一覧にも入り、ディレクターが朝に拾って今日やることに出します。</p>
+</div>
+
+<h2><i>6</i><span>連絡の道具は、こうつなぎます</span></h2>
+<div class="tools">
+  <div class="card"><h3>Chatwork</h3>
+    <div class="lane auto"><b>読む</b>公式のAPIでつなぐと、自動で読めます</div>
+    <div class="lane auto"><b>送る</b>かどっちがOKした文を、そのまま送れます</div></div>
+  <div class="card"><h3>メッセンジャー</h3>
+    <div class="lane now"><b>最初</b>かどっちが文を貼り、下書きをコピーして送ります</div>
+    <div class="lane bee"><b>Beeper を入れた後</b>AI社員が自動で読めます</div></div>
+  <div class="card"><h3>LINE</h3>
+    <div class="lane now"><b>最初</b>かどっちが文を貼り、下書きをコピーして送ります</div>
+    <div class="lane bee"><b>Beeper を入れた後</b>AI社員が自動で読めます</div></div>
+</div>
+<div class="narrow" style="margin-top:16px">
+<p>Chatwork は、公式のAPI（外のアプリとつなぐための仕組み）でつなぐと、届いた連絡を自動で読めます。かどっちがOKした文を、そのまま送ることもできます。</p>
+<p>メッセンジャーとLINEは、最初はかどっちが文を貼り、下書きをコピーして送ります。Beeper というアプリを入れると、この2つもAI社員が自動で読めるようになります。Beeper は、LINEやメッセンジャーなどを1つにまとめるアプリです。</p>
+<p>Beeper を入れる前に、次の4つを知っておいてください。</p>
+<ul>
+<li>LINEのやり取りは、Beeper のサーバーを通ります。</li>
+<li>LINE側では「Chrome版のLINE」として入ります。Chrome版のLINEとは同時に使えません。</li>
+<li>Beeper の案内には、個人で使うこと、送りすぎるとアカウントが止まることがある、と書かれています。</li>
+<li>料金は、5つのサービスまで無料です。それ以上は月9.99ドルです。</li>
+</ul>
+<p>かどっちのLINEには、仕事の連絡が集まっています。そのため、Beeper は「読むことと下書きまで」に使い、送信はかどっちが Beeper の画面で行います。入れる時期は、BNIの流れが1周回ったあとです。</p>
+</div>
+
+<h2><i>7</i><span>BNI Connect への入力は、3段で任せます</span></h2>
+<p>1to1、リファーラル、サンキューの記録は、BNI Connect に入れます。入力は次の3段で、少しずつ AI社員に任せます。</p>
+<div class="stairs">
+  <div class="stair"><span class="n">1段目</span><dl><dt>AI社員</dt><dd>入力欄の順に並べた記録を作ります。</dd><dt>かどっち</dt><dd>貼って登録します。</dd></dl></div>
+  <div class="stair s2"><span class="n">2段目</span><dl><dt>AI社員</dt><dd>BNI Connect の画面を開き、欄を埋めて止まります。</dd><dt>かどっち</dt><dd>見て、登録ボタンを押します。</dd></dl></div>
+  <div class="stair s3"><span class="n">3段目</span><dl><dt>AI社員</dt><dd>登録まで行い、内容を記録に残します。</dd><dt>かどっち</dt><dd>週に1回まとめて見ます。</dd></dl></div>
+</div>
+<p class="cap">左の1段目から始めて、右へ上がっていきます。</p>
+<div class="narrow" style="margin-top:12px">
+<p>BNI Connect へのログインは、かどっちが行います。パスワードは Codex に渡しません。3段目に進むのは、同じ種類の記録が5回続けてそのまま登録になり、かどっちが「任せる」と決めた時です。金額が入るサンキューの記録は、2段目のままにします。</p>
+</div>
+
+<h2><i>8</i><span>信号機の点も、毎週見えるようにします</span></h2>
+<p>BNIの信号機は、直近6か月の平均で点が出ます。満点は105点で、70点以上が緑です。項目ごとの、20点になる目安は次のとおりです。</p>
+<div class="traffic">
+  <div class="card bars">
+    <div class="bar"><b>出席</b><span>90%以上（代理出席は0.5回分）</span></div>
+    <div class="bar"><b>リファーラル</b><span>週1件</span></div>
+    <div class="bar"><b>ビジター招待</b><span>月1人</span></div>
+    <div class="bar star"><b>1to1</b><span>週1回</span></div>
+    <div class="bar"><b>学び（CEU）</b><span>週1時間</span></div>
+    <div class="bar"><b>スポンサー</b><span>6か月以内に新メンバーを紹介すると5点</span></div>
+  </div>
+  <div class="card lights">
+    <div class="light"><i class="g"></i><span><b>緑</b>　70点以上</span></div>
+    <div class="light"><i class="y"></i><span><b>黄</b>　50〜65点</span></div>
+    <div class="light"><i class="r"></i><span><b>赤</b>　30〜45点</span></div>
+    <div class="light"><i class="k"></i><span><b>黒</b>　25点以下</span></div>
+  </div>
+</div>
+<div class="narrow" style="margin-top:16px">
+<p>月に30〜40人と1to1をしていれば、1to1の項目は満点になります。AI社員は、1to1で聞いた話からリファーラルの候補を出し、記録の入力がたまらないようにします。</p>
+<p>この表は、公開されている情報をもとに2026年にまとめたものです。チャプターの決まりと違う所があれば、チャプターの決まりに合わせて直します。</p>
+</div>
+
+<h2><i>9</i><span>進み方は、初日・1週間・1か月です</span></h2>
+<div class="road">
+  <div class="card"><b>初日</b><ul><li>Codex の質問に答えます。</li><li>メンバー5人分のメンバーカードと、次の1to1の準備の1枚ができます。</li></ul></div>
+  <div class="card"><b>1週間</b><ul><li>1to1を1人分、前から後まで1周通します。</li><li>メンバーカードを全員分にします。</li><li>予定表をつなぎ、週の板と前の日の準備を自動にします。</li><li>週の終わりに、最初のふりかえりをします。</li></ul></div>
+  <div class="card"><b>1か月</b><ul><li>Chatwork をつなぎます。</li><li>BNI Connect の入力を2段目に進めます。</li><li>秘書と経理の仕事を始めます。</li><li>フォルダの控えをインターネット上の自分専用の置き場（GitHub）に取ります。</li></ul></div>
+</div>
+
+<h2><i>10</i><span>BNIが回ったら、YouTubeのチームを足します</span></h2>
+<div class="yt">
+  <div>企画<small>見立てを先に書く</small></div>
+  <div>台本</div>
+  <div>制作</div>
+  <div>検品<small>作った社員と別の目で</small></div>
+  <div class="you">かどっちのチェック<small>見て返事をする</small></div>
+  <div>予約投稿</div>
+  <div>数字の回収<small>24時間後と72時間後</small></div>
+  <div>型の見直し<small>続けるか変えるか</small></div>
+</div>
+<div class="narrow" style="margin-top:16px">
+<p>動画は、企画、台本、制作、検品、かどっちのチェック、予約投稿、数字の回収、型の見直しの順に進みます。かどっちがすることは、チェック待ちに来た動画を見て返事をすることです。</p>
+<p>公開から24時間後と72時間後の数字は、AI社員が決まった時刻に自分で集めます。企画の時に書いた見立てと、実際の数字を比べて、その型を続けるか変えるかを決めます。同じ型で見立てどおりの数字が続いたら、その型を別のチャンネルへ写します。</p>
+</div>
+
+<h2><i>11</i><span>あると楽になる道具です</span></h2>
+<div class="gear">
+  <div class="card"><b>🎙 Mori</b><p>身につけておくと、会話を録音して文字にする道具です。1to1の録音を箱に入れる手間が減ります。公式サイトで注文できます。本体は169ドルで、月10時間までの文字起こしは無料です。月30時間のプランは年130ドルです（2026年11月13日に公式サイトで確認）。1to1の相手には、録音することを最初に伝えます。</p></div>
+  <div class="card"><b>💬 Beeper</b><p>6の「連絡の道具」で紹介したアプリです。</p></div>
+</div>
+
+<h2><i>？</i><span>困った時は</span></h2>
+<div class="help">
+  <div><b>承認の画面が何度も出る</b>Codex がフォルダの外やインターネットに触ろうとしています。内容を読んで、許可するかを決めてください。</div>
+  <div><b>社員が役目を忘れる</b>新しいチャットを始めて、「AGENTS.md を読んで」と送ります。</div>
+  <div><b>使える量の上限に当たった</b>時間を置きます。急ぐ時は、頼みごとを短く分けます。</div>
+  <div><b>それでも止まる</b>おけもんに、止まった画面の写真を送ってください。</div>
+</div>
+
+<footer>
+<p>このページは2026年11月13日にまとめました。道具の仕様と料金は変わることがあります。元の案内はこちらです。<br>
+Codex：<a href="https://learn.chatgpt.com/docs/app">https://learn.chatgpt.com/docs/app</a><br>
+Beeper：<a href="https://developers.beeper.com/desktop-api/">https://developers.beeper.com/desktop-api/</a><br>
+Mori：<a href="https://mori.to/">https://mori.to/</a></p>
+</footer>
+
+</main>
+<script>
+document.querySelectorAll('button[data-copy]').forEach(function(b){
+  b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy),t=el.textContent;
+    function done(){var o=b.textContent;b.textContent='コピーしました';setTimeout(function(){b.textContent=o;},1600);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){sel();done();});}else{sel();done();}
+    function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy');}catch(_){}}
+  });
+});
+</script>
+</body></html>
