@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="artifact-type" content="dashboard">
+<meta name="design-style" content="sticker">
+<title>みんな何やってる？引き寄せ実践ダッシュボード｜神戸オフ会</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..900;1,9..40,400..900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+
+  /* 1. Sticker style tokens */
+  --background: #fef7ff;               /* pink-white page */
+  --surface-container-low: #ffffff;    /* white: cards and floating panels */
+  --surface-container: #f8eef8;        /* pale pink: input fills, inset wells */
+  --surface-container-high: #f2e8f2;   /* deeper pink: tracks, hover fills */
+
+  /* Ink */
+  --on-surface: #2e1a28;               /* deep plum: headlines and body */
+  --on-surface-variant: #604868;       /* dusty plum: captions, secondary text */
+
+  /* Rules */
+  --outline: #907898;                  /* mauve: input and control borders */
+  --outline-variant: #dcc8e0;          /* lilac: rare hairlines, gridlines */
+
+  /* Accents */
+  --primary: #c2207f;                  /* hot pink: actions, links, emphasis */
+  --on-primary: #ffffff;
+  --primary-container: #f080c0;        /* bubblegum: badges, selected chips */
+  --on-primary-container: #2e1a28;
+  --secondary: #7c52aa;                /* grape: secondary actions, tags */
+  --tertiary: #0096cc;                 /* sky blue: highlights and fills only */
+  --error: #c53030;
+  --on-error: #ffffff;
+
+  /* Data series */
+  --data-1: #c2207f;
+  --data-2: #7c52aa;
+  --data-3: #0096cc;
+  --data-4: #d96a00;
+  --data-context: #c8b8d0;
+
+  /* Fonts (Japanese + DM Sans) */
+  --font-headline: 'Noto Sans JP', 'DM Sans', sans-serif;
+  --font-body: 'Noto Sans JP', 'DM Sans', sans-serif;
+  --font-label: 'Noto Sans JP', 'DM Sans', sans-serif;
+
+  /* Shape */
+  --rounded: 1.25rem;
+  --rounded-lg: 2rem;
+  --rounded-full: 9999px;
+
+  /* Style effects */
+  --shadow-pink: 0 4px 16px rgb(224 64 160 / 0.16);
+  --shadow-pink-deep: 0 10px 28px rgb(224 64 160 / 0.28);
+  --shadow-grape: 0 4px 16px rgb(124 82 170 / 0.16);
+  --shadow-grape-deep: 0 10px 28px rgb(124 82 170 / 0.26);
+  --shadow-sky: 0 4px 16px rgb(0 150 204 / 0.16);
+  --pop-scale: scale(1.03);
+  --lift: translateY(-4px);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* 2. Soft surface tints & meetup accents */
+  --surface-tint-pink: #fdebf5;
+  --surface-tint-sky: #e7f6fc;
+  --surface-tint-grape: #f1eaf8;
+  --surface-tint-mint: #e8f8f0;
+  --on-secondary: #ffffff;
+
+  /* 3. Shared tokens */
+  --positive: #15803d;
+  --warning: #b45309;
+  --focus: #c2207f;
+
+  /* Type scale (smartphone-friendly larger body) */
+  --display-size: clamp(1.75rem, 1.35rem + 1.8vw, 2.6rem);
+  --headline-size: clamp(1.25rem, 1.08rem + 0.7vw, 1.65rem);
+  --subhead-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --body-size: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --label-size: 0.8125rem;
+
+  /* Spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+}
+
+/* Base reset */
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--on-surface);
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+header { position: static !important; }
+button, input, select, textarea { font-family: inherit; }
+
+.page-grid {
+  display: grid;
+  gap: var(--space-xl);
+  padding: var(--space-lg);
+  max-width: 1180px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.page-grid * { min-width: 0; }
+
+/* Focus rings */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Typography */
+.display {
+  font-family: var(--font-headline);
+  font-weight: 900;
+  font-size: var(--display-size);
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--on-surface);
+  margin: 0;
+}
+.display em {
+  font-style: normal;
+  color: var(--primary);
+}
+h2 {
+  font-family: var(--font-headline);
+  font-weight: 800;
+  font-size: var(--headline-size);
+  line-height: 1.3;
+  letter-spacing: 0;
+  color: var(--on-surface);
+  margin: 0;
+}
+h3 {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: var(--subhead-size);
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--on-surface);
+  margin: 0;
+}
+p { margin: 0; }
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  align-self: flex-start;
+  background: var(--surface-tint-grape);
+  color: var(--secondary);
+  font-family: var(--font-label);
+  font-size: var(--label-size);
+  font-weight: 700;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--rounded-full);
+}
+.section-desc {
+  color: var(--on-surface-variant);
+  max-width: 65ch;
+}
+
+/* Hero Panel */
+.hero-panel {
+  background: var(--surface-container-low);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-pink);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.meetup-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  align-self: flex-start;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  font-weight: 700;
+  font-size: var(--label-size);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--rounded-full);
+}
+.hero-lede {
+  color: var(--on-surface-variant);
+  max-width: 62ch;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+/* KPI Row */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+.kpi-card {
+  background: var(--surface-container-low);
+  border-radius: var(--rounded);
+  padding: var(--space-md) var(--space-lg);
+  box-shadow: var(--shadow-pink);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.kpi-card:nth-child(3n+2) { box-shadow: var(--shadow-sky); }
+.kpi-card:nth-child(3n+3) { box-shadow: var(--shadow-grape); }
+.kpi-label {
+  font-size: var(--label-size);
+  font-weight: 700;
+  color: var(--on-surface-variant);
+}
+.kpi-value {
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  color: var(--on-surface);
+}
+.kpi-value.accent { color: var(--primary); }
+.kpi-value.grape { color: var(--secondary); }
+.kpi-sub {
+  font-size: var(--label-size);
+  color: var(--on-surface-variant);
+}
+
+/* Buttons & Chips */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  min-height: 44px;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--rounded-full);
+  border: 0;
+  font-size: var(--body-size);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform var(--dur-short) var(--ease-bounce),
+              box-shadow var(--dur-short) var(--ease-out),
+              background-color var(--dur-short) var(--ease-out);
+}
+.btn:hover { transform: var(--pop-scale); }
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-pink);
+}
+.btn-primary:hover { box-shadow: var(--shadow-pink-deep); }
+
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--on-secondary);
+  box-shadow: var(--shadow-grape);
+}
+.btn-secondary:hover { box-shadow: var(--shadow-grape-deep); }
+
+.btn-soft {
+  background: var(--surface-container);
+  color: var(--on-surface);
+}
+.btn-soft:hover { background: var(--surface-container-high); }
+
+.btn-quiet {
+  background: transparent;
+  color: var(--primary);
+  padding: var(--space-sm) var(--space-md);
+}
+.btn-quiet:hover { background: var(--surface-tint-pink); }
+
+/* Topic Generator (話のタネ) */
+.topic-panel {
+  background: var(--surface-container-low);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-grape);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.topic-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+}
+.toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md);
+  background: var(--surface-container);
+  border-radius: var(--rounded-full);
+  cursor: pointer;
+  font-size: var(--label-size);
+  font-weight: 700;
+  color: var(--on-surface);
+}
+.toggle-pill input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+.topic-stage {
+  background: var(--surface-tint-pink);
+  border-radius: var(--rounded);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  transition: transform var(--dur-short) var(--ease-bounce), opacity var(--dur-short) var(--ease-out);
+}
+.topic-stage.is-animating {
+  opacity: 0.6;
+  transform: scale(0.98);
+}
+.topic-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.talk-bubble {
+  background: var(--surface-container-low);
+  border-radius: var(--rounded);
+  padding: var(--space-md) var(--space-lg);
+  box-shadow: var(--shadow-pink);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.talk-bubble-lead {
+  font-weight: 800;
+  color: var(--primary);
+  font-size: var(--subhead-size);
+}
+.talk-bubble-sub {
+  color: var(--on-surface);
+}
+.topic-history {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.topic-history-label {
+  font-size: var(--label-size);
+  font-weight: 700;
+  color: var(--on-surface-variant);
+}
+
+/* Badges & Tags */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--rounded-full);
+  font-size: var(--label-size);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.badge-book {
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+}
+.badge-time {
+  background: var(--surface-tint-sky);
+  color: var(--on-surface);
+}
+.badge-tag {
+  background: var(--surface-container);
+  color: var(--secondary);
+}
+
+/* Filter Toolbar */
+.filter-panel {
+  background: var(--surface-container-low);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-sky);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.filter-inputs {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-md);
+  align-items: end;
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.field-label {
+  font-size: var(--label-size);
+  font-weight: 700;
+  color: var(--on-surface-variant);
+}
+.input-pill,
+.select-pill {
+  width: 100%;
+  min-height: 46px;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--rounded-full);
+  border: 2px solid var(--outline);
+  background: var(--surface-container);
+  color: var(--on-surface);
+  font-size: var(--body-size);
+  transition: box-shadow var(--dur-micro) var(--ease-out), background-color var(--dur-micro) var(--ease-out);
+}
+.select-pill {
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+.input-pill:focus,
+.select-pill:focus {
+  background: var(--surface-container-low);
+  box-shadow: 0 0 0 3px var(--primary-container);
+  outline: none;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--rounded-full);
+  border: 2px solid var(--outline-variant);
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  font-size: var(--label-size);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--dur-short) var(--ease-bounce),
+              background-color var(--dur-micro) var(--ease-out),
+              box-shadow var(--dur-short) var(--ease-out);
+}
+.chip:hover {
+  transform: var(--pop-scale);
+  background: var(--surface-container);
+}
+.chip.is-active {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-pink);
+}
+.chip.is-secondary-active {
+  background: var(--secondary);
+  color: var(--on-secondary);
+  border-color: var(--secondary);
+  box-shadow: var(--shadow-grape);
+}
+.filter-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.result-count {
+  font-size: var(--label-size);
+  font-weight: 700;
+  color: var(--on-surface-variant);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Practice Cards Grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(310px, 100%), 1fr));
+  gap: var(--space-lg);
+}
+.card-wrapper {
+  container-type: inline-size;
+  display: flex;
+}
+.practice-card {
+  width: 100%;
+  background: var(--surface-container-low);
+  border-radius: var(--rounded);
+  box-shadow: var(--shadow-pink);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  transition: transform var(--dur-short) var(--ease-bounce), box-shadow var(--dur-short) var(--ease-out);
+}
+.card-wrapper:nth-child(3n+2) .practice-card { box-shadow: var(--shadow-sky); }
+.card-wrapper:nth-child(3n+3) .practice-card { box-shadow: var(--shadow-grape); }
+.practice-card:hover { transform: var(--lift); }
+
+.practice-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  justify-content: space-between;
+  align-items: center;
+}
+.practice-howto {
+  color: var(--on-surface-variant);
+  flex-grow: 1;
+}
+.practice-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+.practice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding-top: var(--space-xs);
+}
+.action-pill {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--rounded-full);
+  border: 0;
+  background: var(--surface-container);
+  color: var(--on-surface);
+  font-size: var(--label-size);
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  transition: transform var(--dur-short) var(--ease-bounce), background-color var(--dur-micro) var(--ease-out);
+}
+.action-pill:hover {
+  transform: var(--pop-scale);
+  background: var(--surface-container-high);
+}
+.action-pill.is-tried {
+  background: var(--surface-tint-mint);
+  color: var(--positive);
+}
+.action-pill.is-saved {
+  background: var(--surface-tint-pink);
+  color: var(--primary);
+}
+
+@container (max-width: 320px) {
+  .practice-actions { flex-direction: column; }
+}
+
+/* Empty State */
+.empty-state {
+  background: var(--surface-container-low);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-pink);
+  padding: var(--space-2xl) var(--space-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* Data Viz & Insights */
+.insights-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: var(--space-lg);
+}
+.viz-card {
+  background: var(--surface-container-low);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-sky);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.common-card {
+  background: var(--surface-container-low);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-grape);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.lollipop-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.lollipop-row {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr) 2.75rem;
+  gap: var(--space-sm);
+  align-items: center;
+}
+.lollipop-label {
+  font-size: var(--label-size);
+  font-weight: 700;
+  color: var(--on-surface);
+}
+.lollipop-track {
+  height: 14px;
+  background: var(--surface-container);
+  border-radius: var(--rounded-full);
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.lollipop-bar {
+  height: 14px;
+  border-radius: var(--rounded-full);
+  background: var(--data-1);
+  position: relative;
+  transition: width var(--dur-long) var(--ease-out);
+}
+.lollipop-row:nth-child(3n+2) .lollipop-bar { background: var(--data-2); }
+.lollipop-row:nth-child(3n+3) .lollipop-bar { background: var(--data-3); }
+.lollipop-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--rounded-full);
+  background: inherit;
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 3px solid var(--surface-container-low);
+}
+.lollipop-count {
+  font-size: var(--label-size);
+  font-weight: 800;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--on-surface);
+}
+
+.common-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.common-item {
+  background: var(--surface-container);
+  border-radius: var(--rounded);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.common-item-title {
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* Comparison Table Card */
+.table-card {
+  background: var(--surface-container-low);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-pink);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9375rem;
+}
+.compare-table thead th {
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+  font-size: var(--label-size);
+  font-weight: 700;
+  padding: var(--space-md);
+  white-space: nowrap;
+}
+.compare-table thead th:first-child { border-radius: var(--rounded) 0 0 var(--rounded); }
+.compare-table thead th:last-child { border-radius: 0 var(--rounded) var(--rounded) 0; }
+.compare-table tbody tr:nth-child(even) {
+  background: var(--surface-container);
+}
+.compare-table tbody td {
+  padding: var(--space-md);
+  vertical-align: top;
+}
+.book-title-cell {
+  font-weight: 800;
+  color: var(--on-surface);
+  min-width: 12rem;
+}
+.approach-pill {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--rounded-full);
+  background: var(--surface-tint-grape);
+  color: var(--secondary);
+  font-size: var(--label-size);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.table-filter-btn {
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--rounded-full);
+  border: 0;
+  background: var(--surface-tint-pink);
+  color: var(--primary);
+  font-size: var(--label-size);
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform var(--dur-short) var(--ease-bounce);
+}
+.table-filter-btn:hover { transform: var(--pop-scale); }
+
+/* Footer / Meetup Tools */
+.footer-card {
+  background: var(--surface-container-low);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-grape);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+}
+.inline-msg {
+  font-size: var(--label-size);
+  font-weight: 700;
+  color: var(--secondary);
+}
+.source-note {
+  font-size: var(--label-size);
+  color: var(--on-surface-variant);
+  line-height: 1.7;
+}
+
+/* Mobile Layout */
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .insights-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .page-grid {
+    padding: var(--space-md);
+    gap: var(--space-lg);
+  }
+  .hero-panel,
+  .topic-panel,
+  .filter-panel,
+  .viz-card,
+  .common-card,
+  .table-card,
+  .footer-card {
+    padding: var(--space-md);
+    border-radius: var(--rounded);
+  }
+  .filter-inputs { grid-template-columns: 1fr; }
+  .lollipop-row { grid-template-columns: 6.5rem minmax(0, 1fr) 2.5rem; }
+
+  /* Stack comparison table cleanly on smartphone */
+  .compare-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .compare-table,
+  .compare-table tbody,
+  .compare-table tr,
+  .compare-table td {
+    display: block;
+    width: 100%;
+  }
+  .compare-table tr {
+    border-radius: var(--rounded);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    background: var(--surface-container);
+  }
+  .compare-table tbody tr:nth-child(even) {
+    background: var(--surface-tint-pink);
+  }
+  .compare-table tbody td {
+    padding: var(--space-xs) 0;
+  }
+  .compare-table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: var(--label-size);
+    font-weight: 700;
+    color: var(--on-surface-variant);
+    margin-bottom: var(--space-xs);
+  }
+  .compare-table tbody td.book-title-cell::before { content: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+<body>
+<main class="page-grid">
+  <!-- Hero & KPI -->
+  <section class="hero-panel" aria-labelledby="hero-title">
+    <span class="meetup-pill">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.8h6.1l-4.9 3.6 1.9 5.8-5-3.6-5 3.6 1.9-5.8-4.9-3.6h6.1z"/></svg>
+      神戸オフ会 13:00〜 ｜ 体験談＆やっていることを語る会
+    </span>
+    <h1 class="display" id="hero-title">みんな<em>何やってる？</em><br>引き寄せ実践ダッシュボード</h1>
+    <p class="hero-lede">
+      ノートブック内の引き寄せ・現実創造・ジャーナリング関連書籍15冊から、紹介されている具体的なワークや思考法をカード化しました。スマホで気になるやり方を探しながら、「これやったことある？」と楽しくおしゃべりしましょう。
+    </p>
+    <div class="hero-actions">
+      <a href="#topic-section" class="btn btn-primary">今日の話のタネを引く</a>
+      <a href="#directory-section" class="btn btn-soft">やっていること図鑑へ</a>
+      <a href="#compare-section" class="btn btn-quiet">15冊の比較表を見る</a>
+    </div>
+  </section>
+
+  <section class="kpi-grid" aria-label="ダッシュボード概要">
+    <div class="kpi-card">
+      <span class="kpi-label">対象書籍</span>
+      <span class="kpi-value">15冊</span>
+      <span class="kpi-sub">抜粋収録14冊＋話題募集1冊</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">収録メソッド数</span>
+      <span class="kpi-value accent" id="kpi-total-methods">29件</span>
+      <span class="kpi-sub">タグ・書籍名で絞り込み可</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">やったことがある</span>
+      <span class="kpi-value grape" id="kpi-tried-count">0件</span>
+      <span class="kpi-sub">カードでチェックして共有</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">気になる・話したい</span>
+      <span class="kpi-value" id="kpi-saved-count">0件</span>
+      <span class="kpi-sub">あとで振り返る用メモ</span>
+    </div>
+  </section>
+
+  <!-- 今日の話のタネ (Random Topic Generator) -->
+  <section class="topic-panel" id="topic-section" aria-labelledby="topic-heading">
+    <div class="section-header">
+      <span class="section-kicker">オフ会トーク機能</span>
+      <h2 id="topic-heading">今日の話のタネ</h2>
+      <p class="section-desc">
+        話題に迷ったらボタンを押して1枚ピックアップ。全員でスマホを見ながら「これ、やったことある？どうだった？」と話してみましょう。
+      </p>
+    </div>
+
+    <div class="topic-controls">
+      <button type="button" class="btn btn-primary" id="draw-topic-btn" onclick="drawRandomTopic()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.5" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.5" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.5" fill="currentColor"/></svg>
+        今日の話のタネを引く！
+      </button>
+      <label class="toggle-pill">
+        <input type="checkbox" id="draw-from-filtered" onchange="toggleDrawMode(this.checked)">
+        <span>図鑑の絞り込み中から引く</span>
+      </label>
+    </div>
+
+    <div class="topic-stage" id="topic-stage" aria-live="polite">
+      <div class="topic-meta" id="topic-meta"></div>
+      <h3 id="topic-title">ボタンを押して今日の1枚を引いてみよう</h3>
+      <p id="topic-howto" class="practice-howto"></p>
+      <div class="talk-bubble">
+        <p class="talk-bubble-lead">「これ、やったことある？どうだった？」</p>
+        <p class="talk-bubble-sub" id="topic-prompt"></p>
+      </div>
+      <div class="practice-actions" id="topic-actions"></div>
+    </div>
+
+    <div class="topic-history" id="topic-history-wrap">
+      <span class="topic-history-label">今日引いたタネ：</span>
+      <div class="chip-row" id="topic-history-chips"></div>
+    </div>
+  </section>
+
+  <!-- やっていること図鑑 (Directory + Filters) -->
+  <section id="directory-section" aria-labelledby="directory-heading">
+    <div class="section-header">
+      <span class="section-kicker">実践メソッド一覧</span>
+      <h2 id="directory-heading">やっていること図鑑</h2>
+      <p class="section-desc">
+        各書籍で紹介されている具体的なワークをカード化しました。時間ややり方のタグから、気楽に試せそうなものや共通の話題を探せます。
+      </p>
+    </div>
+
+    <div class="filter-panel">
+      <div class="filter-inputs">
+        <div class="field-group">
+          <label for="search-input" class="field-label">キーワードで探す（メソッド名・書籍名・内容）</label>
+          <input type="search" id="search-input" class="input-pill" placeholder="例：感謝、AI、ノート、100ドル、フリをする" oninput="onSearchInput(this.value)">
+        </div>
+        <div class="field-group">
+          <label for="book-select" class="field-label">書籍で絞り込む</label>
+          <select id="book-select" class="select-pill" onchange="onBookSelect(this.value)">
+            <option value="all">すべての書籍（14冊）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <span class="field-label">タグ・ステータスで絞り込む</span>
+        <div class="chip-row" id="tag-chips"></div>
+      </div>
+
+      <div class="filter-status-row">
+        <span class="result-count" id="result-count">29件中 29件を表示中</span>
+        <button type="button" class="btn btn-quiet" id="reset-filters-btn" onclick="resetAllFilters()">絞り込みをリセット</button>
+      </div>
+    </div>
+
+    <div id="cards-container" class="card-grid" style="margin-top: var(--space-lg);"></div>
+  </section>
+
+  <!-- Insights & Comparison -->
+  <section id="compare-section" aria-labelledby="compare-heading">
+    <div class="section-header">
+      <span class="section-kicker">全体の傾向と書籍別マップ</span>
+      <h2 id="compare-heading">アプローチの違いと共通点</h2>
+      <p class="section-desc">
+        15冊それぞれの立ち位置と、本をまたいで何度も登場する共通のエッセンスをまとめました。書籍の「実践を見る」を押すと上の図鑑へジャンプします。
+      </p>
+    </div>
+
+    <div class="insights-grid">
+      <div class="viz-card">
+        <h3>実践アプローチ別・メソッド分布</h3>
+        <p class="section-desc">収録した29の実践法にどのタグが多く含まれているかの集計です（複数タグ含む）。</p>
+        <div class="lollipop-list" id="lollipop-chart"></div>
+      </div>
+
+      <div class="common-card">
+        <h3>複数の本に共通して語られる視点</h3>
+        <ul class="common-list">
+          <li class="common-item">
+            <span class="common-item-title">1. 「ない」ではなく「在る・感謝」に意識を向ける</span>
+            <span>『ザ・マジック』『新訳 お金と引き寄せの法則』『まったりしながら引き寄せる』『超科学完全版』など多くの本で、今すでにある豊かさや小さな幸福を観測する習慣が紹介されている。</span>
+          </li>
+          <li class="common-item">
+            <span class="common-item-title">2. 望む現実を「すでにそうである」感覚で味わう</span>
+            <span>『The Secret』『タフティ・ザ・プリーステス』『世界は自分で創造する』などでは、頭や五感・日常の振る舞いを通じて、望みが叶った側の感覚を先取りするワークが挙げられている。</span>
+          </li>
+          <li class="common-item">
+            <span class="common-item-title">3. 自分の感情や反応を観察し、選び直す</span>
+            <span>『78日間トランサーフィン』『さとりをひらくと〜』『すごいジャーナリング』などでは、無意識の反応から一歩引いて気づきを取り戻し、心地よい行動や視点を選び直すことが説かれている。</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="table-card" style="margin-top: var(--space-lg);">
+      <div class="table-toolbar">
+        <div>
+          <h3>対象15冊・アプローチ比較表</h3>
+          <p class="section-desc">気になる本をタップすると、その本の実践カードだけに図鑑を絞り込めます。</p>
+        </div>
+        <div class="chip-row" id="compare-filter-chips"></div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th scope="col">書籍名</th>
+              <th scope="col">主なアプローチ</th>
+              <th scope="col">本書のポイント（客観要約）</th>
+              <th scope="col">代表的な実践</th>
+              <th scope="col">図鑑で見る</th>
+            </tr>
+          </thead>
+          <tbody id="compare-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meetup Footer -->
+  <footer class="footer-card">
+    <div class="footer-actions">
+      <button type="button" class="btn btn-secondary" onclick="exportMeetupSummary()">
+        やったことメモをテキスト保存
+      </button>
+      <button type="button" class="btn btn-soft" id="reset-state-btn" onclick="resetUserState(this)">
+        チェック記録をリセット
+      </button>
+      <span class="inline-msg" id="footer-msg" aria-live="polite"></span>
+    </div>
+    <p class="source-note">
+      <strong>出典書籍（15冊）：</strong>
+      『The Secret（ザ・シークレット）』『ザ・マジック』『アファメーション』『新訳 お金と引き寄せの法則』『超科学完全版 引き寄せの法則』『まったりしながら引き寄せる』『みんなが幸せになる引き寄せの新法則』『引き寄せの法則を全部やったら、効きすぎて人生バグりかけた話』『世界とシンクロすれば願いは最速で叶う！』『世界は自分で創造する』『78日間トランサーフィン実践マニュアル』『タフティ・ザ・プリーステス』『すごいジャーナリング』『さとりをひらくと人生はシンプルで楽になる』『パワーか、フォースか 改訂版』。<br>
+      ※本ダッシュボードはノートブック内の提供資料（抜粋テキスト）に基づき、各書籍で紹介されている実践法や記述を客観的にまとめたものです（効果を保証・断定するものではありません）。『世界とシンクロすれば願いは最速で叶う！』は今回の提供資料に本文抜粋が未収録のため、比較表ではオフ会参加者からの体験談募集枠として掲載しています。
+    </p>
+  </footer>
+</main>
+
+<api-shim></api-shim>
+<script>
+const PRACTICES = [
+  {
+    id: `secret-create-3steps`,
+    book: `The Secret`,
+    method: `現在形の注文書き出し＆「何々ごっこ」`,
+    howto: `本書では、創造のプロセスとして「お願いする・信じる・受け取る」の3段階が紹介されている。「私は今現在、余りにも幸せで感謝していますが〜」と現在形で願いを紙に書き、すでに手に入れたかのように振る舞う「何々ごっこ」を実践すると書かれている。`,
+    duration: `5〜10分`,
+    tags: [`書く`, `イメージング`, `身体・行動`],
+    talkPrompt: `「すでに叶った自分なら今日どう行動するか？」と先取りして動いてみた経験はありますか？`
+  },
+  {
+    id: `secret-shifter`,
+    book: `The Secret`,
+    method: `1分間微笑み＆シークレット・シフター`,
+    howto: `感情が沈んだときに気分を切り替える方法として、本書では「シークレット・シフター（気分転換法）」が挙げられている。美しい思い出・自然・お気に入りの曲に触れたり、内面の感情に意識を向けて約1分間微笑んだりすることが紹介されている。`,
+    duration: `1分でできる`,
+    tags: [`1分でできる`, `考え方を変える`, `身体・行動`],
+    talkPrompt: `気分がモヤっとしたときに「これを使うと一発で切り替えられる！」というお気に入りアイテムや曲はありますか？`
+  },
+  {
+    id: `secret-morning-night`,
+    book: `The Secret`,
+    method: `朝の前もって感謝＆就寝前の再現ワーク`,
+    howto: `本書では、毎朝起きる前に「今日の一日は素晴らしかったです、ありがとうございます」と前もって感謝することが提案されている。また就寝前に1日を振り返り、望み通りでなかった出来事があれば頭の中で望む形に再現し直す方法が紹介されている。`,
+    duration: `1〜3分`,
+    tags: [`毎日の習慣`, `イメージング`, `考え方を変える`],
+    talkPrompt: `朝起きた瞬間や寝る直前に、何か決まってやっている小さなルーティンはありますか？`
+  },
+  {
+    id: `magic-10-thanks`,
+    book: `ザ・マジック`,
+    method: `朝一番の感謝10項目リスト`,
+    howto: `本書の実習その1として、朝一番に人生で感謝できることを10項目リストアップし、「なぜ感謝できるのか」の理由も添えて書く方法が紹介されている。読み上げたあと、毎回「ありがとう」を3回唱えて気持ちを込める手順が示されている。`,
+    duration: `5〜10分`,
+    tags: [`毎日の習慣`, `書く`, `声に出す・祈る`],
+    talkPrompt: `10個毎日ひねり出すのって意外と難しくないですか？続けたことがある人のコツを聞いてみたい！`
+  },
+  {
+    id: `magic-pebble`,
+    book: `ザ・マジック`,
+    method: `ベッドサイドの「魔法の小石」`,
+    howto: `本書では、ベッドのそばやポケットに小石を1つ用意し、毎晩寝る前にその小石を握って「今日起きた最高の出来事」を思い出し、「ありがとう」と言う実習が紹介されている。`,
+    duration: `1分でできる`,
+    tags: [`1分でできる`, `毎日の習慣`, `声に出す・祈る`],
+    talkPrompt: `お気に入りの石や小物に「ありがとう」のスイッチ役を任せるのってかわいいですよね。試したことはありますか？`
+  },
+  {
+    id: `magic-powder-wand`,
+    book: `ザ・マジック`,
+    method: `魔法の粉＆魔法の杖ワーク`,
+    howto: `本書では、お世話になる人や開く前のメール・財布などに感謝の「魔法の粉」をイメージで振りかける方法や、助けを必要とする人の写真を見て朗報が届いた場面を1分想像し「ありがとう」を3回唱える「魔法の杖」が紹介されている。`,
+    duration: `1分でできる`,
+    tags: [`1分でできる`, `イメージング`, `声に出す・祈る`],
+    talkPrompt: `メールを開く前やお店でお会計する前に、こっそり心の中で感謝を送るワーク、やったことある人いますか？`
+  },
+  {
+    id: `magic-100-steps`,
+    book: `ザ・マジック`,
+    method: `90秒で100歩「魔法の歩み」＆心の魔法`,
+    howto: `本書では、好きなタイミングで約90秒かけて100歩歩きながら一歩ごとに「ありがとう」を言う「魔法の歩み」が紹介されている。また、右手を心臓のあたりに置いて心から「ありがとう」を響かせる「心の魔法」も挙げられている。`,
+    duration: `1〜3分`,
+    tags: [`1分でできる`, `声に出す・祈る`, `身体・行動`],
+    talkPrompt: `歩きながら数えたり唱えたりするワーク、お散歩中や通勤中にこっそりできそうですよね！`
+  },
+  {
+    id: `affirmation-daily-words`,
+    book: `アファメーション`,
+    method: `毎日の「言葉」を変える実践＆ノンバーバル術`,
+    howto: `本書（表紙・紹介文）では、名著『アファメーション』（ルー・タイス著）を苫米地英人氏が解説し、「毎日の言葉を変えれば人生が変わる」という実践スキルや、言語以外も活用するノンバーバル・アファメーション術が取り上げられている。`,
+    duration: `日常のすきま時間`,
+    tags: [`毎日の習慣`, `声に出す・祈る`, `考え方を変える`],
+    talkPrompt: `普段の口癖やアファメーションの言葉を変えてみて「あ、なんか変わったかも」と感じたことはありますか？`
+  },
+  {
+    id: `money-100-dollar`,
+    book: `新訳 お金と引き寄せの法則`,
+    method: `「波動の100ドル札」を持ち歩くワーク`,
+    howto: `本書では、ポケットに100ドル（まとまった紙幣）を常に入れて持ち歩き、1日中「これでこれが買える、あれができる」と頭の中で1000回使って豊かな感覚を味わうプロセスが紹介されている。`,
+    duration: `日常のすきま時間`,
+    tags: [`イメージング`, `考え方を変える`, `身体・行動`],
+    talkPrompt: `お財布に少し多めのお札を入れて「買えるけど買わない」を味わうワーク、お金の感覚は変わりましたか？`
+  },
+  {
+    id: `money-new-story`,
+    book: `新訳 お金と引き寄せの法則`,
+    method: `お金に関する「新しい物語」を語る`,
+    howto: `本書では、現在の不足している状況ではなく、「お金は空気と同じくらい手に入りやすい」「いっぱい流れてくる」といった望む視点から自分のお金の物語を語り直し、望むライフスタイルをビジュアライズする方法が提案されている。`,
+    duration: `1〜3分`,
+    tags: [`声に出す・祈る`, `イメージング`, `考え方を変える`],
+    talkPrompt: `お金に対してつい言ってしまう「古い口癖」を、どんな「新しい物語」に言い換えてみたいですか？`
+  },
+  {
+    id: `supersci-ai-diary`,
+    book: `超科学完全版 引き寄せの法則`,
+    method: `AIに報告する「現代版・感謝日記」`,
+    howto: `本書では、ノートを開く手間を省く裏技として、移動中や寝る前にChatGPTなどの生成AIへ「今日空が綺麗だった」「店員さんの笑顔が素敵だった」など小さな幸せの証拠を送信して「セーブ完了」にする方法が紹介されている。`,
+    duration: `1分でできる`,
+    tags: [`1分でできる`, `毎日の習慣`, `書く`, `AI・ツール活用`],
+    talkPrompt: `ノート派とスマホメモ・AI派、みなさんはどっち派ですか？AIに今日の嬉しいことを送ってみた人いますか？`
+  },
+  {
+    id: `supersci-kindness-3`,
+    book: `超科学完全版 引き寄せの法則`,
+    method: `1日3つの「優しさ・在る」観測ゲーム`,
+    howto: `本書では、街中で「席を譲る人」「コンビニ店員の会釈」など人の優しさや笑顔を1日3つ探し、見つけたら「この世界は意外と優しい場所だ」「証拠だ」と心の中で認定して世界線を確定させるゲームが紹介されている。`,
+    duration: `日常のすきま時間`,
+    tags: [`1分でできる`, `毎日の習慣`, `考え方を変える`],
+    talkPrompt: `今日ここ（神戸）に来るまでの道中で、何か「小さな優しさ」や「ラッキー」を見つけましたか？`
+  },
+  {
+    id: `supersci-lockon`,
+    book: `超科学完全版 引き寄せの法則`,
+    method: `望む未来の「意図」を視界に固定する`,
+    howto: `本書では、目標や叶えたい未来の意図を、紙に書いて壁に貼ったりスマホの待ち受け画像にしたりして「普段よく目につく場所」に置き、脳の検索アンテナに目的地をロックオンさせるプロトコルが紹介されている。`,
+    duration: `5分`,
+    tags: [`書く`, `イメージング`, `AI・ツール活用`],
+    talkPrompt: `スマホの待受や手帳の表紙に、願い事や好きな言葉を貼っている人はいますか？`
+  },
+  {
+    id: `mattari-free-abundance`,
+    book: `まったりしながら引き寄せる`,
+    method: `すでに努力なしで得ている豊かさに感謝する`,
+    howto: `著者は、水道からいつでも水が出ること、太陽が昇ること、空気や雨の恵みなど「苦労も努力もせずにすでに受け取っている豊かさ」に意識を向けて感謝することで、豊かさを受け取る信念が活性化すると書いている。`,
+    duration: `1分でできる`,
+    tags: [`1分でできる`, `考え方を変える`],
+    talkPrompt: `「あ、これ無料で毎日受け取ってるな〜」とふと感謝したくなる日常の当たり前はなんですか？`
+  },
+  {
+    id: `mattari-no-rewrite`,
+    book: `まったりしながら引き寄せる`,
+    method: `信念を書き換えようとせず、一人の時間で安心感を味わう`,
+    howto: `著者は、邪魔な思考を無理に書き換えようとするとかえってそこに意識が向くため、書き換えようとしないことが大切だと書いている。また一人の時間に「大切にされている感覚」を見つけて味わうことを勧めている。`,
+    duration: `5分`,
+    tags: [`考え方を変える`, `イメージング`],
+    talkPrompt: `「ネガティブな思い込みを消さなきゃ！」と頑張りすぎて疲れた経験、ありませんか？`
+  },
+  {
+    id: `shinhousoku-pray-strangers`,
+    book: `みんなが幸せになる引き寄せの新法則`,
+    method: `すれ違う「知らない人」の幸せを祈る`,
+    howto: `著者は、横断歩道ですれ違う人やコンビニの会計時など、目が合った見知らぬ人の幸せを心の中で祈る方法を最も簡単なアプローチとして紹介している。外堀から始めることで、自分の内側のエネルギーが底上げされると書かれている。`,
+    duration: `1分でできる`,
+    tags: [`1分でできる`, `毎日の習慣`, `声に出す・祈る`],
+    talkPrompt: `見知らぬ人の幸せを祈るのって気負わずできそうですよね。やってみて自分の気分はどう変わりましたか？`
+  },
+  {
+    id: `shinhousoku-money-vessel`,
+    book: `みんなが幸せになる引き寄せの新法則`,
+    method: `お金の3ステップ＆苦手な人への小さな歩み寄り`,
+    howto: `本書では、欲しい金額を意図したあと「その金額が必要な理由」と「みんなの幸せに繋がる使い道」を明確にする3ステップが紹介されている。また、苦手な人にも自分のエネルギーのために感じよく挨拶や雑談を振る姿勢が勧められている。`,
+    duration: `5〜10分`,
+    tags: [`書く`, `考え方を変える`, `身体・行動`],
+    talkPrompt: `「もし大きな臨時収入があったら、誰の笑顔のために使いたいか」って考えたことありますか？`
+  },
+  {
+    id: `bug-five-senses`,
+    book: `引き寄せの法則を全部やったら人生バグりかけた話`,
+    method: `五感フル活用のリアルイメージング`,
+    howto: `著者は、ただポジティブに思うだけでなく「玄関ドアの手触り、床の冷たさ、冷蔵庫のかすかな音、朝の光の匂い」まで五感すべてを使って細部まで鮮明に思い描き、脳に現実だと錯覚させるほどリアルに妄想する方法を紹介している。`,
+    duration: `5〜10分`,
+    tags: [`イメージング`],
+    talkPrompt: `「この音や手触りまで想像するとワクワクする！」という五感イメージの工夫があれば教えてください！`
+  },
+  {
+    id: `bug-tamaemichi`,
+    book: `引き寄せの法則を全部やったら人生バグりかけた話`,
+    method: `記憶映像の再生法＆意識の巻き戻し法`,
+    howto: `本書ではタマエミチ・トレーニングとして、目を閉じて家から駅までの道を映画のように鮮明に頭の中で往復する「記憶映像の再生法」や、布団に入ってからその日の出来事を直前から逆順に辿る「意識の巻き戻し法」が紹介されている。`,
+    duration: `5〜10分`,
+    tags: [`毎日の習慣`, `イメージング`],
+    talkPrompt: `イメージ力を鍛えるために、寝る前に1日を逆再生してみるのって面白そうですよね。試したことある？`
+  },
+  {
+    id: `jibun-matsuda-seiko`,
+    book: `世界は自分で創造する`,
+    method: `「そうなんです」と淡々と過ごす“松田聖子法”`,
+    howto: `本書では、無理に「できている」と思い込むのではなく、すでに叶った側の私として部屋を整えたり花を飾ったりし、「そうなんです」と淡々と感じて過ごす“松田聖子法”が紹介されている。新しい前提を入れたら現実を確認しない点が大切と書かれている。`,
+    duration: `日常のすきま時間`,
+    tags: [`イメージング`, `考え方を変える`, `身体・行動`],
+    talkPrompt: `ネーミングが最高な「松田聖子法」！叶った自分の部屋づくりや持ち物選び、何か取り入れていますか？`
+  },
+  {
+    id: `jibun-rewrite-phrase`,
+    book: `世界は自分で創造する`,
+    method: `「当たり前の書き換え」＆身体への染み込み`,
+    howto: `著者は、「休む時間がない」と思ったら「休むことは生産的」と前提を書き換えたり、「必要なお金がちゃんと入ってきて安心している」などの心地よいフレーズを呼吸や散歩の動きと合わせて身体に染み込ませる方法を紹介している。`,
+    duration: `1〜3分`,
+    tags: [`1分でできる`, `声に出す・祈る`, `考え方を変える`],
+    talkPrompt: `自分の中で「これ、言い換えたら一気に楽になった！」というマイルールや言葉の変換はありますか？`
+  },
+  {
+    id: `jibun-intoku`,
+    book: `世界は自分で創造する`,
+    method: `陰で熟成させる＆ひっそり「陰徳を積む」`,
+    howto: `本書では、焦って現実を動かそうとせず静けさの中で温める「陰で熟成させる」姿勢と、見返りや評価を求めず誰かのためにひっそり良いことをしたり怒りを理解へ静かに変換したりする「陰徳を積む」実践が紹介されている。`,
+    duration: `日常のすきま時間`,
+    tags: [`考え方を変える`, `身体・行動`],
+    talkPrompt: `誰にも見られていないところでこっそりやっている「いいこと」やゴミ拾い・お掃除習慣などはありますか？`
+  },
+  {
+    id: `transurfing-pendulum`,
+    book: `78日間トランサーフィン実践マニュアル`,
+    method: `「振り子の弱体化」で逆の反応を選ぶ`,
+    howto: `本書では、不快な状況や悪い知らせを受けたときに、恐れ・怒り・不満という「標準的な台本」を意図的に壊し、逆に自信・熱意・喜びといった普通ではない反応を示すことで、バランスを崩そうとする振り子を弱体化させる方法が紹介されている。`,
+    duration: `1分でできる`,
+    tags: [`1分でできる`, `考え方を変える`],
+    talkPrompt: `イラッとしたりピンチが来たりしたときに、あえて笑ったり「おっ、面白くなってきた」と反応を変えたことはありますか？`
+  },
+  {
+    id: `transurfing-goal-frame`,
+    book: `78日間トランサーフィン実践マニュアル`,
+    method: `手段を忘れて「ゴールのコマ」を流す`,
+    howto: `本書では、理性が「でも、どうやって？」と疑う段階では手段のことを忘れ、すでに達成されている最終目的のコマを頭の中でしっかり流す手法や、「ないお金」ではなく「今あるお金」に集中してスムーズに手放すルールが紹介されている。`,
+    duration: `1〜3分`,
+    tags: [`イメージング`, `考え方を変える`],
+    talkPrompt: `「どうやって叶うか」のプロセスをつい考えちゃいませんか？どうやって手放していますか？`
+  },
+  {
+    id: `tufti-plait-frame`,
+    book: `タフティ・ザ・プリーステス`,
+    method: `目覚め＆三つ編み「コマ照射メソッド」`,
+    howto: `本書では、何かが起きたり行動したりする前に「自分を見て、現実を見る」と気づきの中心点に目覚め、背中から斜めに三つ編みを持ち上げる感覚を保ちながら1〜3分静かに望む未来のコマを視覚化し、その後感覚を手放すメソッドが紹介されている。`,
+    duration: `1〜3分`,
+    tags: [`1分でできる`, `イメージング`, `身体・行動`],
+    talkPrompt: `話題の『タフティ』！背中の三つ編みの感覚って、みんなはどんなイメージで掴んでいますか？`
+  },
+  {
+    id: `tufti-advantage`,
+    book: `タフティ・ザ・プリーステス`,
+    method: `困ったときの「アドバンテージ・メソッド」`,
+    howto: `本書では、困ったことが起きた瞬間に目を覚まし、「これにはどんなアドバンテージ（利点）があるのだろう？」と自問して、見つけた利点やありのままの状況を意識的に受け入れるメソッドが紹介されている。`,
+    duration: `1分でできる`,
+    tags: [`1分でできる`, `考え方を変える`],
+    talkPrompt: `最近起きた「えっ困った！」な出来事、後から見たらどんなアドバンテージがありましたか？`
+  },
+  {
+    id: `journaling-ai`,
+    book: `すごいジャーナリング`,
+    method: `一問一答「AIジャーナリング」＆ヒッチハイク理論`,
+    howto: `本書では、AIに「私の自己理解を深める質問を一問一答でしてください」と頼み、無意識に避けている本音に光を当ててもらうAIジャーナリングが提案されている。また普段行かない場へ行き、自分の夢や目標を会った人に話してみる「ヒッチハイク理論」も紹介されている。`,
+    duration: `5〜10分`,
+    tags: [`書く`, `AI・ツール活用`, `身体・行動`],
+    talkPrompt: `AIに質問攻めにしてもらうの、自分で書くより刺さりそうですよね！今日このオフ会もヒッチハイク理論の一歩かも？`
+  },
+  {
+    id: `satori-stairs`,
+    book: `さとりをひらくと人生はシンプルで楽になる`,
+    method: `階段の一歩一歩に全意識を集中する`,
+    howto: `本書では、単なる手段として無意識に行っている動作（家や会社で階段を上り下りする時の呼吸や一歩一歩）に全意識を集中させ、手段を目的そのものに変えることで「完全に『いま』に在ること」を実践するエクササイズが紹介されている。`,
+    duration: `1〜3分`,
+    tags: [`1分でできる`, `毎日の習慣`, `身体・行動`],
+    talkPrompt: `思考がぐるぐるしすぎたとき、「いま・ここ」の呼吸や足の感覚に戻るために何をしていますか？`
+  },
+  {
+    id: `power-muscle-test`,
+    book: `パワーか、フォースか`,
+    method: `キネシオロジー（マッスルテスト）での測定`,
+    howto: `本書では、心の中に特定の人物・対象・声明をイメージした状態で腕の抵抗力や指の輪の強さ、辞書の持ち上げやすさの変化を確かめ、それが建設的（200以上）か否かを探る測定手法が説明されている。`,
+    duration: `1〜3分`,
+    tags: [`身体・行動`, `考え方を変える`],
+    talkPrompt: `指で輪っかを作って強さを試すOリング・マッスルテスト系、実際に誰かと試して遊んだことはありますか？`
+  }
+];
+
+const BOOKS_COMPARISON = [
+  {
+    book: `The Secret`,
+    approach: `思考と感情の同調`,
+    summary: `「お願いする・信じる・受け取る」の3段階や気分転換を通じ、望む現実と同調する感情を先に感じることを重視している。`,
+    representative: `現在形の注文書き出し、何々ごっこ、1分間微笑み`,
+    filterable: true
+  },
+  {
+    book: `ザ・マジック`,
+    approach: `徹底した感謝の習慣`,
+    summary: `28日間の日替わり実習を通じて、朝・夜・人間関係・お金・歩き方まで日常のあらゆる場面に「ありがとう」を組み込む構成。`,
+    representative: `感謝10項目リスト、魔法の小石、魔法の粉・杖`,
+    filterable: true
+  },
+  {
+    book: `アファメーション`,
+    approach: `言葉と無意識の書き換え`,
+    summary: `毎日の「言葉」を変えることで人生が変わる成功スキルや、非言語を使うノンバーバル術をわかりやすく解説している。`,
+    representative: `毎日の言葉を変える、ノンバーバル・アファメーション`,
+    filterable: true
+  },
+  {
+    book: `新訳 お金と引き寄せの法則`,
+    approach: `豊かさの波動・語り直し`,
+    summary: `お金の不足ではなく望む視点から「新しい物語」を語り、心地よい感情と豊かさの感覚を日常的に選ぶことを説いている。`,
+    representative: `波動の100ドル札ワーク、新しいお金の物語を語る`,
+    filterable: true
+  },
+  {
+    book: `超科学完全版 引き寄せの法則`,
+    approach: `脳科学・現代ツール活用`,
+    summary: `「未来への意図×今の在り方」という視点で、AIへの報告や日常の「在る」観測ゲームなど再現しやすい手順を提案している。`,
+    representative: `AIへの感謝報告、1日3つの優しさ認定、視界に固定`,
+    filterable: true
+  },
+  {
+    book: `まったりしながら引き寄せる`,
+    approach: `無理な書き換え手放し`,
+    summary: `邪魔な信念と戦って書き換えようとせず、水や空気などすでに努力なしで得ている豊かさや安心感に意識を向けるスタイル。`,
+    representative: `無料・自然の恵みへの感謝、一人の時間の安心感`,
+    filterable: true
+  },
+  {
+    book: `みんなが幸せになる引き寄せの新法則`,
+    approach: `他者の幸せを祈る愛`,
+    summary: `自分の願いを叶える前に、まず「知らない人の幸せ」を祈ることで内側のエネルギーレベルを底上げする外堀作戦を紹介している。`,
+    representative: `すれ違う人の幸せを祈る、みんなの幸せに繋がるお金の意図`,
+    filterable: true
+  },
+  {
+    book: `引き寄せの法則を全部やったら人生バグりかけた話`,
+    approach: `五感イメージ×身体整え`,
+    summary: `曖昧なポジティブ思考ではなく、五感を使った圧倒的にリアルなイメージングと心・身体・環境を整える準備を重視している。`,
+    representative: `五感フル活用の妄想、記憶映像の再生法・巻き戻し法`,
+    filterable: true
+  },
+  {
+    book: `世界とシンクロすれば願いは最速で叶う！`,
+    approach: `参加者体験談・募集中`,
+    summary: `対象書籍リスト掲載タイトル（※今回の手元資料に本文抜粋が未収録のため、読んだ方の感想・実践シェアを募集中）。`,
+    representative: `オフ会参加者のマイ実践をシェア予定`,
+    filterable: false
+  },
+  {
+    book: `世界は自分で創造する`,
+    approach: `前提の書き換え×陰の熟成`,
+    summary: `「すでに叶っている私」として淡々と暮らし、言葉や前提を身体に染み込ませつつ、陰徳を積んで焦らず待つ姿勢を説いている。`,
+    representative: `松田聖子法、当たり前の書き換え、陰徳を積む`,
+    filterable: true
+  },
+  {
+    book: `78日間トランサーフィン実践マニュアル`,
+    approach: `台本外し・現実シフト`,
+    summary: `感情を揺さぶる「振り子」の挑発に逆の反応で対抗し、手段への執着を手放して最終ゴールのコマに意識を合わせる実践書。`,
+    representative: `振り子の弱体化、手段を忘れてゴールのコマを流す`,
+    filterable: true
+  },
+  {
+    book: `タフティ・ザ・プリーステス`,
+    approach: `気づき・三つ編み照射`,
+    summary: `映画の登場人物として眠ったまま反応する状態から「目覚め」、三つ編みの感覚を使って次のコマを意図的に照射する手法。`,
+    representative: `コマ照射メソッド、アドバンテージ・メソッド、反射構築`,
+    filterable: true
+  },
+  {
+    book: `すごいジャーナリング`,
+    approach: `対話と行動での自己発見`,
+    summary: `AIとの一問一答で無意識の避けがちな課題を見つめ直し、実際に外に出て夢を口に出して人と繋がる行動力を組み合わせている。`,
+    representative: `AIジャーナリング、ヒッチハイク理論`,
+    filterable: true
+  },
+  {
+    book: `さとりをひらくと人生はシンプルで楽になる`,
+    approach: `「いま・ここ」への集中`,
+    summary: `未来の結果への焦りから離れ、階段の上り下りや呼吸といった日常の動作に全意識を集中させて「いまに在る」ことを説いている。`,
+    representative: `階段の一歩一歩への全意識集中`,
+    filterable: true
+  },
+  {
+    book: `パワーか、フォースか`,
+    approach: `意識レベルと真実の識別`,
+    summary: `物事や思考が持つエネルギーの質を「意識のマップ」と身体反応（キネシオロジー）によって客観的に識別する考え方を示している。`,
+    representative: `キネシオロジー（マッスルテスト）による確認`,
+    filterable: true
+  }
+];
+
+const FILTER_TAGS = [
+  `すべて`,
+  `1分でできる`,
+  `毎日の習慣`,
+  `書く`,
+  `声に出す・祈る`,
+  `イメージング`,
+  `考え方を変える`,
+  `身体・行動`,
+  `AI・ツール活用`,
+  `やったことがある`,
+  `気になる`
+];
+
+const VIZ_TAGS = [
+  `考え方を変える`,
+  `イメージング`,
+  `1分でできる`,
+  `毎日の習慣`,
+  `身体・行動`,
+  `声に出す・祈る`,
+  `書く`,
+  `AI・ツール活用`
+];
+
+let appState = {
+  searchQuery: ``,
+  selectedBook: `all`,
+  activeTag: `すべて`,
+  compareMode: `all`,
+  triedIds: [],
+  savedIds: [],
+  drawnHistoryIds: [],
+  currentTopicId: `supersci-ai-diary`,
+  drawFromFiltered: false
+};
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, `&amp;`)
+    .replace(/</g, `&lt;`)
+    .replace(/>/g, `&gt;`)
+    .replace(/"/g, `&quot;`)
+    .replace(/'/g, `&#39;`);
+}
+
+function getFilteredPractices() {
+  const q = appState.searchQuery.trim().toLowerCase();
+  return PRACTICES.filter(function(item) {
+    if (appState.selectedBook !== `all` && item.book !== appState.selectedBook) {
+      return false;
+    }
+    if (appState.activeTag === `やったことがある`) {
+      if (appState.triedIds.indexOf(item.id) === -1) return false;
+    } else if (appState.activeTag === `気になる`) {
+      if (appState.savedIds.indexOf(item.id) === -1) return false;
+    } else if (appState.activeTag !== `すべて`) {
+      if (item.tags.indexOf(appState.activeTag) === -1) return false;
+    }
+    if (q) {
+      const hay = (item.book + ` ` + item.method + ` ` + item.howto + ` ` + item.tags.join(` `)).toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  });
+}
+
+async function persistState() {
+  if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === `function`) {
+    try {
+      await window.notebookAppApi.setAppState({
+        triedIds: appState.triedIds,
+        savedIds: appState.savedIds,
+        drawnHistoryIds: appState.drawnHistoryIds,
+        currentTopicId: appState.currentTopicId
+      });
+    } catch (e) {
+      // Fail gracefully in standalone preview
+    }
+  }
+}
+
+function updateKpis() {
+  const totalEl = document.getElementById(`kpi-total-methods`);
+  const triedEl = document.getElementById(`kpi-tried-count`);
+  const savedEl = document.getElementById(`kpi-saved-count`);
+  if (totalEl) totalEl.textContent = PRACTICES.length + `件`;
+  if (triedEl) triedEl.textContent = appState.triedIds.length + `件`;
+  if (savedEl) savedEl.textContent = appState.savedIds.length + `件`;
+}
+
+function renderBookSelect() {
+  const selectEl = document.getElementById(`book-select`);
+  if (!selectEl) return;
+  const books = [];
+  PRACTICES.forEach(function(p) {
+    if (books.indexOf(p.book) === -1) books.push(p.book);
+  });
+  let html = `<option value="all">すべての書籍（` + books.length + `冊）</option>`;
+  books.forEach(function(b) {
+    const selected = appState.selectedBook === b ? ` selected` : ``;
+    html += `<option value="` + escapeHtml(b) + `"` + selected + `>` + escapeHtml(b) + `</option>`;
+  });
+  selectEl.innerHTML = html;
+}
+
+function renderTagChips() {
+  const container = document.getElementById(`tag-chips`);
+  if (!container) return;
+  let html = ``;
+  FILTER_TAGS.forEach(function(tag) {
+    let cls = `chip`;
+    if (appState.activeTag === tag) {
+      cls += (tag === `やったことがある` || tag === `気になる`) ? ` is-secondary-active` : ` is-active`;
+    }
+    html += `<button type="button" class="` + cls + `" onclick="setTagFilter('` + escapeHtml(tag) + `')">` + escapeHtml(tag) + `</button>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderPracticeCards() {
+  const container = document.getElementById(`cards-container`);
+  const countEl = document.getElementById(`result-count`);
+  if (!container) return;
+
+  const list = getFilteredPractices();
+  if (countEl) {
+    countEl.textContent = PRACTICES.length + `件中 ` + list.length + `件を表示中`;
+  }
+
+  if (list.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <h3>条件に合う実践カードが見つかりませんでした</h3>
+        <p class="section-desc">検索キーワードやタグの組み合わせを変えると、ほかの書籍の実践も表示されます。</p>
+        <button type="button" class="btn btn-primary" onclick="resetAllFilters()">すべてのカードを表示する</button>
+      </div>
+    `;
+    return;
+  }
+
+  let html = ``;
+  list.forEach(function(item) {
+    const isTried = appState.triedIds.indexOf(item.id) !== -1;
+    const isSaved = appState.savedIds.indexOf(item.id) !== -1;
+    const tagsHtml = item.tags.map(function(t) {
+      return `<span class="badge badge-tag">#` + escapeHtml(t) + `</span>`;
+    }).join(``);
+
+    html += `
+      <div class="card-wrapper">
+        <article class="practice-card">
+          <div class="practice-top">
+            <span class="badge badge-book">` + escapeHtml(item.book) + `</span>
+            <span class="badge badge-time">所要：` + escapeHtml(item.duration) + `</span>
+          </div>
+          <h3>` + escapeHtml(item.method) + `</h3>
+          <p class="practice-howto">` + escapeHtml(item.howto) + `</p>
+          <div class="practice-tags">` + tagsHtml + `</div>
+          <div class="practice-actions">
+            <button type="button" class="action-pill ` + (isTried ? `is-tried` : ``) + `" onclick="toggleTried('` + item.id + `')" aria-pressed="` + isTried + `">
+              ` + (isTried ? `✓ やったことある` : `やったことある？`) + `
+            </button>
+            <button type="button" class="action-pill ` + (isSaved ? `is-saved` : ``) + `" onclick="toggleSaved('` + item.id + `')" aria-pressed="` + isSaved + `">
+              ` + (isSaved ? `★ 気になる！` : `☆ 気になる`) + `
+            </button>
+            <button type="button" class="action-pill" onclick="focusTopicById('` + item.id + `')">
+              話のタネにする
+            </button>
+          </div>
+        </article>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function renderTopicSpotlight() {
+  const item = PRACTICES.find(function(p) { return p.id === appState.currentTopicId; }) || PRACTICES[0];
+  if (!item) return;
+
+  const metaEl = document.getElementById(`topic-meta`);
+  const titleEl = document.getElementById(`topic-title`);
+  const howtoEl = document.getElementById(`topic-howto`);
+  const promptEl = document.getElementById(`topic-prompt`);
+  const actionsEl = document.getElementById(`topic-actions`);
+
+  if (metaEl) {
+    metaEl.innerHTML = `
+      <span class="badge badge-book">` + escapeHtml(item.book) + `</span>
+      <span class="badge badge-time">所要：` + escapeHtml(item.duration) + `</span>
+    `;
+  }
+  if (titleEl) titleEl.textContent = item.method;
+  if (howtoEl) howtoEl.textContent = item.howto;
+  if (promptEl) promptEl.textContent = item.talkPrompt;
+
+  if (actionsEl) {
+    const isTried = appState.triedIds.indexOf(item.id) !== -1;
+    const isSaved = appState.savedIds.indexOf(item.id) !== -1;
+    actionsEl.innerHTML = `
+      <button type="button" class="action-pill ` + (isTried ? `is-tried` : ``) + `" onclick="toggleTried('` + item.id + `')">
+        ` + (isTried ? `✓ やったことある！` : `やったことあるにチェック`) + `
+      </button>
+      <button type="button" class="action-pill ` + (isSaved ? `is-saved` : ``) + `" onclick="toggleSaved('` + item.id + `')">
+        ` + (isSaved ? `★ 気になるリスト入り` : `☆ 気になるに追加`) + `
+      </button>
+    `;
+  }
+
+  renderTopicHistory();
+}
+
+function renderTopicHistory() {
+  const wrap = document.getElementById(`topic-history-chips`);
+  if (!wrap) return;
+  if (appState.drawnHistoryIds.length === 0) {
+    wrap.innerHTML = `<span class="result-count">まだ引いていません（上のボタンでスタート！）</span>`;
+    return;
+  }
+  let html = ``;
+  appState.drawnHistoryIds.slice(-6).reverse().forEach(function(id) {
+    const found = PRACTICES.find(function(p) { return p.id === id; });
+    if (!found) return;
+    const active = id === appState.currentTopicId ? ` is-active` : ``;
+    html += `<button type="button" class="chip` + active + `" onclick="focusTopicById('` + found.id + `')">` + escapeHtml(found.method) + `</button>`;
+  });
+  wrap.innerHTML = html;
+}
+
+function renderLollipopChart() {
+  const chartEl = document.getElementById(`lollipop-chart`);
+  if (!chartEl) return;
+
+  const counts = VIZ_TAGS.map(function(tag) {
+    const c = PRACTICES.filter(function(p) { return p.tags.indexOf(tag) !== -1; }).length;
+    return { tag: tag, count: c };
+  }).sort(function(a, b) { return b.count - a.count; });
+
+  const maxCount = counts.reduce(function(m, x) { return Math.max(m, x.count); }, 1);
+
+  let html = ``;
+  counts.forEach(function(row) {
+    const pct = Math.round((row.count / maxCount) * 100);
+    html += `
+      <div class="lollipop-row">
+        <span class="lollipop-label">` + escapeHtml(row.tag) + `</span>
+        <div class="lollipop-track" aria-hidden="true">
+          <div class="lollipop-bar" style="width: ` + pct + `%;">
+            <span class="lollipop-dot"></span>
+          </div>
+        </div>
+        <span class="lollipop-count">` + row.count + `件</span>
+      </div>
+    `;
+  });
+  chartEl.innerHTML = html;
+}
+
+function renderComparisonTable() {
+  const tbody = document.getElementById(`compare-table-body`);
+  const chipsEl = document.getElementById(`compare-filter-chips`);
+  if (!tbody) return;
+
+  const groups = [`すべて`, `感謝・心の在り方`, `イメージ・意識操作`, `言葉・対話・ツール`];
+  if (chipsEl) {
+    chipsEl.innerHTML = groups.map(function(g) {
+      const cls = appState.compareMode === g || (appState.compareMode === `all` && g === `すべて`) ? `chip is-active` : `chip`;
+      return `<button type="button" class="` + cls + `" onclick="setCompareGroup('` + g + `')">` + g + `</button>`;
+    }).join(``);
+  }
+
+  function matchGroup(row) {
+    if (appState.compareMode === `all` || appState.compareMode === `すべて`) return true;
+    const text = row.approach + ` ` + row.summary;
+    if (appState.compareMode === `感謝・心の在り方`) {
+      return /感謝|愛|手放|いま|意識レベル|在り方/.test(text);
+    }
+    if (appState.compareMode === `イメージ・意識操作`) {
+      return /イメージ|五感|シフト|三つ編み|同調|熟成/.test(text);
+    }
+    if (appState.compareMode === `言葉・対話・ツール`) {
+      return /言葉|語り|AI|対話|行動|募集/.test(text);
+    }
+    return true;
+  }
+
+  const rows = BOOKS_COMPARISON.filter(matchGroup);
+  tbody.innerHTML = rows.map(function(row) {
+    const btnHtml = row.filterable
+      ? `<button type="button" class="table-filter-btn" onclick="jumpToBook('` + escapeHtml(row.book) + `')">実践を見る</button>`
+      : `<span class="badge badge-tag">体験談募集中</span>`;
+
+    return `
+      <tr>
+        <td class="book-title-cell">` + escapeHtml(row.book) + `</td>
+        <td data-label="主なアプローチ"><span class="approach-pill">` + escapeHtml(row.approach) + `</span></td>
+        <td data-label="本書のポイント">` + escapeHtml(row.summary) + `</td>
+        <td data-label="代表的な実践">` + escapeHtml(row.representative) + `</td>
+        <td data-label="図鑑で見る">` + btnHtml + `</td>
+      </tr>
+    `;
+  }).join(``);
+}
+
+/* Interactive Handlers (hoisted function declarations) */
+function drawRandomTopic() {
+  const pool = appState.drawFromFiltered ? getFilteredPractices() : PRACTICES;
+  const usablePool = pool.length > 0 ? pool : PRACTICES;
+
+  let candidates = usablePool.filter(function(p) { return p.id !== appState.currentTopicId; });
+  if (candidates.length === 0) candidates = usablePool;
+
+  const picked = candidates[Math.floor(Math.random() * candidates.length)];
+  if (!picked) return;
+
+  appState.currentTopicId = picked.id;
+  if (appState.drawnHistoryIds.indexOf(picked.id) === -1) {
+    appState.drawnHistoryIds.push(picked.id);
+  } else {
+    appState.drawnHistoryIds = appState.drawnHistoryIds.filter(function(id) { return id !== picked.id; });
+    appState.drawnHistoryIds.push(picked.id);
+  }
+
+  const stage = document.getElementById(`topic-stage`);
+  if (stage) {
+    stage.classList.add(`is-animating`);
+    setTimeout(function() {
+      renderTopicSpotlight();
+      stage.classList.remove(`is-animating`);
+    }, 140);
+  } else {
+    renderTopicSpotlight();
+  }
+  persistState();
+}
+
+function toggleDrawMode(checked) {
+  appState.drawFromFiltered = Boolean(checked);
+}
+
+function focusTopicById(id) {
+  const found = PRACTICES.find(function(p) { return p.id === id; });
+  if (!found) return;
+  appState.currentTopicId = found.id;
+  if (appState.drawnHistoryIds.indexOf(found.id) === -1) {
+    appState.drawnHistoryIds.push(found.id);
+  }
+  renderTopicSpotlight();
+  const topicSec = document.getElementById(`topic-section`);
+  if (topicSec) topicSec.scrollIntoView({ behavior: `smooth`, block: `start` });
+  persistState();
+}
+
+function setTagFilter(tag) {
+  appState.activeTag = tag;
+  renderTagChips();
+  renderPracticeCards();
+}
+
+function onSearchInput(val) {
+  appState.searchQuery = val || ``;
+  renderPracticeCards();
+}
+
+function onBookSelect(val) {
+  appState.selectedBook = val || `all`;
+  renderPracticeCards();
+}
+
+function resetAllFilters() {
+  appState.searchQuery = ``;
+  appState.selectedBook = `all`;
+  appState.activeTag = `すべて`;
+  const searchEl = document.getElementById(`search-input`);
+  if (searchEl) searchEl.value = ``;
+  renderBookSelect();
+  renderTagChips();
+  renderPracticeCards();
+}
+
+function jumpToBook(bookName) {
+  appState.selectedBook = bookName;
+  appState.activeTag = `すべて`;
+  appState.searchQuery = ``;
+  const searchEl = document.getElementById(`search-input`);
+  if (searchEl) searchEl.value = ``;
+  renderBookSelect();
+  renderTagChips();
+  renderPracticeCards();
+  const dir = document.getElementById(`directory-section`);
+  if (dir) dir.scrollIntoView({ behavior: `smooth`, block: `start` });
+}
+
+function setCompareGroup(group) {
+  appState.compareMode = group === `すべて` ? `all` : group;
+  renderComparisonTable();
+}
+
+function toggleTried(id) {
+  const idx = appState.triedIds.indexOf(id);
+  if (idx === -1) {
+    appState.triedIds.push(id);
+  } else {
+    appState.triedIds.splice(idx, 1);
+  }
+  updateKpis();
+  renderPracticeCards();
+  renderTopicSpotlight();
+  persistState();
+}
+
+function toggleSaved(id) {
+  const idx = appState.savedIds.indexOf(id);
+  if (idx === -1) {
+    appState.savedIds.push(id);
+  } else {
+    appState.savedIds.splice(idx, 1);
+  }
+  updateKpis();
+  renderPracticeCards();
+  renderTopicSpotlight();
+  persistState();
+}
+
+function exportMeetupSummary() {
+  const lines = [
+    `神戸オフ会「引き寄せ好きさん集まれ」マイメモ`,
+    `========================================`,
+    ``
+  ];
+  const triedItems = PRACTICES.filter(function(p) { return appState.triedIds.indexOf(p.id) !== -1; });
+  const savedItems = PRACTICES.filter(function(p) { return appState.savedIds.indexOf(p.id) !== -1; });
+
+  lines.push(`【やったことがある実践（` + triedItems.length + `件）】`);
+  if (triedItems.length === 0) {
+    lines.push(`（まだチェックがありません）`);
+  } else {
+    triedItems.forEach(function(p) {
+      lines.push(`- ` + p.method + `（` + p.book + `）`);
+    });
+  }
+  lines.push(``);
+  lines.push(`【気になる・試してみたい実践（` + savedItems.length + `件）】`);
+  if (savedItems.length === 0) {
+    lines.push(`（まだチェックがありません）`);
+  } else {
+    savedItems.forEach(function(p) {
+      lines.push(`- ` + p.method + `（` + p.book + `）`);
+    });
+  }
+
+  const content = lines.join(`\n`);
+  const msgEl = document.getElementById(`footer-msg`);
+
+  if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === `function`) {
+    window.notebookAppApi.triggerFileDownload({
+      content: content,
+      contentType: `text/plain`,
+      encoding: `UTF-8`,
+      filename: `kobe-meetup-memo.txt`
+    });
+    if (msgEl) msgEl.textContent = `メモファイルをダウンロードしました。`;
+  } else {
+    const blob = new Blob([content], { type: `text/plain;charset=utf-8` });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement(`a`);
+    a.href = url;
+    a.download = `kobe-meetup-memo.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    if (msgEl) msgEl.textContent = `メモをテキスト保存しました。`;
+  }
+}
+
+function resetUserState(btn) {
+  if (!btn) return;
+  const msgEl = document.getElementById(`footer-msg`);
+  if (btn.dataset.armed !== `true`) {
+    btn.dataset.armed = `true`;
+    btn.textContent = `もう一度押すとリセットされます`;
+    if (msgEl) msgEl.textContent = `「やったことある」「気になる」とトーク履歴を初期化します。`;
+    return;
+  }
+  btn.dataset.armed = `false`;
+  btn.textContent = `チェック記録をリセット`;
+  appState.triedIds = [];
+  appState.savedIds = [];
+  appState.drawnHistoryIds = [];
+  updateKpis();
+  renderPracticeCards();
+  renderTopicSpotlight();
+  persistState();
+  if (msgEl) msgEl.textContent = `チェック記録をリセットしました。`;
+}
+
+async function initApp() {
+  if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === `function`) {
+    try {
+      const saved = await window.notebookAppApi.getAppState();
+      if (saved && typeof saved === `object`) {
+        if (Array.isArray(saved.triedIds)) appState.triedIds = saved.triedIds;
+        if (Array.isArray(saved.savedIds)) appState.savedIds = saved.savedIds;
+        if (Array.isArray(saved.drawnHistoryIds)) appState.drawnHistoryIds = saved.drawnHistoryIds;
+        if (typeof saved.currentTopicId === `string`) appState.currentTopicId = saved.currentTopicId;
+      }
+    } catch (e) {
+      // Ignore state read errors in preview
+    }
+  }
+
+  renderBookSelect();
+  renderTagChips();
+  renderPracticeCards();
+  renderTopicSpotlight();
+  renderLollipopChart();
+  renderComparisonTable();
+  updateKpis();
+
+  if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === `function`) {
+    window.notebookAppApi.notifyAppReady();
+  }
+}
+
+document.addEventListener(`DOMContentLoaded`, initApp);
+</script>
+</body>
+</html>
