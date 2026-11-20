@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
+<meta name="description" content="1Passwordを公式サイトの月額・年額で使っている人が、今のアカウントのままソースネクストの3年版へ切り替える手順。実際にやった時刻つきの記録と、AIにそのまま渡せる頼み文つき。">
+<title>1Passwordをソースネクストの3年版へ乗り換える｜おけもん</title>
+<style>
+:root{
+  --ink:#10283e;--muted:#506474;--paper:#fffdf7;--cream:#f6f1e5;
+  --teal:#007d80;--aqua:#d8f3ee;--yellow:#ffe28a;--yellow-soft:#fff6d6;
+  --line:#d6dfda;--red:#a23f29;--red-soft:#fbe9e4;--green:#2f6b3a;--green-soft:#e3f1e4;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;font-size:16px;line-height:1.9;letter-spacing:.02em}
+a{color:#006e77;text-underline-offset:.2em;overflow-wrap:anywhere}
+button{font:inherit;cursor:pointer}
+a:focus-visible,button:focus-visible{outline:3px solid #e99314;outline-offset:3px}
+.wrap{max-width:860px;margin:0 auto;padding:28px 16px 64px}
+.paper{background:var(--paper);border-radius:12px;box-shadow:0 8px 40px #172b3e0d;overflow:hidden}
+section{padding:36px 40px;border-bottom:1px solid var(--line)}
+section:last-child{border-bottom:0}
+h1,h2,h3{line-height:1.45;margin:0;letter-spacing:.03em;text-wrap:balance;word-break:auto-phrase}
+h1{font-size:clamp(26px,4.6vw,38px);font-weight:900}
+h2{font-size:clamp(21px,3.4vw,26px);font-weight:900;margin-bottom:16px;display:flex;gap:10px;align-items:baseline}
+h2 .no{font-size:13px;color:var(--teal);letter-spacing:.12em;flex:none}
+h3{font-size:18px;font-weight:800}
+p{margin:0 0 12px}
+p:last-child{margin-bottom:0}
+.eyebrow{color:var(--teal);font-size:12px;font-weight:900;letter-spacing:.15em;margin-bottom:10px}
+.lead{font-size:17px;margin-top:14px}
+.byline{font-size:12px;color:var(--muted);margin-top:14px}
+.status{display:inline-flex;gap:8px;align-items:center;background:var(--yellow-soft);border:1px solid #f0d27a;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;margin-top:16px}
+.status::before{content:"";width:9px;height:9px;border-radius:50%;background:#e9a514;flex:none}
+.jump{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.btn{display:inline-block;border:1px solid var(--teal);border-radius:6px;background:var(--teal);color:#fff;padding:9px 16px;font-size:14px;font-weight:700;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--teal)}
+.hero{background:linear-gradient(180deg,#eef7f4,var(--paper));padding-top:40px}
+
+/* 結論 */
+.answer{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.answer li{background:#fff;border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:8px;padding:12px 16px}
+.answer li b{color:var(--teal)}
+.answer li.warn{border-left-color:var(--red)}
+.answer li.warn b{color:var(--red)}
+
+/* 流れの帯 */
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:18px 0 6px;padding:0;list-style:none;counter-reset:f}
+.flow li{background:var(--aqua);border-radius:8px;padding:10px 10px 12px;font-size:13.5px;line-height:1.6;position:relative;counter-increment:f}
+.flow li::before{content:counter(f);display:block;font-weight:900;color:var(--teal);font-size:18px}
+.flow li small{display:block;color:var(--muted);font-size:12px}
+
+/* 実録 */
+.log{list-style:none;margin:0;padding:0;border-left:3px solid var(--line);margin-left:6px}
+.log li{position:relative;padding:0 0 16px 22px}
+.log li::before{content:"";position:absolute;left:-9px;top:8px;width:15px;height:15px;border-radius:50%;background:var(--teal);border:3px solid var(--paper)}
+.log li.wait::before{background:var(--paper);border:3px dashed var(--muted)}
+.log time{font-weight:900;font-variant-numeric:tabular-nums;margin-right:8px}
+.log li p{margin:2px 0 0;color:var(--muted);font-size:14.5px}
+
+/* 分岐表 */
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14.5px;background:#fff}
+th,td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#f2f8f2;font-size:13px;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:700;width:34%}
+.ok{color:var(--green);font-weight:800}
+.ng{color:var(--red);font-weight:800}
+
+/* 手順 */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:18px;counter-reset:s}
+.step{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;counter-increment:s;min-width:0}
+.step h3{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.step h3::before{content:counter(s);background:var(--teal);color:#fff;border-radius:50%;width:28px;height:28px;display:inline-grid;place-items:center;font-size:15px;flex:none}
+.who{font-size:11.5px;font-weight:800;padding:2px 9px;border-radius:999px;letter-spacing:.04em}
+.who.me{background:var(--yellow-soft);color:#8a5a00;border:1px solid #f0d27a}
+.who.ai{background:var(--aqua);color:var(--teal);border:1px solid #a9ddd4}
+.step .body{margin-top:10px}
+.step ol,.step ul{margin:6px 0 10px;padding-left:1.4em}
+.step li{margin:3px 0}
+.ui{font-weight:700;background:#eef3f0;border:1px solid #cfdad5;border-radius:4px;padding:0 6px;overflow-wrap:anywhere;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.note{font-size:14px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:10px}
+.mine{background:var(--green-soft);border-radius:8px;padding:10px 14px;font-size:14.5px;margin-top:10px}
+.mine b{color:var(--green)}
+.pending{background:var(--yellow-soft);border:1px dashed #e0b84a;border-radius:8px;padding:10px 14px;font-size:14.5px;margin-top:10px}
+
+/* つまずき */
+.traps{display:grid;min-width:0;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:14px}
+.trap{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.trap.hot{border-color:var(--red);box-shadow:inset 0 4px 0 var(--red)}
+.trap .when{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.05em}
+.trap .fix{border-top:1px dashed var(--line);padding-top:8px;font-size:14.5px}
+.trap .fix b{color:var(--teal)}
+
+/* コピー枠 */
+.copybox{background:#fff;border:2px solid var(--teal);border-radius:10px;overflow:hidden;margin-top:12px}
+.copybar{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--aqua);padding:8px 12px;font-size:13px;font-weight:700;color:var(--teal);flex-wrap:wrap}
+.copybtn{border:1px solid var(--teal);background:var(--teal);color:#fff;border-radius:6px;padding:5px 14px;font-size:13px;font-weight:700}
+.copybtn.done{background:var(--green);border-color:var(--green)}
+pre{margin:0;padding:16px 18px;white-space:pre-wrap;word-break:break-word;font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif;font-size:14px;line-height:1.85;max-height:560px;overflow:auto}
+.links{margin:0;padding-left:1.2em}
+.links li{margin:6px 0}
+.links small{color:var(--muted)}
+footer{font-size:12.5px;color:var(--muted);padding:24px 40px 32px}
+
+@media (max-width:640px){
+  section{padding:28px 18px}
+  footer{padding:20px 18px 28px}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .step{padding:16px 14px}
+  .lead{font-size:16px}
+  h1{font-size:25px}
+}
+@media print{
+  body{background:#fff}.paper{box-shadow:none}.copybtn,.jump{display:none}pre{max-height:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<main class="paper">
+
+<section class="hero">
+  <p class="eyebrow">1PASSWORD × ソースネクスト｜乗り換えのメモ</p>
+  <h1>1Passwordの月額から、ソースネクストの3年版へ。<br>今のアカウントのまま乗り換える。</h1>
+  <p class="lead">パスワードもパスキーも入ったまま、払い方だけを安い3年版に変えます。実際にやった日の時刻つきの記録と、あなたのAIにそのまま渡せる頼み文を置きました。</p>
+  <p class="status">2026年11月20日：申込とサポートへの返信まで済み。適用の完了を待っています</p>
+  <div class="jump">
+    <a class="btn" href="#steps">手順を見る</a>
+    <a class="btn ghost" href="#ai">AIに渡す頼み文</a>
+    <a class="btn ghost" href="#traps">つまずきやすい所</a>
+  </div>
+  <p class="byline">おけもん｜2026年11月の実体験と、ソースネクスト・1Passwordの公式の案内から。完了を確かめたら、このページを書き足します。</p>
+</section>
+
+<section aria-labelledby="ans-h">
+  <h2 id="ans-h"><span class="no">まず結論</span>こうなります</h2>
+  <ul class="answer">
+    <li><b>同じアカウントのまま切り替えられる。</b>1Passwordを公式サイトの月額・年額で払っている人は、ソースネクストで買った3年版のコードを今のアカウントに結びつけられます。中身の移し替えはいりません。</li>
+    <li><b>やる事は4つだけ。</b>コードを入れる → 「すでにアカウントを持っている」を選ぶ → 名前とメールを送る → 1Passwordのサポートから来るメールに返信する。</li>
+    <li class="warn"><b>一番の落とし穴は「新規アカウント」。</b>ここで新規を選ぶと、空っぽのアカウントができて今のパスワードとつながりません。</li>
+  </ul>
+  <ol class="flow" aria-label="全体の流れ">
+    <li>ソースネクストで買う<small>あなたが買う</small></li>
+    <li>コードを入れて送信<small>マイページ「利用開始」</small></li>
+    <li>既存アカウントを選び、名前とメール<small>1Passwordのページ</small></li>
+    <li>サポートのメールに返信<small>あとは適用を待つ</small></li>
+  </ol>
+</section>
+
+<section aria-labelledby="log-h">
+  <h2 id="log-h"><span class="no">実録</span>わたしの場合（2026年11月20日）</h2>
+  <p>公式サイトの月額（1人用）から、ソースネクストの「1Password 3年 1人用 オンラインコード版」へ。ブラックフライデーの期間で、9,980円でした（値段は時期で変わります）。</p>
+  <ol class="log">
+    <li><time>9:00</time>スマホでソースネクストから購入<p>決済のあと画面がくるくる回ったまま止まった。買い直さず、注文履歴を見たら「完了」になっていた。</p></li>
+    <li><time>9:05</time>「製品登録 完了のお知らせ」のメールが届く<p>マイページの「お持ちの製品一覧」にも「1Password 3年版」が出た。</p></li>
+    <li><time>9:45</time>マイページ「利用開始」から申込<p>「すでに1Passwordアカウントを持ち」を選び、1Passwordに登録してある名前とメールを送った。</p></li>
+    <li><time>9:46</time>1Passwordのサポートから自動でメール<p>件名は「Sourcenext Individual - Existing Account」。チケット番号つき。頼まれたのは「返信して、登録メールを確かめさせて」だけ。</p></li>
+    <li><time>10:38</time>サポートへ返信<p>登録メール・コードの確認・今の払い方（公式サイトの月額）の3つを書いた。</p></li>
+    <li class="wait"><time>このあと</time>適用の連絡を待つ<p>月額の次の更新日（11/24）に、1Passwordの請求の画面で「3年版になった」「月額の請求がない」を確かめる予定。結果はここに書き足します。</p></li>
+  </ol>
+</section>
+
+<section aria-labelledby="route-h">
+  <h2 id="route-h"><span class="no">はじめに</span>あなたはどの道？</h2>
+  <p>今の1Passwordの払い方で、進め方が変わります。払い方は、1Passwordのウェブの「請求（Billing）」の画面か、毎月・毎年届く請求のメールで分かります。</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>今の払い方</th><th>どうする</th></tr></thead>
+    <tbody>
+      <tr><td>1Password公式サイトの月額</td><td><span class="ok">このページの手順どおり。</span>申し込むと月額の残りの日数は消えます。消えるのは数日分なので、サポートが動く平日に出すのが楽です（わたしはこれ）。</td></tr>
+      <tr><td>1Password公式サイトの年額</td><td><span class="ok">このページの手順どおり。</span>ただし残りの期間は足されずに消えます。残りが長いなら、更新日の少し前の平日に申し込むと損が少ないです。</td></tr>
+      <tr><td>App Store・Google Playで払っている</td><td>サポートのメールに「コードを当てる前に、ストアのサブスクリプションをキャンセルして」とあります。先にストアで自動更新を止め、更新日の近くに申し込みます。</td></tr>
+      <tr><td>買い切り版（昔のスタンドアロン）</td><td><span class="ng">結びつけはできません。</span>新しいアカウントを作ってデータを移す方法になります（ソースネクストのFAQ 17626）。</td></tr>
+      <tr><td>まだ1Passwordを使っていない</td><td>このページは乗り換えの話です。初めての人は「1Passwordアカウントを登録」から始めます。</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">このページは「1人用」で試した記録です。ファミリー版も公式の流れは同じ形ですが、わたしは試していません。</p>
+</section>
+
+<section id="steps" aria-labelledby="steps-h">
+  <h2 id="steps-h"><span class="no">手順</span>画面の言葉どおりに進める</h2>
+  <ol class="steps">
+    <li class="step">
+      <h3>3年版を買う <span class="who me">あなたが押す</span></h3>
+      <div class="body">
+        <p>ソースネクストで「1Password 3年版」を買います。1人用かファミリーかを、今の契約と合わせます。</p>
+        <p class="note">決済のあと画面が止まっても、もう一度押さない。2つ買うことになります。メールとマイページの注文履歴で確かめます。</p>
+      </div>
+    </li>
+    <li class="step">
+      <h3>買えたか確かめる <span class="who ai">AIでもできる</span></h3>
+      <div class="body">
+        <ul>
+          <li>メール「製品登録 完了のお知らせ」が届いている</li>
+          <li>ソースネクストのマイページ <span class="ui">お持ちの製品一覧</span> に <span class="ui">1Password 3年版</span> がある</li>
+          <li><span class="ui">ご注文履歴</span> のステータスが「完了」</li>
+        </ul>
+      </div>
+    </li>
+    <li class="step">
+      <h3>1Passwordに登録してある名前とメールを確かめる <span class="who ai">AIでもできる</span></h3>
+      <div class="body">
+        <p>あとで「既存アカウント」に結びつける時に使います。1Passwordから届いた請求のメールの「請求先」の名前と、そのメールの宛先が分かりやすいです。</p>
+      </div>
+    </li>
+    <li class="step">
+      <h3>コードを入れて「送信」 <span class="who me">送信はあなたの一言で</span></h3>
+      <div class="body">
+        <ol>
+          <li>マイページ <span class="ui">お持ちの製品一覧</span> → <span class="ui">1Password 3年版</span></li>
+          <li>左のメニュー <span class="ui">シリアル番号の確認</span> に「コード」があります（SNI で始まる文字）</li>
+          <li>左のメニュー <span class="ui">利用開始</span> → <span class="ui">コードを入力</span> の欄に、そのコードを入れる</li>
+          <li><span class="ui">送信</span> → 新しいタブで1Passwordのページが開きます</li>
+        </ol>
+        <p class="note">新しいタブのアドレスにはコードが入っています。この画面のスクリーンショットは人に見せないでください。</p>
+      </div>
+    </li>
+    <li class="step">
+      <h3>「すでに1Passwordアカウントを持ち」を選ぶ <span class="who me">いちばん大事</span></h3>
+      <div class="body">
+        <p>「1Passwordアカウントを引換する」というページに、ボタンが2つあります。</p>
+        <ul>
+          <li><span class="ui">1Passwordアカウントを登録</span> … 新規。<b style="color:var(--red)">乗り換えでは押さない</b></li>
+          <li><span class="ui">すでに1Passwordアカウントを持ち</span> … こちらを押す</li>
+        </ul>
+      </div>
+    </li>
+    <li class="step">
+      <h3>名前とメールを入れて Submit <span class="who me">送信はあなたの一言で</span></h3>
+      <div class="body">
+        <p>英語のページ <span class="ui">Link your existing 1Password account</span> に変わります。</p>
+        <ul>
+          <li><span class="ui">YOUR NAME</span> … 1Passwordに登録してある名前</li>
+          <li><span class="ui">EMAIL</span> … 1Passwordに登録してあるメールアドレス</li>
+        </ul>
+        <p><span class="ui">Submit</span> を押して「Thank you! We will be in touch with you shortly.」と出たら、申込は届いています。</p>
+        <p class="note">ここで1Passwordへのログインは求められませんでした（名前とメールだけ）。</p>
+      </div>
+    </li>
+    <li class="step">
+      <h3>サポートからのメールを読む <span class="who ai">AIでもできる</span></h3>
+      <div class="body">
+        <p>わたしの時は1分後に、<b>support@1password.com</b> から件名「Sourcenext Individual - Existing Account」（チケット番号つき）が届きました。書いてあった事は、</p>
+        <ul>
+          <li>このメールに返信して、1Passwordアカウントのメールアドレスを確かめさせてほしい</li>
+          <li>ソースネクストのコードが「SN」で始まるか確かめてほしい</li>
+          <li>App Store・Google Playで払っている人は、コードを当てる前にそちらをキャンセルしてほしい</li>
+          <li>残りの有料期間を失わないよう、今の請求の期間の終わり近くに連絡してほしい</li>
+        </ul>
+        <p class="note">迷惑メールやサブのアドレスに入ることもあるので、両方を見ます。</p>
+      </div>
+    </li>
+    <li class="step">
+      <h3>サポートに返信する <span class="who me">送信はあなたの一言で</span></h3>
+      <div class="body">
+        <p>コードはもうチケットに入っているので、返信にコードを書く必要はありませんでした。わたしが送った文の形です（○の所を自分の物に）。</p>
+        <div class="copybox">
+          <div class="copybar"><span>返信の例文</span><button class="copybtn" type="button" data-copy="reply">コピー</button></div>
+<pre id="reply">1Passwordサポートチームさま
+
+お世話になっております。チケット○○○○○○の件です。
+
+1Passwordアカウントに登録しているメールアドレスは ○○○○@○○○○ です。
+SourceNextのコードは、このチケットでお送りした「SN」で始まるもので間違いありません。
+今の契約は1Passwordの公式サイトで契約した（月額／年額）プランで、AppleやGoogle Playで払っているものではありません。
+
+ソースネクストの3年版の適用を、よろしくお願いいたします。
+
+（お名前）</pre>
+        </div>
+      </div>
+    </li>
+    <li class="step">
+      <h3>切り替わったか確かめて、終わりの日を控える <span class="who ai">AIでもできる</span></h3>
+      <div class="body">
+        <ul>
+          <li>1Passwordのウェブの <span class="ui">請求（Billing）</span> の画面で、3年版になっていること、月額・年額の次の請求がないことを見る</li>
+          <li>3年の終わりの日を控え、その2か月前くらいにカレンダーへ「次をどうするか決める」を入れる</li>
+        </ul>
+        <p class="note">コードが正しく当たれば、月額・年額の請求は止まる（100%割引になる）とソースネクストのFAQ 19455にあります。もし請求されたら、1Passwordの日本語の窓口 support+jp@1password.com へ。</p>
+        <div class="pending">わたしはここから先がまだです。結果が出たら、何日かかったか・画面にどう出たかを書き足します。</div>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<section id="traps" aria-labelledby="traps-h">
+  <h2 id="traps-h"><span class="no">注意</span>つまずきやすい所</h2>
+  <div class="traps">
+    <article class="trap hot">
+      <span class="when">申込の時</span>
+      <h3>「1Passwordアカウントを登録」を押してしまう</h3>
+      <p>新しい空っぽのアカウントができ、今のパスワードとつながりません。</p>
+      <p class="fix"><b>こうする</b>　必ず「すでに1Passwordアカウントを持ち」。名前とメールは、1Passwordに登録してある物と同じにします。</p>
+    </article>
+    <article class="trap hot">
+      <span class="when">申込の前</span>
+      <h3>先に自分で月額・年額を止めてしまう</h3>
+      <p>更新を止めたまま期限が来ると、アカウントが凍結されます。中身を見る・コピーすることはできても、使い勝手が大きく落ちます。</p>
+      <p class="fix"><b>こうする</b>　公式サイトで払っている人は、サポートのメールで言われない限り止めません。App Store・Google Playの人だけ、メールの指示どおり先にストアで止めます。</p>
+    </article>
+    <article class="trap">
+      <span class="when">申込の後</span>
+      <h3>送信したら終わり、と思ってしまう</h3>
+      <p>申込の後に1Passwordのサポートとのやりとりがあります。返信しないと進みません。</p>
+      <p class="fix"><b>こうする</b>　メールを見張り、返信まで済ませる。そのあと請求の画面で確かめるまでが1セット。</p>
+    </article>
+    <article class="trap">
+      <span class="when">いつ申し込んでも</span>
+      <h3>残りの期間は足されない</h3>
+      <p>月額・年額の残りがあるうちにコードを当てると、残りは消えます。3年に上乗せはされません。</p>
+      <p class="fix"><b>こうする</b>　月額なら数日分なので気にしない。年額で残りが長いなら、更新日の少し前の平日に。</p>
+    </article>
+    <article class="trap">
+      <span class="when">週末・連休</span>
+      <h3>土日祝はサポートとのやりとりが進みにくい</h3>
+      <p>自動のメールはすぐ来ても、人の対応は平日になりやすいです。</p>
+      <p class="fix"><b>こうする</b>　更新日が週明けなら、その前の平日に出しておく。</p>
+    </article>
+    <article class="trap">
+      <span class="when">購入の時</span>
+      <h3>画面がくるくる回ったまま止まる</h3>
+      <p>決済は通っているのに、画面だけ止まることがあります。押し直すと2つ買うことに。</p>
+      <p class="fix"><b>こうする</b>　買い直さない。メールと注文履歴で確かめる。</p>
+    </article>
+    <article class="trap">
+      <span class="when">ずっと</span>
+      <h3>コードがうっかり広がる</h3>
+      <p>コードはそれだけで3年分の権利です。購入完了の画面や、申込のタブのアドレスにも出ています。</p>
+      <p class="fix"><b>こうする</b>　置き場は1Passwordの項目1つだけ。スクリーンショットを人に見せない。AIとの会話にも貼らない。</p>
+    </article>
+    <article class="trap">
+      <span class="when">返事が来ない時</span>
+      <h3>申込をやり直す・別のアカウントで試す</h3>
+      <p>同じコードを何度も出したり、新しいアカウントを作って試したりすると、ややこしくなります。</p>
+      <p class="fix"><b>こうする</b>　1回出したら待つ。数日たっても何も来なければ、support+jp@1password.com へ「いつ、どのアカウントで申し込んだか」を書いて聞く。</p>
+    </article>
+  </div>
+</section>
+
+<section id="ai" aria-labelledby="ai-h">
+  <h2 id="ai-h"><span class="no">AIに</span>あなたのAIに、このまま渡す頼み文</h2>
+  <p>ブラウザを操作できるAI（ChromeでClaudeを使う拡張、ChatGPTのエージェントなど）なら、画面を進める所まで任せられます。操作できないAIでも、この文を渡せば、画面を一緒に見ながら進める相棒になります。</p>
+  <p>買う・送信する・返信を送るは、あなたの一言をもらってから。コードやパスワードは、AIとの会話に貼らずに済む形にしてあります。</p>
+  <div class="copybox">
+    <div class="copybar"><span>AIへの頼み文（全部コピーして渡す）</span><button class="copybtn" type="button" data-copy="prompt">コピー</button></div>
+<pre id="prompt">1Passwordを、今のアカウントのまま「ソースネクストの3年版」に切り替えたいです。手伝ってください。
+
+■ ゴール
+今使っている1Passwordのアカウント（パスワードやパスキーは入ったまま）が、ソースネクストで買った3年版のコードで使える状態になること。新しいアカウントは作りません。
+
+■ はじめに確かめること（分からなければ私に聞いてください）
+1. 今の1Passwordの払い方：1Password公式サイトの月額か年額か、App Store・Google Playか、買い切り版か。
+　・買い切り版なら、この手順では結びつけられません。そこで止めて教えてください。
+　・App Store・Google Playなら、私が先にストアで自動更新を止める必要があります。
+2. 今の契約の次の更新日（1Passwordの請求の画面か、請求のメールで分かります）。年額で残りが長いなら、更新日の少し前の平日に申し込む案を出してください。
+3. ソースネクストで「1Password 3年版」を買ってあるか。買うのは私です。
+4. 1Passwordに登録してある名前とメールアドレス（1Passwordの請求メールの「請求先」が分かりやすいです）。
+
+■ 手順（画面の言葉はこのとおり）
+1. ソースネクストのマイページ「お持ちの製品一覧」→「1Password 3年版」を開く。
+2. 左のメニュー「シリアル番号の確認」にあるコード（SNI で始まる）を、左のメニュー「利用開始」の「コードを入力」の欄へ入れる。コードの値は、この会話・メモ・スクリーンショットに出さないでください。
+3. 「送信」の前に私に一言確かめる。送信すると新しいタブで1Passwordのページが開きます（アドレスにコードが入るので、その画面は共有しない）。
+4. 「1Passwordアカウントを引換する」では、必ず「すでに1Passwordアカウントを持ち」を押す。「1Passwordアカウントを登録」（新規）は押さない。
+5. 「Link your existing 1Password account」で、YOUR NAME＝登録してある名前、EMAIL＝登録してあるメールを入れる。Submit の前に私に一言確かめる。「Thank you! We will be in touch with you shortly.」と出たら申込は届いています。
+6. support@1password.com から「Sourcenext Individual - Existing Account」（チケット番号つき）が届くので、本文で頼まれている事を短くまとめて私に伝える。届かない時は迷惑メールも見る。
+7. 返信の文を下書きして、宛先と本文を私に見せる。送るのは私のOKの後。コードの値は書かない（チケットにもう入っています）。例：登録メールの確認／コードは「SN」で始まるもので間違いない／今の払い方。
+8. 適用されたら、1Passwordの請求（Billing）の画面で「3年版になった」「月額・年額の次の請求がない」を確かめ、3年の終わりの日を教える。カレンダーに「終わる2か月前」の予定を入れる案も出す。
+
+■ 止まって私に返す所
+・買う、申込の「送信」「Submit」、サポートへの返信の送信、月額・年額のキャンセル：私の一言をもらってから。
+・1Passwordへのログインや、パスワード・コードを入れる場面：私が入れるか、パスワードマネージャーの自動入力で。
+・画面がこの説明と違う時：押す前に、画面のどこが違うかを見せて相談。
+・月額・年額の更新を止めるのは、サポートのメールで言われた時だけ（自分の判断で止めると、期限の後にアカウントが凍結されます）。
+
+■ 終わった時に教えてほしいこと
+申込の時刻／サポートのチケット番号／返信を送った時刻／適用が確かめられた日と画面の表示／3年の終わりの日。</pre>
+  </div>
+</section>
+
+<section aria-labelledby="src-h">
+  <h2 id="src-h"><span class="no">出どころ</span>公式の案内</h2>
+  <ul class="links">
+    <li><a href="https://support.sourcenext.com/fa/support/web/knowledge17626.html" rel="noopener" target="_blank">ソースネクスト FAQ 17626：既存アカウントに新しいライセンスを紐付ける方法</a><br><small>手順の正本。買い切り版は紐付けできない・残りの期間は消える、もここ</small></li>
+    <li><a href="https://download.www.sourcenext.com/product/1password/" rel="noopener" target="_blank">ソースネクスト「1Password 3年版」の製品ページ</a><br><small>よくある質問に「月額・年額で課金中でも使える」「アクティベーションの期限はない」と移行の手順</small></li>
+    <li><a href="https://support.sourcenext.com/fa/support/web/knowledge17292.html" rel="noopener" target="_blank">ソースネクスト FAQ 17292：期限の後も同じアカウントで使えるか</a></li>
+    <li><a href="https://support.sourcenext.com/fa/support/web/knowledge19455.html" rel="noopener" target="_blank">ソースネクスト FAQ 19455：コードを当てた後の請求</a></li>
+    <li><a href="https://support.sourcenext.com/fa/support/web/knowledge17166.html" rel="noopener" target="_blank">ソースネクスト FAQ 17166：残りの期間の確かめ方</a></li>
+    <li><a href="https://support.1password.com/frozen-account/" rel="noopener" target="_blank">1Password：アカウントが凍結された時にできること</a></li>
+    <li><a href="https://support.1password.com/manage-subscription/" rel="noopener" target="_blank">1Password：サブスクリプションの管理</a></li>
+  </ul>
+  <p class="note">どれも2026年11月に読んだ内容です。画面や条件は変わることがあるので、申し込む前に公式の案内を一度開いてください。</p>
+</section>
+
+<footer>
+  2026年11月20日 作成（おけもん）。申込とサポートへの返信までを実際にやった記録です。適用の完了を確かめたら書き足します。<br>
+  このページは乗り換えの手順の共有で、ソースネクスト・1Passwordの公式の案内ではありません。
+</footer>
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.copybtn').forEach(function(b){
+  b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy);
+    var t=el.textContent;
+    function done(){b.textContent='コピーしました';b.classList.add('done');setTimeout(function(){b.textContent='コピー';b.classList.remove('done');},2200);}
+    function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy');done();}catch(e){}}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback);}else{fallback();}
+  });
+});
+</script>
+</body>
+</html>
