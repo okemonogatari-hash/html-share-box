@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>勉強会まとめ｜AIみんなの「共有ノート」を1冊つくろう</title>
+<meta property="og:title" content="【勉強会まとめ】AIに同じことを何回も説明してる人へ。みんなの「共有ノート」を1冊つくろう">
+<meta property="og:description" content="neco.さんの勉強会「AIの『共有脳』をつくろう」を、AIを使い始めた人向けに、おけもんがビフォーアフターでまとめました。">
+<meta property="og:image" content="images/T.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#FFF8EC; --paper:#FFFFFF; --ink:#4A3426; --soft:#8A6F5C;
+  --mint:#6FCFAE; --mint-pale:#E3F7EE; --mint-deep:#2E9E7C;
+  --coral:#FF6B7F; --orange:#FF9A3D; --sun:#FFD45C; --sun-pale:#FFF3C9;
+  --line:#F0E2CC;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  font-weight:500; font-size:17px; line-height:2; letter-spacing:.02em;
+  background-image:radial-gradient(circle at 12% 8%, #FFE9B8 0 90px, transparent 91px),
+                   radial-gradient(circle at 92% 3%, #CFF1E2 0 120px, transparent 121px);
+  background-repeat:no-repeat;
+}
+.wrap{max-width:720px; margin:0 auto; padding:20px 16px 72px}
+/* 連載の帯 */
+.series{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:8px 0 14px}
+.badge{
+  background:var(--ink); color:#fff; font-weight:900; font-size:13px;
+  padding:5px 14px; border-radius:999px; letter-spacing:.08em;
+}
+.num{
+  background:linear-gradient(135deg,var(--orange),var(--coral)); color:#fff; font-weight:900;
+  font-size:13px; padding:5px 12px; border-radius:999px;
+}
+.date{color:var(--soft); font-size:13px; font-weight:700}
+h1{
+  font-size:clamp(27px,7.4vw,42px); line-height:1.35; font-weight:900; margin:0 0 16px;
+  letter-spacing:.01em;
+}
+h1 .hl{
+  background:linear-gradient(transparent 62%, var(--sun) 62%); padding:0 2px;
+}
+h1 .pop{color:var(--coral)}
+.hero{
+  border-radius:22px; overflow:hidden; border:4px solid #fff;
+  box-shadow:0 10px 0 var(--mint), 0 22px 40px rgba(74,52,38,.14);
+  margin:6px 0 30px; transform:rotate(-.6deg);
+}
+img{display:block; width:100%; height:auto}
+.lead{
+  background:var(--paper); border-radius:18px; padding:16px 18px; border:2px dashed var(--mint);
+  font-weight:700; line-height:1.85; margin-bottom:26px;
+}
+.lead b{color:var(--mint-deep)}
+/* 吹き出し */
+.voices{display:grid; gap:10px; margin:6px 0 18px}
+.voice{
+  position:relative; background:var(--paper); border:2.5px solid var(--ink); border-radius:18px;
+  padding:10px 16px 10px 46px; font-weight:700; line-height:1.6; width:fit-content; max-width:100%;
+  box-shadow:4px 4px 0 var(--sun);
+}
+.voice::before{content:"🗣️"; position:absolute; left:14px; top:9px}
+.voice:nth-child(2){margin-left:auto; box-shadow:4px 4px 0 var(--mint)}
+.me{
+  position:relative; background:var(--mint-pale); border-radius:16px; padding:12px 16px 12px 52px;
+  font-weight:700; line-height:1.7; margin:16px 0;
+}
+.me::before{
+  content:"🦫"; position:absolute; left:12px; top:9px; font-size:24px;
+}
+.dots{text-align:center; color:var(--mint); letter-spacing:.6em; font-weight:900; margin:22px 0}
+p{margin:0 0 1.15em}
+h2{
+  font-size:clamp(21px,5.6vw,27px); line-height:1.45; font-weight:900;
+  margin:54px 0 18px; padding:12px 16px; background:var(--paper); border-radius:16px;
+  border-left:10px solid var(--mint); box-shadow:0 4px 0 var(--line);
+}
+h2 .e{margin-right:.35em}
+figure{margin:24px 0 26px}
+figure .pic{
+  border-radius:20px; overflow:hidden; border:4px solid #fff;
+  box-shadow:0 8px 24px rgba(74,52,38,.13);
+}
+figcaption{font-size:13.5px; color:var(--soft); font-weight:700; text-align:center; margin-top:10px; line-height:1.6}
+.big{
+  font-size:clamp(20px,5.4vw,25px); font-weight:900; line-height:1.6; text-align:center;
+  margin:28px 0; padding:22px 14px; border-radius:20px;
+  background:linear-gradient(135deg,#FFF1D6,#FFE3E8);
+}
+.big em{font-style:normal; color:var(--coral)}
+mark{background:linear-gradient(transparent 60%, var(--sun) 60%); color:inherit; font-weight:700}
+/* 今日のアクション */
+.action{
+  margin:34px 0 10px; background:var(--paper); border:3px solid var(--ink); border-radius:22px;
+  padding:22px 18px 18px; position:relative; box-shadow:6px 6px 0 var(--mint);
+}
+.action .tag{
+  position:absolute; top:-16px; left:16px; background:var(--coral); color:#fff; font-weight:900;
+  padding:3px 16px; border-radius:999px; font-size:14px; border:3px solid var(--ink);
+}
+.action label{display:flex; gap:12px; align-items:flex-start; font-weight:900; font-size:18.5px; line-height:1.6; cursor:pointer}
+.action input{appearance:none; flex:none; width:30px; height:30px; margin-top:2px; border:3px solid var(--ink); border-radius:9px; background:#fff; display:grid; place-items:center}
+.action input:checked{background:var(--mint)}
+.action input:checked::after{content:"✓"; color:#fff; font-weight:900; font-size:20px; line-height:1}
+.action .sub{color:var(--soft); font-size:14.5px; font-weight:700; margin:8px 0 0 42px; line-height:1.7}
+.done{ margin:12px 0 0 42px; font-weight:900; color:var(--mint-deep)}
+
+/* 明日の予告 */
+.next{
+  margin-top:44px; border-radius:22px; padding:22px 18px; color:#fff;
+  background:linear-gradient(135deg,#3BB893,#2E9E7C); position:relative; overflow:hidden;
+}
+.next::after{content:"✨"; position:absolute; right:14px; top:8px; font-size:44px; opacity:.5}
+.next .k{font-size:13px; font-weight:900; letter-spacing:.14em; background:rgba(255,255,255,.22); display:inline-block; padding:2px 12px; border-radius:999px}
+.next .t{font-size:clamp(20px,5.2vw,24px); font-weight:900; line-height:1.5; margin:10px 0 6px}
+.next p{margin:0; line-height:1.8; font-weight:700; opacity:.96}
+/* 連載の並び */
+.shelf{margin-top:34px}
+.shelf h3{font-size:15px; font-weight:900; color:var(--soft); margin:0 0 10px; letter-spacing:.08em}
+.shelf ol{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+.shelf li{display:flex; gap:12px; align-items:center; background:var(--paper); border-radius:14px; padding:10px 14px; font-weight:700; line-height:1.5; border:2px solid var(--line)}
+.shelf li.now{border-color:var(--coral)}
+.shelf li.soon{color:var(--soft); border-style:dashed}
+.shelf .n{flex:none; width:40px; height:40px; border-radius:50%; display:grid; place-items:center; font-weight:900; color:#fff; background:var(--coral)}
+.shelf li.soon .n{background:#D9CBB6}
+.home{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--mint-deep);font-weight:900;font-size:14px;background:var(--paper);border:2px solid var(--mint);border-radius:999px;padding:3px 14px}
+.homebtn{display:block;text-align:center;text-decoration:none;margin:26px auto 0;max-width:340px;background:var(--ink);color:#fff;font-weight:900;padding:12px 18px;border-radius:999px;box-shadow:0 5px 0 var(--mint)}
+.sign{margin-top:40px; text-align:center; color:var(--soft); font-weight:700; font-size:14.5px; line-height:1.9}
+.sign b{color:var(--ink); font-size:17px}
+/* ここから勉強会まとめ用（土台の見た目はジャーナリングコラム #1 と同じ） */
+.toc{background:var(--paper); border-radius:18px; padding:14px 16px; border:2px solid var(--line); margin:0 0 26px}
+.toc b{display:block; font-weight:900; margin-bottom:6px}
+.toc ul{margin:0; padding:0; list-style:none; display:grid; gap:4px}
+.toc li{padding-left:1.6em; position:relative; font-weight:700; line-height:1.7}
+.toc li::before{content:"✅"; position:absolute; left:0}
+.quote{background:var(--paper); border:2.5px solid var(--ink); border-radius:18px; padding:14px 16px; font-weight:900; line-height:1.75; margin:18px 0; box-shadow:5px 5px 0 #D9C9F2}
+.quote::before{content:"🤖💢"; display:block; font-size:20px; margin-bottom:2px}
+.pts{display:grid; gap:12px; margin:18px 0 8px}
+.pt{background:var(--paper); border-radius:18px; padding:14px 16px 10px; border:2px solid var(--line)}
+.pt h3{margin:0 0 6px; font-size:18px; font-weight:900; line-height:1.55; display:flex; gap:10px; align-items:flex-start}
+.pt h3 i{flex:none; font-style:normal; width:32px; height:32px; border-radius:50%; background:var(--coral); color:#fff; display:grid; place-items:center; font-size:16px; font-weight:900}
+.pt p{margin:0 0 .6em; line-height:1.9}
+.pt .me{margin:8px 0 6px}
+.ba{display:grid; gap:14px; margin:20px 0}
+.ba .row{display:grid; grid-template-columns:1fr; border-radius:18px; overflow:hidden; border:2px solid var(--line); background:var(--paper)}
+.ba .b,.ba .a{padding:12px 16px 12px 52px; position:relative; font-weight:700; line-height:1.75}
+.ba .b{background:#F1F0EE; color:#5E5048}
+.ba .a{background:var(--paper); border-top:2px dashed var(--mint)}
+.ba .b::before{content:"😵"; position:absolute; left:14px; top:10px; font-size:24px}
+.ba .a::before{content:"😊"; position:absolute; left:14px; top:10px; font-size:24px}
+.ba .k{display:block; font-size:12px; font-weight:900; letter-spacing:.12em; color:#6F6157}
+.ba .a .k{color:var(--mint-deep)}
+@media(min-width:640px){.ba .row{grid-template-columns:1fr 1fr}.ba .a{border-top:0; border-left:2px dashed var(--mint)}}
+.trap{background:#FFF4F1; border:2.5px solid var(--coral); border-radius:20px; padding:16px 16px 8px; margin:18px 0}
+.trap h3{margin:0 0 8px; font-size:18.5px; font-weight:900; line-height:1.55}
+.trap ul{margin:.2em 0 .9em; padding-left:1.3em}
+.trap li{font-weight:700; line-height:1.8}
+.steps{display:grid; gap:26px; margin:28px 0 20px}
+.step{background:var(--paper); border:3px solid var(--ink); border-radius:20px; padding:22px 16px 10px; position:relative; box-shadow:5px 5px 0 var(--mint)}
+.step .tag{position:absolute; top:-15px; left:14px; background:var(--mint-deep); color:#fff; font-weight:900; padding:2px 14px; border-radius:999px; font-size:13.5px; border:3px solid var(--ink)}
+.step h3{margin:0 0 6px; font-size:19px; font-weight:900; line-height:1.5}
+.step ol{margin:.2em 0 .9em; padding-left:1.4em; font-weight:700; line-height:1.85}
+.copy{background:var(--sun-pale); border-radius:14px; padding:12px 14px; margin:8px 0 0; font-weight:700; line-height:1.75}
+.copy small{display:block; font-size:12px; color:#6F6157; font-weight:900; letter-spacing:.08em; user-select:none; -webkit-user-select:none}
+.copy span{user-select:all; -webkit-user-select:all}
+.copybtn{display:inline-block; margin:8px 0 0; border:2.5px solid var(--ink); background:#fff; color:var(--ink); font:inherit; font-weight:900; font-size:14px; padding:6px 16px; border-radius:999px; cursor:pointer; min-height:44px}
+.copybtn.ok{background:var(--mint-deep); color:#fff}
+.note{font-size:14.5px; color:#6F6157; font-weight:700; line-height:1.8; background:var(--paper); border-radius:14px; padding:10px 14px; border:2px dashed var(--line)}
+.qh{font-size:19px; font-weight:900; line-height:1.6; margin:26px 0 8px; padding-left:38px; position:relative}
+.qh::before{content:"Q"; position:absolute; left:0; top:2px; width:28px; height:28px; border-radius:50%; background:var(--coral); color:#fff; display:grid; place-items:center; font-size:15px}
+.places{display:grid; gap:12px; margin:16px 0 8px}
+@media(min-width:640px){.places{grid-template-columns:1fr 1fr}}
+.place{background:var(--paper); border-radius:18px; padding:14px 16px 12px; border:2px solid var(--line)}
+.place h4{margin:0; font-size:18px; font-weight:900; line-height:1.4}
+.place h4 small{font-size:12.5px; color:#6F6157; font-weight:700; margin-left:.4em}
+.place .as{display:inline-block; background:var(--mint-pale); color:#1F7A5E; font-weight:900; font-size:14px; padding:1px 12px; border-radius:999px; margin:6px 0 8px}
+.place dl{margin:0; display:grid; gap:2px}
+.place dt{font-size:12px; font-weight:900; letter-spacing:.1em; color:#6F6157}
+.place dd{margin:0 0 6px; font-weight:700; line-height:1.7; font-size:15.5px}
+.place.me2{border-color:var(--sun)} .place.nc{border-color:var(--coral)}
+.who{font-size:13px; font-weight:900; color:#C8405A; margin-top:4px}
+.faq{display:grid; gap:10px; margin:18px 0}
+.faq details{background:var(--paper); border-radius:16px; border:2px solid var(--line); overflow:hidden}
+.faq summary{cursor:pointer; list-style:none; padding:14px 44px 14px 48px; font-weight:900; line-height:1.6; position:relative; min-height:52px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"Q"; position:absolute; left:12px; top:13px; width:26px; height:26px; border-radius:50%; background:var(--coral); color:#fff; display:grid; place-items:center; font-size:14px}
+.faq summary::after{content:"＋"; position:absolute; right:14px; top:14px; color:var(--mint-deep); font-weight:900}
+.faq details[open] summary::after{content:"－"}
+.faq .ans{padding:0 16px 8px; border-top:2px dashed var(--line)}
+.faq .ans p{margin:.8em 0}
+.common{background:linear-gradient(135deg,#FFF1D6,#FFE3E8); border-radius:20px; padding:18px 16px; font-weight:900; text-align:center; line-height:1.7; font-size:clamp(18px,4.8vw,22px); margin:14px 0}
+.common em{font-style:normal; color:#D93D5A}
+a{color:#1F7A5E; font-weight:700; text-underline-offset:3px; overflow-wrap:anywhere}
+.src{margin-top:34px; font-size:13.5px; color:#6F6157; font-weight:700; line-height:1.9; background:var(--paper); border-radius:14px; padding:12px 16px}
+.src b{color:var(--ink)}
+
+/* 冒頭「この資料について」 */
+.about{background:var(--paper); border:3px solid var(--ink); border-radius:22px; padding:26px 16px 8px; margin:30px 0 10px; position:relative; box-shadow:6px 6px 0 var(--sun)}
+.about-t{position:absolute; top:-17px; left:14px; background:var(--ink); color:#fff; font-weight:900; padding:3px 16px; border-radius:999px; font-size:15px}
+.ab{padding:6px 0 10px; border-bottom:2px dashed var(--line)}
+.ab:last-child{border-bottom:0}
+.ab h3{margin:10px 0 4px; font-size:17px; font-weight:900; line-height:1.5; display:inline-block; background:var(--mint-pale); color:#1F7A5E; padding:1px 14px; border-radius:999px}
+.ab p{margin:.5em 0 .7em; line-height:1.9}
+.hosts{display:grid; gap:12px; margin:14px 0 8px}
+.host{display:grid; grid-template-columns:112px 1fr; gap:12px; align-items:center; border-radius:20px; padding:10px 14px 10px 8px; border:3px solid #fff; box-shadow:0 0 0 2px var(--line), 0 6px 14px rgba(74,52,38,.10); position:relative; overflow:hidden}
+.host::before{content:""; position:absolute; inset:0; background:repeating-conic-gradient(from 0deg at 56px 50%, rgba(255,255,255,.55) 0 12deg, transparent 12deg 24deg); pointer-events:none}
+.h-neco{background:#FFE1EC} .h-kita{background:#FFE9C7} .h-kuma{background:#DCEBFF}
+.host .fig{position:relative; filter:drop-shadow(0 5px 6px rgba(74,52,38,.22))}
+.host .fig img{width:100%; height:auto; border:0; border-radius:0; box-shadow:none; margin:0}
+.who2{position:relative; line-height:1.5; min-width:0}
+.who2 .ic{display:inline-block; width:34px; height:34px; border-radius:50%; border:2px solid #fff; box-shadow:0 0 0 2px var(--mint); vertical-align:middle; margin:0 8px 4px 0}
+.who2 b{font-weight:900; font-size:18px; vertical-align:middle; white-space:nowrap}
+.who2 .role{display:table; background:var(--ink); color:#fff; font-size:12px; font-weight:900; padding:1px 10px; border-radius:999px; margin:2px 0 0; white-space:nowrap}
+.who2 p{margin:4px 0 0; font-size:14.5px; font-weight:700; line-height:1.65; color:#4A3426}
+@media(min-width:640px){.hosts{grid-template-columns:repeat(3,1fr)} .host{grid-template-columns:1fr; text-align:center; padding:14px 10px 12px} .who2 .role{margin:4px auto 0} .host .fig{width:74%; margin:0 auto} .host::before{background:repeating-conic-gradient(from 0deg at 50% 38%, rgba(255,255,255,.55) 0 12deg, transparent 12deg 24deg)}}
+.thanks{text-align:center; font-weight:900; font-size:14.5px; color:#C8405A}
+.flow{margin:.3em 0 .6em; padding:0; list-style:none; counter-reset:f; display:grid; gap:8px}
+.flow li{counter-increment:f; position:relative; padding:8px 12px 8px 46px; background:#FFFBF2; border-radius:14px; font-weight:500; line-height:1.75; font-size:15.5px}
+.flow li::before{content:counter(f); position:absolute; left:10px; top:9px; width:26px; height:26px; border-radius:50%; background:var(--coral); color:#fff; font-weight:900; display:grid; place-items:center; font-size:14px}
+.flow li b{display:block; font-weight:900; font-size:16.5px}
+.who-list{margin:.2em 0 .8em; padding:0; list-style:none; display:grid; gap:4px}
+.who-list li{padding-left:1.7em; position:relative; font-weight:700; line-height:1.75}
+.who-list li::before{content:"🙋"; position:absolute; left:0}
+.who-list.ok li::before{content:"✅"}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="series">
+    <span class="badge">勉強会まとめ</span>
+    <span class="num">AI初心者さん向け</span>
+    <span class="date">2026.11.21 ／ 読むのに8分</span>
+  </div>
+
+  <h1>AIに<span class="pop">同じことを何回も</span>説明してる人へ。<br><span class="hl">みんなの「共有ノート」を1冊つくろう</span>📓</h1>
+
+  <div class="hero"><img src="images/T.jpg" alt="勉強会まとめ「AIを替えるたび、また最初から説明してない？」。舞台の上に、きたしょーさん・neco.さん・くまさん。neco.さんが指し棒で光るノートを指し、左下でおけもんとインコがメモを取りながら見上げている" width="1400" height="933"></div>
+
+  <div class="lead">2026年11月19日に neco.さんが開いた勉強会<b>「複数AIを使っている方必見！ AIの『共有脳』をつくろう」</b>を、初心者さん向けにわかりやすくまとめた共有資料です。ChatGPTやClaudeなど複数のAIを使うときのモヤモヤを、<b>「AIの頭の外にメモの置き場所を1つ作っておこう」</b>という視点で整理しています。会に出られなかった方や横文字が苦手な方でも、今日1つ試せる一歩までつかめる内容です😊</div>
+
+  <div class="voices">
+    <div class="voice">ChatGPTに教えたこと、Claudeにはまた一から説明してる…</div>
+    <div class="voice">Google DriveとかNotionとかMCPとか、横文字が並ぶと「もうわからん…」ってなる😂</div>
+  </div>
+
+  <p>そんなふうに感じたこと、ありませんか？😊</p>
+
+  <div class="dots">・・・・・・</div>
+
+  <section class="about">
+    <div class="about-t">📌 この資料について</div>
+
+    <div class="ab">
+      <h3>どんな会？</h3>
+      <p>2026年11月19日に neco.さんが開いたオンライン勉強会「複数AIを使っている方必見！ AIの『共有脳』をつくろう」のまとめ資料です。ライブ配信もあり、当日は300人を超える方が参加した約1時間55分の会でした。会の全部の書き起こしではなく、おけもんが内容をかみ砕いてまとめたものです。</p>
+      <div class="hosts">
+        <div class="host h-neco">
+          <div class="fig"><img src="images/host_neco_chara.png" alt="neco.さん（指し棒と黒板を持った黒猫）" width="520" height="519"></div>
+          <div class="who2"><img class="ic" src="images/host_neco.jpg" alt="" width="320" height="320"><b>neco.さん</b><span class="role">講師</span><p>会をひらいて、はじめから終わりまで教えてくれました</p></div>
+        </div>
+        <div class="host h-kita">
+          <div class="fig"><img src="images/host_kitasho_chara.png" alt="きたしょーさん（赤いヘルメットにメガホンのカモノハシ）" width="520" height="451"></div>
+          <div class="who2"><img class="ic" src="images/host_kitasho.jpg" alt="" width="320" height="320"><b>きたしょーさん</b><span class="role">いっしょに進行</span><p>「Notionは初めて」の目線で、いっしょに進めてくれました</p></div>
+        </div>
+        <div class="host h-kuma">
+          <div class="fig"><img src="images/host_kuma_chara.png" alt="くまさん（花束を持ったくま）" width="463" height="520"></div>
+          <div class="who2"><img class="ic" src="images/host_kuma.jpg" alt="" width="320" height="320"><b>くまさん</b><span class="role">Notionの先輩</span><p>ひと足先にNotionを使っている先輩として紹介されていました</p></div>
+        </div>
+      </div>
+      <p class="thanks">すてきな会をひらいてくださったみなさんに、感謝をこめて🙏</p>
+    </div>
+
+    <div class="ab">
+      <h3>どう進んだ？</h3>
+      <p>当日は、こんな4つの流れで進みました👇</p>
+      <ol class="flow">
+        <li><b>「AIの共有ノートって何？」の説明</b>AIは1人ずつ別々の記憶を持っている話と、やることは3ステップ（Notionの無料アカウントを作る／使っているAIをNotionとつなぐ／つないだAIに公式ガイドのURLを貼って頼む）</li>
+        <li><b>実演</b>neco.さんのNotionの画面を見せながら、AIが書いた記憶が1行ずつ並んでいる様子</li>
+        <li><b>みんなでつないでみる時間</b>参加者さんも一緒に、その場で自分のAIをNotionに。うまくいかない所はチャットで質問しながら進みました</li>
+        <li><b>使い道の話と質問タイム</b>タスクをみんなで持つ、リマインドの係を決める</li>
+      </ol>
+    </div>
+
+    <div class="ab">
+      <h3>誰に向けた資料？</h3>
+      <p>こんな方に向けた資料です🙌</p>
+      <ul class="who-list">
+        <li>勉強会に出られなかった方</li>
+        <li>出たけれど、途中で置いていかれてしまった方</li>
+        <li>ChatGPTやClaudeを使い始めたばかりで、横文字が苦手な方</li>
+      </ul>
+    </div>
+
+    <div class="ab">
+      <h3>読むと分かること</h3>
+      <p>この資料を読むと、次の4つが分かるようになります😊</p>
+      <ul class="who-list ok">
+        <li>なんでAI同士で話が通じないのか</li>
+        <li>共有ノートを1冊つくると、何が変わるのか</li>
+        <li>今日1つ試すなら、どこから始めればいいか</li>
+        <li>Google Drive・Obsidian・GitHub・Notionは、何が違うのか</li>
+      </ul>
+    </div>
+  </section>
+
+  <h2><span class="e">💡</span>ひとことで言うと</h2>
+
+  <p>この勉強会のいちばん大事なポイントを、ぎゅっとひとことで言うとこうなります👇</p>
+
+  <div class="big">AIの頭の外に、<br>みんなで見られる<em>メモの置き場所を1つ</em>作っておこう</div>
+
+  <figure>
+    <div class="pic"><img src="images/Z.jpg" alt="これまで：AIごとに同じ説明をくり返す／これから：1冊のノートをみんなで読む、のビフォーアフター図解。右で neco.さんが指し棒で「これから」を指し、きたしょーさんとくまさんが並んでいる" width="1400" height="933" loading="lazy"></div>
+    <figcaption>⇧ 先生たちが教えてくれたことを、1枚の図にすると</figcaption>
+  </figure>
+
+  <p>横文字は出てくるその場で身近な物にたとえて書いているので、「わからん…」とならずに読み進められますよ😊<br>ではさっそく、メモの置き場所がバラバラだと実際どんなことが起きるのか――ちょっと笑える行き違いの実話から見ていきましょう👇</p>
+
+  <h2><span class="e">🌀</span>「ちょっとぷんぷんです」事件が起きた朝</h2>
+
+  <p>この資料をまとめた私（おけもん）が、11月21日の朝にやらかした実話です🤣</p>
+  <p>私はふだん、AIを何人も使い分けています。パソコンの中で作業してくれるAI、スマホで話すAI、といった感じです。</p>
+  <p>その日の朝、あるAIに「あの入金、入ったよー」と伝えました。<br>ところが、お金まわりの窓口を任せている別のAIは、それを知らないまま。<br>あとからその子に話しかけたら、こう言われてしまったんです👇</p>
+
+  <div class="quote">着金の記録がどこにもなくて、あたしはおけちゃんに言われて初めて知ったよ。ちょっとぷんぷんです</div>
+
+  <p>もうね、思わず出ましたよ。</p>
+  <div class="me">結局私がチェック入れないと、あなたたち何もできてないよ</div>
+  <div class="me">もう散々この失敗は何百回も繰り返してるしね</div>
+
+  <figure>
+    <div class="pic"><img src="images/S1.jpg" alt="良い知らせを受け取ってご機嫌なAIロボットと、聞いていなくてほっぺを膨らませるAIロボットの間で、あわてて謝るカピバラ" width="1400" height="933" loading="lazy"></div>
+    <figcaption>⇧ あるAIに伝えたのに、別のAIには届いていなくて「ぷんぷん」される朝</figcaption>
+  </figure>
+
+  <p>本当は、「一つが変わったら他のところに自動反映される、イコール関数みたいな感じ」が理想なんです😂</p>
+  <p>ちなみに私はこれまで、Obsidian（自分のパソコンの中に置くメモ帳アプリ）とGitHub（「いつ・誰が・どこを変えたか」が全部残る保管庫）を使って、AIみんなが読めるメモの置き場所――私は『森』と呼んでいます――を作ってきました。<br>それでも、上の行き違いは起きるんですよねぇ😅</p>
+  <p>そんなタイミングで、neco.さんの勉強会で「Notion（ネット上のノートと表が一緒になったアプリ）で共有ノートを作る方法」を見て、</p>
+  <div class="me">あ、これめっちゃわかりやすい！なるほどー😳</div>
+  <p>と腹落ちしたんです。</p>
+  <p class="note">※Notionの共有メモリーは、私自身はまだ設定していません。まずは勉強会で学んだことを整理して、私もこれから試してみる立場です😊</p>
+
+  <h2><span class="e">🤔</span>なんでAI同士で話が通じないの？</h2>
+
+  <p>理由はひとつ。<mark>AIは、1人ずつ別々の記憶を持っているから</mark>です。</p>
+  <p>チャッピー（ChatGPT）に話したことは、基本的にチャッピーしか知りません。クロード（Claude）は知らないし、クロードに話したことは、スマホで話せるAIアプリのミューズも知らないんです。</p>
+  <p>イメージとしては、みんな別々の部屋にいて、それぞれ自分だけのメモ帳を持っている状態📝<br>だから私たちが1人ずつ部屋を回って「あのね、私の好みはね…」と伝え直さない限り、情報はバラバラのままになります。</p>
+  <p>しかもパソコンの中で動くAI（Claude CodeやCodexなど）はパソコンの中のファイルを見られますが、スマホで話すAIはパソコンの中を見に行けません。それで余計に記憶がズレやすいんですよね。</p>
+  <p>さらに勉強会で「へぇ！」と思ったのが、次の2つ👇</p>
+  <div class="pts">
+    <div class="pt"><p>💡 スマホのAIアプリを無料で使っていると、アプリの中の記憶欄（メモリー）が増えすぎて、性能に影響が出ることがあるそうです。だから<b>アプリの中の記憶はシンプルにして、外に置いた方が身軽に使える</b>、というお話でした。</p></div>
+    <div class="pt"><p>💡 AIの中に覚えたことは、どこに何が書いてあるか、人間から見づらい。</p></div>
+  </div>
+  <p>だからこそ、「AIの外に、人間からも見やすい共有ノートを1冊置こう」という話になるわけです😊</p>
+
+  <h2><span class="e">📓</span>勉強会で見た、AIみんなの「共有ノート」</h2>
+
+  <p>2026年10月19日に、Notionが「外のAIと記憶を共有する機能」を始めました。<br>NotionにつないだChatGPTやClaudeなどが、自分専用の同じ「メモリー（記憶欄）」を読んだり書いたりできるようになったんです。</p>
+  <p>つなぐ仕組みの名前は「Notion MCP」。<br>横文字で身構えますが、公式の説明では<mark>「AIがNotionのページを読み書きできるようにする橋のようなもの」</mark>とされています🌉<br>パソコンのAIも、スマホのAIも、この橋を渡ってネット上の同じノートを見に来られるイメージです。</p>
+
+  <figure>
+    <div class="pic"><img src="images/S2.jpg" alt="教室のホワイトボードに、ノートパソコンとスマホから橋を渡って1冊のノートに集まるAIたちの図。踏み台に乗った neco.さんが指し棒でノートを指し、きたしょーさんとくまさんが生徒の方を向いて話している。席でおけもんとインコが目を輝かせて聞いている" width="1400" height="933" loading="lazy"></div>
+    <figcaption>⇧ 先生たちの授業：パソコンのAIもスマホのAIも、橋（MCP）を渡って1冊の共有ノートを読み書きする</figcaption>
+  </figure>
+
+  <p>勉強会では、実際に動いている場面を見て「おおっ😳」となったところが3つありました。</p>
+
+  <div class="pts">
+    <div class="pt">
+      <h3><i>1</i>自分の好みが、ちゃんとノートに残っていた</h3>
+      <p>neco.さんがミューズに「お気に入りの蜂蜜カモミールはこれだよ」と教えたら、ミューズがNotionの記憶欄にちゃんと登録しておいてくれたんです☕<br>仕事の背景や運用ルールも1行ずつ並んでいて、人間が画面を開いて中身を確認したり、古くなったルールを直したりもできます。</p>
+    </div>
+    <div class="pt">
+      <h3><i>2</i>3人のAIが、かぶらないように協力し始めた</h3>
+      <p>勉強会で実際にNotionとつないだ参加者さんからは、「やばい、強くなった気がする」という声が🙌<br>さらに別の参加者さんは、前のめりに3つのAI（ミューズ・Codex・Claude）へ同時に同じお願いを送ってしまったそうなんですが、なんとミューズが最初に土台を作り、Codexが6件、Claudeが5件を、重ならないように見比べながら書き足してくれたそうです😳</p>
+      <div class="me">AI同士が協力し合ってるの、すごすぎん！？🤣</div>
+    </div>
+    <div class="pt">
+      <h3><i>3</i>「あれ、誰に頼んだっけ？」が無くなる</h3>
+      <p>neco.さんはふだん、ミューズやドット（スマホで話せるAIアプリ）、チャッピーにあちこちで「これ覚えといて」「リマインドして」とタスクを伝えていて、「誰に言ったっけ？」となって困っていたそうです。<br>それが、みんなでNotionのタスク表に書いて読みに行くようにしたら、誰にお願いしたことも全員が知っていてくれる状態に✨<br>「終わったよ」とチェックをつければ、他のAIも「あ、これは完了だね」と分かってくれる。まさに「3人の秘書チーム」みたいで、ちょっとワクワクしました😆</p>
+    </div>
+  </div>
+
+  <h2><span class="e">🔄</span>ビフォーアフターで見ると、こう変わる</h2>
+
+  <p>これまでと、共有ノートを作ってからの違いを並べてみると、こんな感じです👇</p>
+
+  <div class="ba">
+    <div class="row"><div class="b"><span class="k">これまで</span>AIを替えるたびに、自分の好みや仕事の背景を一から説明していた</div><div class="a"><span class="k">これから</span>1冊の共有ノートを見てくれるので、どのAIにもすぐ話が通じる</div></div>
+    <div class="row"><div class="b"><span class="k">これまで</span>「あのタスク、どのAIに言ったっけ？」と抜け漏れが出る</div><div class="a"><span class="k">これから</span>誰に伝えても同じノートにたまるので、抜け漏れが減る</div></div>
+    <div class="row"><div class="b"><span class="k">これまで</span>AIが何を覚えているのか見えづらく、古いルールが残りやすい</div><div class="a"><span class="k">これから</span>人間も画面で開いて確認でき、間違いや古い情報を直しやすい</div></div>
+    <div class="row"><div class="b"><span class="k">これまで</span>AIアプリの中の記憶がいっぱいになって、動きに影響が出ることがある</div><div class="a"><span class="k">これから</span>アプリの中の記憶は身軽なまま、大事な記憶は外にためておける</div></div>
+    <div class="row"><div class="b"><span class="k">これまで</span>パソコンのAIとスマホのAIで、知っていることがズレていく</div><div class="a"><span class="k">これから</span>ネット上の同じノートを見に行くので、スマホからも同じ情報に届く</div></div>
+  </div>
+
+  <h2><span class="e">⚠️</span>ここだけは気をつけて！落とし穴2つ</h2>
+
+  <p>ただ、つないだら全部おまかせで完璧、というわけでもないようです。勉強会と公式ヘルプでわかった「落とし穴」を2つ置いておきますね。</p>
+
+  <div class="trap">
+    <h3>落とし穴①「書いてね」「見てね」と頼まないと動かない</h3>
+    <p>Notionの公式ヘルプにも、<mark>「つないだだけでは、ほとんどのAIは頼まれない限りNotionを使わない」</mark>と注意書きがあります。<br>だから最初に、「セットアッププロンプト（最初の設定をAIと一緒にやるための、公式が用意した頼み文）」を、つなぐAIごとに1回ずつ実行しておくのがポイント。</p>
+    <p>ちなみに勉強会でも、neco.さんがCodexに公式ガイドのURLを貼ったのに、実はURLが見えていなかったのに「見た風」に進めてしまった、というハプニングがあったそうです🤣<br>AIには「ちゃんと見てやってね」と一言添えるのも大事ですね。</p>
+    <p>それと、置き場所を2つ作ると「どっちが本当かわからん！」となります（私はこれを何百回もやりました🤣）。<b>置き場所は1つに決める</b>のが鉄則です。</p>
+  </div>
+
+  <div class="trap">
+    <h3>落とし穴② 全員に「リマインドして」と言うと、3人から通知が来る🤣</h3>
+    <p>「忘れてたら教えてね」と3人全員に頼むと、3か所からわあわあリマインドが飛んでくるそうです😂<br>neco.さんはペットボトルを捨てる日にチャッピーの通知を無視して捨て忘れてしまったそうで、「あえて全員から言ってもらおうかな」と笑っていましたが、騒がしいのが苦手な方は、</p>
+    <ul>
+      <li>「登録はみんなにするけど、リマインド係はミューズに任せるね」と係を1人に決める</li>
+      <li>誰かがリマインドしたらチェック済みにして、他の子は言わないように頼んでおく</li>
+    </ul>
+    <p>こんなふうに役割を分けておくとスッキリしますよ😊</p>
+  </div>
+
+  <h2><span class="e">🐾</span>今日やってみるなら、この3ステップ</h2>
+
+  <p>いきなり全部を完璧にしなくて大丈夫です。今の自分の段階に合わせて、1つだけ試してみてくださいね🙌</p>
+
+  <div class="steps">
+    <div class="step">
+      <span class="tag">ステップ1</span>
+      <h3>まずはメモ1枚で体験してみる</h3>
+      <p>すでにGoogleドキュメントなどを使っているなら、新しいアプリを増やさなくても大丈夫。<br>いま話しているAIに、下の文をそのまま送ってみてください。</p>
+      <div class="copy"><small>いまのAIに送る文</small><span id="c1">この会話の続きを、別のAIに頼みたいです。「決まったこと」「まだ決まっていないこと」「次に頼みたいこと」を1行ずつ書いてください。</span></div>
+      <button class="copybtn" data-t="c1" type="button">この文をコピー</button>
+      <p style="margin-top:12px">返ってきたメモを別のAIに貼って、「これを読んでから答えて」と渡すだけ。<br>「外に置くってこういうことか！」が体験できます😊</p>
+    </div>
+    <div class="step">
+      <span class="tag">ステップ2</span>
+      <h3>AIを2つ以上使っているなら、Notionとつないでみる</h3>
+      <p>勉強会で紹介されていた手順は、シンプルに3つ👇</p>
+      <ol>
+        <li>Notionの無料アカウントを作る</li>
+        <li>使っているAIを1つ（複数でもOK）Notionとつなぐ</li>
+        <li>つないだAIに公式ガイドのURLやセットアッププロンプトを渡して、一緒に設定してもらう（「ちゃんと見てやってね」の一言も！）</li>
+      </ol>
+      <p>公式の案内はこちらです👉 <a href="https://www.notion.com/ja/help/notion-mcp" target="_blank" rel="noopener">AIツールをNotion MCPと接続する（Notionヘルプ）</a></p>
+    </div>
+    <div class="step">
+      <span class="tag">ステップ3</span>
+      <h3>最初に一言だけ頼んでおく</h3>
+      <p>つながったら、AIにこう伝えておきます。</p>
+      <div class="copy"><small>つないだAIに送る文</small><span id="c3">これから新しい会話をするときは、Notionを見てから答えてね。私の好みや大事なことを知ったら、Notionに書いてね。</span></div>
+      <button class="copybtn" data-t="c3" type="button">この文をコピー</button>
+      <p class="note" style="margin-top:14px">※公式の注意書きによると、メモリー（記憶欄）に向いているのは「好み・仕事の背景・よく使うページ」など長く役に立つこと。一度きりの頼みごとや、今日の予定・残高などの最新情報は、メモリーではなく普通のページや表に書くのがおすすめです。</p>
+    </div>
+  </div>
+
+  <h2><span class="e">💬</span>よくある質問</h2>
+
+  <p>チャットでよくいただく「横文字がいっぱいでわからん…」に、まとめてお答えしますね🙌</p>
+
+  <h3 class="qh">Google Drive・Obsidian・GitHub・Notionって、何が違うんですか？</h3>
+
+  <p>先に共通点から。じつは、4つとも同じ役目なんです。</p>
+  <div class="common">どれも「AIの頭の外に置く、<br><em>みんなで見られるメモの置き場所</em>」</div>
+  <p>考え方は全部同じで、置いてある場所と得意なことが少しずつ違います👇</p>
+
+  <figure>
+    <div class="pic"><img src="images/S3.jpg" alt="おけもんの復習ノート。Google Driveはネット上の書類棚、Obsidianは手元のメモ帳、GitHubは履歴が残る保管庫、Notionはみんなで書けるノート、という4つのたとえ。机でおけもんとインコが書き取っている" width="1400" height="933" loading="lazy"></div>
+    <figcaption>⇧ ここは、おけもんの復習ノート。4つの置き場所を身近な物にたとえると</figcaption>
+  </figure>
+
+  <div class="places">
+    <div class="place">
+      <h4>Google Drive<small>グーグルドライブ</small></h4>
+      <span class="as">ネット上の書類棚</span>
+      <dl><dt>得意</dt><dd>ふだんのGoogleドキュメントをそのまま使えて、AIに「この書類を読んで」と渡しやすい</dd><dt>苦手</dt><dd>AIが自分から書き足していくのは、あまり得意ではない</dd></dl>
+    </div>
+    <div class="place me2">
+      <h4>Obsidian<small>オブシディアン</small></h4>
+      <span class="as">パソコンの中のメモ帳アプリ</span>
+      <dl><dt>得意</dt><dd>手元にあるので、パソコンの中で作業するAI（Claude CodeやCodex）が読み書きしやすい</dd><dt>苦手</dt><dd>スマホで話すAIからは届きにくい</dd></dl>
+      <div class="who">🦫 おけもんはここ（＋GitHub）</div>
+    </div>
+    <div class="place me2">
+      <h4>GitHub<small>ギットハブ</small></h4>
+      <span class="as">履歴が全部残る保管庫</span>
+      <dl><dt>得意</dt><dd>「いつ・誰が・どこを変えたか」が残って、間違えても前の状態に戻せる</dd><dt>苦手</dt><dd>最初の壁が高め</dd></dl>
+      <div class="who">🦫 おけもんはここ（＋Obsidian）</div>
+    </div>
+    <div class="place nc">
+      <h4>Notion<small>ノーション</small></h4>
+      <span class="as">ネット上のノートと表</span>
+      <dl><dt>得意</dt><dd>スマホのAIもパソコンのAIも同じ場所に届く。AI同士の共有メモリーがある</dd><dt>苦手</dt><dd>自由すぎて、最初は使い方のイメージが湧きにくい</dd></dl>
+      <div class="who">🐱 neco.さんの勉強会はここ</div>
+    </div>
+  </div>
+
+  <p>私自身はObsidian＋GitHubで『森』を作っていて、neco.さんの勉強会ではNotionを使っていました。どれも「外に1つ置く」というゴールは同じです😊</p>
+
+  <div class="faq">
+    <details>
+      <summary>AIを1つしか使っていない私にも関係ありますか？</summary>
+      <div class="ans"><p>関係あります！<br>外にメモを置いておくと、人間が見て「変なこと覚えてないかな？」と直しやすくなります。AIアプリの中の記憶を身軽に保てるのもメリット。<br>将来2つ目のAIを試したくなったときにも、そのまま引き継げますよ🙌</p></div>
+    </details>
+    <details>
+      <summary>無料でできますか？</summary>
+      <div class="ans"><p>Notion AIそのものはビジネスプラン以上に含まれますが、つないだ外のAIが書いたメモリーもNotionに表示される、と公式ヘルプに書かれています。勉強会でも無料の範囲で試している様子でした。<br>ただ、料金や条件は変わることがあるので、<b>始める前に必ず公式ページで確認してくださいね</b>😊</p></div>
+    </details>
+    <details>
+      <summary>個人情報は大丈夫ですか？他の人に見られたりしませんか？</summary>
+      <div class="ans"><p>公式ヘルプでは、メモリーは本人だけのものとされています。中身は自分で開いて、いつでも直したり消したりできます。<br>長く使う好みや方針を中心にしつつ、中身をときどき自分の目で確かめながら使うのが安心です😊<br>👉 <a href="https://www.notion.com/ja/help/view-your-notion-agent-memories" target="_blank" rel="noopener">メモリーの公式説明（Notionヘルプ）</a></p></div>
+    </details>
+    <details>
+      <summary>「MCP」って何ですか？横文字で止まりました…</summary>
+      <div class="ans"><p>「Notion MCP」のことですよね。名前はちょっと強そうですが🤣、公式の説明では<b>「AIがNotionのページを読み書きできるようにする橋のようなもの」</b>です。<br>細かい仕組みを覚える必要はありません。「AIとノートをつなぐ橋なんだな」くらいのイメージで大丈夫ですよ🌉</p></div>
+    </details>
+    <details>
+      <summary>結局、どれから始めればいいですか？</summary>
+      <div class="ans"><p>すでにGoogleドキュメントを使っているなら、まずはメモ1枚（「決まったこと／まだのこと／次に頼みたいこと」）を作って、別のAIに読んでもらうところから。<br>すでにAIを2つ以上使っていて「毎回同じ好みを説明してるな…」と感じているなら、Notionの共有メモリーを試す番です😊</p></div>
+    </details>
+  </div>
+
+  <h2><span class="e">☘️</span>おしゃれに作り込まなくて大丈夫。まずは1歩から</h2>
+
+  <p>Notionって、いろんなおしゃれな見た目にもできるんですが、勉強会でもneco.さんが「最初に見た目に凝りすぎて、更新がめんどくさくなってやらなくなるのがNotionあるある」と話されていて🤣</p>
+  <div class="me">わかる〜！それ私も絶対やるやつ😂</div>
+  <p>今回は、きれいなノートを自分で作る必要はありません。<br>あくまで「AIたちの記憶の置き場所」として置いておいて、「こうなっててほしいな」というイメージをAIに相談しながら進めてもらえば大丈夫です😊</p>
+
+  <div class="action">
+    <span class="tag">📝 今日の一歩</span>
+    <label><input type="checkbox"><span>「決まったこと／まだのこと／次に頼みたいこと」のメモを1枚作って、別のAIに読んでもらう</span></label>
+    <div class="sub">ステップ1のコピー文を、いまのAIに送るだけで作れます🙌</div>
+    <div class="done">できたら、それが「共有ノート」の最初の1ページです📓✨</div>
+  </div>
+
+  <p style="margin-top:30px">私も「ぷんぷん事件」を繰り返さないように🤣、まずはNotionの共有メモリーをこれから試してみます！<br>気になった方は、メモ1枚からでも、ぜひ一緒に試してみてくださいね🙌</p>
+  <p>わかりやすく勉強会を開いてくださったneco.さん、本当にありがとうございました！😊</p>
+
+  <div class="src"><b>この記事のもと</b><br>・neco.さんの勉強会「複数AIを使っている方必見！ AIの『共有脳』をつくろう」（2026年11月19日）<br>・Notion公式ヘルプ「AIツールをNotion MCPと接続する」「Notionエージェントのメモリーを表示する」（2026年11月21日に確認）<br>・置き場所の比べ方は、おけもんの整理です。料金や機能は変わるので、始める前に公式ページをご確認ください。</div>
+
+  <div class="sign">まとめ：<b>おけもん🦫</b></div>
+
+</main>
+<script>
+document.querySelectorAll('.copybtn').forEach(function(b){
+  b.addEventListener('click',function(){
+    var t=document.getElementById(b.dataset.t).innerText.trim();
+    var back=function(){b.textContent='この文をコピー';b.classList.remove('ok')};
+    var done=function(){b.textContent='コピーしました✨';b.classList.add('ok');setTimeout(back,1800)};
+    var fail=function(){b.textContent='上の文を長押しでコピーしてね';setTimeout(back,2600)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fail)}else{fail()}
+  });
+});
+</script>
+</body>
+</html>
