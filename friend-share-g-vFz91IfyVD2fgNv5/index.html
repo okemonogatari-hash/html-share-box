@@ -547,11 +547,19 @@ a{color:#1F7A5E; font-weight:700; text-underline-offset:3px; overflow-wrap:anywh
 <script>
 document.querySelectorAll('.copybtn').forEach(function(b){
   b.addEventListener('click',function(){
-    var t=document.getElementById(b.dataset.t).innerText.trim();
+    var el=document.getElementById(b.dataset.t); var t=el.innerText.trim();
     var back=function(){b.textContent='この文をコピー';b.classList.remove('ok')};
     var done=function(){b.textContent='コピーしました✨';b.classList.add('ok');setTimeout(back,1800)};
     var fail=function(){b.textContent='上の文を長押しでコピーしてね';setTimeout(back,2600)};
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fail)}else{fail()}
+    var old=function(){
+      try{
+        var r=document.createRange(); r.selectNodeContents(el);
+        var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        var ok=document.execCommand('copy'); s.removeAllRanges();
+        if(ok){done()}else{fail()}
+      }catch(e){fail()}
+    };
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,old)}else{old()}
   });
 });
 </script>
