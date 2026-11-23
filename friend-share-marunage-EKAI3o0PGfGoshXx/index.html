@@ -1,41 +1,389 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light">
-<title>『全部、AIに丸投げした。』を、飛び出す絵本で読む｜おけもんの読書ノート</title>
+<title>『全部、AIに丸投げした。』を、飛び出す絵本＆ブログで読む｜おけもんの読書ノート</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#fbf5e9; --ink:#2f2a38; --green:#24584c; --red:#e23a2e; --dim:#7a7068; }
-  * { box-sizing: border-box; }
-  html, body { margin:0; background:var(--bg); color:var(--ink); }
-  body {
-    font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", sans-serif;
-    min-height:100vh; display:flex; flex-direction:column; align-items:center;
-    padding: clamp(20px, 5vw, 52px) 16px 48px;
-  }
-  .kicker { display:inline-block; margin:0 0 14px; padding:6px 18px; border-radius:999px; background:var(--green); color:#fff;
-            font-size: clamp(12px, 3.2vw, 15px); font-weight:700; letter-spacing:.06em; }
-  h1 { font-size: clamp(26px, 7.4vw, 50px); line-height:1.3; margin:0 0 8px; text-align:center; font-weight:900; }
-  h1 em { font-style:normal; color:var(--red); }
-  .by { font-size: clamp(13px, 3.4vw, 16px); color:var(--dim); margin:0 0 clamp(18px, 4vw, 30px); text-align:center; }
-  .stage { width:100%; max-width:1080px; }
-  video { display:block; width:100%; aspect-ratio:16/9; background:#000; border-radius:14px;
-          border:4px solid var(--ink); box-shadow: 0 8px 0 rgba(47,42,56,.18); }
-  .note { max-width:680px; margin: clamp(20px, 5vw, 34px) auto 0; text-align:center;
-          font-size: clamp(15px, 3.8vw, 18px); line-height:2; }
-  .note b { color:var(--red); }
-  .hint { margin-top: 20px; font-size: clamp(12px, 3.1vw, 14px); color:var(--dim); text-align:center; line-height:1.8; }
+:root{
+  color-scheme: light;
+  --bg:#FFF8EC;
+  --paper:#FFFFFF;
+  --ink:#4A3426;
+  --soft:#8A6F5C;
+  --green:#24584C;
+  --mint:#6FCFAE;
+  --mint-pale:#E3F7EE;
+  --mint-deep:#2E9E7C;
+  --coral:#FF6B7F;
+  --red:#E23A2E;
+  --orange:#FF9A3D;
+  --sun:#FFD45C;
+  --sun-pale:#FFF3C9;
+  --line:#F0E2CC;
+}
+*{box-sizing:border-box}
+html{background:var(--bg); scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
+  font-weight:500; font-size:17px; line-height:2; letter-spacing:.02em;
+  background-image:
+    radial-gradient(circle at 10% 4%, #FFE9B8 0 110px, transparent 111px),
+    radial-gradient(circle at 92% 2%, #CFF1E2 0 130px, transparent 131px);
+  background-repeat:no-repeat;
+}
+
+/* ── 上部：飛び出す絵本シアター ── */
+.theater{
+  width:100%; max-width:1080px; margin:0 auto;
+  padding:clamp(22px, 5vw, 48px) 16px 26px;
+  display:flex; flex-direction:column; align-items:center;
+}
+.kicker{
+  display:inline-block; margin:0 0 14px; padding:6px 18px; border-radius:999px;
+  background:var(--green); color:#fff;
+  font-size:clamp(12.5px, 3.2vw, 15px); font-weight:900; letter-spacing:.06em;
+}
+.hero-title{
+  font-size:clamp(23px, 6.2vw, 48px); line-height:1.3; margin:0 0 8px;
+  text-align:center; font-weight:900;
+}
+.hero-title em{font-style:normal; color:var(--red)}
+.by{
+  font-size:clamp(13px, 3.4vw, 16px); color:var(--soft); font-weight:700;
+  margin:0 0 clamp(18px, 4vw, 28px); text-align:center;
+}
+.stage{width:100%; max-width:1040px}
+.stage video{
+  display:block; width:100%; aspect-ratio:16/9; background:#000;
+  border-radius:18px; border:4px solid var(--ink);
+  box-shadow:0 10px 0 rgba(74,52,38,.18), 0 22px 40px rgba(74,52,38,.12);
+}
+.note{
+  max-width:680px; margin:clamp(18px, 4vw, 28px) auto 0; text-align:center;
+  font-size:clamp(15px, 3.8vw, 17.5px); line-height:1.95; font-weight:700;
+}
+.note b{color:var(--red)}
+.jump-bar{
+  margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+}
+.jump-btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px; text-decoration:none;
+  background:var(--ink); color:#fff; font-weight:900; font-size:15px; max-width:100%; text-align:center;
+  padding:10px 22px; border-radius:999px; box-shadow:0 5px 0 var(--mint);
+  transition:transform .15s;
+}
+.jump-btn:hover{transform:translateY(-2px)}
+
+/* ── 区切りリボン ── */
+.divider{
+  max-width:720px; margin:28px auto 0; padding:0 16px;
+  display:flex; align-items:center; gap:14px; color:var(--soft); font-weight:900; font-size:13.5px; letter-spacing:.08em;
+}
+.divider::before, .divider::after{
+  content:""; flex:1; height:3px; border-radius:999px;
+  background:repeating-linear-gradient(90deg, var(--mint) 0 10px, transparent 10px 18px);
+}
+
+/* ── ブログ本文エリア（ジャーナリングコラムスタイル） ── */
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 76px}
+
+.series{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 14px}
+.badge{
+  background:var(--ink); color:#fff; font-weight:900; font-size:13px;
+  padding:5px 14px; border-radius:999px; letter-spacing:.08em;
+}
+.num{
+  background:linear-gradient(135deg, var(--orange), var(--coral)); color:#fff;
+  font-weight:900; font-size:13px; padding:5px 12px; border-radius:999px;
+}
+.date{color:var(--soft); font-size:13px; font-weight:700}
+
+h2.blog-h1{
+  font-size:clamp(25px, 6.8vw, 38px); line-height:1.4; font-weight:900;
+  margin:0 0 18px; letter-spacing:.01em;
+  background:none; border:none; box-shadow:none; padding:0; border-radius:0;
+}
+h2.blog-h1 .hl{background:linear-gradient(transparent 62%, var(--sun) 62%); padding:0 2px}
+h2.blog-h1 .pop{color:var(--coral)}
+
+.lead{
+  background:var(--paper); border-radius:18px; padding:16px 18px;
+  border:2px dashed var(--mint); font-weight:700; line-height:1.85; margin-bottom:24px;
+}
+.lead b{color:var(--mint-deep)}
+
+/* 吹き出し（読者・おけもん・インコ） */
+.voices{display:grid; gap:10px; margin:6px 0 18px}
+.voice{
+  position:relative; background:var(--paper); border:2.5px solid var(--ink);
+  border-radius:18px; padding:10px 16px 10px 46px; font-weight:700; line-height:1.65;
+  width:fit-content; max-width:100%; box-shadow:4px 4px 0 var(--sun);
+}
+.voice::before{content:"🗣️"; position:absolute; left:14px; top:9px}
+.voice:nth-child(2){margin-left:auto; box-shadow:4px 4px 0 var(--mint)}
+
+.me{
+  position:relative; background:var(--mint-pale); border-radius:16px;
+  padding:12px 16px 12px 52px; font-weight:700; line-height:1.75; margin:16px 0;
+}
+.me::before{content:"🦫"; position:absolute; left:12px; top:9px; font-size:24px}
+
+.bird{
+  position:relative; background:var(--sun-pale); border-radius:16px;
+  padding:12px 16px 12px 52px; font-weight:700; line-height:1.75; margin:16px 0;
+  border:2px solid #F3DC96;
+}
+.bird::before{content:"🦜"; position:absolute; left:12px; top:9px; font-size:24px}
+
+.dots{text-align:center; color:var(--mint); letter-spacing:.6em; font-weight:900; margin:22px 0}
+p{margin:0 0 1.15em}
+mark{background:linear-gradient(transparent 60%, var(--sun) 60%); color:inherit; font-weight:700}
+
+/* 目次カード */
+.toc{
+  background:var(--paper); border:3px solid var(--ink); border-radius:22px;
+  padding:18px 18px 16px; margin:28px 0 12px; box-shadow:6px 6px 0 var(--sun);
+}
+.toc .ttl{
+  font-weight:900; font-size:16px; margin:0 0 12px; display:flex; align-items:center; gap:8px;
+}
+.toc ol{list-style:none; margin:0; padding:0; display:grid; gap:7px}
+.toc li a{
+  display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink);
+  font-weight:700; font-size:15px; line-height:1.5; padding:6px 10px; border-radius:12px;
+  transition:background .15s;
+}
+.toc li a:hover{background:var(--bg)}
+.toc .n{
+  flex:none; width:28px; height:28px; border-radius:50%; display:grid; place-items:center;
+  font-weight:900; font-size:13px; color:#fff; background:var(--mint-deep);
+}
+.toc .n.hot{background:linear-gradient(135deg, var(--orange), var(--coral))}
+.toc .tag-mini{
+  margin-left:auto; flex:none; font-size:11.5px; font-weight:900;
+  background:#FFE3E8; color:var(--coral); padding:2px 8px; border-radius:999px;
+}
+
+/* 章見出し */
+.chap-head{margin:54px 0 18px}
+h2{
+  font-size:clamp(20px, 5.4vw, 26px); line-height:1.45; font-weight:900;
+  margin:0; padding:12px 16px; background:var(--paper); border-radius:16px;
+  border-left:10px solid var(--mint); box-shadow:0 4px 0 var(--line);
+}
+h2.hot{border-left-color:var(--coral)}
+h2 .e{margin-right:.35em}
+.chap-meta{
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:8px 0 0 4px;
+}
+.seek-btn{
+  appearance:none; font:inherit; font-size:12.5px; font-weight:900;
+  color:var(--green); background:var(--paper); border:2px solid var(--mint);
+  border-radius:999px; padding:3px 12px; cursor:pointer;
+  display:inline-flex; align-items:center; gap:4px;
+}
+.seek-btn:hover{background:var(--mint-pale)}
+.furue-pill{
+  font-size:12.5px; font-weight:900; color:#fff;
+  background:linear-gradient(135deg, var(--orange), var(--coral));
+  padding:3px 12px; border-radius:999px;
+}
+
+/* 挿絵 */
+figure{margin:24px 0 26px}
+figure .pic{
+  border-radius:20px; overflow:hidden; border:4px solid #fff;
+  box-shadow:0 8px 24px rgba(74,52,38,.13);
+}
+figure img{display:block; width:100%; height:auto}
+figcaption{
+  font-size:13.5px; color:var(--soft); font-weight:700;
+  text-align:center; margin-top:10px; line-height:1.6;
+}
+
+/* ドーンと残す一言 */
+.big{
+  font-size:clamp(19px, 5.2vw, 24px); font-weight:900; line-height:1.65;
+  text-align:center; margin:28px 0; padding:22px 16px; border-radius:20px;
+  background:linear-gradient(135deg, #FFF1D6, #FFE3E8);
+}
+.big em{font-style:normal; color:var(--coral)}
+
+/* 震えた！ボックス */
+.furue{
+  background:var(--paper); border:3px solid var(--coral); border-radius:20px;
+  padding:16px 18px; margin:24px 0; box-shadow:5px 5px 0 #FFD0D8;
+}
+.furue .k{
+  display:inline-block; background:var(--coral); color:#fff; font-weight:900;
+  font-size:13px; padding:2px 12px; border-radius:999px; margin-bottom:8px;
+}
+.furue p{margin:0; font-weight:700; line-height:1.85}
+
+/* リストカード */
+ul.pop{
+  list-style:none; margin:14px 0 18px; padding:14px 16px;
+  background:var(--paper); border-radius:18px; border:2px dashed var(--mint);
+  display:grid; gap:7px; font-weight:700; line-height:1.75;
+}
+ul.pop li::before{content:"✨ "}
+
+ul.ask{list-style:none; margin:12px 0 18px; padding:0; display:grid; gap:8px}
+ul.ask li{
+  background:var(--paper); border:2.5px solid var(--ink); border-radius:16px;
+  padding:8px 14px; font-weight:700; width:fit-content; max-width:100%;
+  box-shadow:4px 4px 0 var(--mint); line-height:1.6;
+}
+
+/* 判断の3層カード */
+.layers{display:grid; gap:10px; margin:18px 0 22px}
+.layer{
+  background:var(--paper); border-radius:16px; padding:13px 16px;
+  border:2px solid var(--line); display:flex; gap:12px; align-items:flex-start;
+  line-height:1.7;
+}
+.layer .lv{
+  flex:none; font-weight:900; font-size:13px; padding:3px 10px; border-radius:999px;
+  color:#fff; background:var(--mint-deep); margin-top:2px;
+}
+.layer.lv2 .lv{background:var(--orange)}
+.layer.lv3{border-color:var(--coral); background:#FFF9FA}
+.layer.lv3 .lv{background:var(--coral)}
+.layer b{display:block; font-weight:900; margin-bottom:2px}
+
+/* おけもん的補足ボックス */
+.omake{
+  background:var(--paper); border-radius:22px; border:3px dashed var(--orange);
+  padding:20px 18px 14px; margin:20px 0 28px;
+}
+.omake p:last-child{margin-bottom:0}
+
+/* まとめ黒板 */
+.summary{
+  background:#244B41; color:#FFFDF7; border-radius:22px; border:6px solid #8A5A3B;
+  padding:22px 20px; margin:26px 0; box-shadow:0 10px 24px rgba(74,52,38,.18);
+}
+.summary .k{
+  display:inline-block; background:var(--sun); color:var(--ink); font-weight:900;
+  font-size:13px; padding:2px 14px; border-radius:999px; margin-bottom:12px;
+}
+.summary ol{margin:0; padding-left:1.35em; display:grid; gap:8px; font-weight:700; line-height:1.7}
+.summary ol li::marker{color:var(--sun); font-weight:900}
+
+/* 本の最後の一行 */
+.quote-end{
+  background:var(--paper); border-radius:20px; border-left:8px solid var(--red);
+  padding:16px 18px; margin:24px 0; box-shadow:0 6px 18px rgba(74,52,38,.09);
+}
+.quote-end .k{font-size:12.5px; font-weight:900; color:var(--soft); margin-bottom:4px; display:block}
+.quote-end .line{font-size:clamp(18px, 4.8vw, 22px); font-weight:900; line-height:1.6; color:var(--ink); margin:0}
+
+/* 今日のアクション */
+.action{
+  margin:36px 0 28px; background:var(--paper); border:3px solid var(--ink);
+  border-radius:22px; padding:24px 18px 18px; position:relative;
+  box-shadow:6px 6px 0 var(--mint);
+}
+.action .tag{
+  position:absolute; top:-16px; left:16px; background:var(--coral); color:#fff;
+  font-weight:900; padding:3px 16px; border-radius:999px; font-size:14px;
+  border:3px solid var(--ink);
+}
+.action label{
+  display:flex; gap:12px; align-items:flex-start; font-weight:900;
+  font-size:18px; line-height:1.6; cursor:pointer;
+}
+.action input{
+  appearance:none; flex:none; width:30px; height:30px; margin-top:2px;
+  border:3px solid var(--ink); border-radius:9px; background:#fff;
+  display:grid; place-items:center;
+}
+.action input:checked{background:var(--mint)}
+.action input:checked::after{content:"✓"; color:#fff; font-weight:900; font-size:20px; line-height:1}
+.action .sub{
+  color:var(--soft); font-size:14.5px; font-weight:700;
+  margin:8px 0 0 42px; line-height:1.75;
+}
+.done{margin:12px 0 0 42px; font-weight:900; color:var(--mint-deep)}
+.js-ready .done{display:none}
+.js-ready .action:has(input:checked) .done{display:block}
+
+/* 本の紹介カード（表紙画像は使わずタイポグラフィで組む） */
+.book{
+  background:var(--paper); border:3px solid var(--ink); border-radius:20px;
+  padding:18px 18px 20px; box-shadow:6px 6px 0 var(--mint); line-height:1.6;
+  margin:30px 0 20px;
+}
+.book .k{
+  display:inline-block; background:var(--sun); font-weight:900; font-size:12.5px;
+  letter-spacing:.06em; padding:2px 12px; border-radius:999px; margin-bottom:14px;
+}
+.book .row{display:flex; gap:16px; align-items:flex-start}
+.book .cv{
+  flex:none; width:126px; aspect-ratio:376/540; border-radius:8px;
+  background:linear-gradient(155deg, #24584C 0%, #193E36 100%);
+  color:#FFFDF7; padding:14px 10px; display:flex; flex-direction:column; justify-content:space-between;
+  box-shadow:0 8px 18px rgba(36,88,76,.28); border:2px solid #D9B978;
+}
+.book .cv .cv-t{font-weight:900; font-size:15px; line-height:1.45; letter-spacing:.02em}
+.book .cv .cv-t em{font-style:normal; color:var(--sun)}
+.book .cv .cv-sub{font-size:10.5px; line-height:1.45; opacity:.9; font-weight:700}
+.book .cv .cv-by{font-size:11px; border-top:1px solid rgba(255,253,247,.3); padding-top:6px; font-weight:700}
+.book .t{font-weight:900; font-size:18px; line-height:1.5; margin:0}
+.book .subt{font-size:13.5px; font-weight:700; color:var(--soft); margin:4px 0 0; line-height:1.5}
+.book .by{display:flex; flex-wrap:wrap; gap:6px 12px; font-weight:700; font-size:13.5px; color:var(--soft); margin-top:6px}
+.book .say{
+  font-weight:700; font-size:14.5px; margin:10px 0 0; background:var(--mint-pale);
+  border-radius:12px; padding:8px 12px; line-height:1.65;
+}
+.book a.btn{
+  display:block; text-align:center; text-decoration:none; margin-top:16px;
+  background:var(--coral); color:#fff; font-weight:900; font-size:16px;
+  padding:12px 14px; border-radius:999px; box-shadow:0 4px 0 #D94A60;
+}
+.book .also{
+  margin:12px 0 0; font-size:13.5px; color:var(--soft); font-weight:700; line-height:1.7;
+}
+
+.topbtn{
+  display:block; text-align:center; text-decoration:none; margin:26px auto 0; max-width:340px;
+  background:var(--ink); color:#fff; font-weight:900; padding:12px 18px;
+  border-radius:999px; box-shadow:0 5px 0 var(--mint);
+}
+.sign{
+  margin-top:34px; text-align:center; color:var(--soft);
+  font-weight:700; font-size:14.5px; line-height:1.95;
+}
+.sign b{color:var(--ink); font-size:17px}
+.hint{
+  margin-top:26px; padding-top:18px; border-top:2px dashed var(--line);
+  font-size:clamp(12px, 3.1vw, 13.5px); color:var(--soft); text-align:center; line-height:1.85;
+}
+
+@media (max-width:480px){
+  .book .row{flex-direction:column; align-items:center; text-align:center}
+  .book .by{justify-content:center}
+  .book .say{text-align:left}
+  .toc .tag-mini{display:none}
+}
 </style>
 </head>
 <body>
+
+<header class="theater" id="top">
   <p class="kicker">おけもんの読書ノート</p>
-  <h1>『全部、<em>AIに丸投げ</em>した。』</h1>
+  <h1 class="hero-title">『全部、<em>AIに丸投げ</em>した。』</h1>
   <p class="by">大塚あみ 著（新潮社）を、飛び出す絵本で読む　16分44秒</p>
 
   <div class="stage">
-    <video controls playsinline preload="metadata" poster="poster.jpg?v=1">
+    <video id="mv" controls playsinline preload="metadata" poster="poster.jpg?v=1">
       <source src="marunage.mp4?v=1" type="video/mp4">
     </video>
   </div>
@@ -45,7 +393,442 @@
     <b>音を出して</b>どうぞ。</p>
   </div>
 
+  <div class="jump-bar">
+    <a class="jump-btn" href="#blog">📖 動画の中身をブログで読む（約6分）👇</a>
+  </div>
+</header>
+
+<div class="divider">ここから要約ブログ</div>
+
+<main class="wrap" id="blog">
+
+  <div class="series">
+    <span class="badge">おけもんの読書ブログ</span>
+    <span class="num">AI時代のライフハック本</span>
+    <span class="date">読むのに約6分 ／ 上の動画16分44秒をまるっと文字で</span>
+  </div>
+
+  <h2 class="blog-h1">
+    「<span class="pop">ダサい努力</span>は無能の証明」！？<br>
+    <span class="hl">がんばるのをやめて、欲をAIに丸投げする</span>7つの考え方🦫
+  </h2>
+
+  <div class="lead">
+    大塚あみさんの新書『全部、AIに丸投げした。』を読んで、改めて震えてしまったおけもんです😳
+    <b>「まさに今、私がやっていることの上位互換や…！」</b>と感じて、上の16分44秒の飛び出す絵本動画を作りました。
+    動画を見る時間がない方や、あとから見返したい方のために、掛け合いの中身をまるっとブログにして置いておきますね🙌
+  </div>
+
+  <div class="voices">
+    <div class="voice">毎日がんばってるのに、自由な暮らしがちっとも近づかない…</div>
+    <div class="voice">AIを使ってみたいけど、何から始めればいいかわからん💦</div>
+  </div>
+
+  <p>そんな方、いませんか？<br>残業が減らない方、がんばるのにちょっと疲れた方にも、ぜひ読んでみてほしい一冊なんです😊</p>
+
+  <div class="dots">・・・・・・</div>
+
+  <p>みなさん、こんにちは〜！<br>ストレングスファインダー認定コーチのおけもんです🦫</p>
+
+  <p>いきなりですが、この本は冒頭からこう言い切ります。</p>
+
+  <div class="big"><em>「ダサい努力は、無能の証明。」</em></div>
+
+  <div class="bird">ちょっと待って！！いきなりケンカ売ってる！？ こういう本、ぼく大嫌い！どうせ一部の天才の話でしょ？ ぼくなんか毎日夜まで残業してるんだよ！</div>
+
+  <p>……って、聞き役のインコも最初からめちゃくちゃ怒ってました🤣<br>でもね、違うんです。</p>
+
+  <p>この本を書いた大塚あみさんは、エンジニア・作家・経営者。でも大学4年生のときの成績は<mark>GPA 0.9</mark>、自分でも認める本物の落ちこぼれでした。</p>
+
+  <p>そんな人がAIと作ったアプリで国際学会で発表し、その記録が1年後に本になり、今は24歳で海外ホテル暮らしの経営者になっているんです😳</p>
+
+  <p>結論から言うと、この本の答えはたったひとつ。</p>
+
+  <p><mark>「がんばるのをやめて、自分の『欲』をAIに言うこと」</mark>。</p>
+
+  <p>予備知識はいりません。AIを触ったことがなくても大丈夫🙌<br>私が読んで「うわっ、ここ震えた…！」となった3つのポイントも交えながら、動画でお話しした<strong>7つの考え方</strong>を順番に見ていきましょう〜！</p>
+
+  <nav class="toc" aria-label="目次">
+    <div class="ttl">📚 このブログの目次（7つの考え方＋補足）</div>
+    <ol>
+      <li><a href="#ch1"><span class="n">1</span><span>落ちこぼれの始まり｜きっかけは「サボりたい」でいい</span></a></li>
+      <li><a href="#ch2"><span class="n hot">2</span><span>ダサい努力は無能の証明｜がんばりじゃなく「最適化」</span><span class="tag-mini">⚡震え①</span></a></li>
+      <li><a href="#ch3"><span class="n">3</span><span>基礎から学ばない｜エラーを貼って、3歳児みたいにゴネる</span></a></li>
+      <li><a href="#ch4"><span class="n">4</span><span>計画も判断も手放す｜1カ月の手札と、映画監督の立ち位置</span></a></li>
+      <li><a href="#ch5"><span class="n hot">5</span><span>ログそのものが実績になる｜引き継ぎ帳が、未来の名刺に</span><span class="tag-mini">⚡震え②</span></a></li>
+      <li><a href="#ch6"><span class="n hot">6</span><span>欲望を突き詰める｜「毎日エステ」から翌月バンコク移住へ</span><span class="tag-mini">⚡震え③</span></a></li>
+      <li><a href="#ch7"><span class="n">7</span><span>真似する前の注意点｜3つだけ気をつけてね</span></a></li>
+      <li><a href="#ch8"><span class="n">＋</span><span>おけもん的・補足とまとめ</span></a></li>
+    </ol>
+  </nav>
+
+  <!-- ═══ 1章 ═══ -->
+  <div class="chap-head" id="ch1">
+    <h2><span class="e">🎮</span>1. 落ちこぼれの始まり｜きっかけは「サボりたい」でいい</h2>
+    <div class="chap-meta">
+      <button type="button" class="seek-btn" data-sec="85">▶ 動画 01:25 から見る</button>
+    </div>
+  </div>
+
+  <p>まずは著者がどんな人だったか。ここを知ると、この本の強い言葉の「毒の意味」がスッとわかるんです😊</p>
+
+  <p>大学4年生。周りが次々に内定を決めるなか、著者が行った企業説明会はたったの1日。<br>あとは部屋に引きこもってゲームの毎日。プライドだけは高くて憧れは「経営者」なのに、計画は何もなし。</p>
+
+  <p>YouTubeに解説動画を出してみたものの、ほとんど見られず「才能がない」とすぐ撤退。<br>英語の本もたくさん買ったのに、カフェに行けばスマホを眺めて終わってしまい、授業の前日に丸暗記して見栄でしのぐ日々だったそうです。</p>
+
+  <div class="bird">えっ……それ、ぼくよりダメじゃない？ なんか急に親近感わいてきたんだけど🤣</div>
+
+  <p>みなさんも、買ったまま開いていない本、ありませんか？（はい、私の本棚にもあります🤣）</p>
+
+  <p>でも、ここから全部がひっくり返ります。<br>人生が動いたのは<mark>2023年4月10日</mark>。理由はなんと、<strong>「大学の課題をやりたくなさすぎて、ChatGPTを開いた」</strong>からでした。</p>
+
+  <figure>
+    <div class="pic"><img src="images/s1.jpg" alt="パソコンの前で初めてChatGPTとやりとりを始める後ろ姿" width="1164" height="506" loading="lazy"></div>
+    <figcaption>⇧ きっかけは「課題をやりたくない」。ただのサボり心だった</figcaption>
+  </figure>
+
+  <p>授業でAIと作ったゲームアプリのやり方を論文にしたら教授の目に留まり、なんと海外の国際学会で発表することに！😳<br>そこから始めた「100日チャレンジ」の動機も、「暇だし、あとで役立つかも」くらいの打算でした。</p>
+
+  <p>そう、始まりは立派な志じゃなくて<strong>ただのサボり心</strong>。<br>それでも今はエンジニア・作家・経営者として、この1年で<mark>10カ国以上</mark>を旅しながら働いています。</p>
+
+  <div class="me">落ちこぼれでも、サボり心からでも、始めていいんやなぁ…！</div>
+
+  <!-- ═══ 2章 ═══ -->
+  <div class="chap-head" id="ch2">
+    <h2 class="hot"><span class="e">💥</span>2. ダサい努力は無能の証明｜がんばりじゃなく「最適化」</h2>
+    <div class="chap-meta">
+      <span class="furue-pill">⚡ おけもん震えポイント①</span>
+      <button type="button" class="seek-btn" data-sec="207">▶ 動画 03:27 から見る</button>
+    </div>
+  </div>
+
+  <p>2つ目が、この本でいちばん毒が強いところ。<br><strong>「ダサい努力は、無能の証明」</strong>です。</p>
+
+  <div class="bird">いきなり失礼すぎない！？ ぼく毎日夜まで残業してるんだよ。それが無能だっていうの！？</div>
+
+  <p>……本の物差しだと、たぶん、そうなんです🤣（痛いっ！）</p>
+
+  <p>著者がやった「100日チャレンジ」は、毎日アプリを1つ完成させて、毎日Xに出し続けるというもの。<br>続いた理由は根性じゃなくて、<mark>「やめたらダサい」という見栄</mark>でした。毎日出すと言ってしまったから、引くに引けなかったんですね。</p>
+
+  <p>しかも途中から考えるのも面倒になって、設計だけ伝えて作るのはAIに丸投げ。<br>その結果、100日で書いたコードは<strong>5万行以上</strong>。ChatGPTに渡した指示は、なんと<mark>のべ8,123個</mark>にのぼります😳</p>
+
+  <figure>
+    <div class="pic"><img src="images/s2.jpg" alt="AIに渡した指示のべ8123個と5万行以上のコードが積み上がる紙の山" width="1164" height="506" loading="lazy"></div>
+    <figcaption>⇧ どう見てもすごい量なのに、本人は「努力じゃない」と言い切る</figcaption>
+  </figure>
+
+  <p>「どう見てもすごい努力じゃん！」と思いますよね。<br>でも本人は、それを努力じゃなく<strong>「最適化」</strong>と呼びます。</p>
+
+  <p>時間をかけて苦労するのは、最適化できていないだけ。<br>分厚い教科書を丸暗記したり、1人で何時間も悩んだりするのが「ダサい努力」。<br>苦労した時間を自慢するのは、<mark>遠回りした距離を自慢するのと同じ</mark>なんだそうです。</p>
+
+  <div class="bird">うっ……ぼくの残業自慢、遠回り自慢だったの！？ ムカつく、でも言い返せない…！</div>
+
+  <div class="furue">
+    <span class="k">⚡ 震えたポイント①</span>
+    <p>ここで私、震えたんです。「がんばり」を「最適化の失敗」と呼ぶ発想。今まで信じてきた努力の話が、まるごとひっくり返りました😳</p>
+  </div>
+
+  <!-- ═══ 3章 ═══ -->
+  <div class="chap-head" id="ch3">
+    <h2><span class="e">👶</span>3. 基礎から学ばない｜エラーを貼って、3歳児みたいにゴネる</h2>
+    <div class="chap-meta">
+      <button type="button" class="seek-btn" data-sec="313">▶ 動画 05:13 から見る</button>
+    </div>
+  </div>
+
+  <div class="bird">勉強しないで、何ができるっていうのさ！</div>
+
+  <p>これ、めちゃくちゃいい質問ですよね🙌<br>本のやり方は、普通の勉強と順番が真逆なんです。</p>
+
+  <p>先に<strong>「何を完成させたいか」</strong>を決めます。<br>「プログラミングを学びたい」ではなく、<mark>「元気が出るアプリを作りたい」</mark>からスタートする。</p>
+
+  <p>すると、作ればすぐエラーが出ます。<br>ここで「うわ、怒られてる気がする…」とそっと画面を閉じちゃうのが、いちばんもったいない！</p>
+
+  <figure>
+    <div class="pic"><img src="images/s3.jpg" alt="赤いエラー画面をそのままAIチャットに貼り付けて相談するイラスト" width="1164" height="506" loading="lazy"></div>
+    <figcaption>⇧ エラーが出ても自分を責めない。そのまま貼って「なぜ？」と聞くだけ</figcaption>
+  </figure>
+
+  <p>エラーの文をそのまま貼って「なぜ？」と聞くだけで、AIは最強の先生になってくれます。<br>AIは怒らないし、バカにもしない。教科書の1ページ目で止まるくらいなら、<strong>つまずいたところから基礎に戻ればいい</strong>んです😊</p>
+
+  <p>さらに面白いのが、AIへの頼み方。<br>著者はAIに向かって、まるで<strong>3歳児みたいにゴネる</strong>そうです。</p>
+
+  <ul class="ask">
+    <li>「これ面倒！ もっと一瞬でサボれる裏技ないの？」</li>
+  </ul>
+
+  <div class="bird">それ、ただのワガママだよ！ でも、ゴネていいなら…ちょっとやってみたいかも🤣</div>
+
+  <p>そう、本は<mark>「そのワガママこそが人間の仕事だ」</mark>と言い切っています😆</p>
+
+  <!-- ═══ 4章 ═══ -->
+  <div class="chap-head" id="ch4">
+    <h2><span class="e">🗺️</span>4. 計画も判断も手放す｜1カ月の手札と、映画監督の立ち位置</h2>
+    <div class="chap-meta">
+      <button type="button" class="seek-btn" data-sec="375">▶ 動画 06:15 から見る</button>
+    </div>
+  </div>
+
+  <p>4つ目は、計画と判断の考え方。<br>本では、5年後のビジョンを<strong>「ただの寝言かギャンブル」</strong>とバッサリ切っています🤣<br>前提が数カ月で変わる時代だから、著者自身も数カ月前までタイでホテル暮らしをするなんて1ミリも思っていなかったそうです。</p>
+
+  <p>だから、先の予定はせいぜい<mark>1カ月</mark>。その1カ月で使える「手札」を増やす。<br>たとえるなら、<strong>RPGの「次の街」</strong>です。</p>
+
+  <figure>
+    <div class="pic"><img src="images/s4.jpg" alt="RPGの地図。宝箱や剣・盾を拾いながら次の街へ続く一本道" width="1164" height="506" loading="lazy"></div>
+    <figcaption>⇧ ラスボスの倒し方じゃなく、次の街で戦える装備を整える</figcaption>
+  </figure>
+
+  <div class="me">ただね、ここで私は本にちょっとだけ反対なんです✋ 細かい計画は捨ててもいい。でも、「どこへ向かいたいのか（自分の北極星）」だけは捨てないでおきたいなと思っていて。</div>
+
+  <p>……実はこの本も、すぐ次のところで「方向だけは人間が握れ」と書いているんですよね😊</p>
+
+  <p>続いて「判断」のお話。<br>著者は都内の移動にタクシーをよく使うそうです。「お金持ちだからでしょ！」と思いきや、理由は<strong>乗り換えや階段探しの小さな判断で「脳のバッテリー」を減らしたくないから</strong>。</p>
+
+  <p>たとえるなら、<mark>映画の監督</mark>の立ち位置です。<br>監督は照明も配線も自分ではやりません。「ここは光を柔らかくして」と方向だけ決める。</p>
+
+  <p>だから、日々の判断をこんなふうに<strong>3つの層</strong>に分けていきます👇</p>
+
+  <div class="layers">
+    <div class="layer">
+      <span class="lv">任せる</span>
+      <div><b>AIに丸投げする層</b>献立や服えらび、メールの文面、情報整理などの瑣末な判断はAIでOK！</div>
+    </div>
+    <div class="layer lv2">
+      <span class="lv">軽く選ぶ</span>
+      <div><b>AIに絞らせて選ぶ層</b>「いちばん得しそうな選択肢を3つ出して」と頼んで、その中からサクッと選ぶ。</div>
+    </div>
+    <div class="layer lv3">
+      <span class="lv">握る</span>
+      <div><b>人間が握る層（ここだけ！）</b>どの方向に進むか、何を大切にするか。ここだけに脳のバッテリーを使う。</div>
+    </div>
+  </div>
+
+  <div class="big">計画は手放す。<br>でも、<em>向かう先</em>だけは自分で握る。</div>
+
+  <!-- ═══ 5章 ═══ -->
+  <div class="chap-head" id="ch5">
+    <h2 class="hot"><span class="e">📓</span>5. ログそのものが実績になる｜引き継ぎ帳が、未来の名刺に</h2>
+    <div class="chap-meta">
+      <span class="furue-pill">⚡ おけもん震えポイント②</span>
+      <button type="button" class="seek-btn" data-sec="500">▶ 動画 08:20 から見る</button>
+    </div>
+  </div>
+
+  <p>さあ後半戦！ ここからが、私の<strong>2つ目の震えポイント</strong>です😳</p>
+
+  <div class="bird">ログって、ただの記録でしょ？ そんなの誰が読むのさ〜。</div>
+
+  <p>著者は試したことを必ず残します。「何をやろうとして、どこでつまずき、AIに何を聞き、どう解決したか」。要点をまとめてGoogleドキュメントへ保存するんです。</p>
+
+  <p>なぜそんなことをするのか？<br>それは、AIには覚えていられる量に限りがあるから。<br>新しいチャットに前の結論を渡して「ここから続きを」と頼む――本のたとえでは、ゲームの<mark>セーブデータ</mark>です。</p>
+
+  <p>ログがないままAIに頼むのは、<strong>空の冷蔵庫で料理を頼むのと同じ</strong>なんです🍳</p>
+
+  <figure>
+    <div class="pic"><img src="images/s5.jpg" alt="空っぽの冷蔵庫の前で途方に暮れるコックさんの後ろ姿" width="1164" height="506" loading="lazy"></div>
+    <figcaption>⇧ 材料（ログ）が空っぽのまま頼んでも、AIは最高の料理を作れない</figcaption>
+  </figure>
+
+  <p>実は私も毎晩、その日のAIとの会話を「引き継ぎ帳」にしています。次の朝、AIの仲間が続きからすぐ走れるようにするためですね😊</p>
+
+  <p>著者は2カ月で<strong>600時間（1日10時間！）</strong>もAIに貼りついて、本人いわく「無能の記録」を溜めました。<br>ただし、チャットの垂れ流しは本の言い方だと「ゴミ」。価値になるのは量じゃなく、<strong>何を切り出してどう並べるか</strong>なんです。</p>
+
+  <p>そして、ここがすごいところ。<br>結果だけポンと出すと「本当に本人がやったの？」と疑われます。<br>でも、無能なところも失敗もあえて過程のログごと見せておくと、それが<strong>いちばん役立つデータ</strong>になり、<mark>まだ会っていないお客さんへの「名刺」</mark>になるんです✨</p>
+
+  <p>実際、著者の100日チャレンジの記録は1年後に1冊の本になり、講演や開発の仕事につながりました。<br>出版が決まったとき、頼りになったのは文才でも記憶力でもなく、<strong>当時のログそのもの</strong>だったそうです。</p>
+
+  <div class="furue">
+    <span class="k">⚡ 震えたポイント②</span>
+    <p>私も半年、AIとの会話を全部ログに残して、AIの仲間に仕事を任せてきました。「まさに今やっていることの上位互換や！」と、読んで改めて震えたんです🦫</p>
+  </div>
+
+  <!-- ═══ 6章 ═══ -->
+  <div class="chap-head" id="ch6">
+    <h2 class="hot"><span class="e">🌴</span>6. 欲望を突き詰める｜「毎日エステ」から翌月バンコク移住へ</h2>
+    <div class="chap-meta">
+      <span class="furue-pill">⚡ おけもん震えポイント③（ここが一番！）</span>
+      <button type="button" class="seek-btn" data-sec="674">▶ 動画 11:14 から見る</button>
+    </div>
+  </div>
+
+  <p>いよいよ、いちばん俗っぽくて、私が<strong>いちばん震えた話</strong>です😆🙌</p>
+
+  <p>ある日、著者はAIにこう聞きました。</p>
+
+  <ul class="ask">
+    <li>「毎日エステを受けたい！」</li>
+  </ul>
+
+  <div class="bird">エステ！？ 急に俗っぽいなぁ🤣 でも、そんなの日本でも受けられるじゃん！</div>
+
+  <p>でも日本だと高いし、著者は渋谷の生活コストと働き方にうんざりしていました。<br>そこで出たAIの答えがこちら。</p>
+
+  <p><mark>「タイのバンコクへ移住すれば、日本の3分の1の価格で最高級のエステが受けられますよ」</mark></p>
+
+  <figure>
+    <div class="pic"><img src="images/s6.jpg" alt="タイ・バンコクの街並みとトゥクトゥク、左上に「バンコクのエステ 3分の1」の札" width="1164" height="506" loading="lazy"></div>
+    <figcaption>⇧ 欲がはっきりしてるから、AIの答えもはっきり返ってくる！</figcaption>
+  </figure>
+
+  <p>そしてなんと、<strong>翌月には日本の住まいを引き払っていた</strong>んです😳<br>「無茶すぎない！？ 仕事はどうするのさ！」って思いますよね。人間に相談したら「無責任だ」と止められそうです。</p>
+
+  <p>でも、AIはお説教も常識も1ミリも挟みません。<br>無茶に見えて、中身はかなり冷静でした。欲の分解、かかるお金、仕事は続けられるか、リスクと備え――全部AIに聞いて決めたんです。</p>
+
+  <p>「毎日エステ」の奥にあった本音は、この3つでした👇</p>
+
+  <ul class="pop">
+    <li>時間を奪われたくない</li>
+    <li>家事を外したい</li>
+    <li>もう我慢したくない</li>
+  </ul>
+
+  <p>そもそも、なぜここまでやるのか？<br>本の答えは一言、<strong>「働きたくないからだ」</strong>🤣<br>「我慢をやめる」と聞くと聞こえが悪いけれど、この本は我慢の正体をAIで1つずつ外していくんですよね。</p>
+
+  <div class="furue">
+    <span class="k">⚡ 震えたポイント③（いちばん刺さった！）</span>
+    <p>「毎日エステ」みたいなちっちゃな欲から、海外移住まで行っちゃう。<strong>欲って、未来の入口なんだ！</strong>って目が覚めました✨</p>
+  </div>
+
+  <div class="bird">ぼくの欲……「毎朝ゆっくり寝たい」でもいいのかな？</div>
+
+  <p>もちろん、めちゃくちゃいいんです！🙌</p>
+
+  <!-- ═══ 7章 ═══ -->
+  <div class="chap-head" id="ch7">
+    <h2><span class="e">🛡️</span>7. 真似する前の注意点｜3つだけ気をつけてね</h2>
+    <div class="chap-meta">
+      <button type="button" class="seek-btn" data-sec="805">▶ 動画 13:25 から見る</button>
+    </div>
+  </div>
+
+  <p>「よし、今すぐ全部丸投げしよう！」となる前に、本がちゃんと書いている<strong>注意点が3つ</strong>あります😊</p>
+
+  <p><strong>① 読み書きと計算の基礎は必要</strong><br>
+  文字が読めない・簡単な計算ができないと、そもそもAIと話せないし、答えが合っているかも判断できません。<br>
+  ただし、本は<mark>「その基礎の勉強にすら、AIを家庭教師にしていい」</mark>と言っています。<strong>月謝0円で、24時間いつでも聞ける家庭教師</strong>ですね！</p>
+
+  <figure>
+    <div class="pic"><img src="images/s7.jpg" alt="あいうえおと足し算が開かれたノートと鉛筆のイラスト" width="1164" height="506" loading="lazy"></div>
+    <figcaption>⇧ 基礎は大事。でも苦行じゃなくて、AIを家庭教師にしていい</figcaption>
+  </figure>
+
+  <p><strong>② 個人情報は伏せる</strong><br>
+  ログをAIに渡すとき、著者も名前や住所などの細かい個人情報はちゃんと伏せています。なんでもそのまま放り込まないように気をつけましょうね🙌</p>
+
+  <p><strong>③ AIの答えは「平均点」</strong><br>
+  AIが出してくるのは、よくできた正論＝つまり平均点。<br>
+  テストなら平均点で十分でも、人生で平均点の答えだけ選ぶと「みんなと同じ毎日」になってしまいます。</p>
+
+  <div class="big">丸投げしていいのは、作業。<br><em>何が欲しいか（ワガママ）</em>は、自分で言う。</div>
+
+  <!-- ═══ 8章：おけもん的補足とまとめ ═══ -->
+  <div class="chap-head" id="ch8">
+    <h2><span class="e">🦫</span>おけもん的・補足とまとめ</h2>
+    <div class="chap-meta">
+      <button type="button" class="seek-btn" data-sec="887">▶ 動画 14:47 から見る</button>
+    </div>
+  </div>
+
+  <div class="omake">
+    <p>ここからは、本とは別の私なりの意見です😊</p>
+    <p>私はこの本を、自己啓発本じゃなくて<mark>「AI時代のライフハック本」</mark>だと思っています。根性の話じゃなくて仕組みの話だから、明日からそのまま真似できるんですよね🙌</p>
+    <p>ただ、正直に言うと……私も「欲をそのまま言う」のは、まだ全然できていなくて🤣 つい遠慮しちゃうんです。<br>だから最初は、「毎日エステ」とか「毎朝ゆっくり寝たい」くらいの、ちっちゃな欲からでちょうどいいなと思っています。</p>
+    <p>それと、<strong>ハマらない人はハマらない本かもしれない</strong>。がんばるのが好きな人には、ちょっとムカつく本かもしれません。でも、それでいいと思うんです😊</p>
+  </div>
+
+  <div class="summary">
+    <span class="k">📝 今日のまとめ（7つの考え方）</span>
+    <ol>
+      <li>落ちこぼれでも、サボり心から始めていい</li>
+      <li>ダサい努力より「最適化」</li>
+      <li>勉強より先に作って、3歳児みたいにゴネる</li>
+      <li>計画は1カ月の手札、判断はAIへ。でも向かう先は自分で</li>
+      <li>ログはそのまま実績と名刺になる</li>
+      <li>欲はそのままAIへぶつける</li>
+      <li>基礎と個人情報には気をつけて、ワガママは自分で握る</li>
+    </ol>
+  </div>
+
+  <div class="quote-end">
+    <span class="k">📖 本の最後の一行</span>
+    <p class="line">「私たちはそろそろ、真面目に苦労するのをやめていい。」</p>
+  </div>
+
+  <p>私はこの本を、<mark>「がんばれない自分を、責めなくていい本」</mark>だと読みました。</p>
+
+  <p>これをやっていく先に、本当に自由な暮らしがあるかもしれない――そう思うと、私いま、すごくワクワクしています😆✨</p>
+
+  <div class="bird">正直、まだちょっとムカついてる。……でも、今日の残業は、先にAIに聞いてからやるよ！</div>
+
+  <div class="me">うん、がんばれ！ ……あ、じゃなかった。<br>上手にサボれ！🤣🙌</div>
+
+  <!-- ═══ 今日のアクション ═══ -->
+  <div class="action">
+    <span class="tag">📝 今日のアクション</span>
+    <label><input type="checkbox"><span>ちっちゃな「欲」か、いちばんイヤな「我慢」を1つだけ、そのままAIに言ってみる</span></label>
+    <div class="sub">「毎朝ゆっくり寝たい」「この面倒な作業、もっと一瞬でサボれる裏技ないの？」「今日の晩ごはん、3つに絞って」――なんでもOKです🙌</div>
+    <div class="done">ナイスー！！ それが、あなたの「丸投げライフ」の最初の一歩です🦫✨</div>
+  </div>
+
+  <!-- ═══ 本の紹介カード ═══ -->
+  <article class="book">
+    <span class="k">📖 今日ご紹介した本</span>
+    <div class="row">
+      <div class="cv" aria-hidden="true">
+        <div class="cv-t">全部、<br><em>AIに丸投げ</em><br>した。</div>
+        <div class="cv-sub">気づいたら、24歳で海外ホテル暮らしの経営者になっていた</div>
+        <div class="cv-by">大塚あみ／新潮社</div>
+      </div>
+      <div class="info">
+        <h3 class="t">全部、AIに丸投げした。</h3>
+        <p class="subt">気づいたら、24歳で海外ホテル暮らしの経営者になっていた</p>
+        <div class="by"><span>著者：大塚あみ</span><span>出版社：新潮社</span></div>
+        <p class="say">プロンプト集ではなく「AI時代の生存戦略書」。AIを使い始めた人にも、すでにどっぷり浸かっている人にも勧めたい一冊です🦫</p>
+      </div>
+    </div>
+    <a class="btn" href="https://www.amazon.co.jp/dp/B0HG952M2W" target="_blank" rel="noopener">Amazonで本を見る</a>
+    <p class="also">💡 著者の最初の本『#100日チャレンジ』も、あわせておすすめです！</p>
+  </article>
+
+  <a class="topbtn" href="#top">🎬 上の飛び出す絵本動画へ戻る</a>
+
+  <div class="sign">
+    あなたはこの本に、賛成？ 反対？<br>
+    よかったら感想も聞かせてくださいね😊<br>
+    <b>おけもんでした🦫</b>
+  </div>
+
   <p class="hint">本の感想を話したい人への共有用です。このページの URL は、もらった人の中だけでお願いします。<br>
   本の中身は、ぜひ本そのもので。</p>
+
+</main>
+
+<script>
+document.documentElement.classList.add('js-ready');
+(function(){
+  var mv = document.getElementById('mv');
+  var btns = document.querySelectorAll('.seek-btn');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var sec = parseFloat(b.dataset.sec || '0');
+      if(mv){
+        mv.scrollIntoView({behavior:'smooth', block:'center'});
+        var go = function(){
+          try{ mv.currentTime = sec; }catch(e){}
+          mv.play().catch(function(){});
+        };
+        if(mv.readyState >= 1){ go(); }
+        else{
+          mv.addEventListener('loadedmetadata', function onMeta(){
+            mv.removeEventListener('loadedmetadata', onMeta);
+            go();
+          });
+          mv.load();
+        }
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
