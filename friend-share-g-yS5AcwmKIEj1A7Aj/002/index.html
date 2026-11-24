@@ -352,5 +352,43 @@ document.documentElement.classList.add('js-ready');
 (function(){var a=document.getElementById('au'),b=document.querySelectorAll('#sp button');
 b.forEach(function(x){x.addEventListener('click',function(){a.playbackRate=parseFloat(x.dataset.r);b.forEach(function(y){y.classList.toggle('on',y===x)})})})})();
 </script>
+<!-- もくじ（2026-11-25 本人「ざっくりでもいいから目次と行き来できるインデックスほしい。noteとノウハウ図書館のイメージ」）。h2 から自動で作る。各回の </body> の直前に1回だけ入れる -->
+<style id="okemori-toc-css">
+html{scroll-behavior:smooth}
+main h2{scroll-margin-top:16px}
+.toc{background:#fff;border:2.5px solid var(--ink,#4A3426);border-radius:20px;padding:14px 16px 10px;margin:22px 0 26px;box-shadow:5px 5px 0 var(--mint,#6FCFAE)}
+.toc .tt{font-weight:900;font-size:15px;letter-spacing:.08em;margin:0 0 6px;color:var(--ink,#4A3426)}
+.toc ol{list-style:none;margin:0;padding:0;counter-reset:t}
+.toc li{counter-increment:t;border-top:1.5px dashed var(--line,#F0E2CC)}
+.toc li:first-child{border-top:0}
+.toc a{display:flex;gap:10px;align-items:baseline;padding:9px 2px;text-decoration:none;color:var(--ink,#4A3426);font-weight:700;font-size:15px;line-height:1.6;word-break:auto-phrase}
+.toc a::before{content:counter(t);flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--mint-pale,#E3F7EE);color:var(--mint-deep,#2E9E7C);font-weight:900;font-size:12.5px}
+.toc a:active,.toc a:hover{color:var(--mint-deep,#2E9E7C)}
+.tocbtn{position:fixed;right:14px;bottom:18px;z-index:50;border:2.5px solid var(--ink,#4A3426);background:#fff;color:var(--ink,#4A3426);font:900 14px/1 inherit;font-family:inherit;padding:11px 15px;border-radius:999px;box-shadow:3px 3px 0 var(--mint,#6FCFAE);transition:.25s}
+.js-ready .tocbtn{opacity:0;transform:translateY(12px);pointer-events:none}
+.js-ready .tocbtn.on{opacity:1;transform:none;pointer-events:auto}
+</style>
+<script id="okemori-toc">
+(function(){
+  document.documentElement.classList.add('js-ready');
+  var main=document.querySelector('main')||document.body;
+  var hs=[].slice.call(main.querySelectorAll('h2'));
+  if(hs.length<2) return;
+  var nav=document.createElement('nav'); nav.className='toc'; nav.id='toc'; nav.setAttribute('aria-label','もくじ');
+  var tt=document.createElement('p'); tt.className='tt'; tt.textContent='📑 もくじ'; nav.appendChild(tt);
+  var ol=document.createElement('ol'); nav.appendChild(ol);
+  hs.forEach(function(h,i){
+    if(!h.id) h.id='s'+(i+1);
+    var e=h.querySelector('.e'); var t=(e?e.textContent.trim()+' '+h.textContent.replace(e.textContent,''):h.textContent).replace(/\s+/g,' ').trim();
+    var li=document.createElement('li'), a=document.createElement('a'); a.href='#'+h.id; a.textContent=t; li.appendChild(a); ol.appendChild(li);
+  });
+  hs[0].parentNode.insertBefore(nav,hs[0]);
+  var b=document.createElement('button'); b.type='button'; b.className='tocbtn'; b.textContent='📑 目次';
+  b.addEventListener('click',function(){nav.scrollIntoView({behavior:'smooth',block:'start'})});
+  document.body.appendChild(b);
+  function f(){var r=nav.getBoundingClientRect(); b.classList.toggle('on', r.bottom<0);}
+  addEventListener('scroll',f,{passive:true}); f();
+})();
+</script>
 </body>
 </html>
