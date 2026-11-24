@@ -441,5 +441,52 @@ main h2{scroll-margin-top:16px}
   addEventListener('scroll',f,{passive:true}); f();
 })();
 </script>
+<!-- 音だけで聴く（2026-11-25 本人「おんせいのバックグラウンド再生ができないからそれも上手いことチューニングしておいてー」）。
+     iPhone の Safari は画面を消すと動画を止めるので、動画の上に「音だけ」へ切り替えるボタンを置き、続きの位置から <audio> で流す。
+     ロック画面の操作（Media Session）・速さの引き継ぎ・二重再生の防止つき。各回の </body> の直前に1回だけ入れる -->
+<style id="okemori-oto-css">
+.bgplay{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:12px 0 10px;border:2.5px solid var(--ink,#4A3426);background:var(--mint-pale,#E3F7EE);color:var(--ink,#4A3426);font:900 15.5px/1.4 inherit;font-family:inherit;padding:12px 14px;border-radius:16px;box-shadow:4px 4px 0 var(--mint,#6FCFAE);cursor:pointer;word-break:auto-phrase}
+.bgplay small{font-weight:700;font-size:12.5px;opacity:.8}
+.bgplay.now{background:var(--mint-deep,#2E9E7C);color:#fff}
+</style>
+<script id="okemori-oto">
+(function(){
+  var v=document.getElementById('au'); if(!v) return;
+  var d=document.querySelector('details.oto');
+  var a=v.tagName==='AUDIO'?v:(d&&d.querySelector('audio'));
+  if(!a) return;
+  var title=(document.title||'').replace(/｜.*$/,'');
+  var art=(document.querySelector('.hero img')||{}).src||(v.getAttribute('poster')||'');
+  function ms(){
+    if(!('mediaSession' in navigator)) return;
+    try{
+      navigator.mediaSession.metadata=new MediaMetadata({title:title,artist:'おけもん',album:'ジャーナリングコラム',artwork:art?[{src:new URL(art,location.href).href,sizes:'1400x933',type:'image/jpeg'}]:[]});
+      var h=navigator.mediaSession.setActionHandler.bind(navigator.mediaSession);
+      h('play',function(){a.play()}); h('pause',function(){a.pause()});
+      h('seekbackward',function(e){a.currentTime=Math.max(0,a.currentTime-((e&&e.seekOffset)||10))});
+      h('seekforward',function(e){a.currentTime=Math.min(a.duration||1e9,a.currentTime+((e&&e.seekOffset)||10))});
+      try{h('seekto',function(e){a.currentTime=e.seekTime})}catch(_){}
+    }catch(_){}
+  }
+  a.addEventListener('play',ms);
+  if(a===v) return;   // 音だけの回（#2）はロック画面の操作だけ
+  var b=document.createElement('button'); b.type='button'; b.className='bgplay';
+  b.innerHTML='🎧 音だけで聴く <small>（画面を消しても止まりません）</small>';
+  v.parentNode.insertBefore(b,v);
+  function toAudio(){
+    var t=v.currentTime||0, r=v.playbackRate||1; v.pause(); if(d) d.open=true; a.preload='auto';
+    function seek(){ if(t>0.5 && Math.abs(a.currentTime-t)>1) a.currentTime=t; a.playbackRate=r; }
+    if(a.readyState>=1) seek(); else a.addEventListener('loadedmetadata',seek,{once:true});
+    var p=a.play(); if(p&&p.then) p.then(seek,function(){});
+  }
+  b.addEventListener('click',toAudio);
+  a.addEventListener('play',function(){ if(!v.paused) v.pause(); b.classList.add('now'); b.innerHTML='🎧 音だけで再生中 <small>（画面を消しても流れます）</small>'; });
+  a.addEventListener('pause',function(){ b.classList.remove('now'); b.innerHTML='🎧 音だけで聴く <small>（画面を消しても止まりません）</small>'; });
+  v.addEventListener('play',function(){ if(!a.paused){ if(a.currentTime>v.currentTime+2) v.currentTime=a.currentTime; a.pause(); } });
+  v.addEventListener('ratechange',function(){ a.playbackRate=v.playbackRate; });
+  // 動画の再生中に画面を消した時、音だけへ引き継ぐのを試す（端末によっては許されない。その時は何もしない）
+  document.addEventListener('visibilitychange',function(){ if(document.hidden && !v.paused) toAudio(); });
+})();
+</script>
 </body>
 </html>
