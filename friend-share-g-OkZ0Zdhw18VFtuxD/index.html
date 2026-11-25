@@ -169,6 +169,35 @@
     .q .plan{font-size:12px;margin-top:2px}
     .q small{font-size:11.5px;margin-top:2px}
   }
+
+ .gantt{background:var(--card);border-radius:16px;padding:14px 14px 10px;box-shadow:0 4px 14px rgba(27,34,51,.07);position:relative}
+ .now-box{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;background:var(--orange-soft);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+ .now-box .pin{background:var(--orange);color:#fff;border-radius:999px;padding:2px 12px;font-weight:900;font-size:14px}
+ .now-box b{font-size:16px;color:#8A3511}
+ .now-box small{flex-basis:100%;font-size:13px;color:var(--ink)}
+ .g-body{position:relative}
+ .g-months{position:relative;height:22px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+ .g-months span{position:absolute;top:0;font-size:12.5px;font-weight:700;color:var(--sub);padding-left:3px;border-left:1px solid var(--line)}
+ .g-today{position:absolute;top:0;bottom:0;width:0;border-left:3px solid var(--orange);z-index:2;pointer-events:none}
+ .g-today em{position:absolute;top:-1px;left:-3px;width:44px;text-align:center;font-style:normal;font-size:12.5px;font-weight:900;color:#fff;background:var(--orange);border-radius:999px;line-height:20px}
+ .gantt ul{list-style:none;margin:0;padding:0}
+ .gantt li{padding:6px 0;border-bottom:1px dashed var(--line)}
+ .gantt li:last-child{border-bottom:0}
+ .gantt li p{margin:0 0 3px;line-height:1.35}
+ .gantt li b{font-size:14.5px;position:relative;z-index:3}
+ .gantt li span{display:block;font-size:12.5px;color:var(--sub)}
+ .gantt li.done b{color:var(--sub)}
+ .gantt li.done b:before{content:"✓ ";color:var(--green)}
+ .gantt li.goal b{color:var(--green);font-size:16px}
+ .track{position:relative;height:14px;background:#F3EEE4;border-radius:999px}
+ .track:after{content:"";position:absolute;left:var(--today);top:-4px;bottom:-4px;width:3px;margin-left:-1px;background:var(--orange);border-radius:2px;z-index:1}
+ .g-months:after{content:"▼";position:absolute;left:var(--today);bottom:-3px;margin-left:-6px;font-size:12.5px;line-height:1;color:var(--orange)}
+ .bar{position:absolute;top:0;height:14px;border-radius:999px}
+ .bar.done{background:#B8BDC7}.bar.now{background:var(--orange)}.bar.next{background:var(--navy)}.bar.hot{background:linear-gradient(90deg,var(--orange),#F2A57E)}.bar.goal{background:var(--green);min-width:22px;height:22px;top:-4px;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--green)}
+ .dot{position:absolute;top:-2px;width:18px;height:18px;margin-left:-9px;transform:rotate(45deg);background:var(--yellow);border:2px solid var(--ink);border-radius:3px}
+ .g-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--sub);margin-top:8px}
+ .g-legend i{display:inline-block;width:14px;height:10px;border-radius:999px;margin-right:4px;vertical-align:0}
+ .venue-link{display:block;background:var(--navy);color:#fff;text-decoration:none;font-weight:700;border-radius:14px;padding:12px 16px;margin-bottom:12px;font-size:15px}
 </style>
 </head>
 <body>
@@ -178,7 +207,7 @@
     <img class="hero-img" src="img/thumb.jpg" alt="neco.さん・くまさんが神戸にやってくる！ 神戸で大AI交流会 AIで次の一歩をふみだそう">
     <h1 class="title"><small>AIブース（リベ大フェス2027の出店チーム）× 神戸 ｜ 公認オフ会の計画（たたき台）</small>neco.さん・くまさんが来る日に、神戸で大AI交流会</h1>
     <div class="kpis">
-      <div class="kpi"><span>日にち（第一候補）</span><b>1/30（土）</b><em>午前（31日なら会場を探し直し）</em></div>
+      <div class="kpi"><span>日にち</span><b>1/30か1/31</b><em>neco.さん・くまさんの都合で</em></div>
       <div class="kpi"><span>人数</span><b>最大100人</b><em>大きく1回で</em></div>
       <div class="kpi"><span>予算</span><b>約2万円</b><em>公認なら持ち出し8千円</em></div>
     </div>
@@ -194,6 +223,18 @@
       <div class="q"><div class="n">4</div><div><b>neco.さん・くまさんへの連絡</b><span class="plan">案：ますまるさんから、できるだけ早く</span><small>伝えること：30日と31日のどちらが来やすいか（これで日にちと会場が決まる）／当日はゲスト兼アドバイザー（トーク・テーブルを回る・相談席）をお願いしたい</small></div></div>
     </div>
   </header>
+
+  <section>
+    <div class="h"><i>🗓</i><h2>いまココ！ここからの流れ</h2></div>
+    <div class="gantt">
+      <div class="now-box"><span class="pin">いま 11/25</span><b>会場を2つ仮押さえ中です</b><small>次は「日にちを聞く」「名前を決める」。11/30に告知して、1月末の当日へ。</small></div>
+      <div class="g-body" style="--today:10.71%">
+        <div class="g-months"><span style="left:0%">11月</span><span style="left:17.86%">12月</span><span style="left:54.76%">1月</span><span style="left:91.67%">2月</span></div>
+        <ul><li class="done"><p><b>たたき台を作って、MTGで「やる」と決定</b><span>11/19〜11/25｜みんな</span></p><div class="track"><i class="bar done" style="left:3.57%;width:8.33%"></i></div></li><li class="now"><p><b>会場を2つ仮押さえ（1/30・1/31）</b><span>いま〜11/30｜おけもん</span></p><div class="track"><i class="bar now" style="left:10.71%;width:7.15%"></i></div></li><li class="now"><p><b>neco.さん・くまさんに日にちを聞く</b><span>できるだけ早く｜ますまるさん</span></p><div class="track"><i class="bar now" style="left:10.71%;width:7.15%"></i></div></li><li class="next"><p><b>会の名前を決める</b><span>〜11/27｜おけもん・ますまるさん</span></p><div class="track"><i class="bar next" style="left:10.71%;width:3.58%"></i></div></li><li class="next"><p><b>チャット作成・カレンダー登録</b><span>11/28〜29｜おけもん・ますまるさん</span></p><div class="track"><i class="bar next" style="left:14.29%;width:2.38%"></i></div></li><li class="hot"><p><b>告知！募集は交流チャットで（公認は取れたら申請）</b><span>11/30〜当日まで｜おけもん</span></p><div class="track"><i class="bar hot" style="left:16.67%;width:72.62%"></i></div></li><li class="mile"><p><b>公認の審査の結果</b><span>〜12/14｜リベ運営</span></p><div class="track"><i class="dot" style="left:33.33%"></i></div></li><li class="next"><p><b>当日の中身を詰める・サポーター集め</b><span>12月｜ブースのみんな</span></p><div class="track"><i class="bar next" style="left:17.86%;width:36.9%"></i></div></li><li class="mile"><p><b>使わない方の会場を取り消す（ここまで0円）</b><span>1/23・1/24｜おけもん</span></p><div class="track"><i class="dot" style="left:80.95%"></i></div></li><li class="goal"><p><b>大AI交流会 当日！</b><span>1/30（土）か1/31（日）｜みんな</span></p><div class="track"><i class="bar goal" style="left:89.29%;width:1.6%"></i></div></li><li class="next"><p><b>開催レポートを出す</b><span>当日のあと｜主催</span></p><div class="track"><i class="bar next" style="left:91.67%;width:8.33%"></i></div></li></ul>
+      </div>
+      <div class="g-legend"><span><i style="background:var(--orange);width:3px;border-radius:2px;height:14px;vertical-align:-2px"></i>縦の線＝いま（11/25）</span><span><i style="background:#B8BDC7"></i>おわった</span><span><i style="background:var(--orange)"></i>いまやってる</span><span><i style="background:var(--navy)"></i>これから</span><span><i style="background:var(--yellow);border:1px solid var(--ink);border-radius:2px;width:10px"></i>期限・結果の日</span></div>
+    </div>
+  </section>
 
   <section>
     <div class="h"><i>💡</i><h2>どんな会？</h2></div>
@@ -258,6 +299,7 @@
 
   <section>
     <div class="h"><i>📍</i><h2>会場くらべ</h2></div>
+    <a class="venue-link" href="https://okemonogatari-hash.github.io/html-share-box/friend-share-g-ZDa3ngdaea1CLWav/">📍 2つの会場を絵で見る（行き方・人数・時間・飲食）→</a>
     <div class="scroll">
     <table class="cmp">
       <thead><tr><th style="text-align:left">会場</th><th>100人を<br>島型で</th><th>1/30（土）<br>の空き</th><th>1/31（日）<br>の空き</th><th>1/30に借りた時の<br>無料キャンセル期限</th><th>料金の<br>目安</th></tr></thead>
@@ -273,17 +315,6 @@
     <p class="note">空きは11/19に各予約画面で見たもの（文化センターとコミスタは11/25に見直し。文化センターは1/30午前だけ空き・1/31は埋まり）。日々変わります。</p>
   </section>
 
-  <section>
-    <div class="h"><i>🗓</i><h2>ここから、こう進む（2か月前に告知）</h2></div>
-    <div class="steps">
-      <div class="step"><span class="d">いま</span><b>日にちを決める</b><span class="w">neco.さん・くまさんの都合で（1/30か1/31）</span></div>
-      <div class="step"><span class="d">すぐ</span><b>会場を仮押さえ（両日）</b><span class="w">おけもん（無料でやめられるのは1/23・1/24まで）</span></div>
-      <div class="step"><span class="d">11/28〜29</span><b>チャット作成・カレンダー登録</b><span class="w">ますまるさん</span></div>
-      <div class="step hot"><span class="d">11/30〜12/1</span><b>告知（＋公認は取れたら申請）</b><span class="w">募集は交流チャットで</span></div>
-      <div class="step"><span class="d">〜12/14</span><b>審査の結果</b><span class="w">通ったら名前に【公認オフ会】</span></div>
-      <div class="step goal"><span class="d">1/30か31</span><b>大AI交流会！</b><span class="w">開催後に簡単なレポート</span></div>
-    </div>
-  </section>
 
   <section>
     <div class="h"><i>✅</i><h2>公認が通る形</h2></div>
@@ -386,7 +417,7 @@ AIを“知る”だけで終わらせず、次の一歩をひとつ持って帰
     </div></details>
   </section>
 
-  <footer>おけもん より ｜ 2026年11月19日（たたき台）</footer>
+  <footer>おけもん より ｜ 2026年11月19日（たたき台）・11月25日 更新</footer>
 </div>
 <a href="#top" class="totop" id="totop">↑ 上へ</a>
 <script>
