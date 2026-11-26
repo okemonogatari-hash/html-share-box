@@ -215,21 +215,26 @@ dialog .act .sv{background:var(--gold);border-color:var(--gold);color:#17110a;fo
 .msg{border-top:1px solid var(--line);padding:14px 0 6px}
 .msg:first-of-type{border-top:0;padding-top:4px}
 .msg .who{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.msg .who .t{font-weight:700;white-space:nowrap} .msg .who .w{font-family:var(--mono);font-size:11px;color:var(--mute);letter-spacing:.1em}
+.msg .who .t{font-weight:700;white-space:nowrap} .msg .who .w{font-family:var(--mono);font-size:11px;color:var(--sub);letter-spacing:.1em}
 .msg .who .via{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--gold);border:1px solid var(--gold-lo);border-radius:99px;padding:3px 9px}
 .paste{position:relative;background:rgba(0,0,0,.32);border:1px solid var(--line2);border-radius:10px;padding:14px 16px 14px;font-size:13.5px;line-height:1.75;white-space:pre-wrap;color:var(--ink)}
 .cp{position:absolute;top:8px;right:8px;border:1px solid var(--gold-lo);background:var(--bg);color:var(--gold);border-radius:99px;font-size:11.5px;padding:4px 11px;cursor:pointer;font-weight:700}
 .cp:hover{border-color:var(--gold);color:var(--gold-hi)} .cp.ok{background:var(--gold);color:#17110a;border-color:var(--gold)}
 .slip{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px;background:rgba(0,0,0,.18)}
 .slip .sh{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
-.slip .sh b{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--gold)} .slip .sh i{font-style:normal;font-size:12px;color:var(--mute)}
+.slip .sh b{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--gold)} .slip .sh i{font-style:normal;font-size:12px;color:var(--sub)}
 .fld{display:grid;grid-template-columns:92px 1fr auto;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:13px}
 .fld:first-of-type{border-top:0}
-.fld span{font-size:11.5px;color:var(--mute)} .fld em{font-style:normal;color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.fld span{font-size:11.5px;color:var(--sub)} .fld em{font-style:normal;color:var(--ink);min-width:0;overflow-wrap:anywhere}
 .fld .cp{position:static;padding:2px 9px;font-size:10.5px}
-.sendnote{font-size:11.5px;color:var(--mute);margin-top:8px}
+.sendnote{font-size:11.5px;color:var(--sub);margin-top:8px}
 @media (max-width:1180px){.send .cols{grid-template-columns:1fr}}
 @media (max-width:560px){.msg .who{flex-wrap:wrap}.msg .who .w{order:3;flex-basis:100%;padding-left:44px}.fld{grid-template-columns:1fr auto}.fld span{grid-column:1/-1}}
+.idx{position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -4px 14px;padding:8px 4px;background:linear-gradient(var(--bg) 70%,rgba(10,8,6,0))}
+.idx::-webkit-scrollbar{display:none}
+.idx a{flex:none;font-size:12px;color:var(--sub);text-decoration:none;border:1px solid var(--line2);border-radius:99px;padding:5px 12px;white-space:nowrap}
+.idx a:hover,.idx a.on{color:var(--gold-hi);border-color:var(--gold)}
+html{scroll-behavior:smooth} .card{scroll-margin-top:58px}
 </style>
 </head>
 <body>
@@ -244,9 +249,10 @@ dialog .act .sv{background:var(--gold);border-color:var(--gold);color:#17110a;fo
   <button class="gear" id="gear">⚙ 願望とタイマー</button>
 </div>
 
+<nav class="idx" aria-label="索引"><a href="#s-aim">願望</a><a href="#s-life">のこり時間</a><a href="#s-weeks">人生の週</a><a href="#s-next">次の1to1</a><a href="#s-push">決断</a><a href="#s-stall">先に差し出す</a><a href="#s-send">送るだけ</a><a href="#s-week">今週の1to1</a><a href="#s-feed">思考→現実</a><a href="#s-nums">数字</a><a href="#s-thirteen">今日の原則</a><a href="#s-crew">仲間</a></nav>
 <div class="grid">
 
-  <section class="card aim">
+  <section class="card aim" id="s-aim">
     <div class="aimhead"><h1>Desire</h1><span id="aimday"></span></div>
     <div class="flamebox">
       <svg class="flame" viewBox="0 0 54 76" aria-hidden="true"><defs><linearGradient id="fg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff5a1f"/><stop offset=".55" stop-color="#ff9a3c"/><stop offset="1" stop-color="#ffe3a6"/></linearGradient></defs>
@@ -264,13 +270,13 @@ dialog .act .sv{background:var(--gold);border-color:var(--gold);color:#17110a;fo
     <div class="dots" id="dots"></div>
   </section>
 
-  <section class="card life">
+  <section class="card life" id="s-life">
     <div class="lbl">Time Left to Live<i>のこりの時間</i></div>
     <div class="stack" id="clock"></div>
     <div class="scale" id="times"></div>
   </section>
 
-  <section class="card weeks">
+  <section class="card weeks" id="s-weeks">
     <div class="h"><div class="lbl">Life in Weeks<i>1つぶ＝1週</i></div><span class="r" id="weeksn"></span></div>
     <div class="gridwrap"><canvas id="cv"></canvas><i class="nowcell" id="nowcell"></i></div>
     <div class="legend">
@@ -281,27 +287,27 @@ dialog .act .sv{background:var(--gold);border-color:var(--gold);color:#17110a;fo
     </div>
   </section>
 
-  <section class="card next">
+  <section class="card next" id="s-next">
     <div class="h"><div class="lbl"><b>Next</b><i>次の 1to1</i></div><span class="r" id="nxwhen"></span></div>
     <div class="person"><div class="av lg" id="nxav"></div><div class="nm" id="nxwho"></div><div class="in" id="nxin"></div></div>
     <div id="nxkv"></div>
     <button class="ghost">準備の1枚を開く →</button>
   </section>
 
-  <section class="card push">
+  <section class="card push" id="s-push">
     <div class="h"><div class="lbl"><b>Decision</b><i>決断：今日、押すだけ</i></div><span class="r" id="pushn"></span></div>
     <div id="pushlist"></div>
     <div class="clear" id="clear">今日のボールは 0。あとは願望に使う時間。</div>
   </section>
 
-  <section class="card stall">
+  <section class="card stall" id="s-stall">
     <div class="h"><div class="lbl"><b>Give First</b><i>先に差し出す約束</i></div></div>
     <div id="promlist"></div>
     <span class="lbl subh">返事が止まっている人</span>
     <div id="quietlist"></div>
   </section>
 
-  <section class="card send">
+  <section class="card send" id="s-send">
     <div class="h"><div class="lbl"><b>Ready to Send</b><i>送るだけ：コピーして、貼って、押す</i></div><span class="r" id="sendn"></span></div>
     <div class="cols">
       <div><span class="lbl subh">Messenger に貼る文</span><div id="msglist"></div></div>
@@ -310,29 +316,29 @@ dialog .act .sv{background:var(--gold);border-color:var(--gold);color:#17110a;fo
     </div>
   </section>
 
-  <section class="card week">
+  <section class="card week" id="s-week">
     <div class="h"><div class="lbl"><b>Plan</b><i>計画：今週の 1to1</i></div><span class="r" id="weekn"></span></div>
     <div id="weeklist"></div>
   </section>
 
-  <section class="card feed">
+  <section class="card feed" id="s-feed">
     <div class="h"><div class="lbl"><b>Thoughts Become Things</b><i>思考は、現実になる</i></div></div>
     <div class="fh"><span class="lbl">頭に浮かんだ一言</span><span></span><span class="lbl">形になった物</span></div>
     <div id="feedlist"></div>
   </section>
 
-  <section class="card nums">
+  <section class="card nums" id="s-nums">
     <div class="h"><div class="lbl">Numbers</div><div class="seg" id="seg"><button data-k="m1" class="on">1か月</button><button data-k="m3">3か月</button><button data-k="m12">12か月</button></div></div>
     <div id="numlist"></div>
   </section>
 
-  <section class="card thirteen">
+  <section class="card thirteen" id="s-thirteen">
     <div class="h"><div class="lbl"><b>13 Principles</b><i>今日の原則</i></div></div>
     <div class="steps" id="steps"></div>
     <div class="q"><span id="qn"></span><b id="qt" style="font-weight:600"></b></div>
   </section>
 
-  <section class="card crew">
+  <section class="card crew" id="s-crew">
     <div class="h"><div class="lbl"><b>Master Mind</b><i>ひとりの頭で考えない</i></div></div>
     <div id="crewlist"></div>
   </section>
@@ -524,6 +530,8 @@ document.addEventListener("click",async e=>{const b=e.target.closest(".cp");if(!
   try{await navigator.clipboard.writeText(t)}catch(_){const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove()}
   b.textContent="コピーした";b.classList.add("ok");setTimeout(()=>{b.textContent="コピー";b.classList.remove("ok")},1600)});
 renderSend();
+
+(()=>{const links=[...document.querySelectorAll('.idx a')];const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}})},{rootMargin:'-60px 0px -70% 0px'});document.querySelectorAll('section.card[id]').forEach(s=>io.observe(s))})();
 </script>
 </body>
 </html>
