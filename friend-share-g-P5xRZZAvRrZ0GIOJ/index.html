@@ -430,6 +430,31 @@ body:not(.pasthero) .navcta{opacity:0;transform:translateY(-6px);pointer-events:
 .jump ul{-webkit-mask-image:none;mask-image:none}
 .jump a{padding:0 8px;font-size:13.5px}
 @media(min-width:900px){header.top{display:block;padding-top:64px}header.top .partlab{text-align:center}header.top .partlab .lead{margin-left:auto;margin-right:auto}header.top .lot-wrap{max-width:960px;margin:0 auto}header.top .lot{aspect-ratio:16/9}}
+.today{padding:64px 0 56px;background:#e8f3ff}
+.today .lead{margin:0 0 22px;font-weight:700;color:var(--sub)}
+.tcard{display:grid;gap:16px;align-items:start}
+.tmain{margin:0;background:#fff;border:3px solid var(--ink);border-radius:var(--r);padding:10px;box-shadow:0 6px 0 var(--ink);transform:rotate(-1.2deg)}
+.tmain img{display:block;width:100%;height:auto;aspect-ratio:1;border-radius:14px;background:#f2f4fb;opacity:0;transform:scale(.97);transition:opacity .5s,transform .5s}
+.tmain img.show{opacity:1;transform:none}
+.tmain figcaption{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:10px 4px 2px;font-size:14px}
+.tmain figcaption b{font-size:16px}
+.ttag{background:var(--eye);border:2px solid var(--ink);border-radius:999px;padding:1px 10px;font-weight:900;font-size:13px}
+.tmain small{color:var(--sub);font-weight:700}.tmain .tnote{flex-basis:100%;color:var(--pinkD)}
+.tflip{margin:0;font-weight:900;color:var(--sub);font-size:14px}
+.tflip b{display:block;font-family:ui-monospace,Menlo,monospace;font-size:clamp(30px,8vw,44px);color:var(--ink);letter-spacing:.04em;font-variant-numeric:tabular-nums;line-height:1.2}
+.tacts{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.stripcap{margin:28px 0 8px;font-size:13px;font-weight:900;color:var(--sub)}
+.cdstrip{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 12px;scroll-snap-type:x proximity}
+.cdc{flex:0 0 86px;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px;border:2.5px solid var(--ink);border-radius:14px;background:#fff;font:inherit;font-weight:900;font-size:12.5px;color:var(--ink);cursor:pointer}
+.cdc img{width:72px;height:72px;border-radius:9px;object-fit:cover;display:block}
+.cdc.on{background:var(--eye);transform:translateY(-3px);box-shadow:0 3px 0 var(--ink)}
+.cdc.td span::after{content:" きょう";color:var(--pinkD)}
+.cdc.back{cursor:default;background:repeating-linear-gradient(45deg,#2f63d0 0 8px,#3a6fe0 8px 16px);color:#fff}
+.cdc.back i{font-style:normal;font-size:20px;line-height:1;margin-top:6px}
+.cdc.back em{font-style:normal;font-size:11px;line-height:1.3;text-align:center;min-height:43px;display:flex;align-items:center}
+.cdc.back span{background:#fff;color:var(--ink);border-radius:999px;padding:0 8px}
+@media(min-width:900px){.tcard{grid-template-columns:minmax(0,440px) 1fr;gap:40px;align-items:center}.tflip b{font-size:56px}}
+@media(prefers-reduced-motion:reduce){.tmain img{transition:none}}
 .why{padding:72px 0 64px;background:var(--paper);text-align:center}
 .why .big{font-family:"Kaisei Decol",serif;font-size:clamp(34px,9.6vw,68px);line-height:1.3;margin:10px 0 0;color:var(--ink)}
 .why .big2{font-weight:900;font-size:clamp(17px,4.6vw,22px);margin:10px 0 36px;color:var(--pinkD)}
@@ -468,6 +493,22 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
   </div>
   <div class="crowd" aria-label="AIブースのメンバー16人"><div class="lane" id="lane"></div><span class="lab">16人で幕張へ</span></div>
 </div>
+<section id="today" class="today reveal" aria-label="きょうの1枚">
+  <div class="wrap">
+    <span class="kicker">TODAY</span>
+    <h2>きょうの1枚</h2>
+    <p class="lead">デザインチームが、フェスまでの毎日を1枚ずつ描いてるよ。夜中の0時に、1枚めくれる。</p>
+    <div class="tcard">
+      <figure class="tmain"><img id="cdImg" alt="" width="720" height="720"><figcaption id="cdCap"></figcaption></figure>
+      <div class="tside">
+        <p class="tflip">つぎの日めくりまで<b id="cdFlip">--:--:--</b></p>
+        <div class="tacts" id="cdActs"></div>
+      </div>
+    </div>
+    <p class="stripcap">日めくり（押すと、その日の1枚）</p>
+    <div class="cdstrip" id="cdStrip" role="list"></div>
+  </div>
+</section>
 <section id="why" class="why reveal" aria-label="このブースをつくった理由">
   <div class="wrap">
     <span class="kicker">WHY</span>
@@ -631,6 +672,7 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
 <div class="toast" id="toast"></div>
 
 <script src="data.js"></script>
+<script src="cd.js"></script>
 <script>addEventListener("error",e=>{const i=e.target;if(i.tagName!=="IMG")return;if(!i.dataset.retry){i.dataset.retry=1;const u=i.src;setTimeout(()=>{i.src=u+(u.includes("?")?"&":"?")+"r=1"},600)}else{i.style.background="#ffd6e4";i.removeAttribute("src")}},true);["ani_ok","ani_point_phone","ani_read_book","ani_bow","ani_question","chibi_search","chibi_heart","chibi_wave","chibi_good","chibi_question"].forEach(n=>{const i=new Image();i.src="assets/"+n+".webp"})</script>
 <script>
 document.documentElement.classList.add("js-ready");
@@ -806,11 +848,33 @@ function renderRoad(){
   const cur=$("#path .now");if(cur)$("#path").scrollLeft=Math.max(0,cur.offsetLeft-60);
 }
 
+/* ── 日めくりカウントダウン（cd.js） ── */
+const CD0=Date.UTC(2027,6,1,15,0),DAY=864e5; // 2027-07-02 0:00 JST
+const cdDayStart=t=>Math.floor((t+9*36e5)/DAY)*DAY-9*36e5; // その日のJST 0:00
+const cdN=t=>Math.round((CD0-cdDayStart(t))/DAY);          // 7/2まで あと何日（日付の差）
+const cdMidnight=t=>cdDayStart(t)+DAY;
+const cdDate=e=>e.d?Date.parse(e.d+"T00:00:00+09:00"):CD0-e.n*DAY;
+let cdShown=null,cdPick=null;
+function renderCD(){const now=Date.now(),n=cdN(now);cdShown=n;if(!window.CD||!$("#cdStrip"))return;
+  const list=[...CD].sort((a,b)=>cdDate(a)-cdDate(b)),open=list.filter(e=>cdDate(e)<=cdDayStart(now));
+  const todays=open.filter(e=>cdDate(e)===cdDayStart(now)).pop();
+  const cur=cdPick&&open.includes(cdPick)?cdPick:(todays||open[open.length-1]);
+  const md=t=>{const j=jst(t);return `${j.m}/${j.d}（${j.w}）`};
+  if(cur){const img=$("#cdImg");if(img.getAttribute("src")!==cur.img){img.classList.remove("show");img.onload=()=>img.classList.add("show");img.src=cur.img}
+    img.alt=`リベフェスまであと${cur.n}日${cur.tag?"・"+cur.tag:""}の画像`;
+    const by=cur.by&&byK[cur.by]?byK[cur.by].n:"";
+    $("#cdCap").innerHTML=`<b>${md(cdDate(cur))}${cur===todays?" きょう":""}</b>${cur.tag?`<span class="ttag">${cur.tag}</span>`:""}${by?`<small>絵：${by}さん</small>`:""}${!todays&&!cdPick?`<small class="tnote">きょうの1枚は準備中。いちばん新しい1枚を出してるよ</small>`:""}`;
+    $("#cdActs").innerHTML=`${cur.who&&byK[cur.who]?`<a class="btn small pink" href="m/${cur.who}.html">${byK[cur.who].n}さんの紹介を見る</a>`:""}<a class="btn small" href="${cur.img}" download="libefes_ato${cur.n}nichi.webp">この画像を保存する</a>`}
+  $("#cdStrip").innerHTML=list.map(e=>{const t=cdDate(e),isOpen=t<=cdDayStart(now),j=jst(t);
+    return isOpen?`<button role="listitem" class="cdc${e===cur?" on":""}${t===cdDayStart(now)?" td":""}" data-n="${e.n}" aria-label="${j.m}/${j.d}の1枚"><img src="${e.img}" alt="" loading="lazy"><span>${j.m}/${j.d}</span></button>`
+      :`<div role="listitem" class="cdc back" aria-label="${j.m}/${j.d}にめくれる"><i>🐾</i><em>${e.tag?e.tag.replace(/さんの自己紹介$/,"<br>さんの日"):(t===cdDayStart(now)+DAY?"あした":"おたのしみ")}</em><span>${j.m}/${j.d}</span></div>`}).join("");
+  document.querySelectorAll("#cdStrip button").forEach(b=>b.onclick=()=>{cdPick=list.find(e=>String(e.n)===b.dataset.n);renderCD()});
+  const on=$("#cdStrip .on");if(on&&!cdPick)$("#cdStrip").scrollLeft=Math.max(0,on.offsetLeft-40)}
 /* 1秒ごとに刻む（変わった数字だけめくる） */
 function setTk(id,v){const e=document.getElementById(id);if(!e)return;const t=String(v).padStart(2,"0");if(e.textContent!==t){e.textContent=t;e.classList.remove("flip");void e.offsetWidth;e.classList.add("flip")}}
 let lastTarget=0;
 function tick(){const now=Date.now();
-  const fr=Math.max(0,FES-now);const fd=Math.floor(fr/864e5),p2=n=>String(n).padStart(2,"0");$("#tminus").textContent=`あと${fd}日 ${p2(Math.floor(fr/36e5)%24)}:${p2(Math.floor(fr/6e4)%60)}:${p2(Math.floor(fr/1e3)%60)}`;setTk("fD",fd);setTk("fH",Math.floor(fr/36e5)%24);setTk("fM",Math.floor(fr/6e4)%60);setTk("fS",Math.floor(fr/1e3)%60);
+  const fr=Math.max(0,FES-now);const fd=Math.floor(fr/864e5),p2=n=>String(n).padStart(2,"0");const cn=cdN(now),mr=Math.max(0,cdMidnight(now)-now);$("#tminus").textContent=`あと${cn}日｜日めくりまで ${p2(Math.floor(mr/36e5)%24)}:${p2(Math.floor(mr/6e4)%60)}:${p2(Math.floor(mr/1e3)%60)}`;const fl=document.getElementById("cdFlip");if(fl)fl.textContent=`${p2(Math.floor(mr/36e5)%24)}:${p2(Math.floor(mr/6e4)%60)}:${p2(Math.floor(mr/1e3)%60)}`;if(cn!==cdShown)renderCD();setTk("fD",fd);setTk("fH",Math.floor(fr/36e5)%24);setTk("fM",Math.floor(fr/6e4)%60);setTk("fS",Math.floor(fr/1e3)%60);
   const ph=phase(now);if(ph.target!==lastTarget||!document.getElementById("nS")!==!!ph.live){lastTarget=ph.target;renderNext()}
   if(!ph.live){const r=Math.max(0,ph.target-now);setTk("nD",Math.floor(r/864e5));setTk("nH",Math.floor(r/36e5)%24);setTk("nM",Math.floor(r/6e4)%60);setTk("nS",Math.floor(r/1e3)%60)}}
 /* ── スクロールでふわっと ── */
@@ -818,7 +882,7 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.targ
 document.querySelectorAll(".reveal").forEach(r=>io.observe(r));
 $("#mgrid").innerHTML=MEMBERS.map((m,i)=>`<button class="mt c${i%5}" data-k="${m.k}"><img src="${icon(m.k)}" alt="" loading="lazy"><b>${m.n}</b><small>${(m.like&&m.like[0])||""}</small></button>`).join("");document.querySelectorAll("#mgrid .mt").forEach(b=>b.onclick=()=>openSheet(b.dataset.k));
 $("#lane").innerHTML=[...MEMBERS,...MEMBERS].map(m=>`<img src="${icon(m.k)}" alt="">`).join("");
-render();renderEps();renderFlow();renderRoad();renderNext();tick();setInterval(tick,1000);drawMine();welcome();setInterval(()=>{if(!viewEp)render()},60e3);
+render();renderEps();renderFlow();renderRoad();renderNext();renderCD();tick();setInterval(tick,1000);drawMine();welcome();setInterval(()=>{if(!viewEp)render()},60e3);
 addEventListener("scroll",()=>{document.body.classList.toggle("pasthero",scrollY>document.querySelector(".hero").offsetHeight-80)},{passive:true});
 let st;addEventListener("scroll",()=>{if($("#askPanel").classList.contains("on"))return;$("#askBtn").classList.add("away");clearTimeout(st);st=setTimeout(()=>{if(scrollY>document.querySelector(".hero").offsetHeight-200)$("#askBtn").classList.remove("away")},1100)},{passive:true});
 let rz;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(render,200)});
