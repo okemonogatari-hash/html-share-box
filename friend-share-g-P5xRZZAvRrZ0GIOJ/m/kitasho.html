@@ -62,15 +62,15 @@ footer{padding:40px 0 110px;font-size:14px;line-height:1.8;color:var(--sub)}
     <div class="meter" aria-hidden="true"><i id="bar"></i></div>
     <div class="mtext" id="mtext">建設度 20%（看板をたたくと、ちょっと進む…かも）</div>
     <div class="hammer" id="hammer" aria-live="polite"></div>
-    <div class="crew"><img id="chibi" src="../assets/chibi_flask.webp" alt="工事中のチビ"><img id="ani" src="../assets/ani_laptop.webp" alt="工事中の兄"></div>
+    <div class="crew"><img id="chibi" src="../assets/chibi_search.webp" alt="工事中のチビ"><img id="ani" src="../assets/ani_read_book.webp" alt="工事中の兄"></div>
   </div>
 
   <h2>いま分かっていること</h2>
   <blockquote>機械、設備のことならお任せください<cite>きたしょーさんのリベのプロフィール（自己紹介）より</cite></blockquote>
   <h2>好きなもの</h2>
   <ul class="chips"><li>高配当株集め</li><li>カモノハシ（可愛いのに優秀すぎるから）</li><li>好きな食べ物は、揚げ物以外なら全部</li></ul>
-  <h2>座談会の出番（12月の予定）</h2>
-  <ul class="plain"><li>まだ未定</li></ul>
+  <h2>座談会の出番（12月）</h2>
+  <ul class="plain"><li>12/21（月）「はじめまして！わたしとAIの出会い〜ガチ勢になったきっかけ」</li></ul>
   <h2>座談会で聞いてみたいこと（例）</h2>
   <ul class="plain"><li>脱サラから法人化まで、いちばん大きな分かれ道はどんな場面でしたか？</li><li>AIの勉強会を3つの地域で開いて、どんな質問がよく出ましたか？</li></ul>
 
@@ -92,12 +92,12 @@ footer{padding:40px 0 110px;font-size:14px;line-height:1.8;color:var(--sub)}
 const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 const K="kitasho";let p=+(LS.get("nk_build_"+K)||20);
 const LINES=["トンカン、トントン！","よいしょ、よいしょ！","設計図をチェック中…","もうすぐできるかな？","ちょっとお茶のもっか","チビ、そっちじゃないよ！","いいお部屋になりそう！"];
-const CH=["chibi_flask","chibi_run","chibi_search","chibi_good","chibi_sleep","chibi_surprised","chibi_banzai"];
-const AN=["ani_laptop","ani_read_book","ani_ok","ani_question","ani_yawn","ani_surprised","ani_joy"];
+const CH=["chibi_surprised","chibi_sleep","chibi_search"]; // 端で切れていない絵だけ
+const AN=["ani_ok","ani_question","ani_yawn","ani_read_book"];
 function draw(){document.getElementById("bar").style.width=p+"%";document.getElementById("mtext").textContent=p>=99?"建設度99%（最後の1%は、本人と一緒に！）":`建設度 ${p}%（看板をたたくと、ちょっと進む…かも）`}
 draw();let n=0;
 document.getElementById("sign").onclick=()=>{const s=document.getElementById("sign");s.classList.remove("hit");void s.offsetWidth;s.classList.add("hit");
-  const i=n++%LINES.length;document.getElementById("hammer").textContent=LINES[i];document.getElementById("chibi").src=`../assets/${CH[i]}.webp`;document.getElementById("ani").src=`../assets/${AN[i]}.webp`;
+  const i=n++%LINES.length;document.getElementById("hammer").textContent=LINES[i];document.getElementById("chibi").src=`../assets/${CH[i%CH.length]}.webp`;document.getElementById("ani").src=`../assets/${AN[i%AN.length]}.webp`;
   if(Math.random()<.6&&p<99){p=Math.min(99,p+Math.ceil(Math.random()*7));LS.set("nk_build_"+K,p)}draw();if(navigator.vibrate)navigator.vibrate(15)};
 </script>
 </body>

@@ -162,6 +162,9 @@ h2{font-family:"Kaisei Decol",serif;font-size:clamp(25px,6vw,36px);line-height:1
 .when{font-weight:700;color:var(--sub);font-size:14px}
 .when.live{color:#e2381b;font-weight:900}
 .lotnote{font-size:14px;color:var(--ink);font-weight:700;margin:8px 0 0}
+.lotkey{display:flex;align-items:center;gap:8px;margin:10px 0 0;font-size:14px;font-weight:900;color:var(--ink)}.lotkey i{flex:0 0 18px;height:18px;border-radius:50%;background:#222;border:3px solid #111;box-shadow:0 0 0 3px var(--eye)}
+#when,.lead,h2{text-wrap:pretty}
+@media(max-width:420px){.lot{aspect-ratio:4/5.6}.seat{width:clamp(34px,10%,60px)}}
 .lotsmall{font-size:14px;color:var(--sub);margin:6px 0 0;line-height:1.7}
 .sitrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;align-items:center}
 .colors{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-weight:900;font-size:14px}
@@ -430,6 +433,15 @@ body:not(.pasthero) .navcta{opacity:0;transform:translateY(-6px);pointer-events:
 .jump ul{-webkit-mask-image:none;mask-image:none}
 .jump a{padding:0 8px;font-size:13.5px}
 @media(min-width:900px){header.top{display:block;padding-top:64px}header.top .partlab{text-align:center}header.top .partlab .lead{margin-left:auto;margin-right:auto}header.top .lot-wrap{max-width:960px;margin:0 auto}header.top .lot{aspect-ratio:16/9}}
+.archbox iframe,.archbox video{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:14px;margin-top:10px;background:#000}
+.movie{margin:6px 0 14px}
+.movie video{display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:18px;border:3px solid #fff;background:#000}
+.movie figcaption{margin-top:8px;font-size:13px;font-weight:700;color:#c9cde8}
+.mtimes{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x proximity}
+.mtimes button{flex:0 0 auto;scroll-snap-align:start;display:flex;align-items:center;gap:6px;min-height:44px;padding:4px 12px 4px 4px;border-radius:999px;border:2px solid #ffffff66;background:#ffffff14;color:#fff;font:inherit;font-weight:900;font-size:13px;cursor:pointer}
+.mtimes button img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.mtimes button small{font-family:ui-monospace,Menlo,monospace;color:var(--eye);font-weight:700}
+.mtimes button.all{padding-left:12px;background:var(--pinkD);border-color:var(--pinkD)}
 .today{padding:64px 0 56px;background:#e8f3ff}
 .today .lead{margin:0 0 22px;font-weight:700;color:var(--sub)}
 .tcard{display:grid;gap:16px;align-items:start}
@@ -473,7 +485,7 @@ body:not(.pasthero) .navcta{opacity:0;transform:translateY(-6px);pointer-events:
 section[id],#lot,#road-map,#members{scroll-margin-top:72px}
 @media(max-width:360px){.navcta{padding:0 10px;font-size:13px;margin-right:8px}.jump a{padding:0 6px;font-size:13px}}
 .askpanel{max-height:min(600px,calc(100dvh - 170px))}
-@media(max-width:700px){.lotsmall{padding-right:76px}}
+@media(max-width:700px){.lotsmall,.lotkey{padding-right:76px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
 </head>
@@ -553,6 +565,7 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
       <button class="host ani" id="ani" aria-label="兄に話しかける"><img src="assets/ani_wave.webp" alt="白衣の黒猫・兄"><span class="bub"></span></button>
     </div>
     <p class="lotnote" id="lotnote" hidden></p>
+    <p class="lotkey"><i></i>黄色い輪の人＝その回に話す人。焚き火のそばの席に、いちばん先に座ってるよ</p>
     <p class="lotsmall">※席の人数は「月曜21時まで、あとどれくらいか」の目印で、来ている人の数ではありません。</p>
 
     <div class="nextup" id="nextup"></div>
@@ -576,13 +589,12 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
   <div class="wrap">
     <span class="kicker">ROADMAP</span>
     <h2>7月まで、<br>交流チャットで起きること。</h2>
-    <p class="lead">交流チャットは、AIブースの16人と、応援してくれる人が集まる場所。チャットは流れていくから、全体の流れはここにまとめておくね。日付が決まっていないものは「予定」。</p>
+    <p class="lead">交流チャットは、AIブースの16人と、応援してくれる人が集まる場所。チャットは流れていくから、決まっていることをここにまとめておくね。</p>
     <ol class="flow big" id="flow">
       <li data-from="2026-11-25"><b>11/25〜</b><span>交流チャットに参加の呼びかけ<small>メンバーがそれぞれの場所で「来てね」をつぶやく期間</small></span></li>
-      <li data-from="2026-12-01"><b>12/1〜</b><span>メンバー16人の自己紹介リレー<small>メンバー紹介動画に出てくる順番で</small></span></li>
-      <li data-from="2026-12-07"><b>12/7〜</b><span>毎週月曜21時、座談会<small>ovice（リベシティのオンライン会場）で30分。聞くだけ・途中参加OK。終わった回はアーカイブに</small></span></li>
+      <li data-from="2026-12-01"><b>12/1〜</b><span>メンバー16人の自己紹介リレー<small><a href="#movie">メンバー紹介ムービー</a>に出てくる順番で</small></span></li>
+      <li data-from="2026-12-07"><b>12/7〜</b><span>毎週月曜21時、座談会<small>ovice（リベシティのオンライン会場）で30分。聞くだけ・途中参加OK</small></span></li>
       <li data-from="2026-12-14"><b>12/14の週〜</b><span>週替わりのお題<small>月曜の座談会で「今週のお題」を発表。AIのお題が中心、たまにAI以外も</small></span></li>
-      <li data-from="2027-01-20"><b>1月末</b><span>神戸でオフ会（予定）<small>ブースのメンバーと会えるオフ会。日にちと場所はこれから、募集は交流チャットで</small></span></li>
       <li data-from="2027-01-31"><b>1/31まで</b><span>フェス出店の選考結果<small>AIブースは申し込み済み</small></span></li>
       <li data-from="2027-07-02" class="goal"><b>2027.7.2–4</b><span>幕張メッセで、ねこ大進化<small>お金の勉強フェス2027。出店が決まったら、ブースで会おうね</small></span></li>
     </ol>
@@ -594,7 +606,13 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
   <div class="wrap">
     <span class="kicker">MEMBERS</span>
     <h2>AIブースの、<br>16人のメンバー。</h2>
-    <p class="lead">AIブースのメンバーです。タップすると、その人の好きなものと「聞いてみたいこと」が出るよ。</p>
+    <p class="lead">まずは100秒の紹介ムービーで、16人に会ってみてね。名前を押すと、その人の場面から始まるよ。</p>
+    <figure class="movie" id="movie">
+      <video id="mv" controls playsinline preload="none" poster="assets/movie/poster.jpg" width="1280" height="720"><source src="assets/movie/members.mp4" type="video/mp4"></video>
+      <figcaption>AIブース メンバー参戦ムービー（100秒・音が出ます）</figcaption>
+    </figure>
+    <div class="mtimes" id="mtimes" aria-label="ムービーの中の、その人の場面"></div>
+    <p class="lead" style="margin-top:30px">顔をタップすると、その人の好きなものと「聞いてみたいこと」が出るよ。</p>
     <div class="mgrid" id="mgrid"></div>
   </div>
 </section>
@@ -602,8 +620,8 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
 <section id="schedule" class="reveal">
   <div class="wrap">
     <span class="kicker">SCHEDULE</span>
-    <h2>月曜21時の座談会<span class="tag">予定</span></h2>
-    <p class="lead">テーマと出る人は予定です。名前を押すと、その人の紹介が出るよ。</p>
+    <h2>月曜21時の座談会</h2>
+    <p class="lead">12月のテーマと出る人が決まったよ。名前を押すと、その人の紹介が出るよ。</p>
     <div class="eps" id="eps"></div>
   </div>
 </section>
@@ -653,7 +671,7 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
       <div style="font-size:12px;color:var(--sub)">（AIブースのポータルより）</div>
     </div>
     <small>リベシティ「AIブース」交流チャットの特設ページです。お金の勉強フェス2027への出店は申し込み中で、まだ決まっていません。</small>
-    <small>メンバーの紹介は、本人がリベシティのプロフィールで公開している内容から。座談会のテーマと出る人は予定です。</small>
+    <small>メンバーの紹介は、本人がリベシティのプロフィールで公開している内容から。</small>
     <small>猫の答えは、試運転中のAIです。まちがうこともあります。</small>
   </div>
 </footer>
@@ -707,9 +725,11 @@ function layout(ep){
   const pos={};
   const row=(keys,y,x0,x1,sag)=>keys.forEach((k,i)=>{const n=keys.length,t=n===1?.5:i/(n-1),u=2*t-1;pos[k]=[x0+(x1-x0)*t,y-sag*(1-u*u)]});
   const half=Math.ceil(outer.length/2);
-  if(tall){row(outer.slice(0,half),44,11,89,5);row(outer.slice(half),57,19,81,4);row(inner,72,24,76,6)}
+  if(tall){row(outer.slice(0,half),42,10,90,5);row(outer.slice(half),54,13,87,4);row(inner,68,17,83,3)}
   else{row(outer.slice(0,half),41,14,86,6);row(outer.slice(half),55,22,78,5);row(inner,71,26,74,4)}
-  const order=[...outer,...inner]; // 話す人は最後にやってくる
+  // その回に話す人がまず焚き火のそばに座り、ほかの人は前の列から、まんなか→外の順にうまっていく
+  const mid=a=>[...a].sort((x,y)=>Math.abs(pos[x][0]-50)-Math.abs(pos[y][0]-50));
+  const order=[...mid(inner),...mid(outer.slice(half)),...mid(outer.slice(0,half))];
   return{pos,order,inner};
 }
 let viewEp=null; // 予定から「この回の空き地」を見ている時
@@ -718,7 +738,7 @@ function render(){
   const now=Date.now(),ph=phase(now),ep=viewEp||epOf(ph.target);
   const L=layout(ep), lot=$("#lot");
   let n;
-  if(viewEp)n=16;else if(ph.live)n=16;else n=Math.max(2,Math.min(16,Math.ceil(16*Math.sqrt(Math.max(0,(now-ph.from)/(ph.target-ph.from))))));
+  if(viewEp)n=16;else if(ph.live)n=16;else n=Math.max(L.inner.length||2,Math.min(16,Math.ceil(16*Math.sqrt(Math.max(0,(now-ph.from)/(ph.target-ph.from))))));
   const here=new Set(L.order.slice(0,n));
   const box=$("#seats");
   if(!box.childElementCount){MEMBERS.forEach(m=>{const b=document.createElement("button");b.className="seat";b.dataset.k=m.k;b.innerHTML=`<span class="cushion"></span><span class="face" style="background-image:url(${icon(m.k)})"></span><span class="nm">${m.n}</span>`;b.addEventListener("click",()=>{if(b.classList.contains("here"))openSheet(m.k);else toast("まだお散歩中みたい。もうすぐトコトコやってくるよ！")});box.appendChild(b)})}
@@ -730,13 +750,13 @@ function render(){
   lot.classList.toggle("dusk",!lot.classList.contains("night")&&((mon&&h>=17)||(h>=17&&h<20)));
   // 帯
   const j=jst(ep?S(ep.d):ph.target);
-  if(viewEp){$("#count").innerHTML=`${j.m}/${j.d}の席（予定）`;$("#when").className="when";$("#when").textContent=ep.t;$("#nowBtn").hidden=false;return}
+  if(viewEp){$("#count").innerHTML=`${j.m}/${j.d}の席`;$("#when").className="when";$("#when").textContent=ep.t;$("#nowBtn").hidden=false;return}
   $("#nowBtn").hidden=true;
   if(ph.live){$("#count").innerHTML=`<b>16</b>/16人 みんなそろった！`;$("#when").className="when live";$("#when").textContent="ただいま座談会中（21:30まで）！場所は交流チャットを見てね";}
   else{
     $("#count").innerHTML=`座談会まで、席が少しずつうまっていくよ <b>${n}</b>/16`;
     const r=ph.target-now,d=Math.floor(r/864e5),hh=Math.floor(r/36e5)%24;
-    $("#when").className="when";$("#when").innerHTML=`<span style="white-space:nowrap">${j.m}月${j.d}日（${j.w}）21:00</span> はじまり｜<span style="white-space:nowrap">あと${d?d+"日":""}${hh}時間</span>${ep?`<br>テーマ：${ep.t}（予定）`:""}`;
+    $("#when").className="when";$("#when").innerHTML=`<span style="white-space:nowrap">${j.m}月${j.d}日（${j.w}）21:00</span> はじまり｜<span style="white-space:nowrap">あと${d?d+"日":""}${hh}時間</span>${ep?`<br>テーマ：${ep.t}`:""}`;
   }
 }
 
@@ -747,9 +767,10 @@ function openSheet(k){
   $("#sheetBody").innerHTML=`<div class="who"><img src="${icon(k)}" alt=""><div><b>${m.n}さん</b><span>${m.c}</span></div></div>
   ${m.q?`<blockquote><span class="qt">${m.q}</span><cite>リベのプロフィール（${m.qs}）より</cite></blockquote>`:""}
   <h4>好きなもの</h4><ul class="likes">${m.like.map(x=>`<li>${x}</li>`).join("")}</ul>
-  <h4>座談会の出番（予定）</h4><div>${eps.length?eps.join("・"):"まだ未定"}</div>
+  <h4>座談会の出番</h4><div>${eps.length?eps.join("・"):"12月の出番はなし"}</div>
   ${m.talk[0]?`<h4>座談会で聞いてみたいこと（例）</h4><div>${m.talk[0]}</div>`:""}
-  <div class="row">${m.talk[0]?`<button class="btn pink small" id="askCopy">この質問を交流チャット用にコピー</button>`:""}<a class="btn small" href="m/${k}.html">${m.n}さんのページ（建設中）</a>${m.p?`<a class="btn small" href="${m.p}" target="_blank" rel="noopener">リベのプロフィール</a>`:""}</div>`;
+  <div class="row">${MT[k]!=null?`<button class="btn small" id="sheetMovie">▶ ムービーで${m.n}さんを見る</button>`:""}${m.talk[0]?`<button class="btn pink small" id="askCopy">この質問を交流チャット用にコピー</button>`:""}<a class="btn small" href="m/${k}.html">${m.n}さんのページ（建設中）</a>${m.p?`<a class="btn small" href="${m.p}" target="_blank" rel="noopener">リベのプロフィール</a>`:""}</div>`;
+  const mvb=$("#sheetMovie");if(mvb)mvb.onclick=()=>{$("#sheetX").click();playAt(MT[k])};
   const b=$("#askCopy");if(b)b.onclick=async()=>{await copy(`【座談会で${m.n}さんに聞いてみたい】\n${m.talk[0]}`);toast("コピーしたよ。交流チャットに貼ってね")};
   $("#sheet").classList.add("on");$("#sheetBg").classList.add("on");$("#sheetX").focus();
 }
@@ -762,8 +783,11 @@ function renderEps(){
   const now=Date.now(),ph=phase(now);
   const ord=[...EPISODES].sort((a,b)=>{const pa=now>S(a.d)+LEN,pb=now>S(b.d)+LEN;return pa-pb||S(a.d)-S(b.d)});
   $("#eps").innerHTML=ord.map(e=>{const no=EPISODES.indexOf(e)+1;const t=S(e.d),j=jst(t);const ppl=[...e.cast.map(k=>`<button data-k="${k}"><img src="${icon(k)}" alt="">${byK[k].n}</button>`),`<button class="mc" data-k="${e.mc}"><img src="${icon(e.mc)}" alt="">${byK[e.mc].n}（司会）</button>`].join("");
-  return`<article class="ep ${now>t+LEN?"past":""} ${t===ph.target?"next":""}"><span class="done">おわったよ</span><div class="d"><span class="no">第${no}回</span>${j.m}/${j.d}<small>（${j.w}）21:00〜21:30</small></div><div class="t">${e.t}</div><div class="cast">${ppl}</div><div class="peek"><button class="btn small" data-ep="${e.d}">この回の席を見る</button></div>${e.archive?`<a class="btn small" style="margin-top:10px" href="${e.archive}" target="_blank" rel="noopener">アーカイブを見る</a>`:`<div class="arch">${now>t+LEN?"アーカイブは準備中です":"終わったら、ここにアーカイブが載ります"}</div>`}</article>`}).join("");
+  return`<article class="ep ${now>t+LEN?"past":""} ${t===ph.target?"next":""}"><span class="done">おわったよ</span><div class="d"><span class="no">第${no}回</span>${j.m}/${j.d}<small>（${j.w}）21:00〜21:30</small></div><div class="t">${e.t}</div><div class="cast">${ppl}</div><div class="peek"><button class="btn small" data-ep="${e.d}">この回の席を見る</button></div>${e.archive?`<button class="btn small" style="margin-top:10px" data-arch="${e.archive}">▶ この回を見る</button><div class="archbox"></div>`:""}</article>`}).join("");
   $("#eps").querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>openSheet(b.dataset.k));
+  // 終わった回の録画は、ページの中で再生する（YouTube は埋め込み、ほかは video）
+  $("#eps").querySelectorAll("[data-arch]").forEach(b=>b.onclick=()=>{const u=b.dataset.arch,box=b.nextElementSibling,y=u.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/);
+    box.innerHTML=y?`<iframe src="https://www.youtube-nocookie.com/embed/${y[1]}?autoplay=1&rel=0" title="座談会の録画" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`:`<video src="${u}" controls autoplay playsinline></video>`;b.hidden=true});
   $("#eps").querySelectorAll("[data-ep]").forEach(b=>b.onclick=()=>{viewEp=EPISODES.find(e=>e.d===b.dataset.ep);render();$("#lot").scrollIntoView({behavior:"smooth",block:"center"})});
 }
 $("#nowBtn").onclick=()=>{viewEp=null;render()};
@@ -795,7 +819,7 @@ function welcome(){if(!from||!byK[from])return;const s=document.querySelector(`.
 /* ── さそい猫セット ── */
 $("#kitWho").innerHTML=`<option value="">（名前をえらぶ）</option>`+MEMBERS.map(m=>`<option value="${m.k}">${m.n}</option>`).join("");
 function kitText(){const k=$("#kitWho").value,ph=phase(Date.now()),j=jst(ph.target),ep=epOf(ph.target);const url=location.origin+location.pathname+(k?`?from=${k}`:"");
-  $("#kitText").value=$("#kitWhat").value==="chat"?`AIブースの交流チャット、ひらいてます🐈‍⬛\n12/1からメンバー16人の自己紹介リレー、毎週月曜21時は座談会、12/14の週からは週替わりのお題も。\n7月の幕張まで、ゆるっとつながろう！\nのぞいてみてね👇\n${url}`:`毎週月曜21時、AIブース交流チャットで座談会（12/7スタート）🐈‍⬛\n聞くだけ・途中参加OK（ovice）\n次は${j.m}/${j.d}（${j.w}）21:00〜${ep?`「${ep.t}」（予定）`:""}\nのぞいてみてね👇\n${url}`}
+  $("#kitText").value=$("#kitWhat").value==="chat"?`AIブースの交流チャット、ひらいてます🐈‍⬛\n12/1からメンバー16人の自己紹介リレー、毎週月曜21時は座談会、12/14の週からは週替わりのお題も。\n7月の幕張まで、ゆるっとつながろう！\nのぞいてみてね👇\n${url}`:`毎週月曜21時、AIブース交流チャットで座談会（12/7スタート）🐈‍⬛\n聞くだけ・途中参加OK（ovice）\n次は${j.m}/${j.d}（${j.w}）21:00〜${ep?`「${ep.t}」`:""}\nのぞいてみてね👇\n${url}`}
 $("#kitWho").onchange=kitText;$("#kitWhat").onchange=kitText;kitText();
 $("#kitCopy").onclick=async()=>{await copy($("#kitText").value);toast("コピーしたよ。つぶやきに貼ってね");confetti(25)};
 
@@ -814,9 +838,9 @@ function addMsg(cls,html){const d=document.createElement("div");d.className="msg
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function local(q){ // つながらない時の、かんたんな答え
   const m=MEMBERS.find(m=>q.includes(m.n));const ph=phase(Date.now()),j=jst(ph.target);
-  if(m)return{chibi:{pose:"heart",line:`${m.like[0]}が好きな人！`},ani:{pose:"ok",line:m.c},card:{title:`${m.n}さん`,status:"メンバー紹介",where:"リベのプロフィールより",url:m.p||CHAT,action:"プロフィールをひらく"},more:`座談会の出番（予定）：${epsOf(m.k).join("・")||"まだ未定"}`};
+  if(m)return{chibi:{pose:"heart",line:`${m.like[0]}が好きな人！`},ani:{pose:"ok",line:m.c},card:{title:`${m.n}さん`,status:"メンバー紹介",where:"リベのプロフィールより",url:m.p||CHAT,action:"プロフィールをひらく"},more:`座談会の出番：${epsOf(m.k).join("・")||"12月の出番はなし"}`};
   const ep=EPISODES.find(e=>{const d=jst(S(e.d));return q.includes(`${d.m}/${d.d}`)||q.includes(`${d.d}日`)});
-  if(ep)return{chibi:{pose:"good",line:"この回はね…"},ani:{pose:"read_book",line:ep.t},card:{title:`${jst(S(ep.d)).m}/${jst(S(ep.d)).d} 21:00〜`,status:"案の段階",where:"11/24の予定",url:CHAT,action:"交流チャットをひらく"},more:"出る人："+[...ep.cast.map(k=>byK[k].n),byK[ep.mc].n+"（司会）"].join("・")};
+  if(ep)return{chibi:{pose:"good",line:"この回はね…"},ani:{pose:"read_book",line:ep.t},card:{title:`${jst(S(ep.d)).m}/${jst(S(ep.d)).d} 21:00〜`,status:"決まった回",where:"AIブースのお知らせ",url:CHAT,action:"交流チャットをひらく"},more:"出る人："+[...ep.cast.map(k=>byK[k].n),byK[ep.mc].n+"（司会）"].join("・")};
   return{chibi:{pose:"wave",line:"毎週月曜だよ！"},ani:{pose:"ok",line:"月曜21:00〜21:30、oviceで"},card:{title:`次は${j.m}/${j.d}（${j.w}）21:00`,status:"決定",where:"交流チャットの概要欄",url:CHAT,action:"交流チャットをひらく"},more:"聞くだけ・途中参加も大歓迎。場所は毎回、交流チャットでお知らせします。"};
 }
 function show(a,offline){a.more=String(a.more||"").replace(/一般向けノート|ノートに無い|ノート/g,"ここの案内");$("#askChibi").src=`assets/chibi_${a.chibi.pose}.webp`;$("#askAni").src=`assets/ani_${a.ani.pose}.webp`;$("#askSay").textContent=a.chibi.line;
@@ -829,7 +853,7 @@ async function ask(q){if(busy)return;busy=true;$("#askQ").value="";addMsg("me",e
 
 
 function renderNext(){const ph=phase(Date.now()),j=jst(ph.target),ep=epOf(ph.target);
-  $("#nextup").innerHTML=`<div class="lab">${ph.live?"いま座談会中":"つぎの座談会"}｜${j.m}/${j.d}（${j.w}）21:00</div>${ph.live?"":`<div class="clock" aria-label="次の座談会までの残り時間"><div class="tk"><b id="nD">--</b><small>日</small></div><div class="tk"><b id="nH">--</b><small>時間</small></div><div class="tk"><b id="nM">--</b><small>分</small></div><div class="tk"><b id="nS">--</b><small>秒</small></div></div>`}<div class="t">${ep?ep.t+"（予定）":"テーマは交流チャットでお知らせ"}</div>${ep?`<div class="faces">${[...ep.cast,ep.mc].map(k=>`<img src="${icon(k)}" alt="${byK[k].n}">`).join("")}<span>${[...ep.cast,ep.mc].map(k=>byK[k].n).join("・")}</span></div>`:""}`}
+  $("#nextup").innerHTML=`<div class="lab">${ph.live?"いま座談会中":"つぎの座談会"}｜${j.m}/${j.d}（${j.w}）21:00</div>${ph.live?"":`<div class="clock" aria-label="次の座談会までの残り時間"><div class="tk"><b id="nD">--</b><small>日</small></div><div class="tk"><b id="nH">--</b><small>時間</small></div><div class="tk"><b id="nM">--</b><small>分</small></div><div class="tk"><b id="nS">--</b><small>秒</small></div></div>`}<div class="t">${ep?ep.t:"テーマは交流チャットでお知らせ"}</div>${ep?`<div class="faces">${[...ep.cast,ep.mc].map(k=>`<img src="${icon(k)}" alt="${byK[k].n}">`).join("")}<span>${[...ep.cast,ep.mc].map(k=>byK[k].n).join("・")}</span></div>`:""}`}
 /* ── フェスまでの道：月曜の集会を肉球1つとして並べる ── */
 const FES=Date.UTC(2027,6,1,15,0); // 2027-07-02 0:00 JST
 function renderRoad(){
@@ -848,6 +872,12 @@ function renderRoad(){
   const cur=$("#path .now");if(cur)$("#path").scrollLeft=Math.max(0,cur.offsetLeft-60);
 }
 
+/* ── 紹介ムービー（ページの中で再生・名前で場面へ） ── */
+const MT={neco:6,joshu:10,mizuno:13,kuma:17,yuka:20,bechiba:25,yuna:28,kurumi:31,masumaru:35,kitasho:39,rasuku:50,okemon:55,kazumaru:58,naru:61,micchi:65,nao:69};
+function playAt(sec){const v=$("#mv");$("#movie").scrollIntoView({behavior:"smooth",block:"center"});const go=()=>{try{v.currentTime=sec}catch(e){}v.play().catch(()=>{})};if(v.readyState>=1)go();else{v.preload="auto";v.addEventListener("loadedmetadata",go,{once:true});v.load()}}
+function renderMovie(){const box=$("#mtimes");if(!box)return;const fmt=t=>`${Math.floor(t/60)}:${String(t%60).padStart(2,"0")}`;
+  box.innerHTML=Object.entries(MT).map(([k,t])=>byK[k]?`<button data-t="${t}"><img src="${icon(k)}" alt="">${byK[k].n}<small>${fmt(t)}</small></button>`:"").join("")+`<button data-t="73" class="all">全員、参戦!!<small>1:13</small></button>`;
+  box.querySelectorAll("button").forEach(b=>b.onclick=()=>playAt(+b.dataset.t))}
 /* ── 日めくりカウントダウン（cd.js） ── */
 const CD0=Date.UTC(2027,6,1,15,0),DAY=864e5; // 2027-07-02 0:00 JST
 const cdDayStart=t=>Math.floor((t+9*36e5)/DAY)*DAY-9*36e5; // その日のJST 0:00
@@ -867,7 +897,7 @@ function renderCD(){const now=Date.now(),n=cdN(now);cdShown=n;if(!window.CD||!$(
     $("#cdActs").innerHTML=`${cur.who&&byK[cur.who]?`<a class="btn small pink" href="m/${cur.who}.html">${byK[cur.who].n}さんの紹介を見る</a>`:""}<a class="btn small" href="${cur.img}" download="libefes_ato${cur.n}nichi.webp">この画像を保存する</a>`}
   $("#cdStrip").innerHTML=list.map(e=>{const t=cdDate(e),isOpen=t<=cdDayStart(now),j=jst(t);
     return isOpen?`<button role="listitem" class="cdc${e===cur?" on":""}${t===cdDayStart(now)?" td":""}" data-n="${e.n}" aria-label="${j.m}/${j.d}の1枚"><img src="${e.img}" alt="" loading="lazy"><span>${j.m}/${j.d}</span></button>`
-      :`<div role="listitem" class="cdc back" aria-label="${j.m}/${j.d}にめくれる"><i>🐾</i><em>${e.tag?e.tag.replace(/さんの自己紹介$/,"<br>さんの日"):(t===cdDayStart(now)+DAY?"あした":"おたのしみ")}</em><span>${j.m}/${j.d}</span></div>`}).join("");
+      :`<div role="listitem" class="cdc back" aria-label="${j.m}/${j.d}にめくれる"><i>🐾</i><em>${t===cdDayStart(now)+DAY?"あした":"おたのしみ"}</em><span>${j.m}/${j.d}</span></div>`}).join("");
   document.querySelectorAll("#cdStrip button").forEach(b=>b.onclick=()=>{cdPick=list.find(e=>String(e.n)===b.dataset.n);renderCD()});
   const on=$("#cdStrip .on");if(on&&!cdPick)$("#cdStrip").scrollLeft=Math.max(0,on.offsetLeft-40)}
 /* 1秒ごとに刻む（変わった数字だけめくる） */
@@ -882,7 +912,7 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.targ
 document.querySelectorAll(".reveal").forEach(r=>io.observe(r));
 $("#mgrid").innerHTML=MEMBERS.map((m,i)=>`<button class="mt c${i%5}" data-k="${m.k}"><img src="${icon(m.k)}" alt="" loading="lazy"><b>${m.n}</b><small>${(m.like&&m.like[0])||""}</small></button>`).join("");document.querySelectorAll("#mgrid .mt").forEach(b=>b.onclick=()=>openSheet(b.dataset.k));
 $("#lane").innerHTML=[...MEMBERS,...MEMBERS].map(m=>`<img src="${icon(m.k)}" alt="">`).join("");
-render();renderEps();renderFlow();renderRoad();renderNext();renderCD();tick();setInterval(tick,1000);drawMine();welcome();setInterval(()=>{if(!viewEp)render()},60e3);
+render();renderEps();renderFlow();renderRoad();renderNext();renderCD();renderMovie();tick();setInterval(tick,1000);drawMine();welcome();setInterval(()=>{if(!viewEp)render()},60e3);
 addEventListener("scroll",()=>{document.body.classList.toggle("pasthero",scrollY>document.querySelector(".hero").offsetHeight-80)},{passive:true});
 let st;addEventListener("scroll",()=>{if($("#askPanel").classList.contains("on"))return;$("#askBtn").classList.add("away");clearTimeout(st);st=setTimeout(()=>{if(scrollY>document.querySelector(".hero").offsetHeight-200)$("#askBtn").classList.remove("away")},1100)},{passive:true});
 let rz;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(render,200)});
