@@ -18,7 +18,7 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:"Zen Maru Gothic",system-ui,sans-serif;font-weight:500;line-height:1.75;overflow-x:hidden}
 a{color:inherit}button{font:inherit;color:inherit;cursor:pointer}img{max-width:100%;display:block}
 .wrap{max-width:1040px;margin:0 auto;padding-left:max(22px,env(safe-area-inset-left,0px));padding-right:max(22px,env(safe-area-inset-right,0px))}
-h2{font-family:"Kaisei Decol",serif;font-size:clamp(25px,6vw,36px);line-height:1.35;margin:0 0 8px}
+h2{font-feature-settings:"palt";font-family:"Kaisei Decol",serif;font-size:clamp(25px,6vw,36px);line-height:1.35;margin:0 0 8px}
 .kicker{display:block;font-weight:900;font-size:13px;letter-spacing:.14em;color:var(--pinkD)}
 .lead{color:var(--sub);margin:0 0 24px;max-width:36em;font-size:15.5px;line-height:1.85}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:48px;padding:10px 18px;border-radius:999px;border:2.5px solid var(--ink);background:var(--card);font-weight:900;text-decoration:none;box-shadow:0 4px 0 var(--ink);transition:transform .1s,box-shadow .1s}
@@ -46,6 +46,7 @@ h2{font-family:"Kaisei Decol",serif;font-size:clamp(25px,6vw,36px);line-height:1
 .hero{position:relative;background:#0f1433;color:#fff;overflow:hidden;isolation:isolate}
 .hero .kvwrap{position:relative;max-width:760px;margin:0 auto}
 .kv{display:block;width:100%;aspect-ratio:1;object-fit:cover;filter:saturate(1.1)}
+@media(max-width:899px){.kv{aspect-ratio:5/4;object-position:50% 22%}}
 .kvwrap::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0f143300 35%,#0f1433cc 72%,#0f1433 96%);pointer-events:none}
 .bunting{position:absolute;left:0;right:0;top:0;height:30px;z-index:3;background:
  linear-gradient(135deg,var(--pinkD) 50%,transparent 50%) 0 0/36px 26px repeat-x,
@@ -124,8 +125,11 @@ h2{font-family:"Kaisei Decol",serif;font-size:clamp(25px,6vw,36px);line-height:1
 .seat{position:absolute;width:clamp(38px,10%,60px);aspect-ratio:1;transform:translate(-50%,-50%);border:0;padding:0;background:none}
 .seat .cushion{position:absolute;left:-8%;right:-8%;bottom:-14%;height:34%;border-radius:40%;background:#f6b0c8;border:2px solid var(--ink)}
 .js-ready .seat .face{pointer-events:none;position:absolute;inset:0;border-radius:50%;background:#222 center/cover;border:3px solid #111;opacity:0;transform:translateY(-30px) scale(.6);transition:opacity .5s,transform .5s cubic-bezier(.3,1.6,.5,1)}
-.seat .face::before,.seat .face::after{content:"";position:absolute;top:-22%;width:38%;height:42%;background:#111;clip-path:polygon(50% 0,100% 100%,0 100%)}
-.seat .face::before{left:2%;transform:rotate(-18deg)}.seat .face::after{right:2%;transform:rotate(18deg)}
+/* 猫耳は顔の後ろから（顔のアイコンを隠さない） */
+.seat .face{z-index:1}
+.seat::before,.seat::after{content:"";position:absolute;z-index:0;top:-15%;width:40%;height:44%;background:#111;clip-path:polygon(50% 0,100% 100%,0 100%);opacity:0;transition:opacity .4s}
+.seat::before{left:-1%;transform:rotate(-24deg)}.seat::after{right:-1%;transform:rotate(24deg)}
+.js-ready .seat.here::before,.js-ready .seat.here::after{opacity:1}
 .js-ready .seat .nm{pointer-events:none;position:absolute;left:50%;top:104%;transform:translateX(-50%);white-space:nowrap;font-size:11px;font-weight:900;background:#fffd;border-radius:8px;padding:0 5px;opacity:0;transition:opacity .4s}
 .js-ready .seat.here .face{opacity:1;transform:none}
 .js-ready .seat.here .nm{opacity:1}
@@ -137,7 +141,8 @@ h2{font-family:"Kaisei Decol",serif;font-size:clamp(25px,6vw,36px);line-height:1
 .seat.glow .face{animation:glow 1s 4}
 @keyframes glow{50%{box-shadow:0 0 0 8px var(--pink)}}
 .seat:focus-visible{outline:3px solid var(--blue);outline-offset:6px;border-radius:50%}
-.host{position:absolute;bottom:1%;width:19%;max-width:130px;border:0;background:none;padding:0}
+#seats{position:absolute;inset:0;z-index:2;pointer-events:none}#seats .seat{pointer-events:auto}#mineLayer{position:absolute;inset:0;z-index:1;pointer-events:none}
+.host{position:absolute;z-index:3;bottom:1%;width:19%;max-width:130px;border:0;background:none;padding:0}
 .host.ani{right:1%}.host.chibi{left:1%;width:16%}
 .host img{width:100%;pointer-events:none;animation:bob 3.2s ease-in-out infinite}
 .host.ani img{animation-delay:-1.6s}
@@ -147,8 +152,9 @@ h2{font-family:"Kaisei Decol",serif;font-size:clamp(25px,6vw,36px);line-height:1
 .js-ready .bub{position:absolute;bottom:96%;left:50%;transform:translateX(-50%);background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:4px 10px;font-size:13px;font-weight:900;line-height:1.45;width:max-content;max-width:min(44vw,220px);opacity:0;transition:opacity .3s;pointer-events:none}
 .host.chibi .bub{left:10%;transform:none}.host.ani .bub{left:auto;right:10%;transform:none}
 .js-ready .bub.on{opacity:1}
-.mine{position:absolute;width:9%;max-width:52px;aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none}
-.mine .face{position:absolute;inset:0;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;font-weight:900;font-size:13px}
+.mine{position:absolute;width:clamp(32px,9%,52px);aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none}
+.mine .cushion{position:absolute;left:-8%;right:-8%;bottom:-14%;height:34%;border-radius:40%;background:var(--pink);border:2px solid var(--ink)}
+.mine .face{position:absolute;z-index:1;inset:0;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;font-weight:900;font-size:13px}
 .mine .face::before,.mine .face::after{content:"";position:absolute;top:-22%;width:38%;height:42%;background:inherit;border:0;clip-path:polygon(50% 0,100% 100%,0 100%)}
 .mine .face::before{left:2%;transform:rotate(-18deg)}.mine .face::after{right:2%;transform:rotate(18deg)}
 .mine .tag{position:absolute;left:50%;top:104%;transform:translateX(-50%);font-size:11px;font-weight:900;background:var(--pink);color:#fff;border-radius:8px;padding:0 6px;white-space:nowrap}
@@ -268,6 +274,7 @@ body{padding-bottom:110px;line-break:strict;word-break:auto-phrase}
 .chips li,.btn,summary,.tk small,.kicker,.ep .cast button,.stone,.nextup .lab,.challenge,.venue,.lotbar .count{word-break:keep-all}
 p,.lead,.intro,.lotnote,.steps li,details p,.t,.theme{text-wrap:pretty}
 h1,h2,.title{text-wrap:balance}
+.title,.why .then,#op .copy .t,.venue,.big2,.nextup .t{font-feature-settings:"palt"}
 .askpanel{position:fixed;right:12px;bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:65;width:min(380px,calc(100vw - 24px));max-height:min(74vh,600px);display:none;flex-direction:column;background:var(--paper);border:3px solid var(--ink);border-radius:24px;overflow:hidden;box-shadow:0 8px 0 #0002}
 .askpanel.on{display:flex}
 .ask-head{display:flex;align-items:flex-end;gap:2px;padding:10px 12px 0;background:var(--paper2);position:relative}
@@ -425,6 +432,7 @@ footer .opagain{color:var(--ink);border-color:var(--ink);margin:0 0 18px}
 }
 .flow.big li b{white-space:nowrap}
 .textlink{background:none!important;border:0!important;box-shadow:none!important;text-decoration:underline;text-underline-offset:4px;min-height:44px;padding:0 6px}
+@media(min-width:521px) and (max-width:899px){.flow.big li{grid-template-columns:190px 1fr}}
 .flow.big li.past b{color:#4f4a2a}.flow.big li.past span{color:#4a4d66}
 .flow.big li.now{background:#fff;border-radius:16px;border:2.5px solid var(--ink);margin:6px -6px;padding:18px 12px;box-shadow:0 5px 0 var(--ink)}
 .flow.big li.now b{color:var(--pinkD)}
@@ -442,6 +450,27 @@ body:not(.pasthero) .navcta{opacity:0;transform:translateY(-6px);pointer-events:
 .mtimes button img{width:32px;height:32px;border-radius:50%;object-fit:cover}
 .mtimes button small{font-family:ui-monospace,Menlo,monospace;color:var(--eye);font-weight:700}
 .mtimes button.all{padding-left:12px;background:var(--pinkD);border-color:var(--pinkD)}
+.herolead{margin:14px 0 0;font-weight:700;color:#e3e6f7;line-height:1.75;font-size:15px}
+.opens{margin:6px 0 0;font-size:12.5px;font-weight:700;opacity:.8}
+.join{padding:64px 0 60px;background:var(--ink);color:#fff;text-align:center}
+.join .big{font-feature-settings:"palt";font-family:"Kaisei Decol",serif;font-size:clamp(30px,8vw,52px);line-height:1.35;margin:0}
+.join .sub{font-weight:700;color:#d8dbf0;margin:14px 0 26px}
+.join .btn{width:100%;max-width:420px;min-height:56px;font-size:17px}
+.kitbox{margin:22px auto;max-width:720px;text-align:left;border:2.5px solid var(--ink);border-radius:18px;background:#fff;padding:4px 16px}
+.kitbox>summary{cursor:pointer;font-weight:900;padding:12px 0;min-height:44px}
+.kitbox .wrap{padding:0}
+.askbtn span small{display:block;font-size:10px;opacity:.8}
+h2,.lead,.steps li,.herolead,.join .sub,.lotkey,#when,.nextup .t,.ep .t,.movie figcaption,.say,.sheet{word-break:auto-phrase}
+[hidden]{display:none!important}
+@media(max-width:400px){.jump li:nth-child(4){display:none}}
+.mvvsec{padding:60px 0 56px;background:#fff;border-top:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink)}
+.mvv2{display:grid;gap:14px;margin:18px 0 0}
+.mvv2>div{align-content:start;display:grid;grid-template-columns:120px 1fr;gap:6px 16px;align-items:baseline;padding:16px 18px;border:2.5px solid var(--ink);border-radius:18px;background:var(--paper);box-shadow:0 4px 0 var(--ink)}
+.mvv2 dt{font-weight:900;letter-spacing:.12em;color:var(--pinkD);font-size:14px}
+.mvv2 dd{margin:0;font-family:"Kaisei Decol",serif;font-feature-settings:"palt";font-size:clamp(20px,5.2vw,28px);line-height:1.45}
+.mvv2 dd span{display:inline-block;margin-right:.9em}
+@media(max-width:520px){.mvv2>div{grid-template-columns:1fr}}
+@media(min-width:900px){.mvv2{grid-template-columns:1fr 1fr 1.4fr}.mvv2>div{grid-template-columns:1fr}}
 .today{padding:64px 0 56px;background:#e8f3ff}
 .today .lead{margin:0 0 22px;font-weight:700;color:var(--sub)}
 .tcard{display:grid;gap:16px;align-items:start}
@@ -468,7 +497,7 @@ body:not(.pasthero) .navcta{opacity:0;transform:translateY(-6px);pointer-events:
 @media(min-width:900px){.tcard{grid-template-columns:minmax(0,440px) 1fr;gap:40px;align-items:center}.tflip b{font-size:56px}}
 @media(prefers-reduced-motion:reduce){.tmain img{transition:none}}
 .why{padding:72px 0 64px;background:var(--paper);text-align:center}
-.why .big{font-family:"Kaisei Decol",serif;font-size:clamp(34px,9.6vw,68px);line-height:1.3;margin:10px 0 0;color:var(--ink)}
+.why .big{font-feature-settings:"palt";letter-spacing:.02em;font-family:"Kaisei Decol",serif;font-size:clamp(34px,9.6vw,68px);line-height:1.3;margin:10px 0 0;color:var(--ink)}
 .why .big2{font-weight:900;font-size:clamp(17px,4.6vw,22px);margin:10px 0 36px;color:var(--pinkD)}
 .why .poem p{margin:0;font-size:clamp(17px,4.6vw,21px);font-weight:700;line-height:2.05}
 .why .poem .gap{margin-top:22px}
@@ -490,37 +519,23 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
 </style>
 </head>
 <body>
-<div id="op" aria-hidden="true"><div class="stars"></div><div class="kvbox"><img src="assets/kv_daishinka.webp" alt=""></div><div class="eyes"></div><div class="copy"><p class="k">AI BOOTH COMMUNITY</p><p class="t"><em>ようこそ、</em><br>AIブースの<br>交流チャットへ。</p></div><div class="copy2"><span>幕張メッセ</span>へ、ねこ大進化。</div><button class="skip" type="button">とばす ›</button></div>
-<nav class="jump" aria-label="ページ内"><ul><li><a href="#lot">座談会</a></li><li><a href="#road-map">これから</a></li><li><a href="#members">16人</a></li><li><a href="#schedule">予定</a></li></ul><a class="navcta" href="https://libecity.com/room_list?room_id=GuGHaJVj95ZqfSuyDxGe" target="_blank" rel="noopener">参加する</a></nav>
+<div id="op" aria-hidden="true"><div class="stars"></div><div class="kvbox"><img src="assets/kv_daishinka.webp" alt=""></div><div class="eyes"></div><div class="copy"><p class="k">AI BOOTH COMMUNITY</p><p class="t"><em>ようこそ、</em><br>AIブースの<br>交流チャットへ。</p></div><div class="copy2">めざすは、7月の<span>幕張メッセ</span>。</div><button class="skip" type="button">とばす ›</button></div>
+<nav class="jump" aria-label="ページ内"><ul><li><a href="#lot">座談会</a></li><li><a href="#schedule">12月</a></li><li><a href="#members">16人</a></li><li><a href="#road-map">これから</a></li></ul><a class="navcta" href="https://libecity.com/room_list?room_id=GuGHaJVj95ZqfSuyDxGe" target="_blank" rel="noopener">チャットに参加</a></nav>
 <div class="hero wait">
-  <div class="kvwrap"><img class="kv" src="assets/kv_daishinka.webp" alt="未来の空中都市で大進化したミライネコの兄とチビ">
+  <div class="kvwrap"><img class="kv" src="assets/kv_daishinka.webp" alt="白衣の黒猫の兄とチビ（AIブースの公式キャラ）">
     <i class="spark" style="left:12%;top:16%"></i><i class="spark" style="left:82%;top:12%;animation-delay:-1.1s"></i><i class="spark" style="left:66%;top:34%;animation-delay:-1.9s"></i></div>
   <div class="wrap over">
     <span class="kicker">AIブースの交流チャット</span>
     <h1 class="title"><em>ようこそ、</em><span>AIブースの</span><span>交流チャットへ。</span></h1>
-    <div class="venue"><span>幕張メッセ</span>へ、ねこ大進化。</div>
-    <p class="fesline"><b>2027.7.2–4</b><span>お金の勉強フェス2027まで</span><span class="cd" id="tminus" aria-label="フェスまでの残り時間">あと --日</span></p>
+    <p class="herolead">毎週月曜21時は、聞くだけOKの30分の座談会。<br>リベ会員なら、どなたでも入れるチャットです。</p>
     <a class="btn pink herocta" href="https://libecity.com/room_list?room_id=GuGHaJVj95ZqfSuyDxGe" target="_blank" rel="noopener">交流チャットに参加する</a>
+    <p class="opens">リベシティのチャットが、新しいタブで開きます</p>
+    <div class="venue">めざすは、7月の<span>幕張メッセ</span>。</div>
+    <p class="fesline"><b>2027.7.2–4</b><span>お金の勉強フェス2027まで</span><span class="cd" id="tminus" aria-label="フェスまでの残り時間">あと --日</span></p>
     <p class="heronote">AIブースはフェスに出店申し込み中（選考の結果は1月末）</p>
   </div>
   <div class="crowd" aria-label="AIブースのメンバー16人"><div class="lane" id="lane"></div><span class="lab">16人で幕張へ</span></div>
 </div>
-<section id="today" class="today reveal" aria-label="きょうの1枚">
-  <div class="wrap">
-    <span class="kicker">TODAY</span>
-    <h2>きょうの1枚</h2>
-    <p class="lead">デザインチームが、フェスまでの毎日を1枚ずつ描いてるよ。夜中の0時に、1枚めくれる。</p>
-    <div class="tcard">
-      <figure class="tmain"><img id="cdImg" alt="" width="720" height="720"><figcaption id="cdCap"></figcaption></figure>
-      <div class="tside">
-        <p class="tflip">つぎの日めくりまで<b id="cdFlip">--:--:--</b></p>
-        <div class="tacts" id="cdActs"></div>
-      </div>
-    </div>
-    <p class="stripcap">日めくり（押すと、その日の1枚）</p>
-    <div class="cdstrip" id="cdStrip" role="list"></div>
-  </div>
-</section>
 <section id="why" class="why reveal" aria-label="このブースをつくった理由">
   <div class="wrap">
     <span class="kicker">WHY</span>
@@ -537,9 +552,36 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
       <p><mark>「できた！」</mark>までサポートできます。</p>
       <p>そして、同じ気持ちで頑張る仲間にも出会えます。</p>
     </div>
-    <div class="by"><img src="assets/m/neco.webp" alt=""><span><b>neco.さん</b>（AIブースのメンバー）<br>交流チャットの投稿「このブースをつくった理由」より</span></div>
+    <div class="by"><img src="assets/m/neco.webp" alt=""><span><b>neco.さん</b>（AIブースのメンバー）</span></div>
     <p class="then">だから、フェスの前から。<br>交流チャットで、一緒に準備を楽しもう。</p>
     <a class="btn pink" href="https://libecity.com/room_list?room_id=GuGHaJVj95ZqfSuyDxGe" target="_blank" rel="noopener">交流チャットに参加する</a>
+  </div>
+</section>
+<section id="mvv" class="mvvsec reveal" aria-label="AIブースが大事にしていること">
+  <div class="wrap">
+    <span class="kicker">MISSION · VISION · VALUE</span>
+    <h2>AIブースが<br>大事にしていること。</h2>
+    <dl class="mvv2">
+      <div><dt>MISSION</dt><dd>ここでしかできない体験を、AIと共に。</dd></div>
+      <div><dt>VISION</dt><dd>AIを一歩身近に</dd></div>
+      <div><dt>VALUE</dt><dd><span>AIと遊ぶ</span><span>分かる言葉で学ぶ</span><span>仲間と一緒に成長する</span></dd></div>
+    </dl>
+  </div>
+</section>
+<section id="how" class="reveal">
+  <div class="wrap">
+    <span class="kicker">ABOUT</span>
+    <h2>座談会とは・<br>はじめての方へ</h2>
+    <p class="lead">AIブースのメンバーが、AIにまつわる話やブース出店の裏側を、毎週テーマを決めてゆるっと話す30分です。案内役は、ブースの公式キャラの白衣の黒猫2匹（大きい方が兄、小さい方がチビ）。聞いてみたいテーマがあれば、交流チャットで教えてね。</p>
+    <ol class="steps">
+      <li>交流チャットに入る（すでに入っていればそのままでOK！）</li>
+      <li>交流チャットに届く「今夜の場所」をチェック（ovice＝リベシティのオンライン会場）</li>
+      <li>月曜21:00にその場所へ！聞くだけ・途中参加も大歓迎</li>
+    </ol>
+    <p class="ok">行くかどうかは直前に決めてOK！気が向いたらふらっとのぞいてね。</p>
+    <details><summary>途中から入っても、途中で抜けてもいい？</summary><p>はい。途中参加も大歓迎です（交流チャットの概要欄より）。</p></details>
+    <details><summary>何を話す会？</summary><p>AIにまつわるお話や、ブース出店の裏側など、毎週テーマを決めて話します（交流チャットの概要欄より）。</p></details>
+    <details><summary>AIの使い方を相談してもいい？</summary><p>個別のAI相談は、交流チャットではお受けしていません。出店が決まったら、フェス当日にブースでゆっくり聞かせてください（交流チャットの概要欄より）。</p></details>
   </div>
 </section>
 <header class="top wrap">
@@ -565,42 +607,29 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
       <button class="host ani" id="ani" aria-label="兄に話しかける"><img src="assets/ani_wave.webp" alt="白衣の黒猫・兄"><span class="bub"></span></button>
     </div>
     <p class="lotnote" id="lotnote" hidden></p>
-    <p class="lotkey"><i></i>黄色い輪の人＝その回に話す人。焚き火のそばの席に、いちばん先に座ってるよ</p>
-    <p class="lotsmall">※席の人数は「月曜21時まで、あとどれくらいか」の目印で、来ている人の数ではありません。</p>
-
-    <div class="nextup" id="nextup"></div>
-    <div class="road" id="road" aria-label="フェスまでの道">
-      <div class="road-head"><div class="big">幕張までの肉球の道<b id="fesDays" hidden>-</b></div><div class="sub" id="fesSub"></div></div>
-      <div class="path" id="path"></div>
-      <p class="road-note">肉球1つが、月曜の座談会1回。横にスクロールすると7月まで続くよ →</p>
-    </div>
-    <p class="scrollhint">↓ 座談会の予定と、はじめての方へ</p>
     <div class="sitrow">
       <button class="btn pink" id="sitBtn">あなたも席にすわってみる</button>
       <button class="btn small" id="helloBtn">「はじめまして」の一言をコピー</button>
       <button class="btn small" id="nowBtn" hidden>いまの席にもどる</button>
       <span class="colors" id="colors" hidden>あなたの猫の色：<button class="btn small" data-color="0">くろ</button><button class="btn small" data-color="1">しろ</button><button class="btn small" data-color="2">ちゃとら</button></span>
     </div>
+    <p class="lotkey"><i></i>黄色い輪の人＝その回に話す人。焚き火のそばの席に、いちばん先に座ってるよ</p>
+    <p class="lotsmall">※席の人数は「月曜21時まで、あとどれくらいか」の目印で、来ている人の数ではありません。</p>
+
+    <div class="nextup" id="nextup"></div>
   </div>
 </header>
 
  <main>
-<section id="road-map" class="band yellow reveal">
+<section id="schedule" class="reveal">
   <div class="wrap">
-    <span class="kicker">ROADMAP</span>
-    <h2>7月まで、<br>交流チャットで起きること。</h2>
-    <p class="lead">交流チャットは、AIブースの16人と、応援してくれる人が集まる場所。チャットは流れていくから、決まっていることをここにまとめておくね。</p>
-    <ol class="flow big" id="flow">
-      <li data-from="2026-11-25"><b>11/25〜</b><span>交流チャットに参加の呼びかけ<small>メンバーがそれぞれの場所で「来てね」をつぶやく期間</small></span></li>
-      <li data-from="2026-12-01"><b>12/1〜</b><span>メンバー16人の自己紹介リレー<small><a href="#movie">メンバー紹介ムービー</a>に出てくる順番で</small></span></li>
-      <li data-from="2026-12-07"><b>12/7〜</b><span>毎週月曜21時、座談会<small>ovice（リベシティのオンライン会場）で30分。聞くだけ・途中参加OK</small></span></li>
-      <li data-from="2026-12-14"><b>12/14の週〜</b><span>週替わりのお題<small>月曜の座談会で「今週のお題」を発表。AIのお題が中心、たまにAI以外も</small></span></li>
-      <li data-from="2027-01-31"><b>1/31まで</b><span>フェス出店の選考結果<small>AIブースは申し込み済み</small></span></li>
-      <li data-from="2027-07-02" class="goal"><b>2027.7.2–4</b><span>幕張メッセで、ねこ大進化<small>お金の勉強フェス2027。出店が決まったら、ブースで会おうね</small></span></li>
-    </ol>
-    
+    <span class="kicker">SCHEDULE</span>
+    <h2>月曜21時の座談会</h2>
+    <p class="lead">12月のテーマと出る人が決まったよ。名前を押すと、その人の紹介が出るよ。</p>
+    <div class="eps" id="eps"></div>
   </div>
 </section>
+
 
 <section id="members" class="band ink reveal">
   <div class="wrap">
@@ -617,75 +646,89 @@ section[id],#lot,#road-map,#members{scroll-margin-top:72px}
   </div>
 </section>
 
-<section id="schedule" class="reveal">
+<section id="today" class="today reveal" aria-label="きょうの1枚">
   <div class="wrap">
-    <span class="kicker">SCHEDULE</span>
-    <h2>月曜21時の座談会</h2>
-    <p class="lead">12月のテーマと出る人が決まったよ。名前を押すと、その人の紹介が出るよ。</p>
-    <div class="eps" id="eps"></div>
-  </div>
-</section>
-
-<section id="how" class="reveal">
-  <div class="wrap">
-    <span class="kicker">ABOUT</span>
-    <h2>座談会とは・はじめての方へ</h2>
-    <p class="lead">AIブースのメンバーが、AIにまつわる話やブース出店の裏側を、毎週テーマを決めてゆるっと話す30分です。案内役は、ブースの公式キャラの白衣の黒猫2匹（大きい方が兄、小さい方がチビ）。聞いてみたいテーマがあれば、交流チャットで教えてね。</p>
-    <ol class="steps">
-      <li>交流チャットに入る（すでに入っていればそのままでOK！）</li>
-      <li>交流チャットに届く「今夜の場所」をチェック（ovice＝リベシティのオンライン会場）</li>
-      <li>月曜21:00にその場所へ！聞くだけ・途中参加も大歓迎</li>
-    </ol>
-    <p class="ok">行くかどうかは直前に決めてOK！気が向いたらふらっとのぞいてね。</p>
-    <details><summary>途中から入っても、途中で抜けてもいい？</summary><p>はい。途中参加も大歓迎です（交流チャットの概要欄より）。</p></details>
-    <details><summary>何を話す会？</summary><p>AIにまつわるお話や、ブース出店の裏側など、毎週テーマを決めて話します（交流チャットの概要欄より）。</p></details>
-    <details><summary>AIの使い方を相談してもいい？</summary><p>個別のAI相談は、交流チャットではお受けしていません。出店が決まったら、フェス当日にブースでゆっくり聞かせてください（交流チャットの概要欄より）。</p></details>
-  </div>
-</section>
-
-<section id="kit" class="reveal">
-  <div class="wrap">
-    <span class="kicker">FOR MEMBERS</span>
-    <h2>メンバーのみんなへ：<br>おさそい文をつくる</h2>
-    <p class="lead">交流チャットに外から来てもらうのは、みんなのつぶやきが入口。名前と伝えたいことを選ぶとシェア文が作れるよ。そのリンクから来てくれた人には、座談会の席であなたの顔がピカッと光ってお出迎え！</p>
-    <div class="kit">
-      <label for="kitWho" style="font-weight:900">わたしは</label>
-      <select id="kitWho"></select>
-      <label for="kitWhat" style="font-weight:900">伝えたいのは</label>
-      <select id="kitWhat"><option value="chat">チャットへのおさそい</option><option value="talk">次の座談会</option></select>
-      <textarea id="kitText" readonly></textarea>
-      <div class="row"><button class="btn pink" id="kitCopy">文をコピー</button><a class="btn" href="https://libecity.com/tweet/all" target="_blank" rel="noopener">つぶやきをひらく</a></div>
+    <span class="kicker">TODAY</span>
+    <h2>きょうの1枚</h2>
+    <p class="lead">デザインチームが、フェスまでの毎日を1枚ずつ描いてるよ。夜中の0時に、1枚めくれる。</p>
+    <div class="tcard">
+      <figure class="tmain"><img id="cdImg" alt="" width="720" height="720"><figcaption id="cdCap"></figcaption></figure>
+      <div class="tside">
+        <p class="tflip">つぎの日めくりまで<b id="cdFlip">--:--:--</b></p>
+        <div class="tacts" id="cdActs"></div>
+      </div>
     </div>
+    <p class="stripcap">日めくり（押すと、その日の1枚）</p>
+    <div class="cdstrip" id="cdStrip" role="list"></div>
   </div>
 </section>
+
+<section id="road-map" class="band yellow reveal">
+  <div class="wrap">
+    <span class="kicker">ROADMAP</span>
+    <h2>7月まで、<br>交流チャットで<br>起きること。</h2>
+    <p class="lead">交流チャットは、AIブースの16人と、応援してくれる人が集まる場所。チャットは流れていくから、決まっていることをここにまとめておくね。</p>
+    <ol class="flow big" id="flow">
+      <li data-from="2026-11-25"><b>11/25〜</b><span>交流チャットに参加の呼びかけ<small>メンバーがそれぞれの場所で「来てね」をつぶやく期間</small></span></li>
+      <li data-from="2026-12-01"><b>12/1〜</b><span>メンバー16人の自己紹介リレー<small><a href="#movie">メンバー紹介ムービー</a>に出てくる順番で</small></span></li>
+      <li data-from="2026-12-07"><b>12/7〜</b><span>毎週月曜21時、座談会<small>ovice（リベシティのオンライン会場）で30分。聞くだけ・途中参加OK</small></span></li>
+      <li data-from="2026-12-14"><b>12/14の週〜</b><span>週替わりのお題<small>月曜の座談会で「今週のお題」を発表。AIのお題が中心、たまにAI以外も</small></span></li>
+      <li data-from="2027-01-31"><b>1/31まで</b><span>フェス出店の選考結果<small>AIブースは申し込み中</small></span></li>
+      <li data-from="2027-07-02" class="goal"><b>2027.7.2–4</b><span>お金の勉強フェス2027（幕張メッセ）<small>出店が決まったら、ブースで会おうね</small></span></li>
+    </ol>
+    
+  </div>
+</section>
+
+<section id="join" class="join reveal">
+  <div class="wrap">
+    <p class="big">「AI、ちょっと<br>身近になったかも」</p>
+    <p class="sub">そう思える場所を、16人でつくっています。<br>月曜21時、のぞきに来てね。</p>
+    <a class="btn pink" href="https://libecity.com/room_list?room_id=GuGHaJVj95ZqfSuyDxGe" target="_blank" rel="noopener">交流チャットに参加する</a>
+    <p class="opens">リベシティのチャットが、新しいタブで開きます</p>
+  </div>
+</section>
+
+
+
+
 </main>
 
 <footer class="reveal">
   <div class="wrap">
     <div class="booth"><span class="pill">親子でも、ひとりでも。</span><b>自分に合った<span>AI体験</span>＆個別相談ブース</b><small>交流チャットは、このブースのメンバーとつながる場所です</small></div>
+    <details id="kit" class="kitbox">
+      <summary>ブースメンバーの方へ：おさそい文をつくる</summary>
+      <div class="wrap">
+        
+        <p class="lead">交流チャットに外から来てもらうのは、みんなのつぶやきが入口。名前と伝えたいことを選ぶとシェア文が作れるよ。そのリンクから来てくれた人には、座談会の席であなたの顔がピカッと光ってお出迎え！</p>
+        <div class="kit">
+          <label for="kitWho" style="font-weight:900">わたしは</label>
+          <select id="kitWho"></select>
+          <label for="kitWhat" style="font-weight:900">伝えたいのは</label>
+          <select id="kitWhat"><option value="chat">チャットへのおさそい</option><option value="talk">次の座談会</option></select>
+          <textarea id="kitText" readonly></textarea>
+          <div class="row"><button class="btn pink" id="kitCopy">文をコピー</button><a class="btn" href="https://libecity.com/tweet/all" target="_blank" rel="noopener">つぶやきをひらく</a></div>
+        </div>
+      </div>
+    </details>
+    
     <button class="opagain" type="button" id="opAgain">▶ オープニングをもう一度</button>
-    <div class="mvv">
-      <div><b>MISSION</b>ここでしかできない体験を、AIと共に。</div>
-      <div><b>VISION</b>AIを一歩身近に</div>
-      <div><b>VALUE</b>AIと遊ぶ／分かる言葉で学ぶ／仲間と一緒に成長する</div>
-      <div style="font-size:12px;color:var(--sub)">（AIブースのポータルより）</div>
-    </div>
     <small>リベシティ「AIブース」交流チャットの特設ページです。お金の勉強フェス2027への出店は申し込み中で、まだ決まっていません。</small>
     <small>メンバーの紹介は、本人がリベシティのプロフィールで公開している内容から。</small>
-    <small>猫の答えは、試運転中のAIです。まちがうこともあります。</small>
   </div>
 </footer>
 
 <div class="sheet-bg" id="sheetBg"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="メンバーの紹介"><button class="x" id="sheetX" aria-label="とじる">×</button><div id="sheetBody"></div></div>
 
-<button class="askbtn away" id="askBtn" aria-label="兄とチビに聞く"><img src="assets/chibi_question.webp" alt=""><span>猫に聞く</span></button>
+<button class="askbtn away" id="askBtn" aria-label="兄とチビに聞く"><img src="assets/chibi_question.webp" alt=""><span>猫に聞く<small>建設中</small></span></button>
 <div class="askpanel" id="askPanel" role="dialog" aria-label="兄とチビに聞く">
-  <div class="ask-head"><img id="askChibi" src="assets/chibi_wave.webp" alt="チビ"><div class="say" id="askSay">なんでも気軽に聞いてね！座談会やメンバーのこと、ぼくらが案内するよ！</div><img id="askAni" src="assets/ani_ok.webp" alt="兄"><button class="x" id="askX" aria-label="とじる">×</button></div>
+  <div class="ask-head"><img id="askChibi" src="assets/chibi_wave.webp" alt="チビ"><div class="say" id="askSay">ただいま建設中！いつか、ここにAIブースのチャットボットを置くよ。それまでは、交流チャットで気軽に聞いてね。</div><img id="askAni" src="assets/ani_ok.webp" alt="兄"><button class="x" id="askX" aria-label="とじる">×</button></div>
   <div class="ask-log" id="askLog"></div>
-  <div class="ask-sug" id="askSug"></div>
-  <form class="ask-form" id="askForm"><input id="askQ" maxlength="120" placeholder="ここに質問を書いてね" autocomplete="off"><button>聞く</button></form>
-  <div class="ask-note">試運転中のAIです。答えは座談会とメンバーのことだけ。まちがうこともあるよ。</div>
+  <div class="ask-sug" id="askSug" hidden></div>
+  <form class="ask-form" id="askForm" hidden><input id="askQ" maxlength="120" placeholder="ここに質問を書いてね" autocomplete="off"><button>聞く</button></form>
+  <div class="ask-note"><a class="btn small pink" href="https://libecity.com/room_list?room_id=GuGHaJVj95ZqfSuyDxGe" target="_blank" rel="noopener">交流チャットで聞く</a></div>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -743,6 +786,7 @@ function render(){
   const box=$("#seats");
   if(!box.childElementCount){MEMBERS.forEach(m=>{const b=document.createElement("button");b.className="seat";b.dataset.k=m.k;b.innerHTML=`<span class="cushion"></span><span class="face" style="background-image:url(${icon(m.k)})"></span><span class="nm">${m.n}</span>`;b.addEventListener("click",()=>{if(b.classList.contains("here"))openSheet(m.k);else toast("まだお散歩中みたい。もうすぐトコトコやってくるよ！")});box.appendChild(b)})}
   box.querySelectorAll(".seat").forEach(b=>{const k=b.dataset.k,[x,y]=L.pos[k];b.style.left=x+"%";b.style.top=y+"%";b.classList.toggle("here",here.has(k));b.classList.toggle("empty",!here.has(k));b.classList.toggle("star",L.inner.includes(k));b.setAttribute("aria-label",here.has(k)?`${byK[k].n}さん（押すと紹介）`:"まだ空いている座布団")});
+  try{drawMine()}catch(e){}
   // 空・火
   const h=jst(now).h,mon=jst(now).w==="月";
   lot.classList.toggle("lit",!!ph.live||!!viewEp);
@@ -756,7 +800,7 @@ function render(){
   else{
     $("#count").innerHTML=`座談会まで、席が少しずつうまっていくよ <b>${n}</b>/16`;
     const r=ph.target-now,d=Math.floor(r/864e5),hh=Math.floor(r/36e5)%24;
-    $("#when").className="when";$("#when").innerHTML=`<span style="white-space:nowrap">${j.m}月${j.d}日（${j.w}）21:00</span> はじまり｜<span style="white-space:nowrap">あと${d?d+"日":""}${hh}時間</span>${ep?`<br>テーマ：${ep.t}`:""}`;
+    $("#when").className="when";$("#when").innerHTML=`<span style="white-space:nowrap">${j.m}月${j.d}日（${j.w}）21:00</span> はじまり｜<span style="white-space:nowrap">あと${d?d+"日":""}${hh}時間</span>`;
   }
 }
 
@@ -802,12 +846,15 @@ function say(who,text,pose){const b=$("#"+who);if(pose)b.querySelector("img").sr
 /* ── あなたも空き地にすわる（端末の中だけ） ── */
 let mine=JSON.parse(LS.get("nk_mine")||"null"),placing=false;
 const COLORS=[["くろ","#222","#fff"],["しろ","#fff","#1d2340"],["ちゃとら","#f0a04b","#1d2340"]];
-function drawMine(){const L=$("#mineLayer");L.innerHTML="";if(!mine)return;const c=COLORS[mine.c]||COLORS[0];L.innerHTML=`<div class="mine" style="left:${mine.x}%;top:${mine.y}%"><div class="face" style="background:${c[1]};color:${c[2]}">${(mine.n||"").slice(0,2)}</div><span class="tag">あなた</span></div>`;$("#sitBtn").textContent=`すわる場所をかえる（${mine.visits||1}回目の来訪）`;$("#colors").hidden=false}
-$("#sitBtn").onclick=()=>{if(!mine){mine={x:55+Math.random()*30,y:84+Math.random()*6,c:0,n:"",visits:1,first:Date.now()};LS.set("nk_mine",JSON.stringify(mine));drawMine();confetti(30);say("chibi","すわったー！月曜21時、ここで待ってるね","chibi_banzai");toast("すわったよ！登録なし・この端末の中だけに残るよ");return}
+// あなたの席：自分で場所を選んでいなければ、空いている座布団（まんなかの列に近い所）にすわる。全員そろった日は、前の列のとなりの「お客さんの座布団」
+function mineSpot(){if(mine&&mine.auto===false)return[mine.x,mine.y];const em=[...document.querySelectorAll("#seats .seat.empty")].map(b=>[parseFloat(b.style.left),parseFloat(b.style.top)]);
+  if(em.length){em.sort((a,b)=>(Math.abs(a[1]-55)+Math.abs(a[0]-50)*.4)-(Math.abs(b[1]-55)+Math.abs(b[0]-50)*.4));return em[0]}return[30,82]} // 全員そろった日は、前の列と焚き火のあいだの「お客さんの座布団」
+function drawMine(){const L=$("#mineLayer");L.innerHTML="";if(!mine)return;const c=COLORS[mine.c]||COLORS[0],[mx,my]=mineSpot();L.innerHTML=`<div class="mine" style="left:${mx}%;top:${my}%"><span class="cushion"></span><div class="face" style="background:${c[1]};color:${c[2]}">${(mine.n||"").slice(0,2)||"🐾"}</div><span class="tag">あなた</span></div>`;$("#sitBtn").textContent=`すわる場所をかえる（${mine.visits||1}回目の来訪）`;$("#colors").hidden=false}
+$("#sitBtn").onclick=()=>{if(!mine){mine={auto:true,x:0,y:0,c:0,n:"",visits:1,first:Date.now()};LS.set("nk_mine",JSON.stringify(mine));drawMine();confetti(30);say("chibi","すわったー！月曜21時、ここで待ってるね","chibi_banzai");toast("すわったよ！登録なし・この端末の中だけに残るよ");return}
   placing=true;$("#lot").classList.add("placing");$("#lot").scrollIntoView({behavior:"smooth",block:"center"})};
 document.querySelectorAll("[data-color]").forEach(b=>b.onclick=()=>{if(!mine)return;mine.c=+b.dataset.color;LS.set("nk_mine",JSON.stringify(mine));drawMine();toast(COLORS[mine.c][0]+"の猫になったよ")});
 $("#lot").addEventListener("click",e=>{if(!placing)return;const r=$("#lot").getBoundingClientRect();const x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100;if(y<42){toast("草の上をえらんでね");return}placing=false;$("#lot").classList.remove("placing");
-  const c=mine?mine.c:0,n=mine?mine.n:"";mine={x:Math.max(6,Math.min(94,x)),y:Math.min(92,y),c,n,visits:(mine&&mine.visits)||1,first:(mine&&mine.first)||Date.now()};LS.set("nk_mine",JSON.stringify(mine));drawMine();confetti(30);
+  const c=mine?mine.c:0,n=mine?mine.n:"";mine={auto:false,x:Math.max(6,Math.min(94,x)),y:Math.min(92,y),c,n,visits:(mine&&mine.visits)||1,first:(mine&&mine.first)||Date.now()};LS.set("nk_mine",JSON.stringify(mine));drawMine();confetti(30);
   say("chibi","すわったー！月曜21時、ここで待ってるね","chibi_banzai");toast("すわる場所をかえたよ")});
 if(mine){const last=+LS.get("nk_last")||0;if(Date.now()-last>6*3600e3){mine.visits=(mine.visits||1)+1;LS.set("nk_mine",JSON.stringify(mine))}}
 LS.set("nk_last",Date.now());
@@ -825,13 +872,13 @@ $("#kitCopy").onclick=async()=>{await copy($("#kitText").value);toast("コピー
 
 $("#helloBtn").onclick=async()=>{await copy("はじめまして！月曜21時の座談会、聞くだけでのぞいてみたいです🐈‍⬛");toast("コピーしたよ。交流チャットに貼ってね");setTimeout(()=>open(CHAT,"_blank"),900)};
 /* ── カレンダー ── */
-$("#gcal").href="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("AIブース交流チャットの座談会（月曜21時）")+"&dates=20261207T120000Z/20261207T123000Z&recur="+encodeURIComponent("RRULE:FREQ=WEEKLY;BYDAY=MO")+"&details="+encodeURIComponent("毎週月曜21:00〜21:30・oviceで。場所は交流チャットでお知らせ。\n"+CHAT);
+$("#gcal").href="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("AIブース交流チャットの座談会（月曜21時）")+"&dates="+(t=>{const f=x=>new Date(x).toISOString().replace(/[-:]|\.\d{3}/g,"");return f(t)+"/"+f(t+LEN)})(phase(Date.now()).target)+"&details="+encodeURIComponent("21:00〜21:30・oviceで。場所は交流チャットでお知らせ。\n"+CHAT);
 
 /* ── 猫に聞く ── */
 const SUG=["座談会っていつ？","12/14はだれが出る？","neco.さんってどんな人？","聞くだけでもいい？"];
 $("#askSug").innerHTML=SUG.map(s=>`<button type="button">${s}</button>`).join("");
 $("#askSug").querySelectorAll("button").forEach(b=>b.onclick=()=>ask(b.textContent));
-$("#askBtn").onclick=()=>{$("#askPanel").classList.toggle("on");if($("#askPanel").classList.contains("on"))$("#askQ").focus()};
+$("#askBtn").onclick=()=>{$("#askPanel").classList.toggle("on");};
 $("#askX").onclick=()=>$("#askPanel").classList.remove("on");
 $("#askForm").onsubmit=e=>{e.preventDefault();const q=$("#askQ").value.trim();if(q)ask(q)};
 function addMsg(cls,html){const d=document.createElement("div");d.className="msg "+cls;d.innerHTML=html;$("#askLog").appendChild(d);$("#askLog").scrollTop=1e6;return d}
@@ -856,7 +903,7 @@ function renderNext(){const ph=phase(Date.now()),j=jst(ph.target),ep=epOf(ph.tar
   $("#nextup").innerHTML=`<div class="lab">${ph.live?"いま座談会中":"つぎの座談会"}｜${j.m}/${j.d}（${j.w}）21:00</div>${ph.live?"":`<div class="clock" aria-label="次の座談会までの残り時間"><div class="tk"><b id="nD">--</b><small>日</small></div><div class="tk"><b id="nH">--</b><small>時間</small></div><div class="tk"><b id="nM">--</b><small>分</small></div><div class="tk"><b id="nS">--</b><small>秒</small></div></div>`}<div class="t">${ep?ep.t:"テーマは交流チャットでお知らせ"}</div>${ep?`<div class="faces">${[...ep.cast,ep.mc].map(k=>`<img src="${icon(k)}" alt="${byK[k].n}">`).join("")}<span>${[...ep.cast,ep.mc].map(k=>byK[k].n).join("・")}</span></div>`:""}`}
 /* ── フェスまでの道：月曜の集会を肉球1つとして並べる ── */
 const FES=Date.UTC(2027,6,1,15,0); // 2027-07-02 0:00 JST
-function renderRoad(){
+function renderRoad(){if(!document.getElementById("path"))return;
   const now=Date.now(),days=Math.max(0,Math.floor((FES-now)/864e5));
   $("#fesDays").textContent=days;
   const stones=[];for(let t=FIRST;t<FES;t+=WEEK)stones.push(t);
@@ -904,7 +951,7 @@ function renderCD(){const now=Date.now(),n=cdN(now);cdShown=n;if(!window.CD||!$(
 function setTk(id,v){const e=document.getElementById(id);if(!e)return;const t=String(v).padStart(2,"0");if(e.textContent!==t){e.textContent=t;e.classList.remove("flip");void e.offsetWidth;e.classList.add("flip")}}
 let lastTarget=0;
 function tick(){const now=Date.now();
-  const fr=Math.max(0,FES-now);const fd=Math.floor(fr/864e5),p2=n=>String(n).padStart(2,"0");const cn=cdN(now),mr=Math.max(0,cdMidnight(now)-now);$("#tminus").textContent=`あと${cn}日｜日めくりまで ${p2(Math.floor(mr/36e5)%24)}:${p2(Math.floor(mr/6e4)%60)}:${p2(Math.floor(mr/1e3)%60)}`;const fl=document.getElementById("cdFlip");if(fl)fl.textContent=`${p2(Math.floor(mr/36e5)%24)}:${p2(Math.floor(mr/6e4)%60)}:${p2(Math.floor(mr/1e3)%60)}`;if(cn!==cdShown)renderCD();setTk("fD",fd);setTk("fH",Math.floor(fr/36e5)%24);setTk("fM",Math.floor(fr/6e4)%60);setTk("fS",Math.floor(fr/1e3)%60);
+  const fr=Math.max(0,FES-now);const fd=Math.floor(fr/864e5),p2=n=>String(n).padStart(2,"0");const cn=cdN(now),mr=Math.max(0,cdMidnight(now)-now);$("#tminus").textContent=`あと${cn}日`;const fl=document.getElementById("cdFlip");if(fl)fl.textContent=`${p2(Math.floor(mr/36e5)%24)}:${p2(Math.floor(mr/6e4)%60)}:${p2(Math.floor(mr/1e3)%60)}`;if(cn!==cdShown)renderCD();setTk("fD",fd);setTk("fH",Math.floor(fr/36e5)%24);setTk("fM",Math.floor(fr/6e4)%60);setTk("fS",Math.floor(fr/1e3)%60);
   const ph=phase(now);if(ph.target!==lastTarget||!document.getElementById("nS")!==!!ph.live){lastTarget=ph.target;renderNext()}
   if(!ph.live){const r=Math.max(0,ph.target-now);setTk("nD",Math.floor(r/864e5));setTk("nH",Math.floor(r/36e5)%24);setTk("nM",Math.floor(r/6e4)%60);setTk("nS",Math.floor(r/1e3)%60)}}
 /* ── スクロールでふわっと ── */
@@ -913,6 +960,7 @@ document.querySelectorAll(".reveal").forEach(r=>io.observe(r));
 $("#mgrid").innerHTML=MEMBERS.map((m,i)=>`<button class="mt c${i%5}" data-k="${m.k}"><img src="${icon(m.k)}" alt="" loading="lazy"><b>${m.n}</b><small>${(m.like&&m.like[0])||""}</small></button>`).join("");document.querySelectorAll("#mgrid .mt").forEach(b=>b.onclick=()=>openSheet(b.dataset.k));
 $("#lane").innerHTML=[...MEMBERS,...MEMBERS].map(m=>`<img src="${icon(m.k)}" alt="">`).join("");
 render();renderEps();renderFlow();renderRoad();renderNext();renderCD();renderMovie();tick();setInterval(tick,1000);drawMine();welcome();setInterval(()=>{if(!viewEp)render()},60e3);
+if(location.hash==="#kit"){const k=document.getElementById("kit");if(k){k.open=true;setTimeout(()=>k.scrollIntoView(),300)}}
 addEventListener("scroll",()=>{document.body.classList.toggle("pasthero",scrollY>document.querySelector(".hero").offsetHeight-80)},{passive:true});
 let st;addEventListener("scroll",()=>{if($("#askPanel").classList.contains("on"))return;$("#askBtn").classList.add("away");clearTimeout(st);st=setTimeout(()=>{if(scrollY>document.querySelector(".hero").offsetHeight-200)$("#askBtn").classList.remove("away")},1100)},{passive:true});
 let rz;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(render,200)});
@@ -956,12 +1004,12 @@ setTimeout(()=>say("ani",phase(Date.now()).live?"いま座談会中だよ。交�
 const op=document.getElementById("op"),hero=document.querySelector(".hero"),box=op.querySelector(".kvbox");
 const done=()=>hero.classList.remove("wait");
 let timers=[],running=false;
-function place(){const r=document.querySelector(".hero .kv").getBoundingClientRect();Object.assign(box.style,{left:r.left+"px",top:r.top+"px",width:r.width+"px",height:r.height+"px"});const v=document.querySelector(".hero .venue").getBoundingClientRect(),sh=hero.classList.contains("wait")?14:0;op.style.setProperty("--vt",(v.top-sh)+"px");op.style.setProperty("--vl",v.left+"px")}
+function place(){const r=document.querySelector(".hero .kv").getBoundingClientRect();Object.assign(box.style,{left:r.left+"px",top:r.top+"px",width:r.width+"px",height:r.height+"px"});const v=document.querySelector(".hero .venue").getBoundingClientRect(),sh=hero.classList.contains("wait")?14:0;op.style.setProperty("--vt",Math.min(v.top-sh,innerHeight-64)+"px");op.style.setProperty("--vl",v.left+"px")}
 function end(){timers.forEach(clearTimeout);timers=[];op.classList.add("s3");op.classList.remove("s2");setTimeout(()=>{op.classList.add("out");document.documentElement.style.overflow="";done();setTimeout(()=>{op.className="";running=false},950)},op.classList.contains("s3")?60:400)}
 function play(full){
   if(running)return;running=true;scrollTo(0,0);
   const ey=op.querySelector(".eyes");ey.innerHTML="";
-  const pos=[[14,66],[30,74],[72,70],[86,62],[22,84],[52,80],[64,88],[8,78]];
+  const pos=[]; // 目がたくさん出る演出は「ちょっとこわい」（みずのさん 11/26）ので出さない
   pos.forEach(([x,y])=>{const e=document.createElement("i");e.className="eye";e.style.left=x+"%";e.style.top=y+"%";ey.appendChild(e)});
   op.className="on";document.documentElement.style.overflow="hidden";place();
   const at=(t,f)=>timers.push(setTimeout(f,t));

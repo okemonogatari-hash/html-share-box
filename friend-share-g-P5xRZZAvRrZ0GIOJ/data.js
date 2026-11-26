@@ -1,4 +1,4 @@
-// メンバー：リベのプロフィール（本人公開・2026-10-13取得）から。予定：みずのさん 11/24 広報チャットの予定案。
+// メンバー：リベのプロフィール（本人公開・2026-10-13取得）から。座談会：12月の4回は 11/25 に確定（12/14 の司会はおけもん）。
 const MEMBERS=[
 {
 "k": "neco",
@@ -288,7 +288,7 @@ const MEMBERS=[
 ];
 const EPISODES=[
  {d:"2026-12-07",archive:"",t:"AIブース出展の想い。挑戦の舞台裏",cast:["neco","rasuku","kurumi","nao"],mc:"mizuno"},
- {d:"2026-12-14",archive:"",t:"資質で見る、自分に合ったAIとの付き合い方",cast:["kuma","kazumaru","naru","masumaru","okemon"],mc:"mizuno"},
+ {d:"2026-12-14",archive:"",t:"資質で見る、自分に合ったAIとの付き合い方",cast:["kuma","kazumaru","naru","masumaru","mizuno"],mc:"okemon"},
  {d:"2026-12-21",archive:"",t:"はじめまして！わたしとAIの出会い〜ガチ勢になったきっかけ",cast:["joshu","yuna","kitasho"],mc:"mizuno"},
  {d:"2026-12-28",archive:"",t:"年末スペシャル：1年後、AIで何をしていたい？",cast:["yuka","micchi","bechiba"],mc:"mizuno"}
 ];
