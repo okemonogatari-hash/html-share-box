@@ -235,6 +235,42 @@ dialog .act .sv{background:var(--gold);border-color:var(--gold);color:#17110a;fo
 .idx a{flex:none;font-size:12px;color:var(--sub);text-decoration:none;border:1px solid var(--line2);border-radius:99px;padding:5px 12px;white-space:nowrap}
 .idx a:hover,.idx a.on{color:var(--gold-hi);border-color:var(--gold)}
 html{scroll-behavior:smooth} .card{scroll-margin-top:58px}
+.today{grid-column:span 12}
+.tcols{display:grid;grid-template-columns:5fr 7fr;gap:18px;align-items:stretch}
+.one{border:1px solid var(--gold-lo);border-radius:12px;padding:16px 18px;background:var(--gold-bg)}
+.onet{font-family:var(--serif);font-size:clamp(20px,2.2vw,26px);color:var(--gold-hi);line-height:1.45;margin-top:4px}
+.oned{color:var(--sub);font-size:13px;margin-top:6px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tile{display:block;text-decoration:none;color:inherit;border:1px solid var(--line2);border-radius:12px;padding:12px 14px;min-width:0}
+.tile:hover{border-color:var(--gold)}
+.tile b{display:block;font-family:var(--num);font-size:34px;line-height:1.1;color:var(--ink);font-weight:400}
+.tile.hot b{color:var(--gold-hi)}
+.tile span{font-size:12px;color:var(--sub)} .tile em{display:block;font-style:normal;font-size:11.5px;color:var(--sub);margin-top:4px;overflow-wrap:anywhere}
+.aiday{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--sub)}
+.aiday b{color:var(--gold);font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;font-weight:500}
+.aiday em{font-style:normal;color:var(--ink)}
+.index{grid-column:span 12;padding:16px 22px}
+.itab{display:grid;grid-template-columns:repeat(2,1fr);gap:0 22px}
+.irow{display:grid;grid-template-columns:110px 1fr 54px 92px;gap:10px;align-items:center;padding:8px 2px;border-top:1px solid var(--line);text-decoration:none;color:inherit;font-size:12.5px}
+.irow:hover .in{color:var(--gold-hi)} .irow .in{font-weight:700} .irow .wh{color:var(--sub)} .irow .ct{font-family:var(--num);color:var(--gold);text-align:right;font-size:15px} .irow .by{font-size:11px;color:var(--sub);text-align:right}
+.push{grid-column:span 4} .send{grid-column:span 8} .next{grid-column:span 5} .stall{grid-column:span 3} .week{grid-column:span 4}
+.aim{grid-column:span 7} .life{grid-column:span 5} .feed{grid-column:span 5} .nums{grid-column:span 3} .crew{grid-column:span 4} .thirteen{grid-column:span 12}
+.lowhead{grid-column:span 12;display:flex;align-items:baseline;gap:14px;margin:18px 2px 0;padding-top:14px;border-top:1px solid var(--line2);scroll-margin-top:58px}
+.lowhead span{font-family:var(--serif);font-size:20px;color:var(--ink)} .lowhead i{font-style:normal;font-size:12px;color:var(--sub)}
+.pr{display:inline-block;font-size:10.5px;font-weight:700;border-radius:4px;padding:1px 6px;margin-right:6px;vertical-align:1px;border:1px solid var(--line2);color:var(--sub)}
+.pr.h{border-color:var(--gold);color:var(--gold-hi)}
+.st4{display:flex;gap:4px;margin:8px 0 0;flex-wrap:wrap}
+.st4 i{font-style:normal;font-size:10.5px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--sub)}
+.st4 i.on{border-color:var(--gold);color:var(--gold-hi);background:var(--gold-bg)}
+.st4 i.past{color:var(--gold-lo);border-color:var(--gold-lo)}
+.mact{display:flex;gap:8px;margin-top:8px}
+.mact button{border-radius:99px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--ink)}
+.mact .sent{background:var(--gold);border-color:var(--gold);color:#17110a}
+.sentrow{font-size:12px;color:var(--sub);padding:8px 0;border-top:1px solid var(--line)}
+.sentrow button{background:none;border:0;color:var(--gold);cursor:pointer;font-size:12px;text-decoration:underline}
+.back{display:block;text-align:right;margin-top:10px;font-size:11px;color:var(--sub);text-decoration:none} .back:hover{color:var(--gold)}
+@media (max-width:1180px){.today,.index,.push,.send,.next,.stall,.week,.aim,.life,.feed,.nums,.crew,.thirteen{grid-column:span 12}.tcols{grid-template-columns:1fr}.tiles{grid-template-columns:repeat(2,1fr)}.itab{grid-template-columns:1fr}}
+@media (max-width:560px){.irow{grid-template-columns:96px 1fr 40px}.irow .by{display:none}.tile b{font-size:28px}}
 </style>
 </head>
 <body>
@@ -249,8 +285,58 @@ html{scroll-behavior:smooth} .card{scroll-margin-top:58px}
   <button class="gear" id="gear">⚙ 願望とタイマー</button>
 </div>
 
-<nav class="idx" aria-label="索引"><a href="#s-aim">願望</a><a href="#s-life">のこり時間</a><a href="#s-weeks">人生の週</a><a href="#s-next">次の1to1</a><a href="#s-push">決断</a><a href="#s-stall">先に差し出す</a><a href="#s-send">送るだけ</a><a href="#s-week">今週の1to1</a><a href="#s-feed">思考→現実</a><a href="#s-nums">数字</a><a href="#s-thirteen">今日の原則</a><a href="#s-crew">仲間</a></nav>
+<nav class="idx" aria-label="索引"><a href="#s-today">今日</a><a href="#s-index">索引</a><a href="#s-push">決断</a><a href="#s-send">送るだけ</a><a href="#s-next">次の1to1</a><a href="#s-stall">約束・止まり</a><a href="#s-week">今週</a><a href="#s-low">ほかの欄</a></nav>
 <div class="grid">
+
+  <section class="card today" id="s-today">
+    <div class="h"><div class="lbl"><b>Today</b><i>今日：30秒で分かる事</i></div><span class="r" id="todayr"></span></div>
+    <div class="tcols">
+      <div class="one"><span class="lbl subh">今日のイチバン</span><div class="onet" id="onet"></div><div class="oned" id="oned"></div></div>
+      <div class="tiles" id="tiles"></div>
+    </div>
+    <div class="aiday" id="aiday"></div>
+  </section>
+
+  <section class="card index" id="s-index">
+    <div class="h"><div class="lbl"><b>Index</b><i>索引：どこに何が載っているか</i></div><span class="r">押すとその欄へ</span></div>
+    <div class="itab" id="itab"></div>
+  </section>
+
+  <section class="card push" id="s-push">
+    <div class="h"><div class="lbl"><b>Decision</b><i>決断：今日、押すだけ</i></div><span class="r" id="pushn"></span></div>
+    <div id="pushlist"></div>
+    <div class="clear" id="clear">今日のボールは 0。あとは願望に使う時間。</div>
+  </section>
+
+  <section class="card send" id="s-send">
+    <div class="h"><div class="lbl"><b>Ready to Send</b><i>送るだけ：コピーして、貼って、押す</i></div><span class="r" id="sendn"></span></div>
+    <div class="cols">
+      <div><span class="lbl subh">Messenger に貼る文</span><div id="msglist"></div></div>
+      <div><span class="lbl subh">BNI Connect に入れる中身</span><div id="sliplist"></div>
+        <div class="sendnote">BNI Connect は、かどっち本人が入れて「送信」を押す。こちらは中身だけを用意する。</div></div>
+    </div>
+  </section>
+
+  <section class="card next" id="s-next">
+    <div class="h"><div class="lbl"><b>Next</b><i>次の 1to1</i></div><span class="r" id="nxwhen"></span></div>
+    <div class="person"><div class="av lg" id="nxav"></div><div class="nm" id="nxwho"></div><div class="in" id="nxin"></div></div>
+    <div id="nxkv"></div>
+    <button class="ghost">準備の1枚を開く →</button>
+  </section>
+
+  <section class="card stall" id="s-stall">
+    <div class="h"><div class="lbl"><b>Give First</b><i>先に差し出す約束</i></div></div>
+    <div id="promlist"></div>
+    <span class="lbl subh">返事が止まっている人</span>
+    <div id="quietlist"></div>
+  </section>
+
+  <section class="card week" id="s-week">
+    <div class="h"><div class="lbl"><b>Plan</b><i>計画：今週の 1to1</i></div><span class="r" id="weekn"></span></div>
+    <div id="weeklist"></div>
+  </section>
+
+  <div class="lowhead" id="s-low"><span>ほかの欄</span><i>願望・のこり時間・記録。毎日は見なくていい</i></div>
 
   <section class="card aim" id="s-aim">
     <div class="aimhead"><h1>Desire</h1><span id="aimday"></span></div>
@@ -287,40 +373,6 @@ html{scroll-behavior:smooth} .card{scroll-margin-top:58px}
     </div>
   </section>
 
-  <section class="card next" id="s-next">
-    <div class="h"><div class="lbl"><b>Next</b><i>次の 1to1</i></div><span class="r" id="nxwhen"></span></div>
-    <div class="person"><div class="av lg" id="nxav"></div><div class="nm" id="nxwho"></div><div class="in" id="nxin"></div></div>
-    <div id="nxkv"></div>
-    <button class="ghost">準備の1枚を開く →</button>
-  </section>
-
-  <section class="card push" id="s-push">
-    <div class="h"><div class="lbl"><b>Decision</b><i>決断：今日、押すだけ</i></div><span class="r" id="pushn"></span></div>
-    <div id="pushlist"></div>
-    <div class="clear" id="clear">今日のボールは 0。あとは願望に使う時間。</div>
-  </section>
-
-  <section class="card stall" id="s-stall">
-    <div class="h"><div class="lbl"><b>Give First</b><i>先に差し出す約束</i></div></div>
-    <div id="promlist"></div>
-    <span class="lbl subh">返事が止まっている人</span>
-    <div id="quietlist"></div>
-  </section>
-
-  <section class="card send" id="s-send">
-    <div class="h"><div class="lbl"><b>Ready to Send</b><i>送るだけ：コピーして、貼って、押す</i></div><span class="r" id="sendn"></span></div>
-    <div class="cols">
-      <div><span class="lbl subh">Messenger に貼る文</span><div id="msglist"></div></div>
-      <div><span class="lbl subh">BNI Connect に入れる中身</span><div id="sliplist"></div>
-        <div class="sendnote">BNI Connect は、かどっち本人が入れて「送信」を押す。こちらは中身だけを用意する。</div></div>
-    </div>
-  </section>
-
-  <section class="card week" id="s-week">
-    <div class="h"><div class="lbl"><b>Plan</b><i>計画：今週の 1to1</i></div><span class="r" id="weekn"></span></div>
-    <div id="weeklist"></div>
-  </section>
-
   <section class="card feed" id="s-feed">
     <div class="h"><div class="lbl"><b>Thoughts Become Things</b><i>思考は、現実になる</i></div></div>
     <div class="fh"><span class="lbl">頭に浮かんだ一言</span><span></span><span class="lbl">形になった物</span></div>
@@ -332,17 +384,16 @@ html{scroll-behavior:smooth} .card{scroll-margin-top:58px}
     <div id="numlist"></div>
   </section>
 
-  <section class="card thirteen" id="s-thirteen">
-    <div class="h"><div class="lbl"><b>13 Principles</b><i>今日の原則</i></div></div>
-    <div class="steps" id="steps"></div>
-    <div class="q"><span id="qn"></span><b id="qt" style="font-weight:600"></b></div>
-  </section>
-
   <section class="card crew" id="s-crew">
     <div class="h"><div class="lbl"><b>Master Mind</b><i>ひとりの頭で考えない</i></div></div>
     <div id="crewlist"></div>
   </section>
 
+  <section class="card thirteen" id="s-thirteen">
+    <div class="h"><div class="lbl"><b>13 Principles</b><i>今日の原則</i></div></div>
+    <div class="steps" id="steps"></div>
+    <div class="q"><span id="qn"></span><b id="qt" style="font-weight:600"></b></div>
+  </section>
 </div>
 
 <p class="note">名前・数字・願望の文はぜんぶ見本。願望は ⚙ から本人の言葉に書き替える。「浮かせた時間」は、最初の1週間で実際に測ってから出す。</p>
@@ -416,6 +467,11 @@ DATA.send={
     {kind:"REFERRAL",ja:"紹介を出す",f:[["紹介先","Aさん（税理士）"],["紹介する人","Gさん（工務店）"],["温度","4（近いうちに話したい）"],["連絡先","Gさんの了承を取ってから入れる"],["メモ","相続前の自社株の整理で相談したい"]]}
   ]
 };
+DATA.one={t:"Bさんの1to1の準備（明日10:00）",d:"聞く事3つと、紹介できそうな人2人まで用意済み。OKを押すだけ"};
+DATA.ai={done:[["予定を取り込んだ",3],["下書きを作った",4],["確認待ち",3]],trust:"任せ度：下書きまで（送信はかどっち）"};
+DATA.push.forEach((p,i)=>p.p=["h","h","m"][i]||"m");
+DATA.send.msgs.forEach((m,i)=>m.p=["h","m"][i]||"m");
+const PRL={h:"高",m:"中",l:"低"};
 const P13=[["願望","いま、いちばん欲しいものは何？ 数字で言える？"],["信念","「できる」と決めて動いたことを、今日1つ。"],["自己暗示","願望の文、朝と夜に声に出した？"],["専門知識","自分で覚えなくていい。誰の知識を借りる？"],["想像力","今週の1to1から、新しい組み合わせを1つ。"],["計画","計画がこけたら、計画を替える。願望は替えない。"],["決断","「押すだけ」を、迷わず今押す。"],["忍耐","金脈まであと3フィート。やめたくなった事を、もう1回だけ。"],["マスターマインド","今日は、誰の頭を借りる？"],["情熱の転換","強い気持ちを、仕事の火に替える。"],["潜在意識","寝る前に、願望をもう一度。"],["頭脳","ひらめきは、消える前に吐き出し箱へ。"],["第六感","ピンと来た人に、今日連絡する。"]];
 
 const $=s=>document.querySelector(s), pad=(n,l=2)=>String(n).padStart(l,"0");
@@ -496,7 +552,7 @@ function render(){
   $("#nxav").textContent=nx.who[0]; $("#nxwho").innerHTML=`${nx.who}<span>${nx.job}</span>`;
   $("#nxkv").innerHTML=`<div class="sec"><span class="lbl">Last talk　最後に話した</span><p>${nx.last}</p></div><div class="sec"><span class="lbl">Thread　前回の続き</span><p class="prev">${nx.prev}</p></div><div class="sec"><span class="lbl">Ask　聞く事</span><ol>${nx.ask.map(a=>`<li>${a}</li>`).join("")}</ol></div><div class="sec"><span class="lbl">Introduce　紹介できそうな人</span><p>${nx.intro}</p></div>`;
   const st=store.push||{};
-  $("#pushlist").innerHTML=DATA.push.map(p=>`<div class="item ${st[p.t]==="ok"?"done":st[p.t]==="fix"?"done fixd":""}" data-k="${p.t}"><div class="t">${p.t}</div><div class="d">${p.d}</div><div class="act"><button class="okb">OK、これで</button><button class="fix">直して</button></div></div>`).join("");
+  $("#pushlist").innerHTML=DATA.push.map(p=>`<div class="item ${st[p.t]==="ok"?"done":st[p.t]==="fix"?"done fixd":""}" data-k="${p.t}"><div class="t"><span class="pr ${p.p}">${PRL[p.p]}</span>${p.t}</div><div class="d">${p.d}</div><div class="act"><button class="okb">OK、これで</button><button class="fix">直して</button></div></div>`).join("");
   const left=DATA.push.filter(p=>!st[p.t]).length; $("#pushn").textContent=`のこり ${left}`; $("#clear").style.display=left?"none":"block";
   const pr=a=>a.map(p=>`<div class="p ${p.hot?"hot":""}"><div class="n">${p.n}</div><div class="x">${p.t}<span>${p.s}</span></div></div>`).join("");
   $("#promlist").innerHTML=pr(DATA.prom); $("#quietlist").innerHTML=pr(DATA.quiet);
@@ -506,7 +562,7 @@ function render(){
   $("#crewlist").innerHTML=DATA.crew.map(c=>`<div class="c ${c.on?"on":""}"><div class="av">${c.n.replace("AI ","")[0]}</div><div><b>${c.n}</b><span>${c.j}</span></div><em>${c.s}</em></div>`).join("");
   renderNums();
 }
-$("#pushlist").addEventListener("click",e=>{const it=e.target.closest(".item"),b=e.target.closest("button"); if(!it||!b)return;
+$("#pushlist").addEventListener("click",e=>{setTimeout(()=>{try{renderToday()}catch(_){}},0);const it=e.target.closest(".item"),b=e.target.closest("button"); if(!it||!b)return;
   store.push=store.push||{}; store.push[it.dataset.k]=b.classList.contains("okb")?"ok":"fix"; save(); render()});
 $("#seg").addEventListener("click",e=>{const b=e.target.closest("button"); if(b){period=b.dataset.k; renderNums()}});
 $("#rAm").onclick=()=>toggleRead("am"); $("#rPm").onclick=()=>toggleRead("pm");
@@ -520,18 +576,44 @@ $("#save").onclick=()=>{
 let rz; addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(drawWeeks,120)});
 render(); renderAim(); renderLife(); tick(); setInterval(tick,1000);
 
-function renderSend(){const S=DATA.send;
-  $("#sendn").textContent=`${S.msgs.length+S.slips.length} 件・見本`;
-  $("#msglist").innerHTML=S.msgs.map((m,i)=>`<div class="msg"><div class="who"><div class="av">${m.who[0]}</div><span class="t">${m.who}</span><span class="w">${m.w}・${m.what}</span><span class="via">${m.via}</span></div><div class="paste"><button class="cp" data-c="m${i}">コピー</button>${m.text.replace(/</g,"&lt;")}</div></div>`).join("");
-  $("#sliplist").innerHTML=S.slips.map((sl,i)=>`<div class="slip"><div class="sh"><b>${sl.kind}</b><i>${sl.ja}</i></div>${sl.f.map((f,j)=>`<div class="fld"><span>${f[0]}</span><em>${f[1]}</em><button class="cp" data-c="s${i}-${j}">コピー</button></div>`).join("")}</div>`).join("");
-}
 document.addEventListener("click",async e=>{const b=e.target.closest(".cp");if(!b)return;const k=b.dataset.c,S=DATA.send;
   const t=k[0]==="m"?S.msgs[+k.slice(1)].text:(()=>{const [a,c]=k.slice(1).split("-");return S.slips[+a].f[+c][1]})();
   try{await navigator.clipboard.writeText(t)}catch(_){const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove()}
   b.textContent="コピーした";b.classList.add("ok");setTimeout(()=>{b.textContent="コピー";b.classList.remove("ok")},1600)});
-renderSend();
 
 (()=>{const links=[...document.querySelectorAll('.idx a')];const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}})},{rootMargin:'-60px 0px -70% 0px'});document.querySelectorAll('section.card[id]').forEach(s=>io.observe(s))})();
+
+const ST4=[["draft","下書き"],["checked","確認済み"],["copied","コピー済み"],["sent","送った"]];
+function sst(k){return (store.send||{})[k]||"draft"}
+function setS(k,v){store.send=store.send||{};store.send[k]=v;save();renderSend();renderToday()}
+function st4(k){const cur=ST4.findIndex(x=>x[0]===sst(k));return `<div class="st4">${ST4.map((x,i)=>`<i class="${i===cur?"on":i<cur?"past":""}">${x[1]}</i>`).join("")}</div>`}
+function renderSend(){const S=DATA.send;
+  const live=S.msgs.map((m,i)=>[m,i]).filter(([m,i])=>sst("m"+i)!=="sent"), done=S.msgs.length-live.length;
+  const sl=S.slips.map((x,i)=>[x,i]).filter(([x,i])=>sst("s"+i)!=="sent");
+  $("#sendn").textContent=`のこり ${live.length+sl.length} 件・見本`;
+  $("#msglist").innerHTML=live.map(([m,i])=>`<div class="msg"><div class="who"><div class="av">${m.who[0]}</div><span class="t"><span class="pr ${m.p}">${PRL[m.p]}</span>${m.who}</span><span class="w">${m.w}・${m.what}</span><span class="via">${m.via}</span></div><div class="paste"><button class="cp" data-c="m${i}">コピー</button>${m.text.replace(/</g,"&lt;")}</div>${st4("m"+i)}<div class="mact"><button data-s="m${i}:checked">確認した</button><button class="sent" data-s="m${i}:sent">送った</button></div></div>`).join("")
+    +(done?`<div class="sentrow">送った ${done} 件は畳んだ <button data-reset="m">元に戻す</button></div>`:"")
+    +(live.length?"":`<div class="clear" style="display:block">Messengerに送る文は、ぜんぶ送った。</div>`);
+  $("#sliplist").innerHTML=sl.map(([sp,i])=>`<div class="slip"><div class="sh"><b>${sp.kind}</b><i>${sp.ja}</i></div>${sp.f.map((f,j)=>`<div class="fld"><span>${f[0]}</span><em>${f[1]}</em><button class="cp" data-c="s${i}-${j}">コピー</button></div>`).join("")}${st4("s"+i)}<div class="mact"><button data-s="s${i}:checked">確認した</button><button class="sent" data-s="s${i}:sent">入れた</button></div></div>`).join("")
+    +(S.slips.length-sl.length?`<div class="sentrow">入れた ${S.slips.length-sl.length} 件は畳んだ <button data-reset="s">元に戻す</button></div>`:"");
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-s],[data-reset]");if(!b)return;
+  if(b.dataset.reset){const pre=b.dataset.reset;Object.keys(store.send||{}).forEach(k=>{if(k[0]===pre&&store.send[k]==="sent")delete store.send[k]});save();renderSend();renderToday();return}
+  const [k,v]=b.dataset.s.split(":");setS(k,v)});
+function renderToday(){
+  const stp=store.push||{}, pushLeft=DATA.push.filter(p=>!stp[p.t]).length;
+  const sendLeft=DATA.send.msgs.filter((m,i)=>sst("m"+i)!=="sent").length+DATA.send.slips.filter((x,i)=>sst("s"+i)!=="sent").length;
+  const hot=DATA.quiet.length;
+  $("#onet").textContent=DATA.one.t; $("#oned").textContent=DATA.one.d;
+  const T=[["#s-next",DATA.next.when.split("）")[1]||DATA.next.when,"次の予定",DATA.next.who+"・1to1",true],["#s-push",pushLeft,"押すだけ","OK か 直して",pushLeft>0],["#s-send",sendLeft,"送るだけ","コピーして送る",sendLeft>0],["#s-stall",hot,"止まっている人",DATA.quiet[0]?DATA.quiet[0].t+" "+DATA.quiet[0].n:"なし",hot>0]];
+  $("#tiles").innerHTML=T.map(t=>`<a class="tile ${t[4]?"hot":""}" href="${t[0]}"><span>${t[2]}</span><b>${t[1]}</b><em>${t[3]}</em></a>`).join("");
+  $("#todayr").textContent=`最終更新 ${DATA.updated}`;
+  $("#aiday").innerHTML=`<b>AI TODAY</b>${DATA.ai.done.map(d=>`<span>${d[0]} <em>${d[1]}</em></span>`).join("")}<span>${DATA.ai.trust}</span>`;
+  const I=[["s-today","今日","今日のイチバンと、いま見る数字",4,"AI"],["s-push","決断","かどっちが OK か直してを押す物",pushLeft,"AI→かどっち"],["s-send","送るだけ","Messengerの文・BNI Connectの中身",sendLeft,"AI→かどっち"],["s-next","次の1to1","相手・前回の続き・聞く事",1,"AI"],["s-stall","約束・止まり","先に差し出す約束と、返事が止まっている人",DATA.prom.length+DATA.quiet.length,"AI"],["s-week","今週","今週の1to1と準備の状態",DATA.week.length,"AI"],["s-aim","願望","願望の文と、声に出した日",1,"かどっち"],["s-life","のこり時間","のこりの時間の言い換え","—","自動"],["s-feed","思考→現実","吐き出した一言が形になった物",DATA.feed.length,"AI"],["s-nums","数字","会った人・紹介の数","—","AI"],["s-crew","仲間","かどっち・おけもん・AIの役割",DATA.crew.length,"おけもん"],["s-thirteen","今日の原則","思考は現実化するの13原則","13","自動"]];
+  $("#itab").innerHTML=I.map(r=>`<a class="irow" href="#${r[0]}"><span class="in">${r[1]}</span><span class="wh">${r[2]}</span><span class="ct">${r[3]}</span><span class="by">${r[4]}</span></a>`).join("");
+}
+document.querySelectorAll("section.card[id]").forEach(sec=>{if(sec.id==="s-index")return;const a=document.createElement("a");a.className="back";a.href="#s-index";a.textContent="索引へ戻る ↑";sec.appendChild(a)});
+renderSend(); renderToday();
 </script>
 </body>
 </html>
