@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex">
+<title>おさそい文をつくる｜AIブースメンバー用</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#fff8ec;--ink:#1d2340;--sub:#464b68;--pinkD:#c8245f;--card:#fff;--r:22px}
+*{box-sizing:border-box}
+html{color-scheme:light;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Zen Maru Gothic",system-ui,sans-serif;font-weight:500;line-height:1.75}
+.wrap{max-width:640px;margin:0 auto;padding:40px 18px 56px}
+.kicker{display:inline-block;font-size:12px;font-weight:900;letter-spacing:.2em;color:var(--pinkD)}
+h1{font-size:clamp(24px,6.4vw,32px);line-height:1.4;margin:6px 0 10px;text-wrap:pretty}
+.lead{margin:0 0 20px;color:var(--sub);text-wrap:pretty}
+.kit{background:var(--card);border:2.5px solid var(--ink);border-radius:var(--r);padding:18px;box-shadow:0 4px 0 var(--ink)}
+.kit label{display:block;font-weight:900;margin:10px 0 4px}
+.kit label:first-child{margin-top:0}
+.kit select,.kit textarea{width:100%;font:inherit;font-size:16px;border:2px solid var(--ink);border-radius:12px;padding:10px;background:var(--paper);color:var(--ink)}
+.kit select{padding-right:2.5em}
+.kit textarea{min-height:170px;margin-top:12px}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 18px;border-radius:999px;border:2.5px solid var(--ink);background:var(--card);color:var(--ink);font:inherit;font-weight:900;text-decoration:none;box-shadow:0 4px 0 var(--ink);cursor:pointer}
+.btn:active{transform:translateY(4px);box-shadow:none}
+.btn.pink{background:var(--pinkD);color:#fff}
+.note{font-size:14px;line-height:1.8;color:var(--sub);margin:22px 2px 0}
+.nw{white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-weight:700;transition:.25s;pointer-events:none}
+.toast:empty{display:none}
+.js-ready .toast{opacity:0;transform:translateX(-50%) translateY(20px)}
+.js-ready .toast.on{opacity:1;transform:translateX(-50%)}
+a{color:var(--pinkD)}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <span class="kicker">FOR MEMBERS</span>
+  <h1>ブースメンバー用：<br>おさそい文をつくる</h1>
+  <p class="lead">交流チャットに外から来てもらう入口は、みんなのつぶやき。名前と伝えたいことを選ぶと、シェア文ができるよ。そのリンクから来てくれた人には、特設ページの座談会の席で、あなたの顔がピカッと光ってお出迎え！</p>
+  <div class="kit">
+    <label for="kitWho">わたしは</label>
+    <select id="kitWho"></select>
+    <label for="kitWhat">伝えたいのは</label>
+    <select id="kitWhat"><option value="chat">チャットへのおさそい</option><option value="talk">次の座談会</option></select>
+    <textarea id="kitText" readonly aria-label="できたシェア文"></textarea>
+    <div class="row"><button class="btn pink" id="kitCopy" type="button">文をコピー</button><a class="btn" href="https://libecity.com/tweet/all" target="_blank" rel="noopener">つぶやきをひらく</a></div>
+  </div>
+  <p class="note">画像もどうぞ。カウントダウン画像は、<a href="./#today">特設ページの「きょうの1枚」</a>から<span class="nw">保存できるよ。</span>勉強会やオフ会で見せる、QRコード入りの告知画像（5種類）は、デザインチームの共有フォルダ「08_デザイン・グッズ制作 ＞ 採用デザイン」に<span class="nw">あるよ。</span></p>
+  <p class="note"><a href="./">特設ページへもどる</a></p>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script src="data.js"></script>
+<script>
+document.documentElement.classList.add("js-ready");
+const $=s=>document.querySelector(s),W="日月火水木金土";
+const S=d=>Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10),12,0);
+const FIRST=S("2026-12-07"),LEN=30*60e3,WEEK=7*864e5;
+function jst(t){const d=new Date(t+9*3600e3);return{m:d.getUTCMonth()+1,d:d.getUTCDate(),w:W[d.getUTCDay()],ymd:d.toISOString().slice(0,10)}}
+function nextTalk(now){if(now<FIRST)return FIRST;const k=Math.floor((now-FIRST)/WEEK),s=FIRST+k*WEEK;return now<s+LEN?s:s+WEEK}
+const epOf=t=>EPISODES.find(e=>e.d===jst(t).ymd);
+const SITE=new URL("./",location.href).href;
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),2600)}
+async function copy(t){try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();document.execCommand("copy");a.remove()}}
+$("#kitWho").innerHTML=`<option value="">（名前をえらぶ）</option>`+MEMBERS.map(m=>`<option value="${m.k}">${m.n}</option>`).join("");
+function kitText(){const k=$("#kitWho").value,t=nextTalk(Date.now()),j=jst(t),ep=epOf(t),url=SITE+(k?`?from=${k}`:"");
+  $("#kitText").value=$("#kitWhat").value==="chat"?`AIブースの交流チャット、ひらいてます🐈‍⬛\n12/1からメンバー16人の自己紹介リレー、毎週月曜21時は座談会、12/14の週からは週替わりのお題も。\n7月の幕張まで、ゆるっとつながろう！\nのぞいてみてね👇\n${url}`:`毎週月曜21時、AIブース交流チャットで座談会（12/7スタート）🐈‍⬛\n聞くだけ・途中参加OK（ovice）\n次は${j.m}/${j.d}（${j.w}）21:00〜${ep?`「${ep.t}」`:""}\nのぞいてみてね👇\n${url}`}
+$("#kitWho").onchange=kitText;$("#kitWhat").onchange=kitText;kitText();
+$("#kitCopy").onclick=async()=>{await copy($("#kitText").value);toast("コピーしたよ。つぶやきに貼ってね")};
+</script>
+</body>
+</html>
