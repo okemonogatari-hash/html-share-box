@@ -12,7 +12,7 @@
 <style>
 :root{--paper:#fff8ec;--ink:#1d2340;--sub:#464b68;--pink:#ff5f93;--pinkD:#c8245f;--eye:#ffcc2e}
 *{box-sizing:border-box}
-body{margin:0;padding-bottom:96px;background:var(--paper);color:var(--ink);font-family:"Zen Maru Gothic",system-ui,sans-serif;font-weight:500;line-height:1.85;font-size:16px;overflow-x:hidden}
+body{margin:0;padding-bottom:96px;background:var(--paper);color:var(--ink);font-family:"Zen Maru Gothic",system-ui,sans-serif;font-weight:500;line-height:1.85;font-size:16px;overflow-x:hidden;line-break:strict;word-break:auto-phrase;text-wrap:pretty}
 a{color:inherit}button{font:inherit;color:inherit;cursor:pointer}img{max-width:100%;display:block}
 .tape{height:26px;background:repeating-linear-gradient(-45deg,var(--eye) 0 18px,var(--ink) 18px 36px)}
 .wrap{max-width:720px;margin:0 auto;padding-left:max(22px,env(safe-area-inset-left,0px));padding-right:max(22px,env(safe-area-inset-right,0px))}
@@ -32,6 +32,7 @@ h1{font-family:"Kaisei Decol",serif;font-size:clamp(28px,7vw,40px);line-height:1
 .meter{margin:16px 0 6px;height:18px;border:2.5px solid var(--ink);border-radius:999px;overflow:hidden;background:#f3eee4}
 .meter i{display:block;height:100%;width:0;background:repeating-linear-gradient(-45deg,var(--pink) 0 10px,#ff8fb2 10px 20px);transition:width .6s}
 .mtext{font-size:14px;color:var(--sub);font-weight:700}
+.nw{white-space:nowrap}
 .crew{display:flex;justify-content:space-between;align-items:flex-end;margin-top:6px}
 .crew img{width:42%;max-width:170px;height:auto;object-fit:contain}
 .hammer{font-size:13px;font-weight:900;text-align:center;min-height:2.4em}
@@ -60,7 +61,7 @@ footer{padding:40px 0 110px;font-size:14px;line-height:1.8;color:var(--sub)}
   <div class="site">
     <button class="sign" id="sign" aria-label="工事中の看板をたたく"><span class="board">🚧 トントン建設中！ 🚧</span></button>
     <div class="meter" aria-hidden="true"><i id="bar"></i></div>
-    <div class="mtext" id="mtext">建設度 20%（看板をたたくと、ちょっと進む…かも）</div>
+    <div class="mtext" id="mtext">建設度 20%（看板をたたくと、<span class="nw">ちょっと進む…かも</span>）</div>
     <div class="hammer" id="hammer" aria-live="polite"></div>
     <div class="crew"><img id="chibi" src="../assets/chibi_search.webp" alt="工事中のチビ"><img id="ani" src="../assets/ani_read_book.webp" alt="工事中の兄"></div>
   </div>
@@ -94,7 +95,7 @@ const K="nao";let p=+(LS.get("nk_build_"+K)||20);
 const LINES=["トンカン、トントン！","よいしょ、よいしょ！","設計図をチェック中…","もうすぐできるかな？","ちょっとお茶のもっか","チビ、そっちじゃないよ！","いいお部屋になりそう！"];
 const CH=["chibi_surprised","chibi_sleep","chibi_search"]; // 端で切れていない絵だけ
 const AN=["ani_ok","ani_question","ani_yawn","ani_read_book"];
-function draw(){document.getElementById("bar").style.width=p+"%";document.getElementById("mtext").textContent=p>=99?"建設度99%（最後の1%は、本人と一緒に！）":`建設度 ${p}%（看板をたたくと、ちょっと進む…かも）`}
+function draw(){document.getElementById("bar").style.width=p+"%";document.getElementById("mtext").innerHTML=p>=99?"建設度99%（最後の1%は、<span class=\"nw\">本人と一緒に！</span>）":`建設度 ${p}%（看板をたたくと、<span class="nw">ちょっと進む…かも</span>）`}
 draw();let n=0;
 document.getElementById("sign").onclick=()=>{const s=document.getElementById("sign");s.classList.remove("hit");void s.offsetWidth;s.classList.add("hit");
   const i=n++%LINES.length;document.getElementById("hammer").textContent=LINES[i];document.getElementById("chibi").src=`../assets/${CH[i%CH.length]}.webp`;document.getElementById("ani").src=`../assets/${AN[i%AN.length]}.webp`;
