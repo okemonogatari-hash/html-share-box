@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>KADO COCKPIT</title>
+<style>
+:root{
+  --bg:#0a0806; --p1:rgba(22,18,14,.78); --p2:#1a1611; --line:rgba(255,236,200,.09); --line2:rgba(255,236,200,.18);
+  --ink:#f4efe4; --sub:#a39a89; --dim:#665e51;
+  --gold:#e2ad52; --gold-hi:#f7dc9c; --gold-lo:rgba(226,173,82,.34); --gold-bg:rgba(226,173,82,.10);
+  --fire:#ff7a2e; --red:#e5574a; --red-bg:rgba(229,87,74,.10);
+  --mono:"SF Mono",ui-monospace,"Menlo","Roboto Mono",monospace;
+  --num:"Didot","Bodoni 72","Hoefler Text","Hiragino Mincho ProN",Georgia,serif;
+  --serif:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",Georgia,serif;
+  --sans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Noto Sans JP",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{color-scheme:dark;background:var(--bg)}
+body{color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh;padding:20px 26px 30px;position:relative;overflow-x:hidden}
+/* 空気：金の光の弧を1つと、ざらつき。面は平らなまま */
+body:before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(90vw 60vh at 78% 118%,rgba(226,150,60,.34),transparent 62%),radial-gradient(60vw 44vh at -6% -12%,rgba(226,173,82,.12),transparent 64%)}
+body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.arc{position:fixed;z-index:-1;pointer-events:none;border-radius:50%;border:1px solid rgba(247,220,156,.20);filter:blur(.6px)}
+.arc.a{width:120vw;height:120vw;left:-34vw;top:-88vw}
+.arc.b{width:90vw;height:90vw;right:-40vw;bottom:-66vw;border-color:rgba(247,220,156,.30)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;color:var(--dim);text-transform:uppercase}
+.lbl b{color:var(--gold);font-weight:500}
+.lbl i{font-style:normal;font-family:var(--sans);letter-spacing:.06em;margin-left:10px;color:var(--sub);font-size:12px;text-transform:none}
+
+.top{display:flex;align-items:center;gap:8px 18px;margin-bottom:16px;flex-wrap:wrap}
+.top>*{white-space:nowrap}
+.logo{font-family:var(--mono);font-weight:700;letter-spacing:.28em;font-size:12.5px}
+.logo b{color:var(--gold)}
+.top .meta{font-family:var(--mono);font-size:11.5px;color:var(--sub)}
+.top .sp{margin-left:auto}
+.tag{font-size:11px;color:var(--sub);border:1px solid var(--line2);border-radius:99px;padding:2px 10px}
+.gear{color:var(--sub);border:1px solid var(--line2);border-radius:99px;padding:3px 12px;font-size:12px}
+.gear:hover{color:var(--ink)}
+
+.grid{display:grid;gap:14px;grid-template-columns:repeat(12,1fr)}
+.card{background:var(--p1);border:1px solid var(--line);border-radius:14px;padding:20px 22px;min-width:0;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.h{display:flex;align-items:baseline;gap:8px;margin-bottom:14px}
+.h .r{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+
+/* 燃える願望（主役・左） */
+.aim{grid-column:span 7;padding:26px 34px 22px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.aim:before{content:"";position:absolute;left:50%;top:70px;width:640px;height:380px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(255,122,46,.20),transparent);pointer-events:none}
+.aimhead{display:flex;align-items:baseline;gap:14px}
+.aimhead h1{font-family:var(--num);font-weight:600;font-size:30px;letter-spacing:.01em}
+.aimhead span{font-size:12.5px;color:var(--sub)}
+.flamebox{position:relative;height:150px;margin:6px -34px 0;display:grid;place-items:center}
+.flamebox:after{content:"";position:absolute;left:0;right:0;bottom:14px;height:1px;background:linear-gradient(90deg,transparent,var(--line2) 18%,var(--line2) 82%,transparent)}
+.flame{width:74px;height:104px;transform-origin:50% 100%;animation:flick 2.6s ease-in-out infinite;position:relative;z-index:1}
+@keyframes flick{0%,100%{transform:scale(1,1) rotate(-1deg)}30%{transform:scale(.96,1.05) rotate(1.4deg)}60%{transform:scale(1.03,.97) rotate(-.6deg)}}
+.metarow{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin:2px 0 14px}
+.aim blockquote{font-family:var(--serif);font-size:clamp(20px,2.3vw,34px);line-height:1.7;color:var(--ink);font-weight:400}
+.aim blockquote b{font-weight:700;color:var(--gold-hi)}
+.aim .give{font-family:var(--serif);font-size:16px;color:var(--sub);margin-top:14px}
+.aim .give b{color:var(--ink);font-weight:600}
+.aimrow{display:flex;align-items:center;gap:10px;margin-top:26px;flex-wrap:wrap}
+.read{border-radius:99px;padding:9px 20px;font-size:13.5px;font-weight:700;background:var(--ink);color:#15110b}
+.read:hover{background:#fff}
+.read.on{background:transparent;color:var(--gold);border:1px solid var(--gold-lo);font-weight:500}
+.read.on:before{content:"✓ "}
+.streak{font-size:12.5px;color:var(--sub);margin-left:auto}
+.streak b{color:var(--ink);font-family:var(--num);font-size:17px}
+.dots{display:grid;grid-template-columns:repeat(73,minmax(0,1fr));gap:2px;margin-top:auto;padding-top:18px}
+.dots{overflow:hidden}
+.dots i{aspect-ratio:1;min-width:0;width:100%;border-radius:50%;background:rgba(255,236,200,.07)}
+.dots i.a{background:var(--gold-lo)} .dots i.b{background:var(--gold)} .dots i.t{box-shadow:0 0 0 1.5px var(--ink)}
+.dots i.u{background:transparent;box-shadow:inset 0 0 0 1px rgba(255,236,200,.06)}
+
+/* のこりの時間（右） */
+.life{grid-column:span 5;padding:26px 30px 20px;display:flex;flex-direction:column}
+.stack{margin:10px 0 6px}
+.stack div{display:flex;align-items:baseline;gap:12px;line-height:1.06}
+.stack b{font-family:var(--num);font-weight:400;font-size:clamp(46px,5.2vw,78px);min-width:3.1ch;text-align:right;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.01em}
+.stack div:nth-child(n+3) b{font-size:clamp(30px,3.2vw,46px);color:var(--gold-hi)}
+.stack span{font-family:var(--mono);font-size:12px;letter-spacing:.22em;color:var(--sub)}
+.scale{margin-top:auto;border-top:1px solid var(--line)}
+.scale div{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--sub)}
+.scale div:last-child{border-bottom:0;padding-bottom:0}
+.scale b{margin-left:auto;font-family:var(--num);font-size:22px;font-weight:400;color:var(--gold);font-variant-numeric:lining-nums}
+.scale small{font-size:11px;color:var(--dim)}
+
+/* 週の格子 */
+.weeks{grid-column:span 12;padding:18px 22px 14px}
+.weeks canvas{display:block;width:100%}
+.gridwrap{position:relative}
+.nowcell{position:absolute;background:var(--ink);border-radius:50%;box-shadow:0 0 10px 2px rgba(255,236,200,.7);animation:blink 1.8s ease-in-out infinite}
+@keyframes blink{50%{opacity:.4}}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--sub)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+
+.av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--num);font-size:15px;color:var(--gold-hi);background:radial-gradient(circle at 30% 25%,#3a2f1f,#1b1610);border:1px solid var(--gold-lo)}
+.av.lg{width:64px;height:64px;font-size:28px;border-color:var(--gold)}
+
+/* 次の1件（人のカード） */
+.next{grid-column:span 5}
+.person{display:flex;align-items:center;gap:16px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.person .nm{font-size:19px;font-weight:600;line-height:1.3}
+.person .nm span{display:block;font-size:12.5px;color:var(--sub);font-weight:400}
+.person .in{margin-left:auto;text-align:right;font-family:var(--num);font-size:34px;line-height:1;color:var(--gold-hi)}
+.person .in small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--sub);margin-top:6px}
+.sec{margin-top:12px}
+.sec .lbl{display:block;margin-bottom:4px}
+.sec p,.sec li{font-size:13.5px}
+.sec ol{padding-left:1.3em}
+.sec .prev{font-family:var(--serif);color:var(--ink)}
+.ghost{margin-top:16px;border:1px solid var(--line2);border-radius:99px;padding:7px 16px;font-size:12.5px}
+.ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* 押すだけ */
+.push{grid-column:span 4}
+.item{border-top:1px solid var(--line);padding:12px 0}
+.item:first-child{border-top:0;padding-top:0}
+.item .t{font-weight:600}
+.item .d{color:var(--sub);font-size:12.5px;margin-top:1px}
+.item .act{display:flex;gap:8px;margin-top:10px}
+.item .okb{flex:2;border-radius:99px;padding:7px 0;font-size:13px;font-weight:700;background:var(--gold);color:#17110a}
+.item .okb:hover{background:var(--gold-hi)}
+.item .fix{flex:1;border-radius:99px;padding:7px 0;font-size:12.5px;border:1px solid var(--line2);color:var(--sub)}
+.item .fix:hover{color:var(--ink)}
+.js-ready .item.done .act{display:none}
+.item.done .t{color:var(--sub)}
+.item.done .t:after{content:"　✓ OK を返した";color:var(--gold);font-weight:500;font-size:12px}
+.item.fixd .t:after{content:"　↩ 直しを頼んだ";color:var(--sub)}
+.js-ready .clear{display:none}
+.clear{color:var(--gold-hi);font-family:var(--serif);font-size:17px;padding:10px 0}
+
+/* 約束・止まっている人 */
+.stall{grid-column:span 3}
+.p{display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.p:first-of-type{border-top:0}
+.p .n{flex:none;min-width:54px;font-family:var(--mono);font-size:11px;text-align:center;border-radius:99px;padding:3px 0;border:1px solid var(--line2);color:var(--sub)}
+.p.hot .n{color:var(--red);border-color:var(--red);background:var(--red-bg)}
+.p .x{font-size:13px;min-width:0}
+.p .x span{display:block;color:var(--sub);font-size:11.5px}
+.subh{display:block;margin:16px 0 6px}
+
+/* 今週 */
+.week{grid-column:span 4}
+.row{display:grid;grid-template-columns:38px 34px 1fr auto;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row .day{font-family:var(--mono);font-size:10.5px;color:var(--dim);line-height:1.2;letter-spacing:.1em}
+.row .day b{display:block;color:var(--ink);font-family:var(--num);font-size:19px;font-weight:400;letter-spacing:0}
+.row.today .day b{color:var(--gold)}
+.row .who{font-weight:500;min-width:0}
+.row .who span{display:block;color:var(--sub);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st{font-family:var(--mono);font-size:10.5px;white-space:nowrap;color:var(--dim);letter-spacing:.08em}
+.st.ready{color:var(--gold)}
+
+/* 思考→現実 */
+.feed{grid-column:span 5}
+.fh,.f{display:grid;grid-template-columns:1fr 18px 1fr;gap:10px;align-items:start}
+.fh{padding-bottom:8px;border-bottom:1px solid var(--line)}
+.f{padding:10px 0;border-top:1px solid var(--line);font-size:13px}
+.f:first-of-type{border-top:0}
+.f .say{color:var(--sub);font-family:var(--serif);font-size:14px}
+.f .ar{color:var(--gold);text-align:center}
+.f .got span{display:block;color:var(--dim);font-size:11.5px}
+
+/* 数字 */
+.nums{grid-column:span 3}
+.seg{display:flex;border:1px solid var(--line2);border-radius:99px;overflow:hidden;margin-left:auto}
+.seg button{font-family:var(--mono);font-size:10.5px;padding:2px 9px;color:var(--dim)}
+.seg button.on{background:var(--gold-bg);color:var(--gold)}
+.num{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.num:first-of-type{border-top:0}
+.num b{font-family:var(--num);font-size:30px;font-weight:400;min-width:60px;font-variant-numeric:lining-nums}
+.num:first-of-type b{color:var(--gold-hi)}
+.num span{font-size:12.5px;color:var(--sub)}
+.num.na b{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.1em}
+
+/* 13の原則 */
+.thirteen{grid-column:span 8}
+.steps{display:grid;grid-template-columns:repeat(13,1fr);gap:4px}
+.steps div{text-align:center;padding:7px 0 6px;border:1px solid var(--line);border-radius:8px;font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden}
+.steps div b{display:block;font-family:var(--num);font-size:13px;font-weight:400}
+.steps div.now{border-color:var(--gold);background:var(--gold-bg);color:var(--gold-hi)}
+.q{margin-top:14px;font-family:var(--serif);font-size:20px;color:var(--ink)}
+.q span{font-family:var(--mono);font-size:11px;color:var(--gold);margin-right:14px;letter-spacing:.14em}
+
+/* マスターマインド */
+.crew{grid-column:span 4}
+.c{display:flex;align-items:center;gap:12px;padding:7px 0;border-top:1px solid var(--line);font-size:13px}
+.c:first-of-type{border-top:0}
+.c .av{width:28px;height:28px;font-size:12px}
+.c b{font-weight:600}
+.c span{display:block;color:var(--sub);font-size:11.5px}
+.c em{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:10.5px;color:var(--dim);white-space:nowrap;letter-spacing:.08em}
+.c.on em{color:var(--gold)}
+
+.note{margin-top:14px;color:var(--dim);font-size:11.5px}
+
+dialog{background:var(--p2);color:var(--ink);border:1px solid var(--line2);border-radius:14px;padding:24px;width:min(440px,92vw);margin:auto}
+dialog::backdrop{background:rgba(0,0,0,.72)}
+dialog h3{font-family:var(--serif);font-size:17px;margin-bottom:10px}
+dialog label{display:block;font-size:12px;color:var(--sub);margin:10px 0 4px}
+dialog input{width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:8px;padding:9px 11px;color:var(--ink);font:inherit;color-scheme:dark}
+dialog .act{display:flex;gap:8px;margin-top:18px}
+dialog .act button{flex:1;border-radius:99px;padding:9px 0;border:1px solid var(--line2)}
+dialog .act .sv{background:var(--gold);border-color:var(--gold);color:#17110a;font-weight:700}
+
+@media (max-width:1180px){.life,.aim,.next,.push,.stall,.week,.feed,.nums,.thirteen,.crew{grid-column:span 12}.steps{grid-template-columns:repeat(7,1fr)}}
+@media (max-width:560px){body{padding:14px 14px 22px}.aim{padding:22px 20px}.flamebox{margin:6px -20px 0}.life{padding:22px 20px}.steps{grid-template-columns:repeat(4,1fr)}.js-ready .fh{display:none}.f{grid-template-columns:1fr}.js-ready .f .ar{display:none}.dots{grid-template-columns:repeat(37,minmax(0,1fr))}.person{flex-wrap:wrap}.person .in{margin-left:0;text-align:left}}
+@media (prefers-reduced-motion:reduce){.nowcell,.flame{animation:none}}
+.send{grid-column:span 12}
+.send .cols{display:grid;grid-template-columns:7fr 5fr;gap:18px}
+.msg{border-top:1px solid var(--line);padding:14px 0 6px}
+.msg:first-of-type{border-top:0;padding-top:4px}
+.msg .who{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.msg .who .t{font-weight:700;white-space:nowrap} .msg .who .w{font-family:var(--mono);font-size:11px;color:var(--mute);letter-spacing:.1em}
+.msg .who .via{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--gold);border:1px solid var(--gold-lo);border-radius:99px;padding:3px 9px}
+.paste{position:relative;background:rgba(0,0,0,.32);border:1px solid var(--line2);border-radius:10px;padding:14px 16px 14px;font-size:13.5px;line-height:1.75;white-space:pre-wrap;color:var(--ink)}
+.cp{position:absolute;top:8px;right:8px;border:1px solid var(--gold-lo);background:var(--bg);color:var(--gold);border-radius:99px;font-size:11.5px;padding:4px 11px;cursor:pointer;font-weight:700}
+.cp:hover{border-color:var(--gold);color:var(--gold-hi)} .cp.ok{background:var(--gold);color:#17110a;border-color:var(--gold)}
+.slip{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px;background:rgba(0,0,0,.18)}
+.slip .sh{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.slip .sh b{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--gold)} .slip .sh i{font-style:normal;font-size:12px;color:var(--mute)}
+.fld{display:grid;grid-template-columns:92px 1fr auto;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:13px}
+.fld:first-of-type{border-top:0}
+.fld span{font-size:11.5px;color:var(--mute)} .fld em{font-style:normal;color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.fld .cp{position:static;padding:2px 9px;font-size:10.5px}
+.sendnote{font-size:11.5px;color:var(--mute);margin-top:8px}
+@media (max-width:1180px){.send .cols{grid-template-columns:1fr}}
+@media (max-width:560px){.msg .who{flex-wrap:wrap}.msg .who .w{order:3;flex-basis:100%;padding-left:44px}.fld{grid-template-columns:1fr auto}.fld span{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<i class="arc a"></i><i class="arc b"></i>
+
+<div class="top">
+  <div class="logo">KADO <b>COCKPIT</b></div>
+  <div class="meta" id="today"></div>
+  <div class="meta" id="updated"></div>
+  <span class="sp"></span>
+  <span class="tag">見本データ</span>
+  <button class="gear" id="gear">⚙ 願望とタイマー</button>
+</div>
+
+<div class="grid">
+
+  <section class="card aim">
+    <div class="aimhead"><h1>Desire</h1><span id="aimday"></span></div>
+    <div class="flamebox">
+      <svg class="flame" viewBox="0 0 54 76" aria-hidden="true"><defs><linearGradient id="fg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff5a1f"/><stop offset=".55" stop-color="#ff9a3c"/><stop offset="1" stop-color="#ffe3a6"/></linearGradient></defs>
+        <path d="M27 2C30 18 48 26 48 48a21 21 0 0 1-42 0C6 36 14 30 17 20c3 6 6 8 8 9C24 20 24 10 27 2Z" fill="#f4efe4"/>
+        <path d="M27 30c2 9 11 13 11 24a11 11 0 0 1-22 0c0-6 4-9 6-14 1 3 3 4 4 5 0-5 0-10 1-15Z" fill="url(#fg)"/></svg>
+    </div>
+    <div class="metarow"><span id="lit"></span><span id="spoken"></span></div>
+    <blockquote id="aimtext"></blockquote>
+    <div class="give">そのために先に差し出すもの：<b id="aimgive"></b></div>
+    <div class="aimrow">
+      <button class="read" id="rAm">☀ 朝、声に出す</button>
+      <button class="read" id="rPm">☾ 夜、声に出す</button>
+      <div class="streak" id="streak"></div>
+    </div>
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <section class="card life">
+    <div class="lbl">Time Left to Live<i>のこりの時間</i></div>
+    <div class="stack" id="clock"></div>
+    <div class="scale" id="times"></div>
+  </section>
+
+  <section class="card weeks">
+    <div class="h"><div class="lbl">Life in Weeks<i>1つぶ＝1週</i></div><span class="r" id="weeksn"></span></div>
+    <div class="gridwrap"><canvas id="cv"></canvas><i class="nowcell" id="nowcell"></i></div>
+    <div class="legend">
+      <span><i style="background:rgba(255,236,200,.10)"></i>過ぎた週</span>
+      <span><i style="background:var(--ink)"></i>今週</span>
+      <span><i style="background:var(--gold)"></i>これからの週</span>
+      <span><i style="background:var(--fire)"></i>願望の期日</span>
+    </div>
+  </section>
+
+  <section class="card next">
+    <div class="h"><div class="lbl"><b>Next</b><i>次の 1to1</i></div><span class="r" id="nxwhen"></span></div>
+    <div class="person"><div class="av lg" id="nxav"></div><div class="nm" id="nxwho"></div><div class="in" id="nxin"></div></div>
+    <div id="nxkv"></div>
+    <button class="ghost">準備の1枚を開く →</button>
+  </section>
+
+  <section class="card push">
+    <div class="h"><div class="lbl"><b>Decision</b><i>決断：今日、押すだけ</i></div><span class="r" id="pushn"></span></div>
+    <div id="pushlist"></div>
+    <div class="clear" id="clear">今日のボールは 0。あとは願望に使う時間。</div>
+  </section>
+
+  <section class="card stall">
+    <div class="h"><div class="lbl"><b>Give First</b><i>先に差し出す約束</i></div></div>
+    <div id="promlist"></div>
+    <span class="lbl subh">返事が止まっている人</span>
+    <div id="quietlist"></div>
+  </section>
+
+  <section class="card send">
+    <div class="h"><div class="lbl"><b>Ready to Send</b><i>送るだけ：コピーして、貼って、押す</i></div><span class="r" id="sendn"></span></div>
+    <div class="cols">
+      <div><span class="lbl subh">Messenger に貼る文</span><div id="msglist"></div></div>
+      <div><span class="lbl subh">BNI Connect に入れる中身</span><div id="sliplist"></div>
+        <div class="sendnote">BNI Connect は、かどっち本人が入れて「送信」を押す。こちらは中身だけを用意する。</div></div>
+    </div>
+  </section>
+
+  <section class="card week">
+    <div class="h"><div class="lbl"><b>Plan</b><i>計画：今週の 1to1</i></div><span class="r" id="weekn"></span></div>
+    <div id="weeklist"></div>
+  </section>
+
+  <section class="card feed">
+    <div class="h"><div class="lbl"><b>Thoughts Become Things</b><i>思考は、現実になる</i></div></div>
+    <div class="fh"><span class="lbl">頭に浮かんだ一言</span><span></span><span class="lbl">形になった物</span></div>
+    <div id="feedlist"></div>
+  </section>
+
+  <section class="card nums">
+    <div class="h"><div class="lbl">Numbers</div><div class="seg" id="seg"><button data-k="m1" class="on">1か月</button><button data-k="m3">3か月</button><button data-k="m12">12か月</button></div></div>
+    <div id="numlist"></div>
+  </section>
+
+  <section class="card thirteen">
+    <div class="h"><div class="lbl"><b>13 Principles</b><i>今日の原則</i></div></div>
+    <div class="steps" id="steps"></div>
+    <div class="q"><span id="qn"></span><b id="qt" style="font-weight:600"></b></div>
+  </section>
+
+  <section class="card crew">
+    <div class="h"><div class="lbl"><b>Master Mind</b><i>ひとりの頭で考えない</i></div></div>
+    <div id="crewlist"></div>
+  </section>
+
+</div>
+
+<p class="note">名前・数字・願望の文はぜんぶ見本。願望は ⚙ から本人の言葉に書き替える。「浮かせた時間」は、最初の1週間で実際に測ってから出す。</p>
+
+<dialog id="dlg">
+  <h3>願望とタイマー</h3>
+  <label>願望（いつまでに・何を。数字で）</label><input type="text" id="inAim">
+  <label>期日</label><input type="date" id="inDue">
+  <label>先に差し出すもの</label><input type="text" id="inGive">
+  <label>生まれた日</label><input type="date" id="inBirth">
+  <label>ゴールの年齢</label><input type="number" id="inAge" min="1" max="130">
+  <div class="act"><button id="cancel">やめる</button><button class="sv" id="save">保存</button></div>
+</dialog>
+
+<script>document.documentElement.classList.add("js-ready");
+/* ===== ここを本番データに差し替える（朝・夕の吸い上げが書き出す） ===== */
+const DATA = {
+  sample:true,
+  updated:"15:00",
+  aim:{text:"2027年12月31日までに、YouTubeとAIの仕組みで、毎月100万円を受け取っている。", due:"2027-12-31", give:"毎週1本の動画と、毎月35人への本気の1to1"},
+  life:{birth:"1986-11-23", goalAge:90},
+  readSample:[1,2,3,5,6,7,8,9,10,12,13,14],   // 見本：何日前に声に出したか（2＝朝夜とも の日は下で決める）
+  next:{inHours:18.7, when:"11/24（火）10:00", who:"Bさん", job:"工務店の社長・社員向けの金融教育に興味",
+        last:"10/27（27日前）", prev:"「若い社員が貯金の話をしたがらない」と言っていた。次は研修の形を持っていく約束",
+        ask:["社員は何人で、何歳くらいが多い？","研修は就業時間の中でやれる？","前に呼んだ講師で、よかった所と困った所は？"],
+        intro:"Dさん（保険代理店）・Fさん（社労士）"},
+  push:[
+    {t:"Aさん（税理士）へのお礼", d:"今日の1to1。紹介の一文つき・下書き済み"},
+    {t:"Bさんの準備の1枚", d:"明日 10:00。聞く事3つ・紹介できそうな人2人"},
+    {t:"Cさんへセミナー案内", d:"「案内送ってください」から3日。下書き済み"}
+  ],
+  prom:[
+    {n:"今日",hot:true,t:"Cさんにセミナー案内",s:"11/20 の1to1で約束"},
+    {n:"あと2日",t:"AさんにGさんを紹介",s:"11/23 の1to1で約束"},
+    {n:"あと9日",t:"Eさんへ動画の見本",s:"11/26 の1to1の前に"}
+  ],
+  quiet:[
+    {n:"21日",hot:true,t:"Hさん（不動産）",s:"紹介をもらったまま、お礼の後が空いている"},
+    {n:"14日",t:"Iさん（デザイナー）",s:"日程の返事を待っている"}
+  ],
+  week:[
+    {d:"月",n:"23",who:"Aさん",job:"税理士・顧問先の資産相談",st:"",lb:"お礼 待ち"},
+    {d:"火",n:"24",who:"Bさん",job:"工務店・社員向け金融教育",st:"ready",lb:"準備 OK",today:true},
+    {d:"水",n:"25",who:"Dさん",job:"保険代理店",st:"ready",lb:"準備 OK"},
+    {d:"木",n:"26",who:"Eさん",job:"Web制作・YouTubeの相談あり",st:"",lb:"作成中"},
+    {d:"金",n:"27",who:"Fさん",job:"社労士",st:"",lb:"作成中"}
+  ],
+  feed:[
+    {say:"Cさんにセミナーの案内送らなあかん",got:"約束と期日に1行。案内の下書き",by:"秘書"},
+    {say:"来週の撮影の段取り、まだ何も決めてへん",got:"段取り表の下書き",by:"ディレクター"},
+    {say:"請求書、毎月集めるんめんどい",got:"3社の一覧と期日",by:"経理"},
+    {say:"投資の入門、1本ネタ思いついた",got:"ネタ帳に1行と構成案",by:"ディレクター"}
+  ],
+  nums:{m1:{met:12,goal:35,gave:4,got:3,ai:21},m3:{met:58,goal:105,gave:15,got:11,ai:21},m12:{met:212,goal:420,gave:49,got:38,ai:21}},
+  crew:[
+    {n:"かどっち",j:"願望を決める人",s:"本人",on:true},
+    {n:"おけもん",j:"隣で仕組みを作る人",s:"同盟",on:true},
+    {n:"AI 秘書",j:"1to1の準備・お礼・約束の期日",s:"稼働中",on:true},
+    {n:"AI 経理",j:"請求書の一覧と支払いの期日",s:"1to1が回ってから"},
+    {n:"AI ディレクター",j:"動画のネタ・構成・段取り",s:"準備中"}
+  ]
+};
+/* ================================================================== */
+DATA.send={
+  msgs:[
+    {who:"Bさん",w:"工務店の社長",via:"MESSENGER",what:"1to1の日程・確定",text:"Bさん、お疲れさまです！\n明日11/27（木）10:00〜、よろしくお願いします🙌\n\nZoomはこちらです👇\nhttps://zoom.us/j/0000000000（見本）\n\n前回の「若手社員とお金の話」の続き、研修の形を持っていきますね！"},
+    {who:"Gさん",w:"BNI 同チャプター",via:"MESSENGER",what:"1to1のお誘いへの返事・候補3つ",text:"Gさん、お声がけありがとうございます！ぜひ😊\n\n12/2（火）14:00〜\n12/3（水）10:00〜\n12/5（金）16:00〜\n\nこの中でご都合いかがでしょう？\nどれも合わなければ、別の日も出しますね！"}
+  ],
+  slips:[
+    {kind:"1-2-1",ja:"1to1 の記録",f:[["会った人","Aさん（税理士）"],["日付","2026/11/23"],["場所","Zoom"],["話したこと","顧問先の資産相談。紹介してほしい人＝不動産を持つ中小の社長"]]},
+    {kind:"REFERRAL",ja:"紹介を出す",f:[["紹介先","Aさん（税理士）"],["紹介する人","Gさん（工務店）"],["温度","4（近いうちに話したい）"],["連絡先","Gさんの了承を取ってから入れる"],["メモ","相続前の自社株の整理で相談したい"]]}
+  ]
+};
+const P13=[["願望","いま、いちばん欲しいものは何？ 数字で言える？"],["信念","「できる」と決めて動いたことを、今日1つ。"],["自己暗示","願望の文、朝と夜に声に出した？"],["専門知識","自分で覚えなくていい。誰の知識を借りる？"],["想像力","今週の1to1から、新しい組み合わせを1つ。"],["計画","計画がこけたら、計画を替える。願望は替えない。"],["決断","「押すだけ」を、迷わず今押す。"],["忍耐","金脈まであと3フィート。やめたくなった事を、もう1回だけ。"],["マスターマインド","今日は、誰の頭を借りる？"],["情熱の転換","強い気持ちを、仕事の火に替える。"],["潜在意識","寝る前に、願望をもう一度。"],["頭脳","ひらめきは、消える前に吐き出し箱へ。"],["第六感","ピンと来た人に、今日連絡する。"]];
+
+const $=s=>document.querySelector(s), pad=(n,l=2)=>String(n).padStart(l,"0");
+const KEY="kado-cockpit-v3";
+let store={}; try{store=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}};
+const life=Object.assign({},DATA.life,store.life||{}), aim=Object.assign({},DATA.aim,store.aim||{});
+const dkey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const birth=()=>new Date(life.birth+"T00:00:00");
+function goalDate(){const b=birth(),g=new Date(b);g.setFullYear(b.getFullYear()+Number(life.goalAge));return g}
+
+function tick(){
+  const now=new Date(), g=goalDate();
+  let y=g.getFullYear()-now.getFullYear(), t=new Date(now); t.setFullYear(now.getFullYear()+y);
+  if(t>g){y--; t=new Date(now); t.setFullYear(now.getFullYear()+y)}
+  let ms=Math.max(0,g-t); if(g<=now){y=0;ms=0}
+  const d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4), s=Math.floor(ms%6e4/1e3);
+  $("#clock").innerHTML=[[y,"YRS"],[d,"DAY"],[pad(h),"HRS"],[pad(m),"MIN"],[pad(s),"SEC"]].map(r=>`<div><b>${r[0]}</b><span>${r[1]}</span></div>`).join("");
+}
+function renderLife(){
+  const now=new Date(), g=goalDate(), yrs=Math.max(0,(g-now)/31557600000);
+  const summers=Math.max(0,g.getFullYear()-now.getFullYear()+(now.getMonth()<7?1:0)-(g.getMonth()<7?1:0));
+  const cells=[[Math.floor((g-now)/6048e5).toLocaleString(),"のこりの月曜"],[summers,"のこりの夏"],[Math.round(yrs*12).toLocaleString(),"のこりの月初"],[Math.round(yrs*12*DATA.nums.m1.goal).toLocaleString(),"これから会える人（月"+DATA.nums.m1.goal+"人なら）"]];
+  cells.unshift([Math.max(0,Math.ceil((new Date(aim.due+"T23:59:59")-now)/864e5)).toLocaleString(),"願望の期日まで（日）"]);
+  $("#times").innerHTML=cells.map(c=>`<div>${c[1]}<b>${c[0]}</b></div>`).join("");
+  drawWeeks();
+}
+function drawWeeks(){
+  const cv=$("#cv"), W=cv.parentElement.clientWidth, b=birth(), g=goalDate(), now=new Date();
+  const total=Math.ceil((g-b)/6048e5), lived=Math.floor((now-b)/6048e5), due=Math.floor((new Date(aim.due+"T00:00:00")-b)/6048e5);
+  const gap=W<700?1.5:2.5, cols=W<700?104:208, cell=(W-gap*(cols-1))/cols, rows=Math.ceil(total/cols), H=rows*cell+(rows-1)*gap, dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr; cv.height=H*dpr; cv.style.height=H+"px"; const c=cv.getContext("2d"); c.scale(dpr,dpr);
+  const cs=getComputedStyle(document.documentElement), lo=cs.getPropertyValue("--gold-lo"), ink=cs.getPropertyValue("--ink");
+  for(let i=0;i<total;i++){const x=(i%cols)*(cell+gap), y=Math.floor(i/cols)*(cell+gap);
+    c.fillStyle=i<lived?"rgba(255,236,200,.10)":i===due?"#ff7a2e":"rgba(226,173,82,.62)"; c.beginPath(); c.arc(x+cell/2,y+cell/2,cell/2,0,6.283); c.fill()}
+  const nc=$("#nowcell"); nc.style.left=((lived%cols)*(cell+gap)-1)+"px"; nc.style.top=(Math.floor(lived/cols)*(cell+gap)-1)+"px"; nc.style.width=nc.style.height=(cell+2)+"px";
+  $("#weeksn").textContent=`${lived.toLocaleString()} 週 生きた ／ のこり ${(total-lived).toLocaleString()} 週`;
+}
+function readMap(){ // 見本の日と、本人が押した日を合わせる
+  const m={}, now=new Date();
+  if(DATA.sample&&!store.aim) DATA.readSample.forEach((n,i)=>{const d=new Date(now);d.setDate(d.getDate()-n);m[dkey(d)]={am:1,pm:i%3?1:0}});
+  Object.assign(m,store.read||{}); return m;
+}
+function renderAim(){
+  const now=new Date(), due=new Date(aim.due+"T23:59:59"), rd=readMap(), t=rd[dkey(now)]||{};
+  const esc=t=>t.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  $("#aimtext").innerHTML=esc(aim.text).replace(/(\d{4}年\d{1,2}月\d{1,2}日|[\d,]+(?:万|億)?円|毎月[\d,]+(?:万|億)?円)/g,"<b>$1</b>"); $("#aimgive").textContent=aim.give;
+  const lit=new Date(store.lit||(()=>{const d=new Date(now);d.setDate(d.getDate()-14);return d})()), dayN=Math.floor((now-lit)/864e5)+1;
+  $("#lit").textContent=`LIT ${lit.getFullYear()}.${pad(lit.getMonth()+1)}.${pad(lit.getDate())}`;
+  $("#rAm").classList.toggle("on",!!t.am); $("#rPm").classList.toggle("on",!!t.pm);
+  const y0=new Date(now.getFullYear(),0,1), days=Math.round((new Date(now.getFullYear()+1,0,1)-y0)/864e5); let h="",tot=0;
+  for(let i=0;i<days;i++){const d=new Date(y0);d.setDate(d.getDate()+i);const r=rd[dkey(d)],k=dkey(d)===dkey(now);
+    const on=r&&(r.am||r.pm); if(on)tot++;
+    h+=`<i class="${d>now?"u":on?(r.am&&r.pm?"b":"a"):""}${k?" t":""}"></i>`}
+  $("#dots").innerHTML=h;
+  const yd=new Date(now);yd.setDate(yd.getDate()-1); const y=rd[dkey(yd)], yon=y&&(y.am||y.pm), ton=t.am||t.pm;
+  const mile=[7,21,30,66,100,200,365].includes(tot)?`　— ${tot}日。節目やね。`:"";
+  $("#aimday").textContent=`Day ${dayN}　·　${ton?"今日は声に出した":"今日はまだ、声に出していない"}`;
+  $("#spoken").textContent=`${tot} DAYS SPOKEN`;
+  $("#rAm").textContent=t.am?"朝、声に出した":"☀ 朝、声に出す"; $("#rPm").textContent=t.pm?"夜、声に出した":"☾ 夜、声に出す";
+  $("#streak").innerHTML= ton?`今年 <b>${tot}</b> 日${mile}`: yon?`今年 <b>${tot}</b> 日`:`今年 <b>${tot}</b> 日。空いた日があっても、数は減らない。`;
+  const i=Math.floor((now-y0)/864e5)%13;
+  $("#steps").innerHTML=P13.map((p,k)=>`<div class="${k==i?"now":""}"><b>${pad(k+1)}</b>${p[0]}</div>`).join("");
+  $("#qn").textContent=`${pad(i+1)} / 13　${P13[i][0]}`; $("#qt").textContent=P13[i][1];
+}
+function toggleRead(k){const d=dkey(new Date()), cur=readMap()[d]||{};store.read=store.read||{};store.read[d]=Object.assign({},cur,{[k]:!cur[k]});save();renderAim()}
+let period="m1";
+function renderNums(){const n=DATA.nums[period];
+  $("#numlist").innerHTML=`<div class="num"><b>${n.met}</b><span>人と会った（目標 ${n.goal}・金脈まで あと${Math.max(0,n.goal-n.met)}人）</span></div><div class="num"><b>${n.gave}</b><span>紹介を出した</span></div><div class="num"><b>${n.got}</b><span>紹介をもらった</span></div><div class="num"><b>${n.ai}</b><span>AIが下書きした件数</span></div><div class="num na"><b>計測中</b><span>AIが浮かせた時間（1件あたりの分数を測ってから）</span></div>`;
+  document.querySelectorAll("#seg button").forEach(b=>b.classList.toggle("on",b.dataset.k===period));
+}
+function render(){
+  const now=new Date();
+  $("#today").textContent=`${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())} ${"日月火水木金土"[now.getDay()]}`;
+  $("#updated").textContent=`最終更新 ${DATA.updated}`;
+  const nx=DATA.next, hh=Math.floor(nx.inHours), mm=Math.round((nx.inHours-hh)*60);
+  $("#nxwhen").textContent=nx.when; $("#nxin").innerHTML=`${hh}:${pad(mm)}<small>IN HOURS</small>`;
+  $("#nxav").textContent=nx.who[0]; $("#nxwho").innerHTML=`${nx.who}<span>${nx.job}</span>`;
+  $("#nxkv").innerHTML=`<div class="sec"><span class="lbl">Last talk　最後に話した</span><p>${nx.last}</p></div><div class="sec"><span class="lbl">Thread　前回の続き</span><p class="prev">${nx.prev}</p></div><div class="sec"><span class="lbl">Ask　聞く事</span><ol>${nx.ask.map(a=>`<li>${a}</li>`).join("")}</ol></div><div class="sec"><span class="lbl">Introduce　紹介できそうな人</span><p>${nx.intro}</p></div>`;
+  const st=store.push||{};
+  $("#pushlist").innerHTML=DATA.push.map(p=>`<div class="item ${st[p.t]==="ok"?"done":st[p.t]==="fix"?"done fixd":""}" data-k="${p.t}"><div class="t">${p.t}</div><div class="d">${p.d}</div><div class="act"><button class="okb">OK、これで</button><button class="fix">直して</button></div></div>`).join("");
+  const left=DATA.push.filter(p=>!st[p.t]).length; $("#pushn").textContent=`のこり ${left}`; $("#clear").style.display=left?"none":"block";
+  const pr=a=>a.map(p=>`<div class="p ${p.hot?"hot":""}"><div class="n">${p.n}</div><div class="x">${p.t}<span>${p.s}</span></div></div>`).join("");
+  $("#promlist").innerHTML=pr(DATA.prom); $("#quietlist").innerHTML=pr(DATA.quiet);
+  $("#weeklist").innerHTML=DATA.week.map(r=>`<div class="row ${r.today?"today":""}"><div class="day"><b>${r.n}</b>${r.d}</div><div class="av">${r.who[0]}</div><div class="who">${r.who}<span>${r.job}</span></div><span class="st ${r.st}">${r.lb}</span></div>`).join("");
+  $("#weekn").textContent=`${DATA.week.length} 件`;
+  $("#feedlist").innerHTML=DATA.feed.map(f=>`<div class="f"><div class="say">「${f.say}」</div><div class="ar">→</div><div class="got">${f.got}<span>${f.by}</span></div></div>`).join("");
+  $("#crewlist").innerHTML=DATA.crew.map(c=>`<div class="c ${c.on?"on":""}"><div class="av">${c.n.replace("AI ","")[0]}</div><div><b>${c.n}</b><span>${c.j}</span></div><em>${c.s}</em></div>`).join("");
+  renderNums();
+}
+$("#pushlist").addEventListener("click",e=>{const it=e.target.closest(".item"),b=e.target.closest("button"); if(!it||!b)return;
+  store.push=store.push||{}; store.push[it.dataset.k]=b.classList.contains("okb")?"ok":"fix"; save(); render()});
+$("#seg").addEventListener("click",e=>{const b=e.target.closest("button"); if(b){period=b.dataset.k; renderNums()}});
+$("#rAm").onclick=()=>toggleRead("am"); $("#rPm").onclick=()=>toggleRead("pm");
+$("#gear").onclick=()=>{$("#inAim").value=aim.text;$("#inDue").value=aim.due;$("#inGive").value=aim.give;$("#inBirth").value=life.birth;$("#inAge").value=life.goalAge;$("#dlg").showModal()};
+$("#cancel").onclick=()=>$("#dlg").close();
+$("#save").onclick=()=>{
+  const at=$("#inAim").value.trim(),ad=$("#inDue").value,ag=$("#inGive").value.trim(),b=$("#inBirth").value,a=Number($("#inAge").value);
+  if(at&&ad){aim.text=at;aim.due=ad;aim.give=ag;store.aim={text:at,due:ad,give:ag}}
+  if(b&&a>0){life.birth=b;life.goalAge=a;store.life={birth:b,goalAge:a}}
+  save(); renderAim(); renderLife(); tick(); $("#dlg").close()};
+let rz; addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(drawWeeks,120)});
+render(); renderAim(); renderLife(); tick(); setInterval(tick,1000);
+
+function renderSend(){const S=DATA.send;
+  $("#sendn").textContent=`${S.msgs.length+S.slips.length} 件・見本`;
+  $("#msglist").innerHTML=S.msgs.map((m,i)=>`<div class="msg"><div class="who"><div class="av">${m.who[0]}</div><span class="t">${m.who}</span><span class="w">${m.w}・${m.what}</span><span class="via">${m.via}</span></div><div class="paste"><button class="cp" data-c="m${i}">コピー</button>${m.text.replace(/</g,"&lt;")}</div></div>`).join("");
+  $("#sliplist").innerHTML=S.slips.map((sl,i)=>`<div class="slip"><div class="sh"><b>${sl.kind}</b><i>${sl.ja}</i></div>${sl.f.map((f,j)=>`<div class="fld"><span>${f[0]}</span><em>${f[1]}</em><button class="cp" data-c="s${i}-${j}">コピー</button></div>`).join("")}</div>`).join("");
+}
+document.addEventListener("click",async e=>{const b=e.target.closest(".cp");if(!b)return;const k=b.dataset.c,S=DATA.send;
+  const t=k[0]==="m"?S.msgs[+k.slice(1)].text:(()=>{const [a,c]=k.slice(1).split("-");return S.slips[+a].f[+c][1]})();
+  try{await navigator.clipboard.writeText(t)}catch(_){const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove()}
+  b.textContent="コピーした";b.classList.add("ok");setTimeout(()=>{b.textContent="コピー";b.classList.remove("ok")},1600)});
+renderSend();
+</script>
+</body>
+</html>
