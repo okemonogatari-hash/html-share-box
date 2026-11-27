@@ -35,6 +35,9 @@ section{background:var(--card);border:1px solid var(--line);border-radius:16px;p
 .ben span{font-size:14px;color:var(--sub);line-height:1.65;display:block}
 .zukai{border-radius:14px;overflow:hidden;border:1px solid var(--line)}
 .pat+.pat{margin-top:22px}
+.okbox{background:var(--accent2);border-radius:12px;padding:12px 14px;margin:14px 0 4px;font-size:14.5px}
+.okbox p{margin:0 0 4px}
+.okbox ul{margin:0;padding-left:1.2em}
 .pat h3{font-size:17px;margin:0 0 8px;color:var(--accent)}
 .apps{display:grid;gap:10px;grid-template-columns:1fr 1fr}
 a.btn{display:block;text-align:center;text-decoration:none;color:var(--accent);font-weight:700;border:2px solid var(--accent);border-radius:14px;padding:14px 8px;background:var(--accent2)}
@@ -107,20 +110,30 @@ button.copy:focus-visible,a:focus-visible{outline:3px solid var(--pink);outline-
 </section>
 
 <section>
-  <h2>② ChatGPT とつなぐ</h2>
+  <h2>② ChatGPT とつなぐ（純正のアプリがあります）</h2>
   <ol>
-    <li><a href="https://chatgpt.com/plugins/plugin_asdk_app_695308f21c648191a0dd48dc9965f4bb" target="_blank" rel="noopener">ChatGPT の Circleback コネクタ</a> を開いて「接続」</li>
-    <li>Circleback のログイン画面で許可</li>
-    <li>「Circlebackで、今日の打ち合わせの文字起こしを出して」と聞くだけ</li>
+    <li><a href="https://chatgpt.com/plugins/plugin_asdk_app_695308f21c648191a0dd48dc9965f4bb" target="_blank" rel="noopener">ChatGPT の Circleback アプリ</a> を開く<br><span class="sub" style="margin:0">（または ChatGPT の「設定 → プラグイン」で Circleback を選ぶ）</span></li>
+    <li>「インストール」→「接続」→ Circleback のログイン画面で許可</li>
+    <li>チャットで <b>@Circleback</b> と打つか、入力欄の <b>＋</b> から Circleback を選んで<br>「今日の打ち合わせの文字起こしを出して」と聞くだけ</li>
   </ol>
-  <p class="sub">出てこない時は、ChatGPT の管理者がワークスペース設定で Circleback を許可します。<br>Codex なら <code>codex mcp add circleback --url https://circleback.ai/api/mcp</code> → <code>codex mcp login circleback</code></p>
+  <div class="okbox">
+    <p><b>ChatGPT Business なら</b></p>
+    <ul>
+      <li>アプリは最初から使える設定です（管理者が止めていなければ、そのまま接続できます）</li>
+      <li>アプリから読んだ情報は、モデルの学習に使われません（OpenAI公式）</li>
+      <li>「管理者により無効」と出た時は、管理者が <a href="https://admin.openai.com" target="_blank" rel="noopener">admin.openai.com</a> →「プラグイン」で Circleback を許可します</li>
+    </ul>
+  </div>
+  <p class="sub">Codex なら <code>codex mcp add circleback --url https://circleback.ai/api/mcp</code> → <code>codex mcp login circleback</code></p>
+  <p class="sub" style="font-size:12px">出典：<a href="https://circleback.ai/docs/support/platform/circleback-mcp" target="_blank" rel="noopener">Circleback MCP</a>／<a href="https://help.openai.com/en/articles/20001494" target="_blank" rel="noopener">OpenAI ヘルプ（アプリの接続）</a>／<a href="https://help.openai.com/en/articles/11509118" target="_blank" rel="noopener">OpenAI ヘルプ（管理者設定）</a>（2026-11-27 確認）</p>
 </section>
 
 <section>
   <h2>③ AIにこれを貼る</h2>
   <button class="copy" id="copyBtn" type="button">📋 コピー</button><span class="copied" id="copied" hidden>コピーしました</span>
 <pre id="aiText">Circleback（録音→文字起こしアプリ）をあなたにつなぎたい。
-- ChatGPTのコネクタ：https://chatgpt.com/plugins/plugin_asdk_app_695308f21c648191a0dd48dc9965f4bb
+- ChatGPTの純正アプリ：https://chatgpt.com/plugins/plugin_asdk_app_695308f21c648191a0dd48dc9965f4bb
+  （設定 → プラグイン → Circleback → インストール → 接続。使う時は @Circleback）
 - MCPサーバー：https://circleback.ai/api/mcp
 - Codex：codex mcp add circleback --url https://circleback.ai/api/mcp → codex mcp login circleback
 つなぎ方を一歩ずつ案内して。つながったら、私が「○○の文字起こし出して」と言った時に
